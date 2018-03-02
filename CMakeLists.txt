@@ -49,6 +49,8 @@ find_package(Boost REQUIRED)
 
 set(netconf-cli_SRCS
     src/main.cpp
+    src/CTree.cpp
+    src/CParser.cpp
     )
 
 add_executable(netconf-cli ${netconf-cli_SRCS})
