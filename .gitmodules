@@ -1,0 +1,15 @@
+[submodule "submodules/Catch"]
+	path = submodules/Catch
+	url = ../../github/philsquared/Catch
+[submodule "submodules/trompeloeil"]
+	path = submodules/trompeloeil
+	url = ../../github/rollbear/trompeloeil
+[submodule "submodules/spirit"]
+	path = submodules/spirit
+	url = ../../github/boostorg/spirit
+[submodule "submodules/docopt.cpp"]
+	path = submodules/docopt.cpp
+	url = ../../github/docopt/docopt.cpp
+[submodule "submodules/spdlog"]
+	path = submodules/spdlog
+	url = ../../github/gabime/spdlog
