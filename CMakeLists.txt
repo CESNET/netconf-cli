@@ -31,11 +31,29 @@ set(CMAKE_CXX_FLAGS "-O2 ${CMAKE_CXX_FLAGS}")
 # configurations. They are warnings, not errors.
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic ${CMAKE_CXX_FLAGS}")
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
+add_custom_target(git-version-cmake-ide
+    cmake/ProjectGitVersion.cmake
+    cmake/ProjectGitVersionRunner.cmake
+    )
+include(cmake/ProjectGitVersion.cmake)
+prepare_git_version(NETCONF_CLI_VERSION "0.0")
+
 find_package(Doxygen)
 option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${DOXYGEN_FOUND})
 
 find_package(docopt REQUIRED)
 find_package(spdlog REQUIRED)
+
+set(netconf-cli_SRCS
+    src/main.cpp
+    )
+
+add_executable(netconf-cli ${netconf-cli_SRCS})
+target_link_libraries(netconf-cli docopt)
+add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
+target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
 
 include(CTest)
 if(BUILD_TESTING)
