@@ -37,6 +37,41 @@ option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${D
 find_package(docopt REQUIRED)
 find_package(spdlog REQUIRED)
 
+include(CTest)
+if(BUILD_TESTING)
+    enable_testing()
+    find_path(TROMPELOEIL_PATH trompeloeil.hpp PATH_SUFFIXES trompeloeil/)
+    if("${TROMPELOEIL_PATH}" STREQUAL "TROMPELOEIL_PATH-NOTFOUND")
+        message(FATAL_ERROR "Cannot find the \"trompeloeil.hpp\" file provided by <https://github.com/rollbear/trompeloeil>. "
+            "Please set TROMPELOEIL_PATH to where it is available.")
+    endif()
+
+    find_path(CATCH_PATH catch.hpp PATH_SUFFIXES catch/)
+    if("${CATCH_PATH}" STREQUAL "CATCH_PATH-NOTFOUND")
+        message(FATAL_ERROR "Cannot find the \"catch.hpp\" file provided by <http://catch-lib.net/>. "
+            "Please set CATCH_PATH to where it is available.")
+    endif()
+
+    add_library(TestCatchIntegration STATIC
+        tests/catch_integration.cpp
+        tests/trompeloeil_catch.h
+        )
+    target_include_directories(TestCatchIntegration SYSTEM PUBLIC ${TROMPELOEIL_PATH} ${CATCH_PATH})
+    target_include_directories(TestCatchIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+    target_link_libraries(TestCatchIntegration spdlog::spdlog)
+
+    macro(cli_test fname)
+        set(test_${fname}_SOURCES tests/${fname}.cpp)
+        add_executable(test_${fname} ${test_${fname}_SOURCES})
+        target_link_libraries(test_${fname} TestCatchIntegration)
+        if(NOT CMAKE_CROSSCOMPILING)
+            add_test(test_${fname} test_${fname})
+        endif()
+        target_include_directories(test_${fname} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+        target_link_libraries(test_${fname} TestCatchIntegration)
+    endmacro()
+endif()
+
 if(WITH_DOCS)
     set(doxyfile_in ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
     set(doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
