@@ -70,6 +70,7 @@ if(BUILD_TESTING)
         target_include_directories(test_${fname} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
         target_link_libraries(test_${fname} TestCatchIntegration)
     endmacro()
+    cli_test(dummy)
 endif()
 
 if(WITH_DOCS)
