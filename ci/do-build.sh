@@ -48,8 +48,8 @@ emerge_dep() {
 
 ARTIFACT=netconf-cli-$(git --git-dir ${TH_GIT_PATH}/.git rev-parse HEAD:submodules/).tar.xz
 
-scp th-ci-logs@ci-logs.gerrit.cesnet.cz:artifacts/${TH_JOB_NAME}/${ARTIFACT} . \
-    || true # ignore network errors
+#scp th-ci-logs@ci-logs.gerrit.cesnet.cz:artifacts/${TH_JOB_NAME}/${ARTIFACT} . \
+#    || true # ignore network errors
 
 if [[ -f ${TH_JOB_WORKING_DIR}/${ARTIFACT} ]]; then
     tar -C ~/target -xvJf ${TH_JOB_WORKING_DIR}/${ARTIFACT}
@@ -69,12 +69,15 @@ else
     do_test_dep_cmake spdlog -j${CI_PARALLEL_JOBS}
 
     # boost-spirit doesn't require installation
+    pushd submodules/boost
+    ./bootstrap.sh --with-libraries=spirit --prefix=${PREFIX}
+    ./b2 headers
 
     tar -C ~/target -cvJf ${TH_JOB_WORKING_DIR}/${ARTIFACT} .
-    ssh th-ci-logs@ci-logs.gerrit.cesnet.cz mkdir -p artifacts/${TH_JOB_NAME} \
-        || true # ignore network errors
-    rsync ${TH_JOB_WORKING_DIR}/${ARTIFACT} th-ci-logs@ci-logs.gerrit.cesnet.cz:artifacts/${TH_JOB_NAME}/ \
-        || true # ignore network errors
+#    ssh th-ci-logs@ci-logs.gerrit.cesnet.cz mkdir -p artifacts/${TH_JOB_NAME} \
+#        || true # ignore network errors
+#    rsync ${TH_JOB_WORKING_DIR}/${ARTIFACT} th-ci-logs@ci-logs.gerrit.cesnet.cz:artifacts/${TH_JOB_NAME}/ \
+#        || true # ignore network errors
 fi
 
 mkdir -p ${ZUUL_PROJECT}/build
