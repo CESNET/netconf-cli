@@ -53,7 +53,7 @@ set(netconf-cli_SRCS
 add_executable(netconf-cli ${netconf-cli_SRCS})
 target_link_libraries(netconf-cli docopt)
 add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
-target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
+target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR}/submodules/spirit)
 
 include(CTest)
 if(BUILD_TESTING)
