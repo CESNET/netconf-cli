@@ -46,6 +46,12 @@ option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${D
 find_package(docopt REQUIRED)
 find_package(spdlog REQUIRED)
 
+find_path(BOOST_SPIRIT_INCLUDE_PATH boost/spirit/home/x3.hpp)
+if(BOOST_SPIRIT_INCLUDE_PATH_NOTFOUND)
+    message(FATAL_ERROR "Cannot find Boost-Spirit X3 include")
+endif()
+include_directories(${BOOST_SPIRIT_INCLUDE_PATH})
+
 set(netconf-cli_SRCS
     src/main.cpp
     )
