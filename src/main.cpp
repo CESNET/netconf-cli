@@ -5,8 +5,10 @@
  *
 */
 
+
 #include <boost/spirit/home/x3.hpp>
 #include <docopt.h>
+#include "CTree.hpp"
 #include <iostream>
 #include <string>
 #include "NETCONF_CLI_VERSION.h"
@@ -23,42 +25,53 @@ Usage:
 
 namespace x3 = boost::spirit::x3;
 namespace ascii = boost::spirit::x3::ascii;
-std::string curDir = "";
 
-struct TCommand {
+/*struct TCommand {
     std::string m_keyword;
     std::string m_args;
-};
+};*/
 
-void changeDir(const std::string& args)
+
+using Cmd = std::vector<std::string>;
+using x3::alpha;
+using x3::lit;
+using x3::string;
+using x3::_attr;
+using x3::lexeme;
+using ascii::space;
+
+CTree tree;
+
+
+auto const checkNode =
+[](auto& ctx)
 {
-    using x3::phrase_parse;
-    using x3::char_;
-    using ascii::space;
-    if (phrase_parse(
-            args.begin(),
-            args.end(),
-            *space >> x3::eoi,
-            x3::eoi)) {
-        std::cout << "returned to root" << std::endl;
+    std::cout << "trying to enter " << _attr(ctx)<< std::endl;
+    
+};
+auto const nodename =
+    lexeme[(*alpha)] | string("..") ;
+auto const cd_args =
+    nodename[checkNode]
+    >> x3::eoi;
+auto const cd = 
+    string("cd")
+    >> cd_args;
+
+auto const keywords = 
+    cd;
+
+void changeDir(const Cmd& args)
+{
+    if (args.at(1) == "") {
         curDir = "";
-        return;
-    }
-    std::string dir;
-    auto farg = [&](auto& val) { dir += _attr(val); };
-    auto it = args.begin();
-    bool r = phrase_parse(
-        it,
-        args.end(),
-        +(char_ - ' ')[farg] >> (*space | x3::eoi), // parse the dirname(con't contain spaces)
-        x3::eol);
-    if (!r || it != args.end()) {
-        std::cout << "Couldn't parse the argument: " << args << std::endl;
+
     } else {
+        std::string dir = args.at(1);
         curDir += "/";
         curDir += dir;
-        std::cout << "cd to " << curDir << std::endl;
     }
+    std::cout << "cd to " << curDir << std::endl;
 }
 
 std::string getInput()
@@ -67,28 +80,22 @@ std::string getInput()
     std::getline(std::cin, line);
     return line;
 }
-TCommand parseCommand(const std::string& line) //parses the keyword
+Cmd parseInput(const std::string& line)
 {
-    using x3::char_;
-    using ascii::space;
-    TCommand cmd;
+    Cmd args;
     auto it = line.begin();
-    auto fcmd = [&](auto& val) { cmd.m_keyword += _attr(val); };
-    bool r = phrase_parse(
-        it,
-        line.end(),
-        *space >> +(char_ - space)[fcmd] >> (+space | x3::eoi), //keyword parser
-        x3::eol);
-    cmd.m_args = std::string(it, line.end());
-    return cmd;
+    //auto fcmd = [&](auto& val) { cmd.m_keyword += _attr(val); };
+    std::cout << "success: "<< x3::phrase_parse(it, line.end(), keywords, space, args) << std::endl;
+    std::cout <<"end: "<< std::string(it, line.end())<< std::endl;
+    return args;
 }
-void handleInput(const TCommand& cmd)
+/*void handleInput(const TCommand& cmd)
 {
     if (cmd.m_keyword == "cd")
         changeDir(cmd.m_args);
     else
         std::cout << "I don't know the keyword \"" << cmd.m_keyword << "\"" << std::endl;
-}
+}*/
 
 
 int main(int argc, char* argv[])
@@ -98,13 +105,17 @@ int main(int argc, char* argv[])
                                true,
                                "netconf-cli " NETCONF_CLI_VERSION,
                                true);
+    tree.initDefault();
     std::cout << "Welcome to netconf-cli" << std::endl;
-    while (true) {
-        std::cout << (curDir == "" ? "/" : "") << curDir << " >> ";
-        std::string line = getInput();
-        TCommand cmd = parseCommand(line);
-        handleInput(cmd);
-    }
+
+    changeDir(parseInput("cd dnaj"));
+    changeDir(parseInput("cd   dnaj"));
+    changeDir(parseInput("cd   dnaj  "));
+    changeDir(parseInput("cd dnaj "));
+    changeDir(parseInput("   cd dnaj "));
+    changeDir(parseInput("cd "));
+    changeDir(parseInput("cd dnaj "));
+    
 
     return 0;
 }
