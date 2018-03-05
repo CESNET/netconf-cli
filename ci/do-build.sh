@@ -10,6 +10,7 @@ mkdir ${PREFIX}
 export PATH=${PREFIX}/bin:$PATH
 export LD_LIBRARY_PATH=${PREFIX}/lib64:${PREFIX}/lib
 export PKG_CONFIG_PATH=${PREFIX}/lib64/pkgconfig:${PREFIX}/lib/pkgconfig
+export BOOST_ROOT=${PREFIX}
 
 if [[ $TH_JOB_NAME =~ .*-sanitizers-.* ]]; then
     # https://gitlab.kitware.com/cmake/cmake/issues/16609
@@ -69,6 +70,12 @@ else
     do_test_dep_cmake spdlog -j${CI_PARALLEL_JOBS}
 
     # boost-spirit doesn't require installation
+    pushd ${TH_GIT_PATH}/submodules/boost
+    git submodule update --init
+    ./bootstrap.sh --prefix=${PREFIX}
+    ./b2 --ignore-site-config headers
+    mv boost ${PREFIX}/include/
+    popd
 
     tar -C ~/target -cvJf ${TH_JOB_WORKING_DIR}/${ARTIFACT} .
     ssh th-ci-logs@ci-logs.gerrit.cesnet.cz mkdir -p artifacts/${TH_JOB_NAME} \

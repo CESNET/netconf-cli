@@ -46,6 +46,9 @@ option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${D
 find_package(docopt REQUIRED)
 find_package(spdlog REQUIRED)
 
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
 set(netconf-cli_SRCS
     src/main.cpp
     )
