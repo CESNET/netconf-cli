@@ -20,6 +20,11 @@ fi
 # - libyang and libnetconf2 copmare CMAKE_BUILD_TYPE to lowercase "debug"...
 CMAKE_OPTIONS="${CMAKE_OPTIONS} -DENABLE_BUILD_TESTS=ON -DENABLE_VALGRIND_TESTS=OFF"
 
+# Find Boost. This should not be needed because it's underneath a CMAKE_INSTALL_PREFIX
+# which ought to be present in CMAKE_SYSTEM_PREFIX_PATH which in turn gets used by
+# find_path, but it is needed, apparently.
+CMAKE_OPTIONS="${CMAKE_OPTIONS} -DBOOST_SPIRIT_INCLUDE_PATH=${PREFIX}/include"
+
 build_dep_cmake() {
     pushd ${TH_JOB_WORKING_DIR}
     mkdir build-$1
@@ -69,6 +74,12 @@ else
     do_test_dep_cmake spdlog -j${CI_PARALLEL_JOBS}
 
     # boost-spirit doesn't require installation
+    pushd ${TH_GIT_PATH}/submodules/boost
+    git submodule update --init
+    ./bootstrap.sh --prefix=${PREFIX}
+    ./b2 --ignore-site-config headers
+    mv boost ${PREFIX}/include/
+    popd
 
     tar -C ~/target -cvJf ${TH_JOB_WORKING_DIR}/${ARTIFACT} .
     ssh th-ci-logs@ci-logs.gerrit.cesnet.cz mkdir -p artifacts/${TH_JOB_NAME} \
