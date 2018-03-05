@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c84f34c0_ab96be9c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-05T15:42:23Z",
+      "side": 1,
+      "message": "Boost",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 5
+      },
+      "revId": "e0e185bfe216ed029d6197f9802dd88493a9baf2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
