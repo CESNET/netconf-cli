@@ -7,6 +7,7 @@
 
 #include <docopt.h>
 #include <string>
+#include <boost/spirit/home/x3.hpp>
 #include "NETCONF_CLI_VERSION.h"
 
 static const char usage[] =
