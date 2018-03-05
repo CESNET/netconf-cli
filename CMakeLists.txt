@@ -46,12 +46,14 @@ option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${D
 find_package(docopt REQUIRED)
 find_package(spdlog REQUIRED)
 
+find_package(Boost REQUIRED)
+
 set(netconf-cli_SRCS
     src/main.cpp
     )
 
 add_executable(netconf-cli ${netconf-cli_SRCS})
-target_link_libraries(netconf-cli docopt)
+target_link_libraries(netconf-cli docopt Boost::boost)
 add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
 target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
 
