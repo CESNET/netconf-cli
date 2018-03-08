@@ -48,6 +48,7 @@ find_package(spdlog REQUIRED)
 
 set(netconf-cli_SRCS
     src/main.cpp
+    src/CTree.cpp
     )
 
 add_executable(netconf-cli ${netconf-cli_SRCS})
