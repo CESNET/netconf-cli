@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "12a201a2_908cedf3",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-08T14:32:50Z",
+      "side": 1,
+      "message": "- autor + copyright\n- podivej se, prosim, na vypis clang-format, tady uz je uzitecny (prvni link od Zuul CI)",
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a851ac22_3a6d5155",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-08T14:32:50Z",
+      "side": 1,
+      "message": "nit: tohle je subjektivni zalezitost, a tak doporucuju zvazit vypusteni prefixu \"get\" kvuli tomu, ze podle me moc nepridava zadnou informaci, a pouze (tak nejak po Javovsku) prodluzujeIdentifikatoryAbyBylyOpravduNepsateleneBezDobrehoIDEJakoTrebaQtCreator :]. Nicmene to je jenom moje osobni preference.",
+      "range": {
+        "startLine": 19,
+        "startChar": 48,
+        "endLine": 19,
+        "endChar": 51
+      },
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2682ebf5_cd705f10",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-08T14:32:50Z",
+      "side": 1,
+      "message": "`const auto\u0026` by zde podle me zvysilo citelnost",
+      "range": {
+        "startLine": 27,
+        "startChar": 4,
+        "endLine": 27,
+        "endChar": 44
+      },
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5877dad9_d31b97c2",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-08T14:32:50Z",
+      "side": 1,
+      "message": "nit: extra whitespace (`git diff` by to mel ukazovat cervene podbarvene, Gerrit to dela take)",
+      "range": {
+        "startLine": 42,
+        "startChar": 80,
+        "endLine": 42,
+        "endChar": 81
+      },
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b44cecf0_13c5d906",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-08T14:32:50Z",
+      "side": 1,
+      "message": "chybi autor a informace o copyrightu -- viz main.cpp",
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b974863_5a1f1356",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-08T14:32:50Z",
+      "side": 1,
+      "message": "jmena argumentu je dobre zachovavat i v .h, zlepsuje to citelnost",
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99416ae6_8863c309",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-08T14:32:50Z",
+      "side": 1,
+      "message": "tenhle komentar nic nepridava",
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79946f95_427b9fd2",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-08T14:32:50Z",
+      "side": 1,
+      "message": "dtto",
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
