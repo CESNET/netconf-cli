@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "48cda581_3022c600",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-08T03:26:23Z",
+      "side": 1,
+      "message": "vsechny exceptions by mely dedit od nejake specializace std::exception",
+      "revId": "f5233e8f55dfe6191b8b94a9f4faeb52c8708c45",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bd1a20b_ba04b3d1",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-08T03:26:23Z",
+      "side": 1,
+      "message": "Pomohlo by mi, kdyby tu bylo pomoci Doxygenu napsano. k cemu tahle trida slouzi",
+      "revId": "f5233e8f55dfe6191b8b94a9f4faeb52c8708c45",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
