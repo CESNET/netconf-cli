@@ -22,6 +22,27 @@
     },
     {
       "key": {
+        "uuid": "cade9ae6_971d8626",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-09T13:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12a201a2_908cedf3",
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a851ac22_3a6d5155",
         "filename": "src/CTree.cpp",
         "patchSetId": 2
@@ -36,6 +57,33 @@
       "writtenOn": "2018-03-08T14:32:50Z",
       "side": 1,
       "message": "nit: tohle je subjektivni zalezitost, a tak doporucuju zvazit vypusteni prefixu \"get\" kvuli tomu, ze podle me moc nepridava zadnou informaci, a pouze (tak nejak po Javovsku) prodluzujeIdentifikatoryAbyBylyOpravduNepsateleneBezDobrehoIDEJakoTrebaQtCreator :]. Nicmene to je jenom moje osobni preference.",
+      "range": {
+        "startLine": 19,
+        "startChar": 48,
+        "endLine": 19,
+        "endChar": 51
+      },
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e532e14_5696f0be",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-09T13:55:01Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "a851ac22_3a6d5155",
       "range": {
         "startLine": 19,
         "startChar": 48,
@@ -74,6 +122,33 @@
     },
     {
       "key": {
+        "uuid": "aa2dea6c_cf77dcc5",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-09T13:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2682ebf5_cd705f10",
+      "range": {
+        "startLine": 27,
+        "startChar": 4,
+        "endLine": 27,
+        "endChar": 44
+      },
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5877dad9_d31b97c2",
         "filename": "src/CTree.cpp",
         "patchSetId": 2
@@ -100,6 +175,33 @@
     },
     {
       "key": {
+        "uuid": "a3d4754e_da6b4ee8",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-09T13:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5877dad9_d31b97c2",
+      "range": {
+        "startLine": 42,
+        "startChar": 80,
+        "endLine": 42,
+        "endChar": 81
+      },
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b44cecf0_13c5d906",
         "filename": "src/CTree.hpp",
         "patchSetId": 2
@@ -117,6 +219,27 @@
       "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e34b92a6_aeaaabb5",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-09T13:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b44cecf0_13c5d906",
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -140,6 +263,27 @@
     },
     {
       "key": {
+        "uuid": "0fdf47e6_39e6db55",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-09T13:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b974863_5a1f1356",
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "99416ae6_8863c309",
         "filename": "src/CTree.hpp",
         "patchSetId": 2
@@ -160,6 +304,27 @@
     },
     {
       "key": {
+        "uuid": "815f2789_193a3047",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-09T13:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99416ae6_8863c309",
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "79946f95_427b9fd2",
         "filename": "src/CTree.hpp",
         "patchSetId": 2
@@ -177,6 +342,27 @@
       "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8b09d53_2ca22a6e",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-09T13:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79946f95_427b9fd2",
+      "revId": "32358c1a792e50b2c7cda756877e975b3628311b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
