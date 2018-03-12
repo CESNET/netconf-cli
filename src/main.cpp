@@ -5,11 +5,11 @@
  *
 */
 
-
 #include <boost/spirit/home/x3.hpp>
 #include <docopt.h>
 #include <iostream>
 #include <string>
+#include "CParser.hpp"
 #include "CTree.hpp"
 #include "NETCONF_CLI_VERSION.h"
 
@@ -40,43 +40,6 @@ using x3::_attr;
 using x3::lexeme;
 using ascii::space;
 
-CTree tree;
-
-class TooManyArgumentsException : std::invalid_argument {
-public:
-    TooManyArgumentsException(const std::string& cmd_name)
-        : std::invalid_argument(cmd_name)
-    {
-        m_msg = "Too many arguments : ";
-        m_msg += std::invalid_argument::what();
-    }
-    const char* what() const noexcept
-    {
-        return m_msg.c_str();
-    }
-
-private:
-    std::string m_msg;
-};
-
-
-auto const checkNode =
-    [](auto& ctx) {
-        std::cout << "trying to enter " << _attr(ctx) << std::endl;
-
-        tree.checkNode(tree.currentNode(), _attr(ctx));
-    };
-auto const node_up = lexeme[x3::string("..")];
-auto const nodename = lexeme[+alpha];
-auto const cd_args = ((+(node_up >> +(char_('/'))) >> -node_up) | //for only going up (../../..)
-                      (*(node_up >> +(char_('/'))) >> nodename[checkNode] >> *("/" >> nodename[checkNode])))
-    >> x3::eoi;
-auto const cd = x3::string("cd")
-    >> cd_args
-    >> x3::eoi;
-
-auto const keywords = cd;
-
 
 std::string getInput()
 {
@@ -84,21 +47,7 @@ std::string getInput()
     std::getline(std::cin, line);
     return line;
 }
-Cmd parseInput(const std::string& line)
-{
-    Cmd args;
-    auto it = line.begin();
-    //auto fcmd = [&](auto& val) { cmd.m_keyword += _attr(val); };
-    bool result = x3::phrase_parse(it, line.end(), keywords, space, args);
-    std::cout << "success: " << result << std::endl;
-    if (!result) {
-        throw TooManyArgumentsException(std::string(it, line.end()));
-    }
-
-
-    return args;
-}
-void handleInput(const Cmd& cmd)
+void handleInput(const Cmd& cmd, CTree& tree)
 {
     if (cmd.at(0) == "cd") {
         if (cmd.size() == 1)
@@ -117,18 +66,22 @@ int main(int argc, char* argv[])
                                true,
                                "netconf-cli " NETCONF_CLI_VERSION,
                                true);
-    tree.initDefault();
     std::cout << "Welcome to netconf-cli" << std::endl;
+    CTree tree;
+    tree.initDefault();
+    CParser parser(tree);
 
     try {
 
-        handleInput(parseInput("   cd    aaa   "));
-        handleInput(parseInput("cd aaabbb  sda"));
+        handleInput(parser.parseInput("   cd    aaa   "), tree);
+        handleInput(parser.parseInput("cd aaabbb  sda"), tree);
         std::cout << "curdir = " << tree.currentNode() << std::endl;
 
-        handleInput(parseInput("cd "));
+        handleInput(parser.parseInput("cd "), tree);
         std::cout << "curdir = " << tree.currentNode() << std::endl;
     } catch (TooManyArgumentsException ex) {
+        std::cout << ex.what() << std::endl;
+    } catch (InvalidNodeException ex) {
         std::cout << ex.what() << std::endl;
     }
     return 0;
