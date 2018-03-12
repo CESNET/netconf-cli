@@ -12,21 +12,11 @@
 #include <unordered_map>
 #include <unordered_set>
 
-class InvalidNodeException : std::invalid_argument {
+class InvalidNodeException : public std::invalid_argument {
 public:
-    InvalidNodeException(const std::string& node_name)
-        : std::invalid_argument(node_name)
-    {
-        m_msg = "Invalid node name: ";
-        m_msg += std::invalid_argument::what();
-    }
-    const char* what() const noexcept
-    {
-        return m_msg.c_str();
-    }
+    using std::invalid_argument::invalid_argument;
+    ~InvalidNodeException() override = default;
 
-private:
-    std::string m_msg;
 };
 
 /*! \class CTree
