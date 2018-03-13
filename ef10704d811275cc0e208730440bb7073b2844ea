@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1fda77c3_e9e6053a",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-13T11:17:29Z",
+      "side": 1,
+      "message": "nit: moc se mi nelibi prefixovani \"hodne viditelnych\" identifikatoru, jako jsou jmena trid, tim C-ckem.\n\nCeho strom to je? Pokud tomu treba rikas adresare, asi bych tridu pojmenoval jako DirectoryTree. Pokud je to strom prikazu, tak treba CommandTree. To same pak analogicky pro dalsi commit.",
+      "revId": "ef10704d811275cc0e208730440bb7073b2844ea",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01d6c79e_4ef3e215",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-13T11:17:29Z",
+      "side": 1,
+      "message": "nit: tohle je lehce nekonzistentni -- jinde je camelCase, a tady je to cur_dir",
+      "revId": "ef10704d811275cc0e208730440bb7073b2844ea",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
