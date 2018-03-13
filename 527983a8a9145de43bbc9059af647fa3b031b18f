@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "022518ac_e9ba6428",
+        "filename": "src/CParser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-13T11:14:49Z",
+      "side": 1,
+      "message": "Zvazil bych, zda neni lepsi do .h souboru psat jenom deklarace trid, bez definic metod. U std::exception je to potreba i kvuli tomu, ze se podle generovani vtable (cili podle prvni virtualni metody, coz je v tomhle pripade destruktor) urcuje RTTI, ktery je nutny k tomu, aby se daly vyjimky zachytavat podle typu.\n\nTL;DR verze: tela metod do .cpp souboru, a destruktor v .cpp definovat jako:\n\n  TooManyArgs::~TooManyArgs() \u003d default;",
+      "revId": "527983a8a9145de43bbc9059af647fa3b031b18f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0684f056_f4259e29",
+        "filename": "src/CParser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-13T11:14:49Z",
+      "side": 1,
+      "message": "nit: bez mezery pred dvojteckou \"Too many arguments: \"",
+      "range": {
+        "startLine": 26,
+        "startChar": 35,
+        "endLine": 26,
+        "endChar": 38
+      },
+      "revId": "527983a8a9145de43bbc9059af647fa3b031b18f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42af65a6_dea42524",
+        "filename": "src/CParser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-13T11:14:49Z",
+      "side": 1,
+      "message": "nit: nebal bych se prazdnych radku mezi funkcemi; cekal bych, ze clang-format to rekne, sorry",
+      "revId": "527983a8a9145de43bbc9059af647fa3b031b18f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b019a28_bd14872d",
+        "filename": "src/CParser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-13T11:14:49Z",
+      "side": 1,
+      "message": "...kdyz se z .h volaji iostreams, je to podle me znamka, ze ten kod patri do implementace a ne do \"verejneho API kontraktu\"",
+      "revId": "527983a8a9145de43bbc9059af647fa3b031b18f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
