@@ -2,6 +2,32 @@
   "comments": [
     {
       "key": {
+        "uuid": "d1c9712b_b0204c74",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000004
+      },
+      "realAuthor": {
+        "id": 1000004
+      },
+      "writtenOn": "2018-03-15T17:29:31Z",
+      "side": 1,
+      "message": "Ahoj,\n\n1) mohl bych mít tady jen připomínku ke konvencím? Tato metoda je virtuální a overriduje původní metodu v std::invalid_argument třídě. Což kdybych nevěděl zpaměti, tak mě třeba nenapadne, že tato metoda je virtuální.\n\nDoporučoval bych proto použít v těchto případech slovíčko override, tj.\n\n const char* what() const noexcept override\n {\n     return m_msg.c_str();\n }\n\n\"override\" slouží jako kontrola, že tato metoda skutečně overriduje nějakou virtuální metodu z base class, a pokud by tomu tak nebylo, tak kompilátor vypíše chybu, tj. je to dobrá kontrola proti překlepům a různým přehlédnutím.\n\n2) Druhá věc je, že takto udělaná třída se nijak neliší od toho, kdyby byla udělána takto:\n\n class InvalidNodeException : public std::invalid_argument {\n public:\n     using std::invalid_argument::invalid_argument;\n     ~InvalidNodeException() override \u003d default;\n };\n\nviz. http://en.cppreference.com/w/cpp/error/invalid_argument\n\nPři použití public dědění bude i v InvalidNodeException veřejná metoda what(), a pomocí \"using\" direktivy lze zdědit všechny konstruktory base třídy. Což ve výsledku dá stejnou\ntřídu, jako kterou máme teď, ale zápis je jednodušší a přehlednější. Nebo jsem se někde\npřehlédl?",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 37
+      },
+      "revId": "ef10704d811275cc0e208730440bb7073b2844ea",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1fda77c3_e9e6053a",
         "filename": "src/CTree.hpp",
         "patchSetId": 8
