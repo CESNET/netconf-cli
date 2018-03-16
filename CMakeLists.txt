@@ -29,7 +29,7 @@ set(CMAKE_CXX_FLAGS "-O2 ${CMAKE_CXX_FLAGS}")
 
 # Build warnings are useful tools (and this project should be warning-free anyway), enable them on all
 # configurations. They are warnings, not errors.
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Wsuggest-override -Woverloaded-virtual ${CMAKE_CXX_FLAGS}")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
