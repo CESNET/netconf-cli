@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "97df283e_89c6522d",
+        "filename": "src/CParser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T15:09:15Z",
+      "side": 1,
+      "message": "Tohle je dobry, to jsem neznal, ja porad ty konstruktory opisoval znova a znova. Diky.",
+      "revId": "5418ffbe561da76178d12a0f3165f9d0bbb665a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ad8e2bf3_228fafdc",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T15:09:15Z",
+      "side": 1,
+      "message": "Levnejsi a IMHO i citelnejsi je:\n\n  node.empty()\n\nObdobne i jinde.",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "5418ffbe561da76178d12a0f3165f9d0bbb665a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a6732a3_07cb662b",
+        "filename": "src/main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T15:09:15Z",
+      "side": 1,
+      "message": "Ja bych se tu tech slozenych zavorek nebal.",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 39
+      },
+      "revId": "5418ffbe561da76178d12a0f3165f9d0bbb665a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "539039c9_3a5025c1",
+        "filename": "src/main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T15:09:15Z",
+      "side": 1,
+      "message": "Tohle mi prijde ale jako opravdu fuj, michat u dvou branchu zavorky a bez-zavorek.",
+      "revId": "5418ffbe561da76178d12a0f3165f9d0bbb665a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
