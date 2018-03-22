@@ -1,0 +1,168 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "33a063f4_12df4fa3",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T16:59:57Z",
+      "side": 1,
+      "message": "duplicitni komentar -- popisuje, co dela kod, ne proc to ten kod dela",
+      "range": {
+        "startLine": 25,
+        "startChar": 50,
+        "endLine": 25,
+        "endChar": 90
+      },
+      "revId": "6eedf9f7b717cc983f836f4e54e6b426d877f360",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30d0dc09_759ef2c8",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T16:59:57Z",
+      "side": 1,
+      "message": "nit: prijde mi citelnejsi `return a !\u003d b` namisto `return !(a \u003d\u003d b)`",
+      "revId": "6eedf9f7b717cc983f836f4e54e6b426d877f360",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "962d0a23_9ea9c6c1",
+        "filename": "src/ast.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T16:59:57Z",
+      "side": 1,
+      "message": "Idealne veci nezakomentovavat, ale smazat, pokud uz nejsou potreba. Vzdy je mozne se k nim vratit pres git.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 3
+      },
+      "revId": "6eedf9f7b717cc983f836f4e54e6b426d877f360",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f57d18a8_0af6a558",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T16:59:57Z",
+      "side": 1,
+      "message": "Melo by tu byt FIT, viz https://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/706 (a obdobne v dalsich souborech)",
+      "revId": "6eedf9f7b717cc983f836f4e54e6b426d877f360",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11b5c686_8e4880c2",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T16:59:57Z",
+      "side": 1,
+      "message": "nit: je to test, vsechny sekce neco testujou -\u003e pryc s tim",
+      "range": {
+        "startLine": 24,
+        "startChar": 13,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "6eedf9f7b717cc983f836f4e54e6b426d877f360",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "281fa45d_2b99aacc",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T16:59:57Z",
+      "side": 1,
+      "message": "nit: Prijde mi, ze ted tahle SECTION ve skutecnosti nic nedela, jenom slucuje dve jine SECTION dohromady.",
+      "revId": "6eedf9f7b717cc983f836f4e54e6b426d877f360",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5faa8b55_1c4ae6d5",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-22T16:59:57Z",
+      "side": 1,
+      "message": "Tohle se da presunout do bloku vyse, aby to nemuselo byt uvedeno v SECTION(\"a\") i SECTION(\"b\") -- podobne, jako jsi vys presunul inicializaci.",
+      "range": {
+        "startLine": 31,
+        "startChar": 2,
+        "endLine": 33,
+        "endChar": 41
+      },
+      "revId": "6eedf9f7b717cc983f836f4e54e6b426d877f360",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
