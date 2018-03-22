@@ -22,6 +22,27 @@
     },
     {
       "key": {
+        "uuid": "a4e81c99_ae2131a4",
+        "filename": "src/CParser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-22T12:49:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "022518ac_e9ba6428",
+      "revId": "527983a8a9145de43bbc9059af647fa3b031b18f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0684f056_f4259e29",
         "filename": "src/CParser.hpp",
         "patchSetId": 1
@@ -48,6 +69,33 @@
     },
     {
       "key": {
+        "uuid": "d18bb3b0_1fb09041",
+        "filename": "src/CParser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-22T12:49:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0684f056_f4259e29",
+      "range": {
+        "startLine": 26,
+        "startChar": 35,
+        "endLine": 26,
+        "endChar": 38
+      },
+      "revId": "527983a8a9145de43bbc9059af647fa3b031b18f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "42af65a6_dea42524",
         "filename": "src/CParser.hpp",
         "patchSetId": 1
@@ -68,6 +116,27 @@
     },
     {
       "key": {
+        "uuid": "02e2d309_765eae14",
+        "filename": "src/CParser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-22T12:49:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42af65a6_dea42524",
+      "revId": "527983a8a9145de43bbc9059af647fa3b031b18f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b019a28_bd14872d",
         "filename": "src/CParser.hpp",
         "patchSetId": 1
@@ -82,6 +151,27 @@
       "writtenOn": "2018-03-13T11:14:49Z",
       "side": 1,
       "message": "...kdyz se z .h volaji iostreams, je to podle me znamka, ze ten kod patri do implementace a ne do \"verejneho API kontraktu\"",
+      "revId": "527983a8a9145de43bbc9059af647fa3b031b18f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a2718999_ca6808f1",
+        "filename": "src/CParser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-22T12:49:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b019a28_bd14872d",
       "revId": "527983a8a9145de43bbc9059af647fa3b031b18f",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
