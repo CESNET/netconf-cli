@@ -47,15 +47,21 @@ find_package(docopt REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(Boost REQUIRED)
 
-set(netconf-cli_SRCS
-    src/main.cpp
+set(parser_SRCS
     src/CTree.cpp
     src/CParser.cpp
     src/ast.cpp
     )
 
+add_library(parser STATIC ${parser_SRCS})
+target_link_libraries(parser Boost::boost)
+
+set(netconf-cli_SRCS
+    src/main.cpp
+    )
+
 add_executable(netconf-cli ${netconf-cli_SRCS})
-target_link_libraries(netconf-cli docopt Boost::boost)
+target_link_libraries(netconf-cli docopt parser)
 add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
 target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
 
@@ -85,7 +91,7 @@ if(BUILD_TESTING)
     macro(cli_test fname)
         set(test_${fname}_SOURCES tests/${fname}.cpp)
         add_executable(test_${fname} ${test_${fname}_SOURCES})
-        target_link_libraries(test_${fname} TestCatchIntegration)
+        target_link_libraries(test_${fname} TestCatchIntegration parser)
         if(NOT CMAKE_CROSSCOMPILING)
             add_test(test_${fname} test_${fname})
         endif()
@@ -93,6 +99,8 @@ if(BUILD_TESTING)
         target_link_libraries(test_${fname} TestCatchIntegration)
     endmacro()
     cli_test(dummy)
+    cli_test(cd)
+
 endif()
 
 if(WITH_DOCS)
