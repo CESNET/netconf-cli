@@ -1,13 +1,15 @@
 /*
  * Copyright (C) 2018 CESNET, https://photonics.cesnet.cz/
+ * Copyright (C) 2018 FIT CVUT, https://fit.cvut.cz/
  *
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
- */
+*/
 
 #pragma once
 #include <boost/spirit/home/x3.hpp>
 #include "CTree.hpp"
+#include "ast.hpp"
 namespace x3 = boost::spirit::x3;
 namespace ascii = boost::spirit::x3::ascii;
 using Cmd = std::vector<std::string>;
@@ -27,7 +29,7 @@ public:
 class CParser {
 public:
     CParser(const CTree& tree);
-    Cmd parseInput(const std::string& line);
+    cd_ parseCommand(const std::string& line);
 
 private:
     const CTree& m_tree;
