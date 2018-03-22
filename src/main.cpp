@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2018 CESNET, https://photonics.cesnet.cz/
+ * Copyright (C) 2018 FIT CVUT, https://fit.cvut.cz/
  *
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
@@ -50,5 +51,25 @@ int main(int argc, char* argv[])
                                "netconf-cli " NETCONF_CLI_VERSION,
                                true);
     std::cout << "Welcome to netconf-cli" << std::endl;
+<<<<<<< HEAD
+=======
+    /*CTree tree;
+    tree.initDefault();
+    CParser parser(tree);
+
+    try {
+
+        handleInput(parser.parseInput("   cd    aaa   "), tree);
+        handleInput(parser.parseInput("cd aaabbb  sda"), tree);
+        std::cout << "curdir = " << tree.currentNode() << std::endl;
+
+        handleInput(parser.parseInput("cd "), tree);
+        std::cout << "curdir = " << tree.currentNode() << std::endl;
+    } catch (TooManyArgumentsException ex) {
+        std::cout << ex.what() << std::endl;
+    } catch (InvalidNodeException ex) {
+        std::cout << ex.what() << std::endl;
+    }*/
+>>>>>>> 6d9ff4b... add test for basic cd parsing
     return 0;
 }
