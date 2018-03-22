@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2018 CESNET, https://photonics.cesnet.cz/
+ * Copyright (C) 2018 FIT CVUT, https://fit.cvut.cz/
  *
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
@@ -67,7 +68,7 @@ int main(int argc, char* argv[])
                                "netconf-cli " NETCONF_CLI_VERSION,
                                true);
     std::cout << "Welcome to netconf-cli" << std::endl;
-    CTree tree;
+    /*CTree tree;
     tree.initDefault();
     CParser parser(tree);
 
@@ -83,6 +84,6 @@ int main(int argc, char* argv[])
         std::cout << ex.what() << std::endl;
     } catch (InvalidNodeException ex) {
         std::cout << ex.what() << std::endl;
-    }
+    }*/
     return 0;
 }
