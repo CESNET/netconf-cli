@@ -6,10 +6,12 @@
 */
 #pragma once
 #include <boost/spirit/home/x3.hpp>
-#include <vector>
 #include <boost/spirit/home/x3/support/ast/position_tagged.hpp>
+
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
+#include <vector>
+
 #include "CTree.hpp"
 namespace x3 = boost::spirit::x3;
 namespace ascii = boost::spirit::x3::ascii;
@@ -22,60 +24,69 @@ using x3::_attr;
 using x3::lexeme;
 using ascii::space;
 
-using nodeString = std::string;
-
-struct ParserContext
-{
+struct ParserContext {
     ParserContext(const CTree& tree);
     const CTree& m_tree;
-    std::string m_currentContext;
+    std::string m_curPath;
 };
 
 struct parser_context_tag;
 
-struct container_
-{
+struct container_ {
+    container_() {}
+    container_(const std::string& name);
+
+    bool operator==(const container_& b) const;
+
     char m_first;
     std::string m_name;
 };
 
 BOOST_FUSION_ADAPT_STRUCT(container_, m_first, m_name)
 
-struct path_
-{
+struct path_ {
+    bool operator==(const path_& b) const;
     std::vector<container_> m_nodes;
 };
 
 BOOST_FUSION_ADAPT_STRUCT(path_, m_nodes)
 
-struct cd_
-{
+struct cd_ {
+    bool operator==(const cd_& b) const;
     path_ m_path;
 };
 
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
 
 
-struct container_class
-{
+struct container_class {
     template <typename T, typename Iterator, typename Context>
-        inline void on_success(Iterator const& first, Iterator const& last
-                , T& ast, Context const& context);
+    void on_success(Iterator const& first, Iterator const& last, T& ast, Context const& context)
+    {
+        ast.m_name = ast.m_first + ast.m_name;
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& tree = parserContext.m_tree;
+
+        if (tree.checkNode(parserContext.m_curPath, ast.m_name)) {
+            parserContext.m_curPath += (parserContext.m_curPath == "" ? "" : "/") + ast.m_name;
+        } else {
+            throw InvalidNodeException("No node with the name \"" + ast.m_name + "\" in \"" + parserContext.m_curPath + "\"");
+        }
+    }
 };
 
-struct path_class
-{
+struct path_class {
     template <typename T, typename Iterator, typename Context>
-    inline void on_success(Iterator const& first, Iterator const& last
-    , T& ast, Context const& context);
+    void on_success(Iterator const& first, Iterator const& last, T& ast, Context const& context)
+    {
+    }
 };
 
-struct cd_class
-{
+struct cd_class {
     template <typename T, typename Iterator, typename Context>
-    inline void on_success(Iterator const& first, Iterator const& last
-    , T& ast, Context const& context);
-
+    void on_success(Iterator const& first, Iterator const& last, T& ast, Context const& context)
+    {
+    }
 };
 
 
@@ -90,7 +101,7 @@ cd_type const cd = "cd";
 
 auto const container_def =
     lexeme[
-        ((alpha | x3::string("_")) >> *(alnum | x3::string("_") | x3::string("-") | x3::string(".")))
+        ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
     ];
 auto const path_def =
     container % '/';

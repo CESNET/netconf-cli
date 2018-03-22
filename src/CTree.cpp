@@ -9,6 +9,10 @@
 
 InvalidNodeException::~InvalidNodeException() = default;
 
+CTree::CTree()
+{
+    m_nodes.emplace("", std::unordered_set<std::string>());
+}
 const std::unordered_set<std::string>& CTree::children(const std::string& node) const
 {
     return m_nodes.at(node);
@@ -16,15 +20,10 @@ const std::unordered_set<std::string>& CTree::children(const std::string& node) 
 
 bool CTree::checkNode(const std::string& location, const std::string& node) const
 {
-    std::cout << "checkNode(" << node << ")" << std::endl;
     if (node == ".." || node == "")
         return true;
     const auto& childrenRef = children(location); //first, get a reference to all children
-    if (childrenRef.find(node) == childrenRef.end()) { //find the desired node, if it isn't present throw an exception
-        std::cout << "cant find " << node << " in " << location << std::endl;
-        throw InvalidNodeException(node);
-    }
-    return true;
+    return !(childrenRef.find(node) == childrenRef.end());
 }
 void CTree::changeNode(const std::string& node)
 {
@@ -50,7 +49,6 @@ void CTree::addNode(const std::string& location, const std::string& name)
 }
 void CTree::initDefault()
 {
-    m_nodes.emplace("", std::unordered_set<std::string>());
     addNode("", "aaa");
     addNode("", "bbb");
     addNode("", "ccc");

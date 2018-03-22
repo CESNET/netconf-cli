@@ -16,7 +16,6 @@ class InvalidNodeException : public std::invalid_argument {
 public:
     using std::invalid_argument::invalid_argument;
     ~InvalidNodeException() override;
-
 };
 
 /*! \class CTree
@@ -27,13 +26,14 @@ public:
  *         */
 class CTree {
 public:
+    CTree();
     bool checkNode(const std::string& location, const std::string& node) const;
     void changeNode(const std::string& node);
+    void addNode(const std::string& location, const std::string& node);
     void initDefault();
     std::string currentNode() const;
 
 private:
-    void addNode(const std::string& location, const std::string& node);
     const std::unordered_set<std::string>& children(const std::string& node) const;
 
     std::unordered_map<std::string, std::unordered_set<std::string>> m_nodes;

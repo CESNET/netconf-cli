@@ -5,10 +5,37 @@
  *
 */
 #include "ast.hpp"
+container_::container_(const std::string& name)
+    : m_name(name)
+{
+}
+
+bool container_::operator==(const container_& b) const
+{
+    return this->m_name == b.m_name;
+}
+
+bool path_::operator==(const path_& b) const
+{
+    if (this->m_nodes.size() != b.m_nodes.size())
+        return false;
+    return this->m_nodes == b.m_nodes;
+}
+
+bool cd_::operator==(const cd_& b) const
+{
+    return this->m_path == b.m_path;
+}
 
 
-template <typename T, typename Iterator, typename Context>
-inline void container_class::on_success(Iterator const& first, Iterator const& last
+ParserContext::ParserContext(const CTree& tree)
+    : m_tree(tree)
+{
+    m_curPath = m_tree.currentNode();
+}
+
+/*template <typename T, typename Iterator, typename Context>
+void container_class::on_success(Iterator const& first, Iterator const& last
     , T& ast, Context const& context)
 {
     ast.m_name = ast.m_first + ast.m_name;
@@ -16,7 +43,7 @@ inline void container_class::on_success(Iterator const& first, Iterator const& l
 }
 
 template <typename T, typename Iterator, typename Context>
-inline void path_class::on_success(Iterator const& first, Iterator const& last
+void path_class::on_success(Iterator const& first, Iterator const& last
     , T& ast, Context const& context)
 {
     //std::cout << "parsed path:" << std::endl;
@@ -25,11 +52,11 @@ inline void path_class::on_success(Iterator const& first, Iterator const& last
 }
 
 template <typename T, typename Iterator, typename Context>
-inline void cd_class::on_success(Iterator const& first, Iterator const& last
+void cd_class::on_success(Iterator const& first, Iterator const& last
     , T& ast, Context const& context)
 {
     //std::cout << "parsed cd! final path:" << std::endl;
     //for (auto it : ast.m_path.m_nodes)
     //std::cout << it.m_name << std::endl;
 
-}
+}*/
