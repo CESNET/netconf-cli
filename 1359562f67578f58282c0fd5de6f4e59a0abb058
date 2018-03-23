@@ -59,6 +59,32 @@
       "revId": "1359562f67578f58282c0fd5de6f4e59a0abb058",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4944f3c_550dd9de",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-23T15:43:33Z",
+      "side": 1,
+      "message": "Tohle se da zjednodusit (pokud tedy mas nas Catch ze spravneho branche):\n\n    SECTION(\"InvalidNodeException\")\n    {\n        SECTION(\"top-level\") { input \u003d \"cd x\"; }\n        SECTION(\"nested\") { input \u003d \"cd a/x\"; }\n        REQUIRE_THROWS_AS(parser.parseCommand(input), InvalidNodeException);\n    }",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 5
+      },
+      "revId": "1359562f67578f58282c0fd5de6f4e59a0abb058",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
