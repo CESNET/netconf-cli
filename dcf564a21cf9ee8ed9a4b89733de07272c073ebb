@@ -22,6 +22,27 @@
     },
     {
       "key": {
+        "uuid": "8241bcb6_f1bb07a5",
+        "filename": "src/CParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-23T13:38:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e7a4147_358f06c5",
+      "revId": "dcf564a21cf9ee8ed9a4b89733de07272c073ebb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4657c77e_5c176c4c",
         "filename": "src/ast.hpp",
         "patchSetId": 3
@@ -42,6 +63,27 @@
     },
     {
       "key": {
+        "uuid": "c325b23b_6fbbc335",
+        "filename": "src/ast.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-23T13:38:09Z",
+      "side": 1,
+      "message": "Done\n\njá jsem zvyklej z mýho js codegolfu, že ternární operátor je kratší... :D",
+      "parentUuid": "4657c77e_5c176c4c",
+      "revId": "dcf564a21cf9ee8ed9a4b89733de07272c073ebb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "181a77af_c5cc1ed1",
         "filename": "src/ast.hpp",
         "patchSetId": 3
@@ -56,6 +98,33 @@
       "writtenOn": "2018-03-23T13:12:42Z",
       "side": 1,
       "message": "Koukam do tutorialu, a tam se obejdou bez toho typedefu. Jak ten kod zkousim cist, prijde mi, ze je tam dost identifikatoru, ktere si jsou velice podobne (container_, container, container_type, container). Zde by mi proto prislo hezke vyhodit ty typedefy, a pouzit primo:\n\n  x3::rule\u003ccontainer_class, container_\u003e const container \u003d \"container\";",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 24
+      },
+      "revId": "dcf564a21cf9ee8ed9a4b89733de07272c073ebb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93866abe_58e4eba8",
+        "filename": "src/ast.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-23T13:38:09Z",
+      "side": 1,
+      "message": "jo, proč ne, je to víceméně formalita, nevím, jestli někde jinde ten typedef použiju",
+      "parentUuid": "181a77af_c5cc1ed1",
       "range": {
         "startLine": 94,
         "startChar": 0,
