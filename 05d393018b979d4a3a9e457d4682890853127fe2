@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a678a680_e4971ecb",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-23T15:22:11Z",
+      "side": 1,
+      "message": "ty ladici vypisy bych vyhazel (i vsude dale)",
+      "revId": "05d393018b979d4a3a9e457d4682890853127fe2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa621bb5_8e76fa92",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-23T15:22:11Z",
+      "side": 1,
+      "message": "Tohle je vec, kterou vidim na nekolika mistech. Doporucuju udelat nejaky helper a la tohle:\n\n  std::string joinPaths(const std::string\u0026 prefix, const std::string\u0026 suffix)\n  {\n      if (prefix.empty() || suffix.empty())\n          return prefix + suffix;\n      else\n          return prefix + \u0027/\u0027 + suffix;\n  }",
+      "revId": "05d393018b979d4a3a9e457d4682890853127fe2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
