@@ -1,0 +1,64 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a85ad85_bc28c236",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-23T15:19:26Z",
+      "side": 1,
+      "message": "Je tohle potreba?",
+      "revId": "1359562f67578f58282c0fd5de6f4e59a0abb058",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e431034e_f005bb6e",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-23T15:19:26Z",
+      "side": 1,
+      "message": "Tohle potencialne vrati std::out_of_range, ale to je asi jedno (a implementacni detail). Je to IMHO korektne pokryto logikou on_success veci ve spiritu, ze by se \"nikdy nemelo zavolat s neplatnym prefixem\". Kazdopadne, vyjimka je IMHO cista chyba.",
+      "revId": "1359562f67578f58282c0fd5de6f4e59a0abb058",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c158b2ae_fe137b9b",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-23T15:19:26Z",
+      "side": 1,
+      "message": "Tohle by nemelo byt potreba",
+      "revId": "1359562f67578f58282c0fd5de6f4e59a0abb058",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
