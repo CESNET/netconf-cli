@@ -1,0 +1,70 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e7a4147_358f06c5",
+        "filename": "src/CParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-23T13:12:42Z",
+      "side": 1,
+      "message": "Tohle je to same, co rika referencni dokumentace spiritu? Pokud ano, tak mi to prijde jako zbytecny komentar.",
+      "revId": "dcf564a21cf9ee8ed9a4b89733de07272c073ebb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4657c77e_5c176c4c",
+        "filename": "src/ast.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-23T13:12:42Z",
+      "side": 1,
+      "message": "nit: Prislo by mi citelnejsi:\n\n  if (!parserContext.m_curPath.empty()) {\n      parserContext.m_curPath +\u003d \u0027/\u0027;\n  }\n  parserContext.m_curPath +\u003d ast.m_name;\n\nLepsi mi to prijde kvuli tomu, ze ten jeden radek dela logicky dve veci:\n\n- urcite priplacne na konec neco z ASTu,\n- pro priplacnuti je potreba nekdy pridat spearator",
+      "revId": "dcf564a21cf9ee8ed9a4b89733de07272c073ebb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "181a77af_c5cc1ed1",
+        "filename": "src/ast.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-23T13:12:42Z",
+      "side": 1,
+      "message": "Koukam do tutorialu, a tam se obejdou bez toho typedefu. Jak ten kod zkousim cist, prijde mi, ze je tam dost identifikatoru, ktere si jsou velice podobne (container_, container, container_type, container). Zde by mi proto prislo hezke vyhodit ty typedefy, a pouzit primo:\n\n  x3::rule\u003ccontainer_class, container_\u003e const container \u003d \"container\";",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 24
+      },
+      "revId": "dcf564a21cf9ee8ed9a4b89733de07272c073ebb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
