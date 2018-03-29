@@ -20,13 +20,16 @@ TEST_CASE("cd")
     tree.addContainer("b", "b2");
     tree.addContainer("a/a2", "a3");
     tree.addContainer("b/b2", "b3");
+    tree.addListElement("", "list", "key1");
+    tree.addListElement("", "list", "key2");
+    tree.addContainer("list[key1]", "contInList");
 
     CParser parser(tree);
     cd_ expected;
 
     std::string input;
 
-    SECTION("basic cd parsing")
+    SECTION("containers")
     {
         SECTION("a")
         {
@@ -39,7 +42,6 @@ TEST_CASE("cd")
             input = "cd b";
             expected.m_path.m_nodes.push_back(container_("b"));
         }
-
 
         SECTION("a/a2")
         {
@@ -55,21 +57,23 @@ TEST_CASE("cd")
             expected.m_path.m_nodes.push_back(container_("b2"));
         }
 
-        cd_ command = parser.parseCommand(input);
-        REQUIRE(command == expected);
     }
 
-    SECTION("InvalidNodeException")
+    SECTION("list elements")
     {
-        SECTION("x")
+        SECTION("list[key1]")
         {
-            input = "cd x";
+            input = "cd list[key1]";
+            expected.m_path.m_nodes.push_back(listElement_("list","key1"));
         }
 
-        SECTION("a/x")
+        SECTION("list[key1]/contInList")
         {
-            input = "cd a/x";
+            input = "cd list[key1]/contInList";
+            expected.m_path.m_nodes.push_back(listElement_("list","key1"));
+            expected.m_path.m_nodes.push_back(container_("contInList"));
         }
-        REQUIRE_THROWS_AS(parser.parseCommand(input), InvalidNodeException);
     }
+    cd_ command = parser.parseCommand(input);
+    REQUIRE(command == expected);
 }
