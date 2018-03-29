@@ -22,6 +22,27 @@
     },
     {
       "key": {
+        "uuid": "5bca09a7_bd03dcca",
+        "filename": "src/CParser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-29T11:04:37Z",
+      "side": 1,
+      "message": "To jsem si přečetl v komentáři od Miroslava Mareše, kde psal o výjimkách a konvencích :D",
+      "parentUuid": "97df283e_89c6522d",
+      "revId": "5418ffbe561da76178d12a0f3165f9d0bbb665a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ad8e2bf3_228fafdc",
         "filename": "src/CTree.cpp",
         "patchSetId": 4
@@ -60,6 +81,33 @@
         "id": 1000000
       },
       "writtenOn": "2018-03-23T15:22:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad8e2bf3_228fafdc",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "5418ffbe561da76178d12a0f3165f9d0bbb665a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c79680a5_d7df2d6d",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-29T11:04:37Z",
       "side": 1,
       "message": "Done",
       "parentUuid": "ad8e2bf3_228fafdc",
@@ -166,6 +214,27 @@
       "revId": "5418ffbe561da76178d12a0f3165f9d0bbb665a9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7cdd351f_8e3bd011",
+        "filename": "src/main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-29T11:04:37Z",
+      "side": 1,
+      "message": "Asi jo, každopádně tenhle kód je už nepoužitelný, smažu ho",
+      "parentUuid": "539039c9_3a5025c1",
+      "revId": "5418ffbe561da76178d12a0f3165f9d0bbb665a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
