@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b913b4d_f50a6525",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-29T12:59:26Z",
+      "side": 1,
+      "message": "Tohle by mi prislo \"hezci\" (mene C-ckove) asi takhle:\n\n enum class Type {\n     Container,\n     List,\n     ListElement,\n };\n\na uvnitr tridy TreeNode. Pak by se k tem vecem pristupovalo jako:\n\n TreeNode::Type::Container",
+      "revId": "4dd1496162217ebdacebfb606fa30881ff0dc089",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a464fb4b_17e36d29",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-03-29T12:59:26Z",
+      "side": 1,
+      "message": "Proc je tu potreba oboji? Naivne bych si myslel, ze staci neco jako\n\n std::map\u003cstd::string, std::vector\u003cTreeNode\u003e\u003e\n\na indexovat to pres jmeno rodice.\n\nInicializovat v testech by se to mohlo nejak takhle:\n\n tree \u003d {\n     {\"\", {\n          {\"a\", Type::Container},\n          {\"b\", Type::Container},\n          }},\n     {\"a\", {}},\n     {\"b\", {\n           {\"1\", Type::Leaf},\n           {\"2\", Type::Container},\n           }},\n     {\"b/2\", {}},\n };\n\nPro strom:\n\n - a (container)\n - b (container)\n   - 1 (leaf)\n   - 2 (container, ktery je prazdny)",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 88
+      },
+      "revId": "4dd1496162217ebdacebfb606fa30881ff0dc089",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
