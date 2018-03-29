@@ -22,11 +22,7 @@ cd_ CParser::parseCommand(const std::string& line)
     auto it = line.begin();
 
     auto grammar = x3::with<parser_context_tag>(ctx)[cd];
-
     x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
-    if (it != line.end()) {
-        throw TooManyArgumentsException(std::string(it, line.end()));
-    }
 
 
     return parsedCommand;

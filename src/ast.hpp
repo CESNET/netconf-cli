@@ -11,6 +11,7 @@
 
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
+#include <boost/variant.hpp>
 #include <vector>
 
 #include "CTree.hpp"
@@ -24,6 +25,15 @@ using x3::char_;
 using x3::_attr;
 using x3::lexeme;
 using ascii::space;
+
+inline std::string joinPaths(const std::string& prefix, const std::string& suffix)
+{
+    if (prefix.empty() || suffix.empty())
+        return prefix + suffix;
+    else
+        return prefix + '/' + suffix;
+}
+
 
 struct ParserContext {
     ParserContext(const CTree& tree);
@@ -39,15 +49,27 @@ struct container_ {
 
     bool operator==(const container_& b) const;
 
-    char m_first = ' ';
     std::string m_name;
 };
 
-BOOST_FUSION_ADAPT_STRUCT(container_, m_first, m_name)
+BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
+
+struct listElement_ {
+    listElement_() {}
+    listElement_(const std::string& listName, const std::string& key);
+
+    bool operator==(const listElement_& b) const;
+
+    std::string m_listName;
+    std::string m_key;
+};
+
+BOOST_FUSION_ADAPT_STRUCT(listElement_, m_listName, m_key)
+
 
 struct path_ {
     bool operator==(const path_& b) const;
-    std::vector<container_> m_nodes;
+    std::vector<boost::variant<container_, listElement_>> m_nodes;
 };
 
 BOOST_FUSION_ADAPT_STRUCT(path_, m_nodes)
@@ -59,22 +81,34 @@ struct cd_ {
 
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
 
+struct identifier_class;
+
+struct listElement_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& tree = parserContext.m_tree;
+        if (tree.isListElement(parserContext.m_curPath, ast.m_listName, ast.m_key)) {
+            parserContext.m_curPath += joinPaths(parserContext.m_curPath, ast.m_listName);
+            parserContext.m_curPath += "[" + ast.m_key + "]";
+        } else {
+            _pass(context) = false;
+        }
+    }
+};
 
 struct container_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
-        ast.m_name = ast.m_first + ast.m_name;
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& tree = parserContext.m_tree;
 
         if (tree.isContainer(parserContext.m_curPath, ast.m_name)) {
-            if (!parserContext.m_curPath.empty()) {
-                parserContext.m_curPath += '/';
-            }
-            parserContext.m_curPath += ast.m_name;
+            parserContext.m_curPath += joinPaths(parserContext.m_curPath, ast.m_name);
         } else {
-            throw InvalidNodeException("No container with the name \"" + ast.m_name + "\" in \"" + parserContext.m_curPath + "\"");
+            _pass(context) = false;
         }
     }
 };
@@ -94,25 +128,34 @@ struct cd_class {
 };
 
 
+x3::rule<identifier_class, std::string> const identifier = "indentifier";
+x3::rule<listElement_class, listElement_> const listElement = "listElement";
 x3::rule<container_class, container_> const container = "container";
 x3::rule<path_class, path_> const path = "path";
 x3::rule<cd_class, cd_> const cd = "cd";
 
 
-auto const identifier =
+auto const identifier_def =
     lexeme[
         ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
     ];
 
+auto const key =
+    identifier;
+
+auto const listElement_def =
+    identifier >> '[' >> key >> ']';
 auto const container_def =
     identifier;
 
 auto const path_def =
-    container % '/';
+    (container | listElement) % '/';
 
 auto const cd_def =
     lit("cd") >> path >> x3::eoi;
 
+BOOST_SPIRIT_DEFINE(identifier)
+BOOST_SPIRIT_DEFINE(listElement)
 BOOST_SPIRIT_DEFINE(container)
 BOOST_SPIRIT_DEFINE(path)
 BOOST_SPIRIT_DEFINE(cd)
