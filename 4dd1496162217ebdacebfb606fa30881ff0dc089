@@ -22,6 +22,27 @@
     },
     {
       "key": {
+        "uuid": "ef382621_fdf84e6b",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-29T15:13:53Z",
+      "side": 1,
+      "message": "Udělám to, ale momentálně třídu TreeNode vůbec nepoužívám, takže to teď nemá moc smysl",
+      "parentUuid": "8b913b4d_f50a6525",
+      "revId": "4dd1496162217ebdacebfb606fa30881ff0dc089",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a464fb4b_17e36d29",
         "filename": "src/CTree.hpp",
         "patchSetId": 10
@@ -63,6 +84,33 @@
       "side": 1,
       "message": "PEBKAC, sorry. To prvni je funkce.",
       "parentUuid": "a464fb4b_17e36d29",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 88
+      },
+      "revId": "4dd1496162217ebdacebfb606fa30881ff0dc089",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "85e9cf42_1f310750",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-03-29T15:13:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d517096_188a3e0c",
       "range": {
         "startLine": 49,
         "startChar": 0,
