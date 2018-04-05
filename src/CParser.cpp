@@ -21,8 +21,10 @@ cd_ CParser::parseCommand(const std::string& line)
     ParserContext ctx(m_tree);
     auto it = line.begin();
 
-    auto grammar = x3::with<parser_context_tag>(ctx)[cd];
-    x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
+    keyValue_ cmd;
+    auto grammar = x3::with<parser_context_tag>(ctx)[keyValue];
+
+    x3::phrase_parse(it, line.end(), grammar, space, cmd);
 
 
     return parsedCommand;

@@ -20,9 +20,9 @@ TEST_CASE("cd")
     tree.addContainer("b", "b2");
     tree.addContainer("a/a2", "a3");
     tree.addContainer("b/b2", "b3");
-    tree.addListElement("", "list", "key1");
+    tree.addListElement("", "list", "number=1");
     tree.addListElement("", "list", "key2");
-    tree.addContainer("list[key1]", "contInList");
+    tree.addContainer("list[number=1]", "contInList");
 
     CParser parser(tree);
     cd_ expected;
@@ -61,18 +61,25 @@ TEST_CASE("cd")
 
     SECTION("list elements")
     {
-        SECTION("list[key1]")
+        SECTION("list[number=1]")
         {
-            input = "cd list[key1]";
-            expected.m_path.m_nodes.push_back(listElement_("list","key1"));
+            input = "cd list[number=1]";
+            expected.m_path.m_nodes.push_back(listElement_("list",{{"number", "1"}}));
         }
 
-        SECTION("list[key1]/contInList")
+        SECTION("list[number=1]/contInList")
         {
-            input = "cd list[key1]/contInList";
-            expected.m_path.m_nodes.push_back(listElement_("list","key1"));
+            input = "cd list[number=1]/contInList";
+            expected.m_path.m_nodes.push_back(listElement_("list",{{"number", "1"}}));
             expected.m_path.m_nodes.push_back(container_("contInList"));
         }
+
+        SECTION("list[number=4 name=\"abcd\"]")
+        {
+            input = "cd list[number=4 name=\"abcd\"]";
+            expected.m_path.m_nodes.push_back(listElement_("list",{"number=4", "name=\"abcd\""}));
+        }
+
     }
     cd_ command = parser.parseCommand(input);
     REQUIRE(command == expected);
