@@ -22,6 +22,7 @@ cd_ CParser::parseCommand(const std::string& line)
     auto it = line.begin();
 
     auto grammar = x3::with<parser_context_tag>(ctx)[cd];
+
     x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
 
 
