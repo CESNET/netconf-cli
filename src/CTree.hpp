@@ -8,20 +8,22 @@
 
 #pragma once
 
+#include <boost/variant.hpp>
 #include <stdexcept>
 #include <unordered_map>
+#include <set>
 
-enum NODE_TYPE {
-    TYPE_CONTAINER,
-    TYPE_LIST,
-    TYPE_LIST_ELEMENT
-};
+namespace schema
+{
+    struct container {
+    };
+    struct list {
+        std::set<std::string> m_keys;
+    };
+}
 
-struct TreeNode {
-    bool operator<(const TreeNode& b) const;
-    std::string m_name;
-    NODE_TYPE m_type;
-};
+using NodeType = boost::variant<schema::container, schema::list>;
+
 
 std::string joinPaths(const std::string& prefix, const std::string& suffix);
 
@@ -44,14 +46,14 @@ public:
 
     bool isContainer(const std::string& location, const std::string& name) const;
     void addContainer(const std::string& location, const std::string& name);
-    bool isListElement(const std::string& location, const std::string& name, const std::string& key) const;
-    void addListElement(const std::string& location, const std::string& name, const std::string& key);
+    bool isList(const std::string& location, const std::string& name, const std::set<std::string>& keys) const;
+    void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void changeNode(const std::string& name);
     std::string currentNode() const;
 
 private:
-    const std::unordered_map<std::string, NODE_TYPE>& children(const std::string& name) const;
+    const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
 
-    std::unordered_map<std::string, std::unordered_map<std::string, NODE_TYPE>> m_nodes;
+    std::unordered_map<std::string, std::unordered_map<std::string, NodeType>> m_nodes;
     std::string m_curDir;
 };
