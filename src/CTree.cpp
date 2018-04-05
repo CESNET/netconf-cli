@@ -11,17 +11,13 @@
 InvalidNodeException::~InvalidNodeException() = default;
 
 
-bool TreeNode::operator<(const TreeNode& b) const
-{
-    return this->m_name < b.m_name;
-}
 
 CTree::CTree()
 {
-    m_nodes.emplace("", std::unordered_map<std::string, NODE_TYPE>());
+    m_nodes.emplace("", std::unordered_map<std::string, NodeType>());
 }
 
-const std::unordered_map<std::string, NODE_TYPE>& CTree::children(const std::string& name) const
+const std::unordered_map<std::string, NodeType>& CTree::children(const std::string& name) const
 {
     return m_nodes.at(name);
 }
@@ -39,32 +35,36 @@ bool CTree::isContainer(const std::string& location, const std::string& name) co
 {
     if (!nodeExists(location, name))
         return false;
-    return children(location).at(name) == TYPE_CONTAINER;
+
+    return children(location).at(name).type() == typeid(schema::container);
 }
 
 void CTree::addContainer(const std::string& location, const std::string& name)
 {
-    m_nodes.at(location).emplace(name, TYPE_CONTAINER);
+    m_nodes.at(location).emplace(name, schema::container{});
 
     //create a new set of children for the new node
     std::string key = joinPaths(location, name);
-    m_nodes.emplace(key, std::unordered_map<std::string, NODE_TYPE>());
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
-bool CTree::isListElement(const std::string& location, const std::string& name, const std::string& key) const
+bool CTree::isList(const std::string& location, const std::string& name, const std::set<std::string>& keys) const
 {
-    if (!nodeExists(location, name + "[" + key + "]"))
+    if (!nodeExists(location, name))
         return false;
-    return children(location).at(name + "[" + key + "]") == TYPE_LIST_ELEMENT;
+    auto &child = children(location).at(name);
+    if(!(child.type() == typeid(schema::list)))
+        return false;
+
+    auto &list = boost::get<schema::list>(child);
+    return list.m_keys == keys;
 }
 
-void CTree::addListElement(const std::string& location, const std::string& name, const std::string& key)
+void CTree::addList(const std::string& location, const std::string& name, const std::set<std::string>& keys)
 {
-    std::string nodeName = name + "[" + key + "]";
-    m_nodes.at(location).emplace(nodeName, TYPE_LIST_ELEMENT);
+    m_nodes.at(location).emplace(name, schema::list{keys});
 
-    std::string mapKey = joinPaths(location, nodeName);
-    m_nodes.emplace(mapKey, std::unordered_map<std::string, NODE_TYPE>());
+    m_nodes.emplace(name, std::unordered_map<std::string, NodeType>());
 }
 
 
