@@ -16,15 +16,15 @@ bool container_::operator==(const container_& b) const
     return this->m_name == b.m_name;
 }
 
-listElement_::listElement_(const std::string& listName, const std::string& key)
-    : m_listName(listName)
-    , m_key(key)
+listElement_::listElement_(const std::string& listName, const std::map<std::string, std::string>& keys)
+    : m_listName(listName),
+      m_keys(keys)
 {
 }
 
 bool listElement_::operator==(const listElement_& b) const
 {
-    return (this->m_listName == b.m_listName && this->m_key == b.m_key);
+    return (this->m_listName == b.m_listName && this->m_keys == b.m_keys);
 }
 
 bool path_::operator==(const path_& b) const
