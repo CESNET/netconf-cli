@@ -6,6 +6,9 @@
  *
 */
 #include "ast.hpp"
+
+InvalidKeyException::~InvalidKeyException() = default;
+
 container_::container_(const std::string& name)
     : m_name(name)
 {
