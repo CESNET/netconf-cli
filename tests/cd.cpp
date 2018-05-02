@@ -23,74 +23,96 @@ TEST_CASE("cd")
     tree.addList("", "list", {"number"});
     tree.addContainer("list", "contInList");
     tree.addList("", "twoKeyList", {"number", "name"});
-
     CParser parser(tree);
-    cd_ expected;
-
     std::string input;
 
-    SECTION("containers")
+    SECTION("valid input")
     {
-        SECTION("a")
+        cd_ expected;
+
+        SECTION("container")
         {
-            input = "cd a";
-            expected.m_path.m_nodes.push_back(container_("a"));
+            SECTION("a")
+            {
+                input = "cd a";
+                expected.m_path.m_nodes.push_back(container_("a"));
+            }
+
+            SECTION("b")
+            {
+                input = "cd b";
+                expected.m_path.m_nodes.push_back(container_("b"));
+            }
+
+            SECTION("a/a2")
+            {
+                input = "cd a/a2";
+                expected.m_path.m_nodes.push_back(container_("a"));
+                expected.m_path.m_nodes.push_back(container_("a2"));
+            }
+
+            SECTION("b/b2")
+            {
+                input = "cd b/b2";
+                expected.m_path.m_nodes.push_back(container_("b"));
+                expected.m_path.m_nodes.push_back(container_("b2"));
+            }
+
         }
 
-        SECTION("b")
+        SECTION("list elements")
         {
-            input = "cd b";
-            expected.m_path.m_nodes.push_back(container_("b"));
-        }
+            SECTION("list[number=1]")
+            {
+                input = "cd list[number=1]";
+                auto keys = std::map<std::string, std::string>{
+                        {"number", "1"}
+                };
+                expected.m_path.m_nodes.push_back(listElement_("list", keys));
+            }
 
-        SECTION("a/a2")
-        {
-            input = "cd a/a2";
-            expected.m_path.m_nodes.push_back(container_("a"));
-            expected.m_path.m_nodes.push_back(container_("a2"));
-        }
+            SECTION("list[number=1]/contInList")
+            {
+                input = "cd list[number=1]/contInList";
+                auto keys = std::map<std::string, std::string>{
+                        {"number", "1"}
+                };
+                expected.m_path.m_nodes.push_back(listElement_("list", keys));
+                expected.m_path.m_nodes.push_back(container_("contInList"));
+            }
 
-        SECTION("b/b2")
-        {
-            input = "cd b/b2";
-            expected.m_path.m_nodes.push_back(container_("b"));
-            expected.m_path.m_nodes.push_back(container_("b2"));
-        }
+            SECTION("twoKeyList[number=4 name=abcd]")
+            {
+                input = "cd twoKeyList[number=4 name=abcd]";
+                auto keys = std::map<std::string, std::string>{
+                        {"number", "4"},
+                        {"name", "abcd"}
+                };
+                expected.m_path.m_nodes.push_back(listElement_("twoKeyList", keys));
+            }
 
+        }
+        cd_ command = parser.parseCommand(input);
+        REQUIRE(command == expected);
     }
-
-    SECTION("list elements")
+    SECTION("invalid input")
     {
-        SECTION("list[number=1]")
+        SECTION("invalid identifiers")
         {
-            input = "cd list[number=1]";
-            auto keys = std::map<std::string, std::string>{
-                    {"number", "1"}
-            };
-            expected.m_path.m_nodes.push_back(listElement_("list", keys));
-        }
+            SECTION("nonexistent")
+            {
+                input = "cd nonexistent";
+                REQUIRE_THROWS(parser.parseCommand(input));
+            }
 
-        SECTION("list[number=1]/contInList")
+        }
+        SECTION("invalid list key identifiers")
         {
-            input = "cd list[number=1]/contInList";
-            auto keys = std::map<std::string, std::string>{
-                {"number", "1"}
-            };
-            expected.m_path.m_nodes.push_back(listElement_("list", keys));
-            expected.m_path.m_nodes.push_back(container_("contInList"));
+            SECTION("twoKeyList[invalidKey=4]")
+            {
+                input = "cd twoKeyList[invalidKey=4]";
+                REQUIRE_THROWS(parser.parseCommand(input));
+            }
         }
-
-        SECTION("twoKeyList[number=4 name=abcd]")
-        {
-            input = "cd twoKeyList[number=4 name=abcd]";
-            auto keys = std::map<std::string, std::string>{
-                {"number", "4"},
-                {"name", "abcd"}
-            };
-            expected.m_path.m_nodes.push_back(listElement_("twoKeyList", keys));
-        }
-
     }
-    cd_ command = parser.parseCommand(input);
-    REQUIRE(command == expected);
 }
