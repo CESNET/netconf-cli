@@ -20,11 +20,18 @@ using x3::_attr;
 using x3::lexeme;
 using ascii::space;
 
+class InvalidCommandException : public std::invalid_argument {
+public:
+    using std::invalid_argument::invalid_argument;
+    ~InvalidCommandException() override;
+};
+
 class TooManyArgumentsException : public std::invalid_argument {
 public:
     using std::invalid_argument::invalid_argument;
     ~TooManyArgumentsException() override;
 };
+
 
 class CParser {
 public:
