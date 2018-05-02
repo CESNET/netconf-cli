@@ -8,6 +8,7 @@
 #pragma once
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/support/ast/position_tagged.hpp>
+#include <boost/spirit/home/x3/support/utility/error_reporting.hpp>
 
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
@@ -28,17 +29,25 @@ using x3::char_;
 using x3::_attr;
 using x3::lexeme;
 using ascii::space;
+using boost::fusion::operator<<;
 
+
+using keyValue_ = std::pair<std::string, std::string>;
+
+class InvalidKeyException : public std::invalid_argument {
+public:
+    using std::invalid_argument::invalid_argument;
+    ~InvalidKeyException () override;
+};
 
 struct ParserContext {
     ParserContext(const CTree& tree);
     const CTree& m_tree;
     std::string m_curPath;
+    std::string m_errorMsg;
 };
 
 struct parser_context_tag;
-
-using keyValue_ = std::pair<std::string, std::string>;
 
 struct container_ {
     container_() = default;
@@ -68,7 +77,6 @@ struct listElement_ {
 
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_listName, m_keys)
 
-
 struct path_ {
     bool operator==(const path_& b) const;
     std::vector<boost::variant<container_, listElement_>> m_nodes;
@@ -76,7 +84,7 @@ struct path_ {
 
 BOOST_FUSION_ADAPT_STRUCT(path_, m_nodes)
 
-struct cd_ {
+struct cd_ : x3::position_tagged {
     bool operator==(const cd_& b) const;
     path_ m_path;
 };
@@ -98,9 +106,14 @@ struct listElement_class {
             keys.insert(it.first);
         }
 
-        if (tree.isList(parserContext.m_curPath, ast.m_listName, keys)) {
+        auto result = tree.isList(parserContext.m_curPath, ast.m_listName, keys);
+
+        if (result.first) {
             parserContext.m_curPath += joinPaths(parserContext.m_curPath, ast.m_listName);
         } else {
+            if (!result.second.empty()) {
+                throw InvalidKeyException(result.second);
+            }
             _pass(context) = false;
         }
     }
@@ -113,7 +126,9 @@ struct container_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& tree = parserContext.m_tree;
 
-        if (tree.isContainer(parserContext.m_curPath, ast.m_name)) {
+        auto result = tree.isContainer(parserContext.m_curPath, ast.m_name);
+
+        if (result.first) {
             parserContext.m_curPath += joinPaths(parserContext.m_curPath, ast.m_name);
         } else {
             _pass(context) = false;
@@ -133,11 +148,20 @@ struct cd_class {
     void on_success(Iterator const&, Iterator const&, T&, Context const&)
     {
     }
+
+    template <typename Iterator, typename Exception, typename Context>
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const&)
+    {
+        //auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
+        //std::string message = "Error! Expecting: a valid path here:";
+        //error_handler(x.where(), message);
+        return x3::error_handler_result::fail;
+    }
 };
 
 
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
-x3::rule<identifier_class, std::string> const identifier = "indentifier";
+x3::rule<identifier_class, std::string> const identifier = "identifier";
 x3::rule<listElement_class, listElement_> const listElement = "listElement";
 x3::rule<container_class, container_> const container = "container";
 x3::rule<path_class, path_> const path = "path";
@@ -162,7 +186,7 @@ auto const path_def =
     (container | listElement) % '/';
 
 auto const cd_def =
-    lit("cd") >> path >> x3::eoi;
+    lit("cd") > path >> x3::eoi;
 
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(identifier)
