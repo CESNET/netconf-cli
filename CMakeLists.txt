@@ -45,7 +45,7 @@ option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${D
 
 find_package(docopt REQUIRED)
 find_package(spdlog REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost COMPONENTS system REQUIRED)
 
 set(parser_SRCS
     src/CTree.cpp
@@ -55,7 +55,7 @@ set(parser_SRCS
     )
 
 add_library(parser STATIC ${parser_SRCS})
-target_link_libraries(parser Boost::boost)
+target_link_libraries(parser Boost::boost ${Boost_SYSTEM_LIBRARY})
 
 set(netconf-cli_SRCS
     src/main.cpp
