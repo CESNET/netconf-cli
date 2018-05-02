@@ -6,6 +6,7 @@
  *
 */
 
+#include <iostream>
 #include "CTree.hpp"
 #include "utils.hpp"
 
@@ -32,12 +33,12 @@ bool CTree::nodeExists(const std::string& location, const std::string& name) con
     return childrenRef.find(name) != childrenRef.end();
 }
 
-bool CTree::isContainer(const std::string& location, const std::string& name) const
+Result CTree::isContainer(const std::string& location, const std::string& name) const
 {
     if (!nodeExists(location, name))
-        return false;
+        return std::make_pair(false, "");
 
-    return children(location).at(name).type() == typeid(schema::container);
+    return std::make_pair(children(location).at(name).type() == typeid(schema::container), "");
 }
 
 void CTree::addContainer(const std::string& location, const std::string& name)
@@ -49,16 +50,28 @@ void CTree::addContainer(const std::string& location, const std::string& name)
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
-bool CTree::isList(const std::string& location, const std::string& name, const std::set<std::string>& keys) const
+Result CTree::isList(const std::string& location, const std::string& name, const std::set<std::string>& keys) const
 {
     if (!nodeExists(location, name))
-        return false;
+        return std::make_pair(false, "");
     const auto &child = children(location).at(name);
     if (!(child.type() == typeid(schema::list)))
-        return false;
+        return std::make_pair(false, "");
 
     auto &list = boost::get<schema::list>(child);
-    return list.m_keys == keys;
+    if (list.m_keys != keys)
+    {
+        std::set<std::string> bad_keys;
+        std::set_difference(list.m_keys.begin(), list.m_keys.end(), keys.begin(), keys.end(), std::inserter(bad_keys, bad_keys.end()));
+
+        std::string error = "bad keys for " + name + ":";
+        for (const auto& it : bad_keys)
+        {
+            error += " " + it;
+        }
+        return std::make_pair(false, error);
+    }
+    return std::make_pair(true, "");
 }
 
 void CTree::addList(const std::string& location, const std::string& name, const std::set<std::string>& keys)
