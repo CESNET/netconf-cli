@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "058900a6_3ac48626",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-03T10:20:34Z",
+      "side": 0,
+      "message": "nit: tohle se vyplati delat jako extra commit. Ted to neni zas tak dulezite, vlastne pises kod na zelene louce, ale pri upravach nejakych vetsich projektu se dost hodi, aby byly zmeny co nejmensi, a pohromade v jednom commitu jenom to, co spolu souvisi. Cili v tomhle pripade nejprve refactoring te funkce ven do extra .cpp, a az pak v dalsim commitu parsovani listu.\n\nNormalne bych rekl, ze uz to nema cenu opravovat, ale (protoze viz dal u utils.cpp), prijde mi fajn to zmenit.",
+      "revId": "d666296f4f4c1f9088c3c45b6d37a00c323f3c80",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
