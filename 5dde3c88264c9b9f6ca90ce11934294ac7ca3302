@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5b97bacd_9644e72c",
+        "filename": "src/CParser.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-03T13:20:59Z",
+      "side": 1,
+      "message": "nit: whitespace, ale nestoji za to to menit",
+      "revId": "5dde3c88264c9b9f6ca90ce11934294ac7ca3302",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15a79254_a2df5a74",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-03T13:20:59Z",
+      "side": 1,
+      "message": "const",
+      "revId": "5dde3c88264c9b9f6ca90ce11934294ac7ca3302",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "172705ef_b7748678",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-03T13:20:59Z",
+      "side": 1,
+      "message": "nit: if (",
+      "range": {
+        "startLine": 56,
+        "startChar": 4,
+        "endLine": 56,
+        "endChar": 7
+      },
+      "revId": "5dde3c88264c9b9f6ca90ce11934294ac7ca3302",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "519ae5fd_bd479cce",
+        "filename": "src/ast.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-03T13:20:59Z",
+      "side": 1,
+      "message": "tohle je dobry kandidat na neoc do utils.cpp, protoze \"potrebuju vsechny klice z mapy\" budes chtit casteji.",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 9
+      },
+      "revId": "5dde3c88264c9b9f6ca90ce11934294ac7ca3302",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
