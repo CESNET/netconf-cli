@@ -33,12 +33,12 @@ bool CTree::nodeExists(const std::string& location, const std::string& name) con
     return childrenRef.find(name) != childrenRef.end();
 }
 
-Result CTree::isContainer(const std::string& location, const std::string& name) const
+bool CTree::isContainer(const std::string& location, const std::string& name) const
 {
     if (!nodeExists(location, name))
-        return std::make_pair(false, "");
+        return false;
 
-    return std::make_pair(children(location).at(name).type() == typeid(schema::container), "");
+    return children(location).at(name).type() == typeid(schema::container);
 }
 
 void CTree::addContainer(const std::string& location, const std::string& name)
@@ -50,28 +50,34 @@ void CTree::addContainer(const std::string& location, const std::string& name)
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
-Result CTree::isList(const std::string& location, const std::string& name, const std::set<std::string>& keys) const
+
+bool CTree::listHasKey(const std::string& location, const std::string& name, const std::string& key) const
+{
+    assert(isList(location, name));
+
+    const auto& child = children(location).at(name);
+    const auto& list = boost::get<schema::list>(child);
+    return list.m_keys.find(key) != list.m_keys.end();
+}
+
+const std::set<std::string>& CTree::listKeys(const std::string& location, const std::string& name) const
+{
+    assert(isList(location, name));
+
+    const auto& child = children(location).at(name);
+    const auto& list = boost::get<schema::list>(child);
+    return list.m_keys;
+}
+
+bool CTree::isList(const std::string& location, const std::string& name) const
 {
     if (!nodeExists(location, name))
-        return std::make_pair(false, "");
+        return false;
     const auto &child = children(location).at(name);
     if ((child.type() != typeid(schema::list)))
-        return std::make_pair(false, "");
+        return false;
 
-    auto &list = boost::get<schema::list>(child);
-    if (list.m_keys != keys)
-    {
-        std::set<std::string> bad_keys;
-        std::set_difference(list.m_keys.begin(), list.m_keys.end(), keys.begin(), keys.end(), std::inserter(bad_keys, bad_keys.end()));
-
-        std::string error = "bad keys for " + name + ":";
-        for (const auto& it : bad_keys)
-        {
-            error += " " + it;
-        }
-        return std::make_pair(false, error);
-    }
-    return std::make_pair(true, "");
+    return true;
 }
 
 void CTree::addList(const std::string& location, const std::string& name, const std::set<std::string>& keys)
