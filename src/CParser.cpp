@@ -5,9 +5,12 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#include <iostream>
 #include "CParser.hpp"
 
 TooManyArgumentsException::~TooManyArgumentsException() = default;
+
+InvalidCommandException::~InvalidCommandException() = default;
 
 CParser::CParser(const CTree& tree)
     : m_tree(tree)
@@ -21,13 +24,16 @@ cd_ CParser::parseCommand(const std::string& line)
     ParserContext ctx(m_tree);
     auto it = line.begin();
 
-    auto grammar = x3::with<parser_context_tag>(ctx)[cd];
+    boost::spirit::x3::error_handler<std::string::const_iterator> errorHandler(it, line.end(), std::cerr);
+    auto grammar =
+            x3::with<parser_context_tag>(ctx)[
+            x3::with<x3::error_handler_tag>(std::ref(errorHandler))[cd]
+    ];
+    bool result = x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
 
-    x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
-    if (it != line.end()) {
-        throw TooManyArgumentsException(std::string(it, line.end()));
+    if (!result || it != line.end()) {
+        throw InvalidCommandException(std::string(it, line.end()) + " this was left of input");
     }
-
 
     return parsedCommand;
 }
