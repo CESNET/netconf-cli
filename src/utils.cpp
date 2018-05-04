@@ -5,7 +5,8 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
-#include <string>
+
+#include "utils.hpp"
 
 std::string joinPaths(const std::string& prefix, const std::string& suffix)
 {
