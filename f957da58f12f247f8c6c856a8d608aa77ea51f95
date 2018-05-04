@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "98b2761b_57b68d3a",
+        "filename": "src/ast.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-04T16:17:39Z",
+      "side": 1,
+      "message": "operator+\u003d, nebo operator\u003d?",
+      "revId": "f957da58f12f247f8c6c856a8d608aa77ea51f95",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
