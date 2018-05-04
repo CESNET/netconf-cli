@@ -23,6 +23,8 @@ struct TreeNode {
     NODE_TYPE m_type;
 };
 
+std::string joinPaths(const std::string& prefix, const std::string& suffix);
+
 class InvalidNodeException : public std::invalid_argument {
 public:
     using std::invalid_argument::invalid_argument;

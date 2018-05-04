@@ -25,6 +25,9 @@ using x3::_attr;
 using x3::lexeme;
 using ascii::space;
 
+std::string joinPaths(const std::string& prefix, const std::string& suffix);
+
+
 struct ParserContext {
     ParserContext(const CTree& tree);
     const CTree& m_tree;
