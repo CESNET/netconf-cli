@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b58890f5_2d4ac118",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-04T16:19:49Z",
+      "side": 1,
+      "message": "nit: ja bych to psal jako:\n\n if (a !\u003d b)\n\nnamisto:\n\n if (!(a \u003d\u003d b))",
+      "revId": "4e4f1d14209cfedbd1f24429a3fa939f873433ec",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
