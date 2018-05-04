@@ -24,7 +24,6 @@ namespace schema
     };
 }
 
-using Result = std::pair< bool, std::string >;
 
 using NodeType = boost::variant<schema::container, schema::list>;
 
@@ -47,9 +46,10 @@ public:
     CTree();
     bool nodeExists(const std::string& location, const std::string& name) const;
 
-    Result isContainer(const std::string& location, const std::string& name) const;
+    bool isContainer(const std::string& location, const std::string& name) const;
     void addContainer(const std::string& location, const std::string& name);
-    Result isList(const std::string& location, const std::string& name, const std::set<std::string>& keys) const;
+    bool listHasKey(const std::string& location, const std::string& name, const std::string& key) const;
+    bool isList(const std::string& location, const std::string& name) const;
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void changeNode(const std::string& name);
     std::string currentNode() const;

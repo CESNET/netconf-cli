@@ -65,6 +65,19 @@ struct list_
     std::vector<std::string> m_keys;
 };
 
+struct listPrefix_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const&)
+    {
+    }
+};
+
+struct listSuffix_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const&)
+    {
+    }
+};
 struct listElement_ {
     listElement_() {}
     listElement_(const std::string& listName, const std::map<std::string, std::string>& keys);
@@ -109,7 +122,7 @@ struct listElement_class {
         auto result = tree.isList(parserContext.m_curPath, ast.m_listName, keys);
 
         if (result.first) {
-            parserContext.m_curPath += joinPaths(parserContext.m_curPath, ast.m_listName);
+            parserContext.m_curPath = joinPaths(parserContext.m_curPath, ast.m_listName);
         } else {
             if (!result.second.empty()) {
                 throw InvalidKeyException(result.second);
@@ -129,7 +142,7 @@ struct container_class {
         auto result = tree.isContainer(parserContext.m_curPath, ast.m_name);
 
         if (result.first) {
-            parserContext.m_curPath += joinPaths(parserContext.m_curPath, ast.m_name);
+            parserContext.m_curPath = joinPaths(parserContext.m_curPath, ast.m_name);
         } else {
             _pass(context) = false;
         }
@@ -162,6 +175,8 @@ struct cd_class {
 
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
 x3::rule<identifier_class, std::string> const identifier = "identifier";
+x3::rule<listPrefix_class, std::string> const listPrefix = "listPrefix";
+x3::rule<listSuffix_class, listElement_> const listSuffix = "listSuffix";
 x3::rule<listElement_class, listElement_> const listElement = "listElement";
 x3::rule<container_class, container_> const container = "container";
 x3::rule<path_class, path_> const path = "path";
@@ -176,8 +191,14 @@ auto const identifier_def =
         ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
     ];
 
+auto const listPrefix_def =
+    identifier >> '[';
+
+auto const listSuffix_def =
+        *keyValue >> ']';
+
 auto const listElement_def =
-    identifier >> '[' >> *keyValue >> ']';
+   listPrefix > listSuffix;
 
 auto const container_def =
     identifier;
