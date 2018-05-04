@@ -11,13 +11,6 @@
 
 InvalidNodeException::~InvalidNodeException() = default;
 
-std::string joinPaths(const std::string& prefix, const std::string& suffix)
-{
-    if (prefix.empty() || suffix.empty())
-        return prefix + suffix;
-    else
-        return prefix + '/' + suffix;
-}
 
 bool TreeNode::operator<(const TreeNode& b) const
 {
@@ -29,25 +22,25 @@ CTree::CTree()
     m_nodes.emplace("", std::unordered_map<std::string, NODE_TYPE>());
 }
 
-const std::unordered_map<std::string, NODE_TYPE>& CTree::children(const std::string& node) const
+const std::unordered_map<std::string, NODE_TYPE>& CTree::children(const std::string& name) const
 {
-    return m_nodes.at(node);
+    return m_nodes.at(name);
 }
 
-bool CTree::nodeExists(const std::string& location, const std::string& node) const
+bool CTree::nodeExists(const std::string& location, const std::string& name) const
 {
-    if (node.empty())
+    if (name.empty())
         return true;
     const auto& childrenRef = children(location);
 
-    return childrenRef.find(node) != childrenRef.end();
+    return childrenRef.find(name) != childrenRef.end();
 }
 
-bool CTree::isContainer(const std::string& location, const std::string& node) const
+bool CTree::isContainer(const std::string& location, const std::string& name) const
 {
-    if (!nodeExists(location, node))
+    if (!nodeExists(location, name))
         return false;
-    return children(location).at(node) == TYPE_CONTAINER;
+    return children(location).at(name) == TYPE_CONTAINER;
 }
 
 void CTree::addContainer(const std::string& location, const std::string& name)
@@ -59,14 +52,30 @@ void CTree::addContainer(const std::string& location, const std::string& name)
     m_nodes.emplace(key, std::unordered_map<std::string, NODE_TYPE>());
 }
 
-
-void CTree::changeNode(const std::string& node)
+bool CTree::isListElement(const std::string& location, const std::string& name, const std::string& key) const
 {
-    if (node.empty()) {
+    if (!nodeExists(location, name + "[" + key + "]"))
+        return false;
+    return children(location).at(name + "[" + key + "]") == TYPE_LIST_ELEMENT;
+}
+
+void CTree::addListElement(const std::string& location, const std::string& name, const std::string& key)
+{
+    std::string nodeName = name + "[" + key + "]";
+    m_nodes.at(location).emplace(nodeName, TYPE_LIST_ELEMENT);
+
+    std::string mapKey = joinPaths(location, nodeName);
+    m_nodes.emplace(mapKey, std::unordered_map<std::string, NODE_TYPE>());
+}
+
+
+void CTree::changeNode(const std::string& name)
+{
+    if (name.empty()) {
         m_curDir = "";
         return;
     }
-    m_curDir += joinPaths(m_curDir, node);
+    m_curDir += joinPaths(m_curDir, name);
 }
 std::string CTree::currentNode() const
 {

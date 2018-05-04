@@ -16,6 +16,17 @@ bool container_::operator==(const container_& b) const
     return this->m_name == b.m_name;
 }
 
+listElement_::listElement_(const std::string& listName, const std::string& key)
+    : m_listName(listName)
+    , m_key(key)
+{
+}
+
+bool listElement_::operator==(const listElement_& b) const
+{
+    return (this->m_listName == b.m_listName && this->m_key == b.m_key);
+}
+
 bool path_::operator==(const path_& b) const
 {
     if (this->m_nodes.size() != b.m_nodes.size())
