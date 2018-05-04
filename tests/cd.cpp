@@ -105,12 +105,35 @@ TEST_CASE("cd")
                 REQUIRE_THROWS(parser.parseCommand(input));
             }
 
+            SECTION("nonexistent/lol")
+            {
+                input = "cd nonexistent/lol";
+                REQUIRE_THROWS(parser.parseCommand(input));
+            }
         }
         SECTION("invalid list key identifiers")
         {
             SECTION("twoKeyList[invalidKey=4]")
             {
                 input = "cd twoKeyList[invalidKey=4]";
+                REQUIRE_THROWS(parser.parseCommand(input));
+            }
+
+            SECTION("twoKeyList[number=4 number=5]")
+            {
+                input = "cd twoKeyList[number=4 number=5]";
+                REQUIRE_THROWS(parser.parseCommand(input));
+            }
+
+            SECTION("twoKeyList[number=4 name=lol number=7]")
+            {
+                input = "cd twoKeyList[number=4 name=lol number=7]";
+                REQUIRE_THROWS(parser.parseCommand(input));
+            }
+
+            SECTION("twoKeyList[number=4]")
+            {
+                input = "cd twoKeyList[number=4]";
                 REQUIRE_THROWS(parser.parseCommand(input));
             }
         }
