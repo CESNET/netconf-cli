@@ -7,16 +7,10 @@
 */
 
 #include "CTree.hpp"
+#include "utils.hpp"
 
 InvalidNodeException::~InvalidNodeException() = default;
 
-std::string joinPaths(const std::string& prefix, const std::string& suffix)
-{
-    if (prefix.empty() || suffix.empty())
-        return prefix + suffix;
-    else
-        return prefix + '/' + suffix;
-}
 
 bool TreeNode::operator<(const TreeNode& b) const
 {
