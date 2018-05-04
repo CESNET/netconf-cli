@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ec8085f_96dad49c",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-04T13:40:05Z",
+      "side": 1,
+      "message": "Tohle musi byt pryc, uz je to v utils.cpp. Ted je to zkopirovane, ne presunute :)",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 1
+      },
+      "revId": "2bd18140c5d580c6026823fe1ed9b026499d73f1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
