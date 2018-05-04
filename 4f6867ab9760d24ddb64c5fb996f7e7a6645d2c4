@@ -1,0 +1,64 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "53eeb727_e97256ed",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-04T16:26:36Z",
+      "side": 1,
+      "message": "tohle sem nepatri",
+      "revId": "4f6867ab9760d24ddb64c5fb996f7e7a6645d2c4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "536c7daf_83d5b052",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-04T16:26:36Z",
+      "side": 1,
+      "message": "tady je videt, proc se mi ten kod se std::pair nelibi",
+      "revId": "4f6867ab9760d24ddb64c5fb996f7e7a6645d2c4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9866b540_e40ebbea",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-04T16:26:36Z",
+      "side": 1,
+      "message": "Tohle si vylozene rika o vysvetleni, co je first a co je second. A o nepouziti std::pair, protoze kod typu:\n\n  if (res.first) {\n    handleCommand(res.second);\n  }\n\n...je necitelnejsi nez neco jako:\n\n  if (res.succeded) {\n    handleCommand(res.command);\n  }",
+      "revId": "4f6867ab9760d24ddb64c5fb996f7e7a6645d2c4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
