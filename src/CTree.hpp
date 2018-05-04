@@ -11,6 +11,8 @@
 #include <stdexcept>
 #include <unordered_map>
 
+#include "utils.hpp"
+
 enum NODE_TYPE {
     TYPE_CONTAINER,
     TYPE_LIST,
@@ -22,6 +24,7 @@ struct TreeNode {
     std::string m_name;
     NODE_TYPE m_type;
 };
+
 
 class InvalidNodeException : public std::invalid_argument {
 public:
