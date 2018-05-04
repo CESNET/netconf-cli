@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "CTree.hpp"
+#include "utils.hpp"
 namespace x3 = boost::spirit::x3;
 namespace ascii = boost::spirit::x3::ascii;
 

@@ -7,6 +7,7 @@
 */
 
 #include "CTree.hpp"
+#include "utils.hpp"
 
 InvalidNodeException::~InvalidNodeException() = default;
 
