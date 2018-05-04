@@ -40,15 +40,17 @@ public:
 class CTree {
 public:
     CTree();
-    bool nodeExists(const std::string& location, const std::string& node) const;
+    bool nodeExists(const std::string& location, const std::string& name) const;
 
-    bool isContainer(const std::string& location, const std::string& node) const;
-    void addContainer(const std::string& location, const std::string& node);
-    void changeNode(const std::string& node);
+    bool isContainer(const std::string& location, const std::string& name) const;
+    void addContainer(const std::string& location, const std::string& name);
+    bool isListElement(const std::string& location, const std::string& name, const std::string& key) const;
+    void addListElement(const std::string& location, const std::string& name, const std::string& key);
+    void changeNode(const std::string& name);
     std::string currentNode() const;
 
 private:
-    const std::unordered_map<std::string, NODE_TYPE>& children(const std::string& node) const;
+    const std::unordered_map<std::string, NODE_TYPE>& children(const std::string& name) const;
 
     std::unordered_map<std::string, std::unordered_map<std::string, NODE_TYPE>> m_nodes;
     std::string m_curDir;
