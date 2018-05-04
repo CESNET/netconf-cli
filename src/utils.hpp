@@ -6,4 +6,6 @@
  *
 */
 
+#include <string>
+
 std::string joinPaths(const std::string& prefix, const std::string& suffix);
