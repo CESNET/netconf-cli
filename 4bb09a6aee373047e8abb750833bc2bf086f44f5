@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ee2aac70_8df1fc4c",
+        "filename": "src/ast.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-04T12:58:24Z",
+      "side": 1,
+      "message": "Tohle presun do noveho utils.hpp, neni potreba, aby to bylo zduplikovane v asi.hpp a CTree.hpp.",
+      "revId": "4bb09a6aee373047e8abb750833bc2bf086f44f5",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
