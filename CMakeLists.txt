@@ -51,6 +51,7 @@ set(parser_SRCS
     src/CTree.cpp
     src/CParser.cpp
     src/ast.cpp
+    src/utils.cpp
     )
 
 add_library(parser STATIC ${parser_SRCS})
