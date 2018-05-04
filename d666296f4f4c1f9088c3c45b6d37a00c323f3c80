@@ -40,6 +40,27 @@
       "revId": "d666296f4f4c1f9088c3c45b6d37a00c323f3c80",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7ca065d_8a707790",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-04T12:06:06Z",
+      "side": 0,
+      "message": "viz komentar u https://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/713/3/src/utils.cpp",
+      "parentUuid": "638cc7ed_505fcb6f",
+      "revId": "d666296f4f4c1f9088c3c45b6d37a00c323f3c80",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
