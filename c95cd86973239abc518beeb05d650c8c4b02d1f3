@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8bcbbc5a_a8b2ba97",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-04T13:06:51Z",
+      "side": 1,
+      "message": "je to pouzito az v .cpp, cili to neni nutne includovat zde",
+      "revId": "c95cd86973239abc518beeb05d650c8c4b02d1f3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
