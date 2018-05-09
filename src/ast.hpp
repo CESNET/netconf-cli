@@ -57,7 +57,7 @@ struct listElement_ {
 
     bool operator==(const listElement_& b) const;
 
-    std::string m_listName;
+    std::string m_name;
     std::map<std::string, std::string> m_keys;
 };
 
@@ -73,9 +73,7 @@ struct cd_ : x3::position_tagged {
     path_ m_path;
 };
 
-
-
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
-BOOST_FUSION_ADAPT_STRUCT(listElement_, m_listName, m_keys)
+BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
 BOOST_FUSION_ADAPT_STRUCT(path_, m_nodes)
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)

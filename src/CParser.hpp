@@ -37,7 +37,7 @@ public:
 class CParser {
 public:
     CParser(const CTree& tree);
-    cd_ parseCommand(const std::string& line);
+    cd_ parseCommand(const std::string& line, std::ostream& errorStream);
 
 private:
     const CTree& m_tree;
