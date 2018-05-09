@@ -88,13 +88,23 @@ void CTree::addList(const std::string& location, const std::string& name, const 
 }
 
 
-void CTree::changeNode(const std::string& name)
+void CTree::changeNode(const path_& name)
 {
-    if (name.empty()) {
+    if (name.m_nodes.empty()) {
         m_curDir = "";
         return;
     }
-    m_curDir += joinPaths(m_curDir, name);
+    for (auto it : name.m_nodes) {
+        if (it.type() == typeid(listElement_)) {
+            listElement_ node = boost::get<listElement_>(it);
+            m_curDir += joinPaths(m_curDir, node.m_name);
+
+        } else if (it.type() == typeid(container_)) {
+            container_ node = boost::get<container_>(it);
+            m_curDir += joinPaths(m_curDir, node.m_name);
+        }
+
+    }
 }
 std::string CTree::currentNode() const
 {

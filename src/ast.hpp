@@ -74,11 +74,11 @@ struct listElement_ {
 
     bool operator==(const listElement_& b) const;
 
-    std::string m_listName;
+    std::string m_name;
     std::map<std::string, std::string> m_keys;
 };
 
-BOOST_FUSION_ADAPT_STRUCT(listElement_, m_listName, m_keys)
+BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
 
 struct path_ {
     bool operator==(const path_& b) const;
@@ -162,7 +162,7 @@ struct listElement_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.m_curPath = joinPaths(parserContext.m_curPath, ast.m_listName);
+        parserContext.m_curPath = joinPaths(parserContext.m_curPath, ast.m_name);
     }
 
     template <typename Iterator, typename Exception, typename Context>
@@ -247,7 +247,7 @@ auto const listPrefix_def =
     identifier >> '[';
 
 auto const listSuffix_def =
-    +keyValue > ']';
+    *keyValue > ']';
 
 auto const listElement_def =
    listPrefix > listSuffix;

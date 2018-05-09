@@ -25,6 +25,7 @@ TEST_CASE("cd")
     tree.addList("", "twoKeyList", {"number", "name"});
     CParser parser(tree);
     std::string input;
+    std::ostringstream errorStream;
 
     SECTION("valid input")
     {
@@ -90,7 +91,7 @@ TEST_CASE("cd")
             }
 
         }
-        cd_ command = parser.parseCommand(input);
+        cd_ command = parser.parseCommand(input, errorStream);
         REQUIRE(command == expected);
     }
     SECTION("invalid input")
@@ -100,13 +101,11 @@ TEST_CASE("cd")
             SECTION("nonexistent")
             {
                 input = "cd nonexistent";
-                REQUIRE_THROWS(parser.parseCommand(input));
             }
 
             SECTION("nonexistent/lol")
             {
                 input = "cd nonexistent/lol";
-                REQUIRE_THROWS(parser.parseCommand(input));
             }
         }
         SECTION("invalid list key identifiers")
@@ -114,26 +113,23 @@ TEST_CASE("cd")
             SECTION("twoKeyList[invalidKey=4]")
             {
                 input = "cd twoKeyList[invalidKey=4]";
-                REQUIRE_THROWS(parser.parseCommand(input));
             }
 
             SECTION("twoKeyList[number=4 number=5]")
             {
                 input = "cd twoKeyList[number=4 number=5]";
-                REQUIRE_THROWS(parser.parseCommand(input));
             }
 
             SECTION("twoKeyList[number=4 name=lol number=7]")
             {
                 input = "cd twoKeyList[number=4 name=lol number=7]";
-                REQUIRE_THROWS(parser.parseCommand(input));
             }
 
             SECTION("twoKeyList[number=4]")
             {
                 input = "cd twoKeyList[number=4]";
-                REQUIRE_THROWS(parser.parseCommand(input));
             }
         }
+        REQUIRE_THROWS(parser.parseCommand(input, errorStream));
     }
 }
