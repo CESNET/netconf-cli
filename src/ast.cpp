@@ -6,6 +6,7 @@
  *
 */
 #include "ast.hpp"
+#include "ast_handlers.hpp"
 
 InvalidKeyException::~InvalidKeyException() = default;
 
