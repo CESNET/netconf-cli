@@ -32,8 +32,9 @@ auto const identifier_def =
 auto const listPrefix_def =
         identifier >> '[';
 
+// even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
 auto const listSuffix_def =
-        +keyValue > ']';
+        *keyValue > ']';
 
 auto const listElement_def =
         listPrefix > listSuffix;
@@ -45,7 +46,7 @@ auto const path_def =
         (container | listElement) % '/';
 
 auto const cd_def =
-        lit("cd") > path >> x3::eoi;
+      lit("cd") > x3::omit[x3::no_skip[space]] > path >> x3::eoi;
 
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(identifier)
