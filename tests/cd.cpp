@@ -91,11 +91,39 @@ TEST_CASE("cd")
             }
 
         }
+
+        SECTION("whitespace handling")
+        {
+            SECTION("  cd   a     ")
+            {
+                input = "  cd   a     ";
+                expected.m_path.m_nodes.push_back(container_("a"));
+            }
+        }
+
         cd_ command = parser.parseCommand(input, errorStream);
         REQUIRE(command == expected);
     }
     SECTION("invalid input")
     {
+        SECTION("missing space between a command and its arguments")
+        {
+            SECTION("cda")
+            {
+                input = "cda";
+            }
+        }
+        SECTION("garbage arguments handling")
+        {
+            SECTION("cd a garbage")
+            {
+               input = "cd a garbage";
+            }
+            SECTION("cd a/a2 garbage")
+            {
+                input = "cd a/a2 garbage";
+            }
+        }
         SECTION("invalid identifiers")
         {
             SECTION("nonexistent")
@@ -108,8 +136,19 @@ TEST_CASE("cd")
                 input = "cd nonexistent/lol";
             }
         }
+
         SECTION("invalid list key identifiers")
         {
+            SECTION("list")
+            {
+                input = "cd list";
+            }
+
+            SECTION("list[]")
+            {
+                input = "cd list[]";
+            }
+
             SECTION("twoKeyList[invalidKey=4]")
             {
                 input = "cd twoKeyList[invalidKey=4]";
