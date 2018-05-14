@@ -11,6 +11,16 @@
 #include "ast.hpp"
 #include "ast_handlers.hpp"
 
+using x3::alpha;
+using x3::alnum;
+using x3::lit;
+using x3::char_;
+using x3::_attr;
+using x3::lexeme;
+using x3::expect;
+using x3::omit;
+using ascii::space;
+
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
 x3::rule<identifier_class, std::string> const identifier = "identifier";
 x3::rule<listPrefix_class, std::string> const listPrefix = "listPrefix";
@@ -33,7 +43,7 @@ auto const listPrefix_def =
         identifier >> '[';
 
 auto const listSuffix_def =
-        +keyValue > ']';
+        *keyValue > ']';
 
 auto const listElement_def =
         listPrefix > listSuffix;
@@ -45,7 +55,7 @@ auto const path_def =
         (container | listElement) % '/';
 
 auto const cd_def =
-        lit("cd") > path >> x3::eoi;
+      lit("cd ") > path >> x3::eoi;
 
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(identifier)
