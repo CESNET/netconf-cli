@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e90c584_4bf1105d",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-15T09:19:24Z",
+      "side": 1,
+      "message": "Tenhle kod je includovany ze dvou soboru, a obsahuje podle me netrivialni mznostvi kodu. Prislo by mi lepsi implementace vsech on_success/on_error presunout do samostatneho .cpp.",
+      "revId": "d72b67e30bce417e0c4f741f068034885406eb19",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
