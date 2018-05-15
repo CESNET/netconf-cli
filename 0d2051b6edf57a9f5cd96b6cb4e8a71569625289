@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c930d54d_adb65dd0",
+        "filename": "src/CParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-15T09:29:07Z",
+      "side": 1,
+      "message": "https://en.cppreference.com/w/cpp/header/ostream , ne sstream",
+      "revId": "0d2051b6edf57a9f5cd96b6cb4e8a71569625289",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d05cda49_e1de195f",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-15T09:29:07Z",
+      "side": 1,
+      "message": "Tohle bych delal jinak. Path je variant, a u prikazu `cd` bude asi vzdy nutne nejak zareagovat na kazdou jeho cast -- dneska jenom na container a list, v budoucnu i na dalsi veci. Pokud bys ted do toho variantu pridal nejakou dalsi moznost, treba leaf, tak Ti kompilator u tohohle kodu nic nerekne, nevyhodi varovani, ze neco neni osetreno.\n\nDoporucuju pouzit visitor pattern http://en.cppreference.com/w/cpp/utility/variant/visit (v tom prikladu jsou variadic templates, to nevim, jestli je uz v C++14, ale kazdopadne da se to udelat i pres explicitni struct s pretizenymi operator(), nejen pres ten jejich pekny hack). Pointa je, ze lambda/struct/... pak musi mit explicitne uvedeny overload pro container, list a v budoucnu pro kazdy dalsi pridany, jinak kod nepujde zkompilovat (a dokonce to neni warning, ale normalni tvrda chyba).",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 9
+      },
+      "revId": "0d2051b6edf57a9f5cd96b6cb4e8a71569625289",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3ab5d29_29e82fd5",
+        "filename": "src/ast.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-15T09:29:07Z",
+      "side": 1,
+      "message": "Tohle prejmenovani je zmena, kterou se hodi delat v extra commitu, protoze pak kdyz clovek kouka na diff, vidi samostatny commit, ktery jenom neco prejmenovava, a tim padem dost pravdepodobne nic nerozbiji, a pak dalsi commit, ktery uz dela neco uzitecneho.",
+      "revId": "0d2051b6edf57a9f5cd96b6cb4e8a71569625289",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "179a3565_d1575bd3",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-15T09:29:07Z",
+      "side": 1,
+      "message": "Tuhle zmenu v unit testu bych take rad videl jako samostatny refactoringovy commit.",
+      "revId": "0d2051b6edf57a9f5cd96b6cb4e8a71569625289",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
