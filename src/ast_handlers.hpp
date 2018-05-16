@@ -93,7 +93,7 @@ struct listElement_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.m_curPath = joinPaths(parserContext.m_curPath, ast.m_listName);
+        parserContext.m_curPath = joinPaths(parserContext.m_curPath, ast.m_name);
     }
 
     template <typename Iterator, typename Exception, typename Context>
