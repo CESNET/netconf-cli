@@ -35,12 +35,9 @@ using x3::_attr;
 using x3::lexeme;
 using ascii::space;
 
-
-std::string getInput()
+void interpret(cd_ command, CTree& tree)
 {
-    std::string line;
-    std::getline(std::cin, line);
-    return line;
+    tree.changeNode(command.m_path);
 }
 
 int main(int argc, char* argv[])
@@ -51,5 +48,33 @@ int main(int argc, char* argv[])
                                "netconf-cli " NETCONF_CLI_VERSION,
                                true);
     std::cout << "Welcome to netconf-cli" << std::endl;
+
+    CTree tree;
+    tree.addContainer("", "a");
+    tree.addContainer("", "b");
+    tree.addContainer("a", "a2");
+    tree.addContainer("b", "b2");
+    tree.addContainer("a/a2", "a3");
+    tree.addContainer("b/b2", "b3");
+    tree.addList("", "list", {"number"});
+    tree.addContainer("list", "contInList");
+    tree.addList("", "twoKeyList", {"number", "name"});
+    CParser parser(tree);
+
+    while (true) {
+        std::cout << tree.currentNode() << ">";
+        std::string input;
+        std::getline(std::cin, input);
+        if (std::cin.eof())
+            break;
+
+        try {
+            cd_ command = parser.parseCommand(input, std::cout);
+            interpret(command, tree);
+        } catch (InvalidCommandException& ex) {
+            std::cerr << ex.what() << std::endl;
+        }
+    }
+
     return 0;
 }
