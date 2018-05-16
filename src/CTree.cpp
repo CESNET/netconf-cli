@@ -12,6 +12,14 @@
 
 InvalidNodeException::~InvalidNodeException() = default;
 
+struct toStringVisitor : public boost::static_visitor<std::string>
+{
+    template <class T>
+    std::string operator()(const T& node) const
+    {
+        return node.m_name;
+    }
+};
 
 
 CTree::CTree()
@@ -88,13 +96,15 @@ void CTree::addList(const std::string& location, const std::string& name, const 
 }
 
 
-void CTree::changeNode(const std::string& name)
+void CTree::changeNode(const path_& name)
 {
-    if (name.empty()) {
+    if (name.m_nodes.empty()) {
         m_curDir = "";
         return;
     }
-    m_curDir += joinPaths(m_curDir, name);
+    for (const auto& it : name.m_nodes) {
+        m_curDir = joinPaths(m_curDir, boost::apply_visitor(toStringVisitor(), it));
+    }
 }
 std::string CTree::currentNode() const
 {
