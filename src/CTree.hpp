@@ -12,6 +12,7 @@
 #include <set>
 #include <stdexcept>
 #include <unordered_map>
+#include "ast.hpp"
 
 namespace schema {
     struct container {
@@ -48,7 +49,7 @@ public:
     bool listHasKey(const std::string& location, const std::string& name, const std::string& key) const;
     bool isList(const std::string& location, const std::string& name) const;
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
-    void changeNode(const std::string& name);
+    void changeNode(const path_& name);
     std::string currentNode() const;
 
 private:
