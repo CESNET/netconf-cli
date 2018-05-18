@@ -40,6 +40,27 @@
       "revId": "d72b67e30bce417e0c4f741f068034885406eb19",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8bdf0089_80e650f1",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-18T12:19:17Z",
+      "side": 1,
+      "message": "Dohodli jsme se, ze to zde za to nestoji.",
+      "parentUuid": "4d362572_e5c20879",
+      "revId": "d72b67e30bce417e0c4f741f068034885406eb19",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
