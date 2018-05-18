@@ -6,9 +6,7 @@
  *
 */
 #include "ast.hpp"
-#include "ast_handlers.hpp"
 
-InvalidKeyException::~InvalidKeyException() = default;
 
 container_::container_(const std::string& name)
     : m_name(name)
@@ -44,8 +42,3 @@ bool cd_::operator==(const cd_& b) const
 }
 
 
-ParserContext::ParserContext(const CTree& tree)
-    : m_tree(tree)
-{
-    m_curPath = m_tree.currentNode();
-}
