@@ -7,23 +7,10 @@
 */
 
 #pragma once
+
 #include "CTree.hpp"
+#include "parser_context.hpp"
 
-class InvalidKeyException : public std::invalid_argument {
-public:
-    using std::invalid_argument::invalid_argument;
-    ~InvalidKeyException() override;
-};
-
-struct ParserContext {
-    ParserContext(const CTree& tree);
-    const CTree& m_tree;
-    std::string m_curPath;
-    std::string m_errorMsg;
-    std::string m_tmpListName;
-    std::set<std::string> m_tmpListKeys;
-    bool m_errorHandled = false;
-};
 
 struct keyValue_class {
     template <typename T, typename Iterator, typename Context>
