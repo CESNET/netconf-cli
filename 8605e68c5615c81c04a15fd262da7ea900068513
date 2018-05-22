@@ -117,6 +117,27 @@
     },
     {
       "key": {
+        "uuid": "c0570c00_e4e555fd",
+        "filename": "src/main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-05-22T15:02:17Z",
+      "side": 1,
+      "message": "jo, dík",
+      "parentUuid": "f5148ecf_f29bd33c",
+      "revId": "8605e68c5615c81c04a15fd262da7ea900068513",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "34532a31_9f4793b1",
         "filename": "src/main.cpp",
         "patchSetId": 2
