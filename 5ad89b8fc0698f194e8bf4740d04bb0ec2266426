@@ -1,0 +1,64 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "287687d6_a685e2fb",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-22T10:13:59Z",
+      "side": 1,
+      "message": "Proc je potreba tohle? Cekal bych, ze tahle uprava zpusobi, ze parser prijme vstup \"cd foo[]\", ktere se pak musi odmitnout na vyssi vrstve. V cem je to lepsi, nez to nechat parserem rovnou zariznout?\n\nPtam se, netvrdim, ze je to blbe.",
+      "revId": "5ad89b8fc0698f194e8bf4740d04bb0ec2266426",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "025af007_98f72f25",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-22T10:13:59Z",
+      "side": 1,
+      "message": "Neda se tohle ve spiritu udelat nejak \"lip\"? Mam z toho divny pocit, cekal bych spis neco jako \"tady muze byt libovolny whitespace\", a ne pevne zadratovanou mezeru. Nerikam, ze je to blbe, ale jsem prekvapeny, ze by se to melo delat takhle IMHO osklive.",
+      "revId": "5ad89b8fc0698f194e8bf4740d04bb0ec2266426",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d47f6a5_5f899f0d",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-22T10:13:59Z",
+      "side": 1,
+      "message": "Nad timlhe musim premyslet, co to znamena. Lepsi nazev by pro me byl \"no space between command and path\".",
+      "revId": "5ad89b8fc0698f194e8bf4740d04bb0ec2266426",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
