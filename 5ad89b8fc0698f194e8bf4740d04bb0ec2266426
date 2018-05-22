@@ -22,6 +22,27 @@
     },
     {
       "key": {
+        "uuid": "2e929078_038bb3b7",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-05-22T11:48:36Z",
+      "side": 1,
+      "message": "Když je to z hvězdičkou, tak se zavolá keyValue_class::on_success, kde dokážu zjisit, jaké klíče chybí. S plusem to taky funguje, ale pravděpodobně se pak zobrazí chyba ve smyslu \"can\u0027t parse cd foo[]\" namísto \"not enough keys for list foo: \u003ckey1\u003e, \u003ckey2\u003e...\"",
+      "parentUuid": "287687d6_a685e2fb",
+      "revId": "5ad89b8fc0698f194e8bf4740d04bb0ec2266426",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "025af007_98f72f25",
         "filename": "src/grammars.hpp",
         "patchSetId": 2
@@ -36,6 +57,27 @@
       "writtenOn": "2018-05-22T10:13:59Z",
       "side": 1,
       "message": "Neda se tohle ve spiritu udelat nejak \"lip\"? Mam z toho divny pocit, cekal bych spis neco jako \"tady muze byt libovolny whitespace\", a ne pevne zadratovanou mezeru. Nerikam, ze je to blbe, ale jsem prekvapeny, ze by se to melo delat takhle IMHO osklive.",
+      "revId": "5ad89b8fc0698f194e8bf4740d04bb0ec2266426",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a070bfb6_c551348a",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-05-22T11:48:36Z",
+      "side": 1,
+      "message": "Nad tímhle jsem nějakou chvíli strávil, +x3::space z nějakého důvodu nefungovalo. Různé modifikátory parserů jako lexeme[] nebo omit[] taky nefungovaly, buď proto, že, že se mu to pak nedařilo dát to tý mý struktury, anebo to ten parser prostě neparsenul. lit(\"cd\") \u003e +x3::space \u003e ... by fungovat mělo, ale nevím, ty parsery se blbě debugujou. Zkusím se na to ještě mrknout.",
+      "parentUuid": "025af007_98f72f25",
       "revId": "5ad89b8fc0698f194e8bf4740d04bb0ec2266426",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -59,6 +101,27 @@
       "revId": "5ad89b8fc0698f194e8bf4740d04bb0ec2266426",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6dec1fb6_1b7fdcbc",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-05-22T11:48:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d47f6a5_5f899f0d",
+      "revId": "5ad89b8fc0698f194e8bf4740d04bb0ec2266426",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
