@@ -119,3 +119,7 @@ if(WITH_DOCS)
         SOURCES ${doxyfile_in}
         )
 endif()
+
+install(TARGETS
+    netconf-cli
+    RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/)
