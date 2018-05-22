@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f76eda1_043c6b75",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-22T10:08:42Z",
+      "side": 1,
+      "message": "Moc se mi nelibi, kdyz jmeno v sobe obsahuje typ (\"Visitor\"), a kdyz je to az moc genericke (\"toString\" u samostatne tridy). Co treba pathToString?",
+      "range": {
+        "startLine": 15,
+        "startChar": 7,
+        "endLine": 15,
+        "endChar": 22
+      },
+      "revId": "8605e68c5615c81c04a15fd262da7ea900068513",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fb32e83_712aab36",
+        "filename": "src/main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-22T10:08:42Z",
+      "side": 1,
+      "message": "nit: mezeru, prosim, a je toho vic, viz clang-format",
+      "revId": "8605e68c5615c81c04a15fd262da7ea900068513",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34532a31_9f4793b1",
+        "filename": "src/main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-22T10:08:42Z",
+      "side": 1,
+      "message": "nit: prijde mi citelnejsi, kdyz by za tihle byl prazdny radek, aby to vizualne nesplyvalo s tim dalsim try/catch blokem",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 18
+      },
+      "revId": "8605e68c5615c81c04a15fd262da7ea900068513",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96dfee92_22be0b7e",
+        "filename": "src/main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-22T10:08:42Z",
+      "side": 1,
+      "message": "Tohle by melo vypsat chybovou hlasku z te vyjimky",
+      "revId": "8605e68c5615c81c04a15fd262da7ea900068513",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
