@@ -96,6 +96,27 @@
     },
     {
       "key": {
+        "uuid": "f5148ecf_f29bd33c",
+        "filename": "src/main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-22T15:00:43Z",
+      "side": 1,
+      "message": "Nebylo to, tak jsem to rovnou opravil sam.",
+      "parentUuid": "8edc485c_d8978efc",
+      "revId": "8605e68c5615c81c04a15fd262da7ea900068513",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "34532a31_9f4793b1",
         "filename": "src/main.cpp",
         "patchSetId": 2
