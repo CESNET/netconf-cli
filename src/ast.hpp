@@ -37,6 +37,14 @@ using keyValue_ = std::pair<std::string, std::string>;
 
 struct parser_context_tag;
 
+
+struct nodeup_ {
+    bool operator==(const nodeup_&) const
+    {
+       return true;
+    }
+};
+
 struct container_ {
     container_() = default;
     container_(const std::string& name);
@@ -64,7 +72,7 @@ struct listElement_ {
 
 struct path_ {
     bool operator==(const path_& b) const;
-    std::vector<boost::variant<container_, listElement_>> m_nodes;
+    std::vector<boost::variant<container_, listElement_, nodeup_>> m_nodes;
 };
 
 
