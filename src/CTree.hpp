@@ -56,5 +56,5 @@ private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
 
     std::unordered_map<std::string, std::unordered_map<std::string, NodeType>> m_nodes;
-    std::string m_curDir;
+    path_ m_curDir;
 };
