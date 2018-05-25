@@ -7,7 +7,7 @@
 */
 
 #include "parser_context.hpp"
-ParserContext::ParserContext(const CTree& tree, const std::string curDir)
+ParserContext::ParserContext(const CTree& tree, const path_ curDir)
         : m_tree(tree)
 {
     m_curPath = curDir;

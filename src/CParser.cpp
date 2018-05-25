@@ -12,17 +12,6 @@ TooManyArgumentsException::~TooManyArgumentsException() = default;
 
 InvalidCommandException::~InvalidCommandException() = default;
 
-struct nodeToString : public boost::static_visitor<std::string> {
-    std::string operator()(const nodeup_&) const
-    {
-        return "..";
-    }
-    template <class T>
-    std::string operator()(const T& node) const
-    {
-        return node.m_name;
-    }
-};
 
 CParser::CParser(const CTree& tree)
     : m_tree(tree)
@@ -52,22 +41,21 @@ cd_ CParser::parseCommand(const std::string& line, std::ostream& errorStream)
 
 void CParser::changeNode(const path_& name)
 {
-    if (name.m_nodes.empty()) {
-        m_curDir = "";
-        return;
-    }
     for (const auto& it : name.m_nodes) {
-        const std::string node = boost::apply_visitor(nodeToString(), it);
-        if (node == "..") {
-            m_curDir = stripLastNodeFromPath(m_curDir);
-        } else {
-            m_curDir = joinPaths(m_curDir, boost::apply_visitor(nodeToString(), it));
-        }
-
+        if (it.type() == typeid(nodeup_))
+            m_curDir.m_nodes.pop_back();
+        else
+            m_curDir.m_nodes.push_back(it);
     }
 }
+
 std::string CParser::currentNode() const
 {
-    return m_curDir;
+    std::string res;
+    for (const auto& it : m_curDir.m_nodes) {
+        res = joinPaths(res, boost::apply_visitor(nodeToString(), it));
+    }
+
+    return res;
 }
 

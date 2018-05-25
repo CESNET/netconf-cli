@@ -13,6 +13,13 @@
 InvalidNodeException::~InvalidNodeException() = default;
 
 
+std::string pathToString(const path_& path)
+{
+   std::string res;
+   for (const auto it : path.m_nodes)
+       res = joinPaths(res, boost::apply_visitor(nodeToString(), it));
+   return res;
+}
 
 CTree::CTree()
 {
@@ -33,12 +40,13 @@ bool CTree::nodeExists(const std::string& location, const std::string& name) con
     return childrenRef.find(name) != childrenRef.end();
 }
 
-bool CTree::isContainer(const std::string& location, const std::string& name) const
+bool CTree::isContainer(const path_& location, const std::string& name) const
 {
-    if (!nodeExists(location, name))
+    std::string locationString = pathToString(location);
+    if (!nodeExists(locationString, name))
         return false;
 
-    return children(location).at(name).type() == typeid(schema::container);
+    return children(locationString).at(name).type() == typeid(schema::container);
 }
 
 void CTree::addContainer(const std::string& location, const std::string& name)
@@ -51,29 +59,32 @@ void CTree::addContainer(const std::string& location, const std::string& name)
 }
 
 
-bool CTree::listHasKey(const std::string& location, const std::string& name, const std::string& key) const
+bool CTree::listHasKey(const path_& location, const std::string& name, const std::string& key) const
 {
+    std::string locationString = pathToString(location);
     assert(isList(location, name));
 
-    const auto& child = children(location).at(name);
+    const auto& child = children(locationString).at(name);
     const auto& list = boost::get<schema::list>(child);
     return list.m_keys.find(key) != list.m_keys.end();
 }
 
-const std::set<std::string>& CTree::listKeys(const std::string& location, const std::string& name) const
+const std::set<std::string>& CTree::listKeys(const path_& location, const std::string& name) const
 {
+    std::string locationString = pathToString(location);
     assert(isList(location, name));
 
-    const auto& child = children(location).at(name);
+    const auto& child = children(locationString).at(name);
     const auto& list = boost::get<schema::list>(child);
     return list.m_keys;
 }
 
-bool CTree::isList(const std::string& location, const std::string& name) const
+bool CTree::isList(const path_& location, const std::string& name) const
 {
-    if (!nodeExists(location, name))
+    std::string locationString = pathToString(location);
+    if (!nodeExists(locationString, name))
         return false;
-    const auto& child = children(location).at(name);
+    const auto& child = children(locationString).at(name);
     if (child.type() != typeid(schema::list))
         return false;
 

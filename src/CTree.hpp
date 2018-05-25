@@ -22,6 +22,17 @@ namespace schema {
     };
 }
 
+struct nodeToString : public boost::static_visitor<std::string> {
+    std::string operator()(const nodeup_&) const
+    {
+        return "..";
+    }
+    template <class T>
+    std::string operator()(const T& node) const
+    {
+        return node.m_name;
+    }
+};
 
 using NodeType = boost::variant<schema::container, schema::list>;
 
@@ -43,11 +54,11 @@ public:
     CTree();
     bool nodeExists(const std::string& location, const std::string& name) const;
 
-    bool isContainer(const std::string& location, const std::string& name) const;
+    bool isContainer(const path_& location, const std::string& name) const;
     void addContainer(const std::string& location, const std::string& name);
-    const std::set<std::string>& listKeys(const std::string& location, const std::string& name) const;
-    bool listHasKey(const std::string& location, const std::string& name, const std::string& key) const;
-    bool isList(const std::string& location, const std::string& name) const;
+    const std::set<std::string>& listKeys(const path_& location, const std::string& name) const;
+    bool listHasKey(const path_& location, const std::string& name, const std::string& key) const;
+    bool isList(const path_& location, const std::string& name) const;
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
 
 private:

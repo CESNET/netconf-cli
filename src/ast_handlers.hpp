@@ -79,7 +79,7 @@ struct listElement_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.m_curPath = joinPaths(parserContext.m_curPath, ast.m_name);
+        parserContext.m_curPath.m_nodes.push_back(ast);
     }
 
     template <typename Iterator, typename Exception, typename Context>
@@ -105,8 +105,8 @@ struct nodeup_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
 
-        if (!parserContext.m_curPath.empty()) {
-            parserContext.m_curPath = stripLastNodeFromPath(parserContext.m_curPath);
+        if (!parserContext.m_curPath.m_nodes.empty()) {
+            parserContext.m_curPath.m_nodes.pop_back();
         } else {
             _pass(context) = false;
         }
@@ -122,7 +122,7 @@ struct container_class {
         const auto& tree = parserContext.m_tree;
 
         if (tree.isContainer(parserContext.m_curPath, ast.m_name)) {
-            parserContext.m_curPath = joinPaths(parserContext.m_curPath, ast.m_name);
+            parserContext.m_curPath.m_nodes.push_back(ast);
         } else {
             _pass(context) = false;
         }

@@ -41,5 +41,5 @@ public:
 
 private:
     const CTree& m_tree;
-    std::string m_curDir;
+    path_ m_curDir;
 };
