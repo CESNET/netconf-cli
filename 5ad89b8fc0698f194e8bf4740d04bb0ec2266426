@@ -43,6 +43,27 @@
     },
     {
       "key": {
+        "uuid": "87c30297_46ad2326",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-25T07:46:32Z",
+      "side": 1,
+      "message": "Diky, tohle je podle me dobry kandidat na komentar do kodu, proc je to zrovna takhle udelane.",
+      "parentUuid": "2e929078_038bb3b7",
+      "revId": "5ad89b8fc0698f194e8bf4740d04bb0ec2266426",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "025af007_98f72f25",
         "filename": "src/grammars.hpp",
         "patchSetId": 2
