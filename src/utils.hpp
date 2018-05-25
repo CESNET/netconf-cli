@@ -8,3 +8,4 @@
 #include <string>
 
 std::string joinPaths(const std::string& prefix, const std::string& suffix);
+std::string stripLastNodeFromPath(const std::string& path);

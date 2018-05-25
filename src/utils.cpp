@@ -14,3 +14,14 @@ std::string joinPaths(const std::string& prefix, const std::string& suffix)
     else
         return prefix + '/' + suffix;
 }
+
+std::string stripLastNodeFromPath(const std::string& path)
+{
+    std::string res = path;
+    auto pos = res.find_last_of('/');
+    if (pos == res.npos)
+        res.clear();
+    else
+        res.erase(pos);
+    return res;
+}

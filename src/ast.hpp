@@ -37,6 +37,14 @@ using keyValue_ = std::pair<std::string, std::string>;
 
 struct parser_context_tag;
 
+
+struct nodeup_ {
+    bool operator==(const nodeup_& b) const
+    {
+       return true;
+    }
+};
+
 struct container_ {
     container_() = default;
     container_(const std::string& name);
@@ -64,7 +72,7 @@ struct listElement_ {
 
 struct path_ {
     bool operator==(const path_& b) const;
-    std::vector<boost::variant<container_, listElement_>> m_nodes;
+    std::vector<boost::variant<container_, listElement_, nodeup_>> m_nodes;
 };
 
 
@@ -73,6 +81,7 @@ struct cd_ : x3::position_tagged {
     path_ m_path;
 };
 
+BOOST_FUSION_ADAPT_STRUCT(nodeup_)
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
 BOOST_FUSION_ADAPT_STRUCT(path_, m_nodes)
