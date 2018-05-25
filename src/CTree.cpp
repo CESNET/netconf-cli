@@ -100,21 +100,21 @@ void CTree::addList(const std::string& location, const std::string& name, const 
 
 void CTree::changeNode(const path_& name)
 {
-    if (name.m_nodes.empty()) {
-        m_curDir = "";
-        return;
-    }
     for (const auto& it : name.m_nodes) {
-        const std::string node = boost::apply_visitor(nodeToString(), it);
-        if (node == "..") {
-            m_curDir = stripLastNodeFromPath(m_curDir);
-        } else {
-            m_curDir = joinPaths(m_curDir, boost::apply_visitor(nodeToString(), it));
-        }
-
+        if (it.type() == typeid(nodeup_))
+            m_curDir.m_nodes.pop_back();
+        else
+            m_curDir.m_nodes.push_back(it);
     }
 }
+
 std::string CTree::currentNode() const
 {
-    return m_curDir;
+    std::string res;
+    for (const auto& it : m_curDir.m_nodes) {
+        const std::string node = boost::apply_visitor(nodeToString(), it);
+        res = joinPaths(res, boost::apply_visitor(nodeToString(), it));
+    }
+
+    return res;
 }
