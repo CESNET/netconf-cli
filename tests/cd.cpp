@@ -101,6 +101,33 @@ TEST_CASE("cd")
             }
         }
 
+        SECTION("moving up")
+        {
+            SECTION("a/..")
+            {
+                input = "cd a/..";
+                expected.m_path.m_nodes.push_back(container_("a"));
+                expected.m_path.m_nodes.push_back(nodeup_());
+            }
+
+            SECTION("a/../a")
+            {
+                input = "cd a/../a";
+                expected.m_path.m_nodes.push_back(container_("a"));
+                expected.m_path.m_nodes.push_back(nodeup_());
+                expected.m_path.m_nodes.push_back(container_("a"));
+            }
+
+            SECTION("a/../a/a2")
+            {
+                input = "cd a/../a/a2";
+                expected.m_path.m_nodes.push_back(container_("a"));
+                expected.m_path.m_nodes.push_back(nodeup_());
+                expected.m_path.m_nodes.push_back(container_("a"));
+                expected.m_path.m_nodes.push_back(container_("a2"));
+            }
+        }
+
         cd_ command = parser.parseCommand(input, errorStream);
         REQUIRE(command == expected);
     }

@@ -11,7 +11,6 @@
 #include "CTree.hpp"
 #include "parser_context.hpp"
 
-
 struct keyValue_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
@@ -96,6 +95,22 @@ struct listElement_class {
         std::string message = parserContext.m_errorMsg;
         error_handler(ex.where(), message);
         return x3::error_handler_result::fail;
+    }
+};
+
+
+struct nodeup_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+
+        if (!parserContext.m_curPath.empty()) {
+            parserContext.m_curPath = stripLastNodeFromPath(parserContext.m_curPath);
+        } else {
+            _pass(context) = false;
+        }
+
     }
 };
 
