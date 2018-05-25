@@ -99,6 +99,9 @@ struct listElement_class {
     }
 };
 
+struct nodeup_class;
+
+
 struct container_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)

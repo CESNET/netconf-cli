@@ -92,6 +92,15 @@ TEST_CASE("cd")
 
         }
 
+        SECTION("..")
+        {
+            path_ helper;
+            helper.m_nodes.push_back(container_("b"));
+            tree.changeNode(helper);
+            input = "cd ..";
+            expected.m_path.m_nodes.push_back(nodeup_(".."));
+        }
+
         SECTION("whitespace handling")
         {
             SECTION("  cd   a     ")
