@@ -1,0 +1,70 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f96f39ec_27befe49",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-25T16:04:35Z",
+      "side": 1,
+      "message": "je tohle jeste potreba?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 5
+      },
+      "revId": "b836436a4ecd250ba02d098e658c18a649574fdd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8730c3a8_43afc142",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-25T16:04:35Z",
+      "side": 1,
+      "message": "tohle teda v dalsim commitu, OK",
+      "revId": "b836436a4ecd250ba02d098e658c18a649574fdd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a65ba495_68ff357a",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-25T16:04:35Z",
+      "side": 1,
+      "message": "OK, tohle je nakonec dobre, aspon v XPath 2.0. YANG 1.1 pouziva XPath 1.0 (s par vecma z 2.0...), a u XPath 1.0 jsem nenasel explicitni zminku. A je to asi burt :).",
+      "revId": "b836436a4ecd250ba02d098e658c18a649574fdd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
