@@ -8,8 +8,8 @@ shopt -s failglob
 PREFIX=~/target
 mkdir ${PREFIX}
 export PATH=${PREFIX}/bin:$PATH
-export LD_LIBRARY_PATH=${PREFIX}/lib64:${PREFIX}/lib
-export PKG_CONFIG_PATH=${PREFIX}/lib64/pkgconfig:${PREFIX}/lib/pkgconfig
+export LD_LIBRARY_PATH=${PREFIX}/lib64:${PREFIX}/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+export PKG_CONFIG_PATH=${PREFIX}/lib64/pkgconfig:${PREFIX}/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}
 
 if [[ $TH_JOB_NAME =~ .*-sanitizers-.* ]]; then
     # https://gitlab.kitware.com/cmake/cmake/issues/16609
