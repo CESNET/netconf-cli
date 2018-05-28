@@ -7,7 +7,7 @@
 */
 
 #include <iostream>
-#include "CTree.hpp"
+#include "Schema.hpp"
 #include "utils.hpp"
 
 InvalidNodeException::~InvalidNodeException() = default;
@@ -21,17 +21,17 @@ std::string pathToString(const path_& path)
    return res;
 }
 
-CTree::CTree()
+Schema::Schema()
 {
     m_nodes.emplace("", std::unordered_map<std::string, NodeType>());
 }
 
-const std::unordered_map<std::string, NodeType>& CTree::children(const std::string& name) const
+const std::unordered_map<std::string, NodeType>& Schema::children(const std::string& name) const
 {
     return m_nodes.at(name);
 }
 
-bool CTree::nodeExists(const std::string& location, const std::string& name) const
+bool Schema::nodeExists(const std::string& location, const std::string& name) const
 {
     if (name.empty())
         return true;
@@ -40,18 +40,18 @@ bool CTree::nodeExists(const std::string& location, const std::string& name) con
     return childrenRef.find(name) != childrenRef.end();
 }
 
-bool CTree::isContainer(const path_& location, const std::string& name) const
+bool Schema::isContainer(const path_& location, const std::string& name) const
 {
     std::string locationString = pathToString(location);
     if (!nodeExists(locationString, name))
         return false;
 
-    return children(locationString).at(name).type() == typeid(schema::container);
+    return children(locationString).at(name).type() == typeid(yang::container);
 }
 
-void CTree::addContainer(const std::string& location, const std::string& name)
+void Schema::addContainer(const std::string& location, const std::string& name)
 {
-    m_nodes.at(location).emplace(name, schema::container{});
+    m_nodes.at(location).emplace(name, yang::container{});
 
     //create a new set of children for the new node
     std::string key = joinPaths(location, name);
@@ -59,41 +59,41 @@ void CTree::addContainer(const std::string& location, const std::string& name)
 }
 
 
-bool CTree::listHasKey(const path_& location, const std::string& name, const std::string& key) const
+bool Schema::listHasKey(const path_& location, const std::string& name, const std::string& key) const
 {
     std::string locationString = pathToString(location);
     assert(isList(location, name));
 
     const auto& child = children(locationString).at(name);
-    const auto& list = boost::get<schema::list>(child);
+    const auto& list = boost::get<yang::list>(child);
     return list.m_keys.find(key) != list.m_keys.end();
 }
 
-const std::set<std::string>& CTree::listKeys(const path_& location, const std::string& name) const
+const std::set<std::string>& Schema::listKeys(const path_& location, const std::string& name) const
 {
     std::string locationString = pathToString(location);
     assert(isList(location, name));
 
     const auto& child = children(locationString).at(name);
-    const auto& list = boost::get<schema::list>(child);
+    const auto& list = boost::get<yang::list>(child);
     return list.m_keys;
 }
 
-bool CTree::isList(const path_& location, const std::string& name) const
+bool Schema::isList(const path_& location, const std::string& name) const
 {
     std::string locationString = pathToString(location);
     if (!nodeExists(locationString, name))
         return false;
     const auto& child = children(locationString).at(name);
-    if (child.type() != typeid(schema::list))
+    if (child.type() != typeid(yang::list))
         return false;
 
     return true;
 }
 
-void CTree::addList(const std::string& location, const std::string& name, const std::set<std::string>& keys)
+void Schema::addList(const std::string& location, const std::string& name, const std::set<std::string>& keys)
 {
-    m_nodes.at(location).emplace(name, schema::list{keys});
+    m_nodes.at(location).emplace(name, yang::list{keys});
 
     m_nodes.emplace(name, std::unordered_map<std::string, NodeType>());
 }

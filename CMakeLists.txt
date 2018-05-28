@@ -55,8 +55,8 @@ find_package(Boost REQUIRED)
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
 
 set(parser_SRCS
-    src/CTree.cpp
-    src/CParser.cpp
+    src/Schema.cpp
+    src/Parser.cpp
     src/ast.cpp
     src/utils.cpp
     src/parser_context.cpp
