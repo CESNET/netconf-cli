@@ -16,12 +16,12 @@
 
 namespace yang {
 struct container {
+    bool m_presence;
 };
 struct list {
     std::set<std::string> m_keys;
 };
 }
-
 
 
 using NodeType = boost::variant<yang::container, yang::list>;
@@ -42,11 +42,12 @@ public:
     bool nodeExists(const std::string& location, const std::string& name) const;
 
     bool isContainer(const path_& location, const std::string& name) const;
-    void addContainer(const std::string& location, const std::string& name);
+    void addContainer(const std::string& location, const std::string& name, bool isPresence = false);
     const std::set<std::string>& listKeys(const path_& location, const std::string& name) const;
     bool listHasKey(const path_& location, const std::string& name, const std::string& key) const;
     bool isList(const path_& location, const std::string& name) const;
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
+    bool isPresenceContainer(const path_& location, const std::string& name) const;
 
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
