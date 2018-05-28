@@ -36,7 +36,6 @@ using x3::char_;
 using x3::lexeme;
 using x3::lit;
 
-using command = boost::variant<cd_>;
 
 int main(int argc, char* argv[])
 {
@@ -48,14 +47,14 @@ int main(int argc, char* argv[])
     std::cout << "Welcome to netconf-cli" << std::endl;
 
     Schema schema;
-    schema.addContainer("", "a");
+    schema.addContainer("", "a", yang::ContainerTraits::Presence);
     schema.addContainer("", "b");
     schema.addContainer("a", "a2");
-    schema.addContainer("b", "b2");
-    schema.addContainer("a/a2", "a3");
+    schema.addContainer("b", "b2", yang::ContainerTraits::Presence);
+    schema.addContainer("a/a2", "a3", yang::ContainerTraits::Presence);
     schema.addContainer("b/b2", "b3");
     schema.addList("", "list", {"number"});
-    schema.addContainer("list", "contInList");
+    schema.addContainer("list", "contInList", yang::ContainerTraits::Presence);
     schema.addList("", "twoKeyList", {"number", "name"});
     Parser parser(schema);
 
@@ -67,8 +66,8 @@ int main(int argc, char* argv[])
             break;
 
         try {
-            command cmd = parser.parseCommand(input, std::cout);
-            boost::apply_visitor(Interpreter(parser), cmd);
+            command_ cmd = parser.parseCommand(input, std::cout);
+            boost::apply_visitor(Interpreter(parser, schema), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         }
