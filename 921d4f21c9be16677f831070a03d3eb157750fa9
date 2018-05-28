@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdecee2b_bce3dd84",
+        "filename": "src/parser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-28T14:30:00Z",
+      "side": 1,
+      "message": "std::copy(...begin, ...end, std::make_ostream_joiner(...))",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 9
+      },
+      "revId": "921d4f21c9be16677f831070a03d3eb157750fa9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16a6aba4_64ae159c",
+        "filename": "src/schema.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-28T14:30:00Z",
+      "side": 1,
+      "message": "Pouziva se az v .cpp",
+      "revId": "921d4f21c9be16677f831070a03d3eb157750fa9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
