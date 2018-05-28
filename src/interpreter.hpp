@@ -12,9 +12,11 @@
 #include "parser.hpp"
 
 struct Interpreter : boost::static_visitor<void> {
-    Interpreter(Parser &m_parser);
+    Interpreter(Parser& parser, Schema& schema);
 
     void operator()(const cd_&) const;
+    void operator()(const create_&) const;
 private:
     Parser& m_parser;
+    Schema& m_schema;
 };
