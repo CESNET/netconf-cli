@@ -125,8 +125,9 @@ TEST_CASE("cd")
             }
         }
 
-        cd_ command = parser.parseCommand(input, errorStream);
-        REQUIRE(command == expected);
+        command_ command = parser.parseCommand(input, errorStream);
+        REQUIRE(command.type() == typeid(cd_));
+        REQUIRE(boost::get<cd_>(command) == expected);
     }
     SECTION("invalid input")
     {
