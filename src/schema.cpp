@@ -17,7 +17,7 @@ std::string pathToString(const path_& path)
 {
     std::string res;
     for (const auto it : path.m_nodes)
-        res = joinPaths(res, boost::apply_visitor(nodeToString(), it));
+        res = joinPaths(res, boost::apply_visitor(nodeToSchemaString(), it));
     return res;
 }
 

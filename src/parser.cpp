@@ -53,7 +53,7 @@ std::string Parser::currentNode() const
 {
     std::string res;
     for (const auto& it : m_curDir.m_nodes) {
-        res = joinPaths(res, boost::apply_visitor(nodeToString(), it));
+        res = joinPaths(res, boost::apply_visitor(nodeToDataString(), it));
     }
 
     return res;

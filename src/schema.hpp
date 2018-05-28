@@ -11,6 +11,7 @@
 #include <boost/variant.hpp>
 #include <set>
 #include <stdexcept>
+#include <experimental/iterator>
 #include <unordered_map>
 #include "ast.hpp"
 
@@ -22,7 +23,31 @@ struct list {
 };
 }
 
-struct nodeToString : public boost::static_visitor<std::string> {
+struct nodeToDataString : public boost::static_visitor<std::string> {
+    std::string operator()(const listElement_& node) const
+    {
+        std::ostringstream res;
+        std::experimental::ostream_joiner joiner = std::experimental::make_ostream_joiner(res, ' ');
+        res << node.m_name + "[";
+        for (auto it : node.m_keys)
+        {
+            joiner = it.first + "=" + it.second;
+        }
+        res << "]";
+        return res.str();
+    }
+    std::string operator()(const nodeup_&) const
+    {
+        return "..";
+    }
+    template <class T>
+    std::string operator()(const T& node) const
+    {
+        return node.m_name;
+    }
+};
+
+struct nodeToSchemaString : public boost::static_visitor<std::string> {
     std::string operator()(const nodeup_&) const
     {
         return "..";
