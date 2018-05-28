@@ -14,12 +14,12 @@
 #include <unordered_map>
 #include "ast.hpp"
 
-namespace schema {
-    struct container {
-    };
-    struct list {
-        std::set<std::string> m_keys;
-    };
+namespace yang {
+struct container {
+};
+struct list {
+    std::set<std::string> m_keys;
+};
 }
 
 struct nodeToString : public boost::static_visitor<std::string> {
@@ -34,7 +34,7 @@ struct nodeToString : public boost::static_visitor<std::string> {
     }
 };
 
-using NodeType = boost::variant<schema::container, schema::list>;
+using NodeType = boost::variant<yang::container, yang::list>;
 
 
 class InvalidNodeException : public std::invalid_argument {
@@ -43,15 +43,12 @@ public:
     ~InvalidNodeException() override;
 };
 
-/*! \class CTree
- *     \brief The class representing the tree, that the user traverses.
- *
- *         This class holds the current position in the tree and handles changing the position,
- *         including checking what nodes are available.
+/*! \class Schema
+ *     \brief The class representing the schema, that the user traverses.
  *         */
-class CTree {
+class Schema {
 public:
-    CTree();
+    Schema();
     bool nodeExists(const std::string& location, const std::string& name) const;
 
     bool isContainer(const path_& location, const std::string& name) const;

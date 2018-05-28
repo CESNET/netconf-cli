@@ -6,22 +6,22 @@
  *
 */
 #include <ostream>
-#include "CParser.hpp"
+#include "parser.hpp"
 
 TooManyArgumentsException::~TooManyArgumentsException() = default;
 
 InvalidCommandException::~InvalidCommandException() = default;
 
 
-CParser::CParser(const CTree& tree)
-    : m_tree(tree)
+Parser::Parser(const Schema& schema)
+    : m_schema(schema)
 {
 }
 
-cd_ CParser::parseCommand(const std::string& line, std::ostream& errorStream)
+cd_ Parser::parseCommand(const std::string& line, std::ostream& errorStream)
 {
     cd_ parsedCommand;
-    ParserContext ctx(m_tree, m_curDir);
+    ParserContext ctx(m_schema, m_curDir);
     auto it = line.begin();
 
     boost::spirit::x3::error_handler<std::string::const_iterator> errorHandler(it, line.end(), errorStream);
@@ -39,7 +39,7 @@ cd_ CParser::parseCommand(const std::string& line, std::ostream& errorStream)
     return parsedCommand;
 }
 
-void CParser::changeNode(const path_& name)
+void Parser::changeNode(const path_& name)
 {
     for (const auto& it : name.m_nodes) {
         if (it.type() == typeid(nodeup_))
@@ -49,7 +49,7 @@ void CParser::changeNode(const path_& name)
     }
 }
 
-std::string CParser::currentNode() const
+std::string Parser::currentNode() const
 {
     std::string res;
     for (const auto& it : m_curDir.m_nodes) {

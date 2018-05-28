@@ -21,14 +21,14 @@
 namespace x3 = boost::spirit::x3;
 namespace ascii = boost::spirit::x3::ascii;
 
-using x3::alpha;
-using x3::alnum;
-using x3::lit;
-using x3::char_;
-using x3::_attr;
-using x3::lexeme;
-using x3::expect;
 using ascii::space;
+using x3::_attr;
+using x3::alnum;
+using x3::alpha;
+using x3::char_;
+using x3::expect;
+using x3::lexeme;
+using x3::lit;
 using boost::fusion::operator<<;
 
 
@@ -41,7 +41,7 @@ struct parser_context_tag;
 struct nodeup_ {
     bool operator==(const nodeup_&) const
     {
-       return true;
+        return true;
     }
 };
 

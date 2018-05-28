@@ -40,5 +40,3 @@ bool cd_::operator==(const cd_& b) const
 {
     return this->m_path == b.m_path;
 }
-
-

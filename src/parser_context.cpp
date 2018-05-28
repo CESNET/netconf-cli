@@ -7,8 +7,8 @@
 */
 
 #include "parser_context.hpp"
-ParserContext::ParserContext(const CTree& tree, const path_ curDir)
-        : m_tree(tree)
+ParserContext::ParserContext(const Schema& schema, const path_ curDir)
+    : m_schema(schema)
 {
     m_curPath = curDir;
 }

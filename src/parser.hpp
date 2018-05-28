@@ -12,12 +12,12 @@
 namespace x3 = boost::spirit::x3;
 namespace ascii = boost::spirit::x3::ascii;
 using Cmd = std::vector<std::string>;
-using x3::alpha;
-using x3::lit;
-using x3::char_;
-using x3::_attr;
-using x3::lexeme;
 using ascii::space;
+using x3::_attr;
+using x3::alpha;
+using x3::char_;
+using x3::lexeme;
+using x3::lit;
 
 class InvalidCommandException : public std::invalid_argument {
 public:
@@ -32,14 +32,14 @@ public:
 };
 
 
-class CParser {
+class Parser {
 public:
-    CParser(const CTree& tree);
+    Parser(const Schema& schema);
     cd_ parseCommand(const std::string& line, std::ostream& errorStream);
     void changeNode(const path_& name);
     std::string currentNode() const;
 
 private:
-    const CTree& m_tree;
+    const Schema& m_schema;
     path_ m_curDir;
 };

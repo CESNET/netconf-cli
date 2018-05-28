@@ -7,23 +7,23 @@
 */
 
 #include "trompeloeil_catch.h"
-#include "CParser.hpp"
-#include "CTree.hpp"
 #include "ast.hpp"
+#include "parser.hpp"
+#include "schema.hpp"
 
 TEST_CASE("cd")
 {
-    CTree tree;
-    tree.addContainer("", "a");
-    tree.addContainer("", "b");
-    tree.addContainer("a", "a2");
-    tree.addContainer("b", "b2");
-    tree.addContainer("a/a2", "a3");
-    tree.addContainer("b/b2", "b3");
-    tree.addList("", "list", {"number"});
-    tree.addContainer("list", "contInList");
-    tree.addList("", "twoKeyList", {"number", "name"});
-    CParser parser(tree);
+    Schema schema;
+    schema.addContainer("", "a");
+    schema.addContainer("", "b");
+    schema.addContainer("a", "a2");
+    schema.addContainer("b", "b2");
+    schema.addContainer("a/a2", "a3");
+    schema.addContainer("b/b2", "b3");
+    schema.addList("", "list", {"number"});
+    schema.addContainer("list", "contInList");
+    schema.addList("", "twoKeyList", {"number", "name"});
+    Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
 
@@ -58,7 +58,6 @@ TEST_CASE("cd")
                 expected.m_path.m_nodes.push_back(container_("b"));
                 expected.m_path.m_nodes.push_back(container_("b2"));
             }
-
         }
 
         SECTION("list elements")
@@ -67,8 +66,7 @@ TEST_CASE("cd")
             {
                 input = "cd list[number=1]";
                 auto keys = std::map<std::string, std::string>{
-                        {"number", "1"}
-                };
+                    {"number", "1"}};
                 expected.m_path.m_nodes.push_back(listElement_("list", keys));
             }
 
@@ -76,7 +74,7 @@ TEST_CASE("cd")
             {
                 input = "cd list[number=1]/contInList";
                 auto keys = std::map<std::string, std::string>{
-                        {"number", "1"}};
+                    {"number", "1"}};
                 expected.m_path.m_nodes.push_back(listElement_("list", keys));
                 expected.m_path.m_nodes.push_back(container_("contInList"));
             }
@@ -85,11 +83,10 @@ TEST_CASE("cd")
             {
                 input = "cd twoKeyList[number=4 name=abcd]";
                 auto keys = std::map<std::string, std::string>{
-                        {"number", "4"},
-                        {"name", "abcd"}};
+                    {"number", "4"},
+                    {"name", "abcd"}};
                 expected.m_path.m_nodes.push_back(listElement_("twoKeyList", keys));
             }
-
         }
 
         SECTION("whitespace handling")
@@ -144,7 +141,7 @@ TEST_CASE("cd")
         {
             SECTION("cd a garbage")
             {
-               input = "cd a garbage";
+                input = "cd a garbage";
             }
             SECTION("cd a/a2 garbage")
             {
