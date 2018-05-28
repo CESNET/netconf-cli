@@ -12,12 +12,23 @@
 
 InvalidNodeException::~InvalidNodeException() = default;
 
+struct nodeToSchemaString : public boost::static_visitor<std::string> {
+    std::string operator()(const nodeup_&) const
+    {
+        return "..";
+    }
+    template <class T>
+    std::string operator()(const T& node) const
+    {
+        return node.m_name;
+    }
+};
 
 std::string pathToString(const path_& path)
 {
     std::string res;
     for (const auto it : path.m_nodes)
-        res = joinPaths(res, boost::apply_visitor(nodeToString(), it));
+        res = joinPaths(res, boost::apply_visitor(nodeToSchemaString(), it));
     return res;
 }
 
