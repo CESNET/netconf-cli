@@ -5,6 +5,7 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#include <experimental/iterator>
 #include <ostream>
 #include "parser.hpp"
 
@@ -17,6 +18,30 @@ Parser::Parser(const Schema& schema)
     : m_schema(schema)
 {
 }
+
+struct nodeToDataString : public boost::static_visitor<std::string> {
+    std::string operator()(const listElement_& node) const
+    {
+        std::ostringstream res;
+        std::experimental::ostream_joiner joiner = std::experimental::make_ostream_joiner(res, ' ');
+        res << node.m_name + "[";
+        for (auto it : node.m_keys)
+        {
+            joiner = it.first + "=" + it.second;
+        }
+        res << "]";
+        return res.str();
+    }
+    std::string operator()(const nodeup_&) const
+    {
+        return "..";
+    }
+    template <class T>
+    std::string operator()(const T& node) const
+    {
+        return node.m_name;
+    }
+};
 
 cd_ Parser::parseCommand(const std::string& line, std::ostream& errorStream)
 {
@@ -53,7 +78,7 @@ std::string Parser::currentNode() const
 {
     std::string res;
     for (const auto& it : m_curDir.m_nodes) {
-        res = joinPaths(res, boost::apply_visitor(nodeToString(), it));
+        res = joinPaths(res, boost::apply_visitor(nodeToDataString(), it));
     }
 
     return res;
