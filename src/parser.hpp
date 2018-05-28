@@ -19,6 +19,7 @@ using x3::char_;
 using x3::lexeme;
 using x3::lit;
 
+
 class InvalidCommandException : public std::invalid_argument {
 public:
     using std::invalid_argument::invalid_argument;
@@ -35,7 +36,7 @@ public:
 class Parser {
 public:
     Parser(const Schema& schema);
-    cd_ parseCommand(const std::string& line, std::ostream& errorStream);
+    command_ parseCommand(const std::string& line, std::ostream& errorStream);
     void changeNode(const path_& name);
     std::string currentNode() const;
 

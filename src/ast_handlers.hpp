@@ -156,3 +156,57 @@ struct cd_class {
         return x3::error_handler_result::fail;
     }
 };
+
+struct create_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& schema = parserContext.m_schema;
+        try
+        {
+            container_ cont = boost::get<container_>(ast.m_path.m_nodes.back());
+            path_ location{std::vector(parserContext.m_curPath.m_nodes.begin(),
+                                       parserContext.m_curPath.m_nodes.end()-1)};
+
+            if (!schema.isPresenceContainer(location, cont.m_name)) {
+                _pass(context) = false;
+                return;
+            }
+        } catch (boost::bad_visit&) {
+            _pass(context) = false;
+            return;
+        }
+    }
+
+    template <typename Iterator, typename Exception, typename Context>
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
+        std::string message = "This isn't a list or a container or nothing.";
+        if (parserContext.m_errorHandled) // someone already handled our error
+            return x3::error_handler_result::fail;
+
+        parserContext.m_errorHandled = true;
+        error_handler(x.where(), message);
+        return x3::error_handler_result::fail;
+    }
+};
+
+struct command_class {
+    template <typename Iterator, typename Exception, typename Context>
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
+        std::string message = "This isn't a list or a container or nothing.";
+        if (parserContext.m_errorHandled) // someone already handled our error
+            return x3::error_handler_result::fail;
+
+        parserContext.m_errorHandled = true;
+        error_handler(x.where(), message);
+        return x3::error_handler_result::fail;
+    }
+
+};

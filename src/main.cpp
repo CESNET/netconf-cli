@@ -36,7 +36,6 @@ using x3::char_;
 using x3::lexeme;
 using x3::lit;
 
-using command = boost::variant<cd_>;
 
 int main(int argc, char* argv[])
 {
@@ -67,8 +66,8 @@ int main(int argc, char* argv[])
             break;
 
         try {
-            command cmd = parser.parseCommand(input, std::cout);
-            boost::apply_visitor(Interpreter(parser), cmd);
+            command_ cmd = parser.parseCommand(input, std::cout);
+            boost::apply_visitor(Interpreter(parser, schema), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         }

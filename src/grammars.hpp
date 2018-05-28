@@ -21,6 +21,8 @@ x3::rule<nodeup_class, nodeup_> const nodeup = "nodeup";
 x3::rule<container_class, container_> const container = "container";
 x3::rule<path_class, path_> const path = "path";
 x3::rule<cd_class, cd_> const cd = "cd";
+x3::rule<create_class, create_> const create = "create";
+x3::rule<command_class, command_> const command = "command";
 
 
 auto const keyValue_def =
@@ -53,6 +55,12 @@ auto const path_def =
 auto const cd_def =
         lit("cd") > x3::omit[x3::no_skip[space]] > path >> x3::eoi;
 
+auto const create_def =
+        lit("create") > x3::omit[x3::no_skip[space]] > path >> x3::eoi;
+
+auto const command_def =
+        cd | create;
+
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(identifier)
 BOOST_SPIRIT_DEFINE(listPrefix)
@@ -62,3 +70,5 @@ BOOST_SPIRIT_DEFINE(nodeup)
 BOOST_SPIRIT_DEFINE(container)
 BOOST_SPIRIT_DEFINE(path)
 BOOST_SPIRIT_DEFINE(cd)
+BOOST_SPIRIT_DEFINE(create)
+BOOST_SPIRIT_DEFINE(command)
