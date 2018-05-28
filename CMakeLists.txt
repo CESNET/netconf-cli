@@ -60,6 +60,7 @@ set(parser_SRCS
     src/ast.cpp
     src/utils.cpp
     src/parser_context.cpp
+    src/interpreter.cpp
     )
 
 add_library(parser STATIC ${parser_SRCS})
