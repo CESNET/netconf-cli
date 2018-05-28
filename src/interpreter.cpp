@@ -6,6 +6,7 @@
  *
 */
 
+#include <iostream>
 #include "interpreter.hpp"
 
 void Interpreter::operator()(const cd_& cd) const
@@ -13,7 +14,17 @@ void Interpreter::operator()(const cd_& cd) const
     m_parser.changeNode(cd.m_path);
 }
 
-Interpreter::Interpreter(Parser& parser)
+void Interpreter::operator()(const create_& create) const
+{
+    std::cout << "Presence container " << boost::get<container_>(create.m_path.m_nodes.back()).m_name << " created." << std::endl;
+}
+
+void Interpreter::operator()(const delete_& delet) const
+{
+    std::cout << "Presence container " << boost::get<container_>(delet.m_path.m_nodes.back()).m_name << " deleted." << std::endl;
+}
+
+Interpreter::Interpreter(Parser& parser, Schema&)
     : m_parser(parser)
 {
 }
