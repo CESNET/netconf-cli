@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
     Parser parser(schema);
 
     while (true) {
-        std::cout << parser.currentNode() << ">";
+        std::cout << parser.currentNode() << "> ";
         std::string input;
         std::getline(std::cin, input);
         if (std::cin.eof())
