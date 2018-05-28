@@ -6,10 +6,10 @@
  *
 */
 
-#include "CTree.hpp"
+#include "schema.hpp"
 struct ParserContext {
-    ParserContext(const CTree& tree, const path_ curDir);
-    const CTree& m_tree;
+    ParserContext(const Schema& schema, const path_ curDir);
+    const Schema& m_schema;
     path_ m_curPath;
     std::string m_errorMsg;
     std::string m_tmpListName;
