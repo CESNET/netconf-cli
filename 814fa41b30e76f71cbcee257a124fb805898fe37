@@ -66,6 +66,27 @@
       "revId": "814fa41b30e76f71cbcee257a124fb805898fe37",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6fb122c_4344f3af",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-05-28T14:22:18Z",
+      "side": 1,
+      "message": "v nejnovějším commitu vytvářim dalšího visitora a oba jsou teď v .cpp",
+      "parentUuid": "b4e38342_21f7ccf8",
+      "revId": "814fa41b30e76f71cbcee257a124fb805898fe37",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
