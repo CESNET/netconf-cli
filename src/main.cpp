@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include "NETCONF_CLI_VERSION.h"
+#include "interpreter.hpp"
 #include "parser.hpp"
 #include "schema.hpp"
 
@@ -35,10 +36,7 @@ using x3::char_;
 using x3::lexeme;
 using x3::lit;
 
-void interpret(cd_ command, Parser& parser)
-{
-    parser.changeNode(command.m_path);
-}
+using command = boost::variant<cd_>;
 
 int main(int argc, char* argv[])
 {
@@ -69,8 +67,8 @@ int main(int argc, char* argv[])
             break;
 
         try {
-            cd_ command = parser.parseCommand(input, std::cout);
-            interpret(command, parser);
+            command cmd = parser.parseCommand(input, std::cout);
+            boost::apply_visitor(Interpreter(parser), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         }
