@@ -22,17 +22,7 @@ struct list {
 };
 }
 
-struct nodeToString : public boost::static_visitor<std::string> {
-    std::string operator()(const nodeup_&) const
-    {
-        return "..";
-    }
-    template <class T>
-    std::string operator()(const T& node) const
-    {
-        return node.m_name;
-    }
-};
+
 
 using NodeType = boost::variant<yang::container, yang::list>;
 
