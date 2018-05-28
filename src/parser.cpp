@@ -41,9 +41,9 @@ struct nodeToDataString : public boost::static_visitor<std::string> {
     }
 };
 
-cd_ Parser::parseCommand(const std::string& line, std::ostream& errorStream)
+command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream)
 {
-    cd_ parsedCommand;
+    command_ parsedCommand;
     ParserContext ctx(m_schema, m_curDir);
     auto it = line.begin();
 
@@ -51,7 +51,7 @@ cd_ Parser::parseCommand(const std::string& line, std::ostream& errorStream)
 
     auto grammar =
             x3::with<parser_context_tag>(ctx)[
-            x3::with<x3::error_handler_tag>(std::ref(errorHandler))[cd]
+            x3::with<x3::error_handler_tag>(std::ref(errorHandler))[command]
     ];
     bool result = x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
 
@@ -81,4 +81,3 @@ std::string Parser::currentNode() const
 
     return res;
 }
-
