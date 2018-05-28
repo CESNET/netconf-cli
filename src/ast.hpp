@@ -81,7 +81,19 @@ struct cd_ : x3::position_tagged {
     path_ m_path;
 };
 
+struct create_ : x3::position_tagged {
+    bool operator==(const create_& b) const;
+    path_ m_path;
+};
+
+struct delete_ : x3::position_tagged {
+    bool operator==(const create_& b) const;
+    path_ m_path;
+};
+
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
 BOOST_FUSION_ADAPT_STRUCT(path_, m_nodes)
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
+BOOST_FUSION_ADAPT_STRUCT(create_, m_path)
+BOOST_FUSION_ADAPT_STRUCT(delete_, m_path)

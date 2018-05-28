@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 
         try {
             command cmd = parser.parseCommand(input, std::cout);
-            boost::apply_visitor(Interpreter(parser), cmd);
+            boost::apply_visitor(Interpreter(parser, schema), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         }
