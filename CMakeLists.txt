@@ -109,6 +109,7 @@ if(BUILD_TESTING)
         target_link_libraries(test_${fname} TestCatchIntegration)
     endmacro()
     cli_test(cd)
+    cli_test(presence_containers)
 
 endif()
 

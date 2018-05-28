@@ -6,7 +6,6 @@
  *
 */
 
-#include <iostream>
 #include "schema.hpp"
 #include "utils.hpp"
 
@@ -60,9 +59,9 @@ bool Schema::isContainer(const path_& location, const std::string& name) const
     return children(locationString).at(name).type() == typeid(yang::container);
 }
 
-void Schema::addContainer(const std::string& location, const std::string& name)
+void Schema::addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence)
 {
-    m_nodes.at(location).emplace(name, yang::container{});
+    m_nodes.at(location).emplace(name, yang::container{isPresence});
 
     //create a new set of children for the new node
     std::string key = joinPaths(location, name);
@@ -107,4 +106,12 @@ void Schema::addList(const std::string& location, const std::string& name, const
     m_nodes.at(location).emplace(name, yang::list{keys});
 
     m_nodes.emplace(name, std::unordered_map<std::string, NodeType>());
+}
+
+bool Schema::isPresenceContainer(const path_& location, const std::string& name) const
+{
+    if (!isContainer(location, name))
+        return false;
+    std::string locationString = pathToString(location);
+    return boost::get<yang::container>(children(locationString).at(name)).m_presence == yang::ContainerTraits::Presence;
 }

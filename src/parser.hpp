@@ -9,15 +9,7 @@
 #pragma once
 #include <boost/spirit/home/x3.hpp>
 #include "grammars.hpp"
-namespace x3 = boost::spirit::x3;
-namespace ascii = boost::spirit::x3::ascii;
-using Cmd = std::vector<std::string>;
-using ascii::space;
-using x3::_attr;
-using x3::alpha;
-using x3::char_;
-using x3::lexeme;
-using x3::lit;
+
 
 class InvalidCommandException : public std::invalid_argument {
 public:
@@ -35,7 +27,7 @@ public:
 class Parser {
 public:
     Parser(const Schema& schema);
-    cd_ parseCommand(const std::string& line, std::ostream& errorStream);
+    command_ parseCommand(const std::string& line, std::ostream& errorStream);
     void changeNode(const path_& name);
     std::string currentNode() const;
 
