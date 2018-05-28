@@ -13,7 +13,17 @@ void Interpreter::operator()(const cd_& cd) const
     m_parser.changeNode(cd.m_path);
 }
 
-Interpreter::Interpreter(Parser& parser)
+void Interpreter::operator()(const create_&) const
+{
+
+}
+
+void Interpreter::operator()(const delete_&) const
+{
+
+}
+
+Interpreter::Interpreter(Parser& parser, Schema&)
     : m_parser(parser)
 {
 }
