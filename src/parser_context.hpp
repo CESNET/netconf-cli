@@ -8,7 +8,7 @@
 
 #include "CTree.hpp"
 struct ParserContext {
-    ParserContext(const CTree& tree);
+    ParserContext(const CTree& tree, const std::string curDir);
     const CTree& m_tree;
     std::string m_curPath;
     std::string m_errorMsg;

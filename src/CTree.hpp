@@ -49,12 +49,9 @@ public:
     bool listHasKey(const std::string& location, const std::string& name, const std::string& key) const;
     bool isList(const std::string& location, const std::string& name) const;
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
-    void changeNode(const path_& name);
-    std::string currentNode() const;
 
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
 
     std::unordered_map<std::string, std::unordered_map<std::string, NodeType>> m_nodes;
-    std::string m_curDir;
 };

@@ -36,7 +36,10 @@ class CParser {
 public:
     CParser(const CTree& tree);
     cd_ parseCommand(const std::string& line, std::ostream& errorStream);
+    void changeNode(const path_& name);
+    std::string currentNode() const;
 
 private:
     const CTree& m_tree;
+    std::string m_curDir;
 };

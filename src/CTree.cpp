@@ -12,17 +12,6 @@
 
 InvalidNodeException::~InvalidNodeException() = default;
 
-struct nodeToString : public boost::static_visitor<std::string> {
-    std::string operator()(const nodeup_&) const
-    {
-        return "..";
-    }
-    template <class T>
-    std::string operator()(const T& node) const
-    {
-        return node.m_name;
-    }
-};
 
 
 CTree::CTree()
@@ -98,23 +87,3 @@ void CTree::addList(const std::string& location, const std::string& name, const 
     m_nodes.emplace(name, std::unordered_map<std::string, NodeType>());
 }
 
-void CTree::changeNode(const path_& name)
-{
-    if (name.m_nodes.empty()) {
-        m_curDir = "";
-        return;
-    }
-    for (const auto& it : name.m_nodes) {
-        const std::string node = boost::apply_visitor(nodeToString(), it);
-        if (node == "..") {
-            m_curDir = stripLastNodeFromPath(m_curDir);
-        } else {
-            m_curDir = joinPaths(m_curDir, boost::apply_visitor(nodeToString(), it));
-        }
-
-    }
-}
-std::string CTree::currentNode() const
-{
-    return m_curDir;
-}

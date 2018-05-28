@@ -35,7 +35,7 @@ using x3::_attr;
 using x3::lexeme;
 using ascii::space;
 
-void interpret(cd_ command, CTree& tree)
+void interpret(cd_ command, CParser& tree)
 {
     tree.changeNode(command.m_path);
 }
@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
     CParser parser(tree);
 
     while (true) {
-        std::cout << tree.currentNode() << ">";
+        std::cout << parser.currentNode() << ">";
         std::string input;
         std::getline(std::cin, input);
         if (std::cin.eof())
@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
 
         try {
             cd_ command = parser.parseCommand(input, std::cout);
-            interpret(command, tree);
+            interpret(command, parser);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         }
