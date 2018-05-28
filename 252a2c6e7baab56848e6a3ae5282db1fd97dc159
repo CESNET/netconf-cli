@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c8929431_be379f8e",
+        "filename": "src/CTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-28T09:38:48Z",
+      "side": 1,
+      "message": "nit: tohle by bylo hezci jako `const auto\u0026`\n\n...ale proc se ten visitor vola dvakrat?",
+      "range": {
+        "startLine": 115,
+        "startChar": 8,
+        "endLine": 115,
+        "endChar": 25
+      },
+      "revId": "252a2c6e7baab56848e6a3ae5282db1fd97dc159",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
