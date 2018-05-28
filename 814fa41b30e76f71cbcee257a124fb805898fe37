@@ -45,6 +45,27 @@
       "revId": "814fa41b30e76f71cbcee257a124fb805898fe37",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4e38342_21f7ccf8",
+        "filename": "src/CTree.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-28T14:06:47Z",
+      "side": 1,
+      "message": "Co koukam na dalsi commity, prijde mi to jako implementacni detail patrici do schema.cpp. Pouziva se to jenom pro lookup ve tvaru pro schema.",
+      "parentUuid": "370f8d26_a7cc8281",
+      "revId": "814fa41b30e76f71cbcee257a124fb805898fe37",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
