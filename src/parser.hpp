@@ -32,14 +32,14 @@ public:
 };
 
 
-class CParser {
+class Parser {
 public:
-    CParser(const CTree& tree);
+    Parser(const Schema& schema);
     cd_ parseCommand(const std::string& line, std::ostream& errorStream);
     void changeNode(const path_& name);
     std::string currentNode() const;
 
 private:
-    const CTree& m_tree;
+    const Schema& m_schema;
     path_ m_curDir;
 };

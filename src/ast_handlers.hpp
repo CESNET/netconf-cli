@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "CTree.hpp"
+#include "Schema.hpp"
 #include "parser_context.hpp"
 
 struct keyValue_class {
@@ -16,12 +16,12 @@ struct keyValue_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        const CTree& tree = parserContext.m_tree;
+        const Schema& schema = parserContext.m_schema;
 
         if (parserContext.m_tmpListKeys.find(ast.first) != parserContext.m_tmpListKeys.end()) {
             _pass(context) = false;
             parserContext.m_errorMsg = "Key \"" + ast.first + "\" was entered more than once.";
-        } else if (tree.listHasKey(parserContext.m_curPath, parserContext.m_tmpListName, ast.first)) {
+        } else if (schema.listHasKey(parserContext.m_curPath, parserContext.m_tmpListName, ast.first)) {
             parserContext.m_tmpListKeys.insert(ast.first);
         } else {
             _pass(context) = false;
@@ -36,9 +36,9 @@ struct listPrefix_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        const CTree& tree = parserContext.m_tree;
+        const Schema& schema = parserContext.m_schema;
 
-        if (tree.isList(parserContext.m_curPath, ast)) {
+        if (schema.isList(parserContext.m_curPath, ast)) {
             parserContext.m_tmpListName = ast;
         } else {
             _pass(context) = false;
@@ -51,9 +51,9 @@ struct listSuffix_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        const CTree& tree = parserContext.m_tree;
+        const Schema& schema = parserContext.m_schema;
 
-        const auto& keysNeeded = tree.listKeys(parserContext.m_curPath, parserContext.m_tmpListName);
+        const auto& keysNeeded = schema.listKeys(parserContext.m_curPath, parserContext.m_tmpListName);
         std::set<std::string> keysSupplied;
         for (const auto& it : ast)
             keysSupplied.insert(it.first);
@@ -119,9 +119,9 @@ struct container_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        const auto& tree = parserContext.m_tree;
+        const auto& schema = parserContext.m_schema;
 
-        if (tree.isContainer(parserContext.m_curPath, ast.m_name)) {
+        if (schema.isContainer(parserContext.m_curPath, ast.m_name)) {
             parserContext.m_curPath.m_nodes.push_back(ast);
         } else {
             _pass(context) = false;
