@@ -1,0 +1,150 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ec1d20cb_7ed91e26",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-30T17:25:52Z",
+      "side": 1,
+      "message": "Tady (?) mi chybi nejaka lidsky citelna chybova hlaska, treba o tom, ze na urovni tam a tam to neni presence container.\n\nPodobne i dal, kdyz to vubec neni container.",
+      "revId": "4ac46c9f2586783865094f48411d3906699a0a38",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c82db896_01c5958b",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-30T17:25:52Z",
+      "side": 1,
+      "message": "Zda se mi to jako skoro stejna implementace, jako u create. Zkus to, prosim, udelat tak, aby ten kod existoval jenom jednou (free standing funkce, napr.).",
+      "revId": "4ac46c9f2586783865094f48411d3906699a0a38",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6cb219e_14f3acfd",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-30T17:25:52Z",
+      "side": 1,
+      "message": "aspon nejaky vystup na stdout, prosim",
+      "revId": "4ac46c9f2586783865094f48411d3906699a0a38",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "476bcba6_dfb82a5c",
+        "filename": "src/schema.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-30T17:25:52Z",
+      "side": 1,
+      "message": "Proc assert? Takhle to znamena, ze kod musi nejdriv zavolat isContainer() a az pak isPresenceContainer(). Pokud by uzivatel tehle tridy moh volat rovnou isPresenceContainer(\"garbage\", \"fuj\"), byl by kod jednodussi, a tady by namisto assertu byl obycejny if.",
+      "revId": "4ac46c9f2586783865094f48411d3906699a0a38",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "257e2c65_fa9c1554",
+        "filename": "src/schema.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-30T17:25:52Z",
+      "side": 1,
+      "message": "Tady by se mi vic libilo, aby to nebyl boolean, protoze [1]. Tenhle patchset jsem zacal cist od testu, tam je to krasne videt:\n\n schema.addContainer(\"list\", \"contInList\", true);\n\nPokud by to bylo treba tohle:\n\n schema.addContainer(\"list\", \"contInList\", Container::Presence):\n\ntak se v tom hned vyznam.\n\n[1] https://ariya.io/2011/08/hall-of-api-shame-boolean-trap",
+      "range": {
+        "startLine": 45,
+        "startChar": 76,
+        "endLine": 45,
+        "endChar": 80
+      },
+      "revId": "4ac46c9f2586783865094f48411d3906699a0a38",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aaac9efa_91844496",
+        "filename": "tests/create.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-30T17:25:52Z",
+      "side": 1,
+      "message": "tady bych ocenil jeste videt, co se stane, kdyz je tech presence containeru vic v sobe (treba /a/b/c, kde je /a i /a/b/c presence cont.)\n\nTo same idealne i pro delete.",
+      "revId": "4ac46c9f2586783865094f48411d3906699a0a38",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e3a00fc_1906d489",
+        "filename": "tests/delete.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-05-30T17:25:52Z",
+      "side": 1,
+      "message": "Tohle je hodne podobne testu pro \"create\". Neslo by to udelat bez duplikace? Treba paralelne v kazdem testu zavolat oboji (ma to nakonec stejnou syntaxi).",
+      "revId": "4ac46c9f2586783865094f48411d3906699a0a38",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
