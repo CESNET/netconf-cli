@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "52e3eb05_908d5ae5",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-01T14:49:21Z",
+      "side": 1,
+      "message": "Mne tohle neprijde jako hezke pouziti dedicnosti, tenhle mixin, ale OK, no.",
+      "revId": "b372491ce37d0ae85de50cd78564a637b4921641",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dd4495e8_647d210f",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-01T14:49:21Z",
+      "side": 1,
+      "message": "tohle je take zduplikovane",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 5
+      },
+      "revId": "b372491ce37d0ae85de50cd78564a637b4921641",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "180d57fb_abe0311a",
+        "filename": "src/parser.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-01T14:49:21Z",
+      "side": 1,
+      "message": "nit: bordel",
+      "revId": "b372491ce37d0ae85de50cd78564a637b4921641",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bb41301_2b634a36",
+        "filename": "tests/presence_containers.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-01T14:49:21Z",
+      "side": 1,
+      "message": "nit: tohle by podle me bylo citelnejsi, pokud bys nejprve udelal vsecko ke create a pak vsecko k delete.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 41
+      },
+      "revId": "b372491ce37d0ae85de50cd78564a637b4921641",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
