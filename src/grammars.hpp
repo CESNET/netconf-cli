@@ -19,8 +19,11 @@ x3::rule<listSuffix_class, std::vector<keyValue_>> const listSuffix = "listSuffi
 x3::rule<listElement_class, listElement_> const listElement = "listElement";
 x3::rule<nodeup_class, nodeup_> const nodeup = "nodeup";
 x3::rule<container_class, container_> const container = "container";
+x3::rule<leaf_class, leaf_> const leaf = "leaf";
 x3::rule<path_class, path_> const path = "path";
+x3::rule<data_string_class, std::string> const data_string = "data_string";
 x3::rule<cd_class, cd_> const cd = "cd";
+x3::rule<set_class, set_> const set = "set";
 x3::rule<create_class, create_> const create = "create";
 x3::rule<delete_class, delete_> const delete_rule = "delete_rule";
 x3::rule<command_class, command_> const command = "command";
@@ -50,20 +53,32 @@ auto const nodeup_def =
 auto const container_def =
         identifier;
 
+auto const leaf_def =
+        identifier;
+
 auto const path_def =
-        (container | listElement | nodeup) % '/';
+        (container | listElement | nodeup | leaf) % '/';
+
+auto const data_string_def =
+        lexeme[+char_];
+
+auto const space_separator =
+        x3::omit[x3::no_skip[space]];
 
 auto const cd_def =
-        lit("cd") > x3::omit[x3::no_skip[space]] > path >> x3::eoi;
+        lit("cd") > space_separator > path >> x3::eoi;
 
 auto const create_def =
-        lit("create") > x3::omit[x3::no_skip[space]] > path >> x3::eoi;
+        lit("create") > space_separator > path >> x3::eoi;
 
 auto const delete_rule_def =
-        lit("delete") > x3::omit[x3::no_skip[space]] > path >> x3::eoi;
+        lit("delete") > space_separator > path >> x3::eoi;
+
+auto const set_def =
+        lit("set") > space_separator > path > data_string >> x3::eoi;
 
 auto const command_def =
-        cd | create | delete_rule;
+        cd | create | delete_rule | set;
 
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(identifier)
@@ -72,7 +87,10 @@ BOOST_SPIRIT_DEFINE(listSuffix)
 BOOST_SPIRIT_DEFINE(listElement)
 BOOST_SPIRIT_DEFINE(nodeup)
 BOOST_SPIRIT_DEFINE(container)
+BOOST_SPIRIT_DEFINE(leaf)
 BOOST_SPIRIT_DEFINE(path)
+BOOST_SPIRIT_DEFINE(data_string)
+BOOST_SPIRIT_DEFINE(set)
 BOOST_SPIRIT_DEFINE(cd)
 BOOST_SPIRIT_DEFINE(create)
 BOOST_SPIRIT_DEFINE(delete_rule)
