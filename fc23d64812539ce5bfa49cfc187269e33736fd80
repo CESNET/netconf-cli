@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "020d3393_ae4bc500",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-04T11:44:56Z",
+      "side": 1,
+      "message": "Tady bych cekal spis neco a la \"blablabla is not a presence container\"",
+      "revId": "fc23d64812539ce5bfa49cfc187269e33736fd80",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "275f0ced_cc6981bc",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-04T11:44:56Z",
+      "side": 1,
+      "message": "Je tohle spravna hlaska?",
+      "revId": "fc23d64812539ce5bfa49cfc187269e33736fd80",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fe3eff5_253b6bf4",
+        "filename": "tests/presence_containers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-04T11:44:56Z",
+      "side": 1,
+      "message": "Spis takhle:\n\n  path_ path;\n\nA v testech pak:\n\n  path \u003d {container_(\"a\"), container_(\"b\")};\n\nA pak si na konci votvorit create_ a delete_ na zaklade te v test cases vytvorene path_.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 31
+      },
+      "revId": "fc23d64812539ce5bfa49cfc187269e33736fd80",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61b584aa_2ed59786",
+        "filename": "tests/presence_containers.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-04T11:44:56Z",
+      "side": 1,
+      "message": "Ja bych byl liny a psal to jako:\n\n  REQUIRE_THROWS(parser.parseCommand(\"create \" + input, errorStream));\n  REQUIRE_THROWS(parser.parseCommand(\"delete \" + input, errorStream));",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 70
+      },
+      "revId": "fc23d64812539ce5bfa49cfc187269e33736fd80",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
