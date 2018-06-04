@@ -115,3 +115,17 @@ bool Schema::isPresenceContainer(const path_& location, const std::string& name)
     std::string locationString = pathToString(location);
     return boost::get<yang::container>(children(locationString).at(name)).m_presence == yang::ContainerTraits::Presence;
 }
+
+void Schema::addLeaf(const std::string& location, const std::string& name)
+{
+    m_nodes.at(location).emplace(name, yang::leaf{});
+}
+
+bool Schema::isLeaf(const path_& location, const std::string& name) const
+{
+    std::string locationString = pathToString(location);
+    if (!nodeExists(locationString, name))
+        return false;
+
+    return children(locationString).at(name).type() == typeid(yang::leaf);
+}
