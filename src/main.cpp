@@ -49,7 +49,9 @@ int main(int argc, char* argv[])
     Schema schema;
     schema.addContainer("", "a", yang::ContainerTraits::Presence);
     schema.addContainer("", "b");
+    schema.addLeaf("", "leaf");
     schema.addContainer("a", "a2");
+    schema.addLeaf("a", "leafa");
     schema.addContainer("b", "b2", yang::ContainerTraits::Presence);
     schema.addContainer("a/a2", "a3", yang::ContainerTraits::Presence);
     schema.addContainer("b/b2", "b3");

@@ -54,6 +54,15 @@ struct container_ {
     std::string m_name;
 };
 
+struct leaf_ {
+    leaf_() = default;
+    leaf_(const std::string& name);
+
+    bool operator==(const leaf_& b) const;
+
+    std::string m_name;
+};
+
 
 struct list_ {
     std::vector<std::string> m_keys;
@@ -72,7 +81,7 @@ struct listElement_ {
 
 struct path_ {
     bool operator==(const path_& b) const;
-    std::vector<boost::variant<container_, listElement_, nodeup_>> m_nodes;
+    std::vector<boost::variant<container_, listElement_, nodeup_, leaf_>> m_nodes;
 };
 
 
@@ -91,7 +100,13 @@ struct delete_ : x3::position_tagged {
     path_ m_path;
 };
 
-using command_ = boost::variant<cd_, create_, delete_>;
+struct set_ : x3::position_tagged {
+    bool operator==(const set_& b) const;
+    path_ m_path;
+    std::string m_data;
+};
+
+using command_ = boost::variant<cd_, create_, delete_, set_>;
 
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
@@ -99,3 +114,4 @@ BOOST_FUSION_ADAPT_STRUCT(path_, m_nodes)
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(create_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(delete_, m_path)
+BOOST_FUSION_ADAPT_STRUCT(set_, m_path, m_data)

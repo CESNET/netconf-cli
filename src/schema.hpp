@@ -25,10 +25,12 @@ struct container {
 struct list {
     std::set<std::string> m_keys;
 };
+struct leaf {
+};
 }
 
 
-using NodeType = boost::variant<yang::container, yang::list>;
+using NodeType = boost::variant<yang::container, yang::list, yang::leaf>;
 
 
 class InvalidNodeException : public std::invalid_argument {
@@ -52,6 +54,8 @@ public:
     bool isList(const path_& location, const std::string& name) const;
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     bool isPresenceContainer(const path_& location, const std::string& name) const;
+    void addLeaf(const std::string& location, const std::string& name);
+    bool isLeaf(const path_& location, const std::string& name) const;
 
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
