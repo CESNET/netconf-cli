@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a59a7eb_a16cf315",
+        "filename": "tests/presence_containers.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-04T14:21:42Z",
+      "side": 1,
+      "message": "proc ty mezery?",
+      "revId": "c00e1b933fd1fcf70ac2cc28d9965af44334d779",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66316a12_8787c039",
+        "filename": "tests/presence_containers.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-04T14:21:42Z",
+      "side": 1,
+      "message": "ted je to podle me takovy kockopes -- napis to, prosim, tak, ze nejprve bude *vsechno* pro create a pak *vsechno* pro delete, ne takhle napul prekryvajicne se",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 42
+      },
+      "revId": "c00e1b933fd1fcf70ac2cc28d9965af44334d779",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
