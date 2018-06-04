@@ -98,7 +98,6 @@ struct listElement_class {
     }
 };
 
-
 struct nodeup_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const& context)
@@ -128,11 +127,43 @@ struct container_class {
     }
 };
 
+struct leaf_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& schema = parserContext.m_schema;
+
+        if (schema.isLeaf(parserContext.m_curPath, ast.m_name)) {
+            parserContext.m_curPath.m_nodes.push_back(ast);
+        } else {
+            _pass(context) = false;
+        }
+    }
+};
+
 struct path_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const&)
     {
     }
+
+    template <typename Iterator, typename Exception, typename Context>
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
+        std::string message = "invalid path.";
+        if (parserContext.m_errorHandled) // someone already handled our error
+            return x3::error_handler_result::fail;
+
+        parserContext.m_errorHandled = true;
+        error_handler(x.where(), message);
+        return x3::error_handler_result::fail;
+    }
+};
+
+struct data_string_class {
 };
 
 struct cd_class {
@@ -196,6 +227,33 @@ struct create_class : public presenceContainerPathHandler {
 };
 
 struct delete_class : public presenceContainerPathHandler {
+};
+
+struct set_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        try {
+            auto leaf = boost::get<leaf_>(ast.m_path.m_nodes.back());
+        } catch (boost::bad_get&) {
+            _pass(context) = false;
+            return;
+        }
+    }
+
+    template <typename Iterator, typename Exception, typename Context>
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
+        std::string message = "This isn't a path to leaf.";
+        if (parserContext.m_errorHandled) // someone already handled our error
+            return x3::error_handler_result::fail;
+
+        parserContext.m_errorHandled = true;
+        error_handler(x.where(), message);
+        return x3::error_handler_result::fail;
+    }
 };
 
 struct command_class {

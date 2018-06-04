@@ -9,6 +9,11 @@
 #include <iostream>
 #include "interpreter.hpp"
 
+void Interpreter::operator()(const set_& set) const
+{
+    std::cout << "Setting " << boost::get<leaf_>(set.m_path.m_nodes.back()).m_name << " to " << set.m_data << std::endl;
+}
+
 void Interpreter::operator()(const cd_& cd) const
 {
     m_parser.changeNode(cd.m_path);

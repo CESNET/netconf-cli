@@ -110,6 +110,7 @@ if(BUILD_TESTING)
     endmacro()
     cli_test(cd)
     cli_test(presence_containers)
+    cli_test(leaf_editing)
 
 endif()
 
