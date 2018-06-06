@@ -7,7 +7,7 @@
 */
 
 #include "trompeloeil_catch.h"
-#include "ast.hpp"
+#include "ast_commands.hpp"
 #include "parser.hpp"
 #include "schema.hpp"
 

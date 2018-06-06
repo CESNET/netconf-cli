@@ -11,26 +11,6 @@
 
 InvalidNodeException::~InvalidNodeException() = default;
 
-struct nodeToSchemaString : public boost::static_visitor<std::string> {
-    std::string operator()(const nodeup_&) const
-    {
-        return "..";
-    }
-    template <class T>
-    std::string operator()(const T& node) const
-    {
-        return node.m_name;
-    }
-};
-
-std::string pathToString(const path_& path)
-{
-    std::string res;
-    for (const auto it : path.m_nodes)
-        res = joinPaths(res, boost::apply_visitor(nodeToSchemaString(), it));
-    return res;
-}
-
 Schema::Schema()
 {
     m_nodes.emplace("", std::unordered_map<std::string, NodeType>());
@@ -52,7 +32,7 @@ bool Schema::nodeExists(const std::string& location, const std::string& name) co
 
 bool Schema::isContainer(const path_& location, const std::string& name) const
 {
-    std::string locationString = pathToString(location);
+    std::string locationString = pathToSchemaString(location);
     if (!nodeExists(locationString, name))
         return false;
 
@@ -71,7 +51,7 @@ void Schema::addContainer(const std::string& location, const std::string& name, 
 
 bool Schema::listHasKey(const path_& location, const std::string& name, const std::string& key) const
 {
-    std::string locationString = pathToString(location);
+    std::string locationString = pathToSchemaString(location);
     assert(isList(location, name));
 
     const auto& child = children(locationString).at(name);
@@ -81,7 +61,7 @@ bool Schema::listHasKey(const path_& location, const std::string& name, const st
 
 const std::set<std::string>& Schema::listKeys(const path_& location, const std::string& name) const
 {
-    std::string locationString = pathToString(location);
+    std::string locationString = pathToSchemaString(location);
     assert(isList(location, name));
 
     const auto& child = children(locationString).at(name);
@@ -91,7 +71,7 @@ const std::set<std::string>& Schema::listKeys(const path_& location, const std::
 
 bool Schema::isList(const path_& location, const std::string& name) const
 {
-    std::string locationString = pathToString(location);
+    std::string locationString = pathToSchemaString(location);
     if (!nodeExists(locationString, name))
         return false;
     const auto& child = children(locationString).at(name);
@@ -112,7 +92,7 @@ bool Schema::isPresenceContainer(const path_& location, const std::string& name)
 {
     if (!isContainer(location, name))
         return false;
-    std::string locationString = pathToString(location);
+    std::string locationString = pathToSchemaString(location);
     return boost::get<yang::container>(children(locationString).at(name)).m_presence == yang::ContainerTraits::Presence;
 }
 
@@ -123,7 +103,7 @@ void Schema::addLeaf(const std::string& location, const std::string& name)
 
 bool Schema::isLeaf(const path_& location, const std::string& name) const
 {
-    std::string locationString = pathToString(location);
+    std::string locationString = pathToSchemaString(location);
     if (!nodeExists(locationString, name))
         return false;
 

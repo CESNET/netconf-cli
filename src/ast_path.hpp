@@ -6,6 +6,7 @@
  *
 */
 #pragma once
+
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/support/ast/position_tagged.hpp>
 #include <boost/spirit/home/x3/support/utility/error_reporting.hpp>
@@ -16,27 +17,6 @@
 #include <boost/variant.hpp>
 #include <map>
 #include <vector>
-
-#include "utils.hpp"
-namespace x3 = boost::spirit::x3;
-namespace ascii = boost::spirit::x3::ascii;
-
-using ascii::space;
-using x3::_attr;
-using x3::alnum;
-using x3::alpha;
-using x3::char_;
-using x3::expect;
-using x3::lexeme;
-using x3::lit;
-using boost::fusion::operator<<;
-
-
-using keyValue_ = std::pair<std::string, std::string>;
-
-
-struct parser_context_tag;
-
 
 struct nodeup_ {
     bool operator==(const nodeup_&) const
@@ -63,11 +43,6 @@ struct leaf_ {
     std::string m_name;
 };
 
-
-struct list_ {
-    std::vector<std::string> m_keys;
-};
-
 struct listElement_ {
     listElement_() {}
     listElement_(const std::string& listName, const std::map<std::string, std::string>& keys);
@@ -78,40 +53,15 @@ struct listElement_ {
     std::map<std::string, std::string> m_keys;
 };
 
-
 struct path_ {
     bool operator==(const path_& b) const;
     std::vector<boost::variant<container_, listElement_, nodeup_, leaf_>> m_nodes;
 };
 
 
-struct cd_ : x3::position_tagged {
-    bool operator==(const cd_& b) const;
-    path_ m_path;
-};
-
-struct create_ : x3::position_tagged {
-    bool operator==(const create_& b) const;
-    path_ m_path;
-};
-
-struct delete_ : x3::position_tagged {
-    bool operator==(const delete_& b) const;
-    path_ m_path;
-};
-
-struct set_ : x3::position_tagged {
-    bool operator==(const set_& b) const;
-    path_ m_path;
-    std::string m_data;
-};
-
-using command_ = boost::variant<cd_, create_, delete_, set_>;
+std::string pathToDataString(const path_& path);
+std::string pathToSchemaString(const path_& path);
 
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
 BOOST_FUSION_ADAPT_STRUCT(path_, m_nodes)
-BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
-BOOST_FUSION_ADAPT_STRUCT(create_, m_path)
-BOOST_FUSION_ADAPT_STRUCT(delete_, m_path)
-BOOST_FUSION_ADAPT_STRUCT(set_, m_path, m_data)

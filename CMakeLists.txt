@@ -57,7 +57,8 @@ add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
 set(parser_SRCS
     src/schema.cpp
     src/parser.cpp
-    src/ast.cpp
+    src/ast_commands.cpp
+    src/ast_path.cpp
     src/utils.cpp
     src/parser_context.cpp
     src/interpreter.cpp

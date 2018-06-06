@@ -12,7 +12,7 @@
 #include <set>
 #include <stdexcept>
 #include <unordered_map>
-#include "ast.hpp"
+#include "ast_path.hpp"
 
 namespace yang {
 enum class ContainerTraits {
