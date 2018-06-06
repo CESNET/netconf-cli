@@ -21,14 +21,23 @@ struct keyValue_class {
         if (parserContext.m_tmpListKeys.find(ast.first) != parserContext.m_tmpListKeys.end()) {
             _pass(context) = false;
             parserContext.m_errorMsg = "Key \"" + ast.first + "\" was entered more than once.";
-        } else if (schema.listHasKey(parserContext.m_curPath, parserContext.m_tmpListName, ast.first)) {
-            parserContext.m_tmpListKeys.insert(ast.first);
-        } else {
+        } else if (!schema.listHasKey(parserContext.m_curPath, parserContext.m_tmpListName, ast.first)) {
             _pass(context) = false;
             parserContext.m_errorMsg = parserContext.m_tmpListName + " is not indexed by \"" + ast.first + "\".";
+        } else {
+            parserContext.m_tmpListKeys.insert(ast.first);
         }
     }
+
+    template <typename Iterator, typename Exception, typename Context>
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_errorMsg = "Error parsing key values here:";
+        return x3::error_handler_result::rethrow;
+    }
 };
+
 struct identifier_class;
 
 struct listPrefix_class {
@@ -73,6 +82,16 @@ struct listSuffix_class {
             _pass(context) = false;
         }
     }
+
+    template <typename Iterator, typename Exception, typename Context>
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        if (parserContext.m_errorMsg.empty())
+            parserContext.m_errorMsg = "Expecting ']' here:";
+        return x3::error_handler_result::rethrow;
+
+    }
 };
 struct listElement_class {
     template <typename T, typename Iterator, typename Context>
@@ -83,18 +102,15 @@ struct listElement_class {
     }
 
     template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& ex, Context const& context)
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
-        if (parserContext.m_errorHandled) // someone already handled our error
+        if (parserContext.m_errorMsg.empty()) {
             return x3::error_handler_result::fail;
+        } else {
+            return x3::error_handler_result::rethrow;
+        }
 
-        parserContext.m_errorHandled = true;
-
-        std::string message = parserContext.m_errorMsg;
-        error_handler(ex.where(), message);
-        return x3::error_handler_result::fail;
     }
 };
 
@@ -149,17 +165,15 @@ struct path_class {
     }
 
     template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
-        std::string message = "invalid path.";
-        if (parserContext.m_errorHandled) // someone already handled our error
+        if (parserContext.m_errorMsg.empty()) {
+            parserContext.m_errorMsg = "Invalid path.";
             return x3::error_handler_result::fail;
-
-        parserContext.m_errorHandled = true;
-        error_handler(x.where(), message);
-        return x3::error_handler_result::fail;
+        } else {
+            return x3::error_handler_result::rethrow;
+        }
     }
 };
 
@@ -176,14 +190,9 @@ struct cd_class {
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
-        std::string message = "This isn't a list or a container or nothing.";
-        if (parserContext.m_errorHandled) // someone already handled our error
-            return x3::error_handler_result::fail;
-
-        parserContext.m_errorHandled = true;
-        error_handler(x.where(), message);
-        return x3::error_handler_result::fail;
+        if (parserContext.m_errorMsg.empty())
+            parserContext.m_errorMsg = "Expected " + x.which() + " here:";
+        return x3::error_handler_result::rethrow;
     }
 };
 
@@ -199,27 +208,22 @@ struct presenceContainerPathHandler {
                                                     parserContext.m_curPath.m_nodes.end() - 1)};
 
             if (!schema.isPresenceContainer(location, cont.m_name)) {
+                parserContext.m_errorMsg = "This container is not a presence container.";
                 _pass(context) = false;
-                return;
             }
         } catch (boost::bad_get&) {
+            parserContext.m_errorMsg = "This is not a container.";
             _pass(context) = false;
-            return;
         }
     }
 
     template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
-        std::string message = "This isn't a path to a presence container.";
-        if (parserContext.m_errorHandled) // someone already handled our error
-            return x3::error_handler_result::fail;
-
-        parserContext.m_errorHandled = true;
-        error_handler(x.where(), message);
-        return x3::error_handler_result::fail;
+        if (parserContext.m_errorMsg.empty())
+            parserContext.m_errorMsg = "Couldn't parse create/delete command.";
+        return x3::error_handler_result::rethrow;
     }
 };
 
@@ -233,11 +237,12 @@ struct set_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
+        auto& parserContext = x3::get<parser_context_tag>(context);
         try {
             auto leaf = boost::get<leaf_>(ast.m_path.m_nodes.back());
         } catch (boost::bad_get&) {
+            parserContext.m_errorMsg = "This is not a leaf.";
             _pass(context) = false;
-            return;
         }
     }
 
@@ -245,14 +250,9 @@ struct set_class {
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
-        std::string message = "This isn't a path to leaf.";
-        if (parserContext.m_errorHandled) // someone already handled our error
-            return x3::error_handler_result::fail;
-
-        parserContext.m_errorHandled = true;
-        error_handler(x.where(), message);
-        return x3::error_handler_result::fail;
+        if (parserContext.m_errorMsg.empty())
+            parserContext.m_errorMsg = "Expected " + x.which() + " here:";
+        return x3::error_handler_result::rethrow;
     }
 };
 
@@ -262,12 +262,10 @@ struct command_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
-        std::string message = "Couldn't parse command.";
-        if (parserContext.m_errorHandled) // someone already handled our error
-            return x3::error_handler_result::fail;
-
-        parserContext.m_errorHandled = true;
-        error_handler(x.where(), message);
+        if (parserContext.m_errorMsg.empty()) {
+            parserContext.m_errorMsg = "Unknown command.";
+        }
+        error_handler(x.where(), parserContext.m_errorMsg);
         return x3::error_handler_result::fail;
     }
 };
