@@ -1,0 +1,70 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "62b1356e_f51c4ab4",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-06T11:30:29Z",
+      "side": 1,
+      "message": "nit: auto",
+      "range": {
+        "startLine": 237,
+        "startChar": 12,
+        "endLine": 237,
+        "endChar": 17
+      },
+      "revId": "92f605bc4414385ba4956b980ab1108e00ebf96e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87f383ec_0e78fe0b",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-06T11:30:29Z",
+      "side": 1,
+      "message": "Verim, ze to funguje, protoze to je osetrene jinde ale leaf muze byt pouze na konci. Nestalo by za to to podchytit v gramatice?",
+      "revId": "92f605bc4414385ba4956b980ab1108e00ebf96e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "959edf42_768811b4",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-06T11:30:29Z",
+      "side": 1,
+      "message": "nit: ja bych tu cekal, ze to vypise celou cestu z rootu",
+      "revId": "92f605bc4414385ba4956b980ab1108e00ebf96e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
