@@ -25,6 +25,33 @@
       "revId": "46930473023c3244666461e688ada77a94fd6af5",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42db5ff2_1f8aa75c",
+        "filename": "src/ast_path.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-06-06T14:53:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e473190d_2b863051",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 2
+      },
+      "revId": "46930473023c3244666461e688ada77a94fd6af5",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
