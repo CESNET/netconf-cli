@@ -28,9 +28,13 @@ x3::rule<create_class, create_> const create = "create";
 x3::rule<delete_class, delete_> const delete_rule = "delete_rule";
 x3::rule<command_class, command_> const command = "command";
 
+#if __clang__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-shift-op-parentheses"
+#endif
 
 auto const keyValue_def =
-        lexeme[+alnum >> '=' >> +alnum];
+        lexeme[+alnum > '=' > +alnum];
 
 auto const identifier_def =
         lexeme[
@@ -58,7 +62,7 @@ auto const leaf_def =
 
 // leaf cannot be in the middle of a path, however, I need the grammar's attribute to be a vector of variants
 auto const path_def =
-        (container | listElement | nodeup | leaf) % '/';
+        (x3::expect[container | listElement | nodeup | leaf]) % '/';
 
 auto const data_string_def =
         lexeme[+char_];
@@ -67,19 +71,23 @@ auto const space_separator =
         x3::omit[x3::no_skip[space]];
 
 auto const cd_def =
-        lit("cd") > space_separator > path >> x3::eoi;
+        lit("cd") >> space_separator > path;
 
 auto const create_def =
-        lit("create") > space_separator > path >> x3::eoi;
+        lit("create") >> space_separator > path;
 
 auto const delete_rule_def =
-        lit("delete") > space_separator > path >> x3::eoi;
+        lit("delete") >> space_separator > path;
 
 auto const set_def =
-        lit("set") > space_separator > path > space_separator > data_string >> x3::eoi;
+        lit("set") >> space_separator > path > data_string;
 
 auto const command_def =
-        cd | create | delete_rule | set;
+        x3::expect[cd | create | delete_rule | set] >> x3::eoi;
+
+#if __clang__
+#pragma GCC diagnostic pop
+#endif
 
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(identifier)
