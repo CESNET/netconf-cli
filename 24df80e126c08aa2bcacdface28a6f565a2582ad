@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "74a0564a_f3400f4c",
+        "filename": "src/ast_path.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-08T13:26:31Z",
+      "side": 1,
+      "message": "ja bych dal k sobe vzdy ten pomocny visitor a funkci, ktera ho pouziva, ne visitor, visitor, fce, fce",
+      "revId": "24df80e126c08aa2bcacdface28a6f565a2582ad",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
