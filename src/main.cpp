@@ -49,9 +49,14 @@ int main(int argc, char* argv[])
     Schema schema;
     schema.addContainer("", "a", yang::ContainerTraits::Presence);
     schema.addContainer("", "b");
-    schema.addLeaf("", "leaf");
+    schema.addLeaf("", "leafString", yang::LeafDataTypes::String);
+    schema.addLeaf("", "leafDecimal", yang::LeafDataTypes::Decimal);
+    schema.addLeaf("", "leafBool", yang::LeafDataTypes::Bool);
+    schema.addLeaf("", "leafInt", yang::LeafDataTypes::Int);
+    schema.addLeaf("", "leafUint", yang::LeafDataTypes::Uint);
+    schema.addLeafEnum("", "leafEnum", {"lol", "data", "coze"});
     schema.addContainer("a", "a2");
-    schema.addLeaf("a", "leafa");
+    schema.addLeaf("a", "leafa", yang::LeafDataTypes::String);
     schema.addContainer("b", "b2", yang::ContainerTraits::Presence);
     schema.addContainer("a/a2", "a3", yang::ContainerTraits::Presence);
     schema.addContainer("b/b2", "b3");

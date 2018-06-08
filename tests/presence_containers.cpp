@@ -33,19 +33,19 @@ TEST_CASE("presence containers")
         SECTION("a")
         {
             input = "a";
-            expectedPath.m_nodes = { container_("a") };
+            expectedPath.m_nodes = {container_("a")};
         }
 
         SECTION("b/b2")
         {
             input = "b/b2";
-            expectedPath.m_nodes = { container_("b"), container_("b2") };
+            expectedPath.m_nodes = {container_("b"), container_("b2")};
         }
 
         SECTION("a/a2/a3")
         {
             input = "a/a2/a3";
-            expectedPath.m_nodes = { container_("a"), container_("a2"), container_("a3") };
+            expectedPath.m_nodes = {container_("a"), container_("a2"), container_("a3")};
         }
 
         SECTION("list[quote=lol]/contInList")
@@ -53,7 +53,7 @@ TEST_CASE("presence containers")
             input = "list[quote=lol]/contInList";
             auto keys = std::map<std::string, std::string>{
                 {"quote", "lol"}};
-            expectedPath.m_nodes = { listElement_("list", keys), container_("contInList") };
+            expectedPath.m_nodes = {listElement_("list", keys), container_("contInList")};
         }
 
         create_ expectedCreate;

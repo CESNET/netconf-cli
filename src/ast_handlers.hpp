@@ -90,7 +90,6 @@ struct listSuffix_class {
         if (parserContext.m_errorMsg.empty())
             parserContext.m_errorMsg = "Expecting ']' here:";
         return x3::error_handler_result::rethrow;
-
     }
 };
 struct listElement_class {
@@ -110,7 +109,6 @@ struct listElement_class {
         } else {
             return x3::error_handler_result::rethrow;
         }
-
     }
 };
 
@@ -177,9 +175,6 @@ struct path_class {
     }
 };
 
-struct data_string_class {
-};
-
 struct cd_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const&)
@@ -231,6 +226,111 @@ struct create_class : public presenceContainerPathHandler {
 };
 
 struct delete_class : public presenceContainerPathHandler {
+};
+
+struct leaf_data_class {
+};
+
+struct leaf_data_enum_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+        path_ location{decltype(path_::m_nodes)(parserContext.m_curPath.m_nodes.begin(),
+                                                parserContext.m_curPath.m_nodes.end() - 1)};
+
+        if (!schema.leafIsEnum(location, leaf.m_name) || !schema.leafEnumHasValue(location, leaf.m_name, ast.m_value)) {
+            _pass(context) = false;
+        }
+    }
+};
+
+struct leaf_data_decimal_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+        path_ location{decltype(path_::m_nodes)(parserContext.m_curPath.m_nodes.begin(),
+                                                parserContext.m_curPath.m_nodes.end() - 1)};
+
+        if (!schema.leafIsDecimal(location, leaf.m_name)) {
+            _pass(context) = false;
+        }
+    }
+};
+
+struct leaf_data_bool_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+        path_ location{decltype(path_::m_nodes)(parserContext.m_curPath.m_nodes.begin(),
+                                                parserContext.m_curPath.m_nodes.end() - 1)};
+
+        if (!schema.leafIsBool(location, leaf.m_name)) {
+            _pass(context) = false;
+        }
+    }
+};
+
+struct leaf_data_int_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+        path_ location{decltype(path_::m_nodes)(parserContext.m_curPath.m_nodes.begin(),
+                                                parserContext.m_curPath.m_nodes.end() - 1)};
+
+        if (!schema.leafIsInt(location, leaf.m_name)) {
+            _pass(context) = false;
+        }
+    }
+};
+
+struct leaf_data_uint_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+        path_ location{decltype(path_::m_nodes)(parserContext.m_curPath.m_nodes.begin(),
+                                                parserContext.m_curPath.m_nodes.end() - 1)};
+
+        if (!schema.leafIsUint(location, leaf.m_name)) {
+            _pass(context) = false;
+        }
+    }
+};
+
+struct leaf_data_string_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+        path_ location{decltype(path_::m_nodes)(parserContext.m_curPath.m_nodes.begin(),
+                                                parserContext.m_curPath.m_nodes.end() - 1)};
+
+        if (!schema.leafIsString(location, leaf.m_name)) {
+            _pass(context) = false;
+        }
+    }
 };
 
 struct set_class {

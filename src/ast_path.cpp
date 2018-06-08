@@ -69,7 +69,7 @@ struct nodeToDataString : public boost::static_visitor<std::string> {
                 std::experimental::make_ostream_joiner(res, ' '),
                 [] (const auto& it) { return it.first + "=" + it.second; });
         res << "]";
-    return res.str();
+        return res.str();
     }
     std::string operator()(const nodeup_&) const
     {
