@@ -15,10 +15,15 @@ TEST_CASE("leaf editing")
 {
     Schema schema;
     schema.addContainer("", "contA");
-    schema.addLeaf("", "leaf");
-    schema.addLeaf("contA", "leafInCont");
+    schema.addLeaf("", "leafString", yang::LeafDataTypes::String);
+    schema.addLeaf("", "leafDecimal", yang::LeafDataTypes::Decimal);
+    schema.addLeaf("", "leafBool", yang::LeafDataTypes::Bool);
+    schema.addLeaf("", "leafInt", yang::LeafDataTypes::Int);
+    schema.addLeaf("", "leafUint", yang::LeafDataTypes::Uint);
+    schema.addLeafEnum("", "leafEnum", {"lol", "data", "coze"});
+    schema.addLeaf("contA", "leafInCont", yang::LeafDataTypes::String);
     schema.addList("", "list", {"number"});
-    schema.addLeaf("list", "leafInList");
+    schema.addLeaf("list", "leafInList", yang::LeafDataTypes::String);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -27,11 +32,11 @@ TEST_CASE("leaf editing")
     {
         set_ expected;
 
-        SECTION("set leaf some_data")
+        SECTION("set leafString some_data")
         {
-            input = "set leaf some_data";
-            expected.m_path.m_nodes.push_back(leaf_("leaf"));
-            expected.m_data = "some_data";
+            input = "set leafString some_data";
+            expected.m_path.m_nodes.push_back(leaf_("leafString"));
+            expected.m_data = std::string("some_data");
         }
 
         SECTION("set contA/leafInCont more_data")
@@ -39,7 +44,55 @@ TEST_CASE("leaf editing")
             input = "set contA/leafInCont more_data";
             expected.m_path.m_nodes.push_back(container_("contA"));
             expected.m_path.m_nodes.push_back(leaf_("leafInCont"));
-            expected.m_data = "more_data";
+            expected.m_data = std::string("more_data");
+        }
+
+        SECTION("set list[number=1]/leafInList another_data")
+        {
+            input = "set list[number=1]/leafInList another_data";
+            auto keys = std::map<std::string, std::string>{
+                {"number", "1"}};
+            expected.m_path.m_nodes.push_back(listElement_("list", keys));
+            expected.m_path.m_nodes.push_back(leaf_("leafInList"));
+            expected.m_data = std::string("another_data");
+        }
+
+        SECTION("data types")
+        {
+            SECTION("string")
+            {
+                input = "set leafString somedata";
+                expected.m_path.m_nodes.push_back(leaf_("leafString"));
+                expected.m_data = std::string("somedata");
+            }
+
+            SECTION("int")
+            {
+                input = "set leafInt 2";
+                expected.m_path.m_nodes.push_back(leaf_("leafInt"));
+                expected.m_data = 2;
+            }
+
+            SECTION("decimal")
+            {
+                input = "set leafDecimal 3.14159";
+                expected.m_path.m_nodes.push_back(leaf_("leafDecimal"));
+                expected.m_data = 3.14159;
+            }
+
+            SECTION("enum")
+            {
+                input = "set leafEnum coze";
+                expected.m_path.m_nodes.push_back(leaf_("leafEnum"));
+                expected.m_data = enum_("coze");
+            }
+
+            SECTION("bool")
+            {
+                input = "set leafBool true";
+                expected.m_path.m_nodes.push_back(leaf_("leafBool"));
+                expected.m_data = true;
+            }
         }
 
         command_ command = parser.parseCommand(input, errorStream);
@@ -75,6 +128,26 @@ TEST_CASE("leaf editing")
             SECTION("set contA abde")
             {
                 input = "set contA abde";
+            }
+        }
+
+        SECTION("wrong types")
+        {
+            SECTION("set leafBool blabla")
+            {
+                input = "set leafBool blabla";
+            }
+            SECTION("set leafUint blabla")
+            {
+                input = "set leafUint blabla";
+            }
+            SECTION("set leafInt blabla")
+            {
+                input = "set leafInt blabla";
+            }
+            SECTION("set leafEnum blabla")
+            {
+                input = "set leafEnum blabla";
             }
         }
 
