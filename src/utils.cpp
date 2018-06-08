@@ -25,3 +25,8 @@ std::string stripLastNodeFromPath(const std::string& path)
         res.erase(pos);
     return res;
 }
+
+path_ pathWithoutLastNode(const path_& path)
+{
+    return path_{decltype(path_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};
+}

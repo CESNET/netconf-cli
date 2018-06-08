@@ -19,6 +19,16 @@ enum class ContainerTraits {
     Presence,
     None,
 };
+
+enum class LeafDataTypes {
+    String,
+    Decimal,
+    Bool,
+    Int,
+    Uint,
+    Enum,
+};
+
 struct container {
     yang::ContainerTraits m_presence;
 };
@@ -26,6 +36,8 @@ struct list {
     std::set<std::string> m_keys;
 };
 struct leaf {
+    yang::LeafDataTypes m_type;
+    std::set<std::string> m_enumValues;
 };
 }
 
@@ -54,8 +66,11 @@ public:
     bool isList(const path_& location, const std::string& name) const;
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     bool isPresenceContainer(const path_& location, const std::string& name) const;
-    void addLeaf(const std::string& location, const std::string& name);
+    void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);
+    void addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues);
+    bool leafEnumHasValue(const path_& location, const std::string& name, const std::string& value) const;
     bool isLeaf(const path_& location, const std::string& name) const;
+    yang::LeafDataTypes leafType(const path_& location, const std::string& name) const;
 
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;

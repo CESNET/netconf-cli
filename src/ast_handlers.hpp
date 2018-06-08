@@ -10,6 +10,7 @@
 
 #include "parser_context.hpp"
 #include "schema.hpp"
+#include "utils.hpp"
 
 struct keyValue_class {
     template <typename T, typename Iterator, typename Context>
@@ -90,7 +91,6 @@ struct listSuffix_class {
         if (parserContext.m_errorMsg.empty())
             parserContext.m_errorMsg = "Expecting ']' here:";
         return x3::error_handler_result::rethrow;
-
     }
 };
 struct listElement_class {
@@ -110,7 +110,6 @@ struct listElement_class {
         } else {
             return x3::error_handler_result::rethrow;
         }
-
     }
 };
 
@@ -177,9 +176,6 @@ struct path_class {
     }
 };
 
-struct data_string_class {
-};
-
 struct cd_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const&)
@@ -204,8 +200,7 @@ struct presenceContainerPathHandler {
         const auto& schema = parserContext.m_schema;
         try {
             container_ cont = boost::get<container_>(ast.m_path.m_nodes.back());
-            path_ location{decltype(path_::m_nodes)(parserContext.m_curPath.m_nodes.begin(),
-                                                    parserContext.m_curPath.m_nodes.end() - 1)};
+            path_ location = pathWithoutLastNode(parserContext.m_curPath);
 
             if (!schema.isPresenceContainer(location, cont.m_name)) {
                 parserContext.m_errorMsg = "This container is not a presence container.";
@@ -231,6 +226,89 @@ struct create_class : public presenceContainerPathHandler {
 };
 
 struct delete_class : public presenceContainerPathHandler {
+};
+
+struct leaf_data_class {
+};
+
+struct leaf_data_base_class {
+    yang::LeafDataTypes m_type;
+
+    leaf_data_base_class(yang::LeafDataTypes type)
+        : m_type(type)
+    {
+    }
+
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+        path_ location = pathWithoutLastNode(parserContext.m_curPath);
+
+        if (schema.leafType(location, leaf.m_name) != m_type) {
+            _pass(context) = false;
+        }
+    }
+};
+
+struct leaf_data_enum_class : leaf_data_base_class {
+    leaf_data_enum_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Enum)
+    {
+    }
+
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& start, Iterator const& end, T& ast, Context const& context)
+    {
+        leaf_data_base_class::on_success(start, end, ast, context);
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+        path_ location = pathWithoutLastNode(parserContext.m_curPath);
+
+        if (!schema.leafEnumHasValue(location, leaf.m_name, ast.m_value)) {
+            _pass(context) = false;
+        }
+    }
+};
+
+struct leaf_data_decimal_class : leaf_data_base_class {
+    leaf_data_decimal_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Decimal)
+    {
+    }
+};
+
+struct leaf_data_bool_class : leaf_data_base_class {
+    leaf_data_bool_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Bool)
+    {
+    }
+};
+
+struct leaf_data_int_class : leaf_data_base_class {
+    leaf_data_int_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Int)
+    {
+    }
+};
+
+struct leaf_data_uint_class : leaf_data_base_class {
+    leaf_data_uint_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Uint)
+    {
+    }
+};
+
+struct leaf_data_string_class : leaf_data_base_class {
+    leaf_data_string_class()
+        : leaf_data_base_class(yang::LeafDataTypes::String)
+    {
+    }
 };
 
 struct set_class {

@@ -96,9 +96,24 @@ bool Schema::isPresenceContainer(const path_& location, const std::string& name)
     return boost::get<yang::container>(children(locationString).at(name)).m_presence == yang::ContainerTraits::Presence;
 }
 
-void Schema::addLeaf(const std::string& location, const std::string& name)
+void Schema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type)
 {
-    m_nodes.at(location).emplace(name, yang::leaf{});
+    m_nodes.at(location).emplace(name, yang::leaf{type, {}});
+}
+
+void Schema::addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues)
+{
+    m_nodes.at(location).emplace(name, yang::leaf{yang::LeafDataTypes::Enum, enumValues});
+}
+
+bool Schema::leafEnumHasValue(const path_& location, const std::string& name, const std::string& value) const
+{
+    std::string locationString = pathToSchemaString(location);
+    assert(isLeaf(location, name));
+
+    const auto& child = children(locationString).at(name);
+    const auto& list = boost::get<yang::leaf>(child);
+    return list.m_enumValues.find(value) != list.m_enumValues.end();
 }
 
 bool Schema::isLeaf(const path_& location, const std::string& name) const
@@ -108,4 +123,10 @@ bool Schema::isLeaf(const path_& location, const std::string& name) const
         return false;
 
     return children(locationString).at(name).type() == typeid(yang::leaf);
+}
+
+yang::LeafDataTypes Schema::leafType(const path_& location, const std::string& name) const
+{
+    std::string locationString = pathToSchemaString(location);
+    return boost::get<yang::leaf>(children(locationString).at(name)).m_type;
 }

@@ -7,6 +7,12 @@
 */
 #include "ast_commands.hpp"
 
+enum_::enum_() = default;
+
+enum_::enum_(const std::string& value)
+    : m_value(value)
+{
+}
 
 bool set_::operator==(const set_& b) const
 {
@@ -16,6 +22,11 @@ bool set_::operator==(const set_& b) const
 bool cd_::operator==(const cd_& b) const
 {
     return this->m_path == b.m_path;
+}
+
+bool enum_::operator==(const enum_& b) const
+{
+    return this->m_value == b.m_value;
 }
 
 bool create_::operator==(const create_& b) const
