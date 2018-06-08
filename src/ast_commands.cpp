@@ -18,6 +18,11 @@ bool cd_::operator==(const cd_& b) const
     return this->m_path == b.m_path;
 }
 
+bool enum_::operator==(const enum_& b) const
+{
+    return this->m_value == b.m_value;
+}
+
 bool create_::operator==(const create_& b) const
 {
     return this->m_path == b.m_path;

@@ -177,9 +177,6 @@ struct path_class {
     }
 };
 
-struct data_string_class {
-};
-
 struct cd_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const&)
@@ -231,6 +228,21 @@ struct create_class : public presenceContainerPathHandler {
 };
 
 struct delete_class : public presenceContainerPathHandler {
+};
+
+struct leaf_data_class {
+};
+struct leaf_data_enum_class {
+};
+struct leaf_data_decimal_class {
+};
+struct leaf_data_bool_class {
+};
+struct leaf_data_int_class {
+};
+struct leaf_data_uint_class {
+};
+struct leaf_data_string_class {
 };
 
 struct set_class {

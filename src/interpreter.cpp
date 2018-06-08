@@ -9,9 +9,23 @@
 #include <iostream>
 #include "interpreter.hpp"
 
+struct TEMPORARY_LEAF_DATA_VISITOR : boost::static_visitor<std::string> {
+    std::string operator()(const enum_& data) const
+    {
+        return data.m_value;
+    }
+    template <typename T>
+    std::string operator()(const T& data) const
+    {
+        std::stringstream stream;
+        stream << data;
+        return stream.str();
+    }
+};
+
 void Interpreter::operator()(const set_& set) const
 {
-    std::cout << "Setting " << pathToDataString(set.m_path) << " to " << set.m_data << std::endl;
+    std::cout << "Setting " << pathToDataString(set.m_path) << " to " << boost::apply_visitor(TEMPORARY_LEAF_DATA_VISITOR(), set.m_data) << std::endl;
 }
 
 void Interpreter::operator()(const cd_& cd) const
