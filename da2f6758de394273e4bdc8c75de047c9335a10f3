@@ -1,0 +1,108 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3b0deba7_a56a38fa",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-12T09:32:43Z",
+      "side": 1,
+      "message": "tohle je pekny kandidat na refactoring do funkce",
+      "range": {
+        "startLine": 242,
+        "startChar": 8,
+        "endLine": 243,
+        "endChar": 92
+      },
+      "revId": "da2f6758de394273e4bdc8c75de047c9335a10f3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a17ada2_75518239",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-12T09:32:43Z",
+      "side": 1,
+      "message": "takhle se obvykle pojmenovavaji makra, ne tridy",
+      "range": {
+        "startLine": 12,
+        "startChar": 7,
+        "endLine": 12,
+        "endChar": 34
+      },
+      "revId": "da2f6758de394273e4bdc8c75de047c9335a10f3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4325f8e_dc6ab4bd",
+        "filename": "src/schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-12T09:32:43Z",
+      "side": 1,
+      "message": "Uz jsem to psal vys, ale tohle je 50 radku de facto identickeho kodu, melo by to prastit do oci, ze to \"musi jit lip\".",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 180,
+        "endChar": 1
+      },
+      "revId": "da2f6758de394273e4bdc8c75de047c9335a10f3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4160c8ba_818ffc5e",
+        "filename": "src/schema.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-12T09:32:43Z",
+      "side": 1,
+      "message": "Tohle bych zvazil resit spis funkci leafType(), ktera vrati prislusny enum. Pak se navic ukaze, ze on_succes pro patricne pravidlo gramatiky bude uplne stejne az na kontrolu jednoho enumu, cili bude mozne to sjednotit.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 76
+      },
+      "revId": "da2f6758de394273e4bdc8c75de047c9335a10f3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
