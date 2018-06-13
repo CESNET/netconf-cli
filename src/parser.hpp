@@ -26,12 +26,12 @@ public:
 
 class Parser {
 public:
-    Parser(const Schema& schema);
+    Parser(const std::shared_ptr<const Schema> schema);
     command_ parseCommand(const std::string& line, std::ostream& errorStream);
     void changeNode(const path_& name);
     std::string currentNode() const;
 
 private:
-    const Schema& m_schema;
+    const std::shared_ptr<const Schema> m_schema;
     path_ m_curDir;
 };

@@ -13,7 +13,7 @@ TooManyArgumentsException::~TooManyArgumentsException() = default;
 InvalidCommandException::~InvalidCommandException() = default;
 
 
-Parser::Parser(const Schema& schema)
+Parser::Parser(const std::shared_ptr<const Schema> schema)
     : m_schema(schema)
 {
 }
@@ -21,7 +21,7 @@ Parser::Parser(const Schema& schema)
 command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream)
 {
     command_ parsedCommand;
-    ParserContext ctx(m_schema, m_curDir);
+    ParserContext ctx(*m_schema, m_curDir);
     auto it = line.begin();
 
     boost::spirit::x3::error_handler<std::string::const_iterator> errorHandler(it, line.end(), errorStream);

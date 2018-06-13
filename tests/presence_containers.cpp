@@ -14,14 +14,14 @@
 
 TEST_CASE("presence containers")
 {
-    StaticSchema schema;
-    schema.addContainer("", "a", yang::ContainerTraits::Presence);
-    schema.addContainer("", "b");
-    schema.addContainer("a", "a2");
-    schema.addContainer("a/a2", "a3", yang::ContainerTraits::Presence);
-    schema.addContainer("b", "b2", yang::ContainerTraits::Presence);
-    schema.addList("", "list", {"quote"});
-    schema.addContainer("list", "contInList", yang::ContainerTraits::Presence);
+    auto schema = std::make_shared<StaticSchema>();
+    schema->addContainer("", "a", yang::ContainerTraits::Presence);
+    schema->addContainer("", "b");
+    schema->addContainer("a", "a2");
+    schema->addContainer("a/a2", "a3", yang::ContainerTraits::Presence);
+    schema->addContainer("b", "b2", yang::ContainerTraits::Presence);
+    schema->addList("", "list", {"quote"});
+    schema->addContainer("list", "contInList", yang::ContainerTraits::Presence);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
