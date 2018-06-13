@@ -10,11 +10,11 @@
 #include "trompeloeil_catch.h"
 #include "ast_commands.hpp"
 #include "parser.hpp"
-#include "schema.hpp"
+#include "static_schema.hpp"
 
 TEST_CASE("presence containers")
 {
-    auto schema = std::make_shared<Schema>();
+    auto schema = std::make_shared<StaticSchema>();
     schema->addContainer("", "a", yang::ContainerTraits::Presence);
     schema->addContainer("", "b");
     schema->addContainer("a", "a2");
