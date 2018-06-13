@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b5948deb_18eb348a",
+        "filename": "src/schema.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-13T16:25:20Z",
+      "side": 1,
+      "message": "Je potreba, aby to melo virtual destruktor, viz chyba kompilace u minule iterace.\n\nStandardni pristup je, ze v .h se napise:\n\n  virtual ~Schema();\n\na v .cpp:\n\n  Schema::~Schema() \u003d default;\n\nJe obvykle to nepsat primo do .h, protoze jinak by kompilator vytvarel dtor v kazde translation unit, coz by rozbijelo RTTI.",
+      "revId": "51b93d7d111c7135c21f03edc2847ca00bd38933",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
