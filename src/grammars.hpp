@@ -96,12 +96,13 @@ auto const leaf_data_string_def =
         *char_;
 
 auto const leaf_data_def =
+x3::expect[
         leaf_data_enum |
         leaf_data_decimal |
         leaf_data_bool |
         leaf_data_int |
         leaf_data_uint |
-        leaf_data_string;
+        leaf_data_string];
 
 auto const space_separator =
         x3::omit[x3::no_skip[space]];
