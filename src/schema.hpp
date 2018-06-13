@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2018 CESNET, https://photonics.cesnet.cz/
  * Copyright (C) 2018 FIT CVUT, https://fit.cvut.cz/
@@ -52,25 +53,21 @@ public:
 };
 
 /*! \class Schema
- *     \brief The class representing the schema, that the user traverses.
+ *     \brief A base schema class for schemas
  *         */
 class Schema {
 public:
-    Schema();
-    bool nodeExists(const std::string& location, const std::string& name) const;
+    virtual ~Schema();
 
-    bool isContainer(const path_& location, const std::string& name) const;
-    void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
-    const std::set<std::string>& listKeys(const path_& location, const std::string& name) const;
-    bool listHasKey(const path_& location, const std::string& name, const std::string& key) const;
-    bool isList(const path_& location, const std::string& name) const;
-    void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
-    bool isPresenceContainer(const path_& location, const std::string& name) const;
-    void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);
-    void addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues);
-    bool leafEnumHasValue(const path_& location, const std::string& name, const std::string& value) const;
-    bool isLeaf(const path_& location, const std::string& name) const;
-    yang::LeafDataTypes leafType(const path_& location, const std::string& name) const;
+    virtual bool isContainer(const path_& location, const std::string& name) const = 0;
+    virtual bool isLeaf(const path_& location, const std::string& name) const = 0;
+    virtual bool isList(const path_& location, const std::string& name) const = 0;
+    virtual bool isPresenceContainer(const path_& location, const std::string& name) const = 0;
+    virtual bool leafEnumHasValue(const path_& location, const std::string& name, const std::string& value) const = 0;
+    virtual bool listHasKey(const path_& location, const std::string& name, const std::string& key) const = 0;
+    virtual bool nodeExists(const std::string& location, const std::string& name) const = 0;
+    virtual const std::set<std::string>& listKeys(const path_& location, const std::string& name) const = 0;
+    virtual yang::LeafDataTypes leafType(const path_& location, const std::string& name) const = 0;
 
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;

@@ -9,11 +9,11 @@
 #include "trompeloeil_catch.h"
 #include "ast_commands.hpp"
 #include "parser.hpp"
-#include "schema.hpp"
+#include "static_schema.hpp"
 
 TEST_CASE("cd")
 {
-    auto schema = std::make_shared<Schema>();
+    auto schema = std::make_shared<StaticSchema>();
     schema->addContainer("", "a");
     schema->addContainer("", "b");
     schema->addContainer("a", "a2");
