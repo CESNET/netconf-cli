@@ -9,11 +9,11 @@
 #include "trompeloeil_catch.h"
 #include "ast_commands.hpp"
 #include "parser.hpp"
-#include "schema.hpp"
+#include "static_schema.hpp"
 
 TEST_CASE("leaf editing")
 {
-    Schema schema;
+    StaticSchema schema;
     schema.addContainer("", "contA");
     schema.addLeaf("", "leafString", yang::LeafDataTypes::String);
     schema.addLeaf("", "leafDecimal", yang::LeafDataTypes::Decimal);

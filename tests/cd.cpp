@@ -9,11 +9,11 @@
 #include "trompeloeil_catch.h"
 #include "ast_commands.hpp"
 #include "parser.hpp"
-#include "schema.hpp"
+#include "static_schema.hpp"
 
 TEST_CASE("cd")
 {
-    Schema schema;
+    StaticSchema schema;
     schema.addContainer("", "a");
     schema.addContainer("", "b");
     schema.addContainer("a", "a2");

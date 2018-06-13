@@ -13,7 +13,7 @@
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
 #include "parser.hpp"
-#include "schema.hpp"
+#include "static_schema.hpp"
 
 
 static const char usage[] =
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
                                true);
     std::cout << "Welcome to netconf-cli" << std::endl;
 
-    Schema schema;
+    StaticSchema schema;
     schema.addContainer("", "a", yang::ContainerTraits::Presence);
     schema.addContainer("", "b");
     schema.addLeaf("", "leafString", yang::LeafDataTypes::String);

@@ -55,7 +55,7 @@ find_package(Boost REQUIRED)
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
 
 set(parser_SRCS
-    src/schema.cpp
+    src/static_schema.cpp
     src/parser.cpp
     src/ast_commands.cpp
     src/ast_path.cpp
