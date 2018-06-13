@@ -229,6 +229,24 @@ struct delete_class : public presenceContainerPathHandler {
 };
 
 struct leaf_data_class {
+    template <typename Iterator, typename Exception, typename Context>
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+        try {
+            if (parserContext.m_errorMsg.empty()) {
+                leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+                path_ location = pathWithoutLastNode(parserContext.m_curPath);
+                parserContext.m_errorMsg = "Expected " + leafDataTypeToString(schema.leafType(location, leaf.m_name)) + " data type.";
+                return x3::error_handler_result::fail;
+            } else {
+                return x3::error_handler_result::rethrow;
+            }
+        } catch(boost::bad_get&) {
+            return x3::error_handler_result::rethrow;
+        }
+    }
 };
 
 struct leaf_data_base_class {
