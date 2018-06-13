@@ -30,3 +30,23 @@ path_ pathWithoutLastNode(const path_& path)
 {
     return path_{decltype(path_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};
 }
+
+std::string leafDataTypeToString(yang::LeafDataTypes type)
+{
+    switch (type) {
+    case yang::LeafDataTypes::String:
+        return "a string";
+    case yang::LeafDataTypes::Decimal:
+        return "a decimal";
+    case yang::LeafDataTypes::Bool:
+        return "a boolean";
+    case yang::LeafDataTypes::Int:
+        return "an integer";
+    case yang::LeafDataTypes::Uint:
+        return "an unsigned integer";
+    case yang::LeafDataTypes::Enum:
+        return "an enum";
+    default:
+        return "";
+    }
+}

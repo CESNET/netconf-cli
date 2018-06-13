@@ -21,6 +21,7 @@ x3::rule<nodeup_class, nodeup_> const nodeup = "nodeup";
 x3::rule<container_class, container_> const container = "container";
 x3::rule<leaf_class, leaf_> const leaf = "leaf";
 x3::rule<path_class, path_> const path = "path";
+x3::rule<leaf_path_class, path_> const leafPath = "leafPath";
 
 x3::rule<leaf_data_class, leaf_data_> const leaf_data = "leaf_data";
 x3::rule<leaf_data_enum_class, enum_> const leaf_data_enum = "leaf_data_enum";
@@ -72,6 +73,9 @@ auto const leaf_def =
 auto const path_def =
         (x3::expect[container | listElement | nodeup | leaf]) % '/';
 
+auto const leafPath_def =
+        path;
+
 auto const leaf_data_enum_def =
         +char_;
 auto const leaf_data_decimal_def =
@@ -96,12 +100,13 @@ auto const leaf_data_string_def =
         *char_;
 
 auto const leaf_data_def =
+x3::expect[
         leaf_data_enum |
         leaf_data_decimal |
         leaf_data_bool |
         leaf_data_int |
         leaf_data_uint |
-        leaf_data_string;
+        leaf_data_string];
 
 auto const space_separator =
         x3::omit[x3::no_skip[space]];
@@ -116,7 +121,7 @@ auto const delete_rule_def =
         lit("delete") >> space_separator > path;
 
 auto const set_def =
-        lit("set") >> space_separator > path > leaf_data;
+        lit("set") >> space_separator > leafPath > leaf_data;
 
 auto const command_def =
         x3::expect[cd | create | delete_rule | set] >> x3::eoi;
@@ -133,6 +138,7 @@ BOOST_SPIRIT_DEFINE(listElement)
 BOOST_SPIRIT_DEFINE(nodeup)
 BOOST_SPIRIT_DEFINE(container)
 BOOST_SPIRIT_DEFINE(leaf)
+BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(path)
 BOOST_SPIRIT_DEFINE(leaf_data)
 BOOST_SPIRIT_DEFINE(leaf_data_enum)

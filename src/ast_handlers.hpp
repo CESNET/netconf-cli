@@ -228,7 +228,34 @@ struct create_class : public presenceContainerPathHandler {
 struct delete_class : public presenceContainerPathHandler {
 };
 
+struct leaf_path_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        try {
+            auto leaf = boost::get<leaf_>(ast.m_nodes.back());
+        } catch (boost::bad_get&) {
+            parserContext.m_errorMsg = "This is not a path to leaf.";
+            _pass(context) = false;
+        }
+    }
+};
+
 struct leaf_data_class {
+    template <typename Iterator, typename Exception, typename Context>
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+        if (parserContext.m_errorMsg.empty()) {
+            leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+            path_ location = pathWithoutLastNode(parserContext.m_curPath);
+            parserContext.m_errorMsg = "Expected " + leafDataTypeToString(schema.leafType(location, leaf.m_name)) + " here:";
+            return x3::error_handler_result::fail;
+        }
+        return x3::error_handler_result::rethrow;
+    }
 };
 
 struct leaf_data_base_class {
@@ -312,18 +339,6 @@ struct leaf_data_string_class : leaf_data_base_class {
 };
 
 struct set_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        try {
-            auto leaf = boost::get<leaf_>(ast.m_path.m_nodes.back());
-        } catch (boost::bad_get&) {
-            parserContext.m_errorMsg = "This is not a leaf.";
-            _pass(context) = false;
-        }
-    }
-
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
     {
