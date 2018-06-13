@@ -70,12 +70,19 @@ set(parser_SRCS
 add_library(parser STATIC ${parser_SRCS})
 target_link_libraries(parser Boost::boost)
 
+set(yangschema_SRCS
+    src/libyang-dummy.cpp)
+add_library(yangschema STATIC ${yangschema_SRCS})
+target_link_libraries(yangschema ${LIBYANG_LIBRARIES})
+target_include_directories(yangschema PRIVATE ${LIBYANG_INCLUDEDIR})
+link_directories(${LIBYANG_LIBRARY_DIRS})
+
 set(netconf-cli_SRCS
     src/main.cpp
     )
 
 add_executable(netconf-cli ${netconf-cli_SRCS})
-target_link_libraries(netconf-cli docopt parser)
+target_link_libraries(netconf-cli docopt parser yangschema)
 add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
 target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
 
