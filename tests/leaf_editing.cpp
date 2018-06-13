@@ -13,17 +13,17 @@
 
 TEST_CASE("leaf editing")
 {
-    Schema schema;
-    schema.addContainer("", "contA");
-    schema.addLeaf("", "leafString", yang::LeafDataTypes::String);
-    schema.addLeaf("", "leafDecimal", yang::LeafDataTypes::Decimal);
-    schema.addLeaf("", "leafBool", yang::LeafDataTypes::Bool);
-    schema.addLeaf("", "leafInt", yang::LeafDataTypes::Int);
-    schema.addLeaf("", "leafUint", yang::LeafDataTypes::Uint);
-    schema.addLeafEnum("", "leafEnum", {"lol", "data", "coze"});
-    schema.addLeaf("contA", "leafInCont", yang::LeafDataTypes::String);
-    schema.addList("", "list", {"number"});
-    schema.addLeaf("list", "leafInList", yang::LeafDataTypes::String);
+    auto schema = std::make_shared<Schema>();
+    schema->addContainer("", "contA");
+    schema->addLeaf("", "leafString", yang::LeafDataTypes::String);
+    schema->addLeaf("", "leafDecimal", yang::LeafDataTypes::Decimal);
+    schema->addLeaf("", "leafBool", yang::LeafDataTypes::Bool);
+    schema->addLeaf("", "leafInt", yang::LeafDataTypes::Int);
+    schema->addLeaf("", "leafUint", yang::LeafDataTypes::Uint);
+    schema->addLeafEnum("", "leafEnum", {"lol", "data", "coze"});
+    schema->addLeaf("contA", "leafInCont", yang::LeafDataTypes::String);
+    schema->addList("", "list", {"number"});
+    schema->addLeaf("list", "leafInList", yang::LeafDataTypes::String);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;

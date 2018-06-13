@@ -13,16 +13,16 @@
 
 TEST_CASE("cd")
 {
-    Schema schema;
-    schema.addContainer("", "a");
-    schema.addContainer("", "b");
-    schema.addContainer("a", "a2");
-    schema.addContainer("b", "b2");
-    schema.addContainer("a/a2", "a3");
-    schema.addContainer("b/b2", "b3");
-    schema.addList("", "list", {"number"});
-    schema.addContainer("list", "contInList");
-    schema.addList("", "twoKeyList", {"number", "name"});
+    auto schema = std::make_shared<Schema>();
+    schema->addContainer("", "a");
+    schema->addContainer("", "b");
+    schema->addContainer("a", "a2");
+    schema->addContainer("b", "b2");
+    schema->addContainer("a/a2", "a3");
+    schema->addContainer("b/b2", "b3");
+    schema->addList("", "list", {"number"});
+    schema->addContainer("list", "contInList");
+    schema->addList("", "twoKeyList", {"number", "name"});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;

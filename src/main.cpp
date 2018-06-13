@@ -46,23 +46,23 @@ int main(int argc, char* argv[])
                                true);
     std::cout << "Welcome to netconf-cli" << std::endl;
 
-    Schema schema;
-    schema.addContainer("", "a", yang::ContainerTraits::Presence);
-    schema.addContainer("", "b");
-    schema.addLeaf("", "leafString", yang::LeafDataTypes::String);
-    schema.addLeaf("", "leafDecimal", yang::LeafDataTypes::Decimal);
-    schema.addLeaf("", "leafBool", yang::LeafDataTypes::Bool);
-    schema.addLeaf("", "leafInt", yang::LeafDataTypes::Int);
-    schema.addLeaf("", "leafUint", yang::LeafDataTypes::Uint);
-    schema.addLeafEnum("", "leafEnum", {"lol", "data", "coze"});
-    schema.addContainer("a", "a2");
-    schema.addLeaf("a", "leafa", yang::LeafDataTypes::String);
-    schema.addContainer("b", "b2", yang::ContainerTraits::Presence);
-    schema.addContainer("a/a2", "a3", yang::ContainerTraits::Presence);
-    schema.addContainer("b/b2", "b3");
-    schema.addList("", "list", {"number"});
-    schema.addContainer("list", "contInList", yang::ContainerTraits::Presence);
-    schema.addList("", "twoKeyList", {"number", "name"});
+    auto schema = std::make_shared<Schema>();
+    schema->addContainer("", "a", yang::ContainerTraits::Presence);
+    schema->addContainer("", "b");
+    schema->addLeaf("", "leafString", yang::LeafDataTypes::String);
+    schema->addLeaf("", "leafDecimal", yang::LeafDataTypes::Decimal);
+    schema->addLeaf("", "leafBool", yang::LeafDataTypes::Bool);
+    schema->addLeaf("", "leafInt", yang::LeafDataTypes::Int);
+    schema->addLeaf("", "leafUint", yang::LeafDataTypes::Uint);
+    schema->addLeafEnum("", "leafEnum", {"lol", "data", "coze"});
+    schema->addContainer("a", "a2");
+    schema->addLeaf("a", "leafa", yang::LeafDataTypes::String);
+    schema->addContainer("b", "b2", yang::ContainerTraits::Presence);
+    schema->addContainer("a/a2", "a3", yang::ContainerTraits::Presence);
+    schema->addContainer("b/b2", "b3");
+    schema->addList("", "list", {"number"});
+    schema->addContainer("list", "contInList", yang::ContainerTraits::Presence);
+    schema->addList("", "twoKeyList", {"number", "name"});
     Parser parser(schema);
 
     while (true) {
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
 
         try {
             command_ cmd = parser.parseCommand(input, std::cout);
-            boost::apply_visitor(Interpreter(parser, schema), cmd);
+            boost::apply_visitor(Interpreter(parser, *schema), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         }
