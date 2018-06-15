@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5948ab97_c942a137",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-06-15T11:17:45Z",
+      "side": 1,
+      "message": "Tohle cele jde zestrucnit a IMHO zprehlednit:\n\n if (parserContext.m_errorMsg.empty()) {\n     leaf_ leaf \u003d boost::get\u003cleaf_\u003e(parserContext.m_curPath.m_nodes.back());\t\n     path_ location \u003d pathWithoutLastNode(parserContext.m_curPath);\n     parserContext.m_errorMsg \u003d \"Expected \" + leafDataTypeToString(schema.leafType(location, leaf.m_name)) + \" here:\";\n     return x3::error_handler_result::fail;\n }\n return x3::error_handler::rethrow;\n\n...pokud teda dobre chapu, ze primo grmatika garantuje to, ze bost::bad_get nikdy nenastane.\n\nA kazdopadne pro vsechny \"error paths\" je tady hezci jenom jeden return.",
+      "range": {
+        "startLine": 237,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 9
+      },
+      "revId": "55978e48b7e6b18a714dc2274a058184a35f15f6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
