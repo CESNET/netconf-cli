@@ -13,3 +13,6 @@
 [submodule "submodules/boost"]
 	path = submodules/boost
 	url = ../../github/boostorg/boost
+[submodule "submodules/libyang"]
+	path = submodules/libyang
+	url = ../../github/CESNET/libyang

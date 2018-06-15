@@ -76,6 +76,9 @@ else
     cp -LR boost ${PREFIX}/include/
     popd
 
+    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DGEN_LANGUAGE_BINDINGS=ON -DGEN_PYTHON_BINDINGS=OFF" emerge_dep libyang
+    do_test_dep_cmake libyang -j${CI_PARALLEL_JOBS}
+
     tar -C ~/target -cvJf ${TH_JOB_WORKING_DIR}/${ARTIFACT} .
     ssh th-ci-logs@ci-logs.gerrit.cesnet.cz mkdir -p artifacts/${TH_JOB_NAME} \
         || true # ignore network errors

@@ -51,6 +51,9 @@ find_package(docopt REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(Boost REQUIRED)
 
+find_package(PkgConfig)
+pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=0.15.111)
+
 # we don't need filename tracking, and we prefer to use header-only Boost
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
 
