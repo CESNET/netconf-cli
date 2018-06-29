@@ -42,7 +42,7 @@ command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream
 void Parser::changeNode(const path_& name)
 {
     for (const auto& it : name.m_nodes) {
-        if (it.type() == typeid(nodeup_))
+        if (it.m_suffix.type() == typeid(nodeup_))
             m_curDir.m_nodes.pop_back();
         else
             m_curDir.m_nodes.push_back(it);

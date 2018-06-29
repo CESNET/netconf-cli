@@ -50,3 +50,12 @@ std::string leafDataTypeToString(yang::LeafDataTypes type)
         return "";
     }
 }
+
+std::string fullNodeName(const path_& location, const ModuleNodePair& pair)
+{
+    if (!pair.first) {
+        return location.m_nodes.at(0).m_prefix.value().m_name + ":" + pair.second;
+    } else {
+        return pair.first.value() + ":" + pair.second;
+    }
+}

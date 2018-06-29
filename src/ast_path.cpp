@@ -25,6 +25,30 @@ leaf_::leaf_(const std::string& name)
 {
 }
 
+bool module_::operator==(const module_& b) const
+{
+    return this->m_name == b.m_name;
+}
+
+node_::node_() = default;
+
+node_::node_(decltype(m_suffix) node)
+    : m_suffix(node)
+{
+}
+
+node_::node_(module_ module, decltype(m_suffix) node)
+    : m_prefix(module)
+    , m_suffix(node)
+{
+}
+
+
+bool node_::operator==(const node_& b) const
+{
+    return this->m_suffix == b.m_suffix && this->m_prefix == b.m_prefix;
+}
+
 bool leaf_::operator==(const leaf_& b) const
 {
     return this->m_name == b.m_name;
@@ -49,7 +73,7 @@ bool path_::operator==(const path_& b) const
 }
 
 
-struct nodeToSchemaString : public boost::static_visitor<std::string> {
+struct nodeToSchemaStringVisitor : public boost::static_visitor<std::string> {
     std::string operator()(const nodeup_&) const
     {
         return "..";
@@ -60,7 +84,7 @@ struct nodeToSchemaString : public boost::static_visitor<std::string> {
         return node.m_name;
     }
 };
-struct nodeToDataString : public boost::static_visitor<std::string> {
+struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
     std::string operator()(const listElement_& node) const
     {
         std::ostringstream res;
@@ -82,18 +106,48 @@ struct nodeToDataString : public boost::static_visitor<std::string> {
     }
 };
 
+std::string nodeToSchemaString(decltype(path_::m_nodes)::value_type node)
+{
+    return boost::apply_visitor(nodeToSchemaStringVisitor(), node.m_suffix);
+}
+
 std::string pathToDataString(const path_& path)
 {
     std::string res;
     for (const auto it : path.m_nodes)
-        res = joinPaths(res, boost::apply_visitor(nodeToDataString(), it));
+        if (it.m_prefix)
+            res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToDataStringVisitor(), it.m_suffix));
+        else
+            res = joinPaths(res, boost::apply_visitor(nodeToDataStringVisitor(), it.m_suffix));
+
+    return res;
+}
+
+std::string pathToAbsoluteSchemaString(const path_& path)
+{
+    std::string res;
+    if (path.m_nodes.empty()) {
+        return "";
+    }
+
+    auto topLevelModule = path.m_nodes.at(0).m_prefix.value();
+    for (const auto it : path.m_nodes) {
+        if (it.m_prefix)
+            res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
+        else
+            res = joinPaths(res, topLevelModule.m_name + ":" + boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
+    }
     return res;
 }
 
 std::string pathToSchemaString(const path_& path)
 {
     std::string res;
-    for (const auto it : path.m_nodes)
-        res = joinPaths(res, boost::apply_visitor(nodeToSchemaString(), it));
+    for (const auto it : path.m_nodes) {
+        if (it.m_prefix)
+            res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
+        else
+            res = joinPaths(res, boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
+    }
     return res;
 }
