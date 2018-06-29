@@ -53,15 +53,34 @@ struct listElement_ {
     std::map<std::string, std::string> m_keys;
 };
 
-struct path_ {
-    bool operator==(const path_& b) const;
-    std::vector<boost::variant<container_, listElement_, nodeup_, leaf_>> m_nodes;
+struct module_ {
+    bool operator==(const module_& b) const;
+    std::string m_name;
 };
 
+struct node_ {
+    boost::optional<module_> m_prefix;
+    boost::variant<container_, listElement_, nodeup_, leaf_> m_suffix;
 
+    node_();
+    node_(decltype(m_suffix) node);
+    node_(module_ module, decltype(m_suffix) node);
+    bool operator==(const node_& b) const;
+};
+
+struct path_ {
+    bool operator==(const path_& b) const;
+    std::vector<node_> m_nodes;
+};
+
+std::string nodeToSchemaString(decltype(path_::m_nodes)::value_type node);
+
+std::string pathToAbsoluteSchemaString(const path_& path);
 std::string pathToDataString(const path_& path);
 std::string pathToSchemaString(const path_& path);
 
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
+BOOST_FUSION_ADAPT_STRUCT(module_, m_name)
+BOOST_FUSION_ADAPT_STRUCT(node_, m_prefix, m_suffix)
 BOOST_FUSION_ADAPT_STRUCT(path_, m_nodes)

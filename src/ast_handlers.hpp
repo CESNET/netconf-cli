@@ -22,7 +22,7 @@ struct keyValue_class {
         if (parserContext.m_tmpListKeys.find(ast.first) != parserContext.m_tmpListKeys.end()) {
             _pass(context) = false;
             parserContext.m_errorMsg = "Key \"" + ast.first + "\" was entered more than once.";
-        } else if (!schema.listHasKey(parserContext.m_curPath, parserContext.m_tmpListName, ast.first)) {
+        } else if (!schema.listHasKey(parserContext.m_curPath, {parserContext.m_curModule, parserContext.m_tmpListName}, ast.first)) {
             _pass(context) = false;
             parserContext.m_errorMsg = parserContext.m_tmpListName + " is not indexed by \"" + ast.first + "\".";
         } else {
@@ -39,7 +39,21 @@ struct keyValue_class {
     }
 };
 
-struct identifier_class;
+struct node_identifier_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+
+        if (!parserContext.m_topLevelModulePresent) {
+            if (parserContext.m_errorMsg.empty())
+                parserContext.m_errorMsg = "You have to specify a top level module.";
+            _pass(context) = false;
+        }
+    }
+};
+
+struct module_identifier_class;
 
 struct listPrefix_class {
     template <typename T, typename Iterator, typename Context>
@@ -48,7 +62,7 @@ struct listPrefix_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const Schema& schema = parserContext.m_schema;
 
-        if (schema.isList(parserContext.m_curPath, ast)) {
+        if (schema.isList(parserContext.m_curPath, {parserContext.m_curModule, ast})) {
             parserContext.m_tmpListName = ast;
         } else {
             _pass(context) = false;
@@ -63,7 +77,7 @@ struct listSuffix_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const Schema& schema = parserContext.m_schema;
 
-        const auto& keysNeeded = schema.listKeys(parserContext.m_curPath, parserContext.m_tmpListName);
+        const auto& keysNeeded = schema.listKeys(parserContext.m_curPath, {parserContext.m_curModule, parserContext.m_tmpListName});
         std::set<std::string> keysSupplied;
         for (const auto& it : ast)
             keysSupplied.insert(it.first);
@@ -94,13 +108,6 @@ struct listSuffix_class {
     }
 };
 struct listElement_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.m_curPath.m_nodes.push_back(ast);
-    }
-
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
     {
@@ -119,11 +126,8 @@ struct nodeup_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
 
-        if (!parserContext.m_curPath.m_nodes.empty()) {
-            parserContext.m_curPath.m_nodes.pop_back();
-        } else {
+        if (parserContext.m_curPath.m_nodes.empty())
             _pass(context) = false;
-        }
     }
 };
 
@@ -134,11 +138,8 @@ struct container_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
 
-        if (schema.isContainer(parserContext.m_curPath, ast.m_name)) {
-            parserContext.m_curPath.m_nodes.push_back(ast);
-        } else {
+        if (!schema.isContainer(parserContext.m_curPath, {parserContext.m_curModule, ast.m_name}))
             _pass(context) = false;
-        }
     }
 };
 
@@ -149,20 +150,44 @@ struct leaf_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
 
-        if (schema.isLeaf(parserContext.m_curPath, ast.m_name)) {
-            parserContext.m_curPath.m_nodes.push_back(ast);
+        if (!schema.isLeaf(parserContext.m_curPath, {parserContext.m_curModule, ast.m_name}))
+            _pass(context) = false;
+    }
+};
+
+
+struct module_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& schema = parserContext.m_schema;
+
+        if (schema.isModule(parserContext.m_curPath, ast.m_name)) {
+            parserContext.m_curModule = ast.m_name;
+            parserContext.m_topLevelModulePresent = true;
         } else {
+            parserContext.m_errorMsg = "Invalid module name.";
             _pass(context) = false;
         }
     }
 };
 
-struct path_class {
+struct node_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const&)
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        if (ast.m_suffix.type() == typeid(nodeup_)) {
+            parserContext.m_curPath.m_nodes.pop_back();
+        } else {
+            parserContext.m_curPath.m_nodes.push_back(ast);
+            parserContext.m_curModule = boost::none;
+        }
     }
+};
 
+struct path_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
     {
@@ -176,12 +201,10 @@ struct path_class {
     }
 };
 
-struct cd_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const&)
-    {
-    }
 
+struct ls_class;
+
+struct cd_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
     {
@@ -199,10 +222,13 @@ struct presenceContainerPathHandler {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
         try {
-            container_ cont = boost::get<container_>(ast.m_path.m_nodes.back());
+            boost::optional<std::string> module;
+            if (ast.m_path.m_nodes.back().m_prefix)
+                module = ast.m_path.m_nodes.back().m_prefix.value().m_name;
+            container_ cont = boost::get<container_>(ast.m_path.m_nodes.back().m_suffix);
             path_ location = pathWithoutLastNode(parserContext.m_curPath);
 
-            if (!schema.isPresenceContainer(location, cont.m_name)) {
+            if (!schema.isPresenceContainer(location, {module, cont.m_name})) {
                 parserContext.m_errorMsg = "This container is not a presence container.";
                 _pass(context) = false;
             }
@@ -234,7 +260,7 @@ struct leaf_path_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         try {
-            auto leaf = boost::get<leaf_>(ast.m_nodes.back());
+            auto leaf = boost::get<leaf_>(ast.m_nodes.back().m_suffix);
         } catch (boost::bad_get&) {
             parserContext.m_errorMsg = "This is not a path to leaf.";
             _pass(context) = false;
@@ -249,9 +275,9 @@ struct leaf_data_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
         if (parserContext.m_errorMsg.empty()) {
-            leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+            leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back().m_suffix);
             path_ location = pathWithoutLastNode(parserContext.m_curPath);
-            parserContext.m_errorMsg = "Expected " + leafDataTypeToString(schema.leafType(location, leaf.m_name)) + " here:";
+            parserContext.m_errorMsg = "Expected " + leafDataTypeToString(schema.leafType(location, {parserContext.m_curModule, leaf.m_name})) + " here:";
             return x3::error_handler_result::fail;
         }
         return x3::error_handler_result::rethrow;
@@ -271,11 +297,14 @@ struct leaf_data_base_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
+        boost::optional<std::string> module;
+        if (parserContext.m_curPath.m_nodes.back().m_prefix)
+            module = parserContext.m_curPath.m_nodes.back().m_prefix.value().m_name;
 
-        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back().m_suffix);
         path_ location = pathWithoutLastNode(parserContext.m_curPath);
 
-        if (schema.leafType(location, leaf.m_name) != m_type) {
+        if (schema.leafType(location, {module, leaf.m_name}) != m_type) {
             _pass(context) = false;
         }
     }
@@ -293,11 +322,14 @@ struct leaf_data_enum_class : leaf_data_base_class {
         leaf_data_base_class::on_success(start, end, ast, context);
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
+        boost::optional<std::string> module;
+        if (parserContext.m_curPath.m_nodes.back().m_prefix)
+            module = parserContext.m_curPath.m_nodes.back().m_prefix.value().m_name;
 
-        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back());
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back().m_suffix);
         path_ location = pathWithoutLastNode(parserContext.m_curPath);
 
-        if (!schema.leafEnumHasValue(location, leaf.m_name, ast.m_value)) {
+        if (!schema.leafEnumHasValue(location, {module, leaf.m_name}, ast.m_value)) {
             _pass(context) = false;
         }
     }
