@@ -35,15 +35,26 @@ void Interpreter::operator()(const cd_& cd) const
 
 void Interpreter::operator()(const create_& create) const
 {
-    std::cout << "Presence container " << boost::get<container_>(create.m_path.m_nodes.back()).m_name << " created." << std::endl;
+    auto cont = boost::get<container_>(create.m_path.m_nodes.back().m_suffix);
+    std::cout << "Presence container " << cont.m_name << " created." << std::endl;
 }
 
 void Interpreter::operator()(const delete_& delet) const
 {
-    std::cout << "Presence container " << boost::get<container_>(delet.m_path.m_nodes.back()).m_name << " deleted." << std::endl;
+    auto cont = boost::get<container_>(delet.m_path.m_nodes.back().m_suffix);
+    std::cout << "Presence container " << cont.m_name << " deleted." << std::endl;
 }
 
-Interpreter::Interpreter(Parser& parser, Schema&)
+void Interpreter::operator()(const ls_&) const
+{
+    std::cout << "Possible nodes:" << std::endl;
+
+    for (const auto& it : m_parser.availableNodes())
+        std::cout << it << std::endl;
+}
+
+Interpreter::Interpreter(Parser& parser, Schema& schema)
     : m_parser(parser)
+    , m_schema(schema)
 {
 }

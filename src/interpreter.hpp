@@ -18,7 +18,9 @@ struct Interpreter : boost::static_visitor<void> {
     void operator()(const cd_&) const;
     void operator()(const create_&) const;
     void operator()(const delete_&) const;
+    void operator()(const ls_&) const;
 
 private:
     Parser& m_parser;
+    Schema& m_schema;
 };
