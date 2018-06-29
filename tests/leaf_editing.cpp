@@ -14,16 +14,17 @@
 TEST_CASE("leaf editing")
 {
     auto schema = std::make_shared<StaticSchema>();
-    schema->addContainer("", "contA");
-    schema->addLeaf("", "leafString", yang::LeafDataTypes::String);
-    schema->addLeaf("", "leafDecimal", yang::LeafDataTypes::Decimal);
-    schema->addLeaf("", "leafBool", yang::LeafDataTypes::Bool);
-    schema->addLeaf("", "leafInt", yang::LeafDataTypes::Int);
-    schema->addLeaf("", "leafUint", yang::LeafDataTypes::Uint);
-    schema->addLeafEnum("", "leafEnum", {"lol", "data", "coze"});
-    schema->addLeaf("contA", "leafInCont", yang::LeafDataTypes::String);
-    schema->addList("", "list", {"number"});
-    schema->addLeaf("list", "leafInList", yang::LeafDataTypes::String);
+    schema->addModule("mod");
+    schema->addContainer("", "mod:contA");
+    schema->addLeaf("", "mod:leafString", yang::LeafDataTypes::String);
+    schema->addLeaf("", "mod:leafDecimal", yang::LeafDataTypes::Decimal);
+    schema->addLeaf("", "mod:leafBool", yang::LeafDataTypes::Bool);
+    schema->addLeaf("", "mod:leafInt", yang::LeafDataTypes::Int);
+    schema->addLeaf("", "mod:leafUint", yang::LeafDataTypes::Uint);
+    schema->addLeafEnum("", "mod:leafEnum", {"lol", "data", "coze"});
+    schema->addLeaf("mod:contA", "mod:leafInCont", yang::LeafDataTypes::String);
+    schema->addList("", "mod:list", {"number"});
+    schema->addLeaf("mod:list", "mod:leafInList", yang::LeafDataTypes::String);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -34,26 +35,26 @@ TEST_CASE("leaf editing")
 
         SECTION("set leafString some_data")
         {
-            input = "set leafString some_data";
-            expected.m_path.m_nodes.push_back(leaf_("leafString"));
+            input = "set mod:leafString some_data";
+            expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafString")});
             expected.m_data = std::string("some_data");
         }
 
-        SECTION("set contA/leafInCont more_data")
+        SECTION("set mod:contA/leafInCont more_data")
         {
-            input = "set contA/leafInCont more_data";
-            expected.m_path.m_nodes.push_back(container_("contA"));
-            expected.m_path.m_nodes.push_back(leaf_("leafInCont"));
+            input = "set mod:contA/leafInCont more_data";
+            expected.m_path.m_nodes.push_back(node_{module_{"mod"}, container_("contA")});
+            expected.m_path.m_nodes.push_back(node_{leaf_("leafInCont")});
             expected.m_data = std::string("more_data");
         }
 
         SECTION("set list[number=1]/leafInList another_data")
         {
-            input = "set list[number=1]/leafInList another_data";
+            input = "set mod:list[number=1]/leafInList another_data";
             auto keys = std::map<std::string, std::string>{
                 {"number", "1"}};
-            expected.m_path.m_nodes.push_back(listElement_("list", keys));
-            expected.m_path.m_nodes.push_back(leaf_("leafInList"));
+            expected.m_path.m_nodes.push_back(node_{module_{"mod"}, listElement_("list", keys)});
+            expected.m_path.m_nodes.push_back(node_{leaf_("leafInList")});
             expected.m_data = std::string("another_data");
         }
 
@@ -61,36 +62,36 @@ TEST_CASE("leaf editing")
         {
             SECTION("string")
             {
-                input = "set leafString somedata";
-                expected.m_path.m_nodes.push_back(leaf_("leafString"));
+                input = "set mod:leafString somedata";
+                expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafString")});
                 expected.m_data = std::string("somedata");
             }
 
             SECTION("int")
             {
-                input = "set leafInt 2";
-                expected.m_path.m_nodes.push_back(leaf_("leafInt"));
+                input = "set mod:leafInt 2";
+                expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafInt")});
                 expected.m_data = 2;
             }
 
             SECTION("decimal")
             {
-                input = "set leafDecimal 3.14159";
-                expected.m_path.m_nodes.push_back(leaf_("leafDecimal"));
+                input = "set mod:leafDecimal 3.14159";
+                expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafDecimal")});
                 expected.m_data = 3.14159;
             }
 
             SECTION("enum")
             {
-                input = "set leafEnum coze";
-                expected.m_path.m_nodes.push_back(leaf_("leafEnum"));
+                input = "set mod:leafEnum coze";
+                expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafEnum")});
                 expected.m_data = enum_("coze");
             }
 
             SECTION("bool")
             {
-                input = "set leafBool true";
-                expected.m_path.m_nodes.push_back(leaf_("leafBool"));
+                input = "set mod:leafBool true";
+                expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafBool")});
                 expected.m_data = true;
             }
         }

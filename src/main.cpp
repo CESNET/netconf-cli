@@ -46,24 +46,18 @@ int main(int argc, char* argv[])
                                true);
     std::cout << "Welcome to netconf-cli" << std::endl;
 
-    auto schema = std::make_shared<StaticSchema>();
-    schema->addContainer("", "a", yang::ContainerTraits::Presence);
-    schema->addContainer("", "b");
-    schema->addLeaf("", "leafString", yang::LeafDataTypes::String);
-    schema->addLeaf("", "leafDecimal", yang::LeafDataTypes::Decimal);
-    schema->addLeaf("", "leafBool", yang::LeafDataTypes::Bool);
-    schema->addLeaf("", "leafInt", yang::LeafDataTypes::Int);
-    schema->addLeaf("", "leafUint", yang::LeafDataTypes::Uint);
-    schema->addLeafEnum("", "leafEnum", {"lol", "data", "coze"});
-    schema->addContainer("a", "a2");
-    schema->addLeaf("a", "leafa", yang::LeafDataTypes::String);
-    schema->addContainer("b", "b2", yang::ContainerTraits::Presence);
-    schema->addContainer("a/a2", "a3", yang::ContainerTraits::Presence);
-    schema->addContainer("b/b2", "b3");
-    schema->addList("", "list", {"number"});
-    schema->addContainer("list", "contInList", yang::ContainerTraits::Presence);
-    schema->addList("", "twoKeyList", {"number", "name"});
-    Parser parser(schema);
+    auto yangschema = std::make_shared<StaticSchema>();
+    yangschema->addModule("mod");
+    yangschema->addContainer("", "mod:a", yang::ContainerTraits::Presence);
+    yangschema->addContainer("", "mod:b");
+    yangschema->addContainer("mod:a", "mod:a2", yang::ContainerTraits::Presence);
+    yangschema->addContainer("mod:b", "mod:b2");
+    yangschema->addContainer("mod:a/mod:a2", "mod:a3");
+    yangschema->addContainer("mod:b/mod:b2", "mod:b3");
+    yangschema->addList("", "mod:list", {"number"});
+    yangschema->addContainer("mod:list", "contInList");
+    yangschema->addList("", "mod:twoKeyList", {"number", "name"});
+    Parser parser(yangschema);
 
     while (true) {
         std::cout << parser.currentNode() << "> ";
@@ -74,7 +68,7 @@ int main(int argc, char* argv[])
 
         try {
             command_ cmd = parser.parseCommand(input, std::cout);
-            boost::apply_visitor(Interpreter(parser, *schema), cmd);
+            boost::apply_visitor(Interpreter(parser, *yangschema), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         }

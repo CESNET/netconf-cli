@@ -13,13 +13,16 @@
 
 
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
-x3::rule<identifier_class, std::string> const identifier = "identifier";
+x3::rule<node_identifier_class, std::string> const node_identifier = "node_identifier";
+x3::rule<module_identifier_class, std::string> const module_identifier = "module_identifier";
 x3::rule<listPrefix_class, std::string> const listPrefix = "listPrefix";
 x3::rule<listSuffix_class, std::vector<keyValue_>> const listSuffix = "listSuffix";
 x3::rule<listElement_class, listElement_> const listElement = "listElement";
 x3::rule<nodeup_class, nodeup_> const nodeup = "nodeup";
 x3::rule<container_class, container_> const container = "container";
 x3::rule<leaf_class, leaf_> const leaf = "leaf";
+x3::rule<module_class, module_> const module = "module";
+x3::rule<node_class, node_> const node = "node";
 x3::rule<path_class, path_> const path = "path";
 x3::rule<leaf_path_class, path_> const leafPath = "leafPath";
 
@@ -45,13 +48,18 @@ x3::rule<command_class, command_> const command = "command";
 auto const keyValue_def =
         lexeme[+alnum > '=' > +alnum];
 
-auto const identifier_def =
+auto const module_identifier_def =
+        lexeme[
+                ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
+        ];
+
+auto const node_identifier_def =
         lexeme[
                 ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
         ];
 
 auto const listPrefix_def =
-        identifier >> '[';
+        node_identifier >> '[';
 
 // even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
 auto const listSuffix_def =
@@ -64,14 +72,20 @@ auto const nodeup_def =
         lit("..") > x3::attr(nodeup_());
 
 auto const container_def =
-        identifier;
+        node_identifier;
+
+auto const module_def =
+        module_identifier >> x3::no_skip[':'] >> !x3::no_skip[space];
 
 auto const leaf_def =
-        identifier;
+        node_identifier;
 
 // leaf cannot be in the middle of a path, however, I need the grammar's attribute to be a vector of variants
+auto const node_def =
+        -(module) >> x3::expect[container | listElement | nodeup | leaf];
+
 auto const path_def =
-        (x3::expect[container | listElement | nodeup | leaf]) % '/';
+        node % '/';
 
 auto const leafPath_def =
         path;
@@ -131,7 +145,8 @@ auto const command_def =
 #endif
 
 BOOST_SPIRIT_DEFINE(keyValue)
-BOOST_SPIRIT_DEFINE(identifier)
+BOOST_SPIRIT_DEFINE(node_identifier)
+BOOST_SPIRIT_DEFINE(module_identifier)
 BOOST_SPIRIT_DEFINE(listPrefix)
 BOOST_SPIRIT_DEFINE(listSuffix)
 BOOST_SPIRIT_DEFINE(listElement)
@@ -139,7 +154,9 @@ BOOST_SPIRIT_DEFINE(nodeup)
 BOOST_SPIRIT_DEFINE(container)
 BOOST_SPIRIT_DEFINE(leaf)
 BOOST_SPIRIT_DEFINE(leafPath)
+BOOST_SPIRIT_DEFINE(node)
 BOOST_SPIRIT_DEFINE(path)
+BOOST_SPIRIT_DEFINE(module)
 BOOST_SPIRIT_DEFINE(leaf_data)
 BOOST_SPIRIT_DEFINE(leaf_data_enum)
 BOOST_SPIRIT_DEFINE(leaf_data_decimal)
