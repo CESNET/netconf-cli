@@ -14,18 +14,22 @@
 TEST_CASE("cd")
 {
     auto schema = std::make_shared<StaticSchema>();
-    schema->addContainer("", "a");
-    schema->addContainer("", "b");
-    schema->addContainer("a", "a2");
-    schema->addContainer("b", "b2");
-    schema->addContainer("a/a2", "a3");
-    schema->addContainer("b/b2", "b3");
-    schema->addList("", "list", {"number"});
-    schema->addContainer("list", "contInList");
-    schema->addList("", "twoKeyList", {"number", "name"});
+    schema->addModule("example");
+    schema->addModule("second");
+    schema->addContainer("", "example:a");
+    schema->addContainer("", "second:a");
+    schema->addContainer("", "example:b");
+    schema->addContainer("example:a", "example:a2");
+    schema->addContainer("example:b", "example:b2");
+    schema->addContainer("example:a/example:a2", "example:a3");
+    schema->addContainer("example:b/example:b2", "example:b3");
+    schema->addList("", "example:list", {"number"});
+    schema->addContainer("example:list", "example:contInList");
+    schema->addList("", "example:twoKeyList", {"number", "name"});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
+
 
     SECTION("valid input")
     {
@@ -33,95 +37,108 @@ TEST_CASE("cd")
 
         SECTION("container")
         {
-            SECTION("a")
+            SECTION("example:a")
             {
-                input = "cd a";
-                expected.m_path.m_nodes.push_back(container_("a"));
+                input = "cd example:a";
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("a")));
             }
 
-            SECTION("b")
+            SECTION("second:a")
             {
-                input = "cd b";
-                expected.m_path.m_nodes.push_back(container_("b"));
+                input = "cd second:a";
+                expected.m_path.m_nodes.push_back(node_(module_{"second"}, container_("a")));
             }
 
-            SECTION("a/a2")
+            SECTION("example:b")
             {
-                input = "cd a/a2";
-                expected.m_path.m_nodes.push_back(container_("a"));
-                expected.m_path.m_nodes.push_back(container_("a2"));
+                input = "cd example:b";
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("b")));
             }
 
-            SECTION("b/b2")
+            SECTION("example:a/a2")
             {
-                input = "cd b/b2";
-                expected.m_path.m_nodes.push_back(container_("b"));
-                expected.m_path.m_nodes.push_back(container_("b2"));
+                input = "cd example:a/a2";
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("a")));
+                expected.m_path.m_nodes.push_back(node_(container_("a2")));
+            }
+
+            SECTION("example:a/example:a2")
+            {
+                input = "cd example:a/example:a2";
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("a")));
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("a2")));
+            }
+
+            SECTION("example:b/b2")
+            {
+                input = "cd example:b/b2";
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("b")));
+                expected.m_path.m_nodes.push_back(node_(container_("b2")));
             }
         }
 
         SECTION("list elements")
         {
-            SECTION("list[number=1]")
+            SECTION("example:list[number=1]")
             {
-                input = "cd list[number=1]";
+                input = "cd example:list[number=1]";
                 auto keys = std::map<std::string, std::string>{
                     {"number", "1"}};
-                expected.m_path.m_nodes.push_back(listElement_("list", keys));
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, listElement_("list", keys)));
             }
 
-            SECTION("list[number=1]/contInList")
+            SECTION("example:list[number=1]/contInList")
             {
-                input = "cd list[number=1]/contInList";
+                input = "cd example:list[number=1]/contInList";
                 auto keys = std::map<std::string, std::string>{
                     {"number", "1"}};
-                expected.m_path.m_nodes.push_back(listElement_("list", keys));
-                expected.m_path.m_nodes.push_back(container_("contInList"));
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, listElement_("list", keys)));
+                expected.m_path.m_nodes.push_back(node_(container_("contInList")));
             }
 
-            SECTION("twoKeyList[number=4 name=abcd]")
+            SECTION("example:twoKeyList[number=4 name=abcd]")
             {
-                input = "cd twoKeyList[number=4 name=abcd]";
+                input = "cd example:twoKeyList[number=4 name=abcd]";
                 auto keys = std::map<std::string, std::string>{
                     {"number", "4"},
                     {"name", "abcd"}};
-                expected.m_path.m_nodes.push_back(listElement_("twoKeyList", keys));
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, listElement_("twoKeyList", keys)));
             }
         }
 
         SECTION("whitespace handling")
         {
-            SECTION("  cd   a     ")
+            SECTION("  cd   example:a     ")
             {
-                input = "  cd   a     ";
-                expected.m_path.m_nodes.push_back(container_("a"));
+                input = "  cd   example:a     ";
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("a")));
             }
         }
 
         SECTION("moving up")
         {
-            SECTION("a/..")
+            SECTION("example:a/..")
             {
-                input = "cd a/..";
-                expected.m_path.m_nodes.push_back(container_("a"));
-                expected.m_path.m_nodes.push_back(nodeup_());
+                input = "cd example:a/..";
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("a")));
+                expected.m_path.m_nodes.push_back(node_(nodeup_()));
             }
 
-            SECTION("a/../a")
+            SECTION("example:a/../example:a")
             {
-                input = "cd a/../a";
-                expected.m_path.m_nodes.push_back(container_("a"));
-                expected.m_path.m_nodes.push_back(nodeup_());
-                expected.m_path.m_nodes.push_back(container_("a"));
+                input = "cd example:a/../example:a";
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("a")));
+                expected.m_path.m_nodes.push_back(node_(nodeup_()));
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("a")));
             }
 
-            SECTION("a/../a/a2")
+            SECTION("example:a/../example:a/a2")
             {
-                input = "cd a/../a/a2";
-                expected.m_path.m_nodes.push_back(container_("a"));
-                expected.m_path.m_nodes.push_back(nodeup_());
-                expected.m_path.m_nodes.push_back(container_("a"));
-                expected.m_path.m_nodes.push_back(container_("a2"));
+                input = "cd example:a/../example:a/a2";
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("a")));
+                expected.m_path.m_nodes.push_back(node_(nodeup_()));
+                expected.m_path.m_nodes.push_back(node_(module_{"example"}, container_("a")));
+                expected.m_path.m_nodes.push_back(node_(container_("a2")));
             }
         }
 
@@ -133,65 +150,124 @@ TEST_CASE("cd")
     {
         SECTION("missing space between a command and its arguments")
         {
-            SECTION("cda")
+            SECTION("cdexample:a")
             {
-                input = "cda";
+                input = "cdexample:a";
             }
         }
-        SECTION("garbage arguments handling")
+
+        SECTION("whitespace between module and nodename")
         {
-            SECTION("cd a garbage")
+            SECTION("cd example: a")
             {
-                input = "cd a garbage";
-            }
-            SECTION("cd a/a2 garbage")
-            {
-                input = "cd a/a2 garbage";
-            }
-        }
-        SECTION("invalid identifiers")
-        {
-            SECTION("nonexistent")
-            {
-                input = "cd nonexistent";
+                input = "cd example: a";
             }
 
-            SECTION("nonexistent/lol")
+            SECTION("cd example : a")
             {
-                input = "cd nonexistent/lol";
+                input = "cd example : a";
+            }
+
+            SECTION("cd example :a")
+            {
+                input = "cd example :a";
+            }
+        }
+
+        SECTION("entering modules")
+        {
+            SECTION("cd example")
+            {
+                input = "cd example";
+            }
+
+            SECTION("cd example:")
+            {
+                input = "cd example:";
+            }
+        }
+
+        SECTION("garbage arguments handling")
+        {
+            SECTION("cd example:a garbage")
+            {
+                input = "cd example:a garbage";
+            }
+            SECTION("cd example:a/a2 garbage")
+            {
+                input = "cd example:a/a2 garbage";
+            }
+        }
+
+        SECTION("invalid node identifiers")
+        {
+            SECTION("example:nonexistent")
+            {
+                input = "cd example:nonexistent";
+            }
+
+            SECTION("example:nonexistent/lol")
+            {
+                input = "cd example:nonexistent/lol";
+            }
+        }
+
+        SECTION("invalid module identifiers")
+        {
+            SECTION("elpmaxe:nonexistent")
+            {
+                input = "cd elpmaxe:nonexistent";
+            }
+
+            SECTION("elpmaxe:nonexistent/example:lol")
+            {
+                input = "cd elpmaxe:nonexistent/example:lol";
+            }
+        }
+
+        SECTION("no top-level module")
+        {
+            SECTION("cd a")
+            {
+                input = "cd a";
+            }
+
+            SECTION("cd example:a/../a")
+            {
+                input = "cd example:a/../a";
             }
         }
 
         SECTION("invalid list key identifiers")
         {
-            SECTION("list")
+            SECTION("example:list")
             {
-                input = "cd list";
+                input = "cd example:list";
             }
 
-            SECTION("list[]")
+            SECTION("example:list[]")
             {
-                input = "cd list[]";
+                input = "cd example:list[]";
             }
 
-            SECTION("twoKeyList[invalidKey=4]")
+            SECTION("example:twoKeyList[invalidKey=4]")
             {
-                input = "cd twoKeyList[invalidKey=4]";
+                input = "cd example:twoKeyList[invalidKey=4]";
             }
 
-            SECTION("twoKeyList[number=4 number=5]")
+            SECTION("example:twoKeyList[number=4 number=5]")
             {
-                input = "cd twoKeyList[number=4 number=5]";
+                input = "cd example:twoKeyList[number=4 number=5]";
             }
 
-            SECTION("twoKeyList[number=4 name=lol number=7]")
+            SECTION("example:twoKeyList[number=4 name=lol number=7]")
             {
-                input = "cd twoKeyList[number=4 name=lol number=7]";
+                input = "cd example:twoKeyList[number=4 name=lol number=7]";
             }
 
-            SECTION("twoKeyList[number=4]")
+            SECTION("example:twoKeyList[number=4]")
             {
-                input = "cd twoKeyList[number=4]";
+                input = "cd example:twoKeyList[number=4]";
             }
         }
         REQUIRE_THROWS(parser.parseCommand(input, errorStream));

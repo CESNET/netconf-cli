@@ -15,13 +15,14 @@
 TEST_CASE("presence containers")
 {
     auto schema = std::make_shared<StaticSchema>();
-    schema->addContainer("", "a", yang::ContainerTraits::Presence);
-    schema->addContainer("", "b");
-    schema->addContainer("a", "a2");
-    schema->addContainer("a/a2", "a3", yang::ContainerTraits::Presence);
-    schema->addContainer("b", "b2", yang::ContainerTraits::Presence);
-    schema->addList("", "list", {"quote"});
-    schema->addContainer("list", "contInList", yang::ContainerTraits::Presence);
+    schema->addModule("mod");
+    schema->addContainer("", "mod:a", yang::ContainerTraits::Presence);
+    schema->addContainer("", "mod:b");
+    schema->addContainer("mod:a", "mod:a2");
+    schema->addContainer("mod:a/mod:a2", "mod:a3", yang::ContainerTraits::Presence);
+    schema->addContainer("mod:b", "mod:b2", yang::ContainerTraits::Presence);
+    schema->addList("", "mod:list", {"quote"});
+    schema->addContainer("mod:list", "mod:contInList", yang::ContainerTraits::Presence);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -30,30 +31,30 @@ TEST_CASE("presence containers")
     {
         path_ expectedPath;
 
-        SECTION("a")
+        SECTION("mod:a")
         {
-            input = "a";
-            expectedPath.m_nodes = {container_("a")};
+            input = "mod:a";
+            expectedPath.m_nodes = {{module_{"mod"}, {container_("a")}}};
         }
 
-        SECTION("b/b2")
+        SECTION("mod:b/b2")
         {
-            input = "b/b2";
-            expectedPath.m_nodes = {container_("b"), container_("b2")};
+            input = "mod:b/b2";
+            expectedPath.m_nodes = {{{module_{"mod"}}, container_("b")}, {container_("b2")}};
         }
 
-        SECTION("a/a2/a3")
+        SECTION("mod:a/a2/a3")
         {
-            input = "a/a2/a3";
-            expectedPath.m_nodes = {container_("a"), container_("a2"), container_("a3")};
+            input = "mod:a/a2/a3";
+            expectedPath.m_nodes = {{{module_{"mod"}}, container_("a")}, {container_("a2")}, {container_("a3")}};
         }
 
-        SECTION("list[quote=lol]/contInList")
+        SECTION("mod:list[quote=lol]/contInList")
         {
-            input = "list[quote=lol]/contInList";
+            input = "mod:list[quote=lol]/contInList";
             auto keys = std::map<std::string, std::string>{
                 {"quote", "lol"}};
-            expectedPath.m_nodes = {listElement_("list", keys), container_("contInList")};
+            expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
         }
 
         create_ expectedCreate;

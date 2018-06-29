@@ -16,27 +16,34 @@ StaticSchema::StaticSchema()
     m_nodes.emplace("", std::unordered_map<std::string, NodeType>());
 }
 
+
 const std::unordered_map<std::string, NodeType>& StaticSchema::children(const std::string& name) const
 {
     return m_nodes.at(name);
 }
 
-bool StaticSchema::nodeExists(const std::string& location, const std::string& name) const
+bool StaticSchema::nodeExists(const std::string& location, const std::string& node) const
 {
-    if (name.empty())
+    if (node.empty())
         return true;
     const auto& childrenRef = children(location);
 
-    return childrenRef.find(name) != childrenRef.end();
+    return childrenRef.find(node) != childrenRef.end();
 }
 
-bool StaticSchema::isContainer(const path_& location, const std::string& name) const
+bool StaticSchema::isModule(const path_&, const std::string& name) const
 {
-    std::string locationString = pathToSchemaString(location);
-    if (!nodeExists(locationString, name))
+    return m_modules.find(name) != m_modules.end();
+}
+
+bool StaticSchema::isContainer(const path_& location, const ModuleNodePair& node) const
+{
+    std::string locationString = pathToAbsoluteSchemaString(location);
+    auto fullName = fullNodeName(location, node);
+    if (!nodeExists(locationString, fullName))
         return false;
 
-    return children(locationString).at(name).type() == typeid(yang::container);
+    return children(locationString).at(fullName).type() == typeid(yang::container);
 }
 
 void StaticSchema::addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence)
@@ -49,32 +56,33 @@ void StaticSchema::addContainer(const std::string& location, const std::string& 
 }
 
 
-bool StaticSchema::listHasKey(const path_& location, const std::string& name, const std::string& key) const
+bool StaticSchema::listHasKey(const path_& location, const ModuleNodePair& node, const std::string& key) const
 {
-    std::string locationString = pathToSchemaString(location);
-    assert(isList(location, name));
+    std::string locationString = pathToAbsoluteSchemaString(location);
+    assert(isList(location, node));
 
-    const auto& child = children(locationString).at(name);
+    const auto& child = children(locationString).at(fullNodeName(location, node));
     const auto& list = boost::get<yang::list>(child);
     return list.m_keys.find(key) != list.m_keys.end();
 }
 
-const std::set<std::string>& StaticSchema::listKeys(const path_& location, const std::string& name) const
+const std::set<std::string>& StaticSchema::listKeys(const path_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToSchemaString(location);
-    assert(isList(location, name));
+    std::string locationString = pathToAbsoluteSchemaString(location);
+    assert(isList(location, node));
 
-    const auto& child = children(locationString).at(name);
+    const auto& child = children(locationString).at(fullNodeName(location, node));
     const auto& list = boost::get<yang::list>(child);
     return list.m_keys;
 }
 
-bool StaticSchema::isList(const path_& location, const std::string& name) const
+bool StaticSchema::isList(const path_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToSchemaString(location);
-    if (!nodeExists(locationString, name))
+    std::string locationString = pathToAbsoluteSchemaString(location);
+    auto fullName = fullNodeName(location, node);
+    if (!nodeExists(locationString, fullName))
         return false;
-    const auto& child = children(locationString).at(name);
+    const auto& child = children(locationString).at(fullName);
     if (child.type() != typeid(yang::list))
         return false;
 
@@ -88,12 +96,12 @@ void StaticSchema::addList(const std::string& location, const std::string& name,
     m_nodes.emplace(name, std::unordered_map<std::string, NodeType>());
 }
 
-bool StaticSchema::isPresenceContainer(const path_& location, const std::string& name) const
+bool StaticSchema::isPresenceContainer(const path_& location, const ModuleNodePair& node) const
 {
-    if (!isContainer(location, name))
+    if (!isContainer(location, node))
         return false;
-    std::string locationString = pathToSchemaString(location);
-    return boost::get<yang::container>(children(locationString).at(name)).m_presence == yang::ContainerTraits::Presence;
+    std::string locationString = pathToAbsoluteSchemaString(location);
+    return boost::get<yang::container>(children(locationString).at(fullNodeName(location, node))).m_presence == yang::ContainerTraits::Presence;
 }
 
 void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type)
@@ -106,27 +114,47 @@ void StaticSchema::addLeafEnum(const std::string& location, const std::string& n
     m_nodes.at(location).emplace(name, yang::leaf{yang::LeafDataTypes::Enum, enumValues});
 }
 
-bool StaticSchema::leafEnumHasValue(const path_& location, const std::string& name, const std::string& value) const
+void StaticSchema::addModule(const std::string& name)
 {
-    std::string locationString = pathToSchemaString(location);
-    assert(isLeaf(location, name));
+    m_modules.emplace(name);
+}
 
-    const auto& child = children(locationString).at(name);
+
+bool StaticSchema::leafEnumHasValue(const path_& location, const ModuleNodePair& node, const std::string& value) const
+{
+    std::string locationString = pathToAbsoluteSchemaString(location);
+    assert(isLeaf(location, node));
+
+    const auto& child = children(locationString).at(fullNodeName(location, node));
     const auto& list = boost::get<yang::leaf>(child);
     return list.m_enumValues.find(value) != list.m_enumValues.end();
 }
 
-bool StaticSchema::isLeaf(const path_& location, const std::string& name) const
+bool StaticSchema::isLeaf(const path_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToSchemaString(location);
-    if (!nodeExists(locationString, name))
+    std::string locationString = pathToAbsoluteSchemaString(location);
+    auto fullName = fullNodeName(location, node);
+    if (!nodeExists(locationString, fullName))
         return false;
 
-    return children(locationString).at(name).type() == typeid(yang::leaf);
+    return children(locationString).at(fullName).type() == typeid(yang::leaf);
 }
 
-yang::LeafDataTypes StaticSchema::leafType(const path_& location, const std::string& name) const
+yang::LeafDataTypes StaticSchema::leafType(const path_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToSchemaString(location);
-    return boost::get<yang::leaf>(children(locationString).at(name)).m_type;
+    std::string locationString = pathToAbsoluteSchemaString(location);
+    return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
+}
+
+std::set<std::string> StaticSchema::childNodes(const path_& path) const
+{
+    std::string locationString = pathToAbsoluteSchemaString(path);
+    std::set<std::string> res;
+
+    auto childrenRef = children(locationString);
+
+    std::transform(childrenRef.begin(), childrenRef.end(),
+                std::inserter(res, res.end()),
+                [] (auto it) { return it.first; });
+    return res;
 }
