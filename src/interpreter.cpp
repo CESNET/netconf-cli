@@ -45,6 +45,14 @@ void Interpreter::operator()(const delete_& delet) const
     std::cout << "Presence container " << cont.m_name << " deleted." << std::endl;
 }
 
+void Interpreter::operator()(const ls_& ls) const
+{
+    std::cout << "Possible nodes:" << std::endl;
+
+    for (const auto& it : m_parser.availableNodes(ls.m_path))
+        std::cout << it << std::endl;
+}
+
 Interpreter::Interpreter(Parser& parser, Schema&)
     : m_parser(parser)
 {
