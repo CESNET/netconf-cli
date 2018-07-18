@@ -245,6 +245,27 @@
       "revId": "fef11d58ebdb2f042e7a03e36d0d3138c7e3f989",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4701aee8_90394f14",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-07-18T15:03:28Z",
+      "side": 1,
+      "message": "Porad chybi:\n\n  cd example\n  cd example:",
+      "parentUuid": "c20f9013_781a710c",
+      "revId": "fef11d58ebdb2f042e7a03e36d0d3138c7e3f989",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
