@@ -14,6 +14,7 @@
 #include "interpreter.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
+#include "yang_schema.hpp"
 
 
 static const char usage[] =
