@@ -28,6 +28,7 @@ enum class LeafDataTypes {
     Int,
     Uint,
     Enum,
+    Unknown,
 };
 
 struct container {
@@ -73,7 +74,7 @@ public:
     virtual bool leafEnumHasValue(const path_& location, const ModuleNodePair& node, const std::string& value) const = 0;
     virtual bool listHasKey(const path_& location, const ModuleNodePair& node, const std::string& key) const = 0;
     virtual bool nodeExists(const std::string& location, const std::string& node) const = 0;
-    virtual const std::set<std::string>& listKeys(const path_& location, const ModuleNodePair& node) const = 0;
+    virtual const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const = 0;
     virtual std::set<std::string> childNodes(const path_& path) const = 0;
 

@@ -9,6 +9,8 @@
 #pragma once
 
 #include <boost/variant.hpp>
+#include <libyang/Libyang.hpp>
+#include <libyang/Tree_Schema.hpp>
 #include <set>
 #include <stdexcept>
 #include <unordered_map>
@@ -16,18 +18,19 @@
 #include "schema.hpp"
 
 
-/*! \class StaticSchema
- *     \brief Static schema, used mainly for testing
+/*! \class YangSchema
+ *     \brief A schema class, which uses libyang for queries.
  *         */
-using ModuleNodePair = std::pair<boost::optional<std::string>, std::string>;
-
-class StaticSchema : public Schema {
+#define OVERDRIVE override
+class YangSchema : public Schema {
 public:
-    StaticSchema();
+    YangSchema();
+    YangSchema(const char* filename);
+    ~YangSchema() override {}
 
     bool isContainer(const path_& location, const ModuleNodePair& node) const override;
-    bool isModule(const path_& location, const std::string& name) const override;
     bool isLeaf(const path_& location, const ModuleNodePair& node) const override;
+    bool isModule(const path_& location, const std::string& name) const override;
     bool isList(const path_& location, const ModuleNodePair& node) const override;
     bool isPresenceContainer(const path_& location, const ModuleNodePair& node) const override;
     bool leafEnumHasValue(const path_& location, const ModuleNodePair& node, const std::string& value) const override;
@@ -37,15 +40,10 @@ public:
     yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const override;
     std::set<std::string> childNodes(const path_& path) const override;
 
-    void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
-    void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);
-    void addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues);
-    void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
-    void addModule(const std::string& name);
-
 private:
-    const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
-
-    std::unordered_map<std::string, std::unordered_map<std::string, NodeType>> m_nodes;
-    std::set<std::string> m_modules;
+    std::set<std::string> modules() const;
+    bool nodeExists(const path_& location, const ModuleNodePair& node) const;
+    S_Set getNodeSet(const path_& location, const ModuleNodePair& node) const;
+    S_Context m_context;
+    S_Module m_moduleTEMP;
 };
