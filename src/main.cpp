@@ -14,6 +14,7 @@
 #include "interpreter.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
+#include "yang_schema.hpp"
 
 
 static const char usage[] =
@@ -47,6 +48,7 @@ int main(int argc, char* argv[])
     std::cout << "Welcome to netconf-cli" << std::endl;
 
     auto yangschema = std::make_shared<StaticSchema>();
+    auto lyschema = std::make_shared<YangSchema>("example-schema.yang");
     yangschema->addModule("mod");
     yangschema->addContainer("", "mod:a", yang::ContainerTraits::Presence);
     yangschema->addContainer("", "mod:b");
@@ -57,7 +59,7 @@ int main(int argc, char* argv[])
     yangschema->addList("", "mod:list", {"number"});
     yangschema->addContainer("mod:list", "contInList");
     yangschema->addList("", "mod:twoKeyList", {"number", "name"});
-    Parser parser(yangschema);
+    Parser parser(lyschema);
 
     while (true) {
         std::cout << parser.currentNode() << "> ";
@@ -68,7 +70,7 @@ int main(int argc, char* argv[])
 
         try {
             command_ cmd = parser.parseCommand(input, std::cout);
-            boost::apply_visitor(Interpreter(parser, *yangschema), cmd);
+            boost::apply_visitor(Interpreter(parser, *lyschema), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         }
