@@ -57,6 +57,14 @@ pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=0.15.111)
 # we don't need filename tracking, and we prefer to use header-only Boost
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
 
+set(yangschema_SRCS
+    src/yang_schema.cpp)
+
+add_library(yangschema STATIC ${yangschema_SRCS})
+target_link_libraries(yangschema ${LIBYANG_LIBRARIES})
+target_include_directories(yangschema PRIVATE ${LIBYANG_INCLUDEDIR})
+link_directories(${LIBYANG_LIBRARY_DIRS})
+
 set(parser_SRCS
     src/static_schema.cpp
     src/schema.cpp
@@ -74,9 +82,8 @@ target_link_libraries(parser Boost::boost)
 set(netconf-cli_SRCS
     src/main.cpp
     )
-
 add_executable(netconf-cli ${netconf-cli_SRCS})
-target_link_libraries(netconf-cli docopt parser)
+target_link_libraries(netconf-cli yangschema docopt parser)
 add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
 target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
 
@@ -106,7 +113,7 @@ if(BUILD_TESTING)
     macro(cli_test fname)
         set(test_${fname}_SOURCES tests/${fname}.cpp)
         add_executable(test_${fname} ${test_${fname}_SOURCES})
-        target_link_libraries(test_${fname} TestCatchIntegration parser)
+        target_link_libraries(test_${fname} TestCatchIntegration parser yangschema)
         if(NOT CMAKE_CROSSCOMPILING)
             add_test(test_${fname} test_${fname})
         endif()
@@ -117,6 +124,7 @@ if(BUILD_TESTING)
     cli_test(ls)
     cli_test(presence_containers)
     cli_test(leaf_editing)
+    cli_test(yang)
 
 endif()
 
