@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "31badb8a_aa97c603",
+        "filename": "src/ast_path.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-07-18T11:36:43Z",
+      "side": 1,
+      "message": "tohle uz je cele moc dlouhe na to, aby to bylo bez {}",
+      "revId": "fef11d58ebdb2f042e7a03e36d0d3138c7e3f989",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6338b5e5_973c1f26",
+        "filename": "src/ast_path.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-07-18T11:36:43Z",
+      "side": 1,
+      "message": "tady to same",
+      "revId": "fef11d58ebdb2f042e7a03e36d0d3138c7e3f989",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba1f4ca5_31fc081b",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-07-18T11:36:43Z",
+      "side": 1,
+      "message": "Davalo by mi smysl, aby prikaz `ls` bral jako volitelny argument relativni cestu.",
+      "revId": "fef11d58ebdb2f042e7a03e36d0d3138c7e3f989",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b442f8a2_9e76d58c",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-07-18T11:36:43Z",
+      "side": 1,
+      "message": "Ted uz je ten commit velmi dlouhy. Byl bys ochotny ho rozdelit do casti, co prida moduly, a casti, co prida prikaz `ls`?",
+      "revId": "fef11d58ebdb2f042e7a03e36d0d3138c7e3f989",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75115124_f4e1f13d",
+        "filename": "src/main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-07-18T11:36:43Z",
+      "side": 1,
+      "message": "umi to vic modulu? prosim, dopln to do testu",
+      "revId": "fef11d58ebdb2f042e7a03e36d0d3138c7e3f989",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e09cf885_7c6a0a13",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-07-18T11:36:43Z",
+      "side": 1,
+      "message": "Chybi mi tu testy na veci typu:\n\n- `cd a`\n- `cd example`\n- `cd example:`\n- `cd example : a`\n- `cd example:a/example:a2`\n\n...atd.",
+      "revId": "fef11d58ebdb2f042e7a03e36d0d3138c7e3f989",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
