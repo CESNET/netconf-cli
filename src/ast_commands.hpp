@@ -28,6 +28,10 @@ struct parser_context_tag;
 
 using keyValue_ = std::pair<std::string, std::string>;
 
+struct ls_ : x3::position_tagged {
+    boost::optional<path_> m_path;
+};
+
 struct cd_ : x3::position_tagged {
     bool operator==(const cd_& b) const;
     path_ m_path;
@@ -63,8 +67,9 @@ struct set_ : x3::position_tagged {
     leaf_data_ m_data;
 };
 
-using command_ = boost::variant<cd_, create_, delete_, set_>;
+using command_ = boost::variant<ls_, cd_, create_, delete_, set_>;
 
+BOOST_FUSION_ADAPT_STRUCT(ls_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(create_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(delete_, m_path)
