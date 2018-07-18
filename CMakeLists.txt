@@ -63,6 +63,14 @@ add_library(schemas STATIC
     )
 target_link_libraries(schemas PUBLIC Boost::boost)
 
+add_library(yangschema STATIC
+    src/yang_schema.cpp
+    )
+target_link_libraries(yangschema ${LIBYANG_LIBRARIES})
+# Ensure that this doesn't override Boost's -isystem -- see the log for details.
+target_include_directories(yangschema SYSTEM PRIVATE ${LIBYANG_INCLUDEDIR})
+link_directories(${LIBYANG_LIBRARY_DIRS})
+
 add_library(parser STATIC
     src/parser.cpp
     src/ast_commands.cpp
@@ -76,7 +84,7 @@ target_link_libraries(parser schemas)
 add_executable(netconf-cli
     src/main.cpp
     )
-target_link_libraries(netconf-cli docopt parser)
+target_link_libraries(netconf-cli yangschema docopt parser)
 add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
 target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
 
@@ -118,6 +126,8 @@ if(BUILD_TESTING)
     cli_test(ls)
     cli_test(presence_containers)
     cli_test(leaf_editing)
+    cli_test(yang)
+    target_link_libraries(test_yang yangschema)
 
 endif()
 
