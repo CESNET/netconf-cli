@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "07644d84_8a1737e3",
+        "filename": "tests/ls.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-07-19T12:53:48Z",
+      "side": 1,
+      "message": "tady ten test netestuje, ze to precetlo dobre tu cestu",
+      "revId": "68c777f401ff3ec3c105105f7e492fd6b833cb66",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
