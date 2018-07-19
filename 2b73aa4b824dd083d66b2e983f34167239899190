@@ -19,6 +19,27 @@
       "revId": "2b73aa4b824dd083d66b2e983f34167239899190",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac73a86b_d5a9d2f4",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-07-19T13:00:37Z",
+      "side": 1,
+      "message": "Dekuju, vidim test.",
+      "parentUuid": "386977e1_c9dd2b22",
+      "revId": "2b73aa4b824dd083d66b2e983f34167239899190",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
