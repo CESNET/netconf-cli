@@ -19,6 +19,27 @@
       "revId": "68c777f401ff3ec3c105105f7e492fd6b833cb66",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ef2d9d13_6eb288a7",
+        "filename": "tests/ls.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000016
+      },
+      "realAuthor": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-07-20T11:41:36Z",
+      "side": 1,
+      "message": "Dokonce jsem ten test i zapnul! :D",
+      "parentUuid": "07644d84_8a1737e3",
+      "revId": "68c777f401ff3ec3c105105f7e492fd6b833cb66",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
