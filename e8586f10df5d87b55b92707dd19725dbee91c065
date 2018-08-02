@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ae6b2358_73698b25",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "realAuthor": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-02T17:20:10Z",
+      "side": 1,
+      "message": "tohle prosim jako forwardy, at treba takoby main.cpp nemusi vedet o libyangu",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 34
+      },
+      "revId": "e8586f10df5d87b55b92707dd19725dbee91c065",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
