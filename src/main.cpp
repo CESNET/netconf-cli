@@ -6,13 +6,10 @@
  *
 */
 
-#include <boost/spirit/home/x3.hpp>
 #include <docopt.h>
 #include <iostream>
-#include <string>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
-#include "parser.hpp"
 #include "static_schema.hpp"
 
 
@@ -24,17 +21,6 @@ Usage:
   netconf-cli (-h | --help)
   netconf-cli --version
 )";
-
-namespace x3 = boost::spirit::x3;
-namespace ascii = boost::spirit::x3::ascii;
-
-using Cmd = std::vector<std::string>;
-using ascii::space;
-using x3::_attr;
-using x3::alpha;
-using x3::char_;
-using x3::lexeme;
-using x3::lit;
 
 
 int main(int argc, char* argv[])
