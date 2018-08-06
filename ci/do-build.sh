@@ -25,7 +25,7 @@ build_dep_cmake() {
     mkdir build-$1
     pushd build-$1
     ${CMAKE} -GNinja ${CMAKE_OPTIONS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Debug} -DCMAKE_INSTALL_PREFIX=${PREFIX} ${TH_GIT_PATH}/submodules/$1
-    ninja-build install
+    ninja-build -v install
     popd
     popd
 }
