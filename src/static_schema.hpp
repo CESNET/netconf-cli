@@ -33,7 +33,7 @@ public:
     bool leafEnumHasValue(const path_& location, const ModuleNodePair& node, const std::string& value) const override;
     bool listHasKey(const path_& location, const ModuleNodePair& node, const std::string& key) const override;
     bool nodeExists(const std::string& location, const std::string& node) const override;
-    const std::set<std::string>& listKeys(const path_& location, const ModuleNodePair& node) const override;
+    const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const override;
     std::set<std::string> childNodes(const path_& path) const override;
 

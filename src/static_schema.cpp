@@ -66,7 +66,7 @@ bool StaticSchema::listHasKey(const path_& location, const ModuleNodePair& node,
     return list.m_keys.find(key) != list.m_keys.end();
 }
 
-const std::set<std::string>& StaticSchema::listKeys(const path_& location, const ModuleNodePair& node) const
+const std::set<std::string> StaticSchema::listKeys(const path_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
     assert(isList(location, node));
