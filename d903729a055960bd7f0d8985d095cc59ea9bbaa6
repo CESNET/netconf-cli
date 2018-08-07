@@ -19,6 +19,24 @@
       "revId": "d903729a055960bd7f0d8985d095cc59ea9bbaa6",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7cddeead_9b3b386b",
+        "filename": "src/schema.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T10:32:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abefbab6_d4a3b930",
+      "revId": "d903729a055960bd7f0d8985d095cc59ea9bbaa6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
