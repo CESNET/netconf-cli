@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9c359bd4_ee9143db",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee5270e0_f62930a8",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d7fa0739_6d4928a4",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "50973274_dc4174f8",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7fa0739_6d4928a4",
+      "range": {
+        "startLine": 48,
+        "startChar": 9,
+        "endLine": 48,
+        "endChar": 21
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e4c3d2cd_d3c6ca2a",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "9fee2ef8_aee94665",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4c3d2cd_d3c6ca2a",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2f5347bd_616fa88e",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -70,6 +130,30 @@
       "writtenOn": "2018-08-07T12:16:21Z",
       "side": 1,
       "message": "Tyhle ctyri netrivialni radky se opakuji v kazde metode. Je to IMHO dobry kandidat na makro, protoze tyhle metody toho \"delaji dost\" a jejich mezivysledky (nodeset) budeme potrebovat v dalsich krocich.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 21
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8a6ef90_0cbd4065",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Makro ve smyslu #define ?",
+      "parentUuid": "2f5347bd_616fa88e",
       "range": {
         "startLine": 77,
         "startChar": 0,
@@ -128,6 +212,30 @@
     },
     {
       "key": {
+        "uuid": "e244bf28_fe39d1b4",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89e4949e_902915f0",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 17
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "42ebba41_5ea5e1a5",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -145,6 +253,24 @@
     },
     {
       "key": {
+        "uuid": "7432fb2e_42a896ee",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42ebba41_5ea5e1a5",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "37ab2e72_10aaf94f",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -159,6 +285,24 @@
       "revId": "610fdc13a6356992568557f57e21ef590edf1945",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3a5b5bd_0797f017",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37ab2e72_10aaf94f",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -185,6 +329,30 @@
     },
     {
       "key": {
+        "uuid": "2b7d13f6_6ba973a8",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c0ac22f_751a79ad",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 15
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3c856cd4_64f4b81e",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -208,6 +376,30 @@
     },
     {
       "key": {
+        "uuid": "8cea8555_6f03894e",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c856cd4_64f4b81e",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 5
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1b82af80_d38295e7",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -219,6 +411,24 @@
       "writtenOn": "2018-08-07T12:16:21Z",
       "side": 1,
       "message": "nespadne tohle, pokud ten XPath bude neexistujici? Pokud to pada, je to akceptovatelne, ze to pada? Kdy se muze stat, ze se to zavola s neplatnym vstupem?",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d00d8c8_6f8326b3",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Ten leafType by se nikdy neměl volat s něčím, co ještě nebylo zvalidovaný jako leaf",
+      "parentUuid": "1b82af80_d38295e7",
       "revId": "610fdc13a6356992568557f57e21ef590edf1945",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -248,6 +458,30 @@
     },
     {
       "key": {
+        "uuid": "2269529a_cf93ac88",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f722694_df150325",
+      "range": {
+        "startLine": 203,
+        "startChar": 13,
+        "endLine": 203,
+        "endChar": 16
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "194e0d98_ba381e11",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -259,6 +493,24 @@
       "writtenOn": "2018-08-07T12:16:21Z",
       "side": 1,
       "message": "std::transform_if?",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3815bc5e_ff335184",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "neexistuje :(",
+      "parentUuid": "194e0d98_ba381e11",
       "revId": "610fdc13a6356992568557f57e21ef590edf1945",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -288,6 +540,30 @@
     },
     {
       "key": {
+        "uuid": "1cb29d5a_9f4e45eb",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f07b005e_68a1f898",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 33
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "97d3dead_46e648d9",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -308,6 +584,30 @@
       "revId": "610fdc13a6356992568557f57e21ef590edf1945",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "247c7954_3671fb10",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-07T13:38:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97d3dead_46e648d9",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 33
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
