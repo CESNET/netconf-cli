@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4405de3d_3334a37b",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T15:53:43Z",
+      "side": 1,
+      "message": "nit: ja bych to psal takhle:\n\n  return schemaNode \u0026\u0026 schemaNode-\u003enodeType() \u003d\u003d LYS_CONTAINER;",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 51
+      },
+      "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c35790d6_545d31ff",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T15:53:43Z",
+      "side": 1,
+      "message": "Tady se ve me perou dve veci, na jednu stranu je to pouziti uz napsaneho, na druhou stranu vsechny ty dynamicke alokace tam a zase zpatky mi nedelaji moc velkou radost. Psal bych to takhle:\n\n  const auto schemaNode \u003d getSchemaNode(...);\n  return schemaNode \u0026\u0026 schemaNode-\u003enodetype() \u003d\u003d LYS_LIST \u0026\u0026 std::make_shared\u003cSchema_Node_Container\u003e(schemaNode)-\u003epresence();\n\nDavam to ke zvazeni, nerikam, ze je to lepsi varianta. Rozhodni se, prosim, jak to chces, a podivej se pritom i na dalsi metody (leafEnumHasValue, listHasKey), davalo by smysl, aby se zmenily bud vsecky, nebo zadna.",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 33
+      },
+      "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4841d13f_b4cd189a",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T15:53:43Z",
+      "side": 1,
+      "message": "nestaci tu unique_ptr (a obdobne i na dalsich mistech, ale ne vsude, protoze nekde uz libyang vraci ty shared_ptr)",
+      "range": {
+        "startLine": 110,
+        "startChar": 26,
+        "endLine": 110,
+        "endChar": 36
+      },
+      "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e56eab4_5c798ada",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T15:53:43Z",
+      "side": 1,
+      "message": "ten iterator staci mit uvnitr toho for cyklu (vcetne jeho deklarace, ktera je ted o nekolik radku vys)",
+      "range": {
+        "startLine": 209,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 37
+      },
+      "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
