@@ -1,0 +1,313 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ee5270e0_f62930a8",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "prosim o doplneni dokumentace, co to presne dela (i do dalsich variant)",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7fa0739_6d4928a4",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "nit: ten prefix m_ obvykle pouzivame pro class members. Tohle neni class member :), tak bych tomu rikal treba jednoduse `module`.\n\nNavic to neni potreba ani nikam ukladat -- staci to takhle:\n\n  if (!m_context-\u003eparse_module_mem(...)) {\n    throw ...\n  }",
+      "range": {
+        "startLine": 48,
+        "startChar": 9,
+        "endLine": 48,
+        "endChar": 21
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e4c3d2cd_d3c6ca2a",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "nit: zjednodusit, viz vyse",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f5347bd_616fa88e",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "Tyhle ctyri netrivialni radky se opakuji v kazde metode. Je to IMHO dobry kandidat na makro, protoze tyhle metody toho \"delaji dost\" a jejich mezivysledky (nodeset) budeme potrebovat v dalsich krocich.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 21
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37ddb3d1_f2e39c13",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "...a mozna by se dalo neopakovat i tohle.",
+      "range": {
+        "startLine": 81,
+        "startChar": 11,
+        "endLine": 81,
+        "endChar": 29
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89e4949e_902915f0",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "ja bych to rad mel mene imperativni:\n\n return std::any_of(enm-\u003ebegin(), enm-\u003eend(), [\u003d](const auto\u0026 x) {return x-\u003ename \u003d\u003d value; });",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 17
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42ebba41_5ea5e1a5",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "nit: const auto, a prosim i vsude jinde, kde je neco takoveho mozne",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37ab2e72_10aaf94f",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "prosim o jednu vetu v doxygenu, co to dela, ktera bude jasna ctenari, ktery nevi, co je to \"node set\"",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c0ac22f_751a79ad",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "nit: rovnou return",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 15
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c856cd4_64f4b81e",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "std::copy?",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 5
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b82af80_d38295e7",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "nespadne tohle, pokud ten XPath bude neexistujici? Pokud to pada, je to akceptovatelne, ze to pada? Kdy se muze stat, ze se to zavola s neplatnym vstupem?",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f722694_df150325",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "chtelo by to neco mene veseleho",
+      "range": {
+        "startLine": 203,
+        "startChar": 13,
+        "endLine": 203,
+        "endChar": 16
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "194e0d98_ba381e11",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "std::transform_if?",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f07b005e_68a1f898",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "co takhle jednoduseji:\n\n  res.insert(it-\u003emodule()-\u003ename + \":\"s + it-\u003ename);",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 33
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97d3dead_46e648d9",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T12:16:21Z",
+      "side": 1,
+      "message": "...a totez zde.",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 33
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
