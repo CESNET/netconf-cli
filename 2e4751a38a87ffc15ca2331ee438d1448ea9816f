@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ebd12a1_626eba42",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T13:58:57Z",
+      "side": 1,
+      "message": "Vim, ze je to v dokumentaci napsane, ze zrovna tohle vrati EXIT_SUCCESS a nebo EXIT_FAILURE, ale obvykla konvence u Cckovych funkci je, ze 0 \u003d\u003d success a !\u003d 0 je error. I proto bych to spis kontroloval \"Ceckove\":\n\n  if (m_context-\u003eset_searchdir(...))\n    throw ...",
+      "revId": "2e4751a38a87ffc15ca2331ee438d1448ea9816f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5374d36_12a38bbd",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T13:58:57Z",
+      "side": 1,
+      "message": "Libilo by se mi spis \"Add a new module passed as a YANG string.\", abych z toho poznal, v jakem je to formatu (vedle YANGu existuje i YIN a jeste navic ruzne proprietarni serializace. Navic \"import\" ma v YANGu specificky vyzvam.",
+      "revId": "2e4751a38a87ffc15ca2331ee438d1448ea9816f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

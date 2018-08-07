@@ -166,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "f060b4c0_d390cb05",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T13:58:57Z",
+      "side": 1,
+      "message": "ano",
+      "parentUuid": "f8a6ef90_0cbd4065",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 21
+      },
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "37ddb3d1_f2e39c13",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -435,6 +459,24 @@
     },
     {
       "key": {
+        "uuid": "a5682fb9_f8a2aa7e",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T13:58:57Z",
+      "side": 1,
+      "message": "Ano, ale to je vec, ktera \"neni nikde napsana\", a i kdyby byla napsana v dokumentaci, tak to neni nejlepsi. Ber to tak, ze je tohle meroda, ktera bere string, a kdyz je ten string \"divny\", tak to segfaultne.",
+      "parentUuid": "3d00d8c8_6f8326b3",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4f722694_df150325",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 18
@@ -514,6 +556,24 @@
       "revId": "610fdc13a6356992568557f57e21ef590edf1945",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "779be8ff_91ce791b",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-07T13:58:57Z",
+      "side": 1,
+      "message": "Aj :), mas pravdu.",
+      "parentUuid": "3815bc5e_ff335184",
+      "revId": "610fdc13a6356992568557f57e21ef590edf1945",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
