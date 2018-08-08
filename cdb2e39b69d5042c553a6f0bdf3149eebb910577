@@ -167,6 +167,29 @@
     },
     {
       "key": {
+        "uuid": "80dcd2cc_fc6553bf",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-08T14:09:00Z",
+      "side": 1,
+      "message": "Tenhleten check tam byl celkem důležitej, to by mě zajímalo, co se v tom konstruktoru Schema_Node_Leaf stane, když se zavolá s null pointerem...\n\nSchema_Node_Container(S_Schema_Node derived):\n    Schema_Node(derived-\u003enode, derived-\u003edeleter),\n    node(derived-\u003enode),\n    deleter(derived-\u003edeleter)\n{\n    if (derived-\u003enode-\u003enodetype !\u003d LYS_CONTAINER) {\n        throw std::invalid_argument(\"Type must be LYS_CONTAINER\");\n    }\n};",
+      "range": {
+        "startLine": 162,
+        "startChar": 4,
+        "endLine": 163,
+        "endChar": 44
+      },
+      "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1e56eab4_5c798ada",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 21
