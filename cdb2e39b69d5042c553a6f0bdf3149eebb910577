@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5bed44cd_0b91e640",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-08T12:13:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4405de3d_3334a37b",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 51
+      },
+      "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c35790d6_545d31ff",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 21
@@ -36,6 +60,30 @@
       "writtenOn": "2018-08-07T15:53:43Z",
       "side": 1,
       "message": "Tady se ve me perou dve veci, na jednu stranu je to pouziti uz napsaneho, na druhou stranu vsechny ty dynamicke alokace tam a zase zpatky mi nedelaji moc velkou radost. Psal bych to takhle:\n\n  const auto schemaNode \u003d getSchemaNode(...);\n  return schemaNode \u0026\u0026 schemaNode-\u003enodetype() \u003d\u003d LYS_LIST \u0026\u0026 std::make_shared\u003cSchema_Node_Container\u003e(schemaNode)-\u003epresence();\n\nDavam to ke zvazeni, nerikam, ze je to lepsi varianta. Rozhodni se, prosim, jak to chces, a podivej se pritom i na dalsi metody (leafEnumHasValue, listHasKey), davalo by smysl, aby se zmenily bud vsecky, nebo zadna.",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 33
+      },
+      "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45196688_e0905e29",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-08T12:13:50Z",
+      "side": 1,
+      "message": "Já si právě řikám, jestli to má smysl vůbec dělat tu alokaci na řádku 100. Tam by to totiž stačil jen normální objekt.",
+      "parentUuid": "c35790d6_545d31ff",
       "range": {
         "startLine": 98,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "3cf1ae13_ce25f7a2",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-08T12:13:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4841d13f_b4cd189a",
+      "range": {
+        "startLine": 110,
+        "startChar": 26,
+        "endLine": 110,
+        "endChar": 36
+      },
+      "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1e56eab4_5c798ada",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 21
@@ -91,6 +163,30 @@
       "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5b06982_e5d50c2a",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-08T12:13:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e56eab4_5c798ada",
+      "range": {
+        "startLine": 209,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 37
+      },
+      "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
