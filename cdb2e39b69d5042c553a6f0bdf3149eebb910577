@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "81f51208_594c5479",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-08T13:56:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45196688_e0905e29",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 33
+      },
+      "revId": "cdb2e39b69d5042c553a6f0bdf3149eebb910577",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4841d13f_b4cd189a",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 21
