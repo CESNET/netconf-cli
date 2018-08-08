@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c2860419_f6708e1a",
+        "filename": "src/schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-08T15:32:56Z",
+      "side": 1,
+      "message": "Jak na to ma ten kod reagovat? Neni cistsi vyhodit vyjimku?",
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "136b4149_45e5202f",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-08T15:32:56Z",
+      "side": 1,
+      "message": "nit: spis bych tu prazdnou radku dal pred ten konstruktor nez pred switch, ale to je jenom stylisticka poznamka",
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ac2bd74_f1238805",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-08T15:32:56Z",
+      "side": 1,
+      "message": "neni to navic?",
+      "range": {
+        "startLine": 195,
+        "startChar": 16,
+        "endLine": 195,
+        "endChar": 27
+      },
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b41d80b8_687d4fbb",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-08T15:32:56Z",
+      "side": 1,
+      "message": "pryc",
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17502d68_5d0be6e8",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-08T15:32:56Z",
+      "side": 1,
+      "message": "tela destruktoru patri do .cpp kvuli RTTI, a v .cpp to udelej jako \u003d default",
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c92b6171_817f2a0d",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-08T15:32:56Z",
+      "side": 1,
+      "message": "proc je tam tohle napsane? podobne i jinde",
+      "range": {
+        "startLine": 61,
+        "startChar": 8,
+        "endLine": 61,
+        "endChar": 18
+      },
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81627bc4_c71829e4",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-08T15:32:56Z",
+      "side": 1,
+      "message": "zbytecne",
+      "range": {
+        "startLine": 62,
+        "startChar": 7,
+        "endLine": 62,
+        "endChar": 18
+      },
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea03df21_1c426983",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-08T15:32:56Z",
+      "side": 1,
+      "message": "nit: tady za tu zavorku bych doporucil newline",
+      "range": {
+        "startLine": 12,
+        "startChar": 23,
+        "endLine": 12,
+        "endChar": 24
+      },
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
