@@ -85,6 +85,12 @@ add_executable(netconf-cli
     src/main.cpp
     )
 target_link_libraries(netconf-cli yangschema docopt parser)
+if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
+    target_link_libraries(netconf-cli c++experimental)
+else()
+    target_link_libraries(netconf-cli stdc++fs)
+endif()
+
 add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
 target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
 
