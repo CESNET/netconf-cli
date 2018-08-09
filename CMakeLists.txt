@@ -57,9 +57,12 @@ pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=0.15.111)
 # we don't need filename tracking, and we prefer to use header-only Boost
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
 
-add_library(parser STATIC
+add_library(schemas STATIC
     src/static_schema.cpp
     src/schema.cpp
+    )
+
+add_library(parser STATIC
     src/parser.cpp
     src/ast_commands.cpp
     src/ast_path.cpp
@@ -67,7 +70,7 @@ add_library(parser STATIC
     src/parser_context.cpp
     src/interpreter.cpp
     )
-target_link_libraries(parser Boost::boost)
+target_link_libraries(parser schemas Boost::boost)
 
 add_executable(netconf-cli
     src/main.cpp
