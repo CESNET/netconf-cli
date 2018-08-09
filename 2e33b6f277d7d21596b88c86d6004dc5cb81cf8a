@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "10a55507_ecfc6579",
+        "filename": "src/schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-09T13:31:44Z",
+      "side": 1,
+      "message": "Rozvedu to -- pokud je nekde enum, dava smysl, aby vsechny ty hodnoty byly \"na stejne urovni\". Ten kod v parseru mas nejak napsany a nemyslim si, ze umi pracovat s leafy neznameho typu (jak by takova prace mela vypadat?).\n\nJak by mela fungovat prace s CLI, kdyz se uzivatel pokusi pracovat s typem, ktery neni podporovany?\n\nMuzou vznikat nove datove typy? Jak s tim pracuje libyang?\n\nExistuje scenar, ze budes mit tuhle apliakci hotovou a bude potreba vratit hodnotu `Unknown`?\n\nZkratka a dobre, prijde mi, ze ted je ten extra \"Unknown\" pridany jako z nouze ctnost, \"aby to nepadalo\". Podle me je lepsi, at to rizene pada, nez pridavat umelou hodnotu \"jeste to nemam hotove\". Ale oprav me, jestli se pletu.",
+      "parentUuid": "1e2b574e_5572e950",
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "136b4149_45e5202f",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 24
@@ -270,6 +288,24 @@
       "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6cf93c01_95a03314",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-09T13:31:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "586b422f_e05047ff",
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
