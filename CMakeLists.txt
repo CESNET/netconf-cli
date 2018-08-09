@@ -84,7 +84,7 @@ target_link_libraries(parser schemas)
 add_executable(netconf-cli
     src/main.cpp
     )
-target_link_libraries(netconf-cli yangschema docopt parser)
+target_link_libraries(netconf-cli yangschema docopt parser stdc++fs)
 add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
 target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
 

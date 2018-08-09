@@ -7,17 +7,18 @@
 */
 
 #include <docopt.h>
+#include <filesystem>
 #include <iostream>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
-#include "static_schema.hpp"
+#include "yang_schema.hpp"
 
 
 static const char usage[] =
     R"(CLI interface to remote NETCONF hosts
 
 Usage:
-  netconf-cli
+  netconf-cli <path-to-yang-schema>...
   netconf-cli (-h | --help)
   netconf-cli --version
 )";
@@ -32,18 +33,14 @@ int main(int argc, char* argv[])
                                true);
     std::cout << "Welcome to netconf-cli" << std::endl;
 
-    auto yangschema = std::make_shared<StaticSchema>();
-    yangschema->addModule("mod");
-    yangschema->addContainer("", "mod:a", yang::ContainerTraits::Presence);
-    yangschema->addContainer("", "mod:b");
-    yangschema->addContainer("mod:a", "mod:a2", yang::ContainerTraits::Presence);
-    yangschema->addContainer("mod:b", "mod:b2");
-    yangschema->addContainer("mod:a/mod:a2", "mod:a3");
-    yangschema->addContainer("mod:b/mod:b2", "mod:b3");
-    yangschema->addList("", "mod:list", {"number"});
-    yangschema->addContainer("mod:list", "contInList");
-    yangschema->addList("", "mod:twoKeyList", {"number", "name"});
+    auto yangschema = std::make_shared<YangSchema>();
     Parser parser(yangschema);
+
+    for (auto it : args.at("<path-to-yang-schema>").asStringList()) {
+        yangschema->addSchemaFile(it.c_str());
+        auto dir = std::filesystem::absolute(it).remove_filename();
+        yangschema->addSchemaDirectory(dir.c_str());
+    }
 
     while (true) {
         std::cout << parser.currentNode() << "> ";
