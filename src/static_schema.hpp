@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include <boost/variant.hpp>
 #include <set>
 #include <stdexcept>
 #include <unordered_map>
@@ -19,7 +18,6 @@
 /*! \class StaticSchema
  *     \brief Static schema, used mainly for testing
  *         */
-using ModuleNodePair = std::pair<boost::optional<std::string>, std::string>;
 
 class StaticSchema : public Schema {
 public:
