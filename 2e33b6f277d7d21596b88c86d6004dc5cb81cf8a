@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "1e2b574e_5572e950",
+        "filename": "src/schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-09T13:00:16Z",
+      "side": 1,
+      "message": "Funguje to tak, že tyhlety LeafDataTypes vrací metoda leafType() a v ast_handlers se porovnává, jestli ten typ sedí. Ale můžu tam udělat tu vyjímku a pak ji catchnout v tom handleru",
+      "parentUuid": "c2860419_f6708e1a",
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "136b4149_45e5202f",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 24
