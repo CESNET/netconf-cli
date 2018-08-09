@@ -101,6 +101,30 @@
     },
     {
       "key": {
+        "uuid": "72b0ac81_5259be73",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-09T12:03:29Z",
+      "side": 1,
+      "message": "Pardon, neuvedomil jsem si, ze to vraci char*. Porovnani pres std::string je cistsi, rozhodne tam prosim nepouzivejme `strcmp`.\n\nJako nejkratsi varianta mi prijde:\n\n  if (it-\u003emodule()-\u003ename() \u003d\u003d \"ietf-yang-library\"s)\n\n...cili pouziti string literalu dle C++11.\n\nOmlouvam se za nejasnost.",
+      "parentUuid": "3ac2bd74_f1238805",
+      "range": {
+        "startLine": 195,
+        "startChar": 16,
+        "endLine": 195,
+        "endChar": 27
+      },
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b41d80b8_687d4fbb",
         "filename": "src/yang_schema.hpp",
         "patchSetId": 24
@@ -197,6 +221,30 @@
       "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3f32a1b9_93c0e137",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-09T12:03:29Z",
+      "side": 1,
+      "message": "Ten muj komentar rikal, ze je pro Doxygen zbytecne znova opakovat nazev metody, ne ze je doxygenni dokumentace zbytecna. Staci to takhle:\n\n  /** @short Return the amount of cash in the pile */\n  int remainingCash() const;\n\nobdobne prosim i jinde.",
+      "parentUuid": "c92b6171_817f2a0d",
+      "range": {
+        "startLine": 61,
+        "startChar": 8,
+        "endLine": 61,
+        "endChar": 18
+      },
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     },
     {
       "key": {
