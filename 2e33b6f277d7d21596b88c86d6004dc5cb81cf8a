@@ -125,6 +125,30 @@
     },
     {
       "key": {
+        "uuid": "817bd013_8ec746e4",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-09T12:29:33Z",
+      "side": 1,
+      "message": "Použiju string_view: o pár znaků víc, o alokaci míň",
+      "parentUuid": "72b0ac81_5259be73",
+      "range": {
+        "startLine": 195,
+        "startChar": 16,
+        "endLine": 195,
+        "endChar": 27
+      },
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b41d80b8_687d4fbb",
         "filename": "src/yang_schema.hpp",
         "patchSetId": 24
@@ -263,6 +287,30 @@
       "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f502279_05ba8989",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-09T12:29:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f32a1b9_93c0e137",
+      "range": {
+        "startLine": 61,
+        "startChar": 8,
+        "endLine": 61,
+        "endChar": 18
+      },
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
