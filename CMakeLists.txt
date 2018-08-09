@@ -57,7 +57,7 @@ pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=0.15.111)
 # we don't need filename tracking, and we prefer to use header-only Boost
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
 
-set(parser_SRCS
+add_library(parser STATIC
     src/static_schema.cpp
     src/schema.cpp
     src/parser.cpp
@@ -67,15 +67,11 @@ set(parser_SRCS
     src/parser_context.cpp
     src/interpreter.cpp
     )
-
-add_library(parser STATIC ${parser_SRCS})
 target_link_libraries(parser Boost::boost)
 
-set(netconf-cli_SRCS
+add_executable(netconf-cli
     src/main.cpp
     )
-
-add_executable(netconf-cli ${netconf-cli_SRCS})
 target_link_libraries(netconf-cli docopt parser)
 add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
 target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
@@ -103,16 +99,17 @@ if(BUILD_TESTING)
     target_include_directories(TestCatchIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
     target_link_libraries(TestCatchIntegration spdlog::spdlog)
 
-    macro(cli_test fname)
-        set(test_${fname}_SOURCES tests/${fname}.cpp)
-        add_executable(test_${fname} ${test_${fname}_SOURCES})
+    function(cli_test fname)
+        add_executable(test_${fname}
+            tests/${fname}.cpp
+            )
         target_link_libraries(test_${fname} TestCatchIntegration parser)
         if(NOT CMAKE_CROSSCOMPILING)
             add_test(test_${fname} test_${fname})
         endif()
         target_include_directories(test_${fname} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
         target_link_libraries(test_${fname} TestCatchIntegration)
-    endmacro()
+    endfunction()
     cli_test(cd)
     cli_test(ls)
     cli_test(presence_containers)
