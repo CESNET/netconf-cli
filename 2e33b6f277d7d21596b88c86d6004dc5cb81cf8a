@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "afe8a199_e7549711",
+        "filename": "src/schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-09T12:59:08Z",
+      "side": 1,
+      "message": "Pripominam se s timhle.",
+      "parentUuid": "c2860419_f6708e1a",
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "136b4149_45e5202f",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 24
@@ -213,6 +231,24 @@
       "side": 1,
       "message": "Mám s tím nějakej problém, když to tak udělám, tak linker řve, že \"undefined reference to Schema::~Schema\", přestože v schema.cpp definovaný je. Když do yang_schema.cpp napíšu Schema::~Schema \u003d default;, tak to funguje, takže je asi nějakej problém v CMakeLists, ale nevím, jak ho fixnout",
       "parentUuid": "17502d68_5d0be6e8",
+      "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "586b422f_e05047ff",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-09T12:59:08Z",
+      "side": 1,
+      "message": "Aha, to je kvuli tomu, ze je vtable od tridy Schema v knihovne \"parser\", a ten kod zkousi linkovat knihovnu Parser proti knihovne YangSchema, ktera sama potrebuje symboly z knihovny Parser. To je cyklicka zavislost, opravim to.",
+      "parentUuid": "8b0cc854_80e53621",
       "revId": "2e33b6f277d7d21596b88c86d6004dc5cb81cf8a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
