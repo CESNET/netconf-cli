@@ -10,9 +10,10 @@
 
 #include <boost/variant/static_visitor.hpp>
 #include "parser.hpp"
+#include "datastore_access.hpp"
 
 struct Interpreter : boost::static_visitor<void> {
-    Interpreter(Parser& parser, Schema&);
+    Interpreter(Parser& parser, DatastoreAccess& datastore);
 
     void operator()(const set_&) const;
     void operator()(const cd_&) const;
@@ -22,4 +23,5 @@ struct Interpreter : boost::static_visitor<void> {
 
 private:
     Parser& m_parser;
+    DatastoreAccess& m_datastore;
 };
