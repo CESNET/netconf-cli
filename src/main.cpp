@@ -34,7 +34,9 @@ int main(int argc, char* argv[])
     std::cout << "Welcome to netconf-cli" << std::endl;
 
     auto yangschema = std::make_shared<YangSchema>();
-    Parser parser(yangschema);
+    /*Parser parser(yangschema);
+
+    SysrepoAccess datastore("app1");
 
     for (auto it : args.at("<path-to-yang-schema>").asStringList()) {
         auto dir = std::experimental::filesystem::absolute(it).remove_filename();
@@ -51,11 +53,11 @@ int main(int argc, char* argv[])
 
         try {
             command_ cmd = parser.parseCommand(input, std::cout);
-            boost::apply_visitor(Interpreter(parser, *yangschema), cmd);
+            boost::apply_visitor(Interpreter(parser, datastore), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         }
-    }
+    }*/
 
     return 0;
 }
