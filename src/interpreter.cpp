@@ -7,6 +7,7 @@
 */
 
 #include <iostream>
+#include "datastore_access.hpp"
 #include "interpreter.hpp"
 
 struct leafDataToString : boost::static_visitor<std::string> {
@@ -25,7 +26,7 @@ struct leafDataToString : boost::static_visitor<std::string> {
 
 void Interpreter::operator()(const set_& set) const
 {
-    std::cout << "Setting " << pathToDataString(set.m_path) << " to " << boost::apply_visitor(leafDataToString(), set.m_data) << std::endl;
+    m_datastore.setLeaf(absolutePathFromCommand(set), set.m_data);
 }
 
 void Interpreter::operator()(const cd_& cd) const
@@ -36,13 +37,13 @@ void Interpreter::operator()(const cd_& cd) const
 void Interpreter::operator()(const create_& create) const
 {
     auto cont = boost::get<container_>(create.m_path.m_nodes.back().m_suffix);
-    std::cout << "Presence container " << cont.m_name << " created." << std::endl;
+    m_datastore.createPresenceContainer(absolutePathFromCommand(create));
 }
 
 void Interpreter::operator()(const delete_& delet) const
 {
     auto cont = boost::get<container_>(delet.m_path.m_nodes.back().m_suffix);
-    std::cout << "Presence container " << cont.m_name << " deleted." << std::endl;
+    m_datastore.deletePresenceContainer(absolutePathFromCommand(delet));
 }
 
 void Interpreter::operator()(const ls_& ls) const
@@ -53,7 +54,13 @@ void Interpreter::operator()(const ls_& ls) const
         std::cout << it << std::endl;
 }
 
-Interpreter::Interpreter(Parser& parser, Schema&)
-    : m_parser(parser)
+template <typename T>
+std::string Interpreter::absolutePathFromCommand(const T& command) const
+{
+    return joinPaths(m_parser.currentNode(), pathToDataString(command.m_path));
+}
+
+Interpreter::Interpreter(Parser& parser, DatastoreAccess& datastore)
+    : m_parser(parser), m_datastore(datastore)
 {
 }
