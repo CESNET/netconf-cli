@@ -63,6 +63,11 @@ add_library(schemas STATIC
     )
 target_link_libraries(schemas PUBLIC Boost::boost)
 
+add_library(datastoreaccess STATIC
+    src/datastore_access.cpp
+    )
+target_link_libraries(datastoreaccess PUBLIC Boost::boost)
+
 add_library(yangschema STATIC
     src/yang_schema.cpp
     )
