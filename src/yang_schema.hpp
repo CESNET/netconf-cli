@@ -14,9 +14,11 @@
 #include "ast_path.hpp"
 #include "schema.hpp"
 
+namespace libyang {
 class Context;
 class Set;
 class Schema_Node;
+}
 
 /*! \class YangSchema
  *     \brief A schema class, which uses libyang for queries.
@@ -52,9 +54,9 @@ private:
     bool nodeExists(const path_& location, const ModuleNodePair& node) const;
 
     /** @short Returns a set of nodes, that match the location and name criteria. */
-    std::shared_ptr<Set> getNodeSet(const path_& location, const ModuleNodePair& node) const;
+    std::shared_ptr<libyang::Set> getNodeSet(const path_& location, const ModuleNodePair& node) const;
 
     /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
-    std::shared_ptr<Schema_Node> getSchemaNode(const path_& location, const ModuleNodePair& node) const;
-    std::shared_ptr<Context> m_context;
+    std::shared_ptr<libyang::Schema_Node> getSchemaNode(const path_& location, const ModuleNodePair& node) const;
+    std::shared_ptr<libyang::Context> m_context;
 };
