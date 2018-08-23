@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c324776_91873c37",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-23T14:07:42Z",
+      "side": 1,
+      "message": "Tady zjevne zalezi na poradi, protoze tohle mi projde. Podezrivam libyang-cpp/libyang, ze se tam nejak nedobre inicializuje nejaky kontext ci co, ale kazdopadne je to divny...",
+      "revId": "4fab9f076f203db4152b027888a2d83d7417bf6a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
