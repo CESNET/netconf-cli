@@ -115,9 +115,9 @@ bool YangSchema::leafEnumHasValue(const path_& location, const ModuleNodePair& n
         return false;
 
     Schema_Node_Leaf leaf(getSchemaNode(location, node));
-    const auto enm = std::unique_ptr<std::vector<S_Type_Enum>>(leaf.type()->info()->enums()->enm());
+    const auto& enm = leaf.type()->info()->enums()->enm();
 
-    return std::any_of(enm->begin(), enm->end(), [=](const auto& x) { return x->name() == value; });
+    return std::any_of(enm.begin(), enm.end(), [=](const auto& x) { return x->name() == value; });
 }
 
 bool YangSchema::listHasKey(const path_& location, const ModuleNodePair& node, const std::string& key) const
@@ -147,10 +147,10 @@ std::shared_ptr<Schema_Node> YangSchema::getSchemaNode(const path_& location, co
     const auto set = getNodeSet(location, node);
     if (!set)
         return nullptr;
-    const auto schemaSet = std::unique_ptr<std::vector<std::shared_ptr<Schema_Node>>>(set->schema());
+    const auto& schemaSet = set->schema();
     if (set->number() != 1)
         return nullptr;
-    return (*(schemaSet->begin()));
+    return *schemaSet.begin();
 }
 
 const std::set<std::string> YangSchema::listKeys(const path_& location, const ModuleNodePair& node) const
@@ -159,9 +159,9 @@ const std::set<std::string> YangSchema::listKeys(const path_& location, const Mo
     if (!isList(location, node))
         return keys;
     Schema_Node_List list(getSchemaNode(location, node));
-    const auto keysVec = std::unique_ptr<std::vector<S_Schema_Node_Leaf>>(list.keys());
+    const auto& keysVec = list.keys();
 
-    std::transform(keysVec->begin(), keysVec->end(), std::inserter(keys, keys.begin()),
+    std::transform(keysVec.begin(), keysVec.end(), std::inserter(keys, keys.begin()),
             [] (const auto& it) {return it->name();});
     return keys;
 }
@@ -193,10 +193,10 @@ yang::LeafDataTypes YangSchema::leafType(const path_& location, const ModuleNode
 
 std::set<std::string> YangSchema::modules() const
 {
-    const auto modules = std::unique_ptr<std::vector<S_Module>>(m_context->get_module_iter());
+    const auto& modules = m_context->get_module_iter();
 
     std::set<std::string> res;
-    std::transform(modules->begin(), modules->end(),
+    std::transform(modules.begin(), modules.end(),
                    std::inserter(res, res.end()),
                    [] (const auto module) { return module->name(); });
     return res;
@@ -207,8 +207,8 @@ std::set<std::string> YangSchema::childNodes(const path_& path) const
     using namespace std::string_view_literals;
     std::set<std::string> res;
     if (path.m_nodes.empty()) {
-        const auto nodeVec = std::unique_ptr<std::vector<S_Schema_Node>>(m_context->data_instantiables(0));
-        for (const auto it : *nodeVec) {
+        const auto& nodeVec = m_context->data_instantiables(0);
+        for (const auto it : nodeVec) {
             if (it->module()->name() == "ietf-yang-library"sv)
                 continue;
             res.insert(std::string(it->module()->name()) + ":" + it->name());
@@ -216,8 +216,8 @@ std::set<std::string> YangSchema::childNodes(const path_& path) const
     } else {
         const auto absolutePath = "/" + pathToAbsoluteSchemaString(path);
         const auto set = m_context->find_path(absolutePath.c_str());
-        const auto schemaSet = std::unique_ptr<std::vector<std::shared_ptr<Schema_Node>>>(set->schema());
-        for (auto it = (*(schemaSet->begin()))->child(); it; it = it->next()) {
+        const auto& schemaSet = set->schema();
+        for (auto it = (*schemaSet.begin())->child(); it; it = it->next()) {
             res.insert(std::string(it->module()->name()) + ":" + it->name());
         }
     }
