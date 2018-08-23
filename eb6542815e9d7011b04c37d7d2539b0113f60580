@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0306e2ec_05b4bea4",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-23T13:30:55Z",
+      "side": 1,
+      "message": "tenhle chybi, a rovnou ho dej do jine TU, je to stejny pripad, jako jsme meli u schema.cpp",
+      "revId": "eb6542815e9d7011b04c37d7d2539b0113f60580",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
