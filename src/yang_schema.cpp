@@ -166,8 +166,12 @@ const std::set<std::string> YangSchema::listKeys(const path_& location, const Mo
     return keys;
 }
 
+#include <iostream>
 yang::LeafDataTypes YangSchema::leafType(const path_& location, const ModuleNodePair& node) const
 {
+    std::cout << "location.m_nodes.size() == " <<location.m_nodes.size();
+    std::cout << " node.first.get() == " << node.first.get();
+    std::cout << " node.second == " << node.second << std::endl;
     using namespace std::string_literals;
     if (!isLeaf(location, node))
         throw InvalidSchemaQueryException(fullNodeName(location, node) + " is not a leaf");

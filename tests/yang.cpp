@@ -98,7 +98,7 @@ TEST_CASE("yangschema")
 
     SECTION("positive")
     {
-        SECTION("isContainer")
+        /*SECTION("isContainer")
         {
             SECTION("example-schema:a")
             {
@@ -222,12 +222,12 @@ TEST_CASE("yangschema")
             }
 
             REQUIRE(ys.listKeys(path, node) == set);
-        }
+        }*/
         SECTION("leafType")
         {
             yang::LeafDataTypes type;
 
-            SECTION("leafString")
+            /*SECTION("leafString")
             {
                 node.first = "example-schema";
                 node.second = "leafString";
@@ -246,7 +246,7 @@ TEST_CASE("yangschema")
                 node.first = "example-schema";
                 node.second = "leafBool";
                 type = yang::LeafDataTypes::Bool;
-            }
+            }*/
 
             SECTION("leafInt")
             {
@@ -255,7 +255,7 @@ TEST_CASE("yangschema")
                 type = yang::LeafDataTypes::Int;
             }
 
-            SECTION("leafUint")
+            /*SECTION("leafUint")
             {
                 node.first = "example-schema";
                 node.second = "leafUint";
@@ -267,7 +267,7 @@ TEST_CASE("yangschema")
                 node.first = "example-schema";
                 node.second = "leafEnum";
                 type = yang::LeafDataTypes::Enum;
-            }
+            }*/
 
             REQUIRE(ys.leafType(path, node) == type);
         }
