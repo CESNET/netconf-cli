@@ -8,6 +8,7 @@
 #pragma once
 
 #include "ast_path.hpp"
+#include "ast_values.hpp"
 
 namespace x3 = boost::spirit::x3;
 namespace ascii = boost::spirit::x3::ascii;
@@ -47,20 +48,6 @@ struct delete_ : x3::position_tagged {
     bool operator==(const delete_& b) const;
     path_ m_path;
 };
-
-struct enum_ {
-    enum_();
-    enum_(const std::string& value);
-    bool operator==(const enum_& b) const;
-    std::string m_value;
-};
-
-using leaf_data_ = boost::variant<enum_,
-                                  double,
-                                  bool,
-                                  int32_t,
-                                  uint32_t,
-                                  std::string>;
 
 struct set_ : x3::position_tagged {
     bool operator==(const set_& b) const;
