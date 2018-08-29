@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "30db796c_eb26efa2",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-29T12:36:43Z",
+      "side": 1,
+      "message": "tady neco chybi, klidne:\n\n  // FIXME: implement me",
+      "revId": "a5349207dba2e7cbdd825518bb8de4b2e3b7e4d8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
