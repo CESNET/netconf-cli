@@ -16,6 +16,24 @@
       "revId": "965a1557cfa1c7d2ba4c53865cf4967816a23b7a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21d5c4f4_ab1c2891",
+        "filename": "src/datastore_access.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-29T11:32:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88a0eb71_32e7f01e",
+      "revId": "965a1557cfa1c7d2ba4c53865cf4967816a23b7a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
