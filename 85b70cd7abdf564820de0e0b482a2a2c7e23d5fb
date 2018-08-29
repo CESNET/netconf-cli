@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a7b5177f_6a83482a",
+        "filename": "src/ast_values.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-29T11:40:13Z",
+      "side": 1,
+      "message": "boost-fusion je ale potreba az pro ten parser, takze tohle i BOOST_FUSION_ADAPT_STRUCT prosim presun do kodu parseru.",
+      "revId": "85b70cd7abdf564820de0e0b482a2a2c7e23d5fb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
