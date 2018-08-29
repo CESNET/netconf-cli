@@ -16,3 +16,9 @@
 [submodule "submodules/libyang"]
 	path = submodules/libyang
 	url = ../../github/CESNET/libyang
+[submodule "submodules/sysrepo"]
+	path = submodules/sysrepo
+	url = ../../github/sysrepo/sysrepo
+[submodule "submodules/libredblack"]
+	path = submodules/libredblack
+	url = ../../github/sysrepo/libredblack
