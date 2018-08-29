@@ -12,6 +12,7 @@ export LD_LIBRARY_PATH=${PREFIX}/lib64:${PREFIX}/lib${LD_LIBRARY_PATH:+:$LD_LIBR
 export PKG_CONFIG_PATH=${PREFIX}/lib64/pkgconfig:${PREFIX}/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}
 
 if [[ $TH_JOB_NAME =~ .*-sanitizers-.* ]]; then
+    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DUSE_SR_MEM_MGMT:BOOL=OFF"
     # https://gitlab.kitware.com/cmake/cmake/issues/16609
     CMAKE_OPTIONS="${CMAKE_OPTIONS} -DTHREADS_HAVE_PTHREAD_ARG:BOOL=ON"
 fi
@@ -19,6 +20,9 @@ fi
 # force-enable tests for packages which use, eh, interesting setup
 # - libyang and libnetconf2 copmare CMAKE_BUILD_TYPE to lowercase "debug"...
 CMAKE_OPTIONS="${CMAKE_OPTIONS} -DENABLE_BUILD_TESTS=ON -DENABLE_VALGRIND_TESTS=OFF"
+
+# nuke python2 builds because we cannot write to the site_path
+CMAKE_OPTIONS="${CMAKE_OPTIONS} -DGEN_PYTHON_BINDINGS=OFF"
 
 build_dep_cmake() {
     pushd ${TH_JOB_WORKING_DIR}
@@ -56,6 +60,17 @@ if [[ -f ${TH_JOB_WORKING_DIR}/${ARTIFACT} ]]; then
 else
     # rebuild everything from scratch
 
+    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DGEN_LANGUAGE_BINDINGS=ON -DGEN_PYTHON_BINDINGS=OFF" emerge_dep libyang
+    do_test_dep_cmake libyang -j${CI_PARALLEL_JOBS}
+
+    emerge_dep libredblack --with-pic
+
+    # sysrepo needs to use a persistent repo location
+    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DREPOSITORY_LOC=${PREFIX}/etc-sysrepo" emerge_dep sysrepo
+    # These tests are only those which can run on the global repo.
+    # They also happen to fail when run in parallel. That's expected, they manipulate a shared repository.
+    do_test_dep_cmake sysrepo
+
     emerge_dep Catch
     do_test_dep_cmake Catch -j${CI_PARALLEL_JOBS}
 
@@ -75,9 +90,6 @@ else
     ./b2 --ignore-site-config headers
     cp -LR boost ${PREFIX}/include/
     popd
-
-    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DGEN_LANGUAGE_BINDINGS=ON -DGEN_PYTHON_BINDINGS=OFF" emerge_dep libyang
-    do_test_dep_cmake libyang -j${CI_PARALLEL_JOBS}
 
     tar -C ~/target -cvJf ${TH_JOB_WORKING_DIR}/${ARTIFACT} .
     ssh th-ci-logs@ci-logs.gerrit.cesnet.cz mkdir -p artifacts/${TH_JOB_NAME} \
