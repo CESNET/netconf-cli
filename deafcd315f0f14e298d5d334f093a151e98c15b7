@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6fff19fe_722679bc",
+        "filename": "src/datastore_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-29T12:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35bd874a_fa649e4b",
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6ebc3853_78c987ac",
         "filename": "src/datastore_access.hpp",
         "patchSetId": 10
@@ -33,6 +51,24 @@
       "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "906cbd37_942833c6",
+        "filename": "src/datastore_access.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-29T12:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ebc3853_78c987ac",
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "9ded5dfd_732beac5",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-29T12:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66cec9b5_10f8c30c",
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "054637fc_b0a7cd01",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 10
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "ff1c17ba_f75e3cfb",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-29T12:12:29Z",
+      "side": 1,
+      "message": "udělal jsem tam tři tasky",
+      "parentUuid": "054637fc_b0a7cd01",
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7f704137_f05ec430",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 10
@@ -84,6 +156,24 @@
       "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6838f80_07392b32",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-29T12:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f704137_f05ec430",
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -107,6 +197,30 @@
       "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae59c8a8_9b873e23",
+        "filename": "src/sysrepo_access.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-29T12:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4704f539_edfc7b16",
+      "range": {
+        "startLine": 24,
+        "startChar": 18,
+        "endLine": 24,
+        "endChar": 29
+      },
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
