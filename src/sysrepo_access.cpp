@@ -9,7 +9,6 @@
 #include <sysrepo-cpp/Session.h>
 #include "sysrepo_access.hpp"
 
-
 struct valFromValue : boost::static_visitor<S_Val> {
     S_Val operator()(const enum_& value) const
     {
@@ -38,6 +37,26 @@ struct valFromValue : boost::static_visitor<S_Val> {
     }
 };
 
+leaf_data_ leafValueFromVal(const S_Val& value)
+{
+    switch (value->type()) {
+        case SR_INT32_T:
+            return value->data()->get_int32();
+        case SR_UINT32_T:
+            return value->data()->get_uint32();
+        case SR_BOOL_T:
+            return value->data()->get_bool();
+        case SR_STRING_T:
+            return value->data()->get_string();
+        case SR_ENUM_T:
+            return value->data()->get_enum();
+        case SR_DECIMAL64_T:
+            return value->data()->get_decimal64();
+        default:
+            return value->data()->get_int32();
+    }
+}
+
 SysrepoAccess::~SysrepoAccess()
 {
     m_session->commit();
@@ -57,6 +76,11 @@ std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& pat
     // TODO: implement this (and make use of it somehow)
 
     return res;
+}
+
+leaf_data_ SysrepoAccess::getLeaf(const std::string& path)
+{
+    return leafValueFromVal(m_session->get_item(path.c_str()));
 }
 
 void SysrepoAccess::setLeaf(const std::string& path, leaf_data_ value)
