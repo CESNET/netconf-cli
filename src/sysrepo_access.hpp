@@ -25,6 +25,7 @@ public:
     SysrepoAccess(const std::string& appname);
     std::map<std::string, leaf_data_> getItems(const std::string& path) override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
+    leaf_data_ getLeaf(const std::string& path) override;
     void createPresenceContainer(const std::string& path) override;
     void deletePresenceContainer(const std::string& path) override;
 
