@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "35bd874a_fa649e4b",
+        "filename": "src/datastore_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-29T09:28:07Z",
+      "side": 1,
+      "message": "Do predchoziho commitu.",
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ebc3853_78c987ac",
+        "filename": "src/datastore_access.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-29T09:28:07Z",
+      "side": 1,
+      "message": "do predchoziho commitu",
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66cec9b5_10f8c30c",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-29T09:28:07Z",
+      "side": 1,
+      "message": "tady by melo jit bez problemu pouzit std::make_shared:\n\n  std::make_shared\u003cVal\u003e(value.m_value.c_str(), SR_ENUM_T)\n\npodobne i vsude dale",
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "054637fc_b0a7cd01",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-29T09:28:07Z",
+      "side": 1,
+      "message": "Nova session pro kazdou modifikaci, to neni dobre. Krome neefektivity a \"divneho pocitu\" je to spatne kvuli validaci dat. Pokud je napr. v nejakem modelu receno (pres `must`), ze je povinne mit bud leaf1 nastaveny na neco, a nebo leaf2 nastaveny na neco jineho, ale nikdy ne oba, tak je potreba \"v jedne operaci\" smazat jeden leaf a nastavit druhy leaf. V sysrepo API se to dela pres otevreni session, smazani jednoho, nastaveni druheho, commit.\n\nCili zjevne bude potreba, aby CLI melo pro commit nejaky prikaz. Take bude zadouci mit moznost vypsat seznam zmen, ktere jeste nejsou commitnute, a pridat jeste prikaz pro rollback.\n\nUdelej si na to, prosim, tasky v Taize, at se na to nezapomene.",
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f704137_f05ec430",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-29T09:28:07Z",
+      "side": 1,
+      "message": "nit: extra radka",
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4704f539_edfc7b16",
+        "filename": "src/sysrepo_access.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-29T09:28:07Z",
+      "side": 1,
+      "message": "const std::string\u0026",
+      "range": {
+        "startLine": 24,
+        "startChar": 18,
+        "endLine": 24,
+        "endChar": 29
+      },
+      "revId": "deafcd315f0f14e298d5d334f093a151e98c15b7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
