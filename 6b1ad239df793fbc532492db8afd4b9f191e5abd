@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f261d0ac_b0308d36",
+        "filename": "src/datastore_access.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T08:32:03Z",
+      "side": 1,
+      "message": "Interface uz obsahuje getItems(xpath). Doporucuji spis naimplementovat ten nez ted pridavat variantu pro pripad, ze XPath vede na jediny leaf.\n\nKonkretni implementace DatastoreAccess jsou obvykle v lepsi pozici pro iteraci pres ten data tree, je zbytecne to honit pres vyssi vrstvy.",
+      "revId": "6b1ad239df793fbc532492db8afd4b9f191e5abd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
