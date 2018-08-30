@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5e3dd73c_89505ba4",
+        "filename": "src/datastore_access.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T08:18:45Z",
+      "side": 1,
+      "message": "tohle se ted jeste nekompiluje -\u003e je potreba to pridat do nejake knihovny",
+      "revId": "9efe8bc9e32a410969675a50f036e9839c745bd4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
