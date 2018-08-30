@@ -9,7 +9,7 @@
 
 std::string joinPaths(const std::string& prefix, const std::string& suffix)
 {
-    if (prefix.empty() || suffix.empty())
+    if (prefix.empty() || suffix.empty() || prefix == "/")
         return prefix + suffix;
     else
         return prefix + '/' + suffix;
