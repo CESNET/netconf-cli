@@ -9,12 +9,13 @@
 #pragma once
 
 #include <boost/variant/static_visitor.hpp>
-#include "parser.hpp"
 #include "datastore_access.hpp"
+#include "parser.hpp"
 
 struct Interpreter : boost::static_visitor<void> {
     Interpreter(Parser& parser, DatastoreAccess& datastore);
 
+    void operator()(const commit_&) const;
     void operator()(const set_&) const;
     void operator()(const get_&) const;
     void operator()(const cd_&) const;
