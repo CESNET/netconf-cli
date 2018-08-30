@@ -16,6 +16,24 @@
       "revId": "9efe8bc9e32a410969675a50f036e9839c745bd4",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01fd294b_5a3f755f",
+        "filename": "src/datastore_access.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-30T09:47:55Z",
+      "side": 1,
+      "message": "Já asi úplně nevim kam to mám dát, v nějakým novějším commitu jsem to dal do tý knihovny sysrepoaccess, ale ta v tomhle commitu nemá význam",
+      "parentUuid": "5e3dd73c_89505ba4",
+      "revId": "9efe8bc9e32a410969675a50f036e9839c745bd4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
