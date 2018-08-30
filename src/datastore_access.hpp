@@ -23,4 +23,6 @@ public:
     virtual void setLeaf(const std::string& path, leaf_data_ value) = 0;
     virtual void createPresenceContainer(const std::string& path) = 0;
     virtual void deletePresenceContainer(const std::string& path) = 0;
+
+    virtual void commitChanges() = 0;
 };

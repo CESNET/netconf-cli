@@ -28,6 +28,8 @@ public:
     void createPresenceContainer(const std::string& path) override;
     void deletePresenceContainer(const std::string& path) override;
 
+    void commitChanges() override;
+
 private:
     std::shared_ptr<Connection> m_connection;
     std::shared_ptr<Session> m_session;
