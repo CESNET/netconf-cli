@@ -11,21 +11,28 @@
 
 leaf_data_ leafValueFromVal(const S_Val& value)
 {
+    using namespace std::string_literals;
     switch (value->type()) {
-        case SR_INT32_T:
-            return value->data()->get_int32();
-        case SR_UINT32_T:
-            return value->data()->get_uint32();
-        case SR_BOOL_T:
-            return value->data()->get_bool();
-        case SR_STRING_T:
-            return std::string(value->data()->get_string());
-        case SR_ENUM_T:
-            return std::string(value->data()->get_enum());
-        case SR_DECIMAL64_T:
-            return value->data()->get_decimal64();
-        default: // TODO: implement all types
-            throw std::runtime_error("This type is not yet implemented");
+    case SR_INT32_T:
+        return value->data()->get_int32();
+    case SR_UINT32_T:
+        return value->data()->get_uint32();
+    case SR_BOOL_T:
+        return value->data()->get_bool();
+    case SR_STRING_T:
+        return std::string(value->data()->get_string());
+    case SR_ENUM_T:
+        return std::string(value->data()->get_enum());
+    case SR_DECIMAL64_T:
+        return value->data()->get_decimal64();
+    case SR_CONTAINER_T:
+        return "(container)"s;
+    case SR_CONTAINER_PRESENCE_T:
+        return "(presence container)"s;
+    case SR_LIST_T:
+        return "(list)"s;
+    default: // TODO: implement all types
+        return value->val_to_string();
     }
 }
 
@@ -71,14 +78,24 @@ SysrepoAccess::SysrepoAccess(const std::string& appname)
 
 std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& path)
 {
+    using namespace std::string_literals;
     std::map<std::string, leaf_data_> res;
-    auto iterator = m_session->get_items_iter(path.c_str());
 
-    if (!iterator)
-        return res;
+    auto fillMap = [&res](auto items) {
+        if (!items)
+            return;
+        for (unsigned int i = 0; i < items->val_cnt(); i++) {
+            res.emplace(items->val(i)->xpath(), leafValueFromVal(items->val(i)));
+        }
+    };
 
-    while (auto value = m_session->get_item_next(iterator)) {
-        res.emplace(value->xpath(), leafValueFromVal(value));
+    if (path == "/") {
+        auto schemas = m_session->list_schemas();
+        for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
+            fillMap(m_session->get_items(("/"s + schemas->schema(i)->module_name() + ":*//.").c_str()));
+        }
+    } else {
+        fillMap(m_session->get_items((path + "//.").c_str()));
     }
 
     return res;

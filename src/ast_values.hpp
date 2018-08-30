@@ -22,4 +22,3 @@ using leaf_data_ = boost::variant<enum_,
                                   int32_t,
                                   uint32_t,
                                   std::string>;
-

@@ -34,6 +34,14 @@ void Interpreter::operator()(const set_& set) const
     m_datastore.setLeaf(absolutePathFromCommand(set), set.m_data);
 }
 
+void Interpreter::operator()(const get_& get) const
+{
+    auto items = m_datastore.getItems(absolutePathFromCommand(get));
+    for (auto it : items) {
+        std::cout << it.first << " = " << boost::apply_visitor(leafDataToString(), it.second) << std::endl;
+    }
+}
+
 void Interpreter::operator()(const cd_& cd) const
 {
     m_parser.changeNode(cd.m_path);
@@ -64,6 +72,16 @@ std::string Interpreter::absolutePathFromCommand(const T& command) const
         return "/" + pathToDataString(command.m_path);
     else
         return joinPaths(m_parser.currentNode(), pathToDataString(command.m_path));
+}
+
+std::string Interpreter::absolutePathFromCommand(const get_& get) const
+{
+    if (!get.m_path) {
+        return m_parser.currentNode();
+    } else if (get.m_path->m_scope == Scope::Absolute)
+        return "/" + pathToDataString(*get.m_path);
+    else
+        return joinPaths(m_parser.currentNode(), pathToDataString(*get.m_path));
 }
 
 Interpreter::Interpreter(Parser& parser, DatastoreAccess& datastore)
