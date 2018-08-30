@@ -16,6 +16,7 @@ struct Interpreter : boost::static_visitor<void> {
     Interpreter(Parser& parser, DatastoreAccess& datastore);
 
     void operator()(const set_&) const;
+    void operator()(const get_&) const;
     void operator()(const cd_&) const;
     void operator()(const create_&) const;
     void operator()(const delete_&) const;
