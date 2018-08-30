@@ -91,7 +91,7 @@ struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
         res << node.m_name + "[";
         std::transform(node.m_keys.begin(), node.m_keys.end(),
                 std::experimental::make_ostream_joiner(res, ' '),
-                [] (const auto& it) { return it.first + "=" + it.second; });
+                [] (const auto& it) { return it.first + "=" + '\'' + it.second + '\''; });
         res << "]";
         return res.str();
     }
