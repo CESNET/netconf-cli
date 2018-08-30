@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "d6a1aedd_405f9110",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T10:27:41Z",
+      "side": 1,
+      "message": "Ted v tomhle commitu ten interpretr zacina mluvit s nejakym backendem, ktery \"neco dela\". Neni duvod, aby ani interpretr, ani implementace sysrepoaccess neco vypisovala. Pokud ty vyisy potrebujes pro ladeni a nebo psani kodu, udelej si nejaky DummyDatastoreAccess, jestli chces neco vypisovat, a presun vypisovani tam. Pokud vypisovani neni potreba, tak to jenom muzes smazat.",
+      "parentUuid": "6a8f8466_99c6f4af",
+      "revId": "f884a94c6f136f891cdde1e02f3837191a4513d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "daf86ee1_d5310275",
         "filename": "src/interpreter.cpp",
         "patchSetId": 15
@@ -119,6 +137,30 @@
       "side": 1,
       "message": "Ta funkce by teda brala jako argumenty ten m_parser a create?",
       "parentUuid": "686e3aa5_b0269f1f",
+      "range": {
+        "startLine": 42,
+        "startChar": 40,
+        "endLine": 42,
+        "endChar": 112
+      },
+      "revId": "f884a94c6f136f891cdde1e02f3837191a4513d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a7872c1_f490c59b",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T10:27:41Z",
+      "side": 1,
+      "message": "Ano, bude potrebovat pristupovat pokazde k m_parser (nebo aspon ke kontextu z nej) a ke create/delete/set, takze asi dobry kandidat je private member template function v teto tride.",
+      "parentUuid": "cfd73622_48e1dc41",
       "range": {
         "startLine": 42,
         "startChar": 40,
