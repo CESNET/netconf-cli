@@ -68,8 +68,7 @@ struct node_ {
     bool operator==(const node_& b) const;
 };
 
-enum class Scope
-{
+enum class Scope {
     Absolute,
     Relative
 };
