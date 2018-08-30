@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c0c2fc67_55043948",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-30T09:59:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0141d836_dbac1f2f",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 5
+      },
+      "revId": "344d30b9e78f4536579322e3b422dca5306637e8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "27d68e4d_00d3d146",
         "filename": "submodules/libyang",
         "patchSetId": 16
@@ -39,6 +63,24 @@
       "revId": "344d30b9e78f4536579322e3b422dca5306637e8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b676c52_077c5280",
+        "filename": "submodules/libyang",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-30T09:59:59Z",
+      "side": 1,
+      "message": "Nějaký omyl, když jsem dělal čáry s gitem",
+      "parentUuid": "27d68e4d_00d3d146",
+      "revId": "344d30b9e78f4536579322e3b422dca5306637e8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
