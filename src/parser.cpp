@@ -51,7 +51,7 @@ void Parser::changeNode(const path_& name)
 
 std::string Parser::currentNode() const
 {
-    return pathToDataString(m_curDir);
+    return "/" + pathToDataString(m_curDir);
 }
 
 std::set<std::string> Parser::availableNodes(const boost::optional<path_>& path) const
