@@ -68,10 +68,7 @@ struct valFromValue : boost::static_visitor<S_Val> {
     }
 };
 
-SysrepoAccess::~SysrepoAccess()
-{
-    m_session->commit();
-}
+SysrepoAccess::~SysrepoAccess() = default;
 
 SysrepoAccess::SysrepoAccess(const std::string& appname)
     : m_connection(new Connection(appname.c_str()))
@@ -105,4 +102,9 @@ void SysrepoAccess::createPresenceContainer(const std::string& path)
 void SysrepoAccess::deletePresenceContainer(const std::string& path)
 {
     m_session->delete_item(path.c_str());
+}
+
+void SysrepoAccess::commitChanges()
+{
+    m_session->commit();
 }
