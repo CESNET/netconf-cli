@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb1fc423_1e969f42",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T15:25:55Z",
+      "side": 1,
+      "message": "nit: ja bych si tam osobne nedelal tu extra promennou, ale je to jedno",
+      "revId": "a276c25e7a8fba8fc47b15d67def90242b1c6f30",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
