@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0141d836_dbac1f2f",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T08:21:54Z",
+      "side": 1,
+      "message": "Tohle je potreba k cemu? Byl bych spis opatrnejsi a delal vse explicitne, pokud nebudeme mit garantovano, ze se vzdy pouzije spravny overload, a takovou garanci mi sysrepo API, pokud si to pamatuju, nedava.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 5
+      },
+      "revId": "344d30b9e78f4536579322e3b422dca5306637e8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27d68e4d_00d3d146",
+        "filename": "submodules/libyang",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T08:21:54Z",
+      "side": 1,
+      "message": "tohle velmi pravdepodobne nechces; pokud to chces, je potreba v commit msg vysvetlit, proc je to potreba",
+      "revId": "344d30b9e78f4536579322e3b422dca5306637e8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
