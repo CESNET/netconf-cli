@@ -12,20 +12,20 @@
 leaf_data_ leafValueFromVal(const S_Val& value)
 {
     switch (value->type()) {
-        case SR_INT32_T:
-            return value->data()->get_int32();
-        case SR_UINT32_T:
-            return value->data()->get_uint32();
-        case SR_BOOL_T:
-            return value->data()->get_bool();
-        case SR_STRING_T:
-            return std::string(value->data()->get_string());
-        case SR_ENUM_T:
-            return std::string(value->data()->get_enum());
-        case SR_DECIMAL64_T:
-            return value->data()->get_decimal64();
-        default: // TODO: implement all types
-            throw std::runtime_error("This type is not yet implemented");
+    case SR_INT32_T:
+        return value->data()->get_int32();
+    case SR_UINT32_T:
+        return value->data()->get_uint32();
+    case SR_BOOL_T:
+        return value->data()->get_bool();
+    case SR_STRING_T:
+        return std::string(value->data()->get_string());
+    case SR_ENUM_T:
+        return std::string(value->data()->get_enum());
+    case SR_DECIMAL64_T:
+        return value->data()->get_decimal64();
+    default: // TODO: implement all types
+        throw std::runtime_error("This type is not yet implemented");
     }
 }
 
@@ -61,10 +61,7 @@ struct valFromValue : boost::static_visitor<S_Val> {
     }
 };
 
-SysrepoAccess::~SysrepoAccess()
-{
-    m_session->commit();
-}
+SysrepoAccess::~SysrepoAccess() = default;
 
 SysrepoAccess::SysrepoAccess(const std::string& appname)
     : m_connection(new Connection(appname.c_str()))
@@ -100,4 +97,9 @@ void SysrepoAccess::createPresenceContainer(const std::string& path)
 void SysrepoAccess::deletePresenceContainer(const std::string& path)
 {
     m_session->delete_item(path.c_str());
+}
+
+void SysrepoAccess::commitChanges()
+{
+    m_session->commit();
 }
