@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7608898b_32406b30",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T12:14:37Z",
+      "side": 1,
+      "message": "je toto jeste potreba? obdobne i jinde",
+      "revId": "1a8e6d0b7ac5202fa0af9ec7ceacec161556c0c2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
