@@ -9,6 +9,25 @@
 #include <sysrepo-cpp/Session.h>
 #include "sysrepo_access.hpp"
 
+leaf_data_ leafValueFromVal(const S_Val& value)
+{
+    switch (value->type()) {
+        case SR_INT32_T:
+            return value->data()->get_int32();
+        case SR_UINT32_T:
+            return value->data()->get_uint32();
+        case SR_BOOL_T:
+            return value->data()->get_bool();
+        case SR_STRING_T:
+            return std::string(value->data()->get_string());
+        case SR_ENUM_T:
+            return std::string(value->data()->get_enum());
+        case SR_DECIMAL64_T:
+            return value->data()->get_decimal64();
+        default: // TODO: implement all types
+            throw std::runtime_error("This type is not yet implemented");
+    }
+}
 
 struct valFromValue : boost::static_visitor<S_Val> {
     S_Val operator()(const enum_& value) const
@@ -58,7 +77,12 @@ std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& pat
     std::map<std::string, leaf_data_> res;
     auto iterator = m_session->get_items_iter(path.c_str());
 
-    // TODO: implement this (and make use of it somehow)
+    if (!iterator)
+        return res;
+
+    while (auto value = m_session->get_item_next(iterator)) {
+        res.emplace(value->xpath(), leafValueFromVal(value));
+    }
 
     return res;
 }
