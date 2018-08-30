@@ -55,7 +55,12 @@ struct set_ : x3::position_tagged {
     leaf_data_ m_data;
 };
 
-using command_ = boost::variant<ls_, cd_, create_, delete_, set_>;
+struct get_ : x3::position_tagged {
+    bool operator==(const get_& b) const;
+    path_ m_path;
+};
+
+using command_ = boost::variant<ls_, cd_, create_, delete_, set_, get_>;
 
 BOOST_FUSION_ADAPT_STRUCT(ls_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
@@ -63,3 +68,4 @@ BOOST_FUSION_ADAPT_STRUCT(create_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(delete_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(enum_, m_value)
 BOOST_FUSION_ADAPT_STRUCT(set_, m_path, m_data)
+BOOST_FUSION_ADAPT_STRUCT(get_, m_path)
