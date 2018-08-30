@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "18fd4f81_3ede4ef2",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-30T11:10:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6a1aedd_405f9110",
+      "revId": "f884a94c6f136f891cdde1e02f3837191a4513d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "daf86ee1_d5310275",
         "filename": "src/interpreter.cpp",
         "patchSetId": 15
@@ -90,6 +108,30 @@
       "side": 1,
       "message": "Chápeš to dobře. m_parser.currentNode() vrací string absolutní cesty, ale není tam na začátku \"/\". Asi to předělám tak, že currentNode() bude vracet tu cestu i s lomítkem. Budu muset ale vylepšít joinPaths(), aby se správně spojily některé cesty (např \"/\" a \"něco\").",
       "parentUuid": "daf86ee1_d5310275",
+      "range": {
+        "startLine": 30,
+        "startChar": 24,
+        "endLine": 30,
+        "endChar": 93
+      },
+      "revId": "f884a94c6f136f891cdde1e02f3837191a4513d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fdc8082_4c58e6dc",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-30T11:10:17Z",
+      "side": 1,
+      "message": "Udělal jsem to tak, jak jsem to tady navrhnul",
+      "parentUuid": "e3f7577d_455a8501",
       "range": {
         "startLine": 30,
         "startChar": 24,
@@ -170,6 +212,30 @@
       "revId": "f884a94c6f136f891cdde1e02f3837191a4513d3",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3865e6f5_881e7b09",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-30T11:10:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7872c1_f490c59b",
+      "range": {
+        "startLine": 42,
+        "startChar": 40,
+        "endLine": 42,
+        "endChar": 112
+      },
+      "revId": "f884a94c6f136f891cdde1e02f3837191a4513d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
