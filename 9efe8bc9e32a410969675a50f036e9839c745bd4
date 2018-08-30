@@ -34,6 +34,24 @@
       "revId": "9efe8bc9e32a410969675a50f036e9839c745bd4",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "315bf98f_c61aef5c",
+        "filename": "src/datastore_access.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T10:23:34Z",
+      "side": 1,
+      "message": "Az bude v budoucnu libnetconfaccess, tak nepujde slinkovat, protoze potrebuje symbol DatastoreAccess::~DatastoreAccess, ktery bude v tom Tvem dalsim commitu v knihovne sysrepoaccess. Linkovat libnetconf2access proti sysrepoaccess nedava smysl, proto pridej novou statickou knihovnu, podobnou existujici knihovne \"schemas\", a do ni dej tenhle jeden .cpp s destruktorem.",
+      "parentUuid": "01fd294b_5a3f755f",
+      "revId": "9efe8bc9e32a410969675a50f036e9839c745bd4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
