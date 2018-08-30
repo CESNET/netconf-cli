@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "add17319_e4490b06",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T08:29:40Z",
+      "side": 1,
+      "message": "Ty debuggovaci hlasky bych mel rad odstranene. Treba by se to dalo udelat tak, ze vytvoris dalsi implementaci DatastoreAccess, ktera bude pouze pro ladeni, a bude veci vypisovat (v jednom commitu s \"Add abstract class for datastore access\" asi nejlepe).",
+      "revId": "f884a94c6f136f891cdde1e02f3837191a4513d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daf86ee1_d5310275",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T08:29:40Z",
+      "side": 1,
+      "message": "Prijde mi \"divne\", ze joinPaths() vrati \"neco\", k cemu je potreba na zacatek pridat jeste \"/\". Proc je to potreba? Proc neni m_parser.currentNode() absolutni cesta? Chapu to dobre, ze set.m_path vrati cestu relativne vzhledem k m_parser.currentNode()?",
+      "range": {
+        "startLine": 30,
+        "startChar": 24,
+        "endLine": 30,
+        "endChar": 93
+      },
+      "revId": "f884a94c6f136f891cdde1e02f3837191a4513d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "686e3aa5_b0269f1f",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T08:29:40Z",
+      "side": 1,
+      "message": "Toto se opakuje vsude, takze DRY, Don\u0027t Repeat Yourself. Prislo by mi lepsi mit funkci/metodu/whatever, ktera prevede \"cokoli od parseru\" na XPath vhodny k nakrmeni DatastoreAccess.\n\nZrejme to bude jednoduchy template, protoze create_, delete_ a set_ nejsou polymorfni tridy, ale to neni problem.",
+      "range": {
+        "startLine": 42,
+        "startChar": 40,
+        "endLine": 42,
+        "endChar": 112
+      },
+      "revId": "f884a94c6f136f891cdde1e02f3837191a4513d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e08d2f2_ec2b783f",
+        "filename": "src/main.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T08:29:40Z",
+      "side": 1,
+      "message": "\"netconf-cli\" ma vetsi informacni hodnotu nez \"app1\"",
+      "range": {
+        "startLine": 40,
+        "startChar": 29,
+        "endLine": 40,
+        "endChar": 33
+      },
+      "revId": "f884a94c6f136f891cdde1e02f3837191a4513d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
