@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2f317da1_ca248afa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-30T12:06:16Z",
+      "side": 1,
+      "message": "Tohle je dobry popis zmeny, dekuju -- je z toho poznat, co bylo predtim blbe.",
+      "revId": "50949e64ef6a89af1dda4a7a15d560bca52522df",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
