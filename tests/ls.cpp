@@ -42,7 +42,7 @@ TEST_CASE("ls")
         SECTION("with path argument")
         {
             input = "ls example:a";
-            expected.m_path = path_{{node_(module_{"example"}, container_{"a"})}};
+            expected.m_path = path_{false, {node_(module_{"example"}, container_{"a"})}};
         }
 
         command_ command = parser.parseCommand(input, errorStream);
