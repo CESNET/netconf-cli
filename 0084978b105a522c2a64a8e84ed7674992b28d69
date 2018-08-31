@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6be96df5_27da40c7",
+        "filename": "tests/ls.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-31T15:18:11Z",
+      "side": 1,
+      "message": "Pridej k tomu, prosim, vic testu, budou potreba aspon ctyri kombinace (cwd je/neni /, cesta je/neni absolutni), a prosim take, at ty absolutni cesty jsou obcas jenom \"/\" a obcas neco delsiho.\n\nJa to pak rebasnu na cisty master, protoze to `get` jeste neni uplne hotove.",
+      "revId": "0084978b105a522c2a64a8e84ed7674992b28d69",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
