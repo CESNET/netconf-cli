@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d5cbccde_e9a8d45e",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-08-31T14:18:00Z",
+      "side": 1,
+      "message": "Ja myslim, ze to puvodni s \"//*\" bylo v poradku, ale je potreba jeste pridat kontrolu a vcasne rizene umreni, pokud je `items` nullptr.",
+      "revId": "c46f87c135f37c15f6d9e02c7edb9b09247afc5f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
