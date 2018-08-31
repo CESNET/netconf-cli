@@ -16,6 +16,24 @@
       "revId": "c46f87c135f37c15f6d9e02c7edb9b09247afc5f",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "554f4c1d_ca574caf",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-08-31T14:36:24Z",
+      "side": 1,
+      "message": "If you want to retrieve all nodes in container subtree, including deeper levels use:\n/model:container//*\n\nTo retrieve all nodes in container subtree including deeper levels and also the container itself use:\n/model:container//.\n\nProblém nebyl v chybějícím null checku (i když tam samozřejmě chybí, ale teoreticky by getItems() neměla nikdy dostat nezvalidovanou cestu), ale v tom, že když se to zavolá na leaf, tak to vrátilo akorát jeho potomky a jelikož leaf žádný nemá, tak to vrátilo nullptr a proto to segfaultnulo už na tom val_cnt().",
+      "parentUuid": "d5cbccde_e9a8d45e",
+      "revId": "c46f87c135f37c15f6d9e02c7edb9b09247afc5f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
