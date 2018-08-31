@@ -41,8 +41,51 @@ TEST_CASE("ls")
 
         SECTION("with path argument")
         {
-            input = "ls example:a";
-            expected.m_path = path_{{node_(module_{"example"}, container_{"a"})}};
+            SECTION("ls example:a")
+            {
+                input = "ls example:a";
+                expected.m_path = path_{Scope::Relative, {node_(module_{"example"}, container_{"a"})}};
+            }
+
+            SECTION("ls /example:a")
+            {
+                input = "ls example:a";
+                expected.m_path = path_{Scope::Absolute, {node_(module_{"example"}, container_{"a"})}};
+            }
+
+            SECTION("ls /")
+            {
+                input = "ls /";
+                expected.m_path = path_{Scope::Absolute, {}};
+            }
+
+            SECTION("ls example:a/a2")
+            {
+                input = "ls example:a/a2";
+                expected.m_path = path_{Scope::Relative, {node_(module_{"example"}, container_{"a"}),
+                                                          node_(container_{"a2"})}};
+            }
+
+            SECTION("ls /example:a/a2")
+            {
+                input = "ls example:a/a2";
+                expected.m_path = path_{Scope::Absolute, {node_(module_{"example"}, container_{"a"}),
+                                                          node_(container_{"a2"})}};
+            }
+
+            SECTION("ls example:a/example:a2")
+            {
+                input = "ls example:a/example:a2";
+                expected.m_path = path_{Scope::Relative, {node_(module_{"example"}, container_{"a"}),
+                                                          node_(module_{"example"}, container_{"a2"})}};
+            }
+
+            SECTION("ls /example:a/example:a2")
+            {
+                input = "ls example:a/example:a2";
+                expected.m_path = path_{Scope::Absolute, {node_(module_{"example"}, container_{"a"}),
+                                                          node_(module_{"example"}, container_{"a2"})}};
+            }
         }
 
         command_ command = parser.parseCommand(input, errorStream);
@@ -53,7 +96,20 @@ TEST_CASE("ls")
     {
         SECTION("invalid path")
         {
-            input = "ls example:nonexistent";
+            SECTION("ls example:nonexistent")
+                input = "ls example:nonexistent";
+
+            SECTION("ls /example:nonexistent")
+                input = "ls /example:nonexistent";
+
+            SECTION("ls /bad:nonexistent")
+                input = "ls /bad:nonexistent";
+
+            SECTION( "ls example:a/nonexistent")
+                input = "ls example:a/nonexistent";
+
+            SECTION( "ls /example:a/nonexistent")
+                input = "ls /example:a/nonexistent";
         }
 
         REQUIRE_THROWS(parser.parseCommand(input, errorStream));
