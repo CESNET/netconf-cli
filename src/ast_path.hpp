@@ -70,6 +70,7 @@ struct node_ {
 
 struct path_ {
     bool operator==(const path_& b) const;
+    bool m_absolute = false;
     std::vector<node_> m_nodes;
 };
 
@@ -83,4 +84,4 @@ BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
 BOOST_FUSION_ADAPT_STRUCT(module_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(node_, m_prefix, m_suffix)
-BOOST_FUSION_ADAPT_STRUCT(path_, m_nodes)
+BOOST_FUSION_ADAPT_STRUCT(path_, m_absolute, m_nodes)

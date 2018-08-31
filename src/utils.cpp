@@ -28,7 +28,7 @@ std::string stripLastNodeFromPath(const std::string& path)
 
 path_ pathWithoutLastNode(const path_& path)
 {
-    return path_{decltype(path_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};
+    return path_{path.m_absolute, decltype(path_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};
 }
 
 std::string leafDataTypeToString(yang::LeafDataTypes type)

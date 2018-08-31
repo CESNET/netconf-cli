@@ -23,6 +23,7 @@ x3::rule<container_class, container_> const container = "container";
 x3::rule<leaf_class, leaf_> const leaf = "leaf";
 x3::rule<module_class, module_> const module = "module";
 x3::rule<node_class, node_> const node = "node";
+x3::rule<absoluteStart_class, bool> const absoluteStart = "absoluteStart";
 x3::rule<path_class, path_> const path = "path";
 x3::rule<leaf_path_class, path_> const leafPath = "leafPath";
 
@@ -87,8 +88,13 @@ auto const leaf_def =
 auto const node_def =
         -(module) >> x3::expect[container | listElement | nodeup | leaf];
 
+auto const absoluteStart_def =
+        x3::omit['/'] >> x3::attr(true);
+
+// I have to insert an empty vector to the first alternative, otherwise they won't have the same attribute
 auto const path_def =
-        node % '/';
+        absoluteStart >> x3::attr(decltype(path_::m_nodes)()) >> x3::eoi |
+        -(absoluteStart) >> node % '/';
 
 auto const leafPath_def =
         path;
@@ -167,6 +173,7 @@ BOOST_SPIRIT_DEFINE(container)
 BOOST_SPIRIT_DEFINE(leaf)
 BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(node)
+BOOST_SPIRIT_DEFINE(absoluteStart)
 BOOST_SPIRIT_DEFINE(path)
 BOOST_SPIRIT_DEFINE(module)
 BOOST_SPIRIT_DEFINE(leaf_data)
