@@ -68,7 +68,10 @@ void Interpreter::operator()(const ls_& ls) const
 template <typename T>
 std::string Interpreter::absolutePathFromCommand(const T& command) const
 {
-    return joinPaths(m_parser.currentNode(), pathToDataString(command.m_path));
+    if (command.m_path.m_scope == Scope::Absolute)
+        return "/" + pathToDataString(command.m_path);
+    else
+        return joinPaths(m_parser.currentNode(), pathToDataString(command.m_path));
 }
 
 Interpreter::Interpreter(Parser& parser, DatastoreAccess& datastore)
