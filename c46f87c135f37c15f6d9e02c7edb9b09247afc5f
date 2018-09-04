@@ -34,6 +34,24 @@
       "revId": "c46f87c135f37c15f6d9e02c7edb9b09247afc5f",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0776780_e51b1820",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-04T14:48:18Z",
+      "side": 1,
+      "message": "V patek jsi mi to vysvetlil, mas pravdu.",
+      "parentUuid": "554f4c1d_ca574caf",
+      "revId": "c46f87c135f37c15f6d9e02c7edb9b09247afc5f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
