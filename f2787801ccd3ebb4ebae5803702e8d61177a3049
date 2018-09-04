@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "74173912_f025192b",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-04T16:35:08Z",
+      "side": 1,
+      "message": "Bez argumentu by to melo vzit cwd",
+      "revId": "f2787801ccd3ebb4ebae5803702e8d61177a3049",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c76405af_d031ddd7",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-04T16:35:08Z",
+      "side": 1,
+      "message": "Do budoucna budeme muset pridat nejake callbacky z interpreteru nahoru, protoze tady se podle me bude hodit nejake interaktivni potvrzeni, jestli chce uzivatel opravdu podstoupit operaci trvajici klidne minuty. Nez to zacne rekurzivne cist vsechna data, bylo by fajn se zeptat uzivatele, jestli jako opravdu.\n\nTed to neresme, jenom to sem pisu, ze me to napadlo.",
+      "revId": "f2787801ccd3ebb4ebae5803702e8d61177a3049",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e84e8ed_dabec51a",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-04T16:35:08Z",
+      "side": 1,
+      "message": "bylo by IMHO dobre ten presence-container nejak vice zviditelnit, treba \"(container!)\"? jak to dela libyang/sysrepo?",
+      "revId": "f2787801ccd3ebb4ebae5803702e8d61177a3049",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e33ddf60_d22a741d",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-04T16:35:08Z",
+      "side": 1,
+      "message": "nit: lepsi bude vzdy uvest, ktere promenne jsou potreba",
+      "range": {
+        "startLine": 84,
+        "startChar": 20,
+        "endLine": 84,
+        "endChar": 21
+      },
+      "revId": "f2787801ccd3ebb4ebae5803702e8d61177a3049",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
