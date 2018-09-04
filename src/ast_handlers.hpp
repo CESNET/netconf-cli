@@ -392,6 +392,8 @@ struct set_class {
     }
 };
 
+struct commit_class;
+
 struct command_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)

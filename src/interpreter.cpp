@@ -24,6 +24,11 @@ struct leafDataToString : boost::static_visitor<std::string> {
     }
 };
 
+void Interpreter::operator()(const commit_&) const
+{
+    m_datastore.commitChanges();
+}
+
 void Interpreter::operator()(const set_& set) const
 {
     m_datastore.setLeaf(absolutePathFromCommand(set), set.m_data);
@@ -62,6 +67,7 @@ std::string Interpreter::absolutePathFromCommand(const T& command) const
 }
 
 Interpreter::Interpreter(Parser& parser, DatastoreAccess& datastore)
-    : m_parser(parser), m_datastore(datastore)
+    : m_parser(parser)
+    , m_datastore(datastore)
 {
 }
