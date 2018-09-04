@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ae71decc_69148a8a",
+        "filename": "tests/ls.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-04T12:38:27Z",
+      "side": 1,
+      "message": "Tohle by bylo citelnejsi, pokud by tam misto kodu byl enum:\n\n expected.m_path \u003d path_{Scope::Relative, {node_(module_{\"example\"}, container_{\"a\"})}};\n\nVice treba na https://ariya.io/2011/08/hall-of-api-shame-boolean-trap .",
+      "revId": "fe055c40c656ca530ac99aafc2cf13484e961657",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

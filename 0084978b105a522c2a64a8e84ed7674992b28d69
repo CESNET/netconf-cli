@@ -34,6 +34,24 @@
       "revId": "0084978b105a522c2a64a8e84ed7674992b28d69",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "39174580_f528a694",
+        "filename": "tests/ls.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-04T12:38:27Z",
+      "side": 1,
+      "message": "Pokud to dobre chapu, tak vsechny testy bezi v kontextu, kdy je parser momentalne v `/`. Chtel bych, aby tu pribyly i testy, kdyz je parser uz zanoren.",
+      "parentUuid": "59063dbb_3dc120a7",
+      "revId": "0084978b105a522c2a64a8e84ed7674992b28d69",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
