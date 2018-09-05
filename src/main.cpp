@@ -52,6 +52,12 @@ int main(int argc, char* argv[])
         if (std::cin.eof())
             break;
 
+        std::locale C_locale("C");
+        if (std::all_of(input.begin(), input.end(),
+                        [C_locale](const auto c) { return std::isspace(c, C_locale);})) {
+            continue;
+        }
+
         try {
             command_ cmd = parser.parseCommand(input, std::cout);
             boost::apply_visitor(Interpreter(parser, datastore), cmd);
