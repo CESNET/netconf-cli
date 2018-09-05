@@ -51,6 +51,8 @@ int main(int argc, char* argv[])
         std::getline(std::cin, input);
         if (std::cin.eof())
             break;
+        if (input.empty())
+            continue;
 
         try {
             command_ cmd = parser.parseCommand(input, std::cout);
