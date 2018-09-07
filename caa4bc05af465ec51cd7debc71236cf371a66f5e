@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "47c44687_44eaba09",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-07T17:59:38Z",
+      "side": 1,
+      "message": "zjistit, jestli je to OK, a nebo jestli je tam spesl vec na submoduly",
+      "revId": "caa4bc05af465ec51cd7debc71236cf371a66f5e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46f1712c_942824e9",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-07T17:59:38Z",
+      "side": 1,
+      "message": ".empty()",
+      "revId": "caa4bc05af465ec51cd7debc71236cf371a66f5e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b66d60d3_b5a25341",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-07T17:59:38Z",
+      "side": 1,
+      "message": "pryc",
+      "revId": "caa4bc05af465ec51cd7debc71236cf371a66f5e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
