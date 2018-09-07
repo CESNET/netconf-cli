@@ -8,17 +8,14 @@
 
 #pragma once
 
+#include <libyang/Libyang.hpp>
+#include <functional>
 #include <set>
 #include <stdexcept>
 #include <unordered_map>
 #include "ast_path.hpp"
 #include "schema.hpp"
 
-namespace libyang {
-class Context;
-class Set;
-class Schema_Node;
-}
 
 /*! \class YangSchema
  *     \brief A schema class, which uses libyang for queries.
@@ -39,6 +36,11 @@ public:
     const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const override;
     std::set<std::string> childNodes(const path_& path) const override;
+
+    void register_module_callback(std::function<libyang::Context::mod_missing_cb_return(const char *mod_name, const char *mod_rev, const char *submod_name, const char *sub_rev)> clb);
+
+    /** @short Loads a schema called schemaName. */
+    void loadSchema(const char* schemaName);
 
     /** @short Adds a new module passed as a YANG string. */
     void addSchemaString(const char* schema);

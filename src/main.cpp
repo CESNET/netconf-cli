@@ -19,6 +19,7 @@ static const char usage[] =
     R"(CLI interface to remote NETCONF hosts
 
 Usage:
+  netconf-cli
   netconf-cli <path-to-yang-schema>...
   netconf-cli (-h | --help)
   netconf-cli --version

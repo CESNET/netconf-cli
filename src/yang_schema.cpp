@@ -6,7 +6,6 @@
  *
 */
 
-#include <libyang/Libyang.hpp>
 #include <libyang/Tree_Schema.hpp>
 #include <string_view>
 #include "utils.hpp"
@@ -53,6 +52,7 @@ std::string pathToYangAbsSchemPath(const path_& path)
 YangSchema::YangSchema()
     : m_context(std::make_shared<libyang::Context>())
 {
+    libyang::set_log_verbosity(LY_LLDBG);
 }
 
 YangSchema::~YangSchema() = default;
@@ -62,6 +62,11 @@ void YangSchema::addSchemaString(const char* schema)
     if (!m_context->parse_module_mem(schema, LYS_IN_YANG)) {
         throw YangLoadError("Couldn't load schema");
     }
+}
+
+void YangSchema::loadSchema(const char* schemaName)
+{
+    m_context->load_module(schemaName);
 }
 
 void YangSchema::addSchemaDirectory(const char* directoryName)
@@ -222,4 +227,9 @@ std::set<std::string> YangSchema::childNodes(const path_& path) const
         }
     }
     return res;
+}
+
+void YangSchema::register_module_callback(std::function<libyang::Context::mod_missing_cb_return(const char *mod_name, const char *mod_rev, const char *submod_name, const char *sub_rev)> clb)
+{
+    m_context->add_missing_module_callback(clb);
 }

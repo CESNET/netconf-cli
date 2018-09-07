@@ -6,7 +6,8 @@
  *
 */
 
-#include <sysrepo-cpp/Session.h>
+#include "yang_schema.hpp"          // <- TADY ZÁLEŽÍ NA POŘADÍ
+#include <sysrepo-cpp/Session.h>    // <- OBRÁCENĚ NEJDE ZKOMPILOVAT
 #include "sysrepo_access.hpp"
 
 leaf_data_ leafValueFromVal(const S_Val& value)
@@ -71,9 +72,18 @@ struct valFromValue : boost::static_visitor<S_Val> {
 SysrepoAccess::~SysrepoAccess() = default;
 
 SysrepoAccess::SysrepoAccess(const std::string& appname)
-    : m_connection(new Connection(appname.c_str()))
+    : m_connection(new Connection(appname.c_str())), m_schema(new YangSchema())
 {
     m_session = std::make_shared<Session>(m_connection);
+    auto lambda = [this](const char *moduleName, const char *, const char *, const char *) -> libyang::Context::mod_missing_cb_return {
+        return {LYS_IN_YANG, fetchSchema(moduleName).c_str()};
+    };
+    m_schema->register_module_callback(lambda);
+
+    for (const auto& it : listImplementedSchemas()) {
+        m_schema->loadSchema(it.c_str());
+    }
+
 }
 
 std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& path)
@@ -120,4 +130,25 @@ void SysrepoAccess::deletePresenceContainer(const std::string& path)
 void SysrepoAccess::commitChanges()
 {
     m_session->commit();
+}
+
+std::string SysrepoAccess::fetchSchema(const std::string& name)
+{
+    auto schema = m_session->get_schema(name.c_str(), nullptr, nullptr, SR_SCHEMA_YANG);
+    if (schema == "")
+        throw std::runtime_error("Module " + name + " not available");
+
+    return schema;
+}
+
+std::vector<std::string> SysrepoAccess::listImplementedSchemas()
+{
+    std::vector<std::string> res;
+    auto schemas = m_session->list_schemas();
+    for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
+        auto schema = schemas->schema(i);
+        if (schema->implemented())
+            res.push_back(schema->module_name());
+    }
+    return res;
 }
