@@ -53,6 +53,7 @@ std::string pathToYangAbsSchemPath(const path_& path)
 YangSchema::YangSchema()
     : m_context(std::make_shared<libyang::Context>())
 {
+    libyang::set_log_verbosity(LY_LLDBG);
 }
 
 YangSchema::~YangSchema() = default;
@@ -222,4 +223,20 @@ std::set<std::string> YangSchema::childNodes(const path_& path) const
         }
     }
     return res;
+}
+
+void YangSchema::loadModule(const std::string& moduleName)
+{
+    m_context->load_module(moduleName.c_str());
+}
+
+void YangSchema::registerModuleCallback(const std::function<std::string(const char*)>& clb)
+{
+    auto lambda = [&clb] (const char *mod_name, const char *, const char *, const char *) {
+        auto moduleSource = clb(mod_name);
+        if (moduleSource == "")
+            return libyang::Context::mod_missing_cb_return{LYS_IN_YANG, nullptr};
+        return libyang::Context::mod_missing_cb_return{LYS_IN_YANG, strdup(moduleSource.c_str())};
+    };
+    m_context->add_missing_module_callback(lambda);
 }
