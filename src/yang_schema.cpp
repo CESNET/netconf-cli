@@ -51,7 +51,7 @@ std::string pathToYangAbsSchemPath(const path_& path)
 }
 
 YangSchema::YangSchema()
-    : m_context(std::make_shared<libyang::Context>())
+    : m_context(std::make_shared<libyang::Context>(nullptr, LY_CTX_DISABLE_SEARCHDIRS | LY_CTX_DISABLE_SEARCHDIR_CWD))
 {
 }
 
@@ -222,4 +222,26 @@ std::set<std::string> YangSchema::childNodes(const path_& path) const
         }
     }
     return res;
+}
+
+void YangSchema::loadModule(const std::string& moduleName)
+{
+    m_context->load_module(moduleName.c_str());
+}
+
+void YangSchema::registerModuleCallback(const std::function<std::string(const char*, const char*, const char*)>& clb)
+{
+    auto lambda = [clb](const char* mod_name, const char* mod_revision, const char* submod_name, const char* submod_revision) {
+        (void)submod_revision;
+        auto moduleSource = clb(mod_name, mod_revision, submod_name);
+        if (moduleSource.empty()) {
+            return libyang::Context::mod_missing_cb_return{LYS_IN_YANG, nullptr};
+        }
+        return libyang::Context::mod_missing_cb_return{LYS_IN_YANG, strdup(moduleSource.c_str())};
+    };
+
+    auto deleter = [](void* data) {
+        free(data);
+    };
+    m_context->add_missing_module_callback(lambda, deleter);
 }
