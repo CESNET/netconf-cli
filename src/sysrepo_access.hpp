@@ -18,6 +18,7 @@
 
 class Connection;
 class Session;
+class YangSchema;
 
 class SysrepoAccess : public DatastoreAccess {
 public:
@@ -27,10 +28,13 @@ public:
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createPresenceContainer(const std::string& path) override;
     void deletePresenceContainer(const std::string& path) override;
+    std::string fetchSchema(const std::string& name);
+    std::vector<std::string> listImplementedSchemas();
 
     void commitChanges() override;
 
 private:
     std::shared_ptr<Connection> m_connection;
     std::shared_ptr<Session> m_session;
+    std::shared_ptr<YangSchema> m_schema;
 };

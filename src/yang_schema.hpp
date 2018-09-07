@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <functional>
 #include <set>
 #include <stdexcept>
 #include <unordered_map>
@@ -39,6 +40,8 @@ public:
     const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const override;
     std::set<std::string> childNodes(const path_& path) const override;
+
+    void callback(const std::function<const char*(const char*)>& clb);
 
     /** @short Adds a new module passed as a YANG string. */
     void addSchemaString(const char* schema);
