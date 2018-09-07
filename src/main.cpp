@@ -19,7 +19,7 @@ static const char usage[] =
     R"(CLI interface to remote NETCONF hosts
 
 Usage:
-  netconf-cli <path-to-yang-schema>...
+  netconf-cli
   netconf-cli (-h | --help)
   netconf-cli --version
 )";
@@ -34,16 +34,8 @@ int main(int argc, char* argv[])
                                true);
     std::cout << "Welcome to netconf-cli" << std::endl;
 
-    auto yangschema = std::make_shared<YangSchema>();
-    Parser parser(yangschema);
-
     SysrepoAccess datastore("netconf-cli");
-
-    for (auto it : args.at("<path-to-yang-schema>").asStringList()) {
-        auto dir = std::experimental::filesystem::absolute(it).remove_filename();
-        yangschema->addSchemaDirectory(dir.c_str());
-        yangschema->addSchemaFile(it.c_str());
-    }
+    Parser parser(datastore.schema());
 
     while (true) {
         std::cout << parser.currentNode() << "> ";
