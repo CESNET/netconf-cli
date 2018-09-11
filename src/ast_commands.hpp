@@ -34,6 +34,11 @@ struct ls_ : x3::position_tagged {
     boost::optional<path_> m_path;
 };
 
+struct lsrec_ : x3::position_tagged {
+    bool operator==(const lsrec_& b) const;
+    boost::optional<path_> m_path;
+};
+
 struct cd_ : x3::position_tagged {
     bool operator==(const cd_& b) const;
     path_ m_path;
@@ -64,9 +69,10 @@ struct get_ : x3::position_tagged {
     boost::optional<path_> m_path;
 };
 
-using command_ = boost::variant<ls_, cd_, create_, delete_, set_, commit_, get_>;
+using command_ = boost::variant<ls_, lsrec_, cd_, create_, delete_, set_, commit_, get_>;
 
 BOOST_FUSION_ADAPT_STRUCT(ls_, m_path)
+BOOST_FUSION_ADAPT_STRUCT(lsrec_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(create_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(delete_, m_path)

@@ -36,6 +36,7 @@ x3::rule<leaf_data_uint_class, uint32_t> const leaf_data_uint = "leaf_data_uint"
 x3::rule<leaf_data_string_class, std::string> const leaf_data_string = "leaf_data_string";
 
 x3::rule<ls_class, ls_> const ls = "ls";
+x3::rule<lsrec_class, lsrec_> const lsrec = "lsrec";
 x3::rule<cd_class, cd_> const cd = "cd";
 x3::rule<set_class, set_> const set = "set";
 x3::rule<get_class, get_> const get = "get";
@@ -135,7 +136,10 @@ auto const space_separator =
         x3::omit[x3::no_skip[space]];
 
 auto const ls_def =
-        lit("ls") >> -path;
+        lit("ls") >> !x3::no_skip[lit("rec")] >> -(space_separator > path);
+
+auto const lsrec_def =
+        lit("lsrec") >> -(space_separator > path);
 
 auto const cd_def =
         lit("cd") >> space_separator > path;
@@ -156,7 +160,7 @@ auto const commit_def =
         lit("commit") >> x3::attr(commit_());
 
 auto const command_def =
-        x3::expect[cd | create | delete_rule | set | commit | get | ls] >> x3::eoi;
+        x3::expect[cd | create | delete_rule | set | commit | get | ls | lsrec] >> x3::eoi;
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -187,6 +191,7 @@ BOOST_SPIRIT_DEFINE(set)
 BOOST_SPIRIT_DEFINE(commit)
 BOOST_SPIRIT_DEFINE(get)
 BOOST_SPIRIT_DEFINE(ls)
+BOOST_SPIRIT_DEFINE(lsrec)
 BOOST_SPIRIT_DEFINE(cd)
 BOOST_SPIRIT_DEFINE(create)
 BOOST_SPIRIT_DEFINE(delete_rule)

@@ -215,6 +215,8 @@ struct path_class {
 
 struct ls_class;
 
+struct lsrec_class;
+
 struct cd_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
