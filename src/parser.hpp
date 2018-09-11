@@ -23,6 +23,10 @@ public:
     ~TooManyArgumentsException() override;
 };
 
+enum class Recursion {
+    NonRecursive,
+    Recursive
+};
 
 class Parser {
 public:
@@ -30,7 +34,7 @@ public:
     command_ parseCommand(const std::string& line, std::ostream& errorStream);
     void changeNode(const path_& name);
     std::string currentNode() const;
-    std::set<std::string> availableNodes(const boost::optional<path_>& path) const;
+    std::set<std::string> availableNodes(const boost::optional<path_>& path, const Recursion& option) const;
 
 private:
     const std::shared_ptr<const Schema> m_schema;
