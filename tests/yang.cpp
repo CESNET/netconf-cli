@@ -288,7 +288,7 @@ TEST_CASE("yangschema")
                 set = {"example-schema:a2", "example-schema:leafa"};
             }
 
-            REQUIRE(ys.childNodes(path) == set);
+            REQUIRE(ys.childNodes(path, Recursion::NonRecursive) == set);
         }
     }
 
