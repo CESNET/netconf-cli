@@ -22,6 +22,7 @@ struct Interpreter : boost::static_visitor<void> {
     void operator()(const create_&) const;
     void operator()(const delete_&) const;
     void operator()(const ls_&) const;
+    void operator()(const lsrec_& lsrec) const;
 
 private:
     template <typename T>

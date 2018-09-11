@@ -34,6 +34,7 @@ public:
     const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const override;
     std::set<std::string> childNodes(const path_& path) const override;
+    std::set<std::string> childNodesRec(const path_& path) const override;
 
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
     void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);
