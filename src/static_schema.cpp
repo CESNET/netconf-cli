@@ -55,7 +55,6 @@ void StaticSchema::addContainer(const std::string& location, const std::string& 
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
-
 bool StaticSchema::listHasKey(const path_& location, const ModuleNodePair& node, const std::string& key) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
@@ -146,7 +145,9 @@ yang::LeafDataTypes StaticSchema::leafType(const path_& location, const ModuleNo
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
 }
 
-std::set<std::string> StaticSchema::childNodes(const path_& path) const
+// We do not test StaticSchema, so we don't need to implement recursive childNodes
+// for this class.
+std::set<std::string> StaticSchema::childNodes(const path_& path, const Recursion) const
 {
     std::string locationString = pathToAbsoluteSchemaString(path);
     std::set<std::string> res;

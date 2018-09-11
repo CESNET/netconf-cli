@@ -45,6 +45,10 @@ struct module {
 };
 }
 
+enum class Recursion {
+    NonRecursive,
+    Recursive
+};
 
 using NodeType = boost::variant<yang::container, yang::list, yang::leaf, yang::module>;
 
@@ -75,7 +79,7 @@ public:
     virtual bool nodeExists(const std::string& location, const std::string& node) const = 0;
     virtual const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const = 0;
-    virtual std::set<std::string> childNodes(const path_& path) const = 0;
+    virtual std::set<std::string> childNodes(const path_& path, const Recursion recursion) const = 0;
 
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
