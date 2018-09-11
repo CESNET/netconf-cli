@@ -36,7 +36,14 @@ TEST_CASE("ls")
 
         SECTION("no arguments")
         {
-            input = "ls";
+            SECTION("ls")
+                input = "ls";
+
+            SECTION("ls --recursive")
+            {
+                input = "ls --recursive";
+                expected.m_options.push_back(LsOption::Recursive);
+            }
         }
 
         SECTION("with path argument")
@@ -110,12 +117,23 @@ TEST_CASE("ls")
                 expected.m_path = path_{Scope::Absolute, {node_(module_{"example"}, container_{"a"}),
                                                           node_(module_{"example"}, container_{"a2"})}};
             }
+
+            SECTION("ls --recursive /example:a")
+            {
+                SECTION("cwd: /") {}
+                SECTION("cwd: /example:a") {parser.changeNode(path_{Scope::Relative, {node_(module_{"example"}, container_{"a"})}});}
+
+                input = "ls --recursive /example:a";
+                expected.m_options.push_back(LsOption::Recursive);
+                expected.m_path = path_{Scope::Absolute, {node_(module_{"example"}, container_{"a"})}};
+            }
         }
 
         command_ command = parser.parseCommand(input, errorStream);
         REQUIRE(command.type() == typeid(ls_));
         REQUIRE(boost::get<ls_>(command) == expected);
     }
+
     SECTION("invalid input")
     {
         SECTION("invalid path")
@@ -129,11 +147,29 @@ TEST_CASE("ls")
             SECTION("ls /bad:nonexistent")
                 input = "ls /bad:nonexistent";
 
-            SECTION( "ls example:a/nonexistent")
+            SECTION("ls example:a/nonexistent")
                 input = "ls example:a/nonexistent";
 
-            SECTION( "ls /example:a/nonexistent")
+            SECTION("ls /example:a/nonexistent")
                 input = "ls /example:a/nonexistent";
+        }
+
+        SECTION("whitespace before path")
+        {
+            SECTION("ls --recursive/")
+                input = "ls --recursive/";
+
+            SECTION("ls/")
+                input = "ls/";
+
+            SECTION("ls --recursive/example:a")
+                input = "ls --recursive/example:a";
+
+            SECTION("ls/example:a")
+                input = "ls/example:a";
+
+            SECTION("lssecond:a")
+                input = "lssecond:a";
         }
 
         REQUIRE_THROWS(parser.parseCommand(input, errorStream));

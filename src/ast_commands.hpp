@@ -29,8 +29,13 @@ struct parser_context_tag;
 
 using keyValue_ = std::pair<std::string, std::string>;
 
+enum class LsOption {
+    Recursive
+};
+
 struct ls_ : x3::position_tagged {
     bool operator==(const ls_& b) const;
+    std::vector<LsOption> m_options;
     boost::optional<path_> m_path;
 };
 
@@ -66,7 +71,7 @@ struct get_ : x3::position_tagged {
 
 using command_ = boost::variant<ls_, cd_, create_, delete_, set_, commit_, get_>;
 
-BOOST_FUSION_ADAPT_STRUCT(ls_, m_path)
+BOOST_FUSION_ADAPT_STRUCT(ls_, m_options, m_path)
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(create_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(delete_, m_path)
