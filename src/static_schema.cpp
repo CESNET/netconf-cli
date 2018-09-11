@@ -146,6 +146,19 @@ yang::LeafDataTypes StaticSchema::leafType(const path_& location, const ModuleNo
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
 }
 
+std::set<std::string> StaticSchema::childNodesRec(const path_& path) const
+{
+    std::string locationString = pathToAbsoluteSchemaString(path);
+    std::set<std::string> res;
+
+    auto childrenRef = children(locationString);
+
+    std::transform(childrenRef.begin(), childrenRef.end(),
+                std::inserter(res, res.end()),
+                [] (auto it) { return it.first; });
+    return res;
+}
+
 std::set<std::string> StaticSchema::childNodes(const path_& path) const
 {
     std::string locationString = pathToAbsoluteSchemaString(path);

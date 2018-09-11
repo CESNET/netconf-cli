@@ -76,6 +76,7 @@ public:
     virtual const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const = 0;
     virtual std::set<std::string> childNodes(const path_& path) const = 0;
+    virtual std::set<std::string> childNodesRec(const path_& path) const = 0;
 
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;

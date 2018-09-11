@@ -40,6 +40,7 @@ public:
     const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const override;
     std::set<std::string> childNodes(const path_& path) const override;
+    std::set<std::string> childNodesRec(const path_& path) const override;
 
     void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*)>& clb);
 
