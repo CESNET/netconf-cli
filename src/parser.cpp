@@ -58,10 +58,13 @@ std::string Parser::currentNode() const
     return "/" + pathToDataString(m_curDir);
 }
 
-std::set<std::string> Parser::availableNodes(const boost::optional<path_>& path) const
+std::set<std::string> Parser::availableNodes(const boost::optional<path_>& path, const LsOption& option) const
 {
     auto pathArg = m_curDir;
     if (path)
         pathArg.m_nodes.insert(pathArg.m_nodes.end(), path->m_nodes.begin(), path->m_nodes.end());
-    return m_schema->childNodes(pathArg);
+    if (option == LsOption::NonRecursive)
+        return m_schema->childNodes(pathArg);
+    else
+        return m_schema->childNodesRec(pathArg);
 }

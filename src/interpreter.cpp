@@ -61,7 +61,15 @@ void Interpreter::operator()(const ls_& ls) const
 {
     std::cout << "Possible nodes:" << std::endl;
 
-    for (const auto& it : m_parser.availableNodes(ls.m_path))
+    for (const auto& it : m_parser.availableNodes(ls.m_path, LsOption::NonRecursive))
+        std::cout << it << std::endl;
+}
+
+void Interpreter::operator()(const lsrec_& lsrec) const
+{
+    std::cout << "Possible nodes (recursive):" << std::endl;
+
+    for (const auto& it : m_parser.availableNodes(lsrec.m_path, LsOption::Recursive))
         std::cout << it << std::endl;
 }
 
