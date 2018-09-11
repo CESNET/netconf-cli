@@ -134,8 +134,16 @@ x3::expect[
 auto const space_separator =
         x3::omit[x3::no_skip[space]];
 
+struct ls_options_table : x3::symbols<LsOption> {
+    ls_options_table()
+    {
+        add
+            ("--recursive", LsOption::Recursive);
+    }
+} const ls_options;
+
 auto const ls_def =
-        lit("ls") >> -path;
+        lit("ls") >> -(space_separator >> *ls_options >> -path); // FIXME: require space before path
 
 auto const cd_def =
         lit("cd") >> space_separator > path;
