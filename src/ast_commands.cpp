@@ -26,7 +26,7 @@ bool cd_::operator==(const cd_& b) const
 
 bool ls_::operator==(const ls_& b) const
 {
-    return this->m_path == b.m_path;
+    return this->m_path == b.m_path && this->m_options == b.m_options;
 }
 
 bool enum_::operator==(const enum_& b) const

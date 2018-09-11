@@ -39,7 +39,7 @@ public:
     bool nodeExists(const std::string& location, const std::string& node) const override;
     const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const override;
-    std::set<std::string> childNodes(const path_& path) const override;
+    std::set<std::string> childNodes(const path_& path, const Recursion& recursion) const override;
 
     void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*)>& clb);
 

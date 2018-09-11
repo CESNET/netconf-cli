@@ -202,25 +202,35 @@ std::set<std::string> YangSchema::modules() const
     return res;
 }
 
-std::set<std::string> YangSchema::childNodes(const path_& path) const
+std::set<std::string> YangSchema::childNodes(const path_& path, const Recursion& recursion) const
 {
     using namespace std::string_view_literals;
     std::set<std::string> res;
+    std::vector<libyang::S_Schema_Node> nodes;
+
     if (path.m_nodes.empty()) {
-        const auto& nodeVec = m_context->data_instantiables(0);
-        for (const auto it : nodeVec) {
-            if (it->module()->name() == "ietf-yang-library"sv)
-                continue;
-            res.insert(std::string(it->module()->name()) + ":" + it->name());
-        }
+        nodes = m_context->data_instantiables(0);
     } else {
         const auto absolutePath = "/" + pathToAbsoluteSchemaString(path);
         const auto set = m_context->find_path(absolutePath.c_str());
-        const auto& schemaSet = set->schema();
+        const auto schemaSet = set->schema();
         for (auto it = (*schemaSet.begin())->child(); it; it = it->next()) {
-            res.insert(std::string(it->module()->name()) + ":" + it->name());
+            nodes.push_back(it);
         }
     }
+
+    for (const auto node : nodes) {
+        if (node->module()->name() == "ietf-yang-library"sv)
+                continue;
+        if (recursion == Recursion::Recursive) {
+            for (auto it : node->tree_dfs()) {
+                res.insert(it->path(LYS_PATH_FIRST_PREFIX));
+            }
+        } else {
+            res.insert(std::string(node->module()->name()) + ":" + node->name());
+        }
+    }
+
     return res;
 }
 
