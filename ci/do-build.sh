@@ -71,7 +71,7 @@ if [[ -f ${TH_JOB_WORKING_DIR}/${ARTIFACT} ]]; then
 else
     # rebuild everything from scratch
 
-    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DGEN_LANGUAGE_BINDINGS=ON -DGEN_PYTHON_BINDINGS=OFF" emerge_dep libyang
+    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DGEN_LANGUAGE_BINDINGS=ON -DGEN_PYTHON_BINDINGS=OFF -DGEN_JAVA_BINDINGS=OFF" emerge_dep libyang
     do_test_dep_cmake libyang -j${CI_PARALLEL_JOBS}
 
     emerge_dep libredblack --with-pic
