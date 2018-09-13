@@ -13,6 +13,7 @@
 
 
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
+x3::rule<key_identifier_class, std::string> const key_identifier = "key_identifier";
 x3::rule<node_identifier_class, std::string> const node_identifier = "node_identifier";
 x3::rule<module_identifier_class, std::string> const module_identifier = "module_identifier";
 x3::rule<listPrefix_class, std::string> const listPrefix = "listPrefix";
@@ -49,8 +50,17 @@ x3::rule<command_class, command_> const command = "command";
 #pragma GCC diagnostic ignored "-Woverloaded-shift-op-parentheses"
 #endif
 
+auto const key_identifier_def =
+        lexeme[
+                ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
+        ];
+
+auto const quotedValue =
+        ('\'' > +(char_-'\'') > '\'') |
+        ('\"' > +(char_-'\"') > '\"');
+
 auto const keyValue_def =
-        lexeme[+alnum > '=' > +alnum];
+        lexeme['[' > key_identifier > '=' > quotedValue > ']'];
 
 auto const module_identifier_def =
         lexeme[
@@ -63,11 +73,11 @@ auto const node_identifier_def =
         ];
 
 auto const listPrefix_def =
-        node_identifier >> '[';
+        node_identifier >> &char_('[');
 
 // even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
 auto const listSuffix_def =
-        *keyValue > ']';
+        *keyValue;
 
 auto const listElement_def =
         listPrefix > listSuffix;
@@ -171,6 +181,7 @@ auto const command_def =
 #endif
 
 BOOST_SPIRIT_DEFINE(keyValue)
+BOOST_SPIRIT_DEFINE(key_identifier)
 BOOST_SPIRIT_DEFINE(node_identifier)
 BOOST_SPIRIT_DEFINE(module_identifier)
 BOOST_SPIRIT_DEFINE(listPrefix)
