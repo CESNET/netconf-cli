@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8edb6ca2_b4157219",
+        "filename": "src/schema.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-13T17:49:53Z",
+      "side": 1,
+      "message": "je to jenom enum, neni duvod ho predavat jako const ref, staci const",
+      "range": {
+        "startLine": 82,
+        "startChar": 79,
+        "endLine": 82,
+        "endChar": 80
+      },
+      "revId": "b9a3dc19e85717eab4a20dc5a1180a392bb4b316",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1abae8e_26e4adf9",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-13T17:49:53Z",
+      "side": 1,
+      "message": "argument neni pouzity, coz \"nevadi\", protoze to netestujeme, ale melo by tam aspon byt napsano FIXME nebo jinak vysvetleny, proc to dulezity neni",
+      "revId": "b9a3dc19e85717eab4a20dc5a1180a392bb4b316",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

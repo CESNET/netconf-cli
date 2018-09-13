@@ -46,6 +46,30 @@
       "revId": "d3b391b4fec7af557adae69c94794ae829a0f33e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ef8a185_3ef00058",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-13T17:49:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf8666ff_d51a41d4",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 249,
+        "endChar": 1
+      },
+      "revId": "d3b391b4fec7af557adae69c94794ae829a0f33e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
