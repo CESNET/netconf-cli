@@ -53,6 +53,8 @@ struct node_identifier_class {
     }
 };
 
+struct key_identifier_class;
+
 struct module_identifier_class;
 
 struct listPrefix_class {

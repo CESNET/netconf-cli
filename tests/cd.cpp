@@ -96,9 +96,9 @@ TEST_CASE("cd")
                 expected.m_path.m_nodes.push_back(node_(container_("contInList")));
             }
 
-            SECTION("example:twoKeyList[number=4 name=abcd]")
+            SECTION("example:twoKeyList[number=4][name='abcd']")
             {
-                input = "cd example:twoKeyList[number=4 name=abcd]";
+                input = "cd example:twoKeyList[number=4][name='abcd']";
                 auto keys = std::map<std::string, std::string>{
                     {"number", "4"},
                     {"name", "abcd"}};
@@ -250,24 +250,29 @@ TEST_CASE("cd")
                 input = "cd example:list[]";
             }
 
-            SECTION("example:twoKeyList[invalidKey=4]")
+            SECTION("example:twoKeyList[invalidKey='4']")
             {
-                input = "cd example:twoKeyList[invalidKey=4]";
+                input = "cd example:twoKeyList[invalidKey='4']";
             }
 
-            SECTION("example:twoKeyList[number=4 number=5]")
+            SECTION("example:twoKeyList[number=4][number=5]")
             {
-                input = "cd example:twoKeyList[number=4 number=5]";
+                input = "cd example:twoKeyList[number=4][number=5]";
             }
 
-            SECTION("example:twoKeyList[number=4 name=lol number=7]")
+            SECTION("example:twoKeyList[number=4][name='lol'][number=7]")
             {
-                input = "cd example:twoKeyList[number=4 name=lol number=7]";
+                input = "cd example:twoKeyList[number=4][name='lol'][number=7]";
             }
 
             SECTION("example:twoKeyList[number=4]")
             {
                 input = "cd example:twoKeyList[number=4]";
+            }
+
+            SECTION("strings must be quoted")
+            {
+                input = "cd example:twoKeyList[number=4][name=abcd]";
             }
         }
         REQUIRE_THROWS(parser.parseCommand(input, errorStream));
