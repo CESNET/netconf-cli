@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7798fcb4_1cf891bf",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-13T17:49:38Z",
+      "side": 1,
+      "message": "cisla nemaji byt uvozovkovana",
+      "revId": "c1a779c92ed746d38b93aee41ca3ce7e0f437450",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
