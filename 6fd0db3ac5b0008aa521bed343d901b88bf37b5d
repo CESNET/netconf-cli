@@ -51,6 +51,24 @@
       "revId": "6fd0db3ac5b0008aa521bed343d901b88bf37b5d",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d6ba7e70_686df43d",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-09-13T14:06:52Z",
+      "side": 1,
+      "message": "To je dobrý, to mě vůbec nenapadlo",
+      "parentUuid": "0db9917a_82795c41",
+      "revId": "6fd0db3ac5b0008aa521bed343d901b88bf37b5d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
