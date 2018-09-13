@@ -49,9 +49,9 @@ TEST_CASE("presence containers")
             expectedPath.m_nodes = {{{module_{"mod"}}, container_("a")}, {container_("a2")}, {container_("a3")}};
         }
 
-        SECTION("mod:list[quote=lol]/contInList")
+        SECTION("mod:list[quote='lol']/contInList")
         {
-            input = "mod:list[quote=lol]/contInList";
+            input = "mod:list[quote='lol']/contInList";
             auto keys = std::map<std::string, std::string>{
                 {"quote", "lol"}};
             expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
@@ -83,9 +83,9 @@ TEST_CASE("presence containers")
             input = "a/a2";
         }
 
-        SECTION("list[quote=lol]")
+        SECTION("list[quote='lol']")
         {
-            input = "list[quote=lol]";
+            input = "list[quote='lol']";
         }
 
         REQUIRE_THROWS(parser.parseCommand("create " + input, errorStream));
