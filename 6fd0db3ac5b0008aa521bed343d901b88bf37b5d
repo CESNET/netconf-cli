@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a2b9dbfb_b78d9e53",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-13T13:41:38Z",
+      "side": 1,
+      "message": "neni potreba",
+      "revId": "6fd0db3ac5b0008aa521bed343d901b88bf37b5d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0db9917a_82795c41",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-13T13:41:38Z",
+      "side": 1,
+      "message": "nit: ja bych to psal\n\n  auto recursion{Recursion::NonRecursive};",
+      "revId": "6fd0db3ac5b0008aa521bed343d901b88bf37b5d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
