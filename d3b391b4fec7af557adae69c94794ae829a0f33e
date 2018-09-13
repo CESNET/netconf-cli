@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a0be78f0_c2614028",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-13T13:45:48Z",
+      "side": 1,
+      "message": "Dalo by se tu vymyslet neco pro sjednoceni?",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 249,
+        "endChar": 1
+      },
+      "revId": "d3b391b4fec7af557adae69c94794ae829a0f33e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
