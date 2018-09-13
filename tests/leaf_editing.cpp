@@ -48,9 +48,9 @@ TEST_CASE("leaf editing")
             expected.m_data = std::string("more_data");
         }
 
-        SECTION("set list[number=1]/leafInList another_data")
+        SECTION("set list[number='1']/leafInList another_data")
         {
-            input = "set mod:list[number=1]/leafInList another_data";
+            input = "set mod:list[number='1']/leafInList another_data";
             auto keys = std::map<std::string, std::string>{
                 {"number", "1"}};
             expected.m_path.m_nodes.push_back(node_{module_{"mod"}, listElement_("list", keys)});

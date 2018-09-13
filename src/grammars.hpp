@@ -49,8 +49,11 @@ x3::rule<command_class, command_> const command = "command";
 #pragma GCC diagnostic ignored "-Woverloaded-shift-op-parentheses"
 #endif
 
+auto const keyIdentifier =
+        ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")));
+
 auto const keyValue_def =
-        lexeme[+alnum > '=' > +alnum];
+        lexeme['[' > +alnum > '=' > '\'' > +(char_-'\'') > '\'' > ']'];
 
 auto const module_identifier_def =
         lexeme[
@@ -63,11 +66,11 @@ auto const node_identifier_def =
         ];
 
 auto const listPrefix_def =
-        node_identifier >> '[';
+        node_identifier >> &char_('[');
 
 // even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
 auto const listSuffix_def =
-        *keyValue > ']';
+        *keyValue;
 
 auto const listElement_def =
         listPrefix > listSuffix;
