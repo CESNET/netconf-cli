@@ -80,6 +80,8 @@ TEST_CASE("presence containers")
         create_ create = boost::get<create_>(commandCreate);
         REQUIRE(create == expectedCreate);
 
+        REQUIRE(pathToDataString(create.m_path) == input);
+
         delete_ expectedDelete;
         expectedDelete.m_path = expectedPath;
         command_ commandDelete = parser.parseCommand("delete " + input, errorStream);
