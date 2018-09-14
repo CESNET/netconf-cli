@@ -94,6 +94,15 @@ add_library(parser STATIC
     )
 target_link_libraries(parser schemas)
 
+
+add_library(sysreposubscription STATIC
+    tests/mock/sysrepo_subscription.cpp
+    )
+
+target_link_libraries(sysreposubscription ${SYSREPO_LIBRARIES})
+link_directories(${SYSREPO_LIBRARY_DIRS})
+target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_DIRS})
+
 add_executable(netconf-cli
     src/main.cpp
     )
@@ -130,6 +139,16 @@ if(BUILD_TESTING)
     target_include_directories(TestCatchIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
     target_link_libraries(TestCatchIntegration spdlog::spdlog)
 
+    if (NOT SYSREPOCTL_EXECUTABLE)
+        find_program(SYSREPOCTL_EXECUTABLE sysrepoctl)
+    endif()
+    if (NOT SYSREPOCTL_EXECUTABLE)
+        message(FATAL_ERROR "Unable to find sysrepoctl, set SYSREPOCTL_EXECUTABLE manually.")
+    endif()
+
+    configure_file("${PROJECT_SOURCE_DIR}/sysrepoctl.hpp.in" "${PROJECT_BINARY_DIR}/sysrepoctl.hpp" @ONLY)
+    configure_file("${PROJECT_SOURCE_DIR}/example-schema.yang" "${PROJECT_BINARY_DIR}/example-schema.yang" COPYONLY)
+
     function(cli_test fname)
         add_executable(test_${fname}
             tests/${fname}.cpp
@@ -147,6 +166,9 @@ if(BUILD_TESTING)
     cli_test(leaf_editing)
     cli_test(yang)
     target_link_libraries(test_yang yangschema)
+    cli_test(sysrepo)
+    target_link_libraries(test_sysrepo sysreposubscription sysrepoaccess yangschema parser)
+    target_include_directories(test_sysrepo PRIVATE ${PROJECT_SOURCE_DIR}/tests/mock)
 
 endif()
 
