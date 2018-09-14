@@ -94,6 +94,15 @@ add_library(parser STATIC
     )
 target_link_libraries(parser schemas)
 
+
+add_library(sysreposubscription STATIC
+    src/sysrepo_subscription.cpp
+    )
+
+target_link_libraries(sysreposubscription ${SYSREPO_LIBRARIES})
+link_directories(${SYSREPO_LIBRARY_DIRS})
+target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_DIRS})
+
 add_executable(netconf-cli
     src/main.cpp
     )
@@ -147,6 +156,8 @@ if(BUILD_TESTING)
     cli_test(leaf_editing)
     cli_test(yang)
     target_link_libraries(test_yang yangschema)
+    cli_test(sysrepo)
+    target_link_libraries(test_sysrepo sysreposubscription sysrepoaccess yangschema parser)
 
 endif()
 
