@@ -1,0 +1,31 @@
+module example-schema {
+    prefix aha;
+    namespace "http://example.com";
+
+    leaf leafInt {
+        type int32;
+    }
+
+    leaf leafString {
+        type string;
+    }
+
+    leaf leafEnum {
+        type enumeration {
+            enum lol;
+            enum data;
+            enum coze;
+        }
+    }
+
+    leaf leafDecimal {
+        type decimal64 {
+            fraction-digits 9;
+        }
+    }
+
+    container pContainer {
+        presence true;
+    }
+
+}
