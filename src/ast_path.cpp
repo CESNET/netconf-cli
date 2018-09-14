@@ -84,6 +84,18 @@ struct nodeToSchemaStringVisitor : public boost::static_visitor<std::string> {
         return node.m_name;
     }
 };
+
+std::string escapeListKeyString(const std::string& what)
+{
+    // If we have both single and double quote, then we're screwed, but that "shouldn't happen"
+    // in <= YANG 1.1 due to limitations in XPath 1.0.
+    if (what.find('\'') != std::string::npos) {
+        return '\"' + what + '\"';
+    } else {
+        return '\'' + what + '\'';
+    }
+}
+
 struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
     std::string operator()(const listElement_& node) const
     {
@@ -91,7 +103,7 @@ struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
         res << node.m_name + "[";
         std::transform(node.m_keys.begin(), node.m_keys.end(),
                 std::experimental::make_ostream_joiner(res, ' '),
-                [] (const auto& it) { return it.first + "=" + '\'' + it.second + '\''; });
+                [] (const auto& it) { return it.first + "=" + escapeListKeyString(it.second); });
         res << "]";
         return res.str();
     }
