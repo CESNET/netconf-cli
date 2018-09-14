@@ -57,6 +57,22 @@ TEST_CASE("presence containers")
             expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
         }
 
+        SECTION("mod:list[quote='double\"quote']/contInList")
+        {
+            input = "mod:list[quote='double\"quote']/contInList";
+            auto keys = std::map<std::string, std::string>{
+                {"quote", "double\"quote"}};
+            expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
+        }
+
+        SECTION("mod:list[quote=\"single'quote\"]/contInList")
+        {
+            input = "mod:list[quote=\"single'quote\"]/contInList";
+            auto keys = std::map<std::string, std::string>{
+                {"quote", "single'quote"}};
+            expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
+        }
+
         create_ expectedCreate;
         expectedCreate.m_path = expectedPath;
         command_ commandCreate = parser.parseCommand("create " + input, errorStream);
