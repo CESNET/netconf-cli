@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3bd5521a_03d60762",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-26T14:27:16Z",
+      "side": 1,
+      "message": "Tady bych doporucil pridat explicitni uninstall testovaciho modelu (s ignorovanim vysledku, protoze model nemusi byt nainstalovany) a nasledne instalaci modelu.",
+      "revId": "3904d63c69b2149126f31c6954774086b011b336",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
