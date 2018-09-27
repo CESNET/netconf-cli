@@ -70,6 +70,24 @@
       "revId": "3904d63c69b2149126f31c6954774086b011b336",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92d15c61_75029896",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-27T14:09:44Z",
+      "side": 1,
+      "message": "Aha, mas pravdu, je to potreba zaridit. Podivej se, prosim, na https://github.com/CESNET/Netopeer2/blob/master/server/CMakeLists.txt#L156 a dal, a udelej to obdobne (se stejnymi nazvy promennych pro override).",
+      "parentUuid": "7886cf8a_e466819b",
+      "revId": "3904d63c69b2149126f31c6954774086b011b336",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
