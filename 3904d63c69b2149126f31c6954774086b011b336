@@ -16,6 +16,24 @@
       "revId": "3904d63c69b2149126f31c6954774086b011b336",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "de94e7da_a035a349",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-09-27T13:36:40Z",
+      "side": 1,
+      "message": "Co tak koukám, tak to asi nejde udělat přes tu klientskou SR knihovnu, mám to teda nějak napsat do toho cmaku?",
+      "parentUuid": "3bd5521a_03d60762",
+      "revId": "3904d63c69b2149126f31c6954774086b011b336",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
