@@ -34,6 +34,24 @@
       "revId": "3904d63c69b2149126f31c6954774086b011b336",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31d47575_1de7a504",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-09-27T13:50:39Z",
+      "side": 1,
+      "message": "Nejlepsi bude, kdyz z C++ spustis `sysrepoctl --uninstall` a `sysrepoctl --install`. Cestu k sysrepoctl vi cmake (je v nejake promenne, grepni si CMakeCzche.txt), pres `configure_file` si ji ulozis do jednorazoveho .h, aby to pak test vedel.",
+      "parentUuid": "de94e7da_a035a349",
+      "revId": "3904d63c69b2149126f31c6954774086b011b336",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
