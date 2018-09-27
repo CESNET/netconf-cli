@@ -52,6 +52,24 @@
       "revId": "3904d63c69b2149126f31c6954774086b011b336",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7886cf8a_e466819b",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-09-27T14:04:10Z",
+      "side": 1,
+      "message": "Nikde v CMakeCache.txt takovou proměnnou nevidim :/",
+      "parentUuid": "31d47575_1de7a504",
+      "revId": "3904d63c69b2149126f31c6954774086b011b336",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
