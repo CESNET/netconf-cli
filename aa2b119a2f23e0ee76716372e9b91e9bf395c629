@@ -22,6 +22,30 @@
       "revId": "aa2b119a2f23e0ee76716372e9b91e9bf395c629",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "585b910c_b4173eeb",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-01T15:44:47Z",
+      "side": 1,
+      "message": "Rve mi to tu lokalne s GCC 8.0. V CI jsou zjevne jine verze gcc a glibc.",
+      "parentUuid": "6b8f9766_39afe345",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 5
+      },
+      "revId": "aa2b119a2f23e0ee76716372e9b91e9bf395c629",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
