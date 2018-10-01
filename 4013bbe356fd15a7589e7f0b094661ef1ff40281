@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2c911fbe_0b8da311",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-01T07:15:04Z",
+      "side": 1,
+      "message": "patri to do testu, cili spis neco jako tests/mock/sysrepo-subscription.cpp",
+      "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98ad07de_fa933cd4",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-01T07:15:04Z",
+      "side": 1,
+      "message": "Nic se v tom s\u0027ouboru needituje, tak je lepsi ho pojmenovat rovnou neco.yang. Tim padem bude v editorech fungovat spravny syntax highlighting.\n\nPak je otazka, zda je potreba ten soubor vubec kopirovat, ale to je celkem jedno.",
+      "range": {
+        "startLine": 150,
+        "startChar": 61,
+        "endLine": 150,
+        "endChar": 64
+      },
+      "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28cfacc9_b4a03964",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-01T07:15:04Z",
+      "side": 1,
+      "message": "pouziti system() je tu za me OK, nejsou tam zadne stringy od uzivatele ci od testu",
+      "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0dda4682_37958bc6",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-01T07:15:04Z",
+      "side": 1,
+      "message": "Uvozovkovani je zbytecne",
+      "range": {
+        "startLine": 23,
+        "startChar": 55,
+        "endLine": 23,
+        "endChar": 57
+      },
+      "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2bb8df73_ba7392b7",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-01T07:15:04Z",
+      "side": 1,
+      "message": "Tady ale uz je potreba jeste zkontrolovat navratovou hodnotu (a idealne u volani o radek vys napsat, proc to tam potreba neni)",
+      "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
