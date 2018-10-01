@@ -1,0 +1,7 @@
+Verified+1: CESNET Zuul CI <cesnet-zuul@gerrit.cesnet.cz>
+Code-Review+2: Václav Kubernát <kubervac@fit.cvut.cz>
+Submitted-by: Václav Kubernát <kubervac@fit.cvut.cz>
+Submitted-at: Mon, 01 Oct 2018 18:13:38 +0200
+Reviewed-on: https://gerrit.cesnet.cz/1127
+Project: CzechLight/netconf-cli
+Branch: refs/heads/master
