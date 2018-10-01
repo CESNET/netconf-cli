@@ -6,11 +6,11 @@
  *
 */
 
-#include <sysrepo-cpp/Session.h>
+#include <sysrepo-cpp/Session.hpp>
 #include "sysrepo_access.hpp"
 #include "yang_schema.hpp"
 
-leaf_data_ leafValueFromVal(const S_Val& value)
+leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
 {
     using namespace std::string_literals;
     switch (value->type()) {
@@ -37,45 +37,45 @@ leaf_data_ leafValueFromVal(const S_Val& value)
     }
 }
 
-struct valFromValue : boost::static_visitor<S_Val> {
-    S_Val operator()(const enum_& value) const
+struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
+    sysrepo::S_Val operator()(const enum_& value) const
     {
-        return std::make_shared<Val>(value.m_value.c_str(), SR_ENUM_T);
+        return std::make_shared<sysrepo::Val>(value.m_value.c_str(), SR_ENUM_T);
     }
 
-    S_Val operator()(const std::string& value) const
+    sysrepo::S_Val operator()(const std::string& value) const
     {
-        return std::make_shared<Val>(value.c_str());
+        return std::make_shared<sysrepo::Val>(value.c_str());
     }
 
-    S_Val operator()(const uint32_t& value) const
+    sysrepo::S_Val operator()(const uint32_t& value) const
     {
-        return std::make_shared<Val>(value, SR_UINT32_T);
+        return std::make_shared<sysrepo::Val>(value, SR_UINT32_T);
     }
 
-    S_Val operator()(const int32_t& value) const
+    sysrepo::S_Val operator()(const int32_t& value) const
     {
-        return std::make_shared<Val>(value, SR_INT32_T);
+        return std::make_shared<sysrepo::Val>(value, SR_INT32_T);
     }
 
-    S_Val operator()(const bool& value) const
+    sysrepo::S_Val operator()(const bool& value) const
     {
-        return std::make_shared<Val>(value, SR_BOOL_T);
+        return std::make_shared<sysrepo::Val>(value, SR_BOOL_T);
     }
 
-    S_Val operator()(const double& value) const
+    sysrepo::S_Val operator()(const double& value) const
     {
-        return std::make_shared<Val>(value);
+        return std::make_shared<sysrepo::Val>(value);
     }
 };
 
 SysrepoAccess::~SysrepoAccess() = default;
 
 SysrepoAccess::SysrepoAccess(const std::string& appname)
-    : m_connection(new Connection(appname.c_str()))
+    : m_connection(new sysrepo::Connection(appname.c_str()))
     , m_schema(new YangSchema())
 {
-    m_session = std::make_shared<Session>(m_connection);
+    m_session = std::make_shared<sysrepo::Session>(m_connection);
     m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule) {
         return fetchSchema(moduleName, revision, submodule);
     });
