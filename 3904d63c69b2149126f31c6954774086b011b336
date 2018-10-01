@@ -88,6 +88,24 @@
       "revId": "3904d63c69b2149126f31c6954774086b011b336",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf7fcb14_c221b866",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-01T12:37:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92d15c61_75029896",
+      "revId": "3904d63c69b2149126f31c6954774086b011b336",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }

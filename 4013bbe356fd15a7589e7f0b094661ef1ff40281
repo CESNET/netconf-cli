@@ -84,6 +84,30 @@
     },
     {
       "key": {
+        "uuid": "9f763b70_1627c25b",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-01T12:37:02Z",
+      "side": 1,
+      "message": "najde ho v ${CMAKE_CURRENT_SOURCE_DIR} (nutno si ji vyexportovat z cmake pres configure_file), coz zaroven bude nezavisle na cwd pri spusteni testu.",
+      "parentUuid": "c74995c8_d03842e9",
+      "range": {
+        "startLine": 150,
+        "startChar": 61,
+        "endLine": 150,
+        "endChar": 64
+      },
+      "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "28cfacc9_b4a03964",
         "filename": "tests/sysrepo.cpp",
         "patchSetId": 7
@@ -166,6 +190,24 @@
     },
     {
       "key": {
+        "uuid": "075bc4a3_0d1b92d9",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-01T12:37:02Z",
+      "side": 1,
+      "message": "Funkce system() je \"nebezpecna\", protoze se vstup rovnou hodi shellu, ktery rad provede \"necekane veci\". Tady to nekrmis neduveryhodnym vstup, cili je to snad OK.\n\nAlternativa (kterou po Tobe nechci) je neco, co nakonec zavola ten exec*(). Treba boost-process.",
+      "parentUuid": "c2369075_1775d69f",
+      "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2bb8df73_ba7392b7",
         "filename": "tests/sysrepo.cpp",
         "patchSetId": 7
@@ -195,6 +237,24 @@
       "side": 1,
       "message": "Nevím úplně přesně jak to mám nechat spadnout",
       "parentUuid": "2bb8df73_ba7392b7",
+      "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "911d6f13_4cc2abbf",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-01T12:37:02Z",
+      "side": 1,
+      "message": "Nerozumim:\n\n  REQUIRE(system(...) \u003d\u003d 0);\n\nptas se na neco jineho?",
+      "parentUuid": "567a5015_9b821de6",
       "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
