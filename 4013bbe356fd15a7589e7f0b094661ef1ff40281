@@ -108,6 +108,30 @@
     },
     {
       "key": {
+        "uuid": "87a081fd_8d536209",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-10-01T13:16:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f763b70_1627c25b",
+      "range": {
+        "startLine": 150,
+        "startChar": 61,
+        "endLine": 150,
+        "endChar": 64
+      },
+      "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "28cfacc9_b4a03964",
         "filename": "tests/sysrepo.cpp",
         "patchSetId": 7
@@ -258,6 +282,24 @@
       "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30aeb927_62a65dcf",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-10-01T13:16:27Z",
+      "side": 1,
+      "message": "Jo, ok",
+      "parentUuid": "911d6f13_4cc2abbf",
+      "revId": "4013bbe356fd15a7589e7f0b094661ef1ff40281",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
