@@ -11,6 +11,7 @@
 
 const char* schema = R"(
 module example-schema {
+    yang-version 1.1;
     namespace "http://example.com/example-sports";
     prefix coze;
 
@@ -62,6 +63,36 @@ module example-schema {
             enum data;
             enum coze;
         }
+    }
+
+    typedef enumTypedef {
+        type enumeration {
+            enum lol;
+            enum data;
+            enum coze;
+        }
+    }
+
+    typedef enumTypedefRestricted {
+        type enumTypedef {
+            enum lol;
+            enum data;
+        }
+    }
+
+    leaf leafEnumTypedef {
+        type enumTypedef;
+    }
+
+    leaf leafEnumTypedefRestricted {
+        type enumTypedef {
+            enum data;
+            enum coze;
+        }
+    }
+
+    leaf leafEnumTypedefRestricted2 {
+        type enumTypedefRestricted;
     }
 
     list _list {
@@ -164,18 +195,60 @@ TEST_CASE("yangschema")
         }
         SECTION("leafEnumHasValue")
         {
-            node.first = "example-schema";
-            node.second = "leafEnum";
             std::string value;
+            SECTION("leafEnum")
+            {
+                node.first = "example-schema";
+                node.second = "leafEnum";
 
-            SECTION("lol")
-            value = "lol";
+                SECTION("lol")
+                    value = "lol";
 
-            SECTION("data")
-            value = "data";
+                SECTION("data")
+                    value = "data";
 
-            SECTION("coze")
-            value = "coze";
+                SECTION("coze")
+                    value = "coze";
+            }
+
+            SECTION("leafEnumTypedef")
+            {
+                node.first = "example-schema";
+                node.second = "leafEnumTypedef";
+
+                SECTION("lol")
+                    value = "lol";
+
+                SECTION("data")
+                    value = "data";
+
+                SECTION("coze")
+                    value = "coze";
+            }
+
+            SECTION("leafEnumTypedefRestricted")
+            {
+                node.first = "example-schema";
+                node.second = "leafEnumTypedefRestricted";
+
+                SECTION("data")
+                    value = "data";
+
+                SECTION("coze")
+                    value = "coze";
+            }
+
+            SECTION("leafEnumTypedefRestricted2")
+            {
+                node.first = "example-schema";
+                node.second = "leafEnumTypedefRestricted2";
+
+                SECTION("lol")
+                    value = "lol";
+
+                SECTION("data")
+                    value = "data";
+            }
 
             REQUIRE(ys.leafEnumHasValue(path, node, value));
         }
@@ -279,7 +352,9 @@ TEST_CASE("yangschema")
             {
                 set = {"example-schema:a", "example-schema:b", "example-schema:leafString",
                        "example-schema:leafDecimal", "example-schema:leafBool", "example-schema:leafInt",
-                       "example-schema:leafUint", "example-schema:leafEnum", "example-schema:_list", "example-schema:twoKeyList"};
+                       "example-schema:leafUint", "example-schema:leafEnum", "example-schema:leafEnumTypedef",
+                       "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
+                       "example-schema:_list", "example-schema:twoKeyList"};
             }
 
             SECTION("a")

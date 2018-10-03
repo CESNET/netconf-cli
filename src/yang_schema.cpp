@@ -115,7 +115,15 @@ bool YangSchema::leafEnumHasValue(const path_& location, const ModuleNodePair& n
         return false;
 
     libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
-    const auto& enm = leaf.type()->info()->enums()->enm();
+    auto type = leaf.type();
+    auto enm = type->info()->enums()->enm();
+    // The enum can be a derived type and enm() only returns values,
+    // if that specific typedef changed the possible values. So we go
+    // up the hierarchy until we find a typedef that defined these values.
+    while (enm.empty()) {
+        type = type->der()->type();
+        enm = type->info()->enums()->enm();
+    }
 
     return std::any_of(enm.begin(), enm.end(), [=](const auto& x) { return x->name() == value; });
 }
