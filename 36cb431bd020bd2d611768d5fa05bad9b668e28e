@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5847371b_97371029",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-03T17:11:22Z",
+      "side": 1,
+      "message": "Tohle vypada \"divne\". Nestaci se podivat na to, jestli je to derievd type, a postupovat dal?",
+      "revId": "36cb431bd020bd2d611768d5fa05bad9b668e28e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4403cb5_8ca5c464",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-03T17:11:22Z",
+      "side": 1,
+      "message": "tomuhle identifikatoru nerozumim. Proc \"restricted\"?",
+      "revId": "36cb431bd020bd2d611768d5fa05bad9b668e28e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
