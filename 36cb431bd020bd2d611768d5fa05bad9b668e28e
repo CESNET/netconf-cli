@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0e6c6d76_63fc78fe",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-10-04T12:54:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5847371b_97371029",
+      "revId": "36cb431bd020bd2d611768d5fa05bad9b668e28e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d4403cb5_8ca5c464",
         "filename": "tests/yang.cpp",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2018-10-03T17:11:22Z",
       "side": 1,
       "message": "tomuhle identifikatoru nerozumim. Proc \"restricted\"?",
+      "revId": "36cb431bd020bd2d611768d5fa05bad9b668e28e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af7a83fc_f35b4097",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-10-04T12:54:06Z",
+      "side": 1,
+      "message": "Z YANG 1.1 rfc:\n\"9.6.3.  Restrictions\n\n   An enumeration can be restricted with one or more \"enum\"\n   (Section 9.6.4) statements, which enumerate a subset of the values\n   for the base type.\"\n\nAle můžu to přejmenovat třeba na \"narrowed\" nebo tak",
+      "parentUuid": "d4403cb5_8ca5c464",
       "revId": "36cb431bd020bd2d611768d5fa05bad9b668e28e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
