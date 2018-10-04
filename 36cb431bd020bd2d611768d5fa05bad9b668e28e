@@ -69,6 +69,24 @@
       "revId": "36cb431bd020bd2d611768d5fa05bad9b668e28e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74100452_9dc02f2f",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-04T16:40:08Z",
+      "side": 1,
+      "message": "Diky, jasne, tohle jsem nevedel, kdyz jsem to psal.",
+      "parentUuid": "af7a83fc_f35b4097",
+      "revId": "36cb431bd020bd2d611768d5fa05bad9b668e28e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
