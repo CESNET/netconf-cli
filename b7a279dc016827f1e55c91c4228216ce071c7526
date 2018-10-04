@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1c393f46_8eee796a",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-10-04T13:33:50Z",
+      "side": 1,
+      "message": "Bez ampersandu řve kompilátor na \"catching plymorphic type by value...\", ale v dokumentaci Catch se píše:\n REQUIRE_THROWS_AS( expression, exception type ) and\n CHECK_THROWS_AS( expression, exception type )\n  Expects that an exception of the specified type is thrown during evaluation of the expression. \n  Note that the exception type is extended with const\u0026 and you should not include it yourself.\n\nZ čehož jsem pochopil, že bych tam neměl psát ani ampersand ani const.",
+      "range": {
+        "startLine": 278,
+        "startChar": 90,
+        "endLine": 278,
+        "endChar": 91
+      },
+      "revId": "b7a279dc016827f1e55c91c4228216ce071c7526",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
