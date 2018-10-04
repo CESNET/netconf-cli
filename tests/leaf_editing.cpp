@@ -152,6 +152,6 @@ TEST_CASE("leaf editing")
             }
         }
 
-        REQUIRE_THROWS(parser.parseCommand(input, errorStream));
+        REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException&);
     }
 }

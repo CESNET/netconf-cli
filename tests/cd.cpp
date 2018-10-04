@@ -275,6 +275,6 @@ TEST_CASE("cd")
                 input = "cd example:twoKeyList[number=4][name=abcd]";
             }
         }
-        REQUIRE_THROWS(parser.parseCommand(input, errorStream));
+        REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException&);
     }
 }
