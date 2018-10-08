@@ -29,17 +29,17 @@ public:
     YangSchema();
     ~YangSchema() override;
 
-    bool isContainer(const path_& location, const ModuleNodePair& node) const override;
-    bool isLeaf(const path_& location, const ModuleNodePair& node) const override;
-    bool isModule(const path_& location, const std::string& name) const override;
-    bool isList(const path_& location, const ModuleNodePair& node) const override;
-    bool isPresenceContainer(const path_& location, const ModuleNodePair& node) const override;
-    bool leafEnumHasValue(const path_& location, const ModuleNodePair& node, const std::string& value) const override;
-    bool listHasKey(const path_& location, const ModuleNodePair& node, const std::string& key) const override;
+    bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
+    bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const override;
+    bool isModule(const schemaPath_& location, const std::string& name) const override;
+    bool isList(const schemaPath_& location, const ModuleNodePair& node) const override;
+    bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
+    bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const override;
+    bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
     bool nodeExists(const std::string& location, const std::string& node) const override;
-    const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const override;
-    yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const override;
-    std::set<std::string> childNodes(const path_& path, const Recursion recursion) const override;
+    const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
+    yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
+    std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const override;
 
     void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*)>& clb);
 
@@ -57,12 +57,12 @@ public:
 
 private:
     std::set<std::string> modules() const;
-    bool nodeExists(const path_& location, const ModuleNodePair& node) const;
+    bool nodeExists(const schemaPath_& location, const ModuleNodePair& node) const;
 
     /** @short Returns a set of nodes, that match the location and name criteria. */
-    std::shared_ptr<libyang::Set> getNodeSet(const path_& location, const ModuleNodePair& node) const;
+    std::shared_ptr<libyang::Set> getNodeSet(const schemaPath_& location, const ModuleNodePair& node) const;
 
     /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
-    std::shared_ptr<libyang::Schema_Node> getSchemaNode(const path_& location, const ModuleNodePair& node) const;
+    std::shared_ptr<libyang::Schema_Node> getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const;
     std::shared_ptr<libyang::Context> m_context;
 };

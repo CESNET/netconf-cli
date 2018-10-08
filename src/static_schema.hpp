@@ -23,17 +23,17 @@ class StaticSchema : public Schema {
 public:
     StaticSchema();
 
-    bool isContainer(const path_& location, const ModuleNodePair& node) const override;
-    bool isModule(const path_& location, const std::string& name) const override;
-    bool isLeaf(const path_& location, const ModuleNodePair& node) const override;
-    bool isList(const path_& location, const ModuleNodePair& node) const override;
-    bool isPresenceContainer(const path_& location, const ModuleNodePair& node) const override;
-    bool leafEnumHasValue(const path_& location, const ModuleNodePair& node, const std::string& value) const override;
-    bool listHasKey(const path_& location, const ModuleNodePair& node, const std::string& key) const override;
+    bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
+    bool isModule(const schemaPath_& location, const std::string& name) const override;
+    bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const override;
+    bool isList(const schemaPath_& location, const ModuleNodePair& node) const override;
+    bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
+    bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const override;
+    bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
     bool nodeExists(const std::string& location, const std::string& node) const override;
-    const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const override;
-    yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const override;
-    std::set<std::string> childNodes(const path_& path, const Recursion) const override;
+    const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
+    yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
+    std::set<std::string> childNodes(const schemaPath_& path, const Recursion) const override;
 
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
     void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);

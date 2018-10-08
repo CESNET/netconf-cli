@@ -26,9 +26,9 @@ std::string stripLastNodeFromPath(const std::string& path)
     return res;
 }
 
-path_ pathWithoutLastNode(const path_& path)
+schemaPath_ pathWithoutLastNode(const schemaPath_& path)
 {
-    return path_{path.m_scope, decltype(path_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};
+    return schemaPath_{path.m_scope, decltype(schemaPath_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};
 }
 
 std::string leafDataTypeToString(yang::LeafDataTypes type)
@@ -51,11 +51,16 @@ std::string leafDataTypeToString(yang::LeafDataTypes type)
     }
 }
 
-std::string fullNodeName(const path_& location, const ModuleNodePair& pair)
+std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair)
 {
     if (!pair.first) {
         return location.m_nodes.at(0).m_prefix.value().m_name + ":" + pair.second;
     } else {
         return pair.first.value() + ":" + pair.second;
     }
+}
+
+std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair)
+{
+    return fullNodeName(dataPathToSchemaPath(location), pair);
 }

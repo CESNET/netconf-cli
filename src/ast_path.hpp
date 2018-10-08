@@ -53,19 +53,38 @@ struct listElement_ {
     std::map<std::string, std::string> m_keys;
 };
 
+struct list_ {
+    list_() {}
+    list_(const std::string& listName);
+
+    bool operator==(const list_& b) const;
+
+    std::string m_name;
+};
+
 struct module_ {
     bool operator==(const module_& b) const;
     std::string m_name;
 };
 
-struct node_ {
+struct schemaNode_ {
+    boost::optional<module_> m_prefix;
+    boost::variant<container_, list_, nodeup_, leaf_> m_suffix;
+
+    schemaNode_();
+    schemaNode_(decltype(m_suffix) node);
+    schemaNode_(module_ module, decltype(m_suffix) node);
+    bool operator==(const schemaNode_& b) const;
+};
+
+struct dataNode_ {
     boost::optional<module_> m_prefix;
     boost::variant<container_, listElement_, nodeup_, leaf_> m_suffix;
 
-    node_();
-    node_(decltype(m_suffix) node);
-    node_(module_ module, decltype(m_suffix) node);
-    bool operator==(const node_& b) const;
+    dataNode_();
+    dataNode_(decltype(m_suffix) node);
+    dataNode_(module_ module, decltype(m_suffix) node);
+    bool operator==(const dataNode_& b) const;
 };
 
 enum class Scope {
@@ -73,20 +92,31 @@ enum class Scope {
     Relative
 };
 
-struct path_ {
-    bool operator==(const path_& b) const;
+struct schemaPath_ {
+    bool operator==(const schemaPath_& b) const;
     Scope m_scope = Scope::Relative;
-    std::vector<node_> m_nodes;
+    std::vector<schemaNode_> m_nodes;
 };
 
-std::string nodeToSchemaString(decltype(path_::m_nodes)::value_type node);
+struct dataPath_ {
+    bool operator==(const dataPath_& b) const;
+    Scope m_scope = Scope::Relative;
+    std::vector<dataNode_> m_nodes;
+};
 
-std::string pathToAbsoluteSchemaString(const path_& path);
-std::string pathToDataString(const path_& path);
-std::string pathToSchemaString(const path_& path);
+std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node);
+
+std::string pathToAbsoluteSchemaString(const dataPath_& path);
+std::string pathToAbsoluteSchemaString(const schemaPath_& path);
+std::string pathToDataString(const dataPath_& path);
+std::string pathToSchemaString(const dataPath_& path);
+schemaNode_ dataNodeToSchemaNode(const dataNode_& node);
+schemaPath_ dataPathToSchemaPath(const dataPath_& path);
 
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
 BOOST_FUSION_ADAPT_STRUCT(module_, m_name)
-BOOST_FUSION_ADAPT_STRUCT(node_, m_prefix, m_suffix)
-BOOST_FUSION_ADAPT_STRUCT(path_, m_scope, m_nodes)
+BOOST_FUSION_ADAPT_STRUCT(dataNode_, m_prefix, m_suffix)
+BOOST_FUSION_ADAPT_STRUCT(schemaNode_, m_prefix, m_suffix)
+BOOST_FUSION_ADAPT_STRUCT(dataPath_, m_scope, m_nodes)
+BOOST_FUSION_ADAPT_STRUCT(schemaPath_, m_scope, m_nodes)

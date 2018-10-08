@@ -40,27 +40,27 @@ struct discard_ : x3::position_tagged {
 struct ls_ : x3::position_tagged {
     bool operator==(const ls_& b) const;
     std::vector<LsOption> m_options;
-    boost::optional<path_> m_path;
+    boost::optional<dataPath_> m_path;
 };
 
 struct cd_ : x3::position_tagged {
     bool operator==(const cd_& b) const;
-    path_ m_path;
+    dataPath_ m_path;
 };
 
 struct create_ : x3::position_tagged {
     bool operator==(const create_& b) const;
-    path_ m_path;
+    dataPath_ m_path;
 };
 
 struct delete_ : x3::position_tagged {
     bool operator==(const delete_& b) const;
-    path_ m_path;
+    dataPath_ m_path;
 };
 
 struct set_ : x3::position_tagged {
     bool operator==(const set_& b) const;
-    path_ m_path;
+    dataPath_ m_path;
     leaf_data_ m_data;
 };
 
@@ -70,7 +70,7 @@ struct commit_ : x3::position_tagged {
 
 struct get_ : x3::position_tagged {
     bool operator==(const get_& b) const;
-    boost::optional<path_> m_path;
+    boost::optional<dataPath_> m_path;
 };
 
 using command_ = boost::variant<discard_, ls_, cd_, create_, delete_, set_, commit_, get_>;

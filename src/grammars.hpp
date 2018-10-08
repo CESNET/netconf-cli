@@ -19,14 +19,17 @@ x3::rule<module_identifier_class, std::string> const module_identifier = "module
 x3::rule<listPrefix_class, std::string> const listPrefix = "listPrefix";
 x3::rule<listSuffix_class, std::vector<keyValue_>> const listSuffix = "listSuffix";
 x3::rule<listElement_class, listElement_> const listElement = "listElement";
+x3::rule<list_class, list_> const list = "list";
 x3::rule<nodeup_class, nodeup_> const nodeup = "nodeup";
 x3::rule<container_class, container_> const container = "container";
 x3::rule<leaf_class, leaf_> const leaf = "leaf";
 x3::rule<module_class, module_> const module = "module";
-x3::rule<node_class, node_> const node = "node";
+x3::rule<dataNode_class, dataNode_> const dataNode = "dataNode";
+x3::rule<schemaNode_class, schemaNode_> const schemaNode = "schemaNode";
 x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
-x3::rule<path_class, path_> const path = "path";
-x3::rule<leaf_path_class, path_> const leafPath = "leafPath";
+x3::rule<schemaPath_class, schemaPath_> const schemaPath = "schemaPath";
+x3::rule<dataPath_class, dataPath_> const dataPath = "dataPath";
+x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
 
 x3::rule<leaf_data_class, leaf_data_> const leaf_data = "leaf_data";
 x3::rule<leaf_data_enum_class, enum_> const leaf_data_enum = "leaf_data_enum";
@@ -86,6 +89,9 @@ auto const listSuffix_def =
 auto const listElement_def =
         listPrefix > listSuffix;
 
+auto const list_def =
+        node_identifier;
+
 auto const nodeup_def =
         lit("..") > x3::attr(nodeup_());
 
@@ -99,19 +105,26 @@ auto const leaf_def =
         node_identifier;
 
 // leaf cannot be in the middle of a path, however, I need the grammar's attribute to be a vector of variants
-auto const node_def =
+auto const schemaNode_def =
+        -(module) >> x3::expect[container | list | nodeup | leaf];
+
+auto const dataNode_def =
         -(module) >> x3::expect[container | listElement | nodeup | leaf];
 
 auto const absoluteStart_def =
         x3::omit['/'] >> x3::attr(Scope::Absolute);
 
 // I have to insert an empty vector to the first alternative, otherwise they won't have the same attribute
-auto const path_def =
-        absoluteStart >> x3::attr(decltype(path_::m_nodes)()) >> x3::eoi |
-        -(absoluteStart) >> node % '/';
+auto const dataPath_def =
+        absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::eoi |
+        -(absoluteStart) >> dataNode % '/';
+
+auto const schemaPath_def =
+        absoluteStart >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::eoi |
+        -(absoluteStart) >> schemaNode % '/';
 
 auto const leafPath_def =
-        path;
+        dataPath;
 
 auto const leaf_data_enum_def =
         +char_;
@@ -157,19 +170,19 @@ struct ls_options_table : x3::symbols<LsOption> {
 } const ls_options;
 
 auto const ls_def =
-        lit("ls") >> *(space_separator >> ls_options) >> -(space_separator >> path);
+        lit("ls") >> *(space_separator >> ls_options) >> -(space_separator >> dataPath);
 
 auto const cd_def =
-        lit("cd") >> space_separator > path;
+        lit("cd") >> space_separator > dataPath;
 
 auto const create_def =
-        lit("create") >> space_separator > path;
+        lit("create") >> space_separator > dataPath;
 
 auto const delete_rule_def =
-        lit("delete") >> space_separator > path;
+        lit("delete") >> space_separator > dataPath;
 
 auto const get_def =
-        lit("get") >> -path;
+        lit("get") >> -dataPath;
 
 auto const set_def =
         lit("set") >> space_separator > leafPath > leaf_data;
@@ -194,13 +207,16 @@ BOOST_SPIRIT_DEFINE(module_identifier)
 BOOST_SPIRIT_DEFINE(listPrefix)
 BOOST_SPIRIT_DEFINE(listSuffix)
 BOOST_SPIRIT_DEFINE(listElement)
+BOOST_SPIRIT_DEFINE(list)
 BOOST_SPIRIT_DEFINE(nodeup)
+BOOST_SPIRIT_DEFINE(schemaNode)
+BOOST_SPIRIT_DEFINE(dataNode)
 BOOST_SPIRIT_DEFINE(container)
 BOOST_SPIRIT_DEFINE(leaf)
 BOOST_SPIRIT_DEFINE(leafPath)
-BOOST_SPIRIT_DEFINE(node)
+BOOST_SPIRIT_DEFINE(schemaPath)
+BOOST_SPIRIT_DEFINE(dataPath)
 BOOST_SPIRIT_DEFINE(absoluteStart)
-BOOST_SPIRIT_DEFINE(path)
 BOOST_SPIRIT_DEFINE(module)
 BOOST_SPIRIT_DEFINE(leaf_data)
 BOOST_SPIRIT_DEFINE(leaf_data_enum)

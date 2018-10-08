@@ -29,7 +29,7 @@ TEST_CASE("presence containers")
 
     SECTION("valid input")
     {
-        path_ expectedPath;
+        dataPath_ expectedPath;
 
         SECTION("mod:a")
         {
