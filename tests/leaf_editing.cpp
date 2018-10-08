@@ -36,15 +36,15 @@ TEST_CASE("leaf editing")
         SECTION("set leafString some_data")
         {
             input = "set mod:leafString some_data";
-            expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafString")});
+            expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafString")});
             expected.m_data = std::string("some_data");
         }
 
         SECTION("set mod:contA/leafInCont more_data")
         {
             input = "set mod:contA/leafInCont more_data";
-            expected.m_path.m_nodes.push_back(node_{module_{"mod"}, container_("contA")});
-            expected.m_path.m_nodes.push_back(node_{leaf_("leafInCont")});
+            expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, container_("contA")});
+            expected.m_path.m_nodes.push_back(dataNode_{leaf_("leafInCont")});
             expected.m_data = std::string("more_data");
         }
 
@@ -53,8 +53,8 @@ TEST_CASE("leaf editing")
             input = "set mod:list[number=1]/leafInList another_data";
             auto keys = std::map<std::string, std::string>{
                 {"number", "1"}};
-            expected.m_path.m_nodes.push_back(node_{module_{"mod"}, listElement_("list", keys)});
-            expected.m_path.m_nodes.push_back(node_{leaf_("leafInList")});
+            expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
+            expected.m_path.m_nodes.push_back(dataNode_{leaf_("leafInList")});
             expected.m_data = std::string("another_data");
         }
 
@@ -63,35 +63,35 @@ TEST_CASE("leaf editing")
             SECTION("string")
             {
                 input = "set mod:leafString somedata";
-                expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafString")});
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafString")});
                 expected.m_data = std::string("somedata");
             }
 
             SECTION("int")
             {
                 input = "set mod:leafInt 2";
-                expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafInt")});
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafInt")});
                 expected.m_data = 2;
             }
 
             SECTION("decimal")
             {
                 input = "set mod:leafDecimal 3.14159";
-                expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafDecimal")});
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafDecimal")});
                 expected.m_data = 3.14159;
             }
 
             SECTION("enum")
             {
                 input = "set mod:leafEnum coze";
-                expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafEnum")});
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafEnum")});
                 expected.m_data = enum_("coze");
             }
 
             SECTION("bool")
             {
                 input = "set mod:leafBool true";
-                expected.m_path.m_nodes.push_back(node_{module_{"mod"}, leaf_("leafBool")});
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafBool")});
                 expected.m_data = true;
             }
         }

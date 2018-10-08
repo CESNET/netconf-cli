@@ -27,11 +27,11 @@ class Parser {
 public:
     Parser(const std::shared_ptr<const Schema> schema);
     command_ parseCommand(const std::string& line, std::ostream& errorStream);
-    void changeNode(const path_& name);
+    void changeNode(const dataPath_& name);
     std::string currentNode() const;
-    std::set<std::string> availableNodes(const boost::optional<path_>& path, const Recursion& option) const;
+    std::set<std::string> availableNodes(const boost::optional<dataPath_>& path, const Recursion& option) const;
 
 private:
     const std::shared_ptr<const Schema> m_schema;
-    path_ m_curDir;
+    dataPath_ m_curDir;
 };

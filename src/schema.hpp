@@ -69,17 +69,17 @@ class Schema {
 public:
     virtual ~Schema();
 
-    virtual bool isContainer(const path_& location, const ModuleNodePair& node) const = 0;
-    virtual bool isLeaf(const path_& location, const ModuleNodePair& node) const = 0;
-    virtual bool isModule(const path_& location, const std::string& name) const = 0;
-    virtual bool isList(const path_& location, const ModuleNodePair& node) const = 0;
-    virtual bool isPresenceContainer(const path_& location, const ModuleNodePair& node) const = 0;
-    virtual bool leafEnumHasValue(const path_& location, const ModuleNodePair& node, const std::string& value) const = 0;
-    virtual bool listHasKey(const path_& location, const ModuleNodePair& node, const std::string& key) const = 0;
+    virtual bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual bool isModule(const schemaPath_& location, const std::string& name) const = 0;
+    virtual bool isList(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const = 0;
+    virtual bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const = 0;
     virtual bool nodeExists(const std::string& location, const std::string& node) const = 0;
-    virtual const std::set<std::string> listKeys(const path_& location, const ModuleNodePair& node) const = 0;
-    virtual yang::LeafDataTypes leafType(const path_& location, const ModuleNodePair& node) const = 0;
-    virtual std::set<std::string> childNodes(const path_& path, const Recursion recursion) const = 0;
+    virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const = 0;
 
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
