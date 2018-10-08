@@ -30,21 +30,33 @@ bool module_::operator==(const module_& b) const
     return this->m_name == b.m_name;
 }
 
-node_::node_() = default;
+dataNode_::dataNode_() = default;
 
-node_::node_(decltype(m_suffix) node)
+dataNode_::dataNode_(decltype(m_suffix) node)
     : m_suffix(node)
 {
 }
 
-node_::node_(module_ module, decltype(m_suffix) node)
+dataNode_::dataNode_(module_ module, decltype(m_suffix) node)
     : m_prefix(module)
     , m_suffix(node)
 {
 }
 
+schemaNode_::schemaNode_(module_ module, decltype(m_suffix) node)
+    : m_prefix(module)
+    , m_suffix(node)
+{
+}
 
-bool node_::operator==(const node_& b) const
+schemaNode_::schemaNode_() = default;
+
+bool schemaNode_::operator==(const schemaNode_& b) const
+{
+    return this->m_suffix == b.m_suffix && this->m_prefix == b.m_prefix;
+}
+
+bool dataNode_::operator==(const dataNode_& b) const
 {
     return this->m_suffix == b.m_suffix && this->m_prefix == b.m_prefix;
 }
@@ -65,7 +77,24 @@ bool listElement_::operator==(const listElement_& b) const
     return (this->m_name == b.m_name && this->m_keys == b.m_keys);
 }
 
-bool path_::operator==(const path_& b) const
+bool list_::operator==(const list_& b) const
+{
+    return (this->m_name == b.m_name);
+}
+
+list_::list_(const std::string& listName)
+    : m_name(listName)
+{
+}
+
+bool schemaPath_::operator==(const schemaPath_& b) const
+{
+    if (this->m_nodes.size() != b.m_nodes.size())
+        return false;
+    return this->m_nodes == b.m_nodes;
+}
+
+bool dataPath_::operator==(const dataPath_& b) const
 {
     if (this->m_nodes.size() != b.m_nodes.size())
         return false;
@@ -118,12 +147,12 @@ struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
     }
 };
 
-std::string nodeToSchemaString(decltype(path_::m_nodes)::value_type node)
+std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node)
 {
     return boost::apply_visitor(nodeToSchemaStringVisitor(), node.m_suffix);
 }
 
-std::string pathToDataString(const path_& path)
+std::string pathToDataString(const dataPath_& path)
 {
     std::string res;
     for (const auto it : path.m_nodes)
@@ -135,7 +164,12 @@ std::string pathToDataString(const path_& path)
     return res;
 }
 
-std::string pathToAbsoluteSchemaString(const path_& path)
+std::string pathToAbsoluteSchemaString(const dataPath_& path)
+{
+    return pathToAbsoluteSchemaString(dataPathToSchemaPath(path));
+}
+
+std::string pathToAbsoluteSchemaString(const schemaPath_& path)
 {
     std::string res;
     if (path.m_nodes.empty()) {
@@ -152,7 +186,7 @@ std::string pathToAbsoluteSchemaString(const path_& path)
     return res;
 }
 
-std::string pathToSchemaString(const path_& path)
+std::string pathToSchemaString(const dataPath_& path)
 {
     std::string res;
     for (const auto it : path.m_nodes) {
@@ -162,4 +196,36 @@ std::string pathToSchemaString(const path_& path)
             res = joinPaths(res, boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
     }
     return res;
+}
+
+struct dataSuffixToSchemaSuffix : boost::static_visitor<decltype(schemaNode_::m_suffix)> {
+    decltype(schemaNode_::m_suffix) operator()(const listElement_& listElement) const
+    {
+        return list_{listElement.m_name};
+    }
+
+    template <typename T>
+    decltype(schemaNode_::m_suffix) operator()(const T& suffix) const
+    {
+        return suffix;
+    }
+};
+
+schemaNode_ dataNodeToSchemaNode(const dataNode_& node)
+{
+    schemaNode_ res;
+    res.m_prefix = node.m_prefix;
+    res.m_suffix = boost::apply_visitor(dataSuffixToSchemaSuffix(), node.m_suffix);
+    return res;
+}
+
+schemaPath_ dataPathToSchemaPath(const dataPath_& path)
+{
+        schemaPath_ res{path.m_scope, {}};
+
+        std::transform(path.m_nodes.begin(), path.m_nodes.end(),
+                       std::back_inserter(res.m_nodes),
+                       [](const dataNode_& node) { return dataNodeToSchemaNode(node); });
+
+        return res;
 }

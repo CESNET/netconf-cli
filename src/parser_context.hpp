@@ -8,9 +8,9 @@
 
 #include "schema.hpp"
 struct ParserContext {
-    ParserContext(const Schema& schema, const path_ curDir);
+    ParserContext(const Schema& schema, const schemaPath_& curDir);
     const Schema& m_schema;
-    path_ m_curPath;
+    schemaPath_ m_curPath;
     boost::optional<std::string> m_curModule;
     std::string m_errorMsg;
     std::string m_tmpListName;

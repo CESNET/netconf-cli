@@ -31,12 +31,12 @@ bool StaticSchema::nodeExists(const std::string& location, const std::string& no
     return childrenRef.find(node) != childrenRef.end();
 }
 
-bool StaticSchema::isModule(const path_&, const std::string& name) const
+bool StaticSchema::isModule(const schemaPath_&, const std::string& name) const
 {
     return m_modules.find(name) != m_modules.end();
 }
 
-bool StaticSchema::isContainer(const path_& location, const ModuleNodePair& node) const
+bool StaticSchema::isContainer(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
     auto fullName = fullNodeName(location, node);
@@ -55,7 +55,7 @@ void StaticSchema::addContainer(const std::string& location, const std::string& 
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
-bool StaticSchema::listHasKey(const path_& location, const ModuleNodePair& node, const std::string& key) const
+bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
     assert(isList(location, node));
@@ -65,7 +65,7 @@ bool StaticSchema::listHasKey(const path_& location, const ModuleNodePair& node,
     return list.m_keys.find(key) != list.m_keys.end();
 }
 
-const std::set<std::string> StaticSchema::listKeys(const path_& location, const ModuleNodePair& node) const
+const std::set<std::string> StaticSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
     assert(isList(location, node));
@@ -75,7 +75,7 @@ const std::set<std::string> StaticSchema::listKeys(const path_& location, const 
     return list.m_keys;
 }
 
-bool StaticSchema::isList(const path_& location, const ModuleNodePair& node) const
+bool StaticSchema::isList(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
     auto fullName = fullNodeName(location, node);
@@ -95,7 +95,7 @@ void StaticSchema::addList(const std::string& location, const std::string& name,
     m_nodes.emplace(name, std::unordered_map<std::string, NodeType>());
 }
 
-bool StaticSchema::isPresenceContainer(const path_& location, const ModuleNodePair& node) const
+bool StaticSchema::isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const
 {
     if (!isContainer(location, node))
         return false;
@@ -119,7 +119,7 @@ void StaticSchema::addModule(const std::string& name)
 }
 
 
-bool StaticSchema::leafEnumHasValue(const path_& location, const ModuleNodePair& node, const std::string& value) const
+bool StaticSchema::leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
     assert(isLeaf(location, node));
@@ -129,7 +129,7 @@ bool StaticSchema::leafEnumHasValue(const path_& location, const ModuleNodePair&
     return list.m_enumValues.find(value) != list.m_enumValues.end();
 }
 
-bool StaticSchema::isLeaf(const path_& location, const ModuleNodePair& node) const
+bool StaticSchema::isLeaf(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
     auto fullName = fullNodeName(location, node);
@@ -139,7 +139,7 @@ bool StaticSchema::isLeaf(const path_& location, const ModuleNodePair& node) con
     return children(locationString).at(fullName).type() == typeid(yang::leaf);
 }
 
-yang::LeafDataTypes StaticSchema::leafType(const path_& location, const ModuleNodePair& node) const
+yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
@@ -147,7 +147,7 @@ yang::LeafDataTypes StaticSchema::leafType(const path_& location, const ModuleNo
 
 // We do not test StaticSchema, so we don't need to implement recursive childNodes
 // for this class.
-std::set<std::string> StaticSchema::childNodes(const path_& path, const Recursion) const
+std::set<std::string> StaticSchema::childNodes(const schemaPath_& path, const Recursion) const
 {
     std::string locationString = pathToAbsoluteSchemaString(path);
     std::set<std::string> res;

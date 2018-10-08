@@ -124,7 +124,7 @@ TEST_CASE("yangschema")
 {
     YangSchema ys;
     ys.addSchemaString(schema);
-    path_ path;
+    schemaPath_ path;
     ModuleNodePair node;
 
     SECTION("positive")
@@ -139,7 +139,7 @@ TEST_CASE("yangschema")
 
             SECTION("example-schema:a/a2")
             {
-                path.m_nodes.push_back(node_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
                 node.second = "a2";
             }
 
@@ -155,7 +155,7 @@ TEST_CASE("yangschema")
 
             SECTION("example-schema:a/leafa")
             {
-                path.m_nodes.push_back(node_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
                 node.first = "example-schema";
                 node.second = "leafa";
             }
@@ -186,8 +186,8 @@ TEST_CASE("yangschema")
         {
             SECTION("example-schema:a/a2/a3")
             {
-                path.m_nodes.push_back(node_(module_{"example-schema"}, container_("a")));
-                path.m_nodes.push_back(node_(module_{"example-schema"}, container_("a2")));
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a2")));
                 node.second = "a3";
             }
 
@@ -359,7 +359,7 @@ TEST_CASE("yangschema")
 
             SECTION("a")
             {
-                path.m_nodes.push_back(node_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
                 set = {"example-schema:a2", "example-schema:leafa"};
             }
 
@@ -379,13 +379,13 @@ TEST_CASE("yangschema")
 
             SECTION("example-schema:a/nevim")
             {
-                path.m_nodes.push_back(node_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
                 node.second = "nevim";
             }
 
             SECTION("modul:a/nevim")
             {
-                path.m_nodes.push_back(node_(module_{"modul"}, container_("a")));
+                path.m_nodes.push_back(schemaNode_(module_{"modul"}, container_("a")));
                 node.second = "nevim";
             }
 
@@ -405,7 +405,7 @@ TEST_CASE("yangschema")
 
             SECTION("example-schema:a/a2")
             {
-                path.m_nodes.push_back(node_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
                 node.second = "a2";
             }
 
@@ -416,7 +416,7 @@ TEST_CASE("yangschema")
 
         SECTION("nodetype-specific methods called with different nodetypes")
         {
-            path.m_nodes.push_back(node_(module_{"example-schema"}, container_("a")));
+            path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
             node.second = "a2";
 
             REQUIRE(!ys.leafEnumHasValue(path, node, "haha"));

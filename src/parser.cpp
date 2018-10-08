@@ -21,7 +21,7 @@ Parser::Parser(const std::shared_ptr<const Schema> schema)
 command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream)
 {
     command_ parsedCommand;
-    ParserContext ctx(*m_schema, m_curDir);
+    ParserContext ctx(*m_schema, dataPathToSchemaPath(m_curDir));
     auto it = line.begin();
 
     boost::spirit::x3::error_handler<std::string::const_iterator> errorHandler(it, line.end(), errorStream);
@@ -39,7 +39,7 @@ command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream
     return parsedCommand;
 }
 
-void Parser::changeNode(const path_& name)
+void Parser::changeNode(const dataPath_& name)
 {
     if (name.m_scope == Scope::Absolute) {
         m_curDir = name;
@@ -58,10 +58,24 @@ std::string Parser::currentNode() const
     return "/" + pathToDataString(m_curDir);
 }
 
-std::set<std::string> Parser::availableNodes(const boost::optional<path_>& path, const Recursion& option) const
+struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {
+    schemaPath_ operator()(const dataPath_& path) const
+    {
+        return dataPathToSchemaPath(path);
+    }
+
+    schemaPath_ operator()(const schemaPath_& path) const
+    {
+        return path;
+    }
+};
+
+std::set<std::string> Parser::availableNodes(const boost::optional<dataPath_>& path, const Recursion& option) const
 {
-    auto pathArg = m_curDir;
-    if (path)
-        pathArg.m_nodes.insert(pathArg.m_nodes.end(), path->m_nodes.begin(), path->m_nodes.end());
+    auto pathArg = dataPathToSchemaPath(m_curDir);
+    if (path) {
+        auto schemaPath = dataPathToSchemaPath(*path);
+        pathArg.m_nodes.insert(pathArg.m_nodes.end(), schemaPath.m_nodes.begin(), schemaPath.m_nodes.end());
+    }
     return m_schema->childNodes(pathArg, option);
 }

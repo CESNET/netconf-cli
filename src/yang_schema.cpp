@@ -30,7 +30,8 @@ public:
     ~InvalidSchemaQueryException() override = default;
 };
 
-std::string pathToYangAbsSchemPath(const path_& path)
+template <typename T>
+std::string pathToYangAbsSchemPath(const T& path)
 {
     std::string res = "/";
     std::string currentModule;
@@ -78,38 +79,38 @@ void YangSchema::addSchemaFile(const char* filename)
     }
 }
 
-bool YangSchema::isModule(const path_&, const std::string& name) const
+bool YangSchema::isModule(const schemaPath_&, const std::string& name) const
 {
     const auto set = modules();
     return set.find(name) != set.end();
 }
 
-bool YangSchema::isContainer(const path_& location, const ModuleNodePair& node) const
+bool YangSchema::isContainer(const schemaPath_& location, const ModuleNodePair& node) const
 {
     const auto schemaNode = getSchemaNode(location, node);
     return schemaNode && schemaNode->nodetype() == LYS_CONTAINER;
 }
 
-bool YangSchema::isLeaf(const path_& location, const ModuleNodePair& node) const
+bool YangSchema::isLeaf(const schemaPath_& location, const ModuleNodePair& node) const
 {
     const auto schemaNode = getSchemaNode(location, node);
     return schemaNode && schemaNode->nodetype() == LYS_LEAF;
 }
 
-bool YangSchema::isList(const path_& location, const ModuleNodePair& node) const
+bool YangSchema::isList(const schemaPath_& location, const ModuleNodePair& node) const
 {
     const auto schemaNode = getSchemaNode(location, node);
     return schemaNode && schemaNode->nodetype() == LYS_LIST;
 }
 
-bool YangSchema::isPresenceContainer(const path_& location, const ModuleNodePair& node) const
+bool YangSchema::isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const
 {
     if (!isContainer(location, node))
         return false;
     return libyang::Schema_Node_Container(getSchemaNode(location, node)).presence();
 }
 
-bool YangSchema::leafEnumHasValue(const path_& location, const ModuleNodePair& node, const std::string& value) const
+bool YangSchema::leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const
 {
     if (!isLeaf(location, node) || leafType(location, node) != yang::LeafDataTypes::Enum)
         return false;
@@ -128,7 +129,7 @@ bool YangSchema::leafEnumHasValue(const path_& location, const ModuleNodePair& n
     return std::any_of(enm.begin(), enm.end(), [=](const auto& x) { return x->name() == value; });
 }
 
-bool YangSchema::listHasKey(const path_& location, const ModuleNodePair& node, const std::string& key) const
+bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
 {
     if (!isList(location, node))
         return false;
@@ -143,14 +144,14 @@ bool YangSchema::nodeExists(const std::string& location, const std::string& node
     return set->number() == 1;
 }
 
-libyang::S_Set YangSchema::getNodeSet(const path_& location, const ModuleNodePair& node) const
+libyang::S_Set YangSchema::getNodeSet(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string absPath = location.m_nodes.empty() ? "" : "/";
     absPath += pathToAbsoluteSchemaString(location) + "/" + fullNodeName(location, node);
     return m_context->find_path(absPath.c_str());
 }
 
-libyang::S_Schema_Node YangSchema::getSchemaNode(const path_& location, const ModuleNodePair& node) const
+libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const
 {
     const auto set = getNodeSet(location, node);
     if (!set)
@@ -161,7 +162,7 @@ libyang::S_Schema_Node YangSchema::getSchemaNode(const path_& location, const Mo
     return *schemaSet.begin();
 }
 
-const std::set<std::string> YangSchema::listKeys(const path_& location, const ModuleNodePair& node) const
+const std::set<std::string> YangSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::set<std::string> keys;
     if (!isList(location, node))
@@ -174,7 +175,7 @@ const std::set<std::string> YangSchema::listKeys(const path_& location, const Mo
     return keys;
 }
 
-yang::LeafDataTypes YangSchema::leafType(const path_& location, const ModuleNodePair& node) const
+yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     using namespace std::string_literals;
     if (!isLeaf(location, node))
@@ -210,7 +211,7 @@ std::set<std::string> YangSchema::modules() const
     return res;
 }
 
-std::set<std::string> YangSchema::childNodes(const path_& path, const Recursion recursion) const
+std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recursion recursion) const
 {
     using namespace std::string_view_literals;
     std::set<std::string> res;

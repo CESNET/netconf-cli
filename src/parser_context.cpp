@@ -7,7 +7,7 @@
 */
 
 #include "parser_context.hpp"
-ParserContext::ParserContext(const Schema& schema, const path_ curDir)
+ParserContext::ParserContext(const Schema& schema, const schemaPath_& curDir)
     : m_schema(schema)
 {
     m_curPath = curDir;
