@@ -28,6 +28,9 @@ x3::rule<dataNode_class, dataNode_> const dataNode = "dataNode";
 x3::rule<schemaNode_class, schemaNode_> const schemaNode = "schemaNode";
 x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
 x3::rule<schemaPath_class, schemaPath_> const schemaPath = "schemaPath";
+x3::rule<dataNodeList_class, decltype(dataPath_::m_nodes)::value_type> const dataNodeList = "dataNodeList";
+x3::rule<dataNodesListEnd_class, decltype(dataPath_::m_nodes)> const dataNodesListEnd = "dataNodesListEnd";
+x3::rule<dataPathListEnd_class, dataPath_> const dataPathListEnd = "dataPathListEnd";
 x3::rule<dataPath_class, dataPath_> const dataPath = "dataPath";
 x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
 
@@ -89,7 +92,7 @@ auto const listElement_def =
         listPrefix > listSuffix;
 
 auto const list_def =
-        node_identifier;
+        node_identifier >> !char_('[');
 
 auto const nodeup_def =
         lit("..") > x3::attr(nodeup_());
@@ -117,6 +120,18 @@ auto const absoluteStart_def =
 auto const dataPath_def =
         absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::eoi |
         -(absoluteStart) >> dataNode % '/';
+
+auto const dataNodeList_def =
+        -(module) >> list;
+
+// This intermediate rule is mandatory, otherwise the rule won't return a vector
+auto const dataNodesListEnd_def =
+        dataNode % '/' >> '/' >> dataNodeList |
+        x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
+
+auto const dataPathListEnd_def =
+        absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::eoi |
+        -(absoluteStart) >> dataNodesListEnd;
 
 auto const schemaPath_def =
         absoluteStart >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::eoi |
@@ -169,7 +184,7 @@ struct ls_options_table : x3::symbols<LsOption> {
 } const ls_options;
 
 auto const ls_def =
-        lit("ls") >> *(space_separator >> ls_options) >> -(space_separator >> dataPath);
+        lit("ls") >> *(space_separator >> ls_options) >> -(space_separator >> (dataPathListEnd | dataPath));
 
 auto const cd_def =
         lit("cd") >> space_separator > dataPath;
@@ -181,7 +196,7 @@ auto const delete_rule_def =
         lit("delete") >> space_separator > dataPath;
 
 auto const get_def =
-        lit("get") >> -dataPath;
+        lit("get") >> -(space_separator >> dataPath);
 
 auto const set_def =
         lit("set") >> space_separator > leafPath > leaf_data;
@@ -212,6 +227,9 @@ BOOST_SPIRIT_DEFINE(leaf)
 BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(schemaPath)
 BOOST_SPIRIT_DEFINE(dataPath)
+BOOST_SPIRIT_DEFINE(dataNodeList)
+BOOST_SPIRIT_DEFINE(dataNodesListEnd)
+BOOST_SPIRIT_DEFINE(dataPathListEnd)
 BOOST_SPIRIT_DEFINE(absoluteStart)
 BOOST_SPIRIT_DEFINE(module)
 BOOST_SPIRIT_DEFINE(leaf_data)

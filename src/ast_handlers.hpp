@@ -201,6 +201,8 @@ struct schemaNode_class {
     }
 };
 
+struct dataNodeList_class;
+
 struct dataNode_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
@@ -225,6 +227,10 @@ struct absoluteStart_class {
         parserContext.m_curPath.m_nodes.clear();
     }
 };
+
+struct dataNodesListEnd_class;
+
+struct dataPathListEnd_class;
 
 struct dataPath_class {
     template <typename Iterator, typename Exception, typename Context>
