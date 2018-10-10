@@ -17,6 +17,7 @@ TEST_CASE("ls")
     schema->addModule("example");
     schema->addModule("second");
     schema->addContainer("", "example:a");
+    schema->addList("example:a", "example:listInCont", {"number"});
     schema->addContainer("", "second:a");
     schema->addContainer("", "example:b");
     schema->addContainer("example:a", "example:a2");
@@ -51,7 +52,7 @@ TEST_CASE("ls")
             SECTION("ls example:a")
             {
                 input = "ls example:a";
-                expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}};
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, container_{"a"})}};
             }
 
             SECTION("ls /example:a")
@@ -60,7 +61,7 @@ TEST_CASE("ls")
                 SECTION("cwd: /example:a") {parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}});}
 
                 input = "ls /example:a";
-                expected.m_path = dataPath_{Scope::Absolute, {dataNode_(module_{"example"}, container_{"a"})}};
+                expected.m_path = schemaPath_{Scope::Absolute, {schemaNode_(module_{"example"}, container_{"a"})}};
             }
 
             SECTION("ls /")
@@ -68,21 +69,21 @@ TEST_CASE("ls")
                 SECTION("cwd: /") {}
                 SECTION("cwd: /example:a") {parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}});}
                 input = "ls /";
-                expected.m_path = dataPath_{Scope::Absolute, {}};
+                expected.m_path = schemaPath_{Scope::Absolute, {}};
             }
 
             SECTION("ls example:a/a2")
             {
                 input = "ls example:a/a2";
-                expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"}),
-                                                          dataNode_(container_{"a2"})}};
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, container_{"a"}),
+                                                          schemaNode_(container_{"a2"})}};
             }
 
             SECTION("ls a2")
             {
                 parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}});
                 input = "ls a2";
-                expected.m_path = dataPath_{Scope::Relative, {dataNode_(container_{"a2"})}};
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(container_{"a2"})}};
             }
 
             SECTION("ls /example:a/a2")
@@ -90,22 +91,22 @@ TEST_CASE("ls")
                 SECTION("cwd: /") {}
                 SECTION("cwd: /example:a") {parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}});}
                 input = "ls /example:a/a2";
-                expected.m_path = dataPath_{Scope::Absolute, {dataNode_(module_{"example"}, container_{"a"}),
-                                                          dataNode_(container_{"a2"})}};
+                expected.m_path = schemaPath_{Scope::Absolute, {schemaNode_(module_{"example"}, container_{"a"}),
+                                                          schemaNode_(container_{"a2"})}};
             }
 
             SECTION("ls example:a/example:a2")
             {
                 input = "ls example:a/example:a2";
-                expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"}),
-                                                          dataNode_(module_{"example"}, container_{"a2"})}};
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, container_{"a"}),
+                                                          schemaNode_(module_{"example"}, container_{"a2"})}};
             }
 
             SECTION("ls example:a2")
             {
                 parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}});
                 input = "ls example:a2";
-                expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a2"})}};
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, container_{"a2"})}};
             }
 
             SECTION("ls /example:a/example:a2")
@@ -114,8 +115,8 @@ TEST_CASE("ls")
                 SECTION("cwd: /example:a") {parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}});}
 
                 input = "ls /example:a/example:a2";
-                expected.m_path = dataPath_{Scope::Absolute, {dataNode_(module_{"example"}, container_{"a"}),
-                                                          dataNode_(module_{"example"}, container_{"a2"})}};
+                expected.m_path = schemaPath_{Scope::Absolute, {schemaNode_(module_{"example"}, container_{"a"}),
+                                                          schemaNode_(module_{"example"}, container_{"a2"})}};
             }
 
             SECTION("ls --recursive /example:a")
@@ -125,7 +126,20 @@ TEST_CASE("ls")
 
                 input = "ls --recursive /example:a";
                 expected.m_options.push_back(LsOption::Recursive);
-                expected.m_path = dataPath_{Scope::Absolute, {dataNode_(module_{"example"}, container_{"a"})}};
+                expected.m_path = schemaPath_{Scope::Absolute, {schemaNode_(module_{"example"}, container_{"a"})}};
+            }
+
+            SECTION("ls example:list")
+            {
+                input = "ls example:list";
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, list_{"list"})}};
+            }
+
+            SECTION("ls example:a/example:listInCont")
+            {
+                input = "ls example:a/example:listInCont";
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, container_{"a"}), 
+                                                                schemaNode_(module_{"example"}, list_{"listInCont"})}};
             }
         }
 

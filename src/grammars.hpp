@@ -169,7 +169,7 @@ struct ls_options_table : x3::symbols<LsOption> {
 } const ls_options;
 
 auto const ls_def =
-        lit("ls") >> *(space_separator >> ls_options) >> -(space_separator >> dataPath);
+        lit("ls") >> *(space_separator >> ls_options) >> -(space_separator >> (schemaPath | dataPath));
 
 auto const cd_def =
         lit("cd") >> space_separator > dataPath;
@@ -181,7 +181,7 @@ auto const delete_rule_def =
         lit("delete") >> space_separator > dataPath;
 
 auto const get_def =
-        lit("get") >> -dataPath;
+        lit("get") >> -(dataPath | schemaPath);
 
 auto const set_def =
         lit("set") >> space_separator > leafPath > leaf_data;

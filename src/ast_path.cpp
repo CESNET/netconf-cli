@@ -43,6 +43,11 @@ dataNode_::dataNode_(module_ module, decltype(m_suffix) node)
 {
 }
 
+schemaNode_::schemaNode_(decltype(m_suffix) node)
+    : m_suffix(node)
+{
+}
+
 schemaNode_::schemaNode_(module_ module, decltype(m_suffix) node)
     : m_prefix(module)
     , m_suffix(node)
@@ -186,7 +191,7 @@ std::string pathToAbsoluteSchemaString(const schemaPath_& path)
     return res;
 }
 
-std::string pathToSchemaString(const dataPath_& path)
+std::string pathToSchemaString(const schemaPath_& path)
 {
     std::string res;
     for (const auto it : path.m_nodes) {
@@ -196,6 +201,11 @@ std::string pathToSchemaString(const dataPath_& path)
             res = joinPaths(res, boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
     }
     return res;
+}
+
+std::string pathToSchemaString(const dataPath_& path)
+{
+    return pathToSchemaString(dataPathToSchemaPath(path));
 }
 
 struct dataSuffixToSchemaSuffix : boost::static_visitor<decltype(schemaNode_::m_suffix)> {

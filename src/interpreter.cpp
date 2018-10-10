@@ -79,14 +79,39 @@ std::string Interpreter::absolutePathFromCommand(const T& command) const
         return joinPaths(m_parser.currentNode(), pathToDataString(command.m_path));
 }
 
+struct pathToStringVisitor : boost::static_visitor<std::string> {
+    std::string operator()(const schemaPath_& path) const
+    {
+        return pathToSchemaString(path);
+    }
+    std::string operator()(const dataPath_& path) const
+    {
+        return pathToDataString(path);
+    }
+};
+
+struct getPathScopeVisitor : boost::static_visitor<Scope> {
+    template <typename T>
+    Scope operator()(const T& path) const
+    {
+        return path.m_scope;
+    }
+};
+
 std::string Interpreter::absolutePathFromCommand(const get_& get) const
 {
     if (!get.m_path) {
         return m_parser.currentNode();
-    } else if (get.m_path->m_scope == Scope::Absolute) {
-        return "/" + pathToDataString(*get.m_path);
+    }
+
+    const auto path = *get.m_path;
+    std::string pathString = boost::apply_visitor(pathToStringVisitor(), path);
+    auto pathScope{boost::apply_visitor(getPathScopeVisitor(), path)};
+
+    if (pathScope == Scope::Absolute) {
+        return "/" + pathString;
     } else {
-        return joinPaths(m_parser.currentNode(), pathToDataString(*get.m_path));
+        return joinPaths(m_parser.currentNode(), pathString);
     }
 }
 
