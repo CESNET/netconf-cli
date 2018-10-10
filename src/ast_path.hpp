@@ -79,7 +79,7 @@ struct schemaNode_ {
 
 struct dataNode_ {
     boost::optional<module_> m_prefix;
-    boost::variant<container_, listElement_, nodeup_, leaf_> m_suffix;
+    boost::variant<container_, listElement_, nodeup_, leaf_, list_> m_suffix;
 
     dataNode_();
     dataNode_(decltype(m_suffix) node);
@@ -109,7 +109,7 @@ std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node);
 std::string pathToAbsoluteSchemaString(const dataPath_& path);
 std::string pathToAbsoluteSchemaString(const schemaPath_& path);
 std::string pathToDataString(const dataPath_& path);
-std::string pathToSchemaString(const dataPath_& path);
+std::string pathToSchemaString(const schemaPath_& path);
 schemaNode_ dataNodeToSchemaNode(const dataNode_& node);
 schemaPath_ dataPathToSchemaPath(const dataPath_& path);
 

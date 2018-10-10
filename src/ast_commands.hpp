@@ -36,7 +36,7 @@ enum class LsOption {
 struct ls_ : x3::position_tagged {
     bool operator==(const ls_& b) const;
     std::vector<LsOption> m_options;
-    boost::optional<dataPath_> m_path;
+    boost::optional<boost::variant<dataPath_, schemaPath_>> m_path;
 };
 
 struct cd_ : x3::position_tagged {
@@ -66,7 +66,7 @@ struct commit_ : x3::position_tagged {
 
 struct get_ : x3::position_tagged {
     bool operator==(const get_& b) const;
-    boost::optional<dataPath_> m_path;
+    boost::optional<boost::variant<dataPath_, schemaPath_>> m_path;
 };
 
 using command_ = boost::variant<ls_, cd_, create_, delete_, set_, commit_, get_>;
