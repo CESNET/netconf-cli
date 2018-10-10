@@ -70,11 +70,12 @@ struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {
     }
 };
 
-std::set<std::string> Parser::availableNodes(const boost::optional<dataPath_>& path, const Recursion& option) const
+
+std::set<std::string> Parser::availableNodes(const boost::optional<boost::variant<dataPath_, schemaPath_>>& path, const Recursion& option) const
 {
     auto pathArg = dataPathToSchemaPath(m_curDir);
     if (path) {
-        auto schemaPath = dataPathToSchemaPath(*path);
+        auto schemaPath = boost::apply_visitor(getSchemaPathVisitor(), *path);
         pathArg.m_nodes.insert(pathArg.m_nodes.end(), schemaPath.m_nodes.begin(), schemaPath.m_nodes.end());
     }
     return m_schema->childNodes(pathArg, option);

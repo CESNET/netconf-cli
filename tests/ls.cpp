@@ -17,6 +17,7 @@ TEST_CASE("ls")
     schema->addModule("example");
     schema->addModule("second");
     schema->addContainer("", "example:a");
+    schema->addList("example:a", "example:listInCont", {"number"});
     schema->addContainer("", "second:a");
     schema->addContainer("", "example:b");
     schema->addContainer("example:a", "example:a2");
@@ -126,6 +127,19 @@ TEST_CASE("ls")
                 input = "ls --recursive /example:a";
                 expected.m_options.push_back(LsOption::Recursive);
                 expected.m_path = dataPath_{Scope::Absolute, {dataNode_(module_{"example"}, container_{"a"})}};
+            }
+
+            SECTION("ls example:list")
+            {
+                input = "ls example:list";
+                expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, list_{"list"})}};
+            }
+
+            SECTION("ls example:a/example:listInCont")
+            {
+                input = "ls example:a/example:listInCont";
+                expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"}),
+                                                                dataNode_(module_{"example"}, list_{"listInCont"})}};
             }
         }
 
