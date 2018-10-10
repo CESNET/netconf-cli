@@ -201,6 +201,8 @@ struct schemaNode_class {
     }
 };
 
+struct dataNodeList_class;
+
 struct dataNode_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
@@ -225,6 +227,10 @@ struct absoluteStart_class {
         parserContext.m_curPath.m_nodes.clear();
     }
 };
+
+struct dataNodesListEnd_class;
+
+struct dataPathListEnd_class;
 
 struct dataPath_class {
     template <typename Iterator, typename Exception, typename Context>
@@ -331,7 +337,7 @@ struct leaf_data_class {
             leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back().m_suffix);
             schemaPath_ location = pathWithoutLastNode(parserContext.m_curPath);
             if (location.m_nodes.empty()) {
-               parserContext.m_curModule = parserContext.m_curPath.m_nodes.back().m_prefix->m_name;
+                parserContext.m_curModule = parserContext.m_curPath.m_nodes.back().m_prefix->m_name;
             }
             parserContext.m_errorMsg = "Expected " + leafDataTypeToString(schema.leafType(location, {parserContext.m_curModule, leaf.m_name})) + " here:";
             return x3::error_handler_result::fail;
@@ -452,5 +458,18 @@ struct command_class {
         }
         error_handler(x.where(), parserContext.m_errorMsg);
         return x3::error_handler_result::fail;
+    }
+};
+
+struct initializeContext_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_curPath = parserContext.m_curPathOrig;
+        if (!parserContext.m_curPath.m_nodes.empty() && parserContext.m_curPath.m_nodes.at(0).m_prefix)
+            parserContext.m_topLevelModulePresent = true;
+        else
+            parserContext.m_topLevelModulePresent = false;
     }
 };

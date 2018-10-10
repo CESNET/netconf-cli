@@ -11,6 +11,7 @@ struct ParserContext {
     ParserContext(const Schema& schema, const schemaPath_& curDir);
     const Schema& m_schema;
     schemaPath_ m_curPath;
+    const schemaPath_ m_curPathOrig;
     boost::optional<std::string> m_curModule;
     std::string m_errorMsg;
     std::string m_tmpListName;
