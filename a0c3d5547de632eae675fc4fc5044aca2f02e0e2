@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "31055824_403acb6c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-22T15:45:37Z",
+      "side": 1,
+      "message": "Tady bych chtel, aby bylo napsano, proc je to nutne rozdelit. Ja to vlastne vim (resp. vim, zes mi to pred tydnem rikal, ale mych poslednich 10 dni bylo velmi nabitych, takze uz to vlastne nevim), ale je otazka, zda to bude vedet kdokoli z nas za takovych pet nedel. Podle me ne.\n\nCili -- popis, prosim, proc to delis, jake jine moznosti jsi mel, a proc ses rozhodl to udelat prave takhle. Pokud by to bylo ciste nahodou vysvetleno v dalsim commitu, klidne napis, ze duvody jsou v dalsim commitu.",
+      "revId": "a0c3d5547de632eae675fc4fc5044aca2f02e0e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd79495e_0b16511a",
+        "filename": "src/ast_path.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-22T15:45:37Z",
+      "side": 1,
+      "message": "tady by melo stacit `auto`",
+      "range": {
+        "startLine": 202,
+        "startChar": 4,
+        "endLine": 202,
+        "endChar": 35
+      },
+      "revId": "a0c3d5547de632eae675fc4fc5044aca2f02e0e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1cd5311a_de579c85",
+        "filename": "src/ast_path.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-22T15:45:37Z",
+      "side": 1,
+      "message": "dtto",
+      "revId": "a0c3d5547de632eae675fc4fc5044aca2f02e0e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
