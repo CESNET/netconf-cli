@@ -29,6 +29,11 @@ void Interpreter::operator()(const commit_&) const
     m_datastore.commitChanges();
 }
 
+void Interpreter::operator()(const discard_&) const
+{
+    m_datastore.discardChanges();
+}
+
 void Interpreter::operator()(const set_& set) const
 {
     m_datastore.setLeaf(absolutePathFromCommand(set), set.m_data);

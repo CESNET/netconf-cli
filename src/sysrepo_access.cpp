@@ -131,6 +131,11 @@ void SysrepoAccess::commitChanges()
     m_session->commit();
 }
 
+void SysrepoAccess::discardChanges()
+{
+    m_session->discard_changes();
+}
+
 std::string SysrepoAccess::fetchSchema(const char* module, const char* revision, const char* submodule)
 {
     auto schema = m_session->get_schema(module, revision, submodule, SR_SCHEMA_YANG); // FIXME: maybe we should use get_submodule_schema for submodules?

@@ -214,6 +214,7 @@ struct path_class {
     }
 };
 
+struct discard_class;
 
 struct ls_class;
 
