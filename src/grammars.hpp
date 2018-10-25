@@ -42,6 +42,7 @@ x3::rule<leaf_data_int_class, int32_t> const leaf_data_int = "leaf_data_int";
 x3::rule<leaf_data_uint_class, uint32_t> const leaf_data_uint = "leaf_data_uint";
 x3::rule<leaf_data_string_class, std::string> const leaf_data_string = "leaf_data_string";
 
+x3::rule<discard_class, discard_> const discard = "discard";
 x3::rule<ls_class, ls_> const ls = "ls";
 x3::rule<cd_class, cd_> const cd = "cd";
 x3::rule<set_class, set_> const set = "set";
@@ -213,8 +214,11 @@ auto const set_def =
 auto const commit_def =
         lit("commit") >> x3::attr(commit_());
 
+auto const discard_def =
+        lit("discard") >> x3::attr(discard_());
+
 auto const command_def =
-        x3::expect[cd | create | delete_rule | set | commit | get | ls] >> x3::eoi;
+        x3::expect[cd | create | delete_rule | set | commit | get | ls | discard] >> x3::eoi;
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -253,6 +257,7 @@ BOOST_SPIRIT_DEFINE(set)
 BOOST_SPIRIT_DEFINE(commit)
 BOOST_SPIRIT_DEFINE(get)
 BOOST_SPIRIT_DEFINE(ls)
+BOOST_SPIRIT_DEFINE(discard)
 BOOST_SPIRIT_DEFINE(cd)
 BOOST_SPIRIT_DEFINE(create)
 BOOST_SPIRIT_DEFINE(delete_rule)

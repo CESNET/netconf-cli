@@ -36,6 +36,7 @@ public:
     std::vector<std::string> listImplementedSchemas();
 
     void commitChanges() override;
+    void discardChanges() override;
 
     std::shared_ptr<Schema> schema();
 

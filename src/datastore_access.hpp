@@ -25,4 +25,5 @@ public:
     virtual void deletePresenceContainer(const std::string& path) = 0;
 
     virtual void commitChanges() = 0;
+    virtual void discardChanges() = 0;
 };
