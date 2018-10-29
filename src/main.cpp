@@ -39,6 +39,12 @@ int main(int argc, char* argv[])
     Parser parser(datastore.schema());
 
     while (true) {
+        linenoise::SetCompletionCallback([&parser](const char* editBuffer, std::vector<std::string>& completions) {
+            std::stringstream stream;
+            auto completionsSet = parser.completeCommand(editBuffer, stream);
+            std::transform(completionsSet.begin(), completionsSet.end(), std::back_inserter(completions),
+                           [editBuffer](auto it) { return std::string(editBuffer) + it; });
+        });
         linenoise::SetHistoryMaxLen(4);
         linenoise::SetMultiLine(true);
         std::string line;
