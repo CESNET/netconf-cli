@@ -39,6 +39,37 @@ command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream
     return parsedCommand;
 }
 
+std::set<std::string> filterAndErasePrefix(const std::set<std::string>& set, const std::string_view prefix)
+{
+    std::set<std::string> filtered;
+    std::copy_if(set.begin(), set.end(),
+            std::inserter(filtered, filtered.end()),
+            [prefix] (auto it) { return boost::starts_with(it, prefix); });
+
+    std::set<std::string> withoutPrefix;
+    std::transform(filtered.begin(), filtered.end(),
+            std::inserter(withoutPrefix, withoutPrefix.end()),
+            [prefix] (auto it) { boost::erase_first(it, prefix); return it; });
+    return withoutPrefix;
+}
+
+std::set<std::string> Parser::completeCommand(const std::string& line, std::ostream& errorStream) const
+{
+    std::set<std::string> completions;
+    command_ parsedCommand;
+    ParserContext ctx(*m_schema, dataPathToSchemaPath(m_curDir));
+    auto it = line.begin();
+    boost::spirit::x3::error_handler<std::string::const_iterator> errorHandler(it, line.end(), errorStream);
+
+    auto grammar =
+            x3::with<parser_context_tag>(ctx)[
+            x3::with<x3::error_handler_tag>(std::ref(errorHandler))[command]
+    ];
+    x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
+
+    return filterAndErasePrefix(ctx.m_suggestions, std::string(ctx.m_completionIterator, line.end()));
+}
+
 void Parser::changeNode(const dataPath_& name)
 {
     if (name.m_scope == Scope::Absolute) {
