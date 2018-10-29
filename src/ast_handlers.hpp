@@ -469,7 +469,7 @@ struct command_class {
     }
 };
 
-struct initializeContext_class {
+struct initializePath_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const& context)
     {
@@ -477,6 +477,7 @@ struct initializeContext_class {
         parserContext.m_curPath = parserContext.m_curPathOrig;
         parserContext.m_tmpListKeys.clear();
         parserContext.m_tmpListName.clear();
+        parserContext.m_suggestions.clear();
         if (!parserContext.m_curPath.m_nodes.empty() && parserContext.m_curPath.m_nodes.at(0).m_prefix)
             parserContext.m_topLevelModulePresent = true;
         else
@@ -485,3 +486,15 @@ struct initializeContext_class {
 };
 
 struct trailingSlash_class;
+
+struct createPathSuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& schema = parserContext.m_schema;
+
+        parserContext.m_completionIterator = begin;
+        parserContext.m_suggestions = schema.childNodes(parserContext.m_curPath, Recursion::NonRecursive);
+    }
+};

@@ -5,6 +5,8 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#include <boost/algorithm/string/erase.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #include "utils.hpp"
 
 std::string joinPaths(const std::string& prefix, const std::string& suffix)
@@ -64,3 +66,21 @@ std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair)
 {
     return fullNodeName(dataPathToSchemaPath(location), pair);
 }
+
+/** Returns a subset of the original set with only the strings starting with prefix
+ * and with the actual prefix deleted from the string
+ */
+std::set<std::string> filterAndErasePrefix(const std::set<std::string>& set, const std::string_view prefix)
+{
+    std::set<std::string> filtered;
+    std::copy_if(set.begin(), set.end(),
+            std::inserter(filtered, filtered.end()),
+            [prefix] (auto it) { return boost::starts_with(it, prefix); });
+
+    std::set<std::string> withoutPrefix;
+    std::transform(filtered.begin(), filtered.end(),
+            std::inserter(withoutPrefix, withoutPrefix.end()),
+            [prefix] (auto it) { boost::erase_first(it, prefix); return it; });
+    return withoutPrefix;
+}
+
