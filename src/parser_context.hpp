@@ -18,4 +18,7 @@ struct ParserContext {
     bool m_topLevelModulePresent = false;
     std::set<std::string> m_tmpListKeys;
     bool m_errorHandled = false;
+    std::set<std::string> m_suggestions;
+    // Iterator pointing to where suggestions were created
+    std::string::const_iterator m_completionIterator;
 };
