@@ -38,6 +38,34 @@ command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream
 
     return parsedCommand;
 }
+#include <iostream>
+std::vector<std::string> Parser::completeCommand(const std::string& line, std::ostream& errorStream) const
+{
+    std::vector<std::string> completions;
+    command_ parsedCommand;
+    ParserContext ctx(*m_schema, dataPathToSchemaPath(m_curDir));
+    auto it = line.begin();
+    boost::spirit::x3::error_handler<std::string::const_iterator> errorHandler(it, line.end(), errorStream);
+
+    auto grammar =
+            x3::with<parser_context_tag>(ctx)[
+            x3::with<x3::error_handler_tag>(std::ref(errorHandler))[command]
+    ];
+    bool result = x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
+
+    if (result && it == line.end()) {
+        std::cout << "[DBG]complete parse, no completions";
+    } else if (!result || it != line.end()) {
+        std::cout << "[DBG]incomplete parse \"" << std::string(line.begin(), it) << "⏐" << std::string(it, line.end()) << "\"";
+    }
+
+    if (ctx.m_parsingPath)
+        std::cout << " (path rule was used at some point)";
+    std::cout << std::endl;
+
+    completions.push_back(line + "");
+    return completions;
+}
 
 void Parser::changeNode(const dataPath_& name)
 {

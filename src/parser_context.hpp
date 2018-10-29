@@ -18,4 +18,6 @@ struct ParserContext {
     bool m_topLevelModulePresent = false;
     std::set<std::string> m_tmpListKeys;
     bool m_errorHandled = false;
+    bool m_completion = false;
+    bool m_parsingPath = false; // TODO: make this an enum or something (cause were gonna be completing other things)
 };

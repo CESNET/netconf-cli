@@ -462,7 +462,7 @@ struct command_class {
     }
 };
 
-struct initializeContext_class {
+struct initializePath_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const& context)
     {
@@ -470,6 +470,7 @@ struct initializeContext_class {
         parserContext.m_curPath = parserContext.m_curPathOrig;
         parserContext.m_tmpListKeys.clear();
         parserContext.m_tmpListName.clear();
+        parserContext.m_parsingPath = true;
         if (!parserContext.m_curPath.m_nodes.empty() && parserContext.m_curPath.m_nodes.at(0).m_prefix)
             parserContext.m_topLevelModulePresent = true;
         else
