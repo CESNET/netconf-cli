@@ -53,7 +53,8 @@ x3::rule<delete_class, delete_> const delete_rule = "delete_rule";
 x3::rule<commit_class, commit_> const commit = "commit";
 x3::rule<command_class, command_> const command = "command";
 
-x3::rule<initializeContext_class, x3::unused_type> const initializeContext = "initializeContext";
+x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
+x3::rule<createSuggestions_class, x3::unused_type> const createSuggestions = "createSuggestions";
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -110,12 +111,15 @@ auto const module_def =
 auto const leaf_def =
         node_identifier;
 
+auto const createSuggestions_def =
+        x3::eps;
+
 // leaf cannot be in the middle of a path, however, I need the grammar's attribute to be a vector of variants
 auto const schemaNode_def =
-        -(module) >> x3::expect[container | list | nodeup | leaf];
+        createSuggestions >> -(module) >> (container | list | nodeup | leaf);
 
 auto const dataNode_def =
-        -(module) >> (container | listElement | nodeup | leaf);
+        createSuggestions >> -(module) >> (container | listElement | nodeup | leaf);
 
 auto const absoluteStart_def =
         x3::omit['/'] >> x3::attr(Scope::Absolute);
@@ -123,29 +127,32 @@ auto const absoluteStart_def =
 auto const trailingSlash_def =
         x3::omit['/'] >> x3::attr(TrailingSlash::Present);
 
+auto const space_separator =
+        x3::omit[x3::no_skip[space]];
+
 // I have to insert an empty vector to the first alternative, otherwise they won't have the same attribute
 auto const dataPath_def =
-        absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-        -(absoluteStart) >> dataNode % '/' >> -trailingSlash;
+        initializePath >> absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
+        initializePath >> -(absoluteStart) >> dataNode % '/' >> -trailingSlash >> (&space_separator | x3::eoi);
 
 auto const dataNodeList_def =
-        -(module) >> list;
+        -(module) >> createSuggestions >> list;
 
 // This intermediate rule is mandatory, because we need the first alternative
 // to be collapsed to a vector. If we didn't use the intermediate rule,
 // Spirit wouldn't know we want it to collapse.
 // https://github.com/boostorg/spirit/issues/408
 auto const dataNodesListEnd_def =
-        dataNode % '/' >> '/' >> dataNodeList |
-        initializeContext >> x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
+        initializePath >> dataNode % '/' >> '/' >> dataNodeList >> -(&char_('/') >> createSuggestions) |
+        initializePath >> x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
 
 auto const dataPathListEnd_def =
-        absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-        -(absoluteStart) >> dataNodesListEnd >> -trailingSlash;
+        initializePath >> absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
+        initializePath >> -(absoluteStart) >> dataNodesListEnd >> -trailingSlash >> (&space_separator | x3::eoi);
 
 auto const schemaPath_def =
-        absoluteStart >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-        -(absoluteStart) >> schemaNode % '/' >> -trailingSlash;
+        initializePath >> absoluteStart >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
+        initializePath >> -(absoluteStart) >> schemaNode % '/' >> -trailingSlash >> (&space_separator | x3::eoi);
 
 auto const leafPath_def =
         dataPath;
@@ -182,9 +189,6 @@ x3::expect[
         leaf_data_uint |
         leaf_data_string];
 
-auto const space_separator =
-        x3::omit[x3::no_skip[space]];
-
 struct ls_options_table : x3::symbols<LsOption> {
     ls_options_table()
     {
@@ -193,12 +197,12 @@ struct ls_options_table : x3::symbols<LsOption> {
     }
 } const ls_options;
 
-// A "nothing" parser, which is used to reset the context (when trying to parse different types of paths)
-auto const initializeContext_def =
+// A "nothing" parser, which is used to indicate we tried to parse a path
+auto const initializePath_def =
         x3::eps;
 
 auto const ls_def =
-        lit("ls") >> *(space_separator >> ls_options) >> -(space_separator >> (dataPathListEnd | initializeContext >> dataPath));
+        lit("ls") >> *(space_separator >> ls_options) >> -(space_separator >> (dataPathListEnd | dataPath | schemaPath));
 
 auto const cd_def =
         lit("cd") >> space_separator > dataPath;
@@ -210,7 +214,7 @@ auto const delete_rule_def =
         lit("delete") >> space_separator > dataPath;
 
 auto const get_def =
-        lit("get") >> -(space_separator >> (dataPathListEnd | initializeContext >> dataPath));
+        lit("get") >> -(space_separator >> (dataPathListEnd | dataPath));
 
 auto const set_def =
         lit("set") >> space_separator > leafPath > leaf_data;
@@ -222,7 +226,7 @@ auto const discard_def =
         lit("discard") >> x3::attr(discard_());
 
 auto const command_def =
-        x3::expect[cd | create | delete_rule | set | commit | get | ls | discard] >> x3::eoi;
+        x3::expect[cd | create | delete_rule | set | commit | get | ls | discard];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -257,7 +261,7 @@ BOOST_SPIRIT_DEFINE(leaf_data_bool)
 BOOST_SPIRIT_DEFINE(leaf_data_int)
 BOOST_SPIRIT_DEFINE(leaf_data_uint)
 BOOST_SPIRIT_DEFINE(leaf_data_string)
-BOOST_SPIRIT_DEFINE(initializeContext)
+BOOST_SPIRIT_DEFINE(initializePath)
 BOOST_SPIRIT_DEFINE(set)
 BOOST_SPIRIT_DEFINE(commit)
 BOOST_SPIRIT_DEFINE(get)
@@ -267,3 +271,4 @@ BOOST_SPIRIT_DEFINE(cd)
 BOOST_SPIRIT_DEFINE(create)
 BOOST_SPIRIT_DEFINE(delete_rule)
 BOOST_SPIRIT_DEFINE(command)
+BOOST_SPIRIT_DEFINE(createSuggestions)
