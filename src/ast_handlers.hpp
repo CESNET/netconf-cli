@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <boost/algorithm/string/erase.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #include "parser_context.hpp"
 #include "schema.hpp"
 #include "utils.hpp"
@@ -38,12 +40,52 @@ struct keyValue_class {
         return x3::error_handler_result::rethrow;
     }
 };
+#include <iostream>
+
+inline std::set<std::string> filterAndErasePrefix(const std::set<std::string>& set, const std::string_view prefix)
+{
+    std::cerr << "filtering by \"" << prefix << "\": " << set.size() << " -> ";
+    std::set<std::string> filtered;
+    std::copy_if(set.begin(), set.end(),
+            std::inserter(filtered, filtered.end()),
+            [prefix] (auto it) { return boost::starts_with(it, prefix); });
+
+    std::cerr << filtered.size() << " -> ";
+    std::set<std::string> withoutPrefix;
+    std::transform(filtered.begin(), filtered.begin(),
+            std::inserter(withoutPrefix, withoutPrefix.end()),
+            [prefix] (auto it) { boost::erase_first(it, prefix); return it; });
+    std::cerr << withoutPrefix.size() << std::endl;
+    return withoutPrefix;
+}
 
 struct node_identifier_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& schema = parserContext.m_schema;
+
+        std::set<std::string> suggestions;
+        std::string prefix;
+        if (parserContext.m_curModule)
+            prefix = *parserContext.m_curModule + ":" + ast;
+        else
+            prefix = ast;
+        suggestions = filterAndErasePrefix(schema.childNodes(parserContext.m_curPath, Recursion::NonRecursive), prefix);
+        std::cerr << "suggestions.size() == " << suggestions.size() <<std::endl;
+
+        if (suggestions.size() == 1) {
+            parserContext.m_suggestions = {"/"};
+        } else {
+            parserContext.m_suggestions = suggestions;
+        }
+
+        //std::cerr << "node suggestions: " << std::endl;
+        //for (auto it : suggestions)
+        //{
+        //    std::cerr << "\"" << it << "\"" << std::endl;
+        //}
 
         if (!parserContext.m_topLevelModulePresent) {
             if (parserContext.m_errorMsg.empty())
@@ -225,6 +267,18 @@ struct absoluteStart_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.m_curPath.m_nodes.clear();
+    }
+};
+
+struct trailingSlash_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const& end, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& schema = parserContext.m_schema;
+        //std::cerr << parserContext.m_curPath.m_nodes.size() << std::endl;
+        std::cerr << "trailslash gen. rest: " << std::string(begin, end) << std::endl;
+        parserContext.m_suggestions = schema.childNodes(parserContext.m_curPath, Recursion::NonRecursive);
     }
 };
 
@@ -462,7 +516,7 @@ struct command_class {
     }
 };
 
-struct initializeContext_class {
+struct initializePath_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const& context)
     {
@@ -470,6 +524,7 @@ struct initializeContext_class {
         parserContext.m_curPath = parserContext.m_curPathOrig;
         parserContext.m_tmpListKeys.clear();
         parserContext.m_tmpListName.clear();
+        parserContext.m_suggestions.clear();
         if (!parserContext.m_curPath.m_nodes.empty() && parserContext.m_curPath.m_nodes.at(0).m_prefix)
             parserContext.m_topLevelModulePresent = true;
         else
