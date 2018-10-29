@@ -17,5 +17,8 @@ struct ParserContext {
     std::string m_tmpListName;
     bool m_topLevelModulePresent = false;
     std::set<std::string> m_tmpListKeys;
+    std::set<std::string> m_suggestions;
     bool m_errorHandled = false;
+    bool m_completion = false;
+    bool m_trailingSlash = false;
 };
