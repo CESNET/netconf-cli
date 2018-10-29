@@ -91,6 +91,7 @@ add_library(parser STATIC
     src/utils.cpp
     src/parser_context.cpp
     src/interpreter.cpp
+    src/ast_handlers.cpp
     )
 target_link_libraries(parser schemas)
 
@@ -171,7 +172,8 @@ if(BUILD_TESTING)
     cli_test(sysrepo)
     target_link_libraries(test_sysrepo sysreposubscription sysrepoaccess yangschema parser)
     target_include_directories(test_sysrepo PRIVATE ${PROJECT_SOURCE_DIR}/tests/mock)
-
+    cli_test(utils)
+    cli_test(path_completion)
 endif()
 
 if(WITH_DOCS)
