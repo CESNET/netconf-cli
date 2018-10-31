@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff6ebfce_0104c659",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-10-31T12:19:00Z",
+      "side": 1,
+      "message": "no jo, tohle jsem jaksi zapomnel pushnout.",
+      "revId": "ee0902d5b2897a1c04f2a45f5e228267557cc5f9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
