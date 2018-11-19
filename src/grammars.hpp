@@ -28,6 +28,7 @@ x3::rule<dataNode_class, dataNode_> const dataNode = "dataNode";
 x3::rule<schemaNode_class, schemaNode_> const schemaNode = "schemaNode";
 x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
 x3::rule<schemaPath_class, schemaPath_> const schemaPath = "schemaPath";
+x3::rule<trailingSlash_class, TrailingSlash> const trailingSlash = "trailingSlash";
 x3::rule<dataNodeList_class, decltype(dataPath_::m_nodes)::value_type> const dataNodeList = "dataNodeList";
 x3::rule<dataNodesListEnd_class, decltype(dataPath_::m_nodes)> const dataNodesListEnd = "dataNodesListEnd";
 x3::rule<dataPathListEnd_class, dataPath_> const dataPathListEnd = "dataPathListEnd";
@@ -119,10 +120,13 @@ auto const dataNode_def =
 auto const absoluteStart_def =
         x3::omit['/'] >> x3::attr(Scope::Absolute);
 
+auto const trailingSlash_def =
+        x3::omit['/'] >> x3::attr(TrailingSlash::Present);
+
 // I have to insert an empty vector to the first alternative, otherwise they won't have the same attribute
 auto const dataPath_def =
-        absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::eoi |
-        -(absoluteStart) >> dataNode % '/';
+        absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
+        -(absoluteStart) >> dataNode % '/' >> -trailingSlash;
 
 auto const dataNodeList_def =
         -(module) >> list;
@@ -136,12 +140,12 @@ auto const dataNodesListEnd_def =
         initializeContext >> x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
 
 auto const dataPathListEnd_def =
-        absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::eoi |
-        -(absoluteStart) >> dataNodesListEnd;
+        absoluteStart >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
+        -(absoluteStart) >> dataNodesListEnd >> -trailingSlash;
 
 auto const schemaPath_def =
-        absoluteStart >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::eoi |
-        -(absoluteStart) >> schemaNode % '/';
+        absoluteStart >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
+        -(absoluteStart) >> schemaNode % '/' >> -trailingSlash;
 
 auto const leafPath_def =
         dataPath;
@@ -244,6 +248,7 @@ BOOST_SPIRIT_DEFINE(dataNodeList)
 BOOST_SPIRIT_DEFINE(dataNodesListEnd)
 BOOST_SPIRIT_DEFINE(dataPathListEnd)
 BOOST_SPIRIT_DEFINE(absoluteStart)
+BOOST_SPIRIT_DEFINE(trailingSlash)
 BOOST_SPIRIT_DEFINE(module)
 BOOST_SPIRIT_DEFINE(leaf_data)
 BOOST_SPIRIT_DEFINE(leaf_data_enum)
