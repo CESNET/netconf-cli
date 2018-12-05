@@ -87,6 +87,11 @@ struct dataNode_ {
     bool operator==(const dataNode_& b) const;
 };
 
+enum class TrailingSlash {
+    Present,
+    NonPresent
+};
+
 enum class Scope {
     Absolute,
     Relative
@@ -96,12 +101,14 @@ struct schemaPath_ {
     bool operator==(const schemaPath_& b) const;
     Scope m_scope = Scope::Relative;
     std::vector<schemaNode_> m_nodes;
+    TrailingSlash m_trailingSlash = TrailingSlash::NonPresent;
 };
 
 struct dataPath_ {
     bool operator==(const dataPath_& b) const;
     Scope m_scope = Scope::Relative;
     std::vector<dataNode_> m_nodes;
+    TrailingSlash m_trailingSlash = TrailingSlash::NonPresent;
 };
 
 std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node);
@@ -118,5 +125,5 @@ BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
 BOOST_FUSION_ADAPT_STRUCT(module_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(dataNode_, m_prefix, m_suffix)
 BOOST_FUSION_ADAPT_STRUCT(schemaNode_, m_prefix, m_suffix)
-BOOST_FUSION_ADAPT_STRUCT(dataPath_, m_scope, m_nodes)
-BOOST_FUSION_ADAPT_STRUCT(schemaPath_, m_scope, m_nodes)
+BOOST_FUSION_ADAPT_STRUCT(dataPath_, m_scope, m_nodes, m_trailingSlash)
+BOOST_FUSION_ADAPT_STRUCT(schemaPath_, m_scope, m_nodes, m_trailingSlash)

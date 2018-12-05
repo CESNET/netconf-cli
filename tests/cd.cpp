@@ -39,13 +39,29 @@ TEST_CASE("cd")
         {
             SECTION("example:a")
             {
-                input = "cd example:a";
+                SECTION("trailing slash")
+                {
+                    input = "cd example:a/";
+                    expected.m_path.m_trailingSlash = TrailingSlash::Present;
+                }
+                SECTION("no trailing slash")
+                {
+                    input = "cd example:a";
+                }
                 expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a")));
             }
 
             SECTION("second:a")
             {
-                input = "cd second:a";
+                SECTION("trailing slash")
+                {
+                    input = "cd second:a/";
+                    expected.m_path.m_trailingSlash = TrailingSlash::Present;
+                }
+                SECTION("no trailing slash")
+                {
+                    input = "cd second:a";
+                }
                 expected.m_path.m_nodes.push_back(dataNode_(module_{"second"}, container_("a")));
             }
 

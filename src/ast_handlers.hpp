@@ -476,3 +476,5 @@ struct initializeContext_class {
             parserContext.m_topLevelModulePresent = false;
     }
 };
+
+struct trailingSlash_class;
