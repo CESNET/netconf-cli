@@ -11,6 +11,7 @@
 #include <iostream>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
+#include "3rdparty/linenoise/linenoise.hpp"
 #include "sysrepo_access.hpp"
 #include "yang_schema.hpp"
 
@@ -38,24 +39,28 @@ int main(int argc, char* argv[])
     Parser parser(datastore.schema());
 
     while (true) {
-        std::cout << parser.currentNode() << "> ";
-        std::string input;
-        std::getline(std::cin, input);
-        if (std::cin.eof())
+        linenoise::SetHistoryMaxLen(4);
+        linenoise::SetMultiLine(true);
+        std::string line;
+        auto quit = linenoise::Readline((parser.currentNode() + "> ").c_str(), line);
+        if (quit) {
             break;
+        }
 
         std::locale C_locale("C");
-        if (std::all_of(input.begin(), input.end(),
+        if (std::all_of(line.begin(), line.end(),
                         [C_locale](const auto c) { return std::isspace(c, C_locale);})) {
             continue;
         }
 
         try {
-            command_ cmd = parser.parseCommand(input, std::cout);
+            command_ cmd = parser.parseCommand(line, std::cout);
             boost::apply_visitor(Interpreter(parser, datastore), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         }
+
+        linenoise::AddHistory(line.c_str());
     }
 
     return 0;
