@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "28eee9d2_b295c1fb",
+        "filename": "src/main.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-01-25T13:41:19Z",
+      "side": 1,
+      "message": "podle clang-format to bylo predtim lepsi",
+      "revId": "d29b331289d97f1ffa8c8bea8cf000a2b5f509eb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
