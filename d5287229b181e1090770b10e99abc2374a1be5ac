@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f6ce51c_74289c84",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-05T11:47:13Z",
+      "side": 1,
+      "message": "tady velmi pomuzou priklady; dopln tam, prosim, jak muze vypadat vstup, co parser zpracuje, a jak vypada completion",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 53
+      },
+      "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14105de9_3f9ab2d0",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-05T11:47:13Z",
+      "side": 1,
+      "message": "tohle si rika o komentar, proc je to potreba",
+      "range": {
+        "startLine": 207,
+        "startChar": 4,
+        "endLine": 208,
+        "endChar": 85
+      },
+      "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cc824e5_baae64ed",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-05T11:47:13Z",
+      "side": 1,
+      "message": "tady bych zvazil, jestli nepridat jednoradkovy doxygen komentar, k cemu ze to je",
+      "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca21d702_8f3b8b2d",
+        "filename": "src/parser.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-05T11:47:13Z",
+      "side": 1,
+      "message": "Z neazvu je to *skoro* videt, ale ne uplne. Pridej komentar, co to presne dela.",
+      "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3444c2fc_79b8ad98",
+        "filename": "src/parser_context.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-05T11:47:13Z",
+      "side": 1,
+      "message": "nit: chapu to dobre, ze je to iterator, co ukazuje na zacatek \"path\", ktera se kompletuje? Pokud jo, tak tim padem bych to pojmenoval \"presnejs\", abych z toho poznal, co to presne dela, treba \"m_startOfPath\", a klidne i doxygen komentar, ze je to pro completion",
+      "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
