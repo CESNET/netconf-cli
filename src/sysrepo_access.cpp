@@ -48,22 +48,8 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
         return std::make_shared<sysrepo::Val>(value.c_str());
     }
 
-    sysrepo::S_Val operator()(const uint32_t& value) const
-    {
-        return std::make_shared<sysrepo::Val>(value, SR_UINT32_T);
-    }
-
-    sysrepo::S_Val operator()(const int32_t& value) const
-    {
-        return std::make_shared<sysrepo::Val>(value, SR_INT32_T);
-    }
-
-    sysrepo::S_Val operator()(const bool& value) const
-    {
-        return std::make_shared<sysrepo::Val>(value, SR_BOOL_T);
-    }
-
-    sysrepo::S_Val operator()(const double& value) const
+    template <typename T>
+    sysrepo::S_Val operator()(const T& value) const
     {
         return std::make_shared<sysrepo::Val>(value);
     }
