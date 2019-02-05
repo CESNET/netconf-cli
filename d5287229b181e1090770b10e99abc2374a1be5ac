@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6e5dbbcb_4d4c9c0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2019-02-05T13:25:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f6ce51c_74289c84",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 53
+      },
+      "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "14105de9_3f9ab2d0",
         "filename": "src/ast_handlers.hpp",
         "patchSetId": 10
