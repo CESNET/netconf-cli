@@ -201,7 +201,14 @@ struct schemaNode_class {
     }
 };
 
-struct dataNodeList_class;
+struct dataNodeList_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_curPath.m_nodes.push_back(dataNodeToSchemaNode(ast));
+    }
+};
 
 struct dataNode_class {
     template <typename T, typename Iterator, typename Context>
