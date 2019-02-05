@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <map>
 #include <string>
 #include "ast_values.hpp"
 
