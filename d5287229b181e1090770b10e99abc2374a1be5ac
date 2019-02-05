@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "e0026d13_bf73e88e",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2019-02-05T12:17:59Z",
+      "side": 1,
+      "message": "Tohle je fix bugu, kterej tam byl už od commitu, kterej povoluje list na konci path bez klíčů, ale projevil se až teď. Možná by to chtělo dát to odlišnýho commitu...",
+      "parentUuid": "14105de9_3f9ab2d0",
+      "range": {
+        "startLine": 207,
+        "startChar": 4,
+        "endLine": 208,
+        "endChar": 85
+      },
+      "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3cc824e5_baae64ed",
         "filename": "src/ast_handlers.hpp",
         "patchSetId": 10
@@ -59,6 +83,24 @@
       "writtenOn": "2019-02-05T11:47:13Z",
       "side": 1,
       "message": "tady bych zvazil, jestli nepridat jednoradkovy doxygen komentar, k cemu ze to je",
+      "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd84d710_a416c74c",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2019-02-05T12:17:59Z",
+      "side": 1,
+      "message": "Možná by to chtělo akorát přejmenovat (třeba na createPathSuggestions), protože určitě budu dělat suggestions i na něco jinýho",
+      "parentUuid": "3cc824e5_baae64ed",
       "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -82,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "75bcf09f_1e80c78f",
+        "filename": "src/parser.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2019-02-05T12:17:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca21d702_8f3b8b2d",
+      "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3444c2fc_79b8ad98",
         "filename": "src/parser_context.hpp",
         "patchSetId": 10
@@ -93,6 +153,24 @@
       "writtenOn": "2019-02-05T11:47:13Z",
       "side": 1,
       "message": "nit: chapu to dobre, ze je to iterator, co ukazuje na zacatek \"path\", ktera se kompletuje? Pokud jo, tak tim padem bych to pojmenoval \"presnejs\", abych z toho poznal, co to presne dela, treba \"m_startOfPath\", a klidne i doxygen komentar, ze je to pro completion",
+      "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c59d37e_f0a5f9b9",
+        "filename": "src/parser_context.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2019-02-05T12:17:59Z",
+      "side": 1,
+      "message": "Ne, tohleto je iterátor, kterej řiká \"na tomhle místě jsem byl, když jsem vymyslel ty suggestions\".",
+      "parentUuid": "3444c2fc_79b8ad98",
       "revId": "d5287229b181e1090770b10e99abc2374a1be5ac",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
