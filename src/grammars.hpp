@@ -55,6 +55,7 @@ x3::rule<command_class, command_> const command = "command";
 
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
 x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestions = "createPathSuggestions";
+x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -73,8 +74,11 @@ auto const quotedValue =
 auto const number =
         +x3::digit;
 
+auto const createKeySuggestions_def =
+        x3::eps;
+
 auto const keyValue_def =
-        lexeme['[' > key_identifier > '=' > (quotedValue | number) > ']'];
+        lexeme['[' > createKeySuggestions > key_identifier > '=' > (quotedValue | number) > ']'];
 
 auto const module_identifier_def =
         lexeme[
@@ -272,3 +276,4 @@ BOOST_SPIRIT_DEFINE(create)
 BOOST_SPIRIT_DEFINE(delete_rule)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
+BOOST_SPIRIT_DEFINE(createKeySuggestions)
