@@ -55,6 +55,8 @@ x3::rule<command_class, command_> const command = "command";
 
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
 x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestions = "createPathSuggestions";
+x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
+x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -73,8 +75,17 @@ auto const quotedValue =
 auto const number =
         +x3::digit;
 
+auto const createKeySuggestions_def =
+        x3::eps;
+
+auto const suggestKeysEnd_def =
+        x3::eps;
+
 auto const keyValue_def =
-        lexeme['[' > key_identifier > '=' > (quotedValue | number) > ']'];
+        key_identifier > '=' > (quotedValue | number);
+
+auto const keyValueWrapper =
+        lexeme['[' > createKeySuggestions > keyValue > suggestKeysEnd > ']'];
 
 auto const module_identifier_def =
         lexeme[
@@ -91,7 +102,7 @@ auto const listPrefix_def =
 
 // even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
 auto const listSuffix_def =
-        *keyValue;
+        *keyValueWrapper;
 
 auto const listElement_def =
         listPrefix > listSuffix;
@@ -272,3 +283,5 @@ BOOST_SPIRIT_DEFINE(create)
 BOOST_SPIRIT_DEFINE(delete_rule)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
+BOOST_SPIRIT_DEFINE(createKeySuggestions)
+BOOST_SPIRIT_DEFINE(suggestKeysEnd)

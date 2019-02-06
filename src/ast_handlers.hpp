@@ -11,6 +11,9 @@
 #include "parser_context.hpp"
 #include "schema.hpp"
 #include "utils.hpp"
+namespace x3 = boost::spirit::x3;
+
+struct parser_context_tag;
 
 struct keyValue_class {
     template <typename T, typename Iterator, typename Context>
@@ -496,5 +499,38 @@ struct createPathSuggestions_class {
 
         parserContext.m_completionIterator = begin;
         parserContext.m_suggestions = schema.childNodes(parserContext.m_curPath, Recursion::NonRecursive);
+    }
+};
+
+std::set<std::string> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::set<std::string> currentSet);
+
+struct createKeySuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& schema = parserContext.m_schema;
+
+        parserContext.m_completionIterator = begin;
+
+        const auto& keysNeeded = schema.listKeys(parserContext.m_curPath, {parserContext.m_curModule, parserContext.m_tmpListName});
+        parserContext.m_suggestions = generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys);
+    }
+};
+
+struct suggestKeysEnd_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& schema = parserContext.m_schema;
+
+        parserContext.m_completionIterator = begin;
+        const auto& keysNeeded = schema.listKeys(parserContext.m_curPath, {parserContext.m_curModule, parserContext.m_tmpListName});
+        if (generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys).empty()) {
+            parserContext.m_suggestions = {"]/"};
+        } else {
+            parserContext.m_suggestions = {"]"};
+        }
     }
 };
