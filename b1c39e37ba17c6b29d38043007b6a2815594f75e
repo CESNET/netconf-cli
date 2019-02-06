@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "516609ea_e7aaf0b3",
+        "filename": "tests/path_completion.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-06T17:34:41Z",
+      "side": 1,
+      "message": "Rad bych videl, aby to umelo doplnovat i trailing ], tedy napr. pri zadani `get /foo:bar[onlyKey\u003d\u0027...\u0027` to doplnilo asi rovnou \u0027]/\u0027.\n\nPlus k tomu jeste test na `/foo:bar[onlyKey\u003d\u0027...\u0027]`, aby se doplnilo spravne lomitko.",
+      "revId": "b1c39e37ba17c6b29d38043007b6a2815594f75e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
