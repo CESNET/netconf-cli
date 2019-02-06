@@ -91,6 +91,7 @@ add_library(parser STATIC
     src/utils.cpp
     src/parser_context.cpp
     src/interpreter.cpp
+    src/ast_handlers.cpp
     )
 target_link_libraries(parser schemas)
 

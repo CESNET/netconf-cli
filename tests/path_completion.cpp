@@ -33,70 +33,118 @@ TEST_CASE("path_completion")
     std::ostringstream errorStream;
     std::set<std::string> expected;
 
-    SECTION("ls ")
+    SECTION("node name completion")
     {
-        input = "ls ";
-        expected = {"example:ano", "example:anoda", "example:bota", "second:amelie", "example:list", "example:twoKeyList"};
+        SECTION("ls ")
+        {
+            input = "ls ";
+            expected = {"example:ano", "example:anoda", "example:bota", "second:amelie", "example:list", "example:twoKeyList"};
+        }
+
+        SECTION("ls e")
+        {
+            input = "ls e";
+            expected = {"xample:ano", "xample:anoda", "xample:bota", "xample:list", "xample:twoKeyList"};
+        }
+
+        SECTION("ls example:ano")
+        {
+            input = "ls example:ano";
+            expected = {"", "da"};
+        }
+
+        SECTION("ls example:ano/example:a")
+        {
+            input = "ls example:ano/example:a";
+            expected = {"2"};
+        }
+
+        SECTION("ls x")
+        {
+            input = "ls x";
+            expected = {};
+        }
+
+        SECTION("ls /")
+        {
+            input = "ls /";
+            expected = {"example:ano", "example:anoda", "example:bota", "second:amelie", "example:list", "example:twoKeyList"};
+        }
+
+        SECTION("ls /e")
+        {
+            input = "ls /e";
+            expected = {"xample:ano", "xample:anoda", "xample:bota", "xample:list", "xample:twoKeyList"};
+        }
+
+        SECTION("ls /s")
+        {
+            input = "ls /s";
+            expected = {"econd:amelie"};
+        }
     }
 
-    SECTION("ls e")
+    SECTION("list keys completion")
     {
-        input = "ls e";
-        expected = {"xample:ano", "xample:anoda", "xample:bota", "xample:list", "xample:twoKeyList"};
-    }
+        SECTION("ls /example:list[number=3]/")
+        {
+            input = "ls /example:list[number=3]/";
+            expected = {"example:contInList"};
+        }
 
-    SECTION("ls example:ano")
-    {
-        input = "ls example:ano";
-        expected = {"", "da"};
-    }
+        SECTION("ls /example:list[number=3]/c")
+        {
+            input = "ls /example:list[number=3]/e";
+            expected = {"xample:contInList"};
+        }
 
-    SECTION("ls example:ano/example:a")
-    {
-        input = "ls example:ano/example:a";
-        expected = {"2"};
-    }
+        SECTION("ls /example:list[number=3]/a")
+        {
+            input = "ls /example:list[number=3]/a";
+            expected = {};
+        }
 
-    SECTION("ls x")
-    {
-        input = "ls x";
-        expected = {};
-    }
+        SECTION("cd example:lis")
+        {
+            input = "cd example:lis";
+            expected = {"t"};
+        }
 
-    SECTION("ls /")
-    {
-        input = "ls /";
-        expected = {"example:ano", "example:anoda", "example:bota", "second:amelie", "example:list", "example:twoKeyList"};
-    }
+        SECTION("cd example:list[")
+        {
+            input = "cd example:list[";
+            expected = {"number="};
+        }
 
-    SECTION("ls /e")
-    {
-        input = "ls /e";
-        expected = {"xample:ano", "xample:anoda", "xample:bota", "xample:list", "xample:twoKeyList"};
-    }
+        SECTION("cd example:list[number=12]")
+        {
+            input = "cd example:list[number=12]";
+            expected = {};
+        }
 
-    SECTION("ls /s")
-    {
-        input = "ls /s";
-        expected = {"econd:amelie"};
-    }
+        SECTION("cd example:twoKeyList[")
+        {
+            input = "cd example:twoKeyList[";
+            expected = {"name=", "number="};
+        }
 
-    SECTION("ls /example:list[number=3]/")
-    {
-        input = "ls /example:list[number=3]/";
-        expected = {"example:contInList"};
-    }
+        SECTION("cd example:twoKeyList[name=\"AHOJ\"][")
+        {
+            input = "cd example:twoKeyList[name=\"AHOJ\"][";
+            expected = {"number="};
+        }
 
-    SECTION("ls /example:list[number=3]/c")
-    {
-        input = "ls /example:list[number=3]/e";
-        expected = {"xample:contInList"};
-    }
+        SECTION("cd example:twoKeyList[number=42][")
+        {
+            input = "cd example:twoKeyList[number=42][";
+            expected = {"name="};
+        }
 
-    SECTION("ls /example:list[number=3]/a")
-    {
-        input = "ls /example:list[number=3]/a";
-        expected = {};
+        SECTION("cd example:twoKeyList[name=\"AHOJ\"][number=123]")
+        {
+            input = "cd example:twoKeyList[name=\"AHOJ\"][number=123]";
+            expected = {};
+        }
     }
 
     REQUIRE(parser.completeCommand(input, errorStream) == expected);
