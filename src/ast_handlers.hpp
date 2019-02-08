@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <boost/mpl/for_each.hpp>
+#include "ast_commands.hpp"
 #include "parser_context.hpp"
 #include "schema.hpp"
 #include "utils.hpp"
@@ -532,5 +534,67 @@ struct suggestKeysEnd_class {
         } else {
             parserContext.m_suggestions = {"]"};
         }
+    }
+};
+
+using namespace std::string_literals;
+struct commandNamesVisitor {
+    std::string operator()(boost::type<discard_>)
+    {
+        return "discard"s;
+    }
+    std::string operator()(boost::type<ls_>)
+    {
+        return "ls"s;
+    }
+    std::string operator()(boost::type<cd_>)
+    {
+        return "cd"s;
+    }
+    std::string operator()(boost::type<create_>)
+    {
+        return "create"s;
+    }
+    std::string operator()(boost::type<delete_>)
+    {
+        return "delete"s;
+    }
+    std::string operator()(boost::type<set_>)
+    {
+        return "set"s;
+    }
+    std::string operator()(boost::type<commit_>)
+    {
+        return "commit"s;
+    }
+    std::string operator()(boost::type<get_>)
+    {
+        return "get"s;
+    }
+};
+
+struct reduceToSet {
+    reduceToSet(std::set<std::string>& names)
+        : m_names(names)
+    {
+    }
+    std::set<std::string>& m_names;
+
+    template <typename T>
+    void operator()(boost::type<T> x)
+    {
+        m_names.insert(commandNamesVisitor()(x));
+    }
+};
+
+struct createCommandSuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_completionIterator = begin;
+
+        parserContext.m_suggestions.clear();
+        boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>(reduceToSet(parserContext.m_suggestions));
     }
 };
