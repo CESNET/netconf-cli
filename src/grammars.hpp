@@ -57,6 +57,7 @@ x3::rule<initializePath_class, x3::unused_type> const initializePath = "initiali
 x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestions = "createPathSuggestions";
 x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
+x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -236,8 +237,11 @@ auto const commit_def =
 auto const discard_def =
         lit("discard") >> x3::attr(discard_());
 
+auto const createCommandSuggestions_def =
+        x3::eps;
+
 auto const command_def =
-        x3::expect[cd | create | delete_rule | set | commit | get | ls | discard];
+        createCommandSuggestions >> x3::expect[cd | create | delete_rule | set | commit | get | ls | discard];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -285,3 +289,4 @@ BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
 BOOST_SPIRIT_DEFINE(suggestKeysEnd)
+BOOST_SPIRIT_DEFINE(createCommandSuggestions)
