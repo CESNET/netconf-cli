@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "564e4862_6e29971b",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2019-02-08T14:04:08Z",
+      "side": 1,
+      "message": "Jakože pak půjde použít třeba todle https://en.cppreference.com/w/cpp/utility/variant/variant_alternative ?",
+      "parentUuid": "720a2856_f7eaba4b",
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a598e2f3_11f9a512",
         "filename": "src/ast_handlers.hpp",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2019-02-08T12:52:08Z",
       "side": 1,
       "message": "tenhle visitor dela dve veci, jednak prevadi tridu na jmeno prikazu, a jednak to ulkada do nejakeho std::setu. To neni dobre kombinovat.",
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acb3cf4a_ec1a5751",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2019-02-08T14:04:08Z",
+      "side": 1,
+      "message": "rozdělil jsem to na dva funktory, ale nejsem si jistej tim názvem, nebo jestli bych to neměl udělat víc genericky nebo to udělat jinak",
+      "parentUuid": "a598e2f3_11f9a512",
       "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "827b8f1e_79ff7910",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2019-02-08T14:04:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df2f0ff7_789adec8",
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9c0c5224_3132ed08",
         "filename": "src/grammars.hpp",
         "patchSetId": 2
@@ -64,6 +118,30 @@
       "writtenOn": "2019-02-08T12:52:08Z",
       "side": 1,
       "message": "da se nejak jednoduse zaridit, abys dostal dany literal z visitoru, ktery uz se pouziva pro help? Ze by ta gramatika vypadala cca jako:\n\n auto const ls_def \u003d lit(commandNamesVisitor()(boost::mpl::type\u003cls_\u003e()) \u003e\u003e *(space_separator...\n\nRikam si, ze bez toho zopakovani by to mohlo byt pekne, ale klidne mi vysvetli, proc si treba myslis, ze to neni dobry napad.",
+      "range": {
+        "startLine": 217,
+        "startChar": 12,
+        "endLine": 217,
+        "endChar": 16
+      },
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d03d5def_c7c9abb8",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2019-02-08T14:04:08Z",
+      "side": 1,
+      "message": "Napadlo mě, že bych mohl ke každému typu přímo do tý třídy přidat nějakej ten statickej string - to bych mohl použít jednak tady a druhak i v tom commandNamesVisitoru (kterej by se dost zkrátil)",
+      "parentUuid": "9c0c5224_3132ed08",
       "range": {
         "startLine": 217,
         "startChar": 12,
