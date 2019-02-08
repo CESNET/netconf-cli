@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "3986584b_fe3929ee",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-08T14:30:19Z",
+      "side": 1,
+      "message": "ano",
+      "parentUuid": "564e4862_6e29971b",
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a598e2f3_11f9a512",
         "filename": "src/ast_handlers.hpp",
         "patchSetId": 2
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "rozdělil jsem to na dva funktory, ale nejsem si jistej tim názvem, nebo jestli bych to neměl udělat víc genericky nebo to udělat jinak",
       "parentUuid": "a598e2f3_11f9a512",
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8432671b_8fda2c4f",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-08T14:30:19Z",
+      "side": 1,
+      "message": "zkusil bych to lambdou a la https://stackoverflow.com/a/47025004/2245623",
+      "parentUuid": "acb3cf4a_ec1a5751",
       "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -142,6 +178,30 @@
       "side": 1,
       "message": "Napadlo mě, že bych mohl ke každému typu přímo do tý třídy přidat nějakej ten statickej string - to bych mohl použít jednak tady a druhak i v tom commandNamesVisitoru (kterej by se dost zkrátil)",
       "parentUuid": "9c0c5224_3132ed08",
+      "range": {
+        "startLine": 217,
+        "startChar": 12,
+        "endLine": 217,
+        "endChar": 16
+      },
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41fb859f_f43668f1",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-08T14:30:19Z",
+      "side": 1,
+      "message": "za me by to bylo dobre reseni.",
+      "parentUuid": "d03d5def_c7c9abb8",
       "range": {
         "startLine": 217,
         "startChar": 12,
