@@ -7,6 +7,7 @@
 */
 #pragma once
 
+#include <boost/mpl/vector.hpp>
 #include "ast_path.hpp"
 #include "ast_values.hpp"
 
@@ -34,46 +35,57 @@ enum class LsOption {
 };
 
 struct discard_ : x3::position_tagged {
+    static constexpr std::string_view name = "discard";
     bool operator==(const discard_& b) const;
 };
 
 struct ls_ : x3::position_tagged {
+    static constexpr std::string_view name = "ls";
     bool operator==(const ls_& b) const;
     std::vector<LsOption> m_options;
     boost::optional<boost::variant<dataPath_, schemaPath_>> m_path;
 };
 
 struct cd_ : x3::position_tagged {
+    static constexpr std::string_view name = "cd";
     bool operator==(const cd_& b) const;
     dataPath_ m_path;
 };
 
 struct create_ : x3::position_tagged {
+    static constexpr std::string_view name = "create";
     bool operator==(const create_& b) const;
     dataPath_ m_path;
 };
 
 struct delete_ : x3::position_tagged {
+    static constexpr std::string_view name = "delete";
     bool operator==(const delete_& b) const;
     dataPath_ m_path;
 };
 
 struct set_ : x3::position_tagged {
+    static constexpr std::string_view name = "set";
     bool operator==(const set_& b) const;
     dataPath_ m_path;
     leaf_data_ m_data;
 };
 
 struct commit_ : x3::position_tagged {
+    static constexpr std::string_view name = "commit";
     bool operator==(const set_& b) const;
 };
 
 struct get_ : x3::position_tagged {
+    static constexpr std::string_view name = "get";
     bool operator==(const get_& b) const;
     boost::optional<boost::variant<dataPath_, schemaPath_>> m_path;
 };
 
-using command_ = boost::variant<discard_, ls_, cd_, create_, delete_, set_, commit_, get_>;
+// TODO: The usage of MPL won't be necessary after std::variant support is added to Spirit
+// https://github.com/boostorg/spirit/issues/270
+using CommandTypes = boost::mpl::vector<discard_, ls_, cd_, create_, delete_, set_, commit_, get_>;
+using command_ = boost::make_variant_over<CommandTypes>::type;
 
 BOOST_FUSION_ADAPT_STRUCT(ls_, m_options, m_path)
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
