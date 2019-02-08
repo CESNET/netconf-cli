@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <boost/mpl/for_each.hpp>
+#include "ast_commands.hpp"
 #include "parser_context.hpp"
 #include "schema.hpp"
 #include "utils.hpp"
@@ -532,5 +534,28 @@ struct suggestKeysEnd_class {
         } else {
             parserContext.m_suggestions = {"]"};
         }
+    }
+};
+
+struct commandNamesVisitor {
+    template<typename T>
+    std::string_view operator()(boost::type<T>)
+    {
+        return T::name;
+    }
+};
+
+struct createCommandSuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_completionIterator = begin;
+
+        parserContext.m_suggestions.clear();
+        boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([&parserContext] (auto cmd) {
+            auto name = commandNamesVisitor()(cmd);
+            parserContext.m_suggestions.emplace(name.data());
+        });
     }
 };
