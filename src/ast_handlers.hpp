@@ -8,9 +8,11 @@
 
 #pragma once
 
+#include <boost/mpl/for_each.hpp>
 #include "parser_context.hpp"
 #include "schema.hpp"
 #include "utils.hpp"
+#include "ast_commands.hpp"
 namespace x3 = boost::spirit::x3;
 
 struct parser_context_tag;
@@ -532,5 +534,57 @@ struct suggestKeysEnd_class {
         } else {
             parserContext.m_suggestions = {"]"};
         }
+    }
+};
+
+struct commandNamesVisitor {
+    commandNamesVisitor(std::set<std::string>& names) : m_names(names)
+    {
+    }
+    std::set<std::string>& m_names;
+
+    void operator()(discard_)
+    {
+        m_names.insert("discard");
+    }
+    void operator()(ls_)
+    {
+        m_names.insert("ls");
+    }
+    void operator()(cd_)
+    {
+        m_names.insert("cd");
+    }
+    void operator()(create_)
+    {
+        m_names.insert("create");
+    }
+    void operator()(delete_)
+    {
+        m_names.insert("delete");
+    }
+    void operator()(set_)
+    {
+        m_names.insert("set");
+    }
+    void operator()(commit_)
+    {
+        m_names.insert("commit");
+    }
+    void operator()(get_)
+    {
+        m_names.insert("get");
+    }
+};
+
+struct createCommandSuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_completionIterator = begin;
+
+        parserContext.m_suggestions.clear();
+        boost::mpl::for_each<CommandTypes>(commandNamesVisitor(parserContext.m_suggestions));
     }
 };

@@ -7,6 +7,7 @@
 */
 #pragma once
 
+#include <boost/mpl/vector.hpp>
 #include "ast_path.hpp"
 #include "ast_values.hpp"
 
@@ -73,7 +74,8 @@ struct get_ : x3::position_tagged {
     boost::optional<boost::variant<dataPath_, schemaPath_>> m_path;
 };
 
-using command_ = boost::variant<discard_, ls_, cd_, create_, delete_, set_, commit_, get_>;
+using CommandTypes = boost::mpl::vector<discard_, ls_, cd_, create_, delete_, set_, commit_, get_>;
+using command_ = boost::make_variant_over<CommandTypes>::type;
 
 BOOST_FUSION_ADAPT_STRUCT(ls_, m_options, m_path)
 BOOST_FUSION_ADAPT_STRUCT(cd_, m_path)
