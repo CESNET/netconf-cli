@@ -175,6 +175,7 @@ if(BUILD_TESTING)
     target_include_directories(test_sysrepo PRIVATE ${PROJECT_SOURCE_DIR}/tests/mock)
     cli_test(utils)
     cli_test(path_completion)
+    cli_test(command_completion)
 endif()
 
 if(WITH_DOCS)
