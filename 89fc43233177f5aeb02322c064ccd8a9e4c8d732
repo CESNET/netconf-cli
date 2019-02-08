@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "720a2856_f7eaba4b",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-08T12:52:08Z",
+      "side": 1,
+      "message": "no jo, MPL, no. Tak sem prosim pridej TODO odkazujici na https://github.com/boostorg/spirit/issues/270 , ze tyhle zrudnosti nebudou potreba, az bude spirit umet radne std::variant.",
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a598e2f3_11f9a512",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-08T12:52:08Z",
+      "side": 1,
+      "message": "tenhle visitor dela dve veci, jednak prevadi tridu na jmeno prikazu, a jednak to ulkada do nejakeho std::setu. To neni dobre kombinovat.",
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df2f0ff7_789adec8",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-08T12:52:08Z",
+      "side": 1,
+      "message": "Pokud se nemyslim, tohle ty typy instanciuje. Prijde mi to trosku neelegantni, a https://stackoverflow.com/questions/24954220/boostmplfor-each-without-instantiating podle me popisuje, jak se to da udelat bez toho.",
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c0c5224_3132ed08",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-08T12:52:08Z",
+      "side": 1,
+      "message": "da se nejak jednoduse zaridit, abys dostal dany literal z visitoru, ktery uz se pouziva pro help? Ze by ta gramatika vypadala cca jako:\n\n auto const ls_def \u003d lit(commandNamesVisitor()(boost::mpl::type\u003cls_\u003e()) \u003e\u003e *(space_separator...\n\nRikam si, ze bez toho zopakovani by to mohlo byt pekne, ale klidne mi vysvetli, proc si treba myslis, ze to neni dobry napad.",
+      "range": {
+        "startLine": 217,
+        "startChar": 12,
+        "endLine": 217,
+        "endChar": 16
+      },
+      "revId": "89fc43233177f5aeb02322c064ccd8a9e4c8d732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
