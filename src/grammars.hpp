@@ -214,28 +214,28 @@ auto const initializePath_def =
         x3::eps;
 
 auto const ls_def =
-        lit("ls") >> *(space_separator >> ls_options) >> -(space_separator >> (dataPathListEnd | dataPath | schemaPath));
+        ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> (dataPathListEnd | dataPath | schemaPath));
 
 auto const cd_def =
-        lit("cd") >> space_separator > dataPath;
+        cd_::name >> space_separator > dataPath;
 
 auto const create_def =
-        lit("create") >> space_separator > dataPath;
+        create_::name >> space_separator > dataPath;
 
 auto const delete_rule_def =
-        lit("delete") >> space_separator > dataPath;
+        delete_::name >> space_separator > dataPath;
 
 auto const get_def =
-        lit("get") >> -(space_separator >> (dataPathListEnd | dataPath));
+        get_::name >> -(space_separator >> (dataPathListEnd | dataPath));
 
 auto const set_def =
-        lit("set") >> space_separator > leafPath > leaf_data;
+        set_::name >> space_separator > leafPath > leaf_data;
 
 auto const commit_def =
-        lit("commit") >> x3::attr(commit_());
+        commit_::name >> x3::attr(commit_());
 
 auto const discard_def =
-        lit("discard") >> x3::attr(discard_());
+        discard_::name >> x3::attr(discard_());
 
 auto const createCommandSuggestions_def =
         x3::eps;
