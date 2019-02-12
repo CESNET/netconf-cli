@@ -53,7 +53,8 @@ find_package(Boost REQUIRED)
 
 find_package(PkgConfig)
 pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=0.15.111)
-pkg_check_modules(SYSREPO REQUIRED libSysrepo-cpp>=0.7.3)
+# TODO: bump to 0.7.8 once it is tagged
+pkg_check_modules(SYSREPO REQUIRED libSysrepo-cpp>=0.7.7)
 
 # we don't need filename tracking, and we prefer to use header-only Boost
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
