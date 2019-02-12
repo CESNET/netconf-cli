@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "31346034_21e0d8dc",
+        "filename": "tests/command_completion.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-12T11:25:51Z",
+      "side": 1,
+      "message": "Myslim, ze by to melo doplnovat i s mezerou, a la bash, ktery taky za konec prikazu pridava i mezeru. Znamena to, ze se pak bude dat \"jenom tabovat\", aniz by tam clovek musel tu mezeru rucne psat :).",
+      "revId": "948a67f0ed3d2c0e4d72adcc7cf4ab55a7bc2dc3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
