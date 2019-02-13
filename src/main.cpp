@@ -5,11 +5,10 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
-
 #include <docopt.h>
 #include <experimental/filesystem>
 #include <iostream>
-#include <linenoise.hpp>
+#include "replxx.hxx"
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
 #include "sysrepo_access.hpp"
@@ -37,24 +36,27 @@ int main(int argc, char* argv[])
 
     SysrepoAccess datastore("netconf-cli");
     Parser parser(datastore.schema());
+    replxx::Replxx lineEditor;
+    lineEditor.set_completion_callback([&parser](const std::string& input, int&) {
+            std::stringstream stream;
+            auto completionsSet = parser.completeCommand(input, stream);
+
+            std::vector<std::string> res;
+            std::transform(completionsSet.begin(), completionsSet.end(), std::back_inserter(res),
+                    [input](auto it) { return it; });
+            return res;
+            });
+    lineEditor.set_word_break_characters(" '/[");
 
     while (true) {
-        linenoise::SetCompletionCallback([&parser](const char* editBuffer, std::vector<std::string>& completions) {
-            std::stringstream stream;
-            auto completionsSet = parser.completeCommand(editBuffer, stream);
-            std::transform(completionsSet.begin(), completionsSet.end(), std::back_inserter(completions),
-                           [editBuffer](auto it) { return std::string(editBuffer) + it; });
-        });
-        linenoise::SetHistoryMaxLen(4);
-        linenoise::SetMultiLine(true);
-        std::string line;
-        auto quit = linenoise::Readline((parser.currentNode() + "> ").c_str(), line);
-        if (quit) {
+        auto line = lineEditor.input((parser.currentNode() + "> ").c_str());
+        if (!line) {
             break;
         }
 
         std::locale C_locale("C");
-        if (std::all_of(line.begin(), line.end(),
+        std::string_view view = line;
+        if (std::all_of(view.begin(), view.end(),
                         [C_locale](const auto c) { return std::isspace(c, C_locale);})) {
             continue;
         }
@@ -66,7 +68,8 @@ int main(int argc, char* argv[])
             std::cerr << ex.what() << std::endl;
         }
 
-        linenoise::AddHistory(line.c_str());
+        lineEditor.history_add(line);
+
     }
 
     return 0;

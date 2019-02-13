@@ -19,7 +19,5 @@ dataPath_ pathWithoutLastNode(const dataPath_& path);
 std::string leafDataTypeToString(yang::LeafDataTypes type);
 std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair);
 std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair);
-/** Returns a subset of the original set with only the strings starting with prefix
- * and with the actual prefix deleted from the string
- */
-std::set<std::string> filterAndErasePrefix(const std::set<std::string>& set, const std::string_view prefix);
+/** Returns a subset of the original set with only the strings starting with prefix */
+std::set<std::string> filterByPrefix(const std::set<std::string>& set, const std::string_view prefix);
