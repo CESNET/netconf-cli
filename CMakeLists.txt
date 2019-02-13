@@ -108,7 +108,7 @@ target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_
 add_executable(netconf-cli
     src/main.cpp
     )
-target_link_libraries(netconf-cli sysrepoaccess yangschema docopt parser)
+target_link_libraries(netconf-cli sysrepoaccess yangschema docopt parser replxx)
 if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
     target_link_libraries(netconf-cli c++experimental)
 else()

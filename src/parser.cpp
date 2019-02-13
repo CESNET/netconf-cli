@@ -53,7 +53,7 @@ std::set<std::string> Parser::completeCommand(const std::string& line, std::ostr
     ];
     x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
 
-    return filterAndErasePrefix(ctx.m_suggestions, std::string(ctx.m_completionIterator, line.end()));
+    return filterByPrefix(ctx.m_suggestions, std::string(ctx.m_completionIterator, line.end()));
 }
 
 void Parser::changeNode(const dataPath_& name)

@@ -44,19 +44,19 @@ TEST_CASE("path_completion")
         SECTION("ls e")
         {
             input = "ls e";
-            expected = {"xample:ano", "xample:anoda", "xample:bota", "xample:list", "xample:twoKeyList"};
+            expected = {"example:ano", "example:anoda", "example:bota", "example:list", "example:twoKeyList"};
         }
 
         SECTION("ls example:ano")
         {
             input = "ls example:ano";
-            expected = {"", "da"};
+            expected = {"example:ano", "example:anoda"};
         }
 
         SECTION("ls example:ano/example:a")
         {
             input = "ls example:ano/example:a";
-            expected = {"2"};
+            expected = {"example:a2"};
         }
 
         SECTION("ls x")
@@ -74,13 +74,13 @@ TEST_CASE("path_completion")
         SECTION("ls /e")
         {
             input = "ls /e";
-            expected = {"xample:ano", "xample:anoda", "xample:bota", "xample:list", "xample:twoKeyList"};
+            expected = {"example:ano", "example:anoda", "example:bota", "example:list", "example:twoKeyList"};
         }
 
         SECTION("ls /s")
         {
             input = "ls /s";
-            expected = {"econd:amelie"};
+            expected = {"second:amelie"};
         }
 
         SECTION("ls /example:list[number=3]/")
@@ -92,7 +92,7 @@ TEST_CASE("path_completion")
         SECTION("ls /example:list[number=3]/c")
         {
             input = "ls /example:list[number=3]/e";
-            expected = {"xample:contInList"};
+            expected = {"example:contInList"};
         }
 
         SECTION("ls /example:list[number=3]/a")
@@ -107,7 +107,7 @@ TEST_CASE("path_completion")
         SECTION("cd example:lis")
         {
             input = "cd example:lis";
-            expected = {"t"};
+            expected = {"example:list"};
         }
 
         SECTION("cd example:list[")
@@ -119,13 +119,13 @@ TEST_CASE("path_completion")
         SECTION("cd example:list[numb")
         {
             input = "cd example:list[numb";
-            expected = {"er="};
+            expected = {"number="};
         }
 
         SECTION("cd example:list[number")
         {
             input = "cd example:list[number";
-            expected = {"="};
+            expected = {"number="};
         }
 
         SECTION("cd example:list[number=12")
@@ -137,7 +137,7 @@ TEST_CASE("path_completion")
         SECTION("cd example:list[number=12]")
         {
             input = "cd example:list[number=12]";
-            expected = {"/"};
+            expected = {"]/"};
         }
 
         SECTION("cd example:twoKeyList[")
@@ -167,7 +167,7 @@ TEST_CASE("path_completion")
         SECTION("cd example:twoKeyList[name=\"AHOJ\"][number=123]")
         {
             input = "cd example:twoKeyList[name=\"AHOJ\"][number=123]";
-            expected = {"/"};
+            expected = {"]/"};
         }
     }
 
