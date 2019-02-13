@@ -11,17 +11,16 @@
 
 TEST_CASE("utils")
 {
-    SECTION("filterAndErasePrefix")
+    SECTION("filterByPrefix")
     {
         std::set<std::string> set{"ahoj", "coze", "copak", "aha", "polivka"};
 
-        REQUIRE((filterAndErasePrefix(set, "a") == std::set<std::string>{"hoj", "ha"}));
-        REQUIRE((filterAndErasePrefix(set, "ah") == std::set<std::string>{"oj", "a"}));
-        REQUIRE((filterAndErasePrefix(set, "aho") == std::set<std::string>{"j"}));
-        REQUIRE((filterAndErasePrefix(set, "polivka") == std::set<std::string>{""}));
-        REQUIRE((filterAndErasePrefix(set, "polivka") == std::set<std::string>{""}));
-        REQUIRE((filterAndErasePrefix(set, "polivkax") == std::set<std::string>{}));
-        REQUIRE((filterAndErasePrefix(set, "co") == std::set<std::string>{"pak", "ze"}));
+        REQUIRE((filterByPrefix(set, "a") == std::set<std::string>{"ahoj", "aha"}));
+        REQUIRE((filterByPrefix(set, "ah") == std::set<std::string>{"ahoj", "aha"}));
+        REQUIRE((filterByPrefix(set, "aho") == std::set<std::string>{"ahoj"}));
+        REQUIRE((filterByPrefix(set, "polivka") == std::set<std::string>{"polivka"}));
+        REQUIRE((filterByPrefix(set, "polivkax") == std::set<std::string>{}));
+        REQUIRE((filterByPrefix(set, "co") == std::set<std::string>{"copak", "coze"}));
     }
 
 }
