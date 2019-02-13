@@ -32,13 +32,13 @@ TEST_CASE("command completion")
     SECTION("c")
     {
         input = "c";
-        expected = {"d", "ommit", "reate"};
+        expected = {"cd", "commit", "create"};
     }
 
     SECTION("d")
     {
         input = "d";
-        expected = {"elete", "iscard"};
+        expected = {"delete", "discard"};
     }
 
     SECTION("x")
@@ -51,13 +51,13 @@ TEST_CASE("command completion")
     {
         input = "cd";
         // TODO: depending on how Readline works, this will have to be changed to include a space
-        expected = {""};
+        expected = {"cd"};
     }
 
     SECTION("create")
     {
         input = "create";
-        expected = {""};
+        expected = {"create"};
     }
 
     REQUIRE(parser.completeCommand(input, errorStream) == expected);
