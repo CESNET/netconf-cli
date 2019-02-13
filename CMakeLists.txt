@@ -50,6 +50,11 @@ option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${D
 find_package(docopt REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(Boost REQUIRED)
+find_library(REPLXX_LIBRARY replxx REQUIRED)
+find_path(REPLXX_PATH replxx.hxx)
+if("${REPLXX_PATH}" STREQUAL REPLXX_PATH-NOTFOUND)
+    message(FATAL_ERROR "Cannot find the \"replxx.hxx\" include file for the replxx library.")
+endif()
 
 find_package(PkgConfig)
 pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=0.15.111)
@@ -108,7 +113,8 @@ target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_
 add_executable(netconf-cli
     src/main.cpp
     )
-target_link_libraries(netconf-cli sysrepoaccess yangschema docopt parser)
+target_link_libraries(netconf-cli sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
+target_include_directories(netconf-cli PRIVATE ${REPLXX_PATH})
 if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
     target_link_libraries(netconf-cli c++experimental)
 else()
