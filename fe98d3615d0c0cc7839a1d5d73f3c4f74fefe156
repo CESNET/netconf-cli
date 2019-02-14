@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "25f9b9e8_2b7fc7fd",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-02-14T16:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f340dd08_f685a44e",
+      "revId": "fe98d3615d0c0cc7839a1d5d73f3c4f74fefe156",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bb4bab2e_faff6538",
         "filename": "src/main.cpp",
         "patchSetId": 4
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "53865e32_d4b394a8",
+        "filename": "src/main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-02-14T16:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb4bab2e_faff6538",
+      "range": {
+        "startLine": 52,
+        "startChar": 66,
+        "endLine": 52,
+        "endChar": 74
+      },
+      "revId": "fe98d3615d0c0cc7839a1d5d73f3c4f74fefe156",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d19e3728_f6d838a4",
         "filename": "src/main.cpp",
         "patchSetId": 4
@@ -56,6 +98,24 @@
       "revId": "fe98d3615d0c0cc7839a1d5d73f3c4f74fefe156",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7710ea3c_fda9ec68",
+        "filename": "src/main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-02-14T16:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d19e3728_f6d838a4",
+      "revId": "fe98d3615d0c0cc7839a1d5d73f3c4f74fefe156",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
