@@ -63,8 +63,8 @@ emerge_dep() {
 
 ARTIFACT=netconf-cli-$(git --git-dir ${TH_GIT_PATH}/.git rev-parse HEAD:submodules/).tar.xz
 
-scp th-ci-logs@ci-logs.gerrit.cesnet.cz:artifacts/${TH_JOB_NAME}/${ARTIFACT} . \
-    || true # ignore network errors
+#scp th-ci-logs@ci-logs.gerrit.cesnet.cz:artifacts/${TH_JOB_NAME}/${ARTIFACT} . \
+#    || true # ignore network errors
 
 if [[ -f ${TH_JOB_WORKING_DIR}/${ARTIFACT} ]]; then
     tar -C ~/target -xvJf ${TH_JOB_WORKING_DIR}/${ARTIFACT}
@@ -101,6 +101,10 @@ else
     ./b2 --ignore-site-config headers
     cp -LR boost ${PREFIX}/include/
     popd
+
+    # examples are broked on clang+ubsan because of their STL override
+    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DBUILD_SHARED_LIBS=ON -DREPLXX_BuildExamples=OFF" emerge_dep replxx
+    do_test_dep_cmake replxx -j${CI_PARALLEL_JOBS}
 
     tar -C ~/target -cvJf ${TH_JOB_WORKING_DIR}/${ARTIFACT} .
     ssh th-ci-logs@ci-logs.gerrit.cesnet.cz mkdir -p artifacts/${TH_JOB_NAME} \
