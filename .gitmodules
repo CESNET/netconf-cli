@@ -22,3 +22,6 @@
 [submodule "submodules/libredblack"]
 	path = submodules/libredblack
 	url = ../../github/sysrepo/libredblack
+[submodule "submodules/replxx"]
+	path = submodules/replxx
+	url = ../../github/AmokHuginnsson/replxx
