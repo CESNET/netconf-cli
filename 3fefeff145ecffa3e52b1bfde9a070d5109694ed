@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dbd8e90a_2c62cfd0",
+        "filename": "ci/do-build.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-14T15:48:50Z",
+      "side": 1,
+      "message": "Cachuje se to podle stavu podadresare submodules/, cili jakmile to ejdnou vybuildis se spatnymi parametry, je potreba takhle vynutit predelani tech build artefaktu. Je to krehky proces.\n\nAz build *tohohle* ted projde, tak dam tuhle upravu zase pryc, proto zatim -2.",
+      "revId": "3fefeff145ecffa3e52b1bfde9a070d5109694ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
