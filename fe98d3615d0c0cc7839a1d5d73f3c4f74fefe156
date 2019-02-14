@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f340dd08_f685a44e",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-14T14:46:37Z",
+      "side": 1,
+      "message": "tu knihovnu musis nejdriv nejak \"najit\", a la CMake\u0027s find_library nebo neco podobneho, a pak ji dokazovat pres promennou, co Ti cmake vratil",
+      "revId": "fe98d3615d0c0cc7839a1d5d73f3c4f74fefe156",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb4bab2e_faff6538",
+        "filename": "src/main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-14T14:46:37Z",
+      "side": 1,
+      "message": "kdyz je to C++ knihovna, nezere to std::string?",
+      "range": {
+        "startLine": 52,
+        "startChar": 66,
+        "endLine": 52,
+        "endChar": 74
+      },
+      "revId": "fe98d3615d0c0cc7839a1d5d73f3c4f74fefe156",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d19e3728_f6d838a4",
+        "filename": "src/main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-14T14:46:37Z",
+      "side": 1,
+      "message": "nit: ja bych to asi psal jako:\n\n std::string_view view{line};",
+      "revId": "fe98d3615d0c0cc7839a1d5d73f3c4f74fefe156",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
