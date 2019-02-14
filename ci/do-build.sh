@@ -102,6 +102,9 @@ else
     cp -LR boost ${PREFIX}/include/
     popd
 
+    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DBUILD_SHARED_LIBS=ON" emerge_dep replxx
+    do_test_dep_cmake replxx -j${CI_PARALLEL_JOBS}
+
     tar -C ~/target -cvJf ${TH_JOB_WORKING_DIR}/${ARTIFACT} .
     ssh th-ci-logs@ci-logs.gerrit.cesnet.cz mkdir -p artifacts/${TH_JOB_NAME} \
         || true # ignore network errors
