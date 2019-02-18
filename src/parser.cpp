@@ -44,6 +44,7 @@ std::set<std::string> Parser::completeCommand(const std::string& line, std::ostr
     std::set<std::string> completions;
     command_ parsedCommand;
     ParserContext ctx(*m_schema, dataPathToSchemaPath(m_curDir));
+    ctx.m_completing = true;
     auto it = line.begin();
     boost::spirit::x3::error_handler<std::string::const_iterator> errorHandler(it, line.end(), errorStream);
 

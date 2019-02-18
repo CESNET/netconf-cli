@@ -150,6 +150,13 @@ TEST_CASE("ls")
                 expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, listElement_{"list", keys}),
                                                                 dataNode_(container_{"contInList"})}};
             }
+
+            SECTION("ls example:list/contInList")
+            {
+                input = "ls example:list/contInList";
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, list_{"list"}),
+                                                                schemaNode_(container_{"contInList"})}};
+            }
         }
 
         command_ command = parser.parseCommand(input, errorStream);

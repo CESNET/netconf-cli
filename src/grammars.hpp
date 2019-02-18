@@ -58,6 +58,7 @@ x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestio
 x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
+x3::rule<completing_class, x3::unused_type> const completing = "completing";
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -142,10 +143,14 @@ auto const trailingSlash_def =
 auto const space_separator =
         x3::omit[x3::no_skip[space]];
 
+// This is a pseudo-parser, that fails if we're not completing a command
+auto const completing_def =
+        x3::eps;
+
 // I have to insert an empty vector to the first alternative, otherwise they won't have the same attribute
 auto const dataPath_def =
         initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-        initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % '/' >> (trailingSlash >> createPathSuggestions | (&space_separator | x3::eoi));
+        initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % '/' >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
 
 auto const dataNodeList_def =
         -(module) >> createPathSuggestions >> list;
@@ -160,11 +165,11 @@ auto const dataNodesListEnd_def =
 
 auto const dataPathListEnd_def =
         initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-        initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNodesListEnd >> (trailingSlash >> createPathSuggestions | (&space_separator | x3::eoi));
+        initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNodesListEnd >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
 
 auto const schemaPath_def =
         initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-        initializePath >> -(absoluteStart >> createPathSuggestions) >> schemaNode % '/' >> (trailingSlash >> createPathSuggestions | (&space_separator | x3::eoi));
+        initializePath >> -(absoluteStart >> createPathSuggestions) >> schemaNode % '/' >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
 
 auto const leafPath_def =
         dataPath;
@@ -290,3 +295,4 @@ BOOST_SPIRIT_DEFINE(createPathSuggestions)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
 BOOST_SPIRIT_DEFINE(suggestKeysEnd)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)
+BOOST_SPIRIT_DEFINE(completing)
