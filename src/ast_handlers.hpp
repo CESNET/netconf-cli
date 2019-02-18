@@ -558,3 +558,14 @@ struct createCommandSuggestions_class {
         });
     }
 };
+
+struct completing_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+
+        if (!parserContext.m_completing)
+            _pass(context) = false;
+    }
+};
