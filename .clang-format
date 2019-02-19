@@ -18,4 +18,5 @@ AlignEscapedNewlinesLeft: true
 AlignAfterOpenBracket: Align
 BinPackArguments: false
 BinPackParameters: false
+SpaceBeforeCpp11BracedList: false
 ...
