@@ -12,8 +12,7 @@
 #include "sysrepo_subscription.hpp"
 #include "sysrepo_vars.hpp"
 
-class MockRecorder : public Recorder
-{
+class MockRecorder : public Recorder {
 public:
     MAKE_MOCK3(write, void(const std::string&, const std::string&, const std::string&), override);
 };

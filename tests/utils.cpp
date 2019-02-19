@@ -22,5 +22,4 @@ TEST_CASE("utils")
         REQUIRE((filterByPrefix(set, "polivkax") == std::set<std::string>{}));
         REQUIRE((filterByPrefix(set, "co") == std::set<std::string>{"copak", "coze"}));
     }
-
 }
