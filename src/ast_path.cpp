@@ -231,11 +231,11 @@ schemaNode_ dataNodeToSchemaNode(const dataNode_& node)
 
 schemaPath_ dataPathToSchemaPath(const dataPath_& path)
 {
-        schemaPath_ res{path.m_scope, {}};
+    schemaPath_ res{path.m_scope, {}};
 
-        std::transform(path.m_nodes.begin(), path.m_nodes.end(),
-                       std::back_inserter(res.m_nodes),
-                       [](const dataNode_& node) { return dataNodeToSchemaNode(node); });
+    std::transform(path.m_nodes.begin(), path.m_nodes.end(),
+                   std::back_inserter(res.m_nodes),
+                   [](const dataNode_& node) { return dataNodeToSchemaNode(node); });
 
-        return res;
+    return res;
 }
