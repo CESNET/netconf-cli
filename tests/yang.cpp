@@ -9,7 +9,28 @@
 #include "trompeloeil_catch.h"
 #include "yang_schema.hpp"
 
-const char* schema = R"(
+const char* second_schema = R"(
+module second-schema {
+    namespace "http://example.com/nevim";
+    prefix second;
+
+    import example-schema {
+        prefix "example";
+    }
+
+    augment /example:a {
+        container augmentedContainer {
+        }
+    }
+
+    container bla {
+        container bla2 {
+        }
+    }
+}
+)";
+
+const char* example_schema = R"(
 module example-schema {
     yang-version 1.1;
     namespace "http://example.com/example-sports";
@@ -122,8 +143,15 @@ module example-schema {
 
 TEST_CASE("yangschema")
 {
+    using namespace std::string_view_literals;
     YangSchema ys;
-    ys.addSchemaString(schema);
+    ys.registerModuleCallback([](auto modName, auto, auto) {
+        (void) modName;
+        assert(modName == "example-schema");
+        return example_schema;
+    });
+    ys.addSchemaString(second_schema);
+
     schemaPath_ path;
     ModuleNodePair node;
 
@@ -354,13 +382,19 @@ TEST_CASE("yangschema")
                        "example-schema:leafDecimal", "example-schema:leafBool", "example-schema:leafInt",
                        "example-schema:leafUint", "example-schema:leafEnum", "example-schema:leafEnumTypedef",
                        "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
-                       "example-schema:_list", "example-schema:twoKeyList"};
+                       "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla"};
             }
 
-            SECTION("a")
+            SECTION("example-schema:a")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                set = {"example-schema:a2", "example-schema:leafa"};
+                set = {"a2", "leafa", "second-schema:augmentedContainer"};
+            }
+
+            SECTION("second-schema:bla")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"second-schema"}, container_("bla")));
+                set = {"bla2"};
             }
 
             REQUIRE(ys.childNodes(path, Recursion::NonRecursive) == set);
