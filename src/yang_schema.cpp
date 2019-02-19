@@ -245,7 +245,13 @@ std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recu
                 res.insert(it->path(LYS_PATH_FIRST_PREFIX));
             }
         } else {
-            res.insert(std::string(node->module()->name()) + ":" + node->name());
+            std::string toInsert;
+            if (path.m_nodes.empty() || path.m_nodes.front().m_prefix.get().m_name != node->module()->name()) {
+                toInsert += node->module()->name();
+                toInsert += ":";
+            }
+            toInsert += node->name();
+            res.insert(toInsert);
         }
     }
 
