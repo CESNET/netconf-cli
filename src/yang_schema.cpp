@@ -112,8 +112,15 @@ bool YangSchema::isPresenceContainer(const schemaPath_& location, const ModuleNo
 
 bool YangSchema::leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const
 {
+    auto enums = enumValues(location, node);
+
+    return std::any_of(enums.begin(), enums.end(), [=](const auto& x) { return x == value; });
+}
+
+const std::set<std::string> YangSchema::enumValues(const schemaPath_& location, const ModuleNodePair& node) const
+{
     if (!isLeaf(location, node) || leafType(location, node) != yang::LeafDataTypes::Enum)
-        return false;
+        return {};
 
     libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
     auto type = leaf.type();
@@ -126,7 +133,9 @@ bool YangSchema::leafEnumHasValue(const schemaPath_& location, const ModuleNodeP
         enm = type->info()->enums()->enm();
     }
 
-    return std::any_of(enm.begin(), enm.end(), [=](const auto& x) { return x->name() == value; });
+    std::set<std::string> enumSet;
+    std::transform(enm.begin(), enm.end(), std::inserter(enumSet, enumSet.end()), [](auto it) { return it->name(); });
+    return enumSet;
 }
 
 bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const

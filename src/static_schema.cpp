@@ -121,12 +121,8 @@ void StaticSchema::addModule(const std::string& name)
 
 bool StaticSchema::leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(location);
-    assert(isLeaf(location, node));
-
-    const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& list = boost::get<yang::leaf>(child);
-    return list.m_enumValues.find(value) != list.m_enumValues.end();
+    auto enums = enumValues(location, node);
+    return enums.find(value) != enums.end();
 }
 
 bool StaticSchema::isLeaf(const schemaPath_& location, const ModuleNodePair& node) const
@@ -143,6 +139,16 @@ yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const Mo
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
+}
+
+const std::set<std::string> StaticSchema::enumValues(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    std::string locationString = pathToAbsoluteSchemaString(location);
+    assert(isLeaf(location, node));
+
+    const auto& child = children(locationString).at(fullNodeName(location, node));
+    const auto& leaf = boost::get<yang::leaf>(child);
+    return leaf.m_enumValues;
 }
 
 // We do not test StaticSchema, so we don't need to implement recursive childNodes
