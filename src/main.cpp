@@ -8,12 +8,14 @@
 #include <docopt.h>
 #include <experimental/filesystem>
 #include <iostream>
+#include <optional>
 #include <replxx.hxx>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
 #include "sysrepo_access.hpp"
 #include "yang_schema.hpp"
 
+const auto HISTORY_FILE_NAME = "netconf-cli_history";
 
 static const char usage[] =
     R"(CLI interface to remote NETCONF hosts
@@ -48,6 +50,16 @@ int main(int argc, char* argv[])
     });
     lineEditor.set_word_break_characters(" '/[");
 
+    std::optional<std::string> historyFile;
+    if (auto xdgHome = getenv("XDG_DATA_HOME")) {
+        historyFile = std::string(xdgHome) + "/" + HISTORY_FILE_NAME;
+    } else if (auto home = getenv("HOME")) {
+        historyFile = std::string(home) + "/.local/share/" + HISTORY_FILE_NAME;
+    }
+
+    if (historyFile)
+        lineEditor.history_load(historyFile.value());
+
     while (true) {
         auto line = lineEditor.input(parser.currentNode() + "> ");
         if (!line) {
@@ -70,6 +82,9 @@ int main(int argc, char* argv[])
 
         lineEditor.history_add(line);
     }
+
+    if (historyFile)
+        lineEditor.history_save(historyFile.value());
 
     return 0;
 }
