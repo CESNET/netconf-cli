@@ -47,6 +47,7 @@ int main(int argc, char* argv[])
         return res;
     });
     lineEditor.set_word_break_characters(" '/[");
+    lineEditor.history_load(".netconf-cli_history");
 
     while (true) {
         auto line = lineEditor.input(parser.currentNode() + "> ");
@@ -70,6 +71,8 @@ int main(int argc, char* argv[])
 
         lineEditor.history_add(line);
     }
+
+    lineEditor.history_save(".netconf-cli_history");
 
     return 0;
 }
