@@ -33,6 +33,7 @@ public:
     bool nodeExists(const std::string& location, const std::string& node) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
+    const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion) const override;
 
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);

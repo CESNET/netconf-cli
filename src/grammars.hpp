@@ -59,6 +59,7 @@ x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
 x3::rule<completing_class, x3::unused_type> const completing = "completing";
+x3::rule<createEnumSuggestions_class, x3::unused_type> const createEnumSuggestions = "createEnumSuggestions";
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -174,8 +175,11 @@ auto const schemaPath_def =
 auto const leafPath_def =
     dataPath;
 
+auto const createEnumSuggestions_def =
+    x3::eps;
+
 auto const leaf_data_enum_def =
-    +char_;
+    createEnumSuggestions >> +char_;
 auto const leaf_data_decimal_def =
     double_;
 
@@ -234,7 +238,7 @@ auto const get_def =
     get_::name >> -(space_separator >> (dataPathListEnd | dataPath));
 
 auto const set_def =
-    set_::name >> space_separator > leafPath > leaf_data;
+    set_::name >> space_separator > leafPath > space_separator > leaf_data;
 
 auto const commit_def =
     commit_::name >> x3::attr(commit_());
@@ -296,3 +300,4 @@ BOOST_SPIRIT_DEFINE(createKeySuggestions)
 BOOST_SPIRIT_DEFINE(suggestKeysEnd)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)
 BOOST_SPIRIT_DEFINE(completing)
+BOOST_SPIRIT_DEFINE(createEnumSuggestions)

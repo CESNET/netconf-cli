@@ -177,6 +177,7 @@ if(BUILD_TESTING)
     cli_test(utils)
     cli_test(path_completion)
     cli_test(command_completion)
+    cli_test(enum_completion)
 endif()
 
 if(WITH_DOCS)
