@@ -14,6 +14,7 @@
 #include "sysrepo_access.hpp"
 #include "yang_schema.hpp"
 
+const auto HISTORY_FILE_NAME = "netconf-cli_history";
 
 static const char usage[] =
     R"(CLI interface to remote NETCONF hosts
@@ -48,6 +49,16 @@ int main(int argc, char* argv[])
     });
     lineEditor.set_word_break_characters(" '/[");
 
+    std::string historyFile;
+    if (auto xdgHome = getenv("XDG_DATA_HOME")) {
+        historyFile = std::string(xdgHome) + "/" + HISTORY_FILE_NAME;
+    } else {
+        auto home = getenv("HOME");
+        historyFile = std::string(home) + "/.local/share/" + HISTORY_FILE_NAME;
+    }
+
+    lineEditor.history_load(historyFile);
+
     while (true) {
         auto line = lineEditor.input(parser.currentNode() + "> ");
         if (!line) {
@@ -70,6 +81,8 @@ int main(int argc, char* argv[])
 
         lineEditor.history_add(line);
     }
+
+    lineEditor.history_save(historyFile);
 
     return 0;
 }
