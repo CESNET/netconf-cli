@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b29a0e10_8edc315b",
+        "filename": "src/main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-21T13:02:52Z",
+      "side": 1,
+      "message": "Vidis, ja bych to byl byval daval do XDG_CACHE_DIR, ale tohle je lepsi. Dobre!",
+      "revId": "84e685445b5da8003bef290341d14cb9b22fe92b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ac6686b_63bf0913",
+        "filename": "src/main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-21T13:02:52Z",
+      "side": 1,
+      "message": "Bylo by pekne, pokud by to pri nenastavenem $HOME fungovalo korektne, cili napr. nechat `historyFile` prazdny, a tuhle featuru povolit jenom kdyz je neprazdna, atd.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 5
+      },
+      "revId": "84e685445b5da8003bef290341d14cb9b22fe92b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
