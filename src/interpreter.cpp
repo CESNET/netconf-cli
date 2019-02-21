@@ -75,6 +75,32 @@ void Interpreter::operator()(const ls_& ls) const
         std::cout << it << std::endl;
 }
 
+struct commandLongHelpVisitor : boost::static_visitor<const char*> {
+    template <typename T>
+    const char* operator()(boost::type<T>) const
+    {
+        return T::longHelp;
+    }
+};
+
+struct commandShortHelpVisitor : boost::static_visitor<const char*> {
+    template <typename T>
+    const char* operator()(boost::type<T>) const
+    {
+        return T::shortHelp;
+    }
+};
+
+void Interpreter::operator()(const help_& help) const
+{
+    if (help.m_cmd)
+        std::cout << boost::apply_visitor(commandLongHelpVisitor(), help.m_cmd.get()) << std::endl;
+    else
+        boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([](auto cmd) {
+            std::cout << commandShortHelpVisitor()(cmd) << std::endl;
+        });
+}
+
 template <typename T>
 std::string Interpreter::absolutePathFromCommand(const T& command) const
 {
