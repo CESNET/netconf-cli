@@ -51,6 +51,7 @@ x3::rule<get_class, get_> const get = "get";
 x3::rule<create_class, create_> const create = "create";
 x3::rule<delete_class, delete_> const delete_rule = "delete_rule";
 x3::rule<commit_class, commit_> const commit = "commit";
+x3::rule<help_class, help_> const help = "help";
 x3::rule<command_class, command_> const command = "command";
 
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
@@ -246,11 +247,23 @@ auto const commit_def =
 auto const discard_def =
     discard_::name >> x3::attr(discard_());
 
+struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
+    command_names_table()
+    {
+        boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([this](auto cmd) {
+            add(commandNamesVisitor()(cmd), decltype(help_::m_cmd)(cmd));
+        });
+    }
+} const command_names;
+
+auto const help_def =
+    help_::name > createCommandSuggestions >> -command_names;
+
 auto const createCommandSuggestions_def =
     x3::eps;
 
 auto const command_def =
-    createCommandSuggestions >> x3::expect[cd | create | delete_rule | set | commit | get | ls | discard];
+    createCommandSuggestions >> x3::expect[cd | create | delete_rule | set | commit | get | ls | discard | help];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -294,6 +307,7 @@ BOOST_SPIRIT_DEFINE(discard)
 BOOST_SPIRIT_DEFINE(cd)
 BOOST_SPIRIT_DEFINE(create)
 BOOST_SPIRIT_DEFINE(delete_rule)
+BOOST_SPIRIT_DEFINE(help)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
