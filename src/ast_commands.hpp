@@ -76,6 +76,13 @@ struct commit_ : x3::position_tagged {
     bool operator==(const set_& b) const;
 };
 
+struct help_ : x3::position_tagged {
+    static constexpr auto name = "help";
+    bool operator==(const help_& b) const;
+
+    std::string_view m_cmdName;
+};
+
 struct get_ : x3::position_tagged {
     static constexpr auto name = "get";
     bool operator==(const get_& b) const;
@@ -94,5 +101,6 @@ BOOST_FUSION_ADAPT_STRUCT(delete_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(enum_, m_value)
 BOOST_FUSION_ADAPT_STRUCT(set_, m_path, m_data)
 BOOST_FUSION_ADAPT_STRUCT(commit_)
+BOOST_FUSION_ADAPT_STRUCT(help_, m_cmdName)
 BOOST_FUSION_ADAPT_STRUCT(discard_)
 BOOST_FUSION_ADAPT_STRUCT(get_, m_path)

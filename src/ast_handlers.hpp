@@ -458,6 +458,8 @@ struct set_class {
 
 struct commit_class;
 
+struct help_class;
+
 struct get_class;
 
 struct command_class {
