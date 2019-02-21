@@ -20,13 +20,13 @@ TEST_CASE("command completion")
     SECTION("")
     {
         input = "";
-        expected = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard"};
+        expected = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard", "help"};
     }
 
     SECTION(" ")
     {
         input = " ";
-        expected = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard"};
+        expected = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard", "help"};
     }
 
     SECTION("c")
