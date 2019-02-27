@@ -1,0 +1,11 @@
+- project:
+    check:
+      jobs:
+        - clang-format:
+            voting: false
+        - f29-gcc:
+            requires: CzechLight-deps-f29-gcc
+        - f29-gcc-asan-ubsan:
+            requires: CzechLight-deps-f29-gcc-asan-ubsan
+        - f29-clang-asan:
+            requires: CzechLight-deps-f29-clang-asan
