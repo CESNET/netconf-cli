@@ -1,27 +1,3 @@
-[submodule "submodules/Catch"]
-	path = submodules/Catch
-	url = ../../github/philsquared/Catch
-[submodule "submodules/trompeloeil"]
-	path = submodules/trompeloeil
-	url = ../../github/rollbear/trompeloeil
-[submodule "submodules/docopt.cpp"]
-	path = submodules/docopt.cpp
-	url = ../../github/docopt/docopt.cpp
-[submodule "submodules/spdlog"]
-	path = submodules/spdlog
-	url = ../../github/gabime/spdlog
-[submodule "submodules/boost"]
-	path = submodules/boost
-	url = ../../github/boostorg/boost
-[submodule "submodules/libyang"]
-	path = submodules/libyang
-	url = ../../github/CESNET/libyang
-[submodule "submodules/sysrepo"]
-	path = submodules/sysrepo
-	url = ../../github/sysrepo/sysrepo
-[submodule "submodules/libredblack"]
-	path = submodules/libredblack
-	url = ../../github/sysrepo/libredblack
-[submodule "submodules/replxx"]
-	path = submodules/replxx
-	url = ../../github/AmokHuginnsson/replxx
+[submodule "submodules/dependencies"]
+	path = submodules/dependencies
+	url = ../dependencies
