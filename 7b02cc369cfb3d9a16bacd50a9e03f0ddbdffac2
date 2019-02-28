@@ -16,6 +16,24 @@
       "revId": "7b02cc369cfb3d9a16bacd50a9e03f0ddbdffac2",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53ce5f3d_0773ca21",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-02-28T18:14:54Z",
+      "side": 1,
+      "message": "No, mně se to nezdá v tom smyslu, že by to byl fakt pain to programovat",
+      "parentUuid": "d730c2e7_329e037c",
+      "revId": "7b02cc369cfb3d9a16bacd50a9e03f0ddbdffac2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
