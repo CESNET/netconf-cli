@@ -22,6 +22,30 @@
       "revId": "67a51dc4a455a1e5f70de97c7579b51373cd3cd7",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25d77111_7f473b26",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-02-28T16:47:37Z",
+      "side": 1,
+      "message": "Když to tam neni, tak libyang řve, že\n libyang[0]: Importing \"example-schema\" module into \"second-schema\" failed.\n libyang[0]: Module \"second-schema\" parsing failed.",
+      "parentUuid": "1119b38d_5573c758",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 26
+      },
+      "revId": "67a51dc4a455a1e5f70de97c7579b51373cd3cd7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
