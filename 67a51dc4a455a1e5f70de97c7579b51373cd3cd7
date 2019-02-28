@@ -46,6 +46,30 @@
       "revId": "67a51dc4a455a1e5f70de97c7579b51373cd3cd7",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50df3458_444699fc",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-28T16:55:27Z",
+      "side": 1,
+      "message": "Jasne, ale nelibi se mi, ze michas explicitni import schematu a on-demand nacitani, ktere je od pohledu udelane nedobre, protoze pro nejake vstupy potichu vrati spatnou hodnotu. Lepsi postup je podle me pripravit ten hook, udelat do nej assert, ze se nacte jenom ten importovany modul (cili \"example-schema\"), a pak explicitne pres addSchemaString() nacist to vnejsi chema, cili \"second-schema\".",
+      "parentUuid": "25d77111_7f473b26",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 26
+      },
+      "revId": "67a51dc4a455a1e5f70de97c7579b51373cd3cd7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
