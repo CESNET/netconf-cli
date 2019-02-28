@@ -4,6 +4,7 @@ set -eux -o pipefail
 shopt -s failglob
 
 ZUUL_JOB_NAME=$(jq < ~/zuul-env.json -r '.job')
+ZUUL_TENANT=$(jq < ~/zuul-env.json -r '.tenant')
 ZUUL_PROJECT_SRC_DIR=$HOME/$(jq < ~/zuul-env.json -r '.project.src_dir')
 ZUUL_PROJECT_SHORT_NAME=$(jq < ~/zuul-env.json -r '.project.short_name')
 
@@ -44,23 +45,14 @@ ARTIFACT_URL=""
 
 if [[ "$(jq < ~/zuul-env.json -r '.artifacts[0].project')" = "CzechLight/dependencies" &&
       "$(jq < ~/zuul-env.json -r '.artifacts[0].name')" = "tarball" ]]; then
-    # FIXME: Zuul feeds us with wrong artifact (from a different provider) for some reason :(
-    # so let's look into builds from the change pipeline and fetch their artifact directly
-    #ARTIFACT_URL=$(jq < ~/zuul-env.json -r '.artifacts[0].url')
-
-    CHANGE_BUILD_QUERY=$(jq -r '.items | map(select(.project.name == "CzechLight/dependencies"))[-1] | ("change=" + .change + "&patchset=" + .patchset)' < ~/zuul-env.json)
-    if [[ "${CHANGE_BUILD_QUERY}" != "null" ]]; then
-        # We depend on some change from project CzechLight/dependencies, let's look at the latest one
-        ZUUL_TENANT=$(jq < ~/zuul-env.json -r '.tenant')
-        ARTIFACT_URL=$(curl "https://zuul.gerrit.cesnet.cz/api/tenant/${ZUUL_TENANT}/builds?pipeline=check&job_name=${ZUUL_JOB_NAME}&${CHANGE_BUILD_QUERY}" | jq -r '.[].artifacts[0].url')
-    fi
+    ARTIFACT_URL=$(jq < ~/zuul-env.json -r '.artifacts[0].url')
 fi
 
 DEP_SUBMODULE_COMMIT=$(git ls-tree -l master submodules/dependencies | cut -d ' ' -f 3)
 
 if [[ -z "${ARTIFACT_URL}" ]]; then
     # fallback to a promoted artifact
-    ARTIFACT_URL=https://ci-logs.gerrit.cesnet.cz/t/public/artifacts/${ZUUL_JOB_NAME}/czechlight-dependencies-${DEP_SUBMODULE_COMMIT}.tar.xz
+    ARTIFACT_URL="https://ci-logs.gerrit.cesnet.cz/t/${ZUUL_TENANT,,}/artifacts/${ZUUL_JOB_NAME}/czechlight-dependencies-${DEP_SUBMODULE_COMMIT}.tar.xz"
 fi
 
 ARTIFACT_FILE=$(basename ${ARTIFACT_URL})
