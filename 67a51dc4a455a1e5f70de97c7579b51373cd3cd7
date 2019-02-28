@@ -70,6 +70,30 @@
       "revId": "67a51dc4a455a1e5f70de97c7579b51373cd3cd7",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fd81d18_8ec15da3",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-02-28T17:08:59Z",
+      "side": 1,
+      "message": "Nevím, jestli jsem to správně pochopil",
+      "parentUuid": "50df3458_444699fc",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 26
+      },
+      "revId": "67a51dc4a455a1e5f70de97c7579b51373cd3cd7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
