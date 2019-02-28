@@ -34,6 +34,24 @@
       "revId": "7b02cc369cfb3d9a16bacd50a9e03f0ddbdffac2",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1d0e235_ee2e6327",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-02-28T18:18:11Z",
+      "side": 1,
+      "message": "úplně se tomu nebránim, mohlo by to tam být, ale nemyslim si, že to je nějak extra podstatná feature",
+      "parentUuid": "53ce5f3d_0773ca21",
+      "revId": "7b02cc369cfb3d9a16bacd50a9e03f0ddbdffac2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
