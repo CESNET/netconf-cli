@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d730c2e7_329e037c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-28T18:12:46Z",
+      "side": 1,
+      "message": "jeste bych tam chtel videt, ze se Ti nezda, aby se tam ten prefix doplnoval podminene, cili ze neni pekne, aby se jenom podle toho, jestli *nahodou* uzivatel zadal string, co sedi na prefix, objevilo najednou vic completions",
+      "revId": "7b02cc369cfb3d9a16bacd50a9e03f0ddbdffac2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
