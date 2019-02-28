@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bce5191f_86ac2365",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-02-28T17:18:18Z",
+      "side": 1,
+      "message": "nit: C++ to uz umi lip:\n\n  std::ignore \u003d modName;",
+      "revId": "ec66266f2ac7022fa3ffbdea866178328c303bb6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
