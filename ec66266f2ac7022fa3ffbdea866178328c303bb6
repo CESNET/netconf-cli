@@ -16,6 +16,24 @@
       "revId": "ec66266f2ac7022fa3ffbdea866178328c303bb6",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73a88335_676862b2",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-02-28T17:32:06Z",
+      "side": 1,
+      "message": "I když se mi teda std::ignore líbí kvůli tomu názvu, použiju radši toto https://en.cppreference.com/w/cpp/language/attributes/maybe_unused",
+      "parentUuid": "bce5191f_86ac2365",
+      "revId": "ec66266f2ac7022fa3ffbdea866178328c303bb6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
