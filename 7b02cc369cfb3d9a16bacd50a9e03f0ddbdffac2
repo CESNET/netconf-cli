@@ -52,6 +52,24 @@
       "revId": "7b02cc369cfb3d9a16bacd50a9e03f0ddbdffac2",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3767114c_7043bbfc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-01T10:35:03Z",
+      "side": 1,
+      "message": "Mne je to vcelku jedno, ja jenom chci, aby bylo primo v commitu napsano, jak ses rozhodl, a zejmena proc. Cili to, co pises sem, napis prosim do commitu.",
+      "parentUuid": "c1d0e235_ee2e6327",
+      "revId": "7b02cc369cfb3d9a16bacd50a9e03f0ddbdffac2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
