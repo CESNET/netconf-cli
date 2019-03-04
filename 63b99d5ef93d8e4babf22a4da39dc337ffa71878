@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a70c2a46_9f4e48fb",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-04T15:41:39Z",
+      "side": 1,
+      "message": "tady by to chtely ty using.... veci, o kterych jsme se bavili ustne",
+      "revId": "63b99d5ef93d8e4babf22a4da39dc337ffa71878",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dff1044b_c2b8f7ba",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-04T15:41:39Z",
+      "side": 1,
+      "message": "tohle podle me muze byt constexpr a navratovou hodnotu `auto`; nevim, jestli to enco zasadniho zmeni, ale \"proc ne\"",
+      "revId": "63b99d5ef93d8e4babf22a4da39dc337ffa71878",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
