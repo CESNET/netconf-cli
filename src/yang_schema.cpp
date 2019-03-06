@@ -204,6 +204,8 @@ yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const Modu
         return yang::LeafDataTypes::Uint;
     case LY_TYPE_ENUM:
         return yang::LeafDataTypes::Enum;
+    case LY_TYPE_BINARY:
+        return yang::LeafDataTypes::Binary;
     default:
         throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported");
     }

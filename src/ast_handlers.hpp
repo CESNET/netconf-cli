@@ -445,6 +445,15 @@ struct leaf_data_string_class : leaf_data_base_class {
     }
 };
 
+struct leaf_data_binary_data_class;
+
+struct leaf_data_binary_class : leaf_data_base_class {
+    leaf_data_binary_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Binary)
+    {
+    }
+};
+
 struct set_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)

@@ -16,7 +16,15 @@ struct enum_ {
     std::string m_value;
 };
 
+struct binary_ {
+    binary_();
+    binary_(const std::string& value);
+    bool operator==(const binary_& b) const;
+    std::string m_value;
+};
+
 using leaf_data_ = boost::variant<enum_,
+                                  binary_,
                                   double,
                                   bool,
                                   int32_t,

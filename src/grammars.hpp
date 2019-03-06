@@ -42,6 +42,8 @@ x3::rule<leaf_data_bool_class, bool> const leaf_data_bool = "leaf_data_bool";
 x3::rule<leaf_data_int_class, int32_t> const leaf_data_int = "leaf_data_int";
 x3::rule<leaf_data_uint_class, uint32_t> const leaf_data_uint = "leaf_data_uint";
 x3::rule<leaf_data_string_class, std::string> const leaf_data_string = "leaf_data_string";
+x3::rule<leaf_data_binary_data_class, std::string> const leaf_data_binary_data = "leaf_data_binary_data";
+x3::rule<leaf_data_binary_class, binary_> const leaf_data_binary = "leaf_data_binary";
 
 x3::rule<discard_class, discard_> const discard = "discard";
 x3::rule<ls_class, ls_> const ls = "ls";
@@ -202,6 +204,13 @@ auto const leaf_data_uint_def =
 auto const leaf_data_string_def =
     *char_;
 
+// This intermediate rule is neccessary for coercing to std::string.
+auto const leaf_data_binary_data_def =
+    +(x3::alnum | char_('+') | char_('/')) >> -char_('=') >> -char_('=');
+
+auto const leaf_data_binary_def =
+    leaf_data_binary_data;
+
 auto const leaf_data_def =
 x3::expect[
     leaf_data_enum |
@@ -209,6 +218,7 @@ x3::expect[
     leaf_data_bool |
     leaf_data_int |
     leaf_data_uint |
+    leaf_data_binary |
     leaf_data_string];
 
 struct ls_options_table : x3::symbols<LsOption> {
@@ -298,6 +308,8 @@ BOOST_SPIRIT_DEFINE(leaf_data_bool)
 BOOST_SPIRIT_DEFINE(leaf_data_int)
 BOOST_SPIRIT_DEFINE(leaf_data_uint)
 BOOST_SPIRIT_DEFINE(leaf_data_string)
+BOOST_SPIRIT_DEFINE(leaf_data_binary_data)
+BOOST_SPIRIT_DEFINE(leaf_data_binary)
 BOOST_SPIRIT_DEFINE(initializePath)
 BOOST_SPIRIT_DEFINE(set)
 BOOST_SPIRIT_DEFINE(commit)

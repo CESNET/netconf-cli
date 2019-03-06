@@ -21,6 +21,7 @@ TEST_CASE("leaf editing")
     schema->addLeaf("", "mod:leafBool", yang::LeafDataTypes::Bool);
     schema->addLeaf("", "mod:leafInt", yang::LeafDataTypes::Int);
     schema->addLeaf("", "mod:leafUint", yang::LeafDataTypes::Uint);
+    schema->addLeaf("", "mod:leafBinary", yang::LeafDataTypes::Binary);
     schema->addLeafEnum("", "mod:leafEnum", {"lol", "data", "coze"});
     schema->addLeaf("mod:contA", "mod:leafInCont", yang::LeafDataTypes::String);
     schema->addList("", "mod:list", {"number"});
@@ -33,7 +34,7 @@ TEST_CASE("leaf editing")
     {
         set_ expected;
 
-        SECTION("set leafString some_data")
+        SECTION("set mod:leafString some_data")
         {
             input = "set mod:leafString some_data";
             expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafString")});
@@ -48,7 +49,7 @@ TEST_CASE("leaf editing")
             expected.m_data = std::string("more_data");
         }
 
-        SECTION("set list[number=1]/leafInList another_data")
+        SECTION("set mod:list[number=1]/leafInList another_data")
         {
             input = "set mod:list[number=1]/leafInList another_data";
             auto keys = std::map<std::string, std::string>{
@@ -93,6 +94,28 @@ TEST_CASE("leaf editing")
                 input = "set mod:leafBool true";
                 expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafBool")});
                 expected.m_data = true;
+            }
+
+            SECTION("binary")
+            {
+                SECTION("zero ending '='")
+                {
+                    input = "set mod:leafBinary This/IsABase64EncodedSomething++/342431++";
+                    expected.m_data = binary_{"This/IsABase64EncodedSomething++/342431++"};
+                }
+
+                SECTION("one ending '='")
+                {
+                    input = "set mod:leafBinary This/IsABase64EncodedSomething++/342431++=";
+                    expected.m_data = binary_{"This/IsABase64EncodedSomething++/342431++="};
+                }
+
+                SECTION("two ending '='")
+                {
+                    input = "set mod:leafBinary This/IsABase64EncodedSomething++/342431++==";
+                    expected.m_data = binary_{"This/IsABase64EncodedSomething++/342431++=="};
+                }
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafBinary")});
             }
         }
 
@@ -150,6 +173,14 @@ TEST_CASE("leaf editing")
             {
                 input = "set leafEnum blabla";
             }
+        }
+
+        SECTION("wrong base64 strings")
+        {
+            SECTION("invalid character")
+                input = "set leafBinary dbahj-";
+            SECTION("equal sign in the middle")
+                input = "set leafBinary db=ahj";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException&);

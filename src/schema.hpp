@@ -28,6 +28,7 @@ enum class LeafDataTypes {
     Int,
     Uint,
     Enum,
+    Binary,
 };
 
 struct container {

@@ -14,6 +14,13 @@ enum_::enum_(const std::string& value)
 {
 }
 
+binary_::binary_() = default;
+
+binary_::binary_(const std::string& value)
+    : m_value(value)
+{
+}
+
 bool set_::operator==(const set_& b) const
 {
     return this->m_path == b.m_path && this->m_data == b.m_data;
@@ -27,6 +34,11 @@ bool cd_::operator==(const cd_& b) const
 bool ls_::operator==(const ls_& b) const
 {
     return this->m_path == b.m_path && this->m_options == b.m_options;
+}
+
+bool binary_::operator==(const binary_& b) const
+{
+    return this->m_value == b.m_value;
 }
 
 bool enum_::operator==(const enum_& b) const

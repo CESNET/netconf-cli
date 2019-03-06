@@ -43,6 +43,11 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
         return std::make_shared<sysrepo::Val>(value.m_value.c_str(), SR_ENUM_T);
     }
 
+    sysrepo::S_Val operator()(const binary_& value) const
+    {
+        return std::make_shared<sysrepo::Val>(value.m_value.c_str(), SR_BINARY_T);
+    }
+
     sysrepo::S_Val operator()(const std::string& value) const
     {
         return std::make_shared<sysrepo::Val>(value.c_str());

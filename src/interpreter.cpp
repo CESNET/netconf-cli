@@ -15,6 +15,12 @@ struct leafDataToString : boost::static_visitor<std::string> {
     {
         return data.m_value;
     }
+
+    std::string operator()(const binary_& data) const
+    {
+        return data.m_value;
+    }
+
     template <typename T>
     std::string operator()(const T& data) const
     {
