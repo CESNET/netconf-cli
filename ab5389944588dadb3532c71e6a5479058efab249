@@ -34,6 +34,24 @@
       "revId": "ab5389944588dadb3532c71e6a5479058efab249",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ab169b6_66a52771",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-06T17:10:20Z",
+      "side": 1,
+      "message": "Mas pravdu, promin.",
+      "parentUuid": "b13173ba_7462bda2",
+      "revId": "ab5389944588dadb3532c71e6a5479058efab249",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
