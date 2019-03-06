@@ -16,6 +16,24 @@
       "revId": "ab5389944588dadb3532c71e6a5479058efab249",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b13173ba_7462bda2",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-03-06T16:50:06Z",
+      "side": 1,
+      "message": "https://tools.ietf.org/html/rfc7950#section-9.8 tady se píše, že \"Binary values are encoded with the base64 encoding scheme\", tak mi přišlo celkem logický stejným způsobem zadávat ty binární hodnoty i v mým programu",
+      "parentUuid": "e6dfa24c_9fa7c78a",
+      "revId": "ab5389944588dadb3532c71e6a5479058efab249",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
