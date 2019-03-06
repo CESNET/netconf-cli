@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e6dfa24c_9fa7c78a",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-06T15:36:24Z",
+      "side": 1,
+      "message": "Tohle podle me ale nejsou spatne vstupy (maximalne se muzeme bavit o tom, ze zatim neni receno, jak by se takove hodnoty mely zadavat, ale prece v \"binary\" hodnote muze byt uvnitr \u0027\u003d\u0027 a nebo na konci \u0027-\u0027. Nemusis to implementovat, ale dej tam, prosim, aspon TODO nekam do kodu ci gramatiky parseru.",
+      "revId": "ab5389944588dadb3532c71e6a5479058efab249",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
