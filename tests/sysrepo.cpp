@@ -8,7 +8,11 @@
 
 #include "trompeloeil_doctest.h"
 
+#ifdef sysrepo_BACKEND
 #include "sysrepo_access.hpp"
+#else
+#include "netconf_access.hpp"
+#endif
 #include "sysrepo_subscription.hpp"
 
 class MockRecorder : public Recorder {
@@ -21,7 +25,12 @@ TEST_CASE("setting values")
     trompeloeil::sequence seq1;
     MockRecorder mock;
     SysrepoSubscription subscription(&mock);
+
+#ifdef sysrepo_BACKEND
     SysrepoAccess datastore("netconf-cli-test");
+#else
+    NetconfAccess datastore("/home/ci/target/var-run/netopeer2-server.sock");
+#endif
 
     SECTION("set leafInt to 123")
     {
