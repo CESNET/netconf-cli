@@ -8,6 +8,7 @@
 
 #include <libyang/Libyang.hpp>
 #include <libyang/Tree_Schema.hpp>
+#include <libyang/Tree_Data.hpp>
 #include <string_view>
 #include "utils.hpp"
 #include "yang_schema.hpp"
@@ -280,4 +281,9 @@ void YangSchema::registerModuleCallback(const std::function<std::string(const ch
         free(data);
     };
     m_context->add_missing_module_callback(lambda, deleter);
+}
+
+std::shared_ptr<libyang::Data_Node> YangSchema::dataNodeFromPath(const std::string& path, const std::string& value) const
+{
+    return std::make_shared<libyang::Data_Node>(m_context, path.c_str(), value.c_str(), LYD_ANYDATA_CONSTSTRING, 0);
 }
