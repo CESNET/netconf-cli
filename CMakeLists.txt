@@ -2,6 +2,8 @@ project(netconf-cli LANGUAGES CXX)
 cmake_minimum_required(VERSION 3.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
 
 include(GNUInstallDirs)
 
@@ -60,6 +62,7 @@ find_package(PkgConfig)
 pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=0.15.111)
 # TODO: bump to 0.7.8 once it is tagged
 pkg_check_modules(SYSREPO REQUIRED libSysrepo-cpp>=0.7.7)
+pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=0.12.47)
 
 # we don't need filename tracking, and we prefer to use header-only Boost
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
@@ -78,9 +81,19 @@ target_link_libraries(datastoreaccess PUBLIC Boost::boost)
 add_library(sysrepoaccess STATIC
     src/sysrepo_access.cpp
     )
+
 target_link_libraries(sysrepoaccess datastoreaccess ${SYSREPO_LIBRARIES})
 link_directories(${SYSREPO_LIBRARY_DIRS})
 target_include_directories(sysrepoaccess SYSTEM PRIVATE ${SYSREPO_INCLUDE_DIRS})
+
+add_library(netconfaccess STATIC
+    src/netconf-client.cpp
+    src/netconf_access.cpp
+    )
+
+target_link_libraries(netconfaccess datastoreaccess ${LIBNETCONF2_LIBRARIES})
+link_directories(${LIBNETCONF2_LIBRARY_DIRS})
+target_include_directories(netconfaccess SYSTEM PRIVATE ${LIBNETCONF2_INCLUDE_DIRS})
 
 add_library(yangschema STATIC
     src/yang_schema.cpp
@@ -113,8 +126,8 @@ target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_
 add_executable(netconf-cli
     src/main.cpp
     )
-target_link_libraries(netconf-cli sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
 target_include_directories(netconf-cli PRIVATE ${REPLXX_PATH})
+target_link_libraries(netconf-cli netconfaccess sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY} Threads::Threads spdlog::spdlog)
 if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
     target_link_libraries(netconf-cli c++experimental)
 else()

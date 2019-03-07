@@ -19,6 +19,7 @@ namespace libyang {
 class Context;
 class Set;
 class Schema_Node;
+class Data_Node;
 }
 
 /*! \class YangSchema
@@ -55,6 +56,8 @@ public:
 
     /** @short Adds a new directory for schema lookup. */
     void addSchemaDirectory(const char* directoryName);
+
+    std::shared_ptr<libyang::Data_Node> dataNodeFromPath(const std::string& path, const std::string& value) const;
 
 private:
     std::set<std::string> modules() const;
