@@ -10,6 +10,7 @@
 */
 #include <string>
 #include "ast_path.hpp"
+#include "ast_values.hpp"
 #include "schema.hpp"
 
 std::string joinPaths(const std::string& prefix, const std::string& suffix);
