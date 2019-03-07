@@ -77,3 +77,33 @@ std::set<std::string> filterByPrefix(const std::set<std::string>& set, const std
             [prefix] (auto it) { return boost::starts_with(it, prefix); });
     return filtered;
 }
+
+struct leafDataToStringVisitor : boost::static_visitor<std::string> {
+    std::string operator()(const enum_& data) const
+    {
+        return data.m_value;
+    }
+
+    std::string operator()(const binary_& data) const
+    {
+        return data.m_value;
+    }
+
+    std::string operator()(const identityRef_& data) const
+    {
+        return data.m_prefix.value().m_name + ":" + data.m_value;
+    }
+
+    template <typename T>
+    std::string operator()(const T& data) const
+    {
+        std::stringstream stream;
+        stream << data;
+        return stream.str();
+    }
+};
+
+std::string leafDataToString(const leaf_data_ value)
+{
+    return boost::apply_visitor(leafDataToStringVisitor(), value);
+}

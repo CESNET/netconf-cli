@@ -10,31 +10,6 @@
 #include "datastore_access.hpp"
 #include "interpreter.hpp"
 
-struct leafDataToString : boost::static_visitor<std::string> {
-    std::string operator()(const enum_& data) const
-    {
-        return data.m_value;
-    }
-
-    std::string operator()(const binary_& data) const
-    {
-        return data.m_value;
-    }
-
-    std::string operator()(const identityRef_& data) const
-    {
-        return data.m_value;
-    }
-
-    template <typename T>
-    std::string operator()(const T& data) const
-    {
-        std::stringstream stream;
-        stream << data;
-        return stream.str();
-    }
-};
-
 void Interpreter::operator()(const commit_&) const
 {
     m_datastore.commitChanges();
@@ -64,7 +39,7 @@ void Interpreter::operator()(const get_& get) const
 {
     auto items = m_datastore.getItems(absolutePathFromCommand(get));
     for (auto it : items) {
-        std::cout << it.first << " = " << boost::apply_visitor(leafDataToString(), it.second) << std::endl;
+        std::cout << it.first << " = " << leafDataToString(it.second) << std::endl;
     }
 }
 
