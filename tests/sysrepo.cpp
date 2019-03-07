@@ -8,7 +8,14 @@
 
 #include "trompeloeil_doctest.h"
 
+#ifdef sysrepo_BACKEND
 #include "sysrepo_access.hpp"
+#elif defined(netconf_BACKEND)
+#include "netconf_access.hpp"
+#include "netopeer_vars.hpp"
+#else
+#error "Unknown backend"
+#endif
 #include "sysrepo_subscription.hpp"
 
 class MockRecorder : public Recorder {
@@ -21,7 +28,14 @@ TEST_CASE("setting values")
     trompeloeil::sequence seq1;
     MockRecorder mock;
     SysrepoSubscription subscription(&mock);
+
+#ifdef sysrepo_BACKEND
     SysrepoAccess datastore("netconf-cli-test");
+#elif defined(netconf_BACKEND)
+    NetconfAccess datastore(NETOPEER_SOCKET_PATH);
+#else
+#error "Unknown backend"
+#endif
 
     SECTION("set leafInt to 123")
     {
