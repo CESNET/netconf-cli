@@ -7,6 +7,7 @@
 */
 
 #include <libyang/Libyang.hpp>
+#include <libyang/Tree_Data.hpp>
 #include <libyang/Tree_Schema.hpp>
 #include <string_view>
 #include "UniqueResource.h"
@@ -340,4 +341,18 @@ void YangSchema::registerModuleCallback(const std::function<std::string(const ch
         free(data);
     };
     m_context->add_missing_module_callback(lambda, deleter);
+}
+
+std::shared_ptr<libyang::Data_Node> YangSchema::dataNodeFromPath(const std::string& path, const std::optional<const std::string> value) const
+{
+    return std::make_shared<libyang::Data_Node>(m_context,
+                                                path.c_str(),
+                                                value ? value.value().c_str() : nullptr,
+                                                LYD_ANYDATA_CONSTSTRING,
+                                                0);
+}
+
+std::shared_ptr<libyang::Module> YangSchema::getYangModule(const std::string& name)
+{
+    return m_context->get_module(name.c_str(), nullptr, 0);
 }

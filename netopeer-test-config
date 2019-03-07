@@ -1,0 +1,4 @@
+<netconf-server xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-server">
+  <listen>
+  </listen>
+</netconf-server>

@@ -48,7 +48,6 @@ find_package(Doxygen)
 option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${DOXYGEN_FOUND})
 
 find_package(docopt REQUIRED)
-find_package(spdlog REQUIRED)
 find_package(Boost REQUIRED)
 find_library(REPLXX_LIBRARY replxx REQUIRED)
 find_path(REPLXX_PATH replxx.hxx)
@@ -60,6 +59,7 @@ find_package(PkgConfig)
 pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=0.15.111)
 # TODO: bump to 0.7.8 once it is tagged
 pkg_check_modules(SYSREPO REQUIRED libSysrepo-cpp>=0.7.7)
+pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=0.12.47)
 
 # we don't need filename tracking, and we prefer to use header-only Boost
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
@@ -78,9 +78,19 @@ target_link_libraries(datastoreaccess PUBLIC Boost::boost)
 add_library(sysrepoaccess STATIC
     src/sysrepo_access.cpp
     )
+
 target_link_libraries(sysrepoaccess datastoreaccess ${SYSREPO_LIBRARIES})
 link_directories(${SYSREPO_LIBRARY_DIRS})
 target_include_directories(sysrepoaccess SYSTEM PRIVATE ${SYSREPO_INCLUDE_DIRS})
+
+add_library(netconfaccess STATIC
+    src/netconf-client.cpp
+    src/netconf_access.cpp
+    )
+
+target_link_libraries(netconfaccess datastoreaccess ${LIBNETCONF2_LIBRARIES})
+link_directories(${LIBNETCONF2_LIBRARY_DIRS})
+target_include_directories(netconfaccess SYSTEM PRIVATE ${LIBNETCONF2_INCLUDE_DIRS})
 
 add_library(yangschema STATIC
     src/yang_schema.cpp
@@ -113,8 +123,8 @@ target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_
 add_executable(netconf-cli
     src/main.cpp
     )
-target_link_libraries(netconf-cli sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
 target_include_directories(netconf-cli PRIVATE ${REPLXX_PATH})
+target_link_libraries(netconf-cli netconfaccess sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
 if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
     target_link_libraries(netconf-cli c++experimental)
 else()
@@ -136,7 +146,7 @@ if(BUILD_TESTING)
         tests/wait-a-bit-longer.cpp
         )
     target_include_directories(DoctestIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-    target_link_libraries(DoctestIntegration doctest::doctest trompeloeil spdlog::spdlog)
+    target_link_libraries(DoctestIntegration doctest::doctest trompeloeil)
     target_compile_definitions(DoctestIntegration PUBLIC DOCTEST_CONFIG_SUPER_FAST_ASSERTS)
 
     if (NOT SYSREPOCTL_EXECUTABLE)
@@ -152,6 +162,31 @@ if(BUILD_TESTING)
     if (NOT SYSREPOCFG_EXECUTABLE)
         message(FATAL_ERROR "Unable to find sysrepocfg, set SYSREPOCFG_EXECUTABLE manually.")
     endif()
+
+    if (NOT SYSREPOD_EXECUTABLE)
+        find_program(SYSREPOD_EXECUTABLE sysrepod)
+    endif()
+    if (NOT SYSREPOD_EXECUTABLE)
+        message(FATAL_ERROR "Unable to find sysrepod, set SYSREPOD_EXECUTABLE manually.")
+    endif()
+
+    if (NOT SYSREPO_PLUGIND_EXECUTABLE)
+        find_program(SYSREPO_PLUGIND_EXECUTABLE sysrepo-plugind)
+    endif()
+    if (NOT SYSREPO_PLUGIND_EXECUTABLE)
+        message(FATAL_ERROR "Unable to find sysrepo-plugind, set SYSREPO_EXECUTABLE manually.")
+    endif()
+
+    if (NOT NETOPEER2_EXECUTABLE)
+        find_program(NETOPEER2_EXECUTABLE netopeer2-server)
+    endif()
+    if (NOT NETOPEER2_EXECUTABLE)
+        message(FATAL_ERROR "Unable to find netopeer2-server, set NETOPEER2_EXECUTABLE manually.")
+    endif()
+
+    set(NETOPEER_SOCKET_PATH "${CMAKE_CURRENT_BINARY_DIR}/netopeer2-server.sock")
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start_daemons.sh.in ${CMAKE_CURRENT_BINARY_DIR}/start_daemons.sh @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/netopeer_vars.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/netopeer_vars.hpp @ONLY)
 
     function(cli_test name)
         if (${ARGC} GREATER 1) # this is how CMake does optional arguments
@@ -178,6 +213,7 @@ if(BUILD_TESTING)
         set_tests_properties(test_${name}_init PROPERTIES FIXTURES_SETUP ${name}-setup)
         set_tests_properties(test_${name} PROPERTIES FIXTURES_REQUIRED ${name}-setup RESOURCE_LOCK sysrepo)
         set_tests_properties(test_${name}_cleanup PROPERTIES FIXTURES_CLEANUP ${name}-setup)
+        target_compile_definitions(test_${name} PRIVATE ${name}_BACKEND)
     endfunction()
 
     cli_test(cd)
@@ -193,7 +229,19 @@ if(BUILD_TESTING)
     cli_test(list_manipulation)
     datastore_test(sysrepo sysrepo.cpp ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
     target_link_libraries(test_sysrepo sysrepoaccess yangschema)
+    datastore_test(netconf sysrepo.cpp ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
+    add_test(NAME start_daemons COMMAND fakeroot ${CMAKE_CURRENT_BINARY_DIR}/start_daemons.sh)
+    add_test(NAME setup_netopeer COMMAND ${SYSREPOCFG_EXECUTABLE} ietf-netconf-server -i ${CMAKE_CURRENT_SOURCE_DIR}/netopeer-test-config --datastore=startup --format=xml)
+    add_test(NAME kill_daemons COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/kill_daemons.sh)
+    set_tests_properties(setup_netopeer PROPERTIES DEPENDS test_sysrepo_cleanup)
+    set_tests_properties(start_daemons PROPERTIES DEPENDS setup_netopeer)
+    set_tests_properties(test_netconf_init PROPERTIES DEPENDS start_daemons)
+    set_tests_properties(test_netconf_cleanup PROPERTIES DEPENDS kill_daemons)
+    set_tests_properties(kill_daemons PROPERTIES DEPENDS test_netconf)
+
     target_include_directories(test_sysrepo PRIVATE ${PROJECT_SOURCE_DIR}/tests/mock)
+    target_link_libraries(test_netconf sysreposubscription netconfaccess yangschema parser)
+    target_include_directories(test_netconf PRIVATE ${PROJECT_SOURCE_DIR}/tests/mock)
 endif()
 
 if(WITH_DOCS)

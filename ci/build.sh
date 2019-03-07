@@ -72,6 +72,9 @@ curl ${ARTIFACT_URL} --output ${ARTIFACT_FILE}
 tar -C ${PREFIX} -xf ${ARTIFACT_FILE}
 rm ${ARTIFACT_FILE}
 
+# TODO: move this to CzechLight/dependencies
+mkdir -p /home/ci/target/var-run
+
 cd ${BUILD_DIR}
 cmake -GNinja -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Debug} -DCMAKE_INSTALL_PREFIX=${PREFIX} ${CMAKE_OPTIONS} ${ZUUL_PROJECT_SRC_DIR}
 ninja-build
