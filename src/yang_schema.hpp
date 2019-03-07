@@ -9,6 +9,7 @@
 #pragma once
 
 #include <functional>
+#include <optional>
 #include <set>
 #include <stdexcept>
 #include <unordered_map>
@@ -19,6 +20,8 @@ namespace libyang {
 class Context;
 class Set;
 class Schema_Node;
+class Data_Node;
+class Module;
 }
 
 /*! \class YangSchema
@@ -56,6 +59,10 @@ public:
 
     /** @short Adds a new directory for schema lookup. */
     void addSchemaDirectory(const char* directoryName);
+
+    /** @short Creates a new data node from a path (to be used with NETCONF edit-config) */
+    std::shared_ptr<libyang::Data_Node> dataNodeFromPath(const std::string& path, const std::optional<const std::string> value = std::nullopt) const;
+    std::shared_ptr<libyang::Module> getYangModule(const std::string& name);
 
 private:
     std::set<std::string> modules() const;
