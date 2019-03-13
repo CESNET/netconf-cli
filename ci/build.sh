@@ -33,6 +33,12 @@ if [[ $ZUUL_JOB_NAME =~ .*-asan ]]; then
     export LDFLAGS="-fsanitize=address ${LDFLAGS}"
 fi
 
+if [[ $ZUUL_JOB_NAME =~ .*-tsan ]]; then
+    export CFLAGS="-fsanitize=thread ${CFLAGS}"
+    export CXXFLAGS="-fsanitize=thread ${CXXFLAGS}"
+    export LDFLAGS="-fsanitize=thread ${LDFLAGS}"
+fi
+
 PREFIX=~/target
 mkdir ${PREFIX}
 BUILD_DIR=~/build

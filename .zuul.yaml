@@ -9,3 +9,5 @@
             requires: CzechLight-deps-f29-gcc-asan-ubsan
         - f29-clang-asan:
             requires: CzechLight-deps-f29-clang-asan
+        - f29-clang-tsan:
+            requires: CzechLight-deps-f29-clang-tsan
