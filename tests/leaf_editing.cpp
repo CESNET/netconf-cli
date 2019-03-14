@@ -183,6 +183,6 @@ TEST_CASE("leaf editing")
                 input = "set leafBinary db=ahj";
         }
 
-        REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException&);
+        REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
     }
 }

@@ -129,25 +129,17 @@ target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
 include(CTest)
 if(BUILD_TESTING)
     enable_testing()
-    find_path(TROMPELOEIL_PATH trompeloeil.hpp PATH_SUFFIXES trompeloeil/)
-    if("${TROMPELOEIL_PATH}" STREQUAL "TROMPELOEIL_PATH-NOTFOUND")
-        message(FATAL_ERROR "Cannot find the \"trompeloeil.hpp\" file provided by <https://github.com/rollbear/trompeloeil>. "
-            "Please set TROMPELOEIL_PATH to where it is available.")
-    endif()
-
-    find_path(CATCH_PATH catch.hpp PATH_SUFFIXES catch/)
-    if("${CATCH_PATH}" STREQUAL "CATCH_PATH-NOTFOUND")
-        message(FATAL_ERROR "Cannot find the \"catch.hpp\" file provided by <http://catch-lib.net/>. "
-            "Please set CATCH_PATH to where it is available.")
-    endif()
+    find_package(trompeloeil 33 REQUIRED)
+    find_package(Catch2 2.7.0 REQUIRED)
 
     add_library(TestCatchIntegration STATIC
         tests/catch_integration.cpp
         tests/trompeloeil_catch.h
+        tests/wait-a-bit-longer.cpp
         )
-    target_include_directories(TestCatchIntegration SYSTEM PUBLIC ${TROMPELOEIL_PATH} ${CATCH_PATH})
     target_include_directories(TestCatchIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-    target_link_libraries(TestCatchIntegration spdlog::spdlog)
+    target_link_libraries(TestCatchIntegration Catch2::Catch2 trompeloeil spdlog::spdlog)
+    target_compile_definitions(TestCatchIntegration PUBLIC CATCH_CONFIG_FAST_COMPILE)
 
     if (NOT SYSREPOCTL_EXECUTABLE)
         find_program(SYSREPOCTL_EXECUTABLE sysrepoctl)
