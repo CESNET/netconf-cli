@@ -237,6 +237,7 @@ struct absoluteStart_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.m_curPath.m_nodes.clear();
+        parserContext.m_topLevelModulePresent = false;
     }
 };
 
