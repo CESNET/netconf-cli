@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9a698c4d_1dd9eb0d",
+        "filename": "src/netconf-client.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-03-18T16:02:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "627f5659_0c043d8f",
+      "range": {
+        "startLine": 35,
+        "startChar": 26,
+        "endLine": 35,
+        "endChar": 69
+      },
+      "revId": "e1b24b5d4cfc968c5be4eaba280b18095ced4273",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa7e623d_54abedb4",
         "filename": "src/netconf_access.cpp",
         "patchSetId": 6
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "cd308bc4_ca1d63db",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-03-18T16:02:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa7e623d_54abedb4",
+      "range": {
+        "startLine": 45,
+        "startChar": 13,
+        "endLine": 45,
+        "endChar": 17
+      },
+      "revId": "e1b24b5d4cfc968c5be4eaba280b18095ced4273",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d6e0d9d2_15aa4636",
         "filename": "src/utils.hpp",
         "patchSetId": 6
@@ -59,6 +107,30 @@
       "writtenOn": "2019-03-18T14:13:57Z",
       "side": 1,
       "message": "Da se z toho udelat forward deklarace, a nebo je to nejaky sileny `auto` chrchel? Ze by nebylo nutne includovat ast_values.hpp primo z tohoto headeru kvuli rychlosti kompilace.",
+      "range": {
+        "startLine": 25,
+        "startChar": 35,
+        "endLine": 25,
+        "endChar": 45
+      },
+      "revId": "e1b24b5d4cfc968c5be4eaba280b18095ced4273",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1216fe86_2838aed0",
+        "filename": "src/utils.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-03-18T16:02:37Z",
+      "side": 1,
+      "message": "To leaf_data_ je\n using leaf_data_ \u003d boost::variant\u003cenum_,\n                                  binary_,\n                                  double,\n                                  bool,\n                                  int32_t,\n                                  uint32_t,\n                                  std::string\u003e;\n\nMyslíš, že tim includem se nějak razantně sníží doba kompilace?",
+      "parentUuid": "d6e0d9d2_15aa4636",
       "range": {
         "startLine": 25,
         "startChar": 35,
@@ -91,6 +163,30 @@
       "revId": "e1b24b5d4cfc968c5be4eaba280b18095ced4273",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58d3dacf_6c53b285",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-03-18T16:02:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28f0d5b1_f6da858c",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 292,
+        "endChar": 1
+      },
+      "revId": "e1b24b5d4cfc968c5be4eaba280b18095ced4273",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
