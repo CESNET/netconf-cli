@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "943b0271_25267761",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-18T17:39:53Z",
+      "side": 1,
+      "message": "Rad bych tohle mergnul nezavisle na podpore NETCONFu, protoze s ni bych rad pockal na to, az to bude funkci z aplikace, co si muzu bez dalsiho patchovani pustit. Rebasni to, prosim.",
+      "revId": "be4103f58bfd475f70e7eaa50ae59bec87227f5d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e105efe_4251a891",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-18T17:39:53Z",
+      "side": 1,
+      "message": "git/gerrit potrebujou \"do paticek\", cili do posledniho odstavce, davat jenom veci formatovane jako \"klic: hodnota\". Prijde mi dobre pouzit Bug: pro bugreporty a Task: pro tasky, delam to tak i jinde.",
+      "revId": "be4103f58bfd475f70e7eaa50ae59bec87227f5d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
