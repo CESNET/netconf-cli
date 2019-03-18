@@ -288,7 +288,7 @@ struct cd_class {
     }
 };
 
-struct presenceContainerPathHandler {
+struct presenceContainerPath_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
@@ -296,9 +296,9 @@ struct presenceContainerPathHandler {
         const auto& schema = parserContext.m_schema;
         try {
             boost::optional<std::string> module;
-            if (ast.m_path.m_nodes.back().m_prefix)
-                module = ast.m_path.m_nodes.back().m_prefix.value().m_name;
-            container_ cont = boost::get<container_>(ast.m_path.m_nodes.back().m_suffix);
+            if (ast.m_nodes.back().m_prefix)
+                module = ast.m_nodes.back().m_prefix.value().m_name;
+            container_ cont = boost::get<container_>(ast.m_nodes.back().m_suffix);
             schemaPath_ location = pathWithoutLastNode(parserContext.m_curPath);
 
             if (!schema.isPresenceContainer(location, {module, cont.m_name})) {
@@ -310,7 +310,9 @@ struct presenceContainerPathHandler {
             _pass(context) = false;
         }
     }
+};
 
+struct create_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
     {
@@ -321,10 +323,16 @@ struct presenceContainerPathHandler {
     }
 };
 
-struct create_class : public presenceContainerPathHandler {
-};
+struct delete_class {
+    template <typename Iterator, typename Exception, typename Context>
+    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        if (parserContext.m_errorMsg.empty())
+            parserContext.m_errorMsg = "Couldn't parse create/delete command.";
+        return x3::error_handler_result::rethrow;
+    }
 
-struct delete_class : public presenceContainerPathHandler {
 };
 
 struct leaf_path_class {
