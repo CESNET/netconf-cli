@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "5db8b6af_a94f1a54",
+        "filename": "src/utils.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-18T18:06:28Z",
+      "side": 1,
+      "message": "Prijde mi to jako obecne dobry postup, je na to X toolu (\"include what you use\"). Ale kazdopadne v tomhle konrektnim projektu je to jedno, protoze src/utils.cpp trva \"jenom\" 10 vterin, coz znamena, ze je tak v pulce celeho histogramu :), jsou tam mnohoem horsi bumbrlicci, jako treba libovolny test.\n\n(skript na statistiku: https://github.com/ninja-build/ninja/issues/1080#issuecomment-255436851)",
+      "parentUuid": "1216fe86_2838aed0",
+      "range": {
+        "startLine": 25,
+        "startChar": 35,
+        "endLine": 25,
+        "endChar": 45
+      },
+      "revId": "e1b24b5d4cfc968c5be4eaba280b18095ced4273",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "28f0d5b1_f6da858c",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 6
