@@ -174,6 +174,13 @@ TEST_CASE("ls")
             SECTION("ls /example:nonexistent")
                 input = "ls /example:nonexistent";
 
+            SECTION("ls /exa")
+            {
+                SECTION("cwd: /") {}
+                SECTION("cwd: /example:a") { parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}}); }
+                input = "ls /exa";
+            }
+
             SECTION("ls /bad:nonexistent")
                 input = "ls /bad:nonexistent";
 
