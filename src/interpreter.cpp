@@ -65,7 +65,10 @@ void Interpreter::operator()(const create_& create) const
 
 void Interpreter::operator()(const delete_& delet) const
 {
-    m_datastore.deletePresenceContainer(absolutePathFromCommand(delet));
+    if (delet.m_path.m_nodes.back().m_suffix.type() == typeid(container_))
+        m_datastore.deletePresenceContainer(absolutePathFromCommand(delet));
+    else
+        m_datastore.deleteListInstance(absolutePathFromCommand(delet));
 }
 
 void Interpreter::operator()(const ls_& ls) const

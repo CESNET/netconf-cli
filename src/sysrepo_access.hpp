@@ -32,6 +32,8 @@ public:
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createPresenceContainer(const std::string& path) override;
     void deletePresenceContainer(const std::string& path) override;
+    void createListInstance(const std::string& path) override;
+    void deleteListInstance(const std::string& path) override;
     std::string fetchSchema(const char* module, const char* revision, const char* submodule);
     std::vector<std::string> listImplementedSchemas();
 

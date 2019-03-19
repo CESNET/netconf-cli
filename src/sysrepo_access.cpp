@@ -117,6 +117,16 @@ void SysrepoAccess::deletePresenceContainer(const std::string& path)
     m_session->delete_item(path.c_str());
 }
 
+void SysrepoAccess::createListInstance(const std::string& path)
+{
+    m_session->set_item(path.c_str());
+}
+
+void SysrepoAccess::deleteListInstance(const std::string& path)
+{
+    m_session->delete_item(path.c_str());
+}
+
 void SysrepoAccess::commitChanges()
 {
     m_session->commit();

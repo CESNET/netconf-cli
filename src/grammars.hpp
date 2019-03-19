@@ -35,6 +35,7 @@ x3::rule<dataPathListEnd_class, dataPath_> const dataPathListEnd = "dataPathList
 x3::rule<dataPath_class, dataPath_> const dataPath = "dataPath";
 x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
+x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
 
 x3::rule<leaf_data_class, leaf_data_> const leaf_data = "leaf_data";
 x3::rule<leaf_data_enum_class, enum_> const leaf_data_enum = "leaf_data_enum";
@@ -182,6 +183,9 @@ auto const leafPath_def =
 auto const presenceContainerPath_def =
     dataPath;
 
+auto const listInstancePath_def =
+    dataPath;
+
 auto const createEnumSuggestions_def =
     x3::eps;
 
@@ -244,10 +248,10 @@ auto const cd_def =
     cd_::name >> space_separator > dataPath;
 
 auto const create_def =
-    create_::name >> space_separator > presenceContainerPath;
+    create_::name >> space_separator > (presenceContainerPath | listInstancePath);
 
 auto const delete_rule_def =
-    delete_::name >> space_separator > presenceContainerPath;
+    delete_::name >> space_separator > (presenceContainerPath | listInstancePath);
 
 auto const get_def =
     get_::name >> -(space_separator >> (dataPathListEnd | dataPath));
@@ -298,6 +302,7 @@ BOOST_SPIRIT_DEFINE(container)
 BOOST_SPIRIT_DEFINE(leaf)
 BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
+BOOST_SPIRIT_DEFINE(listInstancePath)
 BOOST_SPIRIT_DEFINE(schemaPath)
 BOOST_SPIRIT_DEFINE(dataPath)
 BOOST_SPIRIT_DEFINE(dataNodeList)

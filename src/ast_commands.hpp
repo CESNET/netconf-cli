@@ -86,12 +86,13 @@ struct create_ : x3::position_tagged {
     static constexpr auto name = "create";
     static constexpr auto shortHelp = "create - Create a presence container.";
     static constexpr auto longHelp = R"(
-    create path_to_presence_container
+    create path
 
-    Creates a presence container specified by a path.
+    Creates a presence container or a list instance specified by path.
 
     Usage:
-        /> create /module:pContainer)";
+        /> create /module:pContainer
+        /> create /module:list[key=value][anotherKey=value])";
     bool operator==(const create_& b) const;
     dataPath_ m_path;
 };
@@ -100,12 +101,13 @@ struct delete_ : x3::position_tagged {
     static constexpr auto name = "delete";
     static constexpr auto shortHelp = "delete - Delete a presence container.";
     static constexpr auto longHelp = R"(
-    delete path_to_presence_container
+    delete path
 
-    Delete a presence container specified by a path.
+    Deletes a presence container or a list instance specified by path.
 
     Usage:
-        /> delete /module:pContainer)";
+        /> delete /module:pContainer
+        /> delete /module:list[key=value][anotherKey=value])";
     bool operator==(const delete_& b) const;
     dataPath_ m_path;
 };

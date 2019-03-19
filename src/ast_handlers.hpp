@@ -312,6 +312,18 @@ struct presenceContainerPath_class {
     }
 };
 
+struct listInstancePath_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        if (ast.m_nodes.back().m_suffix.type() != typeid(listElement_)) {
+            parserContext.m_errorMsg = "This is not a list instance.";
+            _pass(context) = false;
+        }
+    }
+};
+
 struct create_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
