@@ -18,6 +18,10 @@ module second-schema {
         prefix "example";
     }
 
+    identity pineapple {
+        base "example:fruit";
+    }
+
     augment /example:a {
         container augmentedContainer {
         }
@@ -35,6 +39,28 @@ module example-schema {
     yang-version 1.1;
     namespace "http://example.com/example-sports";
     prefix coze;
+
+    identity drink {
+    }
+
+    identity voda {
+        base "drink";
+    }
+
+    identity food {
+    }
+
+    identity fruit {
+        base "food";
+    }
+
+    identity pizza {
+        base "food";
+    }
+
+    identity hawaii {
+        base "pizza";
+    }
 
     container a {
         container a2 {
@@ -114,6 +140,25 @@ module example-schema {
 
     leaf leafEnumTypedefRestricted2 {
         type enumTypedefRestricted;
+    }
+
+    leaf foodIdentLeaf {
+        type identityref {
+            base "food";
+        }
+    }
+
+    leaf pizzaIdentLeaf {
+        type identityref {
+            base "pizza";
+        }
+    }
+
+    leaf foodDrinkIdentLeaf {
+        type identityref {
+            base "food";
+            base "drink";
+        }
     }
 
     list _list {
@@ -279,6 +324,110 @@ TEST_CASE("yangschema")
 
             REQUIRE(ys.leafEnumHasValue(path, node, value));
         }
+        SECTION("leafIdentityIsValid")
+        {
+            ModuleValuePair value;
+
+            SECTION("foodIdentLeaf")
+            {
+                node.first = "example-schema";
+                node.second = "foodIdentLeaf";
+
+                SECTION("food")
+                {
+                    value.second = "food";
+                }
+                SECTION("example-schema:food")
+                {
+                    value.first = "example-schema";
+                    value.second = "food";
+                }
+                SECTION("pizza")
+                {
+                    value.second = "pizza";
+                }
+                SECTION("example-schema:pizza")
+                {
+                    value.first = "example-schema";
+                    value.second = "pizza";
+                }
+                SECTION("hawaii")
+                {
+                    value.second = "hawaii";
+                }
+                SECTION("example-schema:hawaii")
+                {
+                    value.first = "example-schema";
+                    value.second = "hawaii";
+                }
+                SECTION("fruit")
+                {
+                    value.second = "fruit";
+                }
+                SECTION("example-schema:fruit")
+                {
+                    value.first = "example-schema";
+                    value.second = "fruit";
+                }
+                SECTION("second-schema:pineapple")
+                {
+                    value.first = "second-schema";
+                    value.second = "pineapple";
+                }
+            }
+
+            SECTION("pizzaIdentLeaf")
+            {
+                node.first = "example-schema";
+                node.second = "pizzaIdentLeaf";
+
+                SECTION("pizza")
+                {
+                    value.second = "pizza";
+                }
+                SECTION("example-schema:pizza")
+                {
+                    value.first = "example-schema";
+                    value.second = "pizza";
+                }
+                SECTION("hawaii")
+                {
+                    value.second = "hawaii";
+                }
+                SECTION("example-schema:hawaii")
+                {
+                    value.first = "example-schema";
+                    value.second = "hawaii";
+                }
+            }
+
+            SECTION("foodDrinkIdentLeaf")
+            {
+                node.first = "example-schema";
+                node.second = "foodDrinkIdentLeaf";
+
+                SECTION("food")
+                {
+                    value.second = "food";
+                }
+                SECTION("example-schema:food")
+                {
+                    value.first = "example-schema";
+                    value.second = "food";
+                }
+                SECTION("drink")
+                {
+                    value.second = "drink";
+                }
+                SECTION("example-schema:drink")
+                {
+                    value.first = "example-schema";
+                    value.second = "drink";
+                }
+            }
+            REQUIRE(ys.leafIdentityIsValid(path, node, value));
+        }
+
         SECTION("listHasKey")
         {
             std::string key;
@@ -381,6 +530,7 @@ TEST_CASE("yangschema")
                        "example-schema:leafDecimal", "example-schema:leafBool", "example-schema:leafInt",
                        "example-schema:leafUint", "example-schema:leafEnum", "example-schema:leafEnumTypedef",
                        "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
+                       "example-schema:foodIdentLeaf", "example-schema:pizzaIdentLeaf", "example-schema:foodDrinkIdentLeaf",
                        "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla"};
             }
 
@@ -459,6 +609,44 @@ TEST_CASE("yangschema")
         SECTION("nonexistent module")
         {
             REQUIRE(!ys.isModule(path, "notAModule"));
+        }
+
+        SECTION("leafIdentityIsValid")
+        {
+            ModuleValuePair value;
+            SECTION("pizzaIdentLeaf")
+            {
+                node.first = "example-schema";
+                node.second = "pizzaIdentLeaf";
+
+                SECTION("wrong base ident")
+                {
+                    SECTION("food")
+                    {
+                        value.second = "food";
+                    }
+                    SECTION("fruit")
+                    {
+                        value.second = "fruit";
+                    }
+                }
+                SECTION("non-existent identity")
+                {
+                    value.second = "nonexistent";
+                }
+                SECTION("weird module")
+                {
+                    value.first = "ahahaha";
+                    value.second = "pizza";
+                }
+            }
+            SECTION("different module identity, but withotu prefix")
+            {
+                node.first = "example-schema";
+                node.second = "foodIdentLeaf";
+                value.second = "pineapple";
+            }
+            REQUIRE_FALSE(ys.leafIdentityIsValid(path, node, value));
         }
     }
 }
