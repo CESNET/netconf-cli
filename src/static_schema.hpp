@@ -29,11 +29,13 @@ public:
     bool isList(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const override;
+    bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const override;
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
     bool nodeExists(const std::string& location, const std::string& node) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
+    const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion) const override;
 
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
@@ -41,10 +43,12 @@ public:
     void addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues);
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void addModule(const std::string& name);
+    void addIdentity(const std::string& name);
 
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
 
     std::unordered_map<std::string, std::unordered_map<std::string, NodeType>> m_nodes;
     std::set<std::string> m_modules;
+    std::set<std::string> m_identities;
 };
