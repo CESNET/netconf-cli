@@ -48,8 +48,10 @@ std::string leafDataTypeToString(yang::LeafDataTypes type)
         return "an unsigned integer";
     case yang::LeafDataTypes::Enum:
         return "an enum";
+    case yang::LeafDataTypes::IdentityRef:
+        return "an identity";
     default:
-        return "";
+        throw std::runtime_error("leafDataTypeToString: unsupported leaf data type");
     }
 }
 

@@ -16,7 +16,6 @@ StaticSchema::StaticSchema()
     m_nodes.emplace("", std::unordered_map<std::string, NodeType>());
 }
 
-
 const std::unordered_map<std::string, NodeType>& StaticSchema::children(const std::string& name) const
 {
     return m_nodes.at(name);
@@ -105,12 +104,24 @@ bool StaticSchema::isPresenceContainer(const schemaPath_& location, const Module
 
 void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type)
 {
-    m_nodes.at(location).emplace(name, yang::leaf{type, {}});
+    m_nodes.at(location).emplace(name, yang::leaf{type, {}, {}});
 }
 
 void StaticSchema::addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues)
 {
-    m_nodes.at(location).emplace(name, yang::leaf{yang::LeafDataTypes::Enum, enumValues});
+    yang::leaf toAdd;
+    toAdd.m_type = yang::LeafDataTypes::Enum;
+    toAdd.m_enumValues = enumValues;
+    m_nodes.at(location).emplace(name, toAdd);
+}
+
+void StaticSchema::addLeafIdentityRef(const std::string& location, const std::string& name, const ModuleValuePair& base)
+{
+    assert(base.first); // base identity cannot have an empty module
+    yang::leaf toAdd;
+    toAdd.m_type = yang::LeafDataTypes::IdentityRef;
+    toAdd.m_identBase = base;
+    m_nodes.at(location).emplace(name, toAdd);
 }
 
 void StaticSchema::addModule(const std::string& name)
@@ -118,11 +129,62 @@ void StaticSchema::addModule(const std::string& name)
     m_modules.emplace(name);
 }
 
+void StaticSchema::addIdentity(const std::optional<ModuleValuePair>& base, const ModuleValuePair& name)
+{
+    if (base)
+        m_identities.at(base.value()).emplace(name);
+
+    m_identities.emplace(name, std::set<ModuleValuePair>());
+}
 
 bool StaticSchema::leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const
 {
     auto enums = enumValues(location, node);
     return enums.find(value) != enums.end();
+}
+
+void StaticSchema::getIdentSet(const ModuleValuePair& ident, std::set<ModuleValuePair>& res) const
+{
+    res.insert(ident);
+    auto derivedIdentities = m_identities.at(ident);
+    for (auto it : derivedIdentities) {
+        getIdentSet(it, res);
+    }
+}
+
+const std::set<std::string> StaticSchema::validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const
+{
+    std::string locationString = pathToAbsoluteSchemaString(location);
+    assert(isLeaf(location, node));
+
+    const auto& child = children(locationString).at(fullNodeName(location, node));
+    const auto& leaf = boost::get<yang::leaf>(child);
+
+    std::set<ModuleValuePair> identSet;
+    getIdentSet(leaf.m_identBase, identSet);
+
+    std::set<std::string> res;
+    std::transform(identSet.begin(), identSet.end(), std::inserter(res, res.end()), [location, node, prefixes](const auto& it) {
+        auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
+        std::string stringIdent;
+        if (prefixes == Prefixes::Always || (it.first && it.first.value() != topLevelModule)) {
+            stringIdent += it.first ? it.first.value() : topLevelModule;
+            stringIdent += ":";
+        }
+        stringIdent += it.second;
+        return stringIdent;
+    });
+
+    return res;
+}
+
+bool StaticSchema::leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const
+{
+    auto identities = validIdentities(location, node, Prefixes::Always);
+
+    auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
+    auto identModule = value.first ? value.first.value() : topLevelModule;
+    return std::any_of(identities.begin(), identities.end(), [identModule, value](const auto& x) { return x == identModule + ":" + value.second; });
 }
 
 bool StaticSchema::isLeaf(const schemaPath_& location, const ModuleNodePair& node) const

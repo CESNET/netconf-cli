@@ -15,6 +15,7 @@ TEST_CASE("leaf editing")
 {
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("mod");
+    schema->addModule("pizza-module");
     schema->addContainer("", "mod:contA");
     schema->addLeaf("", "mod:leafString", yang::LeafDataTypes::String);
     schema->addLeaf("", "mod:leafDecimal", yang::LeafDataTypes::Decimal);
@@ -22,6 +23,14 @@ TEST_CASE("leaf editing")
     schema->addLeaf("", "mod:leafInt", yang::LeafDataTypes::Int);
     schema->addLeaf("", "mod:leafUint", yang::LeafDataTypes::Uint);
     schema->addLeaf("", "mod:leafBinary", yang::LeafDataTypes::Binary);
+    schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "food"});
+    schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "vehicle"});
+    schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "pizza"});
+    schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "spaghetti"});
+    schema->addIdentity(ModuleValuePair{"mod", "pizza"}, ModuleValuePair{"pizza-module", "hawaii"});
+    schema->addLeafIdentityRef("", "mod:foodIdentRef", ModuleValuePair{"mod", "food"});
+    schema->addLeafIdentityRef("", "mod:pizzaIdentRef", ModuleValuePair{"mod", "pizza"});
+    schema->addLeafIdentityRef("mod:contA", "mod:identInCont", ModuleValuePair{"mod", "pizza"});
     schema->addLeafEnum("", "mod:leafEnum", {"lol", "data", "coze"});
     schema->addLeaf("mod:contA", "mod:leafInCont", yang::LeafDataTypes::String);
     schema->addList("", "mod:list", {"number"});
@@ -117,6 +126,82 @@ TEST_CASE("leaf editing")
                 }
                 expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafBinary")});
             }
+
+            SECTION("identityRef")
+            {
+                SECTION("foodIdentRef")
+                {
+                    input = "set mod:foodIdentRef ";
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("foodIdentRef")});
+
+                    SECTION("food")
+                    {
+                        input += "food";
+                        expected.m_data = identityRef_("food");
+                    }
+                    SECTION("mod:food")
+                    {
+                        input += "mod:food";
+                        expected.m_data = identityRef_("mod", "food");
+                    }
+                    SECTION("pizza")
+                    {
+                        input += "pizza";
+                        expected.m_data = identityRef_("pizza");
+                    }
+                    SECTION("mod:pizza")
+                    {
+                        input += "mod:pizza";
+                        expected.m_data = identityRef_("mod", "pizza");
+                    }
+                    SECTION("pizza-module:hawaii")
+                    {
+                        input += "pizza-module:hawaii";
+                        expected.m_data = identityRef_("pizza-module", "hawaii");
+                    }
+                }
+                SECTION("pizzaIdentRef")
+                {
+                    input = "set mod:pizzaIdentRef ";
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("pizzaIdentRef")});
+                    SECTION("pizza")
+                    {
+                        input += "pizza";
+                        expected.m_data = identityRef_("pizza");
+                    }
+                    SECTION("mod:pizza")
+                    {
+                        input += "mod:pizza";
+                        expected.m_data = identityRef_("mod", "pizza");
+                    }
+                    SECTION("pizza-module:hawaii")
+                    {
+                        input += "pizza-module:hawaii";
+                        expected.m_data = identityRef_("pizza-module", "hawaii");
+                    }
+                }
+                SECTION("mod:contA/identInCont")
+                {
+                    input = "set mod:contA/identInCont ";
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, container_("contA")});
+                    expected.m_path.m_nodes.push_back(dataNode_(leaf_("identInCont")));
+                    SECTION("pizza")
+                    {
+                        input += "pizza";
+                        expected.m_data = identityRef_("pizza");
+                    }
+                    SECTION("mod:pizza")
+                    {
+                        input += "mod:pizza";
+                        expected.m_data = identityRef_("mod", "pizza");
+                    }
+                    SECTION("pizza-module:hawaii")
+                    {
+                        input += "pizza-module:hawaii";
+                        expected.m_data = identityRef_("pizza-module", "hawaii");
+                    }
+                }
+            }
         }
 
         command_ command = parser.parseCommand(input, errorStream);
@@ -181,6 +266,31 @@ TEST_CASE("leaf editing")
                 input = "set leafBinary dbahj-";
             SECTION("equal sign in the middle")
                 input = "set leafBinary db=ahj";
+        }
+
+        SECTION("non-existing identity")
+        {
+            input = "set mod:foodIdentRef identityBLABLA";
+        }
+
+        SECTION("setting identities with wrong bases")
+        {
+            SECTION("set mod:foodIdentRef mod:vehicle")
+            {
+                input = "set mod:foodIdentRef mod:vehicle";
+            }
+            SECTION("set mod:pizzaIdentRef mod:food")
+            {
+                input = "set mod:pizzaIdentRef mod:food";
+            }
+        }
+        SECTION("setting different module identities without prefix")
+        {
+            input = "set mod:pizzaIdentRef hawaii";
+        }
+        SECTION("identity prefix without name")
+        {
+            input = "set mod:contA/identInCont pizza-module:";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
