@@ -138,6 +138,33 @@ const std::set<std::string> YangSchema::enumValues(const schemaPath_& location, 
     return enumSet;
 }
 
+const std::set<std::string> YangSchema::validIdentities(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    if (!isLeaf(location, node) || leafType(location, node) != yang::LeafDataTypes::IdentityRef)
+        return {};
+
+    libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
+    auto type_info = leaf.type()->info()->ident();
+    std::set<std::string> identSet;
+    for (auto it : type_info->ref()) {
+        for(auto jt : it->der()->schema()) {
+            std::string toInsert = jt->module()->name();
+            toInsert += ":";
+            toInsert += jt->name();
+            identSet.emplace(toInsert);
+        }
+    }
+
+    return identSet;
+}
+
+bool YangSchema::leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const
+{
+    auto identities = validIdentities(location, node);
+
+    return std::any_of(identities.begin(), identities.end(), [=](const auto& x) { return x == value; });
+}
+
 bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
 {
     if (!isList(location, node))
@@ -206,6 +233,8 @@ yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const Modu
         return yang::LeafDataTypes::Enum;
     case LY_TYPE_BINARY:
         return yang::LeafDataTypes::Binary;
+    case LY_TYPE_IDENT:
+        return yang::LeafDataTypes::IdentityRef;
     default:
         throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported");
     }

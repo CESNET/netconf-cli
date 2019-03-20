@@ -279,6 +279,11 @@ TEST_CASE("yangschema")
 
             REQUIRE(ys.leafEnumHasValue(path, node, value));
         }
+        SECTION("validIdentities")
+        {
+            // TODO: write this test
+        }
+
         SECTION("listHasKey")
         {
             std::string key;

@@ -474,6 +474,34 @@ struct leaf_data_binary_class : leaf_data_base_class {
     }
 };
 
+struct leaf_data_identityRef_data_class;
+
+struct leaf_data_identityRef_class : leaf_data_base_class {
+    leaf_data_identityRef_class()
+        : leaf_data_base_class(yang::LeafDataTypes::IdentityRef)
+    {
+    }
+
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& start, Iterator const& end, T& ast, Context const& context)
+    {
+        // FIXME: can I reuse leaf_data_enum_class somehow..?
+        leaf_data_base_class::on_success(start, end, ast, context);
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+        boost::optional<std::string> module;
+        if (parserContext.m_curPath.m_nodes.back().m_prefix)
+            module = parserContext.m_curPath.m_nodes.back().m_prefix.value().m_name;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back().m_suffix);
+        schemaPath_ location = pathWithoutLastNode(parserContext.m_curPath);
+
+        if (!schema.leafIdentityIsValid(location, {module, leaf.m_name}, ast.m_value)) {
+            _pass(context) = false;
+        }
+    }
+};
+
 struct set_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
@@ -617,5 +645,25 @@ struct createEnumSuggestions_class {
         schemaPath_ location = pathWithoutLastNode(parserContext.m_curPath);
 
         parserContext.m_suggestions = schema.enumValues(location, {module, leaf.m_name});
+    }
+};
+
+// FIXME: can I reuse createEnumSuggestions?
+struct createIdentitySuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_completionIterator = begin;
+        const Schema& schema = parserContext.m_schema;
+
+        boost::optional<std::string> module;
+        if (parserContext.m_curPath.m_nodes.back().m_prefix)
+            module = parserContext.m_curPath.m_nodes.back().m_prefix.value().m_name;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back().m_suffix);
+        schemaPath_ location = pathWithoutLastNode(parserContext.m_curPath);
+
+        parserContext.m_suggestions = schema.validIdentities(location, {module, leaf.m_name});
     }
 };
