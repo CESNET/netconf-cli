@@ -18,6 +18,8 @@
 #include <map>
 #include <vector>
 
+#include "ast_values.hpp"
+
 struct nodeup_ {
     bool operator==(const nodeup_&) const
     {
@@ -59,11 +61,6 @@ struct list_ {
 
     bool operator==(const list_& b) const;
 
-    std::string m_name;
-};
-
-struct module_ {
-    bool operator==(const module_& b) const;
     std::string m_name;
 };
 

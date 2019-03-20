@@ -18,6 +18,10 @@ module second-schema {
         prefix "example";
     }
 
+    identity secondIdentity {
+        base "example:base_ident";
+    }
+
     augment /example:a {
         container augmentedContainer {
         }
@@ -35,6 +39,14 @@ module example-schema {
     yang-version 1.1;
     namespace "http://example.com/example-sports";
     prefix coze;
+
+    identity base_ident {
+
+    }
+
+    identity derived_from_base {
+        base "base_ident";
+    }
 
     container a {
         container a2 {
@@ -114,6 +126,18 @@ module example-schema {
 
     leaf leafEnumTypedefRestricted2 {
         type enumTypedefRestricted;
+    }
+
+    leaf leaf_base_ident {
+        type identityref {
+            base "base_ident";
+        }
+    }
+
+    leaf leaf_only_derived {
+        type identityref {
+            base "derived_from_base";
+        }
     }
 
     list _list {
@@ -279,6 +303,50 @@ TEST_CASE("yangschema")
 
             REQUIRE(ys.leafEnumHasValue(path, node, value));
         }
+        SECTION("leafIdentityIsValid")
+        {
+            ModuleValuePair value;
+
+            SECTION("leaf_base_ident") {
+                node.first = "example-schema";
+                node.second = "leaf_base_ident";
+
+                SECTION("base_ident")
+                    value.second = "base_ident";
+                SECTION("example-schema:base_ident")
+                {
+                    value.first = "example-schema";
+                    value.second = "base_ident";
+                }
+                SECTION("derived_from_base")
+                    value.second = "derived_from_base";
+                SECTION("example-schema:derived_from_base")
+                {
+                    value.first = "example-schema";
+                    value.second = "derived_from_base";
+                }
+                SECTION("second-schema:secondIdentity")
+                {
+                    value.first = "second-schema";
+                    value.second = "secondIdentity";
+                }
+            }
+
+            SECTION("leaf_only_derived") {
+                node.first = "example-schema";
+                node.second = "leaf_only_derived";
+
+                SECTION("derived_from_base")
+                    value.second = "derived_from_base";
+                SECTION("example-schema:derived_from_base")
+                {
+                    value.first = "example-schema";
+                    value.second = "derived_from_base";
+                }
+            }
+            REQUIRE(ys.leafIdentityIsValid(path, node, value));
+        }
+
         SECTION("listHasKey")
         {
             std::string key;
@@ -381,6 +449,7 @@ TEST_CASE("yangschema")
                        "example-schema:leafDecimal", "example-schema:leafBool", "example-schema:leafInt",
                        "example-schema:leafUint", "example-schema:leafEnum", "example-schema:leafEnumTypedef",
                        "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
+                       "example-schema:leaf_base_ident", "example-schema:leaf_only_derived",
                        "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla"};
             }
 
@@ -459,6 +528,25 @@ TEST_CASE("yangschema")
         SECTION("nonexistent module")
         {
             REQUIRE(!ys.isModule(path, "notAModule"));
+        }
+
+        SECTION("leafIdentityIsValid") {
+            ModuleValuePair value;
+            SECTION("leaf_only_derived") {
+                node.first = "example-schema";
+                node.second = "leaf_only_derived";
+
+                SECTION("wrong base ident")
+                    value.second = "base_ident";
+                SECTION("non-existent identity")
+                    value.second = "nonexistent";
+                SECTION("weird module")
+                {
+                    value.first = "ahahaha";
+                    value.second = "derived_from_base";
+                }
+            }
+            REQUIRE_FALSE(ys.leafIdentityIsValid(path, node, value));
         }
     }
 }

@@ -15,6 +15,8 @@
 #include <unordered_map>
 #include "ast_path.hpp"
 
+using ModuleValuePair = std::pair<boost::optional<std::string>, std::string>;
+
 namespace yang {
 enum class ContainerTraits {
     Presence,
@@ -29,6 +31,7 @@ enum class LeafDataTypes {
     Uint,
     Enum,
     Binary,
+    IdentityRef,
 };
 
 struct container {
@@ -37,9 +40,11 @@ struct container {
 struct list {
     std::set<std::string> m_keys;
 };
+
 struct leaf {
     yang::LeafDataTypes m_type;
     std::set<std::string> m_enumValues;
+    ModuleValuePair m_identBase;
 };
 
 struct module {
@@ -49,6 +54,11 @@ struct module {
 enum class Recursion {
     NonRecursive,
     Recursive
+};
+
+enum class Prefixes {
+    Always,
+    WhenNeeded
 };
 
 using NodeType = boost::variant<yang::container, yang::list, yang::leaf, yang::module>;
@@ -76,10 +86,12 @@ public:
     virtual bool isList(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const = 0;
+    virtual bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const = 0;
     virtual bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const = 0;
     virtual bool nodeExists(const std::string& location, const std::string& node) const = 0;
     virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const = 0;
     virtual const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const = 0;
 

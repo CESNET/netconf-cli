@@ -415,6 +415,9 @@ struct leaf_data_enum_class : leaf_data_base_class {
     void on_success(Iterator const& start, Iterator const& end, T& ast, Context const& context)
     {
         leaf_data_base_class::on_success(start, end, ast, context);
+        // Base class on_success cannot return for us, so we check if it failed the parser.
+        if (_pass(context) == false)
+            return;
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
         boost::optional<std::string> module;
@@ -471,6 +474,43 @@ struct leaf_data_binary_class : leaf_data_base_class {
     leaf_data_binary_class()
         : leaf_data_base_class(yang::LeafDataTypes::Binary)
     {
+    }
+};
+
+struct leaf_data_identityRef_data_class;
+
+struct leaf_data_identityRef_class : leaf_data_base_class {
+    leaf_data_identityRef_class()
+        : leaf_data_base_class(yang::LeafDataTypes::IdentityRef)
+    {
+    }
+
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& start, Iterator const& end, T& ast, Context const& context)
+    {
+        // FIXME: can I reuse leaf_data_enum_class somehow..?
+        leaf_data_base_class::on_success(start, end, ast, context);
+        // Base class on_success cannot return for us, so we check if it failed the parser.
+        if (_pass(context) == false)
+            return;
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        auto& schema = parserContext.m_schema;
+        boost::optional<std::string> module;
+        if (parserContext.m_curPath.m_nodes.back().m_prefix)
+            module = parserContext.m_curPath.m_nodes.back().m_prefix.value().m_name;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back().m_suffix);
+        schemaPath_ location = pathWithoutLastNode(parserContext.m_curPath);
+
+        ModuleValuePair pair;
+        if (ast.m_prefix) {
+            pair.first = ast.m_prefix.get().m_name;
+        }
+        pair.second = ast.m_value;
+
+        if (!schema.leafIdentityIsValid(location, {module, leaf.m_name}, pair)) {
+            _pass(context) = false;
+        }
     }
 };
 
@@ -616,6 +656,32 @@ struct createEnumSuggestions_class {
         leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back().m_suffix);
         schemaPath_ location = pathWithoutLastNode(parserContext.m_curPath);
 
-        parserContext.m_suggestions = schema.enumValues(location, {module, leaf.m_name});
+        // Only generate completions if the type is enum so that we don't
+        // overwrite some other completions.
+        if (schema.leafType(location, {module, leaf.m_name}) == yang::LeafDataTypes::Enum)
+            parserContext.m_suggestions = schema.enumValues(location, {module, leaf.m_name});
+    }
+};
+
+// FIXME: can I reuse createEnumSuggestions?
+struct createIdentitySuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_completionIterator = begin;
+        const Schema& schema = parserContext.m_schema;
+
+        boost::optional<std::string> module;
+        if (parserContext.m_curPath.m_nodes.back().m_prefix)
+            module = parserContext.m_curPath.m_nodes.back().m_prefix.value().m_name;
+
+        leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back().m_suffix);
+        schemaPath_ location = pathWithoutLastNode(parserContext.m_curPath);
+
+        // Only generate completions if the type is identityref so that we
+        // don't overwrite some other completions.
+        if (schema.leafType(location, {module, leaf.m_name}) == yang::LeafDataTypes::IdentityRef)
+            parserContext.m_suggestions = schema.validIdentities(location, {module, leaf.m_name}, Prefixes::WhenNeeded);
     }
 };
