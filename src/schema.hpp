@@ -29,6 +29,7 @@ enum class LeafDataTypes {
     Uint,
     Enum,
     Binary,
+    IdentityRef,
 };
 
 struct container {
@@ -65,6 +66,7 @@ public:
  *         */
 
 using ModuleNodePair = std::pair<boost::optional<std::string>, std::string>;
+using ModuleValuePair = std::pair<boost::optional<std::string>, std::string>;
 
 class Schema {
 public:
@@ -76,10 +78,12 @@ public:
     virtual bool isList(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const = 0;
+    virtual bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const = 0;
     virtual bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const = 0;
     virtual bool nodeExists(const std::string& location, const std::string& node) const = 0;
     virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const = 0;
 

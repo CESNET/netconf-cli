@@ -138,6 +138,57 @@ const std::set<std::string> YangSchema::enumValues(const schemaPath_& location, 
     return enumSet;
 }
 
+const std::set<std::string> YangSchema::validIdentities(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    if (!isLeaf(location, node) || leafType(location, node) != yang::LeafDataTypes::IdentityRef)
+        return {};
+
+    libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
+    auto type_info = leaf.type()->info()->ident();
+    std::set<std::string> identSet;
+
+    auto insertToSet = [location, node, &identSet](auto ident) {
+        std::string toInsert;
+        auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
+        // We don't prepend module prefix for identities with the same
+        // module as the top-level module. This means it is slightly
+        // complicated to check valid identities, but our parser gives
+        // better suggestions
+        auto identityModule = ident->module()->name();
+        if (topLevelModule != identityModule) {
+            toInsert = identityModule;
+            toInsert += ":";
+        }
+        toInsert += ident->name();
+        identSet.emplace(toInsert);
+    };
+
+    for (auto it : type_info->ref()) {
+        insertToSet(it); // The base identity is also valid
+        auto derived = it->der();
+        if (derived) {
+            for (auto derivedIdent : it->der()->schema()) {
+                insertToSet(derivedIdent);
+            }
+        }
+    }
+
+    return identSet;
+}
+
+bool YangSchema::leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const
+{
+    auto identities = validIdentities(location, node);
+
+    // If the ModuleValuePair has a module and it's different from the top
+    // level module, use it for lookup
+    auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
+    if (value.first && value.first.value() != topLevelModule)
+        return std::any_of(identities.begin(), identities.end(), [=](const auto& x) { return x == value.first.value() + ":" + value.second; });
+    else
+        return std::any_of(identities.begin(), identities.end(), [=](const auto& x) { return x == value.second; });
+}
+
 bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
 {
     if (!isList(location, node))
@@ -206,6 +257,8 @@ yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const Modu
         return yang::LeafDataTypes::Enum;
     case LY_TYPE_BINARY:
         return yang::LeafDataTypes::Binary;
+    case LY_TYPE_IDENT:
+        return yang::LeafDataTypes::IdentityRef;
     default:
         throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported");
     }

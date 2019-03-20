@@ -7,6 +7,7 @@
 */
 #pragma once
 
+#include <boost/optional.hpp>
 #include <boost/variant.hpp>
 
 struct enum_ {
@@ -23,8 +24,18 @@ struct binary_ {
     std::string m_value;
 };
 
+struct identityRef_ {
+    identityRef_();
+    identityRef_(const std::string& module, const std::string& value);
+    identityRef_(const std::string& value);
+    bool operator==(const identityRef_& b) const;
+    boost::optional<std::string> m_prefix;
+    std::string m_value;
+};
+
 using leaf_data_ = boost::variant<enum_,
                                   binary_,
+                                  identityRef_,
                                   double,
                                   bool,
                                   int32_t,

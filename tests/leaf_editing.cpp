@@ -22,6 +22,8 @@ TEST_CASE("leaf editing")
     schema->addLeaf("", "mod:leafInt", yang::LeafDataTypes::Int);
     schema->addLeaf("", "mod:leafUint", yang::LeafDataTypes::Uint);
     schema->addLeaf("", "mod:leafBinary", yang::LeafDataTypes::Binary);
+    schema->addIdentity("identity1");
+    schema->addLeaf("", "mod:leafIdentityRef", yang::LeafDataTypes::IdentityRef);
     schema->addLeafEnum("", "mod:leafEnum", {"lol", "data", "coze"});
     schema->addLeaf("mod:contA", "mod:leafInCont", yang::LeafDataTypes::String);
     schema->addList("", "mod:list", {"number"});
@@ -117,6 +119,23 @@ TEST_CASE("leaf editing")
                 }
                 expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafBinary")});
             }
+
+            SECTION("identityRef")
+            {
+                SECTION("without module")
+                {
+                    input = "set mod:leafIdentityRef identity1";
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafIdentityRef")});
+                    expected.m_data = identityRef_{"identity1"};
+                }
+
+                SECTION("with module")
+                {
+                    input = "set mod:leafIdentityRef mod:identity1";
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafIdentityRef")});
+                    expected.m_data = identityRef_{"mod", "identity1"};
+                }
+            }
         }
 
         command_ command = parser.parseCommand(input, errorStream);
@@ -181,6 +200,11 @@ TEST_CASE("leaf editing")
                 input = "set leafBinary dbahj-";
             SECTION("equal sign in the middle")
                 input = "set leafBinary db=ahj";
+        }
+
+        SECTION("non-existing identity")
+        {
+            input = "set mod:leafIdentityRef identityBLABLA";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
