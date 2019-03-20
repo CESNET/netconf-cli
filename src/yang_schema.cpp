@@ -138,6 +138,46 @@ const std::set<std::string> YangSchema::enumValues(const schemaPath_& location, 
     return enumSet;
 }
 
+const std::set<std::string> YangSchema::validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const
+{
+    if (!isLeaf(location, node) || leafType(location, node) != yang::LeafDataTypes::IdentityRef)
+        return {};
+
+    std::set<std::string> identSet;
+
+    auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
+    auto insertToSet = [&identSet, prefixes, topLevelModule](auto module, auto name) {
+        std::string stringIdent;
+        if (prefixes == Prefixes::Always || topLevelModule != module) {
+            stringIdent += module;
+            stringIdent += ":";
+        }
+        stringIdent += name;
+        identSet.emplace(stringIdent);
+    };
+
+    auto leaf = std::make_shared<libyang::Schema_Node_Leaf>(getSchemaNode(location, node));
+    auto info = leaf->type()->info();
+    for (auto base : info->ident()->ref()) { // Iterate over all bases
+        insertToSet(base->module()->name(), base->name());
+        // Iterate over derived identities (this is recursive!)
+        for (auto derived : base->der()->schema()) {
+            insertToSet(derived->module()->name(), derived->name());
+        }
+    }
+
+    return identSet;
+}
+
+bool YangSchema::leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const
+{
+    auto identities = validIdentities(location, node, Prefixes::Always);
+
+    auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
+    auto identModule = value.first ? value.first.value() : topLevelModule;
+    return std::any_of(identities.begin(), identities.end(), [identModule, value](const auto& x) { return x == identModule + ":" + value.second; });
+}
+
 bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
 {
     if (!isList(location, node))
@@ -206,6 +246,8 @@ yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const Modu
         return yang::LeafDataTypes::Enum;
     case LY_TYPE_BINARY:
         return yang::LeafDataTypes::Binary;
+    case LY_TYPE_IDENT:
+        return yang::LeafDataTypes::IdentityRef;
     default:
         throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported");
     }

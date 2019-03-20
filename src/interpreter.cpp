@@ -21,6 +21,11 @@ struct leafDataToString : boost::static_visitor<std::string> {
         return data.m_value;
     }
 
+    std::string operator()(const identityRef_& data) const
+    {
+        return data.m_value;
+    }
+
     template <typename T>
     std::string operator()(const T& data) const
     {
@@ -42,7 +47,17 @@ void Interpreter::operator()(const discard_&) const
 
 void Interpreter::operator()(const set_& set) const
 {
-    m_datastore.setLeaf(absolutePathFromCommand(set), set.m_data);
+    auto data = set.m_data;
+
+    // If the user didn't supply a module prefix for identityref, we need to add it ourselves
+    if (data.type() == typeid(identityRef_)) {
+        auto identityRef = boost::get<identityRef_>(data);
+        if (!identityRef.m_prefix) {
+            identityRef.m_prefix = set.m_path.m_nodes.front().m_prefix.value();
+            data = identityRef;
+        }
+    }
+    m_datastore.setLeaf(absolutePathFromCommand(set), data);
 }
 
 void Interpreter::operator()(const get_& get) const

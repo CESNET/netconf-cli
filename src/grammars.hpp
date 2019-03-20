@@ -46,6 +46,9 @@ x3::rule<leaf_data_uint_class, uint32_t> const leaf_data_uint = "leaf_data_uint"
 x3::rule<leaf_data_string_class, std::string> const leaf_data_string = "leaf_data_string";
 x3::rule<leaf_data_binary_data_class, std::string> const leaf_data_binary_data = "leaf_data_binary_data";
 x3::rule<leaf_data_binary_class, binary_> const leaf_data_binary = "leaf_data_binary";
+x3::rule<data_module_prefix_class, module_> const data_module_prefix = "data_module_prefix";
+x3::rule<leaf_data_identityRef_data_class, identityRef_> const leaf_data_identityRef_data = "leaf_data_identityRef_data";
+x3::rule<leaf_data_identityRef_class, identityRef_> const leaf_data_identityRef = "leaf_data_identityRef";
 
 x3::rule<discard_class, discard_> const discard = "discard";
 x3::rule<ls_class, ls_> const ls = "ls";
@@ -65,6 +68,7 @@ x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestK
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
 x3::rule<completing_class, x3::unused_type> const completing = "completing";
 x3::rule<createEnumSuggestions_class, x3::unused_type> const createEnumSuggestions = "createEnumSuggestions";
+x3::rule<createIdentitySuggestions_class, x3::unused_type> const createIdentitySuggestions = "createIdentitySuggestions";
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -219,6 +223,21 @@ auto const leaf_data_binary_data_def =
 auto const leaf_data_binary_def =
     leaf_data_binary_data;
 
+auto const data_module_prefix_def =
+    module_identifier >> x3::omit[char_(":")];
+
+// TODO: I can't reuse "module" because it sets some flags in ParserContext and
+// that interferes with parsing somehow. It could probably be solved by some
+// x3::lexeme directive. Spirit debug mode would probably help with this
+auto const leaf_data_identityRef_data_def =
+    -data_module_prefix  >> node_identifier;
+
+auto const createIdentitySuggestions_def =
+    x3::eps;
+
+auto const leaf_data_identityRef_def =
+    createIdentitySuggestions >> leaf_data_identityRef_data;
+
 auto const leaf_data_def =
 x3::expect[
     leaf_data_enum |
@@ -227,6 +246,7 @@ x3::expect[
     leaf_data_int |
     leaf_data_uint |
     leaf_data_binary |
+    leaf_data_identityRef |
     leaf_data_string];
 
 struct ls_options_table : x3::symbols<LsOption> {
@@ -310,6 +330,7 @@ BOOST_SPIRIT_DEFINE(dataNodesListEnd)
 BOOST_SPIRIT_DEFINE(dataPathListEnd)
 BOOST_SPIRIT_DEFINE(absoluteStart)
 BOOST_SPIRIT_DEFINE(trailingSlash)
+BOOST_SPIRIT_DEFINE(data_module_prefix)
 BOOST_SPIRIT_DEFINE(module)
 BOOST_SPIRIT_DEFINE(leaf_data)
 BOOST_SPIRIT_DEFINE(leaf_data_enum)
@@ -320,6 +341,8 @@ BOOST_SPIRIT_DEFINE(leaf_data_uint)
 BOOST_SPIRIT_DEFINE(leaf_data_string)
 BOOST_SPIRIT_DEFINE(leaf_data_binary_data)
 BOOST_SPIRIT_DEFINE(leaf_data_binary)
+BOOST_SPIRIT_DEFINE(leaf_data_identityRef_data)
+BOOST_SPIRIT_DEFINE(leaf_data_identityRef)
 BOOST_SPIRIT_DEFINE(initializePath)
 BOOST_SPIRIT_DEFINE(set)
 BOOST_SPIRIT_DEFINE(commit)
@@ -337,3 +360,4 @@ BOOST_SPIRIT_DEFINE(suggestKeysEnd)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)
 BOOST_SPIRIT_DEFINE(completing)
 BOOST_SPIRIT_DEFINE(createEnumSuggestions)
+BOOST_SPIRIT_DEFINE(createIdentitySuggestions)
