@@ -118,11 +118,23 @@ void StaticSchema::addModule(const std::string& name)
     m_modules.emplace(name);
 }
 
+void StaticSchema::addIdentity(const std::string& name)
+{
+    m_identities.emplace(name);
+}
 
 bool StaticSchema::leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const
 {
     auto enums = enumValues(location, node);
     return enums.find(value) != enums.end();
+}
+
+// To simplify testing, StaticSchema doesn't use the concept of base and
+// derived identities and simply checks if an identity exists. That's why it
+// doesn't use the location and node arguments.
+bool StaticSchema::leafIdentityIsValid([[maybe_unused]] const schemaPath_& location, [[maybe_unused]] const ModuleNodePair& node, const std::string& value) const
+{
+    return m_identities.find(value) != m_identities.end();
 }
 
 bool StaticSchema::isLeaf(const schemaPath_& location, const ModuleNodePair& node) const
