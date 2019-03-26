@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "800fba64_f905c4b3",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-26T17:50:41Z",
+      "side": 1,
+      "message": "Chapu to dobre, ze se tenhle mock chova jinak, nez \"plnotucny\" YangSchema? Pokud ano, tak je to spatne. U enumu taky sledujes, odkud pochazi, a neni pripustne michat hodnodty z ruznych enumu.",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 57
+      },
+      "revId": "64d0e31320c2919272d9bd3efa4a1eb9a90ecbe2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11f4c86e_ad3c67b7",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-26T17:50:41Z",
+      "side": 1,
+      "message": "tady uplne nevidim rekurzi, a tak si nejsem jisty, ze to dobre funguje na takovehle hierarchii:\n\n- jidlo\n  - ovoce\n    - pomerance\n      - cerveny\n\nUdelej na to, prosim, test, abys me presvedcil.",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 5
+      },
+      "revId": "64d0e31320c2919272d9bd3efa4a1eb9a90ecbe2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f86480c2_62278529",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-26T17:50:41Z",
+      "side": 1,
+      "message": "tady mi chybi testy pro identity z jinych modulu",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 13
+      },
+      "revId": "64d0e31320c2919272d9bd3efa4a1eb9a90ecbe2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c1a9e2e_8b389f3f",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-26T17:50:41Z",
+      "side": 1,
+      "message": "Tohle se mi necte uplne dobre. Nemuzes tomu treba rikat klasicky:\n\ns/base_ident/some_fruit/\ns/derived_from_base/orange/\ns/second_identity/apple/",
+      "revId": "64d0e31320c2919272d9bd3efa4a1eb9a90ecbe2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2593a7e_36ff4da4",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-26T17:50:41Z",
+      "side": 1,
+      "message": "...a na tohle by pak bylo dobre mit jeste dalsi identitu pink_orange (base: orange), aby se to dalo vyzkouset.",
+      "revId": "64d0e31320c2919272d9bd3efa4a1eb9a90ecbe2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2413f5f6_0b6df7c8",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-03-26T17:50:41Z",
+      "side": 1,
+      "message": "Ja vim, ze to mas v tech testech na spouste mistech, ale tahle syntaxe mi prijde vcelku evil. Nesetri, prosim, tema slozenyma zavorkama, jsou zadarmo a ja se v tech makrech mene ztracim.",
+      "range": {
+        "startLine": 321,
+        "startChar": 0,
+        "endLine": 323,
+        "endChar": 59
+      },
+      "revId": "64d0e31320c2919272d9bd3efa4a1eb9a90ecbe2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
