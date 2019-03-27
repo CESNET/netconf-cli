@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3ae5bc4b_1222d192",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-03-27T18:51:38Z",
+      "side": 1,
+      "message": "Udělal jsem to teda pořádně",
+      "parentUuid": "800fba64_f905c4b3",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 57
+      },
+      "revId": "64d0e31320c2919272d9bd3efa4a1eb9a90ecbe2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "11f4c86e_ad3c67b7",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 5
@@ -68,6 +92,30 @@
       "revId": "64d0e31320c2919272d9bd3efa4a1eb9a90ecbe2",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb056992_baf1580a",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-03-27T18:51:38Z",
+      "side": 1,
+      "message": "Přidal jsem nějaký testy",
+      "parentUuid": "f86480c2_62278529",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 13
+      },
+      "revId": "64d0e31320c2919272d9bd3efa4a1eb9a90ecbe2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
