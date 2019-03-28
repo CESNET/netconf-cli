@@ -128,16 +128,16 @@ include(CTest)
 if(BUILD_TESTING)
     enable_testing()
     find_package(trompeloeil 33 REQUIRED)
-    find_package(Catch2 2.7.0 REQUIRED)
+    find_package(doctest 2.3.1 REQUIRED)
 
-    add_library(TestCatchIntegration STATIC
-        tests/catch_integration.cpp
-        tests/trompeloeil_catch.h
+    add_library(DoctestIntegration STATIC
+        tests/doctest_integration.cpp
+        tests/trompeloeil_doctest.h
         tests/wait-a-bit-longer.cpp
         )
-    target_include_directories(TestCatchIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-    target_link_libraries(TestCatchIntegration Catch2::Catch2 trompeloeil spdlog::spdlog)
-    target_compile_definitions(TestCatchIntegration PUBLIC CATCH_CONFIG_FAST_COMPILE)
+    target_include_directories(DoctestIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+    target_link_libraries(DoctestIntegration doctest::doctest trompeloeil spdlog::spdlog)
+    target_compile_definitions(DoctestIntegration PUBLIC DOCTEST_CONFIG_SUPER_FAST_ASSERTS)
 
     if (NOT SYSREPOCTL_EXECUTABLE)
         find_program(SYSREPOCTL_EXECUTABLE sysrepoctl)
@@ -153,12 +153,12 @@ if(BUILD_TESTING)
         add_executable(test_${fname}
             tests/${fname}.cpp
             )
-        target_link_libraries(test_${fname} TestCatchIntegration parser)
+        target_link_libraries(test_${fname} DoctestIntegration parser)
         if(NOT CMAKE_CROSSCOMPILING)
             add_test(test_${fname} test_${fname})
         endif()
         target_include_directories(test_${fname} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-        target_link_libraries(test_${fname} TestCatchIntegration)
+        target_link_libraries(test_${fname} DoctestIntegration)
     endfunction()
     cli_test(cd)
     cli_test(ls)

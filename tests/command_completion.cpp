@@ -6,7 +6,7 @@
  *
 */
 
-#include "trompeloeil_catch.h"
+#include "trompeloeil_doctest.h"
 #include "parser.hpp"
 #include "static_schema.hpp"
 

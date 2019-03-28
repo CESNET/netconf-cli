@@ -4,7 +4,7 @@ BasedOnStyle:  WebKit
 Standard: Cpp11
 Cpp11BracedListStyle: true
 IncludeCategories:
-  - Regex: '^"trompeloeil_catch.h'
+  - Regex: '^"trompeloeil_doctest.h'
     Priority:        1
   - Regex:           '^<'
     Priority:        2
