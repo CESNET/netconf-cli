@@ -6,7 +6,7 @@
  *
 */
 
-#include "trompeloeil_catch.h"
+#include "trompeloeil_doctest.h"
 #include "yang_schema.hpp"
 
 const char* second_schema = R"(
