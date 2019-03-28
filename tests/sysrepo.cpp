@@ -6,7 +6,7 @@
  *
 */
 
-#include "trompeloeil_catch.h"
+#include "trompeloeil_doctest.h"
 
 #include "sysrepo_access.hpp"
 #include "sysrepo_subscription.hpp"
