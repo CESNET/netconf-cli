@@ -10,8 +10,6 @@
 ParserContext::ParserContext(const Schema& schema, const schemaPath_& curDir)
     : m_schema(schema)
     , m_curPath(curDir)
-    , m_curPathOrig(curDir)
-{
+    , m_curPathOrig(curDir)                                                   {
     if (!m_curPath.m_nodes.empty() && m_curPath.m_nodes.at(0).m_prefix)
-        m_topLevelModulePresent = true;
-}
+        m_topLevelModulePresent = true                                        ;}

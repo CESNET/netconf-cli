@@ -8,4 +8,4 @@
 
 #include "schema.hpp"
 
-Schema::~Schema() = default;
+Schema::~Schema() = default                                ;

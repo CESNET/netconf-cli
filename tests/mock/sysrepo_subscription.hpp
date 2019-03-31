@@ -10,28 +10,25 @@
 
 #include <memory>
 
-namespace sysrepo {
-class Callback;
-class Connection;
-class Session;
-class Subscribe;
-}
-class YangSchema;
+namespace sysrepo                                                                                              {
+class Callback                                                                                                 ;
+class Connection                                                                                               ;
+class Session                                                                                                  ;
+class Subscribe                                                                                                ;}
+class YangSchema                                                                                               ;
 
-class Recorder {
+class Recorder                                                                                                 {
 public:
-    virtual ~Recorder();
-    virtual void write(const std::string& xpath, const std::string& oldValue, const std::string& newValue) = 0;
-};
+    virtual ~Recorder()                                                                                        ;
+    virtual void write(const std::string& xpath, const std::string& oldValue, const std::string& newValue) = 0 ;};
 
-class SysrepoSubscription {
+class SysrepoSubscription                                                                                      {
 public:
-    SysrepoSubscription(Recorder* rec);
+    SysrepoSubscription(Recorder* rec)                                                                         ;
 
 private:
-    std::shared_ptr<sysrepo::Connection> m_connection;
-    std::shared_ptr<sysrepo::Session> m_session;
-    std::shared_ptr<YangSchema> m_schema;
-    std::shared_ptr<sysrepo::Callback> m_callback;
-    std::shared_ptr<sysrepo::Subscribe> m_subscription;
-};
+    std::shared_ptr<sysrepo::Connection> m_connection                                                          ;
+    std::shared_ptr<sysrepo::Session> m_session                                                                ;
+    std::shared_ptr<YangSchema> m_schema                                                                       ;
+    std::shared_ptr<sysrepo::Callback> m_callback                                                              ;
+    std::shared_ptr<sysrepo::Subscribe> m_subscription                                                         ;};

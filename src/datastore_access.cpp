@@ -8,4 +8,4 @@
 
 #include "datastore_access.hpp"
 
-DatastoreAccess::~DatastoreAccess() = default;
+DatastoreAccess::~DatastoreAccess() = default              ;

@@ -11,28 +11,25 @@
 #include "grammars.hpp"
 
 
-class InvalidCommandException : public std::invalid_argument {
+class InvalidCommandException : public std::invalid_argument                                                                                 {
 public:
-    using std::invalid_argument::invalid_argument;
-    ~InvalidCommandException() override;
-};
+    using std::invalid_argument::invalid_argument                                                                                            ;
+    ~InvalidCommandException() override                                                                                                      ;};
 
-class TooManyArgumentsException : public std::invalid_argument {
+class TooManyArgumentsException : public std::invalid_argument                                                                               {
 public:
-    using std::invalid_argument::invalid_argument;
-    ~TooManyArgumentsException() override;
-};
+    using std::invalid_argument::invalid_argument                                                                                            ;
+    ~TooManyArgumentsException() override                                                                                                    ;};
 
-class Parser {
+class Parser                                                                                                                                 {
 public:
-    Parser(const std::shared_ptr<const Schema> schema);
-    command_ parseCommand(const std::string& line, std::ostream& errorStream);
-    void changeNode(const dataPath_& name);
-    std::string currentNode() const;
-    std::set<std::string> availableNodes(const boost::optional<boost::variant<dataPath_, schemaPath_>>& path, const Recursion& option) const;
-    std::set<std::string> completeCommand(const std::string& line, std::ostream& errorStream) const;
+    Parser(const std::shared_ptr<const Schema> schema)                                                                                       ;
+    command_ parseCommand(const std::string& line, std::ostream& errorStream)                                                                ;
+    void changeNode(const dataPath_& name)                                                                                                   ;
+    std::string currentNode() const                                                                                                          ;
+    std::set<std::string> availableNodes(const boost::optional<boost::variant<dataPath_, schemaPath_>>& path, const Recursion& option) const ;
+    std::set<std::string> completeCommand(const std::string& line, std::ostream& errorStream) const                                          ;
 
 private:
-    const std::shared_ptr<const Schema> m_schema;
-    dataPath_ m_curDir;
-};
+    const std::shared_ptr<const Schema> m_schema                                                                                             ;
+    dataPath_ m_curDir                                                                                                                       ;};

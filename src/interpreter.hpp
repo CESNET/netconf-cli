@@ -12,24 +12,23 @@
 #include "datastore_access.hpp"
 #include "parser.hpp"
 
-struct Interpreter : boost::static_visitor<void> {
-    Interpreter(Parser& parser, DatastoreAccess& datastore);
+struct Interpreter : boost::static_visitor<void>                   {
+    Interpreter(Parser& parser, DatastoreAccess& datastore)        ;
 
-    void operator()(const commit_&) const;
-    void operator()(const set_&) const;
-    void operator()(const get_&) const;
-    void operator()(const cd_&) const;
-    void operator()(const create_&) const;
-    void operator()(const delete_&) const;
-    void operator()(const ls_&) const;
-    void operator()(const discard_&) const;
-    void operator()(const help_&) const;
+    void operator()(const commit_&) const                          ;
+    void operator()(const set_&) const                             ;
+    void operator()(const get_&) const                             ;
+    void operator()(const cd_&) const                              ;
+    void operator()(const create_&) const                          ;
+    void operator()(const delete_&) const                          ;
+    void operator()(const ls_&) const                              ;
+    void operator()(const discard_&) const                         ;
+    void operator()(const help_&) const                            ;
 
 private:
     template <typename T>
-    std::string absolutePathFromCommand(const T& command) const;
-    std::string absolutePathFromCommand(const get_& command) const;
+    std::string absolutePathFromCommand(const T& command) const    ;
+    std::string absolutePathFromCommand(const get_& command) const ;
 
-    Parser& m_parser;
-    DatastoreAccess& m_datastore;
-};
+    Parser& m_parser                                               ;
+    DatastoreAccess& m_datastore                                   ;};

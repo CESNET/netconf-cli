@@ -17,16 +17,15 @@
  */
 
 
-class DatastoreAccess {
+class DatastoreAccess                                                               {
 public:
-    virtual ~DatastoreAccess() = 0;
-    virtual std::map<std::string, leaf_data_> getItems(const std::string& path) = 0;
-    virtual void setLeaf(const std::string& path, leaf_data_ value) = 0;
-    virtual void createPresenceContainer(const std::string& path) = 0;
-    virtual void deletePresenceContainer(const std::string& path) = 0;
-    virtual void createListInstance(const std::string& path) = 0;
-    virtual void deleteListInstance(const std::string& path) = 0;
+    virtual ~DatastoreAccess() = 0                                                  ;
+    virtual std::map<std::string, leaf_data_> getItems(const std::string& path) = 0 ;
+    virtual void setLeaf(const std::string& path, leaf_data_ value) = 0             ;
+    virtual void createPresenceContainer(const std::string& path) = 0               ;
+    virtual void deletePresenceContainer(const std::string& path) = 0               ;
+    virtual void createListInstance(const std::string& path) = 0                    ;
+    virtual void deleteListInstance(const std::string& path) = 0                    ;
 
-    virtual void commitChanges() = 0;
-    virtual void discardChanges() = 0;
-};
+    virtual void commitChanges() = 0                                                ;
+    virtual void discardChanges() = 0                                               ;};
