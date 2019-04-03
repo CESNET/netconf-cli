@@ -72,7 +72,11 @@ SysrepoAccess::SysrepoAccess(const std::string& appname)
     : m_connection(new sysrepo::Connection(appname.c_str()))
     , m_schema(new YangSchema())
 {
-    m_session = std::make_shared<sysrepo::Session>(m_connection);
+    try {
+        m_session = std::make_shared<sysrepo::Session>(m_connection);
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
     m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule) {
         return fetchSchema(moduleName, revision, submodule);
     });
@@ -95,57 +99,94 @@ std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& pat
         }
     };
 
-    if (path == "/") {
-        // Sysrepo doesn't have a root node ("/"), so we take all top-level nodes from all schemas
-        auto schemas = m_session->list_schemas();
-        for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
-            fillMap(m_session->get_items(("/"s + schemas->schema(i)->module_name() + ":*//.").c_str()));
+    try {
+        if (path == "/") {
+            // Sysrepo doesn't have a root node ("/"), so we take all top-level nodes from all schemas
+            auto schemas = m_session->list_schemas();
+            for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
+                fillMap(m_session->get_items(("/"s + schemas->schema(i)->module_name() + ":*//.").c_str()));
+            }
+        } else {
+            fillMap(m_session->get_items((path + "//.").c_str()));
         }
-    } else {
-        fillMap(m_session->get_items((path + "//.").c_str()));
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
     }
-
     return res;
 }
 
 void SysrepoAccess::setLeaf(const std::string& path, leaf_data_ value)
 {
-    m_session->set_item(path.c_str(), boost::apply_visitor(valFromValue(), value));
+    try {
+        m_session->set_item(path.c_str(), boost::apply_visitor(valFromValue(), value));
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
 }
 
 void SysrepoAccess::createPresenceContainer(const std::string& path)
 {
-    m_session->set_item(path.c_str());
+    try {
+        m_session->set_item(path.c_str());
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
 }
 
 void SysrepoAccess::deletePresenceContainer(const std::string& path)
 {
-    m_session->delete_item(path.c_str());
+    try {
+        m_session->delete_item(path.c_str());
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
 }
 
 void SysrepoAccess::createListInstance(const std::string& path)
 {
-    m_session->set_item(path.c_str());
+    try {
+        m_session->set_item(path.c_str());
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
 }
 
 void SysrepoAccess::deleteListInstance(const std::string& path)
 {
-    m_session->delete_item(path.c_str());
+    try {
+        m_session->delete_item(path.c_str());
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
 }
 
 void SysrepoAccess::commitChanges()
 {
-    m_session->commit();
+    try {
+        m_session->commit();
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
 }
 
 void SysrepoAccess::discardChanges()
 {
-    m_session->discard_changes();
+    try {
+        m_session->discard_changes();
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
 }
 
 std::string SysrepoAccess::fetchSchema(const char* module, const char* revision, const char* submodule)
 {
-    auto schema = m_session->get_schema(module, revision, submodule, SR_SCHEMA_YANG); // FIXME: maybe we should use get_submodule_schema for submodules?
+    std::string schema;
+    try {
+        schema = m_session->get_schema(module, revision, submodule, SR_SCHEMA_YANG); // FIXME: maybe we should use get_submodule_schema for submodules?
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
+
     if (schema.empty())
         throw std::runtime_error(std::string("Module ") + module + " not available");
 
@@ -155,7 +196,12 @@ std::string SysrepoAccess::fetchSchema(const char* module, const char* revision,
 std::vector<std::string> SysrepoAccess::listImplementedSchemas()
 {
     std::vector<std::string> res;
-    auto schemas = m_session->list_schemas();
+    std::shared_ptr<sysrepo::Yang_Schemas> schemas;
+    try {
+        schemas = m_session->list_schemas();
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
     for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
         auto schema = schemas->schema(i);
         if (schema->implemented())
@@ -167,4 +213,27 @@ std::vector<std::string> SysrepoAccess::listImplementedSchemas()
 std::shared_ptr<Schema> SysrepoAccess::schema()
 {
     return m_schema;
+}
+
+[[noreturn]] void SysrepoAccess::reportErrors()
+{
+    // I only use get_last_errors to get error info, since the error code from
+    // sysrepo_exception doesn't really give any meaningful information. For
+    // example an "invalid argument" error could mean a node isn't enabled, or
+    // it could mean something totally different and there is no documentation
+    // for that, so it's better to just use the message sysrepo gives me.
+    auto srErrors = m_session->get_last_errors();
+    std::vector<DatastoreError> res;
+
+    for (size_t i = 0; i < srErrors->error_cnt(); i++) {
+        auto error = srErrors->error(i);
+        DatastoreError err;
+        err.m_message = error->message();
+        if (auto xpath = error->xpath()) {
+            err.m_xpath = xpath;
+        }
+        res.push_back(err);
+    }
+
+    throw DatastoreException(res);
 }
