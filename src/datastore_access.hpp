@@ -9,6 +9,7 @@
 #pragma once
 
 #include <map>
+#include <optional>
 #include <string>
 #include "ast_values.hpp"
 
@@ -16,6 +17,28 @@
  *     \brief Abstract class for accessing a datastore
  */
 
+struct DatastoreError {
+    std::string m_message;
+    std::optional<std::string> m_xpath;
+};
+
+class InternalErrorException : std::exception {
+public:
+    InternalErrorException(std::vector<DatastoreError> errors);
+    ~InternalErrorException() override = default;
+    const char* what() const noexcept override;
+private:
+    std::vector<DatastoreError> m_errors;
+};
+
+class ValidationException : std::exception {
+public:
+    ValidationException(std::vector<DatastoreError> errors);
+    ~ValidationException() override = default;
+    const char* what() const noexcept override;
+private:
+    std::vector<DatastoreError> m_errors;
+};
 
 class DatastoreAccess {
 public:

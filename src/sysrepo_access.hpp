@@ -19,6 +19,7 @@
 namespace sysrepo {
 class Connection;
 class Session;
+class sysrepo_exception;
 }
 
 class Schema;
@@ -43,6 +44,8 @@ public:
     std::shared_ptr<Schema> schema();
 
 private:
+    [[noreturn]] void reportErrors(const sysrepo::sysrepo_exception& ex);
+
     std::shared_ptr<sysrepo::Connection> m_connection;
     std::shared_ptr<sysrepo::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;

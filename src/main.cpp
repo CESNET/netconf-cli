@@ -78,6 +78,10 @@ int main(int argc, char* argv[])
             boost::apply_visitor(Interpreter(parser, datastore), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
+        } catch (ValidationException& ex) {
+            std::cerr << ex.what() << std::endl;
+        } catch (InternalErrorException& ex) {
+            std::cerr << ex.what() << std::endl;
         }
 
         lineEditor.history_add(line);

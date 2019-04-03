@@ -9,3 +9,25 @@
 #include "datastore_access.hpp"
 
 DatastoreAccess::~DatastoreAccess() = default;
+
+InternalErrorException::InternalErrorException(std::vector<DatastoreError> errors)
+    : m_errors(std::move(errors))
+{
+}
+
+ValidationException::ValidationException(std::vector<DatastoreError> errors)
+    : m_errors(std::move(errors))
+{
+}
+
+const char* InternalErrorException::what() const noexcept
+{
+    // TODO: implement this
+    return "<placeholder>";
+}
+
+const char* ValidationException::what() const noexcept
+{
+    // TODO: implement this
+    return "<placeholder>";
+}
