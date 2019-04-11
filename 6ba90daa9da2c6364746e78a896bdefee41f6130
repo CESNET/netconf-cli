@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0f7773f5_e0c10d72",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-04-11T13:57:45Z",
+      "side": 1,
+      "message": "Prosim o komentar s linkem na ten libyang bugreport",
+      "revId": "6ba90daa9da2c6364746e78a896bdefee41f6130",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03c42f03_084c761a",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-04-11T13:57:45Z",
+      "side": 1,
+      "message": "neco jako `blockLogging` nebo `logBlocker`",
+      "range": {
+        "startLine": 203,
+        "startChar": 13,
+        "endLine": 203,
+        "endChar": 27
+      },
+      "revId": "6ba90daa9da2c6364746e78a896bdefee41f6130",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
