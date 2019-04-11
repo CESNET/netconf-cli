@@ -26,6 +26,8 @@ TEST_CASE("path_completion")
     schema->addContainer("example:ano/example:a2", "example:a3");
     schema->addContainer("example:bota/example:b2", "example:b3");
     schema->addList("", "example:list", {"number"});
+    schema->addList("", "example:ovoce", {"name"});
+    schema->addList("", "example:ovocezelenina", {"name"});
     schema->addContainer("example:list", "example:contInList");
     schema->addList("", "example:twoKeyList", {"number", "name"});
     Parser parser(schema);
@@ -38,13 +40,13 @@ TEST_CASE("path_completion")
         SECTION("ls ")
         {
             input = "ls ";
-            expected = {"example:ano", "example:anoda", "example:bota", "second:amelie", "example:list", "example:twoKeyList"};
+            expected = {"example:ano", "example:anoda", "example:bota", "second:amelie", "example:list", "example:twoKeyList", "example:ovoce", "example:ovocezelenina"};
         }
 
         SECTION("ls e")
         {
             input = "ls e";
-            expected = {"example:ano", "example:anoda", "example:bota", "example:list", "example:twoKeyList"};
+            expected = {"example:ano", "example:anoda", "example:bota", "example:list", "example:twoKeyList", "example:ovoce", "example:ovocezelenina"};
         }
 
         SECTION("ls example:ano")
@@ -68,13 +70,13 @@ TEST_CASE("path_completion")
         SECTION("ls /")
         {
             input = "ls /";
-            expected = {"example:ano", "example:anoda", "example:bota", "second:amelie", "example:list", "example:twoKeyList"};
+            expected = {"example:ano", "example:anoda", "example:bota", "second:amelie", "example:list", "example:twoKeyList", "example:ovoce", "example:ovocezelenina"};
         }
 
         SECTION("ls /e")
         {
             input = "ls /e";
-            expected = {"example:ano", "example:anoda", "example:bota", "example:list", "example:twoKeyList"};
+            expected = {"example:ano", "example:anoda", "example:bota", "example:list", "example:twoKeyList", "example:ovoce", "example:ovocezelenina"};
         }
 
         SECTION("ls /s")
@@ -108,6 +110,12 @@ TEST_CASE("path_completion")
         {
             input = "cd example:lis";
             expected = {"example:list"};
+        }
+
+        SECTION("cd example:list")
+        {
+            input = "cd example:list";
+            expected = {"example:list["};
         }
 
         SECTION("cd example:list[")
@@ -146,6 +154,18 @@ TEST_CASE("path_completion")
             expected = {"name=", "number="};
         }
 
+        SECTION("cd example:twoKeyList[name=\"AHOJ\"")
+        {
+            input = "cd example:twoKeyList[name=\"AHOJ\"";
+            expected = {"]["};
+        }
+
+        SECTION("cd example:twoKeyList[name=\"AHOJ\"]")
+        {
+            input = "cd example:twoKeyList[name=\"AHOJ\"]";
+            expected = {"]["};
+        }
+
         SECTION("cd example:twoKeyList[name=\"AHOJ\"][")
         {
             input = "cd example:twoKeyList[name=\"AHOJ\"][";
@@ -168,6 +188,12 @@ TEST_CASE("path_completion")
         {
             input = "cd example:twoKeyList[name=\"AHOJ\"][number=123]";
             expected = {"]/"};
+        }
+
+        SECTION("cd example:ovoce")
+        {
+            input = "cd example:ovoce";
+            expected = {"example:ovoce", "example:ovocezelenina"};
         }
     }
 
