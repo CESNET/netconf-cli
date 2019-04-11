@@ -31,7 +31,6 @@ public:
     bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const override;
     bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const override;
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
-    bool nodeExists(const std::string& location, const std::string& node) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
@@ -49,6 +48,7 @@ public:
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
     void getIdentSet(const ModuleValuePair& ident, std::set<ModuleValuePair>& res) const;
+    bool nodeExists(const std::string& location, const std::string& node) const;
 
     std::unordered_map<std::string, std::unordered_map<std::string, NodeType>> m_nodes;
     std::set<std::string> m_modules;
