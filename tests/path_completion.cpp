@@ -110,6 +110,12 @@ TEST_CASE("path_completion")
             expected = {"example:list"};
         }
 
+        SECTION("cd example:list")
+        {
+            input = "cd example:list";
+            expected = {"example:list["};
+        }
+
         SECTION("cd example:list[")
         {
             input = "cd example:list[";
@@ -144,6 +150,18 @@ TEST_CASE("path_completion")
         {
             input = "cd example:twoKeyList[";
             expected = {"name=", "number="};
+        }
+
+        SECTION("cd example:twoKeyList[name=\"AHOJ\"")
+        {
+            input = "cd example:twoKeyList[name=\"AHOJ\"";
+            expected = {"]["};
+        }
+
+        SECTION("cd example:twoKeyList[name=\"AHOJ\"]")
+        {
+            input = "cd example:twoKeyList[name=\"AHOJ\"]";
+            expected = {"]["};
         }
 
         SECTION("cd example:twoKeyList[name=\"AHOJ\"][")
