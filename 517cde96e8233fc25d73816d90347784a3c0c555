@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fef3c21c_576157e4",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-04-11T15:24:26Z",
+      "side": 1,
+      "message": "slo by to, prosim, jeste alespon o jeden level hloubeji, aby tenhle grouping `uses` jiny grouping?",
+      "revId": "517cde96e8233fc25d73816d90347784a3c0c555",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
