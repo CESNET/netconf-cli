@@ -16,6 +16,24 @@
       "revId": "517cde96e8233fc25d73816d90347784a3c0c555",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f891eb97_de5c2393",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-04-11T16:05:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fef3c21c_576157e4",
+      "revId": "517cde96e8233fc25d73816d90347784a3c0c555",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
