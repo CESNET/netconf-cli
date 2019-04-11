@@ -37,7 +37,6 @@ public:
     bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const override;
     bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const override;
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
-    bool nodeExists(const std::string& location, const std::string& node) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const override;
@@ -60,7 +59,6 @@ public:
 
 private:
     std::set<std::string> modules() const;
-    bool nodeExists(const schemaPath_& location, const ModuleNodePair& node) const;
 
     /** @short Returns a set of nodes, that match the location and name criteria. */
     std::shared_ptr<libyang::Set> getNodeSet(const schemaPath_& location, const ModuleNodePair& node) const;

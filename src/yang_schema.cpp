@@ -187,13 +187,6 @@ bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& n
     return keys.find(key) != keys.end();
 }
 
-bool YangSchema::nodeExists(const std::string& location, const std::string& node) const
-{
-    const auto absPath = location + "/" + node;
-    const auto set = m_context->find_path(absPath.c_str());
-    return set->number() == 1;
-}
-
 libyang::S_Set YangSchema::getNodeSet(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string absPath = location.m_nodes.empty() ? "" : "/";
