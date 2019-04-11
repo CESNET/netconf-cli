@@ -22,4 +22,5 @@ struct ParserContext {
     std::set<std::string> m_suggestions;
     // Iterator pointing to where suggestions were created
     std::string::const_iterator m_completionIterator;
+    std::string m_completionSuffix;
 };
