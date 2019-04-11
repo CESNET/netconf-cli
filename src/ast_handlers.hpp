@@ -619,8 +619,18 @@ struct suggestKeysEnd_class {
         if (generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys).empty()) {
             parserContext.m_suggestions = {"]/"};
         } else {
-            parserContext.m_suggestions = {"]"};
+            parserContext.m_suggestions = {"]["};
         }
+    }
+};
+
+struct suggestKeysStart_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+
+        parserContext.m_completionSuffix = "[";
     }
 };
 
