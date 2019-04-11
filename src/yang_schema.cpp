@@ -9,6 +9,7 @@
 #include <libyang/Libyang.hpp>
 #include <libyang/Tree_Schema.hpp>
 #include <string_view>
+#include "UniqueResource.h"
 #include "utils.hpp"
 #include "yang_schema.hpp"
 
@@ -197,7 +198,21 @@ libyang::S_Set YangSchema::getNodeSet(const schemaPath_& location, const ModuleN
 {
     std::string absPath = location.m_nodes.empty() ? "" : "/";
     absPath += pathToAbsoluteSchemaString(location) + "/" + fullNodeName(location, node);
-    return m_context->find_path(absPath.c_str());
+
+    // If no node is found find_path prints an error message, so we have to
+    // disable logging
+    // https://github.com/CESNET/libyang/issues/753
+    {
+        int oldOptions;
+        auto logBlocker = make_unique_resource(
+            [&oldOptions]() {
+                oldOptions = libyang::set_log_options(0);
+            },
+            [&oldOptions]() {
+                libyang::set_log_options(oldOptions);
+            });
+        return m_context->find_path(absPath.c_str());
+    }
 }
 
 libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const
