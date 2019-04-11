@@ -284,9 +284,7 @@ std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recu
         const auto absolutePath = "/" + pathToAbsoluteSchemaString(path);
         const auto set = m_context->find_path(absolutePath.c_str());
         const auto schemaSet = set->schema();
-        for (auto it = (*schemaSet.begin())->child(); it; it = it->next()) {
-            nodes.push_back(it);
-        }
+        nodes = (*schemaSet.begin())->child_instantiables(0);
     }
 
     for (const auto node : nodes) {
