@@ -28,4 +28,18 @@ module example-schema {
         presence true;
     }
 
+    grouping upAndDown {
+        leaf up {
+            type boolean;
+        }
+        leaf down {
+            type boolean;
+        }
+    }
+
+    uses upAndDown;
+
+    container lol {
+        uses upAndDown;
+    }
 }
