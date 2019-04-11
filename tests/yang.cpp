@@ -184,6 +184,17 @@ module example-schema {
             type string;
         }
     }
+
+    grouping startAndStop {
+        leaf start {
+            type boolean;
+        }
+        leaf stop {
+            type boolean;
+        }
+    }
+
+    uses startAndStop;
 })";
 
 TEST_CASE("yangschema")
@@ -230,6 +241,18 @@ TEST_CASE("yangschema")
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
                 node.first = "example-schema";
                 node.second = "leafa";
+            }
+
+            SECTION("example-schema:start")
+            {
+                node.first = "example-schema";
+                node.second = "start";
+            }
+
+            SECTION("example-schema:stop")
+            {
+                node.first = "example-schema";
+                node.second = "stop";
             }
 
             REQUIRE(ys.isLeaf(path, node));
@@ -531,7 +554,8 @@ TEST_CASE("yangschema")
                        "example-schema:leafUint", "example-schema:leafEnum", "example-schema:leafEnumTypedef",
                        "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
                        "example-schema:foodIdentLeaf", "example-schema:pizzaIdentLeaf", "example-schema:foodDrinkIdentLeaf",
-                       "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla"};
+                       "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla",
+                       "example-schema:start", "example-schema:stop"};
             }
 
             SECTION("example-schema:a")
@@ -647,6 +671,17 @@ TEST_CASE("yangschema")
                 value.second = "pineapple";
             }
             REQUIRE_FALSE(ys.leafIdentityIsValid(path, node, value));
+        }
+
+        SECTION("grouping is not a node")
+        {
+            node.first = "example-schema";
+            node.second = "startAndStop";
+
+            REQUIRE(!ys.isPresenceContainer(path, node));
+            REQUIRE(!ys.isList(path, node));
+            REQUIRE(!ys.isLeaf(path, node));
+            REQUIRE(!ys.isContainer(path, node));
         }
     }
 }
