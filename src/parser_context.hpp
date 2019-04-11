@@ -22,4 +22,8 @@ struct ParserContext {
     std::set<std::string> m_suggestions;
     // Iterator pointing to where suggestions were created
     std::string::const_iterator m_completionIterator;
+    // If the parser determines that suggestions are unambiguous (after
+    // filtering by prefix), this suffix gets added to the completion (for
+    // example a left bracket after a list)
+    std::string m_completionSuffix;
 };
