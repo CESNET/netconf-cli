@@ -176,7 +176,7 @@ bool YangSchema::leafIdentityIsValid(const schemaPath_& location, const ModuleNo
 
     auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
     auto identModule = value.first ? value.first.value() : topLevelModule;
-    return std::any_of(identities.begin(), identities.end(), [identModule, value](const auto& x) { return x == identModule + ":" + value.second; });
+    return std::any_of(identities.begin(), identities.end(), [toFind = identModule + ":" + value.second](const auto& x) { return x == toFind; });
 }
 
 bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
