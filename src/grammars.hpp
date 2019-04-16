@@ -162,7 +162,7 @@ auto const dataPath_def =
     initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % '/' >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
 
 auto const dataNodeList_def =
-    -(module) >> createPathSuggestions >> list;
+    createPathSuggestions >> -(module) >> list;
 
 // This intermediate rule is mandatory, because we need the first alternative
 // to be collapsed to a vector. If we didn't use the intermediate rule,

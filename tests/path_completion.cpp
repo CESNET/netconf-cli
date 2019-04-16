@@ -110,6 +110,12 @@ TEST_CASE("path_completion")
             expected = {"example:list"};
         }
 
+        SECTION("set example:list")
+        {
+            input = "set example:list";
+            expected = {"example:list"};
+        }
+
         SECTION("cd example:list[")
         {
             input = "cd example:list[";
