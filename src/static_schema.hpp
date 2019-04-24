@@ -32,6 +32,7 @@ public:
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
+    yang::LeafDataTypes leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion) const override;
@@ -40,6 +41,7 @@ public:
     void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);
     void addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues);
     void addLeafIdentityRef(const std::string& location, const std::string& name, const ModuleValuePair& base);
+    void addLeafRef(const std::string& location, const std::string& name, const std::string& source);
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void addModule(const std::string& name);
     void addIdentity(const std::optional<ModuleValuePair>& base, const ModuleValuePair& name);
