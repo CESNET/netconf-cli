@@ -122,5 +122,33 @@ TEST_CASE("setting values")
         datastore.commitChanges();
     }
 
+    SECTION("leafref pointing to a key of a list")
+    {
+        REQUIRE_CALL(mock, write("/example-schema:person[name='Dan']", "", ""));
+        REQUIRE_CALL(mock, write("/example-schema:person[name='Dan']/name", "", "Dan"));
+        REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']", "", ""));
+        REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']/name", "", "Elfi"));
+        REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']", "", ""));
+        REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']/name", "", "Kolafa"));
+        datastore.createListInstance("/example-schema:person[name='Dan']");
+        datastore.createListInstance("/example-schema:person[name='Elfi']");
+        datastore.createListInstance("/example-schema:person[name='Kolafa']");
+
+        // I would like this to be in separate sections, but Netopeer/Sysrepo
+        // remembers old values, even though we are the only subscription (and
+        // thus running config should be deleted)
+        REQUIRE_CALL(mock, write("/example-schema:bossPerson", "", "Dan"));
+        datastore.setLeaf("/example-schema:bossPerson", std::string{"Dan"});
+        datastore.commitChanges();
+
+        REQUIRE_CALL(mock, write("/example-schema:bossPerson", "Dan", "Elfi"));
+        datastore.setLeaf("/example-schema:bossPerson", std::string{"Elfi"});
+        datastore.commitChanges();
+
+        REQUIRE_CALL(mock, write("/example-schema:bossPerson", "Elfi", "Kolafa"));
+        datastore.setLeaf("/example-schema:bossPerson", std::string{"Kolafa"});
+        datastore.commitChanges();
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
