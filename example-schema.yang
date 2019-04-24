@@ -63,6 +63,12 @@ module example-schema {
         }
     }
 
+    leaf bossPerson {
+        type leafref {
+            path '../aha:person/name';
+        }
+    }
+
     grouping upAndDown {
         leaf up {
             type boolean;
