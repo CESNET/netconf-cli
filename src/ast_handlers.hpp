@@ -419,7 +419,11 @@ struct leaf_data_base_class {
         leaf_ leaf = boost::get<leaf_>(parserContext.m_curPath.m_nodes.back().m_suffix);
         schemaPath_ location = pathWithoutLastNode(parserContext.m_curPath);
 
-        if (schema.leafType(location, {module, leaf.m_name}) != m_type) {
+        auto type = schema.leafType(location, {module, leaf.m_name});
+        if (type == yang::LeafDataTypes::LeafRef) {
+            type = schema.leafrefBase(location, {module, leaf.m_name});
+        }
+        if (type != m_type) {
             _pass(context) = false;
         }
     }
