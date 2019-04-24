@@ -40,6 +40,7 @@ public:
     void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);
     void addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues);
     void addLeafIdentityRef(const std::string& location, const std::string& name, const ModuleValuePair& base);
+    void addLeafRef(const std::string& location, const std::string& name, const std::string& source);
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void addModule(const std::string& name);
     void addIdentity(const std::optional<ModuleValuePair>& base, const ModuleValuePair& name);

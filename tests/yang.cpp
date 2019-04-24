@@ -230,6 +230,18 @@ module example-schema {
     }
 
     uses flags;
+
+    leaf refToInt8 {
+        type leafref {
+            path "../leafInt8";
+        }
+    }
+
+    leaf refToString {
+        type leafref {
+            path "../leafString";
+        }
+    }
 })";
 
 TEST_CASE("yangschema")
@@ -630,6 +642,20 @@ TEST_CASE("yangschema")
                 type = yang::LeafDataTypes::Enum;
             }
 
+            SECTION("refToInt8")
+            {
+                node.first = "example-schema";
+                node.second = "refToInt8";
+                type = yang::LeafDataTypes::Int8;
+            }
+
+            SECTION("refToString")
+            {
+                node.first = "example-schema";
+                node.second = "refToString";
+                type = yang::LeafDataTypes::String;
+            }
+
             REQUIRE(ys.leafType(path, node) == type);
         }
         SECTION("childNodes")
@@ -649,7 +675,7 @@ TEST_CASE("yangschema")
                        "example-schema:foodIdentLeaf", "example-schema:pizzaIdentLeaf", "example-schema:foodDrinkIdentLeaf",
                        "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla",
                        "example-schema:carry", "example-schema:zero", "example-schema:direction",
-                       "example-schema:interrupt"};
+                       "example-schema:interrupt", "example-schema:refToInt8", "example-schema:refToString"};
             }
 
             SECTION("example-schema:a")

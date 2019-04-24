@@ -38,6 +38,7 @@ enum class LeafDataTypes {
     Enum,
     Binary,
     IdentityRef,
+    LeafRef, // only used in StaticSchema
 };
 
 struct container {
@@ -51,6 +52,7 @@ struct leaf {
     yang::LeafDataTypes m_type;
     std::set<std::string> m_enumValues;
     ModuleValuePair m_identBase;
+    std::string m_leafRefSource;
 };
 
 struct module {

@@ -240,7 +240,11 @@ yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const Modu
         throw InvalidSchemaQueryException(fullNodeName(location, node) + " is not a leaf");
 
     libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
-    switch (leaf.type()->base()) {
+    auto baseType{leaf.type()->base()};
+    if (baseType == LY_TYPE_LEAFREF) {
+        baseType = leaf.type()->info()->lref()->target()->type()->base();
+    }
+    switch (baseType) {
     case LY_TYPE_STRING:
         return yang::LeafDataTypes::String;
     case LY_TYPE_DEC64:
