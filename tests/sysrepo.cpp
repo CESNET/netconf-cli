@@ -122,5 +122,45 @@ TEST_CASE("setting values")
         datastore.commitChanges();
     }
 
+    SECTION("leafref pointing to a key of a list")
+    {
+        {
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Dan']", "", ""));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Dan']/name", "", "Dan"));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']", "", ""));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']/name", "", "Elfi"));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']", "", ""));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']/name", "", "Kolafa"));
+            datastore.createListInstance("/example-schema:person[name='Dan']");
+            datastore.createListInstance("/example-schema:person[name='Elfi']");
+            datastore.createListInstance("/example-schema:person[name='Kolafa']");
+            datastore.commitChanges();
+        }
+
+        // The commitChanges method has to be called in each of the
+        // SECTIONs, because the REQUIRE_CALL only works inside the given
+        // SECTION.
+        SECTION("Dan")
+        {
+            REQUIRE_CALL(mock, write("/example-schema:bossPerson", "", "Dan"));
+            datastore.setLeaf("/example-schema:bossPerson", std::string{"Dan"});
+            datastore.commitChanges();
+        }
+
+        SECTION("Elfi")
+        {
+            REQUIRE_CALL(mock, write("/example-schema:bossPerson", "", "Elfi"));
+            datastore.setLeaf("/example-schema:bossPerson", std::string{"Elfi"});
+            datastore.commitChanges();
+        }
+
+        SECTION("Kolafa")
+        {
+            REQUIRE_CALL(mock, write("/example-schema:bossPerson", "", "Kolafa"));
+            datastore.setLeaf("/example-schema:bossPerson", std::string{"Kolafa"});
+            datastore.commitChanges();
+        }
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
