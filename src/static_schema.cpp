@@ -104,7 +104,7 @@ bool StaticSchema::isPresenceContainer(const schemaPath_& location, const Module
 
 void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type)
 {
-    m_nodes.at(location).emplace(name, yang::leaf{type, {}, {}});
+    m_nodes.at(location).emplace(name, yang::leaf{type, {}, {}, {}});
 }
 
 void StaticSchema::addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues)
@@ -121,6 +121,14 @@ void StaticSchema::addLeafIdentityRef(const std::string& location, const std::st
     yang::leaf toAdd;
     toAdd.m_type = yang::LeafDataTypes::IdentityRef;
     toAdd.m_identBase = base;
+    m_nodes.at(location).emplace(name, toAdd);
+}
+
+void StaticSchema::addLeafRef(const std::string& location, const std::string& name, const std::string& source)
+{
+    yang::leaf toAdd;
+    toAdd.m_type = yang::LeafDataTypes::LeafRef;
+    toAdd.m_leafRefSource = source;
     m_nodes.at(location).emplace(name, toAdd);
 }
 
@@ -197,10 +205,17 @@ bool StaticSchema::isLeaf(const schemaPath_& location, const ModuleNodePair& nod
     return children(locationString).at(fullName).type() == typeid(yang::leaf);
 }
 
+// This method is just a stub, because leafrefs are not tested in StaticSchema;
+yang::LeafDataTypes StaticSchema::leafrefBase(const schemaPath_&, const ModuleNodePair&) const
+{
+    return yang::LeafDataTypes::Binary;
+}
+
 yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
-    return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
+    auto leaf{boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node)))};
+    return leaf.m_type;
 }
 
 const std::set<std::string> StaticSchema::enumValues(const schemaPath_& location, const ModuleNodePair& node) const

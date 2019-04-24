@@ -53,3 +53,9 @@ SysrepoSubscription::SysrepoSubscription(Recorder* rec)
 
     m_subscription->module_change_subscribe(modName, m_callback);
 }
+
+SysrepoSubscription::~SysrepoSubscription()
+{
+    m_subscription->unsubscribe();
+    m_session->session_stop();
+}

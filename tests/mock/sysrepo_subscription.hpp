@@ -27,6 +27,7 @@ public:
 class SysrepoSubscription {
 public:
     SysrepoSubscription(Recorder* rec);
+    ~SysrepoSubscription();
 
 private:
     std::shared_ptr<sysrepo::Connection> m_connection;
