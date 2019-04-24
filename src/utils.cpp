@@ -62,6 +62,8 @@ std::string leafDataTypeToString(yang::LeafDataTypes type)
         return "an enum";
     case yang::LeafDataTypes::IdentityRef:
         return "an identity";
+    case yang::LeafDataTypes::LeafRef:
+        return "a leafref";
     default:
         throw std::runtime_error("leafDataTypeToString: unsupported leaf data type");
     }
