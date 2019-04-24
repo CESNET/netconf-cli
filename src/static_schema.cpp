@@ -197,6 +197,12 @@ bool StaticSchema::isLeaf(const schemaPath_& location, const ModuleNodePair& nod
     return children(locationString).at(fullName).type() == typeid(yang::leaf);
 }
 
+// This method is just a stub, because leafrefs are not tested in StaticSchema;
+yang::LeafDataTypes StaticSchema::leafrefBase(const schemaPath_&, const ModuleNodePair&) const
+{
+    return yang::LeafDataTypes::Binary;
+}
+
 yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToAbsoluteSchemaString(location);
