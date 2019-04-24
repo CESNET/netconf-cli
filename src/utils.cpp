@@ -28,6 +28,15 @@ std::string stripLastNodeFromPath(const std::string& path)
     return res;
 }
 
+std::string lastNodeOfPath(const std::string& path)
+{
+    std::string res = path;
+    auto pos = res.find_last_of('/');
+    if (pos != res.npos)
+        res.erase(0, pos);
+    return res;
+}
+
 schemaPath_ pathWithoutLastNode(const schemaPath_& path)
 {
     return schemaPath_{path.m_scope, decltype(schemaPath_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};

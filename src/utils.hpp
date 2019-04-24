@@ -14,6 +14,7 @@
 
 std::string joinPaths(const std::string& prefix, const std::string& suffix);
 std::string stripLastNodeFromPath(const std::string& path);
+std::string lastNodeOfPath(const std::string& path);
 schemaPath_ pathWithoutLastNode(const schemaPath_& path);
 dataPath_ pathWithoutLastNode(const dataPath_& path);
 std::string leafDataTypeToString(yang::LeafDataTypes type);

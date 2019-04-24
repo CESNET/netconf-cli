@@ -35,6 +35,8 @@ TEST_CASE("leaf editing")
     schema->addLeaf("mod:contA", "mod:leafInCont", yang::LeafDataTypes::String);
     schema->addList("", "mod:list", {"number"});
     schema->addLeaf("mod:list", "mod:leafInList", yang::LeafDataTypes::String);
+    schema->addLeafRef("", "mod:refToString", "mod:leafString");
+    schema->addLeafRef("", "mod:refToInt", "mod:leafInt");
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -202,6 +204,22 @@ TEST_CASE("leaf editing")
                     }
                 }
             }
+            SECTION("leafRef")
+            {
+                SECTION("refToString")
+                {
+                    input = "set mod:refToString blabal";
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("refToString")});
+                    expected.m_data = std::string("blabal");
+                }
+
+                SECTION("refToInt")
+                {
+                    input = "set mod:refToInt 42";
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("refToInt")});
+                    expected.m_data = 42;
+                }
+            }
         }
 
         command_ command = parser.parseCommand(input, errorStream);
@@ -257,6 +275,10 @@ TEST_CASE("leaf editing")
             SECTION("set leafEnum blabla")
             {
                 input = "set leafEnum blabla";
+            }
+            SECTION("set mod:refToInt blabla")
+            {
+                input = "set mod:refToInt blabla";
             }
         }
 
