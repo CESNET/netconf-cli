@@ -38,6 +38,7 @@ enum class LeafDataTypes {
     Enum,
     Binary,
     IdentityRef,
+    LeafRef,
 };
 
 struct container {
@@ -96,6 +97,8 @@ public:
     virtual bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const = 0;
     virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual yang::LeafDataTypes leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+
     virtual const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const = 0;
     virtual const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const = 0;
