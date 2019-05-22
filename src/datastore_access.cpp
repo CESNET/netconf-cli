@@ -24,7 +24,7 @@ DatastoreException::DatastoreException(const std::vector<DatastoreError>& errors
         m_what += it.message;
         m_what += "\n";
         if (it.xpath) {
-            m_what += " Xpath: ";
+            m_what += " XPath: ";
             m_what += it.xpath.value();
             m_what += "\n";
         }
