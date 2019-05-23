@@ -75,7 +75,10 @@ void Interpreter::operator()(const cd_& cd) const
 
 void Interpreter::operator()(const create_& create) const
 {
-    m_datastore.createPresenceContainer(absolutePathFromCommand(create));
+    if (create.m_path.m_nodes.back().m_suffix.type() == typeid(listElement_))
+        m_datastore.createListInstance(absolutePathFromCommand(create));
+    else
+        m_datastore.createPresenceContainer(absolutePathFromCommand(create));
 }
 
 void Interpreter::operator()(const delete_& delet) const
