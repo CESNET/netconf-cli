@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f35391c_32d7a5d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-24T12:17:57Z",
+      "side": 1,
+      "message": "Pokud tomu dobre rozumim, tenhle patch pridava jenom dost zakladni podporu. Povoli prikaz `set`, kde bude parser akceptovat presne stejne vstupy (co do datoveho typu), jako kdyz by se volal `set` na odkazovany leaf. Tohle by melo byt vysvetleno v commit message.",
+      "revId": "136926f72eb21cfa7f4921cdb5620105f37ffa4f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "561118e6_04f485ef",
+        "filename": "src/schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-24T12:17:57Z",
+      "side": 1,
+      "message": "Tady to zacina byt podezrele, protoze pokud se \"jednoducha trida pro testy\" chova jinak nez \"opravdova implementace\", je nekde neco spatne.\n\nV tuhle chvili jsem presvedceny o tom, ze tohle neni dobre reseni, nicmene jsem otevreny argumentum.",
+      "revId": "136926f72eb21cfa7f4921cdb5620105f37ffa4f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ed4a269_7c6ec758",
+        "filename": "src/schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-24T12:17:57Z",
+      "side": 1,
+      "message": "Nazev \"source\" me mate. K cemu to slouzi -- je to statement `path` z definice leafrefu ve schematu? Pokud ano, doporucuju neco jako `leafrefPath`.",
+      "revId": "136926f72eb21cfa7f4921cdb5620105f37ffa4f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f40bd07_0160c108",
+        "filename": "src/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-05-24T12:17:57Z",
+      "side": 1,
+      "message": "Co to udela, pokud path bude /example:foo[key\u003d\"a/b\"] ?",
+      "revId": "136926f72eb21cfa7f4921cdb5620105f37ffa4f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
