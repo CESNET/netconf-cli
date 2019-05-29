@@ -8,25 +8,11 @@
 #pragma once
 
 #include <boost/mpl/vector.hpp>
+#include <boost/spirit/home/x3/support/ast/position_tagged.hpp>
 #include "ast_path.hpp"
 #include "ast_values.hpp"
 
 namespace x3 = boost::spirit::x3;
-namespace ascii = boost::spirit::x3::ascii;
-
-using ascii::space;
-using x3::_attr;
-using x3::alnum;
-using x3::alpha;
-using x3::char_;
-using x3::double_;
-using x3::expect;
-using x3::int_;
-using x3::lexeme;
-using x3::lit;
-using x3::uint_;
-
-struct parser_context_tag;
 
 using keyValue_ = std::pair<std::string, std::string>;
 

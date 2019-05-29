@@ -6,14 +6,13 @@
  *
 */
 #include <docopt.h>
-#include <experimental/filesystem>
 #include <iostream>
+#include <sstream>
 #include <optional>
 #include <replxx.hxx>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
 #include "sysrepo_access.hpp"
-#include "yang_schema.hpp"
 
 const auto HISTORY_FILE_NAME = "netconf-cli_history";
 
