@@ -7,7 +7,6 @@
 */
 
 #include "trompeloeil_doctest.h"
-#include "ast_commands.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 
