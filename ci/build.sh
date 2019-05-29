@@ -49,9 +49,9 @@ export PKG_CONFIG_PATH=${PREFIX}/lib64/pkgconfig:${PREFIX}/lib/pkgconfig${PKG_CO
 
 ARTIFACT_URL=""
 
-if [[ "$(jq < ~/zuul-env.json -r '.artifacts[0].project')" = "CzechLight/dependencies" &&
-      "$(jq < ~/zuul-env.json -r '.artifacts[0].name')" = "tarball" ]]; then
-    ARTIFACT_URL=$(jq < ~/zuul-env.json -r '.artifacts[0].url')
+if [[ "$(jq < ~/zuul-env.json -r '.artifacts[-1].project')" = "CzechLight/dependencies" &&
+      "$(jq < ~/zuul-env.json -r '.artifacts[-1].name')" = "tarball" ]]; then
+    ARTIFACT_URL=$(jq < ~/zuul-env.json -r '.artifacts[-1].url')
 fi
 
 DEP_SUBMODULE_COMMIT=$(git ls-tree -l master submodules/dependencies | cut -d ' ' -f 3)
