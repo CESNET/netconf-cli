@@ -28,6 +28,13 @@ module example-schema {
         presence true;
     }
 
+    list person {
+        key 'name';
+        leaf name {
+            type string;
+        }
+    }
+
     grouping upAndDown {
         leaf up {
             type boolean;

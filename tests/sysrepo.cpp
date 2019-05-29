@@ -58,5 +58,13 @@ TEST_CASE("setting values")
         datastore.commitChanges();
     }
 
+    SECTION("create a list instance")
+    {
+        REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']", "", ""));
+        REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", "", "Nguyen"));
+        datastore.createListInstance("/example-schema:person[name='Nguyen']");
+        datastore.commitChanges();
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
