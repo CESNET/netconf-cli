@@ -21,3 +21,4 @@ std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair
 std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair);
 /** Returns a subset of the original set with only the strings starting with prefix */
 std::set<std::string> filterByPrefix(const std::set<std::string>& set, const std::string_view prefix);
+std::string leafDataToString(const leaf_data_ value);
