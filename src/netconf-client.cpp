@@ -12,7 +12,6 @@ extern "C" {
 #include <nc_client.h>
 }
 #include <sstream>
-#include <tuple>
 #include "netconf-client.h"
 
 namespace libnetconf {
