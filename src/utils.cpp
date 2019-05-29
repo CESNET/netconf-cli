@@ -5,8 +5,8 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
-#include <boost/algorithm/string/erase.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <sstream>
 #include "utils.hpp"
 
 std::string joinPaths(const std::string& prefix, const std::string& suffix)
