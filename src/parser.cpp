@@ -6,7 +6,9 @@
  *
 */
 #include <ostream>
+#include "grammars.hpp"
 #include "parser.hpp"
+#include "parser_context.hpp"
 
 TooManyArgumentsException::~TooManyArgumentsException() = default;
 

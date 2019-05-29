@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <boost/spirit/home/x3.hpp>
 #include "ast_commands.hpp"
 #include "ast_handlers.hpp"
 
@@ -80,6 +81,26 @@ x3::rule<createIdentitySuggestions_class, x3::unused_type> const createIdentityS
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Woverloaded-shift-op-parentheses"
 #endif
+
+namespace ascii = boost::spirit::x3::ascii;
+
+using ascii::space;
+using x3::_attr;
+using x3::alnum;
+using x3::alpha;
+using x3::char_;
+using x3::double_;
+using x3::expect;
+using x3::lexeme;
+using x3::lit;
+using x3::int8;
+using x3::int16;
+using x3::int32;
+using x3::int64;
+using x3::uint8;
+using x3::uint16;
+using x3::uint32;
+using x3::uint64;
 
 auto const key_identifier_def =
     lexeme[
