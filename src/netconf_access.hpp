@@ -8,7 +8,6 @@
 #pragma once
 
 #include <string>
-#include "ast_commands.hpp"
 #include "datastore_access.hpp"
 
 /*! \class NetconfAccess

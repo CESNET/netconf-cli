@@ -9,8 +9,11 @@
 #pragma once
 
 #include <boost/mpl/for_each.hpp>
+#include <boost/spirit/home/x3.hpp>
+#include <boost/spirit/home/x3/support/utility/error_reporting.hpp>
+
+
 #include "ast_commands.hpp"
-#include "parser_context.hpp"
 #include "schema.hpp"
 #include "utils.hpp"
 namespace x3 = boost::spirit::x3;
