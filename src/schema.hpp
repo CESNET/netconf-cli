@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <boost/variant.hpp>
+#include <boost/variant/variant.hpp>
 #include <set>
 #include <stdexcept>
 #include <unordered_map>

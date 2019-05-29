@@ -13,7 +13,6 @@ extern "C" {
 }
 #include <spdlog/spdlog.h>
 #include <sstream>
-#include <tuple>
 #include "netconf-client.h"
 
 #define NETCONF_CLIENT_TRACE_FUNC \

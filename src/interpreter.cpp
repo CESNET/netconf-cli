@@ -6,9 +6,11 @@
  *
 */
 
+#include <boost/mpl/for_each.hpp>
 #include <iostream>
 #include "datastore_access.hpp"
 #include "interpreter.hpp"
+#include "utils.hpp"
 
 void Interpreter::operator()(const commit_&) const
 {
