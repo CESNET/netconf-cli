@@ -9,7 +9,6 @@
 #pragma once
 
 #include <set>
-#include <stdexcept>
 #include <unordered_map>
 #include "ast_path.hpp"
 #include "schema.hpp"

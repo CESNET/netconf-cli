@@ -7,8 +7,9 @@
 */
 
 #pragma once
-#include <boost/spirit/home/x3.hpp>
-#include "grammars.hpp"
+#include "ast_commands.hpp"
+#include "ast_path.hpp"
+#include "schema.hpp"
 
 
 class InvalidCommandException : public std::invalid_argument {
