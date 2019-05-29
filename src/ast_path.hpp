@@ -7,14 +7,10 @@
 */
 #pragma once
 
-#include <boost/spirit/home/x3.hpp>
-#include <boost/spirit/home/x3/support/ast/position_tagged.hpp>
-#include <boost/spirit/home/x3/support/utility/error_reporting.hpp>
-
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/std_pair.hpp>
-#include <boost/variant.hpp>
+#include <boost/variant/variant.hpp>
 #include <map>
 #include <vector>
 

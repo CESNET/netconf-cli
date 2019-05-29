@@ -11,6 +11,7 @@
 #include "ast_commands.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
+#include "utils.hpp"
 
 std::ostream& operator<<(std::ostream& s, const set_ cmd)
 {
