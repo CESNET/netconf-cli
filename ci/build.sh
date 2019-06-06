@@ -7,6 +7,7 @@ ZUUL_JOB_NAME=$(jq < ~/zuul-env.json -r '.job')
 ZUUL_TENANT=$(jq < ~/zuul-env.json -r '.tenant')
 ZUUL_PROJECT_SRC_DIR=$HOME/$(jq < ~/zuul-env.json -r '.project.src_dir')
 ZUUL_PROJECT_SHORT_NAME=$(jq < ~/zuul-env.json -r '.project.short_name')
+ZUUL_GERRIT_HOSTNAME=$(jq < ~/zuul-env.json -r '.project.canonical_hostname')
 
 CI_PARALLEL_JOBS=$(grep -c '^processor' /proc/cpuinfo)
 CMAKE_OPTIONS=""
@@ -58,7 +59,7 @@ DEP_SUBMODULE_COMMIT=$(git ls-tree -l master submodules/dependencies | cut -d ' 
 
 if [[ -z "${ARTIFACT_URL}" ]]; then
     # fallback to a promoted artifact
-    ARTIFACT_URL="https://ci-logs.gerrit.cesnet.cz/t/${ZUUL_TENANT,,}/artifacts/${ZUUL_JOB_NAME}/czechlight-dependencies-${DEP_SUBMODULE_COMMIT}.tar.xz"
+    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME}/${DEP_SUBMODULE_COMMIT}.tar.xz"
 fi
 
 ARTIFACT_FILE=$(basename ${ARTIFACT_URL})
@@ -76,4 +77,6 @@ cmake -GNinja -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Debug} -DCMAKE_INSTALL_PREF
 ninja-build
 ctest -j${CI_PARALLEL_JOBS} --output-on-failure
 ninja-build doc
-mv html ~/zuul-output/docs/
+pushd html
+zip -r ~/zuul-output/docs/html.zip .
+popd
