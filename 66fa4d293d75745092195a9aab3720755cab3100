@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "12714d99_d71417a1",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-06-26T19:55:51Z",
+      "side": 1,
+      "message": "tohle asi potrebuje poladit take",
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5ad9191_c1ebd239",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-06-26T19:55:51Z",
+      "side": 1,
+      "message": "neni mi jasne, proc je tohle potreba; ted je to sysrepo.cpp vs. sysrepo.cpp, ne?",
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c54ae44_40fecb47",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-06-26T19:55:51Z",
+      "side": 1,
+      "message": "jestli si jsi 100% jisty, ze nebudes v budoucnu potrbovat pridavat jine moduly, tak OK, ale radsi mi to, prosim, potvrd",
+      "range": {
+        "startLine": 178,
+        "startChar": 196,
+        "endLine": 178,
+        "endChar": 215
+      },
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2795018_3ce44263",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-06-26T19:55:51Z",
+      "side": 1,
+      "message": "jeste tam chybi to RESOURCE_LOCK, viz cla-sysrepo, jinak by hrozila paralelizace testu (coz je ted non-issue, protoze ten test je jenom jeden, ale stejne)",
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7b82060_425477a9",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-06-26T19:55:51Z",
+      "side": 1,
+      "message": "to by slo dat do toho makra",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 85
+      },
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
