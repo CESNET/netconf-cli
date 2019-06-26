@@ -10,7 +10,6 @@
 
 #include "sysrepo_access.hpp"
 #include "sysrepo_subscription.hpp"
-#include "sysrepo_vars.hpp"
 
 class MockRecorder : public Recorder {
 public:
@@ -19,12 +18,6 @@ public:
 
 TEST_CASE("setting values")
 {
-    if (system(SYSREPOCTLEXECUTABLE " --uninstall --module example-schema > /dev/null") != 0) {
-        // uninstall can fail if it isn't already installed -> do nothing
-        // This crappy comment is here due to https://gcc.gnu.org/bugzilla/show_bug.cgi?id=25509
-    }
-    REQUIRE(system(SYSREPOCTLEXECUTABLE " --install --yang " EXAMPLE_SCHEMA_LOCATION " > /dev/null") == 0);
-
     trompeloeil::sequence seq1;
     MockRecorder mock;
     SysrepoSubscription subscription(&mock);
