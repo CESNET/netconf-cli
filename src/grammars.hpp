@@ -41,8 +41,14 @@ x3::rule<leaf_data_class, leaf_data_> const leaf_data = "leaf_data";
 x3::rule<leaf_data_enum_class, enum_> const leaf_data_enum = "leaf_data_enum";
 x3::rule<leaf_data_decimal_class, double> const leaf_data_decimal = "leaf_data_decimal";
 x3::rule<leaf_data_bool_class, bool> const leaf_data_bool = "leaf_data_bool";
-x3::rule<leaf_data_int_class, int32_t> const leaf_data_int = "leaf_data_int";
-x3::rule<leaf_data_uint_class, uint32_t> const leaf_data_uint = "leaf_data_uint";
+x3::rule<leaf_data_int8_class, int8_t> const leaf_data_int8 = "leaf_data_int8";
+x3::rule<leaf_data_uint8_class, uint8_t> const leaf_data_uint8 = "leaf_data_uint8";
+x3::rule<leaf_data_int16_class, int16_t> const leaf_data_int16 = "leaf_data_int16";
+x3::rule<leaf_data_uint16_class, uint16_t> const leaf_data_uint16 = "leaf_data_uint16";
+x3::rule<leaf_data_int32_class, int32_t> const leaf_data_int32 = "leaf_data_int32";
+x3::rule<leaf_data_uint32_class, uint32_t> const leaf_data_uint32 = "leaf_data_uint32";
+x3::rule<leaf_data_int64_class, int64_t> const leaf_data_int64 = "leaf_data_int64";
+x3::rule<leaf_data_uint64_class, uint64_t> const leaf_data_uint64 = "leaf_data_uint64";
 x3::rule<leaf_data_string_class, std::string> const leaf_data_string = "leaf_data_string";
 x3::rule<leaf_data_binary_data_class, std::string> const leaf_data_binary_data = "leaf_data_binary_data";
 x3::rule<leaf_data_binary_class, binary_> const leaf_data_binary = "leaf_data_binary";
@@ -212,10 +218,22 @@ struct bool_symbol_table : x3::symbols<bool> {
 
 auto const leaf_data_bool_def =
     bool_rule;
-auto const leaf_data_int_def =
-    int_;
-auto const leaf_data_uint_def =
-    uint_;
+auto const leaf_data_int8_def =
+    int8;
+auto const leaf_data_int16_def =
+    int16;
+auto const leaf_data_int32_def =
+    int32;
+auto const leaf_data_int64_def =
+    int64;
+auto const leaf_data_uint8_def =
+    uint8;
+auto const leaf_data_uint16_def =
+    uint16;
+auto const leaf_data_uint32_def =
+    uint32;
+auto const leaf_data_uint64_def =
+    uint64;
 auto const leaf_data_string_def =
     *char_;
 
@@ -240,8 +258,14 @@ x3::expect[
     leaf_data_enum |
     leaf_data_decimal |
     leaf_data_bool |
-    leaf_data_int |
-    leaf_data_uint |
+    leaf_data_int8 |
+    leaf_data_int16 |
+    leaf_data_int32 |
+    leaf_data_int64 |
+    leaf_data_uint8 |
+    leaf_data_uint16 |
+    leaf_data_uint32 |
+    leaf_data_uint64 |
     leaf_data_binary |
     leaf_data_identityRef |
     leaf_data_string];
@@ -332,8 +356,14 @@ BOOST_SPIRIT_DEFINE(leaf_data)
 BOOST_SPIRIT_DEFINE(leaf_data_enum)
 BOOST_SPIRIT_DEFINE(leaf_data_decimal)
 BOOST_SPIRIT_DEFINE(leaf_data_bool)
-BOOST_SPIRIT_DEFINE(leaf_data_int)
-BOOST_SPIRIT_DEFINE(leaf_data_uint)
+BOOST_SPIRIT_DEFINE(leaf_data_int8)
+BOOST_SPIRIT_DEFINE(leaf_data_int16)
+BOOST_SPIRIT_DEFINE(leaf_data_int32)
+BOOST_SPIRIT_DEFINE(leaf_data_int64)
+BOOST_SPIRIT_DEFINE(leaf_data_uint8)
+BOOST_SPIRIT_DEFINE(leaf_data_uint16)
+BOOST_SPIRIT_DEFINE(leaf_data_uint32)
+BOOST_SPIRIT_DEFINE(leaf_data_uint64)
 BOOST_SPIRIT_DEFINE(leaf_data_string)
 BOOST_SPIRIT_DEFINE(leaf_data_binary_data)
 BOOST_SPIRIT_DEFINE(leaf_data_binary)

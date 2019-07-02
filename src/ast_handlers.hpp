@@ -463,16 +463,58 @@ struct leaf_data_bool_class : leaf_data_base_class {
     }
 };
 
-struct leaf_data_int_class : leaf_data_base_class {
-    leaf_data_int_class()
-        : leaf_data_base_class(yang::LeafDataTypes::Int)
+struct leaf_data_int8_class : leaf_data_base_class {
+    leaf_data_int8_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Int8)
     {
     }
 };
 
-struct leaf_data_uint_class : leaf_data_base_class {
-    leaf_data_uint_class()
-        : leaf_data_base_class(yang::LeafDataTypes::Uint)
+struct leaf_data_uint8_class : leaf_data_base_class {
+    leaf_data_uint8_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Uint8)
+    {
+    }
+};
+
+struct leaf_data_int16_class : leaf_data_base_class {
+    leaf_data_int16_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Int16)
+    {
+    }
+};
+
+struct leaf_data_uint16_class : leaf_data_base_class {
+    leaf_data_uint16_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Uint16)
+    {
+    }
+};
+
+struct leaf_data_int32_class : leaf_data_base_class {
+    leaf_data_int32_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Int32)
+    {
+    }
+};
+
+struct leaf_data_uint32_class : leaf_data_base_class {
+    leaf_data_uint32_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Uint32)
+    {
+    }
+};
+
+struct leaf_data_int64_class : leaf_data_base_class {
+    leaf_data_int64_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Int64)
+    {
+    }
+};
+
+struct leaf_data_uint64_class : leaf_data_base_class {
+    leaf_data_uint64_class()
+        : leaf_data_base_class(yang::LeafDataTypes::Uint64)
     {
     }
 };
