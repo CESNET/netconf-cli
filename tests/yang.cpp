@@ -96,12 +96,36 @@ module example-schema {
         type boolean;
     }
 
-    leaf leafInt {
+    leaf leafInt8 {
+        type int8;
+    }
+
+    leaf leafUint8 {
+        type uint8;
+    }
+
+    leaf leafInt16 {
+        type int16;
+    }
+
+    leaf leafUint16 {
+        type uint16;
+    }
+
+    leaf leafInt32 {
         type int32;
     }
 
-    leaf leafUint {
+    leaf leafUint32 {
         type uint32;
+    }
+
+    leaf leafInt64 {
+        type int64;
+    }
+
+    leaf leafUint64 {
+        type uint64;
     }
 
     leaf leafEnum {
@@ -543,18 +567,60 @@ TEST_CASE("yangschema")
                 type = yang::LeafDataTypes::Bool;
             }
 
-            SECTION("leafInt")
+            SECTION("leafInt8")
             {
                 node.first = "example-schema";
-                node.second = "leafInt";
-                type = yang::LeafDataTypes::Int;
+                node.second = "leafInt8";
+                type = yang::LeafDataTypes::Int8;
             }
 
-            SECTION("leafUint")
+            SECTION("leafUint8")
             {
                 node.first = "example-schema";
-                node.second = "leafUint";
-                type = yang::LeafDataTypes::Uint;
+                node.second = "leafUint8";
+                type = yang::LeafDataTypes::Uint8;
+            }
+
+            SECTION("leafInt15")
+            {
+                node.first = "example-schema";
+                node.second = "leafInt16";
+                type = yang::LeafDataTypes::Int16;
+            }
+
+            SECTION("leafUint16")
+            {
+                node.first = "example-schema";
+                node.second = "leafUint16";
+                type = yang::LeafDataTypes::Uint16;
+            }
+
+            SECTION("leafInt32")
+            {
+                node.first = "example-schema";
+                node.second = "leafInt32";
+                type = yang::LeafDataTypes::Int32;
+            }
+
+            SECTION("leafUint32")
+            {
+                node.first = "example-schema";
+                node.second = "leafUint32";
+                type = yang::LeafDataTypes::Uint32;
+            }
+
+            SECTION("leafInt64")
+            {
+                node.first = "example-schema";
+                node.second = "leafInt64";
+                type = yang::LeafDataTypes::Int64;
+            }
+
+            SECTION("leafUint64")
+            {
+                node.first = "example-schema";
+                node.second = "leafUint64";
+                type = yang::LeafDataTypes::Uint64;
             }
 
             SECTION("leafEnum")
@@ -573,8 +639,12 @@ TEST_CASE("yangschema")
             SECTION("<root>")
             {
                 set = {"example-schema:a", "example-schema:b", "example-schema:leafString",
-                       "example-schema:leafDecimal", "example-schema:leafBool", "example-schema:leafInt",
-                       "example-schema:leafUint", "example-schema:leafEnum", "example-schema:leafEnumTypedef",
+                       "example-schema:leafDecimal", "example-schema:leafBool",
+                       "example-schema:leafInt8", "example-schema:leafUint8",
+                       "example-schema:leafInt16", "example-schema:leafUint16",
+                       "example-schema:leafInt32", "example-schema:leafUint32",
+                       "example-schema:leafInt64", "example-schema:leafUint64",
+                       "example-schema:leafEnum", "example-schema:leafEnumTypedef",
                        "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
                        "example-schema:foodIdentLeaf", "example-schema:pizzaIdentLeaf", "example-schema:foodDrinkIdentLeaf",
                        "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla",
