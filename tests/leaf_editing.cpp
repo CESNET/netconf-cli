@@ -26,8 +26,14 @@ TEST_CASE("leaf editing")
     schema->addLeaf("", "mod:leafString", yang::LeafDataTypes::String);
     schema->addLeaf("", "mod:leafDecimal", yang::LeafDataTypes::Decimal);
     schema->addLeaf("", "mod:leafBool", yang::LeafDataTypes::Bool);
-    schema->addLeaf("", "mod:leafInt", yang::LeafDataTypes::Int);
-    schema->addLeaf("", "mod:leafUint", yang::LeafDataTypes::Uint);
+    schema->addLeaf("", "mod:leafInt8", yang::LeafDataTypes::Int8);
+    schema->addLeaf("", "mod:leafInt16", yang::LeafDataTypes::Int16);
+    schema->addLeaf("", "mod:leafInt32", yang::LeafDataTypes::Int32);
+    schema->addLeaf("", "mod:leafInt64", yang::LeafDataTypes::Int64);
+    schema->addLeaf("", "mod:leafUint8", yang::LeafDataTypes::Uint8);
+    schema->addLeaf("", "mod:leafUint16", yang::LeafDataTypes::Uint16);
+    schema->addLeaf("", "mod:leafUint32", yang::LeafDataTypes::Uint32);
+    schema->addLeaf("", "mod:leafUint64", yang::LeafDataTypes::Uint64);
     schema->addLeaf("", "mod:leafBinary", yang::LeafDataTypes::Binary);
     schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "food"});
     schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "vehicle"});
@@ -83,11 +89,67 @@ TEST_CASE("leaf editing")
                 expected.m_data = std::string("somedata");
             }
 
-            SECTION("int")
+            SECTION("int8")
             {
-                input = "set mod:leafInt 2";
-                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafInt")});
-                expected.m_data = 2;
+                input = "set mod:leafInt8 2";
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafInt8")});
+                expected.m_data = int8_t{2};
+            }
+
+            SECTION("negative int8")
+            {
+                input = "set mod:leafInt8 -10";
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafInt8")});
+                expected.m_data = int8_t{-10};
+            }
+
+            SECTION("uint8")
+            {
+                input = "set mod:leafUint8 2";
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafUint8")});
+                expected.m_data = uint8_t{2};
+            }
+
+            SECTION("int16")
+            {
+                input = "set mod:leafInt16 30000";
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafInt16")});
+                expected.m_data = int16_t{30'000};
+            }
+
+            SECTION("uint16")
+            {
+                input = "set mod:leafUint16 30000";
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafUint16")});
+                expected.m_data = uint16_t{30'000};
+            }
+
+            SECTION("int32")
+            {
+                input = "set mod:leafInt32 30000";
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafInt32")});
+                expected.m_data = int32_t{30'000};
+            }
+
+            SECTION("uint32")
+            {
+                input = "set mod:leafUint32 30000";
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafUint32")});
+                expected.m_data = uint32_t{30'000};
+            }
+
+            SECTION("int32")
+            {
+                input = "set mod:leafInt32 30000";
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafInt32")});
+                expected.m_data = int32_t{30'000};
+            }
+
+            SECTION("uint64")
+            {
+                input = "set mod:leafUint64 30000";
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafUint64")});
+                expected.m_data = uint64_t{30'000};
             }
 
             SECTION("decimal")
@@ -252,13 +314,45 @@ TEST_CASE("leaf editing")
             {
                 input = "set leafBool blabla";
             }
-            SECTION("set leafUint blabla")
+            SECTION("set leafUint8 blabla")
             {
-                input = "set leafUint blabla";
+                input = "set leafUint8 blabla";
             }
-            SECTION("set leafInt blabla")
+            SECTION("set leafUint8 -5")
             {
-                input = "set leafInt blabla";
+                input = "set leafUint8 -5";
+            }
+            SECTION("set leafInt8 blabla")
+            {
+                input = "set leafInt8 blabla";
+            }
+            SECTION("set leafInt8 130")
+            {
+                input = "set leafInt8 130";
+            }
+            SECTION("set leafUint16 blabla")
+            {
+                input = "set leafUint16 blabla";
+            }
+            SECTION("set leafInt16 blabla")
+            {
+                input = "set leafInt16 blabla";
+            }
+            SECTION("set leafUint32 blabla")
+            {
+                input = "set leafUint32 blabla";
+            }
+            SECTION("set leafInt32 blabla")
+            {
+                input = "set leafInt32 blabla";
+            }
+            SECTION("set leafUint64 blabla")
+            {
+                input = "set leafUint64 blabla";
+            }
+            SECTION("set leafInt64 blabla")
+            {
+                input = "set leafInt64 blabla";
             }
             SECTION("set leafEnum blabla")
             {

@@ -42,10 +42,22 @@ std::string leafDataTypeToString(yang::LeafDataTypes type)
         return "a decimal";
     case yang::LeafDataTypes::Bool:
         return "a boolean";
-    case yang::LeafDataTypes::Int:
-        return "an integer";
-    case yang::LeafDataTypes::Uint:
-        return "an unsigned integer";
+    case yang::LeafDataTypes::Int8:
+        return "an 8-bit integer";
+    case yang::LeafDataTypes::Uint8:
+        return "an 8-bit unsigned integer";
+    case yang::LeafDataTypes::Int16:
+        return "a 16-bit integer";
+    case yang::LeafDataTypes::Uint16:
+        return "a 16-bit unsigned integer";
+    case yang::LeafDataTypes::Int32:
+        return "a 32-bit integer";
+    case yang::LeafDataTypes::Uint32:
+        return "a 32-bit unsigned integer";
+    case yang::LeafDataTypes::Int64:
+        return "a 64-bit integer";
+    case yang::LeafDataTypes::Uint64:
+        return "a 64-bit unsigned integer";
     case yang::LeafDataTypes::Enum:
         return "an enum";
     case yang::LeafDataTypes::IdentityRef:
