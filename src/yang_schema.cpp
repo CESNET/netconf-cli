@@ -246,9 +246,15 @@ yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const Modu
         return yang::LeafDataTypes::Decimal;
     case LY_TYPE_BOOL:
         return yang::LeafDataTypes::Bool;
+    case LY_TYPE_INT8:
+    case LY_TYPE_INT16:
     case LY_TYPE_INT32:
+    case LY_TYPE_INT64:
         return yang::LeafDataTypes::Int;
+    case LY_TYPE_UINT8:
+    case LY_TYPE_UINT16:
     case LY_TYPE_UINT32:
+    case LY_TYPE_UINT64:
         return yang::LeafDataTypes::Uint;
     case LY_TYPE_ENUM:
         return yang::LeafDataTypes::Enum;
