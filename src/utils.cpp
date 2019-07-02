@@ -94,12 +94,15 @@ struct leafDataToStringVisitor : boost::static_visitor<std::string> {
         return data.m_value;
     }
 
+    std::string operator()(const std::string& data) const
+    {
+        return data;
+    }
+
     template <typename T>
     std::string operator()(const T& data) const
     {
-        std::stringstream stream;
-        stream << data;
-        return stream.str();
+        return std::to_string(data);
     }
 };
 
