@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "99ff97f6_7d00de8b",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-07-03T12:26:52Z",
+      "side": 1,
+      "message": "Vasku, na tohle prosim mrkni, jestli je to zadouci upravovat timhle stylem.",
+      "revId": "50d549792e14004eeddaefe145996cc80d151dae",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
