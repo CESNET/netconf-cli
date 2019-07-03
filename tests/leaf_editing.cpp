@@ -7,9 +7,15 @@
 */
 
 #include "trompeloeil_doctest.h"
+#include <boost/core/demangle.hpp>
 #include "ast_commands.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
+
+std::ostream& operator<<(std::ostream& s, const set_ cmd)
+{
+    return s << "Command SET {path: " << pathToAbsoluteSchemaString(cmd.m_path) << ", type " << boost::core::demangle(cmd.m_data.type().name()) << ", data: " << leafDataToString(cmd.m_data) << "}";
+}
 
 TEST_CASE("leaf editing")
 {
