@@ -16,6 +16,24 @@
       "revId": "50d549792e14004eeddaefe145996cc80d151dae",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f71e07ec_885b0735",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-08-05T14:16:42Z",
+      "side": 1,
+      "message": "Předěláno na template",
+      "parentUuid": "99ff97f6_7d00de8b",
+      "revId": "50d549792e14004eeddaefe145996cc80d151dae",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
