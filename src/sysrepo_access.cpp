@@ -14,10 +14,22 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
 {
     using namespace std::string_literals;
     switch (value->type()) {
+    case SR_INT8_T:
+        return value->data()->get_int8();
+    case SR_UINT8_T:
+        return value->data()->get_uint8();
+    case SR_INT16_T:
+        return value->data()->get_int16();
+    case SR_UINT16_T:
+        return value->data()->get_uint16();
     case SR_INT32_T:
         return value->data()->get_int32();
     case SR_UINT32_T:
         return value->data()->get_uint32();
+    case SR_INT64_T:
+        return value->data()->get_int64();
+    case SR_UINT64_T:
+        return value->data()->get_uint64();
     case SR_BOOL_T:
         return value->data()->get_bool();
     case SR_STRING_T:

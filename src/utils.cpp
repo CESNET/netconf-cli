@@ -42,10 +42,22 @@ std::string leafDataTypeToString(yang::LeafDataTypes type)
         return "a decimal";
     case yang::LeafDataTypes::Bool:
         return "a boolean";
-    case yang::LeafDataTypes::Int:
-        return "an integer";
-    case yang::LeafDataTypes::Uint:
-        return "an unsigned integer";
+    case yang::LeafDataTypes::Int8:
+        return "an 8-bit integer";
+    case yang::LeafDataTypes::Uint8:
+        return "an 8-bit unsigned integer";
+    case yang::LeafDataTypes::Int16:
+        return "a 16-bit integer";
+    case yang::LeafDataTypes::Uint16:
+        return "a 16-bit unsigned integer";
+    case yang::LeafDataTypes::Int32:
+        return "a 32-bit integer";
+    case yang::LeafDataTypes::Uint32:
+        return "a 32-bit unsigned integer";
+    case yang::LeafDataTypes::Int64:
+        return "a 64-bit integer";
+    case yang::LeafDataTypes::Uint64:
+        return "a 64-bit unsigned integer";
     case yang::LeafDataTypes::Enum:
         return "an enum";
     case yang::LeafDataTypes::IdentityRef:
@@ -94,12 +106,15 @@ struct leafDataToStringVisitor : boost::static_visitor<std::string> {
         return data.m_value;
     }
 
+    std::string operator()(const std::string& data) const
+    {
+        return data;
+    }
+
     template <typename T>
     std::string operator()(const T& data) const
     {
-        std::stringstream stream;
-        stream << data;
-        return stream.str();
+        return std::to_string(data);
     }
 };
 

@@ -395,11 +395,12 @@ struct leaf_data_class {
     }
 };
 
+template<yang::LeafDataTypes TYPE>
 struct leaf_data_base_class {
     yang::LeafDataTypes m_type;
 
-    leaf_data_base_class(yang::LeafDataTypes type)
-        : m_type(type)
+    leaf_data_base_class()
+        : m_type(TYPE)
     {
     }
 
@@ -421,11 +422,10 @@ struct leaf_data_base_class {
     }
 };
 
-struct leaf_data_enum_class : leaf_data_base_class {
-    leaf_data_enum_class()
-        : leaf_data_base_class(yang::LeafDataTypes::Enum)
-    {
-    }
+struct leaf_data_binary_data_class;
+
+struct leaf_data_enum_class : leaf_data_base_class<yang::LeafDataTypes::Enum> {
+    using leaf_data_base_class::leaf_data_base_class;
 
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const& start, Iterator const& end, T& ast, Context const& context)
@@ -449,57 +449,10 @@ struct leaf_data_enum_class : leaf_data_base_class {
     }
 };
 
-struct leaf_data_decimal_class : leaf_data_base_class {
-    leaf_data_decimal_class()
-        : leaf_data_base_class(yang::LeafDataTypes::Decimal)
-    {
-    }
-};
-
-struct leaf_data_bool_class : leaf_data_base_class {
-    leaf_data_bool_class()
-        : leaf_data_base_class(yang::LeafDataTypes::Bool)
-    {
-    }
-};
-
-struct leaf_data_int_class : leaf_data_base_class {
-    leaf_data_int_class()
-        : leaf_data_base_class(yang::LeafDataTypes::Int)
-    {
-    }
-};
-
-struct leaf_data_uint_class : leaf_data_base_class {
-    leaf_data_uint_class()
-        : leaf_data_base_class(yang::LeafDataTypes::Uint)
-    {
-    }
-};
-
-struct leaf_data_string_class : leaf_data_base_class {
-    leaf_data_string_class()
-        : leaf_data_base_class(yang::LeafDataTypes::String)
-    {
-    }
-};
-
-struct leaf_data_binary_data_class;
-
-struct leaf_data_binary_class : leaf_data_base_class {
-    leaf_data_binary_class()
-        : leaf_data_base_class(yang::LeafDataTypes::Binary)
-    {
-    }
-};
-
 struct leaf_data_identityRef_data_class;
 
-struct leaf_data_identityRef_class : leaf_data_base_class {
-    leaf_data_identityRef_class()
-        : leaf_data_base_class(yang::LeafDataTypes::IdentityRef)
-    {
-    }
+struct leaf_data_identityRef_class : leaf_data_base_class<yang::LeafDataTypes::IdentityRef> {
+    using leaf_data_base_class::leaf_data_base_class;
 
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const& start, Iterator const& end, T& ast, Context const& context)
