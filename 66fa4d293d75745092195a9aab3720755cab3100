@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2963f72a_57b5f64c",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-08-07T14:28:56Z",
+      "side": 1,
+      "message": "Ono je tam tohle vlastně úplně zbytečně, protože ten původní test se stejnak koukal do PROJECT_SOURCE_DIR :D",
+      "parentUuid": "12714d99_d71417a1",
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e5ad9191_c1ebd239",
         "filename": "CMakeLists.txt",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2019-06-26T19:55:51Z",
       "side": 1,
       "message": "neni mi jasne, proc je tohle potreba; ted je to sysrepo.cpp vs. sysrepo.cpp, ne?",
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cdfabb8_45ac8cb7",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-08-07T14:28:56Z",
+      "side": 1,
+      "message": "Je to kvůli tomu, že ten netconf test je ve stejnym souboru a musim to nějak rozlišit (ale je pravda, že v tomhle commitu je to zatim k ničemu)",
+      "parentUuid": "e5ad9191_c1ebd239",
       "revId": "66fa4d293d75745092195a9aab3720755cab3100",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -56,6 +92,30 @@
       "revId": "66fa4d293d75745092195a9aab3720755cab3100",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d342865a_da707385",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-08-07T14:28:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c54ae44_40fecb47",
+      "range": {
+        "startLine": 178,
+        "startChar": 196,
+        "endLine": 178,
+        "endChar": 215
+      },
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +147,30 @@
       "writtenOn": "2019-06-26T19:55:51Z",
       "side": 1,
       "message": "to by slo dat do toho makra",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 85
+      },
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0529b7e_b44774b7",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-08-07T14:28:56Z",
+      "side": 1,
+      "message": "tady ještě jo, ale netconf test se bude linkovat s něčím jiným... nebo mám linkovat všechno se vším?",
+      "parentUuid": "d7b82060_425477a9",
       "range": {
         "startLine": 197,
         "startChar": 4,
