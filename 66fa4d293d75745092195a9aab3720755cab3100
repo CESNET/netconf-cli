@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "2f9b81b2_696e4fbb",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-08-09T13:32:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2cdfabb8_45ac8cb7",
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5c54ae44_40fecb47",
         "filename": "CMakeLists.txt",
         "patchSetId": 1
@@ -171,6 +189,30 @@
       "side": 1,
       "message": "tady ještě jo, ale netconf test se bude linkovat s něčím jiným... nebo mám linkovat všechno se vším?",
       "parentUuid": "d7b82060_425477a9",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 85
+      },
+      "revId": "66fa4d293d75745092195a9aab3720755cab3100",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "411f772e_f047015d",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-08-09T13:32:40Z",
+      "side": 1,
+      "message": "`yangschema` bued asi spolecne, ale ten zbytek tim padem by mel zrejme zustat tak, jak to ted pises",
+      "parentUuid": "b0529b7e_b44774b7",
       "range": {
         "startLine": 197,
         "startChar": 4,
