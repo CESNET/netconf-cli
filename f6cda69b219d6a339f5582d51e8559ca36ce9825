@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef4762f5_f57d430d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-08-28T12:23:47Z",
+      "side": 1,
+      "message": "Jak je ted konec srpna, tak si poradne nepamatuju, o cem tohle v cervnu presne bylo, a commit message mi nepomaha. Moh bys tam, prosim, napsat, ze to delas kvuli tomu, aby po testech nezustaval neporadek, a aby ctest vedel, co presne muze a nemuze spoustet paralelne?",
+      "revId": "f6cda69b219d6a339f5582d51e8559ca36ce9825",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f23241c5_ef2d9055",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-08-28T12:23:47Z",
+      "side": 1,
+      "message": "A tohle me zmatlo, protoze jsem to blbe pochopil. Neco jako \"The tests/sysrepoctl-manage-module.sh comes from cla-sysrepo, commit d39cc7797ea371e90711ee0ed317cadc91c8368e\" je pro me jasnejsi.",
+      "revId": "f6cda69b219d6a339f5582d51e8559ca36ce9825",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
