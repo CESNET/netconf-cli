@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd5d6701_f592e0b1",
+        "filename": "start_daemons.sh",
+        "patchSetId": 25
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-08-28T19:03:12Z",
+      "side": 1,
+      "message": "- pust je s vyssim log levelem a nechej je logovat na stdout/stderr\n- pridej si sem neco jako `ps auxww`, at vidis, jestli opravdu bezej",
+      "revId": "d6e622d28953e886340db4e65800079b1a2fec1e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
