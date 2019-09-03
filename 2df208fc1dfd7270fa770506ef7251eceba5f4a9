@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a2ec4419_0a47d7a2",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 36
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-03T12:24:38Z",
+      "side": 1,
+      "message": "je to jedno, protoze je to binarka, ne knihovna, ale ja bych psal PRIVATE",
+      "range": {
+        "startLine": 216,
+        "startChar": 48,
+        "endLine": 216,
+        "endChar": 54
+      },
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cbc166ab_5f0c53ad",
+        "filename": "netopeer-test-config",
+        "patchSetId": 36
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-03T12:24:38Z",
+      "side": 1,
+      "message": "Prislo by mi dobre zvazit, jestli rovnou nezariznout poslouchani po siti vubec. Takhle to totiz zavisi na tom, ze nic jinyho na portu c. 5000 neposloucha, coz je -- obecne -- risk.\n\nZkratka, funguje to, kdyz tenhle blok cely smazes? Pokud ne, prosim do commit message vysvetlit, proc je to nutne.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 15
+      },
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e37da185_7c16f09e",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-03T12:24:38Z",
+      "side": 1,
+      "message": "nit: 2018-2019",
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8103a3ff_33378abb",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-03T12:24:38Z",
+      "side": 1,
+      "message": "napsal jsi do tohohle souboru nejaky veci?",
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acbf0ef2_cba0c1c7",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-03T12:24:38Z",
+      "side": 1,
+      "message": "zbytek kodu ud podporuje vic typu (a protoze tohle proslo testama, tak prosim i rozsirit testy)",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 32
+      },
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88d1a569_9e5ebff6",
+        "filename": "src/netconf_access.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-03T12:24:38Z",
+      "side": 1,
+      "message": "private?",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 37
+      },
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a150d543_4a449250",
+        "filename": "src/utils.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-03T12:24:38Z",
+      "side": 1,
+      "message": "nit: je tahle zmena dobre?",
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "455b8312_82bce851",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-03T12:24:38Z",
+      "side": 1,
+      "message": "nit: ja bych to psal jako #elseif defined(netconf_BACKEND) a pak #else #error \"Unknown backend\"",
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
