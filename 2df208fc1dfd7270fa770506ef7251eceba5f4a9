@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c5fa68a4_902f6a59",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 36
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-03T14:21:07Z",
+      "side": 1,
+      "message": "Já vlastně ani nevim, co to dělá, ale proč ne",
+      "parentUuid": "a2ec4419_0a47d7a2",
+      "range": {
+        "startLine": 216,
+        "startChar": 48,
+        "endLine": 216,
+        "endChar": 54
+      },
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cbc166ab_5f0c53ad",
         "filename": "netopeer-test-config",
         "patchSetId": 36
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "579b6805_57d52b1a",
+        "filename": "netopeer-test-config",
+        "patchSetId": 36
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-03T14:21:07Z",
+      "side": 1,
+      "message": "funguje",
+      "parentUuid": "cbc166ab_5f0c53ad",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 15
+      },
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e37da185_7c16f09e",
         "filename": "src/netconf-client.cpp",
         "patchSetId": 36
@@ -65,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "d26026a8_143d1c97",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-03T14:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e37da185_7c16f09e",
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8103a3ff_33378abb",
         "filename": "src/netconf-client.cpp",
         "patchSetId": 36
@@ -76,6 +142,24 @@
       "writtenOn": "2019-09-03T12:24:38Z",
       "side": 1,
       "message": "napsal jsi do tohohle souboru nejaky veci?",
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ec0ec76_987ca423",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-03T14:21:07Z",
+      "side": 1,
+      "message": "Nějaký jo, metody getSchema, connectPubkey a connectSocket a smazal jsem spdlog",
+      "parentUuid": "8103a3ff_33378abb",
       "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -105,6 +189,30 @@
     },
     {
       "key": {
+        "uuid": "30669925_ab2ca83b",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-03T14:21:07Z",
+      "side": 1,
+      "message": "testy vylepším v dalším commitu",
+      "parentUuid": "acbf0ef2_cba0c1c7",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 32
+      },
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "88d1a569_9e5ebff6",
         "filename": "src/netconf_access.hpp",
         "patchSetId": 36
@@ -128,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "72c3fa55_3068df0c",
+        "filename": "src/netconf_access.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-03T14:21:07Z",
+      "side": 1,
+      "message": "schema musi mít public getter, protože ho potřebuje parser",
+      "parentUuid": "88d1a569_9e5ebff6",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 37
+      },
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a150d543_4a449250",
         "filename": "src/utils.hpp",
         "patchSetId": 36
@@ -145,6 +277,24 @@
     },
     {
       "key": {
+        "uuid": "6271a47e_7f30f9e2",
+        "filename": "src/utils.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-03T14:21:07Z",
+      "side": 1,
+      "message": "Je. Potřebuju leaf_data_",
+      "parentUuid": "a150d543_4a449250",
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "455b8312_82bce851",
         "filename": "tests/sysrepo.cpp",
         "patchSetId": 36
@@ -159,6 +309,24 @@
       "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb24c107_417c91b4",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-03T14:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "455b8312_82bce851",
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
