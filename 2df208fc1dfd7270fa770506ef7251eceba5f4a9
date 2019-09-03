@@ -166,6 +166,24 @@
     },
     {
       "key": {
+        "uuid": "a3ba723e_dc3ccf4f",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-03T14:55:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9ec0ec76_987ca423",
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "acbf0ef2_cba0c1c7",
         "filename": "src/netconf_access.cpp",
         "patchSetId": 36
@@ -248,6 +266,30 @@
       "side": 1,
       "message": "schema musi mít public getter, protože ho potřebuje parser",
       "parentUuid": "88d1a569_9e5ebff6",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 37
+      },
+      "revId": "2df208fc1dfd7270fa770506ef7251eceba5f4a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a996d8a4_0bd8adb2",
+        "filename": "src/netconf_access.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-03T14:55:44Z",
+      "side": 1,
+      "message": "tak to prosim rebasni nad https://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/1825 (pokud budes souhlasit)",
+      "parentUuid": "72c3fa55_3068df0c",
       "range": {
         "startLine": 42,
         "startChar": 0,
