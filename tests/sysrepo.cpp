@@ -37,10 +37,59 @@ TEST_CASE("setting values")
 #error "Unknown backend"
 #endif
 
-    SECTION("set leafInt to 123")
+    SECTION("set leafInt8 to -128")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafInt", "", "123"));
-        datastore.setLeaf("/example-schema:leafInt", 123);
+        REQUIRE_CALL(mock, write("/example-schema:leafInt8", "", "-128"));
+        datastore.setLeaf("/example-schema:leafInt8", int8_t{-128});
+        datastore.commitChanges();
+    }
+
+    SECTION("set leafInt16 to -32768")
+    {
+        REQUIRE_CALL(mock, write("/example-schema:leafInt16", "", "-32768"));
+        datastore.setLeaf("/example-schema:leafInt16", int16_t{-32768});
+        datastore.commitChanges();
+    }
+
+    SECTION("set leafInt32 to -2147483648")
+    {
+        REQUIRE_CALL(mock, write("/example-schema:leafInt32", "", "-2147483648"));
+        datastore.setLeaf("/example-schema:leafInt32", int32_t{-2147483648});
+        datastore.commitChanges();
+    }
+
+    SECTION("set leafInt64 to -50000000000")
+    {
+        REQUIRE_CALL(mock, write("/example-schema:leafInt64", "", "-50000000000"));
+        datastore.setLeaf("/example-schema:leafInt64", int64_t{-50000000000});
+        datastore.commitChanges();
+    }
+
+    SECTION("set leafUInt8 to 255")
+    {
+        REQUIRE_CALL(mock, write("/example-schema:leafUInt8", "", "255"));
+        datastore.setLeaf("/example-schema:leafUInt8", uint8_t{255});
+        datastore.commitChanges();
+    }
+
+    SECTION("set leafUInt16 to 65535")
+    {
+        REQUIRE_CALL(mock, write("/example-schema:leafUInt16", "", "65535"));
+        datastore.setLeaf("/example-schema:leafUInt16", uint16_t{65535});
+        datastore.commitChanges();
+    }
+
+    SECTION("set leafUInt32 to 4294967295")
+    {
+        REQUIRE_CALL(mock, write("/example-schema:leafUInt32", "", "4294967295"));
+        datastore.setLeaf("/example-schema:leafUInt32", uint32_t{4294967295});
+        datastore.commitChanges();
+    }
+
+    SECTION("set leafUInt64 to 50000000000")
+    {
+        REQUIRE_CALL(mock, write("/example-schema:leafUInt64", "", "50000000000"));
+        datastore.setLeaf("/example-schema:leafUInt64", uint64_t{50000000000});
         datastore.commitChanges();
     }
 
