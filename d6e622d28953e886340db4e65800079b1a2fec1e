@@ -16,6 +16,24 @@
       "revId": "d6e622d28953e886340db4e65800079b1a2fec1e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a276d2d_9c7b0459",
+        "filename": "start_daemons.sh",
+        "patchSetId": 25
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-03T14:21:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd5d6701_f592e0b1",
+      "revId": "d6e622d28953e886340db4e65800079b1a2fec1e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
