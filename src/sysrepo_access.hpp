@@ -34,16 +34,17 @@ public:
     void deletePresenceContainer(const std::string& path) override;
     void createListInstance(const std::string& path) override;
     void deleteListInstance(const std::string& path) override;
-    std::string fetchSchema(const char* module, const char* revision, const char* submodule);
-    std::vector<std::string> listImplementedSchemas();
+
+    std::shared_ptr<Schema> schema() override;
 
     void commitChanges() override;
     void discardChanges() override;
 
-    std::shared_ptr<Schema> schema();
-
 private:
     [[noreturn]] void reportErrors();
+
+    std::string fetchSchema(const char* module, const char* revision, const char* submodule);
+    std::vector<std::string> listImplementedSchemas();
 
     std::shared_ptr<sysrepo::Connection> m_connection;
     std::shared_ptr<sysrepo::Session> m_session;

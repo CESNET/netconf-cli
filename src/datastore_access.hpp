@@ -34,6 +34,8 @@ private:
     std::string m_what;
 };
 
+class Schema;
+
 class DatastoreAccess {
 public:
     virtual ~DatastoreAccess() = 0;
@@ -43,6 +45,8 @@ public:
     virtual void deletePresenceContainer(const std::string& path) = 0;
     virtual void createListInstance(const std::string& path) = 0;
     virtual void deleteListInstance(const std::string& path) = 0;
+
+    virtual std::shared_ptr<Schema> schema() = 0;
 
     virtual void commitChanges() = 0;
     virtual void discardChanges() = 0;
