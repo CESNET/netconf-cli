@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "126a928e_be44604f",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-11T17:15:49Z",
+      "side": 1,
+      "message": "nit: spis \"target\", protoze leafref je vlastne pointer, reference na neco",
+      "range": {
+        "startLine": 127,
+        "startChar": 103,
+        "endLine": 127,
+        "endChar": 109
+      },
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10b8e060_0314193e",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-11T17:15:49Z",
+      "side": 1,
+      "message": "je tahle zmena dulezita, a proc?",
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61d47552_7af4e2ec",
+        "filename": "src/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-11T17:15:49Z",
+      "side": 1,
+      "message": "tohle vypada jako nikde nepouzita funkce",
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eff9e291_579f8a65",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-11T17:15:49Z",
+      "side": 1,
+      "message": "Tomuhle nerozumim -- podle me zadna exception aktivni neni, takze tohle vyhazuje std::terminate, ne?",
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d44cc54_03877190",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-11T17:15:49Z",
+      "side": 1,
+      "message": "...aha. Chapu to dobre, ze implicitne chytas std:;terminate? Takhle teda ne, prosim. Je OK, ze to rozdelujes do dvou funkci, ale udelej si na to prosim rozumnou vyjimku a vyhazuj ji s neco rikajicim stringem.",
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e236c0e_bc91a3ea",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-11T17:15:49Z",
+      "side": 1,
+      "message": "tohle mi prijde, ze je zbytecny (a pokud by to nebylo zbytecny, tak by Ti to uz fungovalo i s temi ruznymi SECTION makry)",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 30
+      },
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "753cb978_7ba6f63f",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-11T17:15:49Z",
+      "side": 1,
+      "message": "tolhe bych dal do samostatneho C++ scope (blok {}), aby destruktory tech objektu vytvorenych pres REQUIRE_CALL zkontrolovaly inicializaci \"hned\", a ne az na konci tehle SECTION",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 78
+      },
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f18a8d9d_fd2b9281",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-11T17:15:49Z",
+      "side": 1,
+      "message": "Ja si taky myslim, ze by to melo fungovat tak, jak popisujes. Hlavne v tom patchestu verze 3 probehly testy pro sysrepo v poradku, ale failovaly testy pro NetconfAccess, cili ten problem je zjevne specificky pro NETCONF. Cili se mi zda, ze implicitni disconnect od sysrepo::Session zpusobi revert DS running do stavu DS startup -- coz je chovani, ktere ocekavas a ktere chces.\n\nJe otazka, proc je NETCONF jiny. Bude podle me potreba se podivat do zdrojaku Netopeer2-serveru, kdy presne on vytvari svoji sr_session. Jako mozny scenar mi prijde to, ze se nejak tahle session znovu pouziva, pokud se pripojis pres socket.\n\nNebo to chapu blbe. je pravda, ze ten test prece pouziva dve sessions, jednu pro provadeni modifikaci (ktera muze byt \"neprima\", instanciovana v netopeer2-server), a druhou jako \"backend reagujici na zmeny\". Mas pravdu, ze by melo stacit znicit tuhle druhou, aby sysrepo samo zrusilo data v running datastore...\n\nPripadne jako zalozni velky kladivo me napada zkoprivat DS startup do DS running, ale spis bych radsi prisel na to, kde je presne ten problem.",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 49
+      },
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
