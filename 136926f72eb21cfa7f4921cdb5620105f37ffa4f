@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "355b4481_eff24c0d",
+        "filename": "src/schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-12T11:28:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "561118e6_04f485ef",
+      "revId": "136926f72eb21cfa7f4921cdb5620105f37ffa4f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6ed4a269_7c6ec758",
         "filename": "src/schema.hpp",
         "patchSetId": 1
@@ -50,6 +68,24 @@
       "revId": "136926f72eb21cfa7f4921cdb5620105f37ffa4f",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3958bc21_4eca45ab",
+        "filename": "src/schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-09-12T11:28:20Z",
+      "side": 1,
+      "message": "smazáno, ve StaticSchema se netestuje leafref (tahle struktura by vlastně vůbec neměla ve schema.hpp, ale ve static_schema.hpp)",
+      "parentUuid": "6ed4a269_7c6ec758",
+      "revId": "136926f72eb21cfa7f4921cdb5620105f37ffa4f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
