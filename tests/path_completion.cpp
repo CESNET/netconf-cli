@@ -6,9 +6,20 @@
  *
 */
 
+#include <experimental/iterator>
 #include "trompeloeil_doctest.h"
 #include "parser.hpp"
 #include "static_schema.hpp"
+
+namespace std {
+std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
+{
+    s << std::endl << "{";
+    std::copy(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", "));
+    s << "}" << std::endl;
+    return s;
+}
+}
 
 TEST_CASE("path_completion")
 {
@@ -29,6 +40,7 @@ TEST_CASE("path_completion")
     schema->addList("", "example:ovocezelenina", {"name"});
     schema->addContainer("example:list", "example:contInList");
     schema->addList("", "example:twoKeyList", {"number", "name"});
+    schema->addLeaf("", "example:leafInt", yang::LeafDataTypes::Int32);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -39,13 +51,13 @@ TEST_CASE("path_completion")
         SECTION("ls ")
         {
             input = "ls ";
-            expected = {"example:ano", "example:anoda", "example:bota", "second:amelie", "example:list", "example:twoKeyList", "example:ovoce", "example:ovocezelenina"};
+            expected = {"example:ano", "example:anoda", "example:bota", "example:leafInt", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie"};
         }
 
         SECTION("ls e")
         {
             input = "ls e";
-            expected = {"example:ano", "example:anoda", "example:bota", "example:list", "example:twoKeyList", "example:ovoce", "example:ovocezelenina"};
+            expected = {"example:ano", "example:anoda", "example:bota", "example:leafInt", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList"};
         }
 
         SECTION("ls example:ano")
@@ -69,13 +81,14 @@ TEST_CASE("path_completion")
         SECTION("ls /")
         {
             input = "ls /";
-            expected = {"example:ano", "example:anoda", "example:bota", "second:amelie", "example:list", "example:twoKeyList", "example:ovoce", "example:ovocezelenina"};
+            expected = {"example:ano", "example:anoda", "example:bota", "example:leafInt", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie"};
         }
 
         SECTION("ls /e")
         {
             input = "ls /e";
-            expected = {"example:ano", "example:anoda", "example:bota", "example:list", "example:twoKeyList", "example:ovoce", "example:ovocezelenina"};
+            expected = {"example:ano", "example:anoda", "example:bota", "example:leafInt", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList"};
+
         }
 
         SECTION("ls /s")
@@ -200,6 +213,12 @@ TEST_CASE("path_completion")
             input = "cd example:ovoce";
             expected = {"example:ovoce", "example:ovocezelenina"};
         }
+    }
+
+    SECTION("clear completions when no longer inputting path")
+    {
+        input = "set example:leafInt ";
+        expected = {};
     }
 
     REQUIRE(parser.completeCommand(input, errorStream) == expected);

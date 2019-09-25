@@ -537,6 +537,15 @@ struct initializePath_class {
     }
 };
 
+struct clear_suggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_suggestions.clear();
+    }
+};
+
 struct trailingSlash_class;
 
 struct createPathSuggestions_class {
