@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c0f5a9ce_cabaa511",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-25T21:15:49Z",
+      "side": 1,
+      "message": "Nejsem expert na spirit::x3, ale prije mi to divne. Vetsina zbytku gramatiky pusobi tak, ze skutecne odpovida \"formatu vstupu\", jedinou vyjimkou jsou tusim nejake specialni veci pro completion, ktere jsme nemohli vyresit jinak. Tady tenhle neterminal clear_suggestion je uplne umely. Byl by nejaky problem tohle budto sloucit do leaf_data, a nebo nejak \"otagovat space_separator semantickou akci\" (mozna to neni semantic action, dokumentaci si pamatuju mlhave), aby tam tohle virtualni, umele pravidlo nebylo?\n\nBer to jako pohled zvenci, necham se presvedit, ze/proc je tenhle kod ve skutecnosti lepsi.",
+      "revId": "422e437c1712a4bc921084075ba49bd23b6daddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
