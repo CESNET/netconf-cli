@@ -37,6 +37,7 @@ x3::rule<dataPath_class, dataPath_> const dataPath = "dataPath";
 x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
+x3::rule<space_separator_class, x3::unused_type> const space_separator = "space_separator";
 
 x3::rule<leaf_data_class, leaf_data_> const leaf_data = "leaf_data";
 x3::rule<leaf_data_enum_class, enum_> const leaf_data_enum = "leaf_data_enum";
@@ -180,7 +181,7 @@ auto const absoluteStart_def =
 auto const trailingSlash_def =
     x3::omit['/'] >> x3::attr(TrailingSlash::Present);
 
-auto const space_separator =
+auto const space_separator_def =
     x3::omit[x3::no_skip[space]];
 
 // This is a pseudo-parser, that fails if we're not completing a command
@@ -365,6 +366,7 @@ BOOST_SPIRIT_DEFINE(leaf)
 BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
+BOOST_SPIRIT_DEFINE(space_separator)
 BOOST_SPIRIT_DEFINE(schemaPath)
 BOOST_SPIRIT_DEFINE(dataPath)
 BOOST_SPIRIT_DEFINE(dataNodeList)
