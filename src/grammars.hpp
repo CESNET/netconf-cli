@@ -68,6 +68,7 @@ x3::rule<help_class, help_> const help = "help";
 x3::rule<command_class, command_> const command = "command";
 
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
+x3::rule<clear_suggestions_class, x3::unused_type> const clear_suggestions = "clear_suggestions";
 x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestions = "createPathSuggestions";
 x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
 x3::rule<suggestKeysStart_class, x3::unused_type> const suggestKeysStart = "suggestKeysStart";
@@ -303,6 +304,9 @@ struct ls_options_table : x3::symbols<LsOption> {
 auto const initializePath_def =
     x3::eps;
 
+auto const clear_suggestions_def =
+    x3::eps;
+
 auto const ls_def =
     ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> (dataPathListEnd | dataPath | schemaPath));
 
@@ -319,7 +323,7 @@ auto const get_def =
     get_::name >> -(space_separator >> (dataPathListEnd | dataPath));
 
 auto const set_def =
-    set_::name >> space_separator > leafPath > space_separator > leaf_data;
+    set_::name >> space_separator > leafPath > space_separator > clear_suggestions > leaf_data;
 
 auto const commit_def =
     commit_::name >> x3::attr(commit_());
@@ -391,6 +395,7 @@ BOOST_SPIRIT_DEFINE(leaf_data_binary)
 BOOST_SPIRIT_DEFINE(leaf_data_identityRef_data)
 BOOST_SPIRIT_DEFINE(leaf_data_identityRef)
 BOOST_SPIRIT_DEFINE(initializePath)
+BOOST_SPIRIT_DEFINE(clear_suggestions)
 BOOST_SPIRIT_DEFINE(set)
 BOOST_SPIRIT_DEFINE(commit)
 BOOST_SPIRIT_DEFINE(get)
