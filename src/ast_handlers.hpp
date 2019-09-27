@@ -327,6 +327,15 @@ struct listInstancePath_class {
     }
 };
 
+struct space_separator_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_suggestions.clear();
+    }
+};
+
 struct create_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
