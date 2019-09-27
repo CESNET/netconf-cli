@@ -2,6 +2,9 @@ set -eux -o pipefail
 shopt -s failglob
 export ASAN_OPTIONS=verify_asan_link_order=false
 export UBSAN_OPTIONS=halt_on_error=1
+
+./kill_daemons.sh || true
+
 @SYSREPOD_EXECUTABLE@ -l3
 sleep 1
 @SYSREPO_PLUGIND_EXECUTABLE@ -l3
