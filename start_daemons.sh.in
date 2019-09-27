@@ -2,9 +2,12 @@ set -eux -o pipefail
 shopt -s failglob
 export ASAN_OPTIONS=verify_asan_link_order=false
 export UBSAN_OPTIONS=halt_on_error=1
-sysrepod -l3
+
+./kill_daemons.sh || true
+
+@SYSREPOD_EXECUTABLE@ -l3
 sleep 1
-sysrepo-plugind -l3
+@SYSREPO_PLUGIND_EXECUTABLE@ -l3
 sleep 1
-netopeer2-server -U -v2 -s @NETOPEER_SOCKET_PATH@
+@NETOPEER2_EXECUTABLE@ -U -v2 -s @NETOPEER_SOCKET_PATH@
 sleep 5
