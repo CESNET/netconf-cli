@@ -34,6 +34,24 @@
       "revId": "422e437c1712a4bc921084075ba49bd23b6daddf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "95362918_52f24c52",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-09-27T10:07:30Z",
+      "side": 1,
+      "message": "pekny, ze neni potreba nijak vyrabet \"specialni verzi\" toho separatoru, ale ze je to vlastne vzdycky potreba. To zas nenapadlo me :)",
+      "parentUuid": "c51f3bea_5d367498",
+      "revId": "422e437c1712a4bc921084075ba49bd23b6daddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
