@@ -64,15 +64,13 @@ std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& pat
         }
     };
 
-    if (path == "/") {
-        for (auto it : m_session->getConfig(NC_DATASTORE_RUNNING)->tree_for()) {
+    auto config = m_session->getConfig(NC_DATASTORE_RUNNING, (path != "/") ? std::optional{path} : std::nullopt);
+
+    if (config) {
+        for (auto it : config->tree_for()) {
             fillMap(it->tree_dfs());
         }
-    } else {
-        auto data = m_session->getConfig(NC_DATASTORE_RUNNING, path);
-        fillMap(data->tree_dfs());
     }
-
     return res;
 }
 
