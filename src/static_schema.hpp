@@ -35,6 +35,7 @@ public:
     const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion) const override;
+    std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const override;
 
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
     void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);

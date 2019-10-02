@@ -157,6 +157,12 @@ TEST_CASE("ls")
                 expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, list_{"list"}),
                                                                 schemaNode_(container_{"contInList"})}};
             }
+
+            SECTION("ls example:*")
+            {
+                input = "ls example:*";
+                expected.m_path = module_{"example"};
+            }
         }
 
         command_ command = parser.parseCommand(input, errorStream);

@@ -6,6 +6,7 @@
  *
 */
 
+#include <boost/algorithm/string/predicate.hpp>
 #include "static_schema.hpp"
 #include "utils.hpp"
 
@@ -225,5 +226,20 @@ std::set<std::string> StaticSchema::childNodes(const schemaPath_& path, const Re
     std::transform(childrenRef.begin(), childrenRef.end(),
                 std::inserter(res, res.end()),
                 [] (auto it) { return it.first; });
+    return res;
+}
+
+// We do not test StaticSchema, so we don't need to implement recursive moduleNodes
+// for this class.
+std::set<std::string> StaticSchema::moduleNodes(const module_& module, const Recursion) const
+{
+    std::set<std::string> res;
+    auto topLevelNodes = m_nodes.at("");
+    auto modulePlusColon = module.m_name + ":";
+    for (const auto& it : topLevelNodes) {
+        if (boost::algorithm::starts_with(it.first, modulePlusColon)) {
+            res.insert(it.first);
+        }
+    }
     return res;
 }
