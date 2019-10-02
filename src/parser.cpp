@@ -95,11 +95,16 @@ struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {
 };
 
 
-std::set<std::string> Parser::availableNodes(const boost::optional<boost::variant<dataPath_, schemaPath_>>& path, const Recursion& option) const
+std::set<std::string> Parser::availableNodes(const boost::optional<boost::variant<boost::variant<dataPath_, schemaPath_>, module_>>& path, const Recursion& option) const
 {
     auto pathArg = dataPathToSchemaPath(m_curDir);
     if (path) {
-        auto schemaPath = boost::apply_visitor(getSchemaPathVisitor(), *path);
+        auto pathDeref = *path;
+        if (path->type() == typeid(module_)) {
+            return m_schema->moduleNodes(boost::get<module_>(pathDeref), option);
+        }
+
+        auto schemaPath = boost::apply_visitor(getSchemaPathVisitor(), boost::get<boost::variant<dataPath_, schemaPath_>>(pathDeref));
         if (schemaPath.m_scope == Scope::Absolute) {
             pathArg = schemaPath;
         } else {

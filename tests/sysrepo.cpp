@@ -23,7 +23,7 @@ public:
     MAKE_MOCK3(write, void(const std::string&, const std::string&, const std::string&), override);
 };
 
-TEST_CASE("setting values")
+TEST_CASE("setting/getting values")
 {
     trompeloeil::sequence seq1;
     MockRecorder mock;
@@ -159,6 +159,11 @@ TEST_CASE("setting values")
             datastore.setLeaf("/example-schema:bossPerson", std::string{"Kolafa"});
             datastore.commitChanges();
         }
+    }
+
+    SECTION("getting items from the whole module")
+    {
+        datastore.getItems("/example-schema:*");
     }
 
     waitForCompletionAndBitMore(seq1);
