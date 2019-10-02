@@ -91,7 +91,8 @@ void StaticSchema::addList(const std::string& location, const std::string& name,
 {
     m_nodes.at(location).emplace(name, yang::list{keys});
 
-    m_nodes.emplace(name, std::unordered_map<std::string, NodeType>());
+    std::string key = joinPaths(location, name);
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
 bool StaticSchema::isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const
