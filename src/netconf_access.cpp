@@ -33,7 +33,10 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
     case LY_TYPE_UINT64:
         return value->uint64();
     case LY_TYPE_BOOL:
-        return value->bln();
+        if (value->bln())
+            return true;
+        else
+            return false;
     case LY_TYPE_STRING:
         return std::string(value->string());
     case LY_TYPE_ENUM:
@@ -64,15 +67,13 @@ std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& pat
         }
     };
 
-    if (path == "/") {
-        for (auto it : m_session->getConfig(NC_DATASTORE_RUNNING)->tree_for()) {
+    auto config = m_session->getConfig(NC_DATASTORE_RUNNING, (path != "/") ? std::optional{path}: std::nullopt);
+
+    if (config) {
+        for (auto it : config->tree_for()) {
             fillMap(it->tree_dfs());
         }
-    } else {
-        auto data = m_session->getConfig(NC_DATASTORE_RUNNING, path);
-        fillMap(data->tree_dfs());
     }
-
     return res;
 }
 

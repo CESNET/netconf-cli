@@ -6,6 +6,7 @@
  *
 */
 
+#include <experimental/iterator>
 #include "trompeloeil_doctest.h"
 
 #ifdef sysrepo_BACKEND
@@ -17,13 +18,26 @@
 #error "Unknown backend"
 #endif
 #include "sysrepo_subscription.hpp"
+#include "utils.hpp"
 
 class MockRecorder : public Recorder {
 public:
     MAKE_MOCK3(write, void(const std::string&, const std::string&, const std::string&), override);
 };
 
-TEST_CASE("setting values")
+namespace std {
+std::ostream& operator<<(std::ostream& s, const std::map<std::string, leaf_data_> map)
+{
+    s << std::endl << "{";
+    for (const auto& it : map) {
+        s << "{\"" << it.first << "\", " << leafDataToString(it.second) << "}" << std::endl;
+    }
+    s << "}" << std::endl;
+    return s;
+}
+}
+
+TEST_CASE("setting/getting values")
 {
     trompeloeil::sequence seq1;
     MockRecorder mock;
@@ -160,6 +174,22 @@ TEST_CASE("setting values")
             datastore.setLeaf("/example-schema:bossPerson", std::string{"Kolafa"});
             datastore.commitChanges();
         }
+    }
+
+    SECTION("getting items from the whole module")
+    {
+        {
+            REQUIRE_CALL(mock, write("/example-schema:up", "", "true"));
+            REQUIRE_CALL(mock, write("/example-schema:down", "", "false"));
+            datastore.setLeaf("/example-schema:up", bool{true});
+            datastore.setLeaf("/example-schema:down", bool{false});
+            datastore.commitChanges();
+        }
+
+        std::map<std::string, leaf_data_> expected{{"/example-schema:down", bool{false}},
+                                                   {"/example-schema:up", bool{true}},
+                                                   {"/example-schema:lol", std::string{"(container)"}}};
+        REQUIRE(datastore.getItems("/example-schema:*") == expected);
     }
 
     waitForCompletionAndBitMore(seq1);

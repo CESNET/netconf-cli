@@ -135,18 +135,25 @@ struct getPathScopeVisitor : boost::static_visitor<Scope> {
 
 std::string Interpreter::absolutePathFromCommand(const get_& get) const
 {
+    using namespace std::string_literals;
     if (!get.m_path) {
         return m_parser.currentNode();
     }
 
     const auto path = *get.m_path;
-    std::string pathString = boost::apply_visitor(pathToStringVisitor(), path);
-    auto pathScope{boost::apply_visitor(getPathScopeVisitor(), path)};
+    if (path.type() == typeid(module_)) {
+        return "/"s + boost::get<module_>(path).m_name + ":*";
 
-    if (pathScope == Scope::Absolute) {
-        return "/" + pathString;
     } else {
-        return joinPaths(m_parser.currentNode(), pathString);
+        auto actualPath = boost::get<boost::variant<dataPath_, schemaPath_>>(path);
+        std::string pathString = boost::apply_visitor(pathToStringVisitor(), actualPath);
+        auto pathScope{boost::apply_visitor(getPathScopeVisitor(), actualPath)};
+
+        if (pathScope == Scope::Absolute) {
+            return "/" + pathString;
+        } else {
+            return joinPaths(m_parser.currentNode(), pathString);
+        }
     }
 }
 
