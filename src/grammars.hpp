@@ -305,7 +305,7 @@ auto const initializePath_def =
     x3::eps;
 
 auto const ls_def =
-    ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> (dataPathListEnd | dataPath | schemaPath));
+    ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> ((dataPathListEnd | dataPath | schemaPath) | (module >> "*")));
 
 auto const cd_def =
     cd_::name >> space_separator > dataPath;
@@ -317,7 +317,7 @@ auto const delete_rule_def =
     delete_::name >> space_separator > (presenceContainerPath | listInstancePath);
 
 auto const get_def =
-    get_::name >> -(space_separator >> (dataPathListEnd | dataPath));
+    get_::name >> -(space_separator >> ((dataPathListEnd | dataPath) | (module >> "*")));
 
 auto const set_def =
     set_::name >> space_separator > leafPath > space_separator > leaf_data;
