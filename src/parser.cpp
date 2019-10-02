@@ -100,7 +100,11 @@ std::set<std::string> Parser::availableNodes(const boost::optional<boost::varian
     auto pathArg = dataPathToSchemaPath(m_curDir);
     if (path) {
         auto schemaPath = boost::apply_visitor(getSchemaPathVisitor(), *path);
-        pathArg.m_nodes.insert(pathArg.m_nodes.end(), schemaPath.m_nodes.begin(), schemaPath.m_nodes.end());
+        if (schemaPath.m_scope == Scope::Absolute) {
+            pathArg = schemaPath;
+        } else {
+            pathArg.m_nodes.insert(pathArg.m_nodes.end(), schemaPath.m_nodes.begin(), schemaPath.m_nodes.end());
+        }
     }
     return m_schema->childNodes(pathArg, option);
 }
