@@ -50,7 +50,7 @@ struct ls_ : x3::position_tagged {
         /> ls /module:node)";
     bool operator==(const ls_& b) const;
     std::vector<LsOption> m_options;
-    boost::optional<boost::variant<dataPath_, schemaPath_>> m_path;
+    boost::optional<boost::variant<boost::variant<dataPath_, schemaPath_>, module_>> m_path;
 };
 
 struct cd_ : x3::position_tagged {
@@ -141,7 +141,7 @@ struct get_ : x3::position_tagged {
         /> get
         /> get /module:path)";
     bool operator==(const get_& b) const;
-    boost::optional<boost::variant<dataPath_, schemaPath_>> m_path;
+    boost::optional<boost::variant<boost::variant<dataPath_, schemaPath_>, module_>> m_path;
 };
 
 struct help_;

@@ -7,6 +7,7 @@
 */
 
 #include "trompeloeil_doctest.h"
+#include <experimental/iterator>
 
 #ifdef sysrepo_BACKEND
 #include "sysrepo_access.hpp"
@@ -185,6 +186,32 @@ TEST_CASE("setting/getting values")
 
         std::map<std::string, leaf_data_> expected{{"/example-schema:down", bool{true}}};
         REQUIRE(datastore.getItems("/example-schema:down") == expected);
+    }
+
+    SECTION("getting items from the whole module")
+    {
+        {
+            REQUIRE_CALL(mock, write("/example-schema:up", "", "true"));
+            REQUIRE_CALL(mock, write("/example-schema:down", "", "false"));
+            datastore.setLeaf("/example-schema:up", bool{true});
+            datastore.setLeaf("/example-schema:down", bool{false});
+            datastore.commitChanges();
+        }
+
+        std::map<std::string, leaf_data_> expected{{"/example-schema:down", bool{false}},
+        // Sysrepo always returns containers when getting values, but
+        // libnetconf does not. This is fine by the YANG standard:
+        // https://tools.ietf.org/html/rfc7950#section-7.5.7 Furthermore,
+        // NetconfAccess implementation actually only iterates over leafs,
+        // so even if libnetconf did include containers, they wouldn't get
+        // shown here anyway. With sysrepo2, this won't be necessary,
+        // because it'll use the same data structure as libnetconf, so the
+        // results will be consistent.
+#ifdef sysrepo_BACKEND
+                                                   {"/example-schema:lol", std::string{"(container)"}},
+#endif
+                                                   {"/example-schema:up", bool{true}}};
+        REQUIRE(datastore.getItems("/example-schema:*") == expected);
     }
 
     waitForCompletionAndBitMore(seq1);
