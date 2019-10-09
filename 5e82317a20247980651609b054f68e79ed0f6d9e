@@ -46,6 +46,30 @@
       "revId": "5e82317a20247980651609b054f68e79ed0f6d9e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "09896d37_81498da0",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-09T17:15:43Z",
+      "side": 1,
+      "message": "Cely ten test_blabla.cpp ma v kazde SECTION na konci session-\u003ecommit(), takze nerozumim tomu, proc je to potreba na konci souboru napsat do komentare",
+      "parentUuid": "2b9005f5_d8b7df4a",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 23
+      },
+      "revId": "5e82317a20247980651609b054f68e79ed0f6d9e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }

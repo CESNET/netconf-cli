@@ -171,6 +171,24 @@
     },
     {
       "key": {
+        "uuid": "f70839d3_7a6ea311",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-09T17:15:43Z",
+      "side": 1,
+      "message": "neco jako tohle?\n\n yang::LeafDataType lyTypeToLeafDataTypes(const LY_DATA_TYPE x)\n {\n    switch (...) {\n    case FOO:\n      return XX_FOO;\n    // tady *zadny* default, at Te muze kompilator varovat, kdyz na dalsi zapomenes\n    }\n    throw std::logic_error{\"internal error: unsupported libyang data type \"\n      + std::to_string(static_cast\u003cstd::underlying_type\u003cLY_DATA_TYPE\u003e\u003e(x))};\n }\n\n yang::LeafDataTypes YangSchema::leafType(...)\n {\n    ...\n    try {\n      ...\n    } catch (std::logic_error\u0026 e) {\n      throw Unsupp(\"type of \"s + ... + \" is not supported: \" + e.what());\n    }\n }",
+      "parentUuid": "710d3604_de7d5448",
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8e236c0e_bc91a3ea",
         "filename": "tests/mock/sysrepo_subscription.cpp",
         "patchSetId": 4
