@@ -13,6 +13,32 @@
 #include "ast_path.hpp"
 #include "schema.hpp"
 
+namespace yang {
+enum class ContainerTraits {
+    Presence,
+    None,
+};
+
+struct container {
+    yang::ContainerTraits m_presence;
+};
+struct list {
+    std::set<std::string> m_keys;
+};
+
+struct leaf {
+    yang::LeafDataTypes m_type;
+    std::set<std::string> m_enumValues;
+    ModuleValuePair m_identBase;
+};
+
+struct module {
+};
+}
+
+using NodeType = boost::variant<yang::container, yang::list, yang::leaf, yang::module>;
+
+
 
 /*! \class StaticSchema
  *     \brief Static schema, used mainly for testing

@@ -18,11 +18,6 @@
 using ModuleValuePair = std::pair<boost::optional<std::string>, std::string>;
 
 namespace yang {
-enum class ContainerTraits {
-    Presence,
-    None,
-};
-
 enum class LeafDataTypes {
     String,
     Decimal,
@@ -39,22 +34,6 @@ enum class LeafDataTypes {
     Binary,
     IdentityRef,
 };
-
-struct container {
-    yang::ContainerTraits m_presence;
-};
-struct list {
-    std::set<std::string> m_keys;
-};
-
-struct leaf {
-    yang::LeafDataTypes m_type;
-    std::set<std::string> m_enumValues;
-    ModuleValuePair m_identBase;
-};
-
-struct module {
-};
 }
 
 enum class Recursion {
@@ -66,8 +45,6 @@ enum class Prefixes {
     Always,
     WhenNeeded
 };
-
-using NodeType = boost::variant<yang::container, yang::list, yang::leaf, yang::module>;
 
 
 class InvalidNodeException : public std::invalid_argument {
@@ -99,9 +76,4 @@ public:
     virtual const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const = 0;
     virtual const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const = 0;
-
-private:
-    const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
-
-    std::unordered_map<std::string, std::unordered_map<std::string, NodeType>> m_nodes;
 };
