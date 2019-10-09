@@ -22,6 +22,30 @@
       "revId": "5e82317a20247980651609b054f68e79ed0f6d9e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b9005f5_d8b7df4a",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-09T15:35:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aa9cf84_241e13ab",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 23
+      },
+      "revId": "5e82317a20247980651609b054f68e79ed0f6d9e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
