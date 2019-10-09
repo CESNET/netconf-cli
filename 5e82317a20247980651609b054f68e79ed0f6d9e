@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aa9cf84_241e13ab",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-09T14:40:58Z",
+      "side": 1,
+      "message": "mas pravdu, ale asi bych to nepsal jako komentar do prostredni SECTION, kdyz to ostatni uz tak maji",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 23
+      },
+      "revId": "5e82317a20247980651609b054f68e79ed0f6d9e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
