@@ -101,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "f1a51848_206c7ad9",
+        "filename": "src/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-09T10:52:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61d47552_7af4e2ec",
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eff9e291_579f8a65",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 4
@@ -291,6 +309,30 @@
       "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "027d3024_b44da497",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-09T10:52:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a68fa21_b53f2344",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 49
+      },
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }

@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3607bfd5_1ec8edb9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-09T10:52:45Z",
+      "side": 1,
+      "message": "Tohle je už asi vyřešeno",
+      "parentUuid": "4f35391c_32d7a5d1",
+      "revId": "136926f72eb21cfa7f4921cdb5620105f37ffa4f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "561118e6_04f485ef",
         "filename": "src/schema.hpp",
         "patchSetId": 1
@@ -103,6 +121,24 @@
       "revId": "136926f72eb21cfa7f4921cdb5620105f37ffa4f",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1876b75e_a2989143",
+        "filename": "src/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-09T10:52:45Z",
+      "side": 1,
+      "message": "Funkce smazána",
+      "parentUuid": "3f40bd07_0160c108",
+      "revId": "136926f72eb21cfa7f4921cdb5620105f37ffa4f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
