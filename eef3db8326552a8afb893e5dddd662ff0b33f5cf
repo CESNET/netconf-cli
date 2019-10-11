@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0315d7e6_8a0194c7",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 8
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-11T16:46:25Z",
+      "side": 1,
+      "message": "zbytek po vyvoji?",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9da3057_3c3c0927",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-11T16:46:25Z",
+      "side": 1,
+      "message": "Souvisi to s touhle zmenou? Jinak pokud je to potreba, obvykly zpusob konverze na \"cisty bool\" je !!expr",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9bd0fa0d_92467cc5",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-11T16:46:25Z",
+      "side": 1,
+      "message": "v jakych situacich to muze vratit neco neplatneho?",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe4d41a1_c1c5f086",
+        "filename": "src/parser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-11T16:46:25Z",
+      "side": 1,
+      "message": "Tohle mi prijde divne, zejmena, kdyz to pak nepouzivas konzistentne (kousek dal je operator-\u003e). Prijde mi, ze *path je cistsi zapis nez `pathDeref`.\n\nNeco jineho by bylo, pokud by to bylo schovane za nejakou radou iteratoru...",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33e7ecb5_1571e690",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-11T16:46:25Z",
+      "side": 1,
+      "message": "myslim si, ze to neni pouzito",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "725c182b_bbb03da4",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-11T16:46:25Z",
+      "side": 1,
+      "message": "pouziva se?",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
