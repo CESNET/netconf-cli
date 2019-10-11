@@ -225,6 +225,24 @@
     },
     {
       "key": {
+        "uuid": "0d17bc41_b4dfbb8b",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-11T01:01:47Z",
+      "side": 1,
+      "message": "tim lip",
+      "parentUuid": "1745cba8_472e9a36",
+      "revId": "bb81d1590a61a1578e9423fe95796bf4037b0e2b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8e236c0e_bc91a3ea",
         "filename": "tests/mock/sysrepo_subscription.cpp",
         "patchSetId": 4
