@@ -233,14 +233,9 @@ const std::set<std::string> YangSchema::listKeys(const schemaPath_& location, co
     return keys;
 }
 
-yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
+yang::LeafDataTypes lyTypeToLeafDataTypes(LY_DATA_TYPE type)
 {
-    using namespace std::string_literals;
-    if (!isLeaf(location, node))
-        throw InvalidSchemaQueryException(fullNodeName(location, node) + " is not a leaf");
-
-    libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
-    switch (leaf.type()->base()) {
+    switch (type) {
     case LY_TYPE_STRING:
         return yang::LeafDataTypes::String;
     case LY_TYPE_DEC64:
@@ -269,8 +264,38 @@ yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const Modu
         return yang::LeafDataTypes::Binary;
     case LY_TYPE_IDENT:
         return yang::LeafDataTypes::IdentityRef;
+    case LY_TYPE_LEAFREF:
+        return yang::LeafDataTypes::LeafRef;
     default:
-        throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported");
+        using namespace std::string_literals;
+        throw std::logic_error{"internal error: unsupported libyang data type "s + std::to_string(type)};
+    }
+
+}
+
+yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    using namespace std::string_literals;
+    if (!isLeaf(location, node))
+        throw InvalidSchemaQueryException(fullNodeName(location, node) + " is not a leaf");
+
+    libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
+    auto baseType{leaf.type()->base()};
+    try {
+        return lyTypeToLeafDataTypes(baseType);
+    } catch(std::logic_error& ex) {
+        throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported: " + ex.what());
+    }
+}
+
+yang::LeafDataTypes YangSchema::leafrefBase(const schemaPath_& location, const ModuleNodePair & node) const
+{
+    using namespace std::string_literals;
+    libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
+    try {
+        return lyTypeToLeafDataTypes(leaf.type()->info()->lref()->target()->type()->base());
+    } catch(std::logic_error& ex) {
+        throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported: " + ex.what());
     }
 }
 
