@@ -33,7 +33,7 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
     case LY_TYPE_UINT64:
         return value->uint64();
     case LY_TYPE_BOOL:
-        return value->bln();
+        return bool(value->bln());
     case LY_TYPE_STRING:
         return std::string(value->string());
     case LY_TYPE_ENUM:

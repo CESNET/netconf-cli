@@ -113,6 +113,14 @@ struct leafDataToStringVisitor : boost::static_visitor<std::string> {
         return data;
     }
 
+    std::string operator()(const bool& data) const
+    {
+        if (data)
+            return "true";
+        else
+            return "false";
+    }
+
     template <typename T>
     std::string operator()(const T& data) const
     {
