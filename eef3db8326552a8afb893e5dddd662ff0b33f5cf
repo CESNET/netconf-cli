@@ -124,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "a9fe87ea_cb459014",
+        "filename": "src/parser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-15T14:14:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe4d41a1_c1c5f086",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "33e7ecb5_1571e690",
         "filename": "tests/sysrepo.cpp",
         "patchSetId": 8
@@ -141,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "1ea49f07_9615f480",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-15T14:14:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33e7ecb5_1571e690",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "725c182b_bbb03da4",
         "filename": "tests/sysrepo.cpp",
         "patchSetId": 8
@@ -152,6 +188,24 @@
       "writtenOn": "2019-10-11T16:46:25Z",
       "side": 1,
       "message": "pouziva se?",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9d46625_fb18c76f",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-15T14:14:14Z",
+      "side": 1,
+      "message": "používá se kousek dole",
+      "parentUuid": "725c182b_bbb03da4",
       "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
