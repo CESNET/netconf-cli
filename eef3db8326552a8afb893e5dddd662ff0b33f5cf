@@ -107,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "1a88182f_73cbcbd2",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-15T16:11:06Z",
+      "side": 1,
+      "message": "OK.\n\nNebal bych se to psat jako one-liner:\n\n if (auto config \u003d m_session-\u003e...) {\n     for ...\n }",
+      "parentUuid": "76877635_3ecfb279",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fe4d41a1_c1c5f086",
         "filename": "src/parser.cpp",
         "patchSetId": 8
@@ -209,6 +227,24 @@
       "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61416173_30b34cf3",
+        "filename": "tests/sysrepo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-10-15T16:11:06Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "d9d46625_fb18c76f",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
