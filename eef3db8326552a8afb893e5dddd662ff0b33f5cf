@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b1558792_d6c039b4",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 8
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-15T14:11:37Z",
+      "side": 1,
+      "message": "Tohleto je řešení nějakýho divnýho bugu, když zakomentuju nějaký SECTIONS, tak to pak nejde bez tohohle zkompilovat, netušim čím to je. Každopádně, nutný to není",
+      "parentUuid": "0315d7e6_8a0194c7",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a9da3057_3c3c0927",
         "filename": "src/netconf_access.cpp",
         "patchSetId": 8
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "a2eb5f82_e96096ca",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-15T14:11:37Z",
+      "side": 1,
+      "message": "No, jde o to, že ten bln() vrací int, tak jsem to musel přetypovat, ale projevilo se to až teď někdy. Asi to můžu hodit do odlišnýho commitu",
+      "parentUuid": "a9da3057_3c3c0927",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9bd0fa0d_92467cc5",
         "filename": "src/netconf_access.cpp",
         "patchSetId": 8
@@ -47,6 +83,24 @@
       "writtenOn": "2019-10-11T16:46:25Z",
       "side": 1,
       "message": "v jakych situacich to muze vratit neco neplatneho?",
+      "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76877635_3ecfb279",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-10-15T14:11:37Z",
+      "side": 1,
+      "message": "Pokud tam nejsou žádný data, tak `config` bude null",
+      "parentUuid": "9bd0fa0d_92467cc5",
       "revId": "eef3db8326552a8afb893e5dddd662ff0b33f5cf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
