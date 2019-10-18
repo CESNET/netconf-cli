@@ -49,7 +49,7 @@ option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${D
 
 find_package(docopt REQUIRED)
 find_package(Boost REQUIRED)
-find_library(REPLXX_LIBRARY replxx REQUIRED)
+find_library(REPLXX_LIBRARY NAMES replxx replxx-d REQUIRED)
 find_path(REPLXX_PATH replxx.hxx)
 if("${REPLXX_PATH}" STREQUAL REPLXX_PATH-NOTFOUND)
     message(FATAL_ERROR "Cannot find the \"replxx.hxx\" include file for the replxx library.")

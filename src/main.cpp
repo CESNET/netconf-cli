@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
         std::stringstream stream;
         auto completionsSet = parser.completeCommand(input, stream);
 
-        std::vector<std::string> res;
+        std::vector<replxx::Replxx::Completion> res;
         std::transform(completionsSet.begin(), completionsSet.end(), std::back_inserter(res),
                 [input](auto it) { return it; });
         return res;
