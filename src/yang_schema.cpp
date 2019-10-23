@@ -346,6 +346,26 @@ std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recu
     return res;
 }
 
+std::set<std::string> YangSchema::moduleNodes(const module_& module, const Recursion recursion) const
+{
+    std::set<std::string> res;
+    const auto yangModule = m_context->get_module(module.m_name.c_str());
+
+    std::vector<libyang::S_Schema_Node> nodes;
+
+    for (const auto node : yangModule->data_instantiables(0)) {
+        if (recursion == Recursion::Recursive) {
+            for (const auto it : node->tree_dfs()) {
+                res.insert(it->path(LYS_PATH_FIRST_PREFIX));
+            }
+        } else {
+            res.insert(module.m_name + ":" + node->name());
+        }
+    }
+
+    return res;
+}
+
 void YangSchema::loadModule(const std::string& moduleName)
 {
     m_context->load_module(moduleName.c_str());
