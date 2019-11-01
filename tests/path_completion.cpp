@@ -91,6 +91,18 @@ TEST_CASE("path_completion")
 
         }
 
+        SECTION("ls example:bota")
+        {
+            input = "ls example:bota";
+            expected = {"example:bota/"};
+        }
+
+        SECTION("ls /example:bota")
+        {
+            input = "ls /example:bota";
+            expected = {"example:bota/"};
+        }
+
         SECTION("ls /s")
         {
             input = "ls /s";
@@ -100,13 +112,13 @@ TEST_CASE("path_completion")
         SECTION("ls /example:list[number=3]/")
         {
             input = "ls /example:list[number=3]/";
-            expected = {"example:contInList"};
+            expected = {"example:contInList/"};
         }
 
         SECTION("ls /example:list[number=3]/c")
         {
             input = "ls /example:list[number=3]/e";
-            expected = {"example:contInList"};
+            expected = {"example:contInList/"};
         }
 
         SECTION("ls /example:list[number=3]/a")

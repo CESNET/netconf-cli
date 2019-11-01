@@ -38,6 +38,7 @@ x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
 x3::rule<space_separator_class, x3::unused_type> const space_separator = "space_separator";
+x3::rule<pathSeparator_class, x3::unused_type> const pathSeparator = "pathSeparator";
 
 x3::rule<leaf_data_class, leaf_data_> const leaf_data = "leaf_data";
 x3::rule<leaf_data_enum_class, enum_> const leaf_data_enum = "leaf_data_enum";
@@ -71,6 +72,7 @@ x3::rule<command_class, command_> const command = "command";
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
 x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestions = "createPathSuggestions";
 x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
+x3::rule<suggestSlash_class, x3::unused_type> const suggestSlash = "suggestSlash";
 x3::rule<suggestKeysStart_class, x3::unused_type> const suggestKeysStart = "suggestKeysStart";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
@@ -188,10 +190,16 @@ auto const space_separator_def =
 auto const completing_def =
     x3::eps;
 
+auto const suggestSlash_def =
+    x3::eps;
+
+auto const pathSeparator_def =
+    -(!char_('/') >> suggestSlash) >> '/';
+
 // I have to insert an empty vector to the first alternative, otherwise they won't have the same attribute
 auto const dataPath_def =
     initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-    initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % '/' >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
+    initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % pathSeparator >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (-trailingSlash >> (&space_separator | x3::eoi)));
 
 auto const dataNodeList_def =
     createPathSuggestions >> -(module) >> list;
@@ -201,7 +209,7 @@ auto const dataNodeList_def =
 // Spirit wouldn't know we want it to collapse.
 // https://github.com/boostorg/spirit/issues/408
 auto const dataNodesListEnd_def =
-    initializePath >> dataNode % '/' >> '/' >> dataNodeList >> -(&char_('/') >> createPathSuggestions) |
+    initializePath >> dataNode % pathSeparator >> '/' >> dataNodeList >> -(&char_('/') >> createPathSuggestions) |
     initializePath >> x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
 
 auto const dataPathListEnd_def =
@@ -210,7 +218,7 @@ auto const dataPathListEnd_def =
 
 auto const schemaPath_def =
     initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-    initializePath >> -(absoluteStart >> createPathSuggestions) >> schemaNode % '/' >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
+    initializePath >> -(absoluteStart >> createPathSuggestions) >> schemaNode % pathSeparator >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
 
 auto const leafPath_def =
     dataPath;
@@ -367,6 +375,7 @@ BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
 BOOST_SPIRIT_DEFINE(space_separator)
+BOOST_SPIRIT_DEFINE(pathSeparator)
 BOOST_SPIRIT_DEFINE(schemaPath)
 BOOST_SPIRIT_DEFINE(dataPath)
 BOOST_SPIRIT_DEFINE(dataNodeList)
@@ -405,6 +414,7 @@ BOOST_SPIRIT_DEFINE(help)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
+BOOST_SPIRIT_DEFINE(suggestSlash)
 BOOST_SPIRIT_DEFINE(suggestKeysStart)
 BOOST_SPIRIT_DEFINE(suggestKeysEnd)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)
