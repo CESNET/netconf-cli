@@ -230,6 +230,25 @@ module example-schema {
     }
 
     uses flags;
+
+    choice interface {
+        case caseLoopback {
+            container loopback {
+                leaf ip {
+                    type string;
+                }
+            }
+        }
+
+        case caseEthernet {
+            container ethernet {
+                leaf ip {
+                    type string;
+                }
+            }
+        }
+    }
+
 })";
 
 TEST_CASE("yangschema")
@@ -259,6 +278,18 @@ TEST_CASE("yangschema")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
                 node.second = "a2";
+            }
+
+            SECTION("example-schema:ethernet")
+            {
+                node.first = "example-schema";
+                node.second = "ethernet";
+            }
+
+            SECTION("example-schema:loopback")
+            {
+                node.first = "example-schema";
+                node.second = "loopback";
             }
 
             REQUIRE(ys.isContainer(path, node));
@@ -649,7 +680,8 @@ TEST_CASE("yangschema")
                        "example-schema:foodIdentLeaf", "example-schema:pizzaIdentLeaf", "example-schema:foodDrinkIdentLeaf",
                        "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla",
                        "example-schema:carry", "example-schema:zero", "example-schema:direction",
-                       "example-schema:interrupt"};
+                       "example-schema:interrupt",
+                       "example-schema:ethernet", "example-schema:loopback"};
             }
 
             SECTION("example-schema:a")
@@ -779,6 +811,40 @@ TEST_CASE("yangschema")
             {
                 node.first = "example-schema";
                 node.second = "startAndStop";
+            }
+
+            REQUIRE(!ys.isPresenceContainer(path, node));
+            REQUIRE(!ys.isList(path, node));
+            REQUIRE(!ys.isLeaf(path, node));
+            REQUIRE(!ys.isContainer(path, node));
+        }
+
+        SECTION("choice is not a node")
+        {
+            SECTION("example-schema:interface")
+            {
+                node.first = "example-schema";
+                node.second = "interface";
+            }
+
+            REQUIRE(!ys.isPresenceContainer(path, node));
+            REQUIRE(!ys.isList(path, node));
+            REQUIRE(!ys.isLeaf(path, node));
+            REQUIRE(!ys.isContainer(path, node));
+        }
+
+        SECTION("case is not a node")
+        {
+            SECTION("example-schema:caseLoopback")
+            {
+                node.first = "example-schema";
+                node.second = "caseLoopback";
+            }
+
+            SECTION("example-schema:caseEthernet")
+            {
+                node.first = "example-schema";
+                node.second = "caseEthernet";
             }
 
             REQUIRE(!ys.isPresenceContainer(path, node));

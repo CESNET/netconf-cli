@@ -188,7 +188,7 @@ bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& n
     return keys.find(key) != keys.end();
 }
 
-libyang::S_Set YangSchema::getNodeSet(const schemaPath_& location, const ModuleNodePair& node) const
+libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string absPath = location.m_nodes.empty() ? "" : "/";
     absPath += pathToAbsoluteSchemaString(location) + "/" + fullNodeName(location, node);
@@ -205,19 +205,8 @@ libyang::S_Set YangSchema::getNodeSet(const schemaPath_& location, const ModuleN
             [&oldOptions]() {
                 libyang::set_log_options(oldOptions);
             });
-        return m_context->find_path(absPath.c_str());
+        return m_context->get_node(nullptr, absPath.c_str());
     }
-}
-
-libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    const auto set = getNodeSet(location, node);
-    if (!set)
-        return nullptr;
-    const auto& schemaSet = set->schema();
-    if (set->number() != 1)
-        return nullptr;
-    return *schemaSet.begin();
 }
 
 const std::set<std::string> YangSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const

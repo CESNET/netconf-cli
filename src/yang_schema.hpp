@@ -16,7 +16,6 @@
 
 namespace libyang {
 class Context;
-class Set;
 class Schema_Node;
 class Data_Node;
 class Module;
@@ -68,7 +67,6 @@ private:
     std::set<std::string> modules() const;
 
     /** @short Returns a set of nodes, that match the location and name criteria. */
-    std::shared_ptr<libyang::Set> getNodeSet(const schemaPath_& location, const ModuleNodePair& node) const;
 
     /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
     std::shared_ptr<libyang::Schema_Node> getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const;
