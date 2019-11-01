@@ -71,7 +71,6 @@ x3::rule<command_class, command_> const command = "command";
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
 x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestions = "createPathSuggestions";
 x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
-x3::rule<suggestKeysStart_class, x3::unused_type> const suggestKeysStart = "suggestKeysStart";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
 x3::rule<completing_class, x3::unused_type> const completing = "completing";
@@ -118,9 +117,6 @@ auto const number =
 auto const createKeySuggestions_def =
     x3::eps;
 
-auto const suggestKeysStart_def =
-    x3::eps;
-
 auto const suggestKeysEnd_def =
     x3::eps;
 
@@ -148,7 +144,7 @@ auto const listSuffix_def =
     *keyValueWrapper;
 
 auto const listElement_def =
-    listPrefix >> -(!char_('[') >> suggestKeysStart) >> &char_('[') > listSuffix;
+    listPrefix >> &char_('[') > listSuffix;
 
 auto const list_def =
     node_identifier >> !char_('[');
@@ -405,7 +401,6 @@ BOOST_SPIRIT_DEFINE(help)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
-BOOST_SPIRIT_DEFINE(suggestKeysStart)
 BOOST_SPIRIT_DEFINE(suggestKeysEnd)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)
 BOOST_SPIRIT_DEFINE(completing)
