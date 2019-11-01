@@ -71,6 +71,7 @@ x3::rule<command_class, command_> const command = "command";
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
 x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestions = "createPathSuggestions";
 x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
+x3::rule<suggestSlash_class, x3::unused_type> const suggestSlash = "suggestSlash";
 x3::rule<suggestKeysStart_class, x3::unused_type> const suggestKeysStart = "suggestKeysStart";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
@@ -188,10 +189,16 @@ auto const space_separator_def =
 auto const completing_def =
     x3::eps;
 
+auto const suggestSlash_def =
+    x3::eps;
+
+auto const pathSeparator =
+    (!char_('/') >> suggestSlash) >> '/';
+
 // I have to insert an empty vector to the first alternative, otherwise they won't have the same attribute
 auto const dataPath_def =
     initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-    initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % '/' >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
+    initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % pathSeparator >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
 
 auto const dataNodeList_def =
     createPathSuggestions >> -(module) >> list;
@@ -201,7 +208,7 @@ auto const dataNodeList_def =
 // Spirit wouldn't know we want it to collapse.
 // https://github.com/boostorg/spirit/issues/408
 auto const dataNodesListEnd_def =
-    initializePath >> dataNode % '/' >> '/' >> dataNodeList >> -(&char_('/') >> createPathSuggestions) |
+    initializePath >> dataNode % pathSeparator >> '/' >> dataNodeList >> -(&char_('/') >> createPathSuggestions) |
     initializePath >> x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
 
 auto const dataPathListEnd_def =
@@ -210,7 +217,7 @@ auto const dataPathListEnd_def =
 
 auto const schemaPath_def =
     initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-    initializePath >> -(absoluteStart >> createPathSuggestions) >> schemaNode % '/' >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
+    initializePath >> -(absoluteStart >> createPathSuggestions) >> schemaNode % pathSeparator >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
 
 auto const leafPath_def =
     dataPath;
@@ -405,6 +412,7 @@ BOOST_SPIRIT_DEFINE(help)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
+BOOST_SPIRIT_DEFINE(suggestSlash)
 BOOST_SPIRIT_DEFINE(suggestKeysStart)
 BOOST_SPIRIT_DEFINE(suggestKeysEnd)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)

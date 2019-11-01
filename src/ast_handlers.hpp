@@ -576,6 +576,16 @@ struct createKeySuggestions_class {
     }
 };
 
+struct suggestSlash_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+
+        parserContext.m_completionSuffix = "/";
+    }
+};
+
 struct suggestKeysEnd_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
@@ -586,7 +596,8 @@ struct suggestKeysEnd_class {
         parserContext.m_completionIterator = begin;
         const auto& keysNeeded = schema.listKeys(parserContext.m_curPath, {parserContext.m_curModule, parserContext.m_tmpListName});
         if (generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys).empty()) {
-            parserContext.m_suggestions = {"]/"};
+            parserContext.m_suggestions = {"]"};
+            parserContext.m_completionSuffix = "/";
         } else {
             parserContext.m_suggestions = {"]["};
         }
