@@ -333,6 +333,7 @@ struct space_separator_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.m_suggestions.clear();
+        parserContext.m_completionSuffix.clear();
     }
 };
 
@@ -556,7 +557,32 @@ struct createPathSuggestions_class {
         const auto& schema = parserContext.m_schema;
 
         parserContext.m_completionIterator = begin;
-        parserContext.m_suggestions = schema.childNodes(parserContext.m_curPath, Recursion::NonRecursive);
+        auto suggestions = schema.childNodes(parserContext.m_curPath, Recursion::NonRecursive);
+        std::set<std::string> suffixesAdded;
+        std::transform(suggestions.begin(), suggestions.end(),
+            std::inserter(suffixesAdded, suffixesAdded.end()),
+            [&parserContext, &schema] (auto it) {
+                ModuleNodePair node;
+                if (auto colonPos = it.find(":"); colonPos != it.npos) {
+                    node.first = it.substr(0, colonPos);
+                    node.second = it.substr(colonPos + 1, node.second.npos);
+                } else {
+                    node.first = boost::none;
+                    node.second = it;
+                }
+
+                if (schema.isLeaf(parserContext.m_curPath, node)) {
+                    return it + " ";
+                }
+                if (schema.isContainer(parserContext.m_curPath, node)) {
+                    return it + "/";
+                }
+                if (schema.isList(parserContext.m_curPath, node)) {
+                    return it + "[";
+                }
+                return it;
+        });
+        parserContext.m_suggestions = suffixesAdded;
     }
 };
 
@@ -590,16 +616,6 @@ struct suggestKeysEnd_class {
         } else {
             parserContext.m_suggestions = {"]["};
         }
-    }
-};
-
-struct suggestKeysStart_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-
-        parserContext.m_completionSuffix = "[";
     }
 };
 
