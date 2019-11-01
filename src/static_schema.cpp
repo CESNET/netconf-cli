@@ -107,6 +107,8 @@ bool StaticSchema::isPresenceContainer(const schemaPath_& location, const Module
 void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type)
 {
     m_nodes.at(location).emplace(name, yang::leaf{type, {}, {}, {}});
+    std::string key = joinPaths(location, name);
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
 void StaticSchema::addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues)
@@ -115,6 +117,8 @@ void StaticSchema::addLeafEnum(const std::string& location, const std::string& n
     toAdd.m_type = yang::LeafDataTypes::Enum;
     toAdd.m_enumValues = enumValues;
     m_nodes.at(location).emplace(name, toAdd);
+    std::string key = joinPaths(location, name);
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
 void StaticSchema::addLeafIdentityRef(const std::string& location, const std::string& name, const ModuleValuePair& base)
@@ -124,6 +128,8 @@ void StaticSchema::addLeafIdentityRef(const std::string& location, const std::st
     toAdd.m_type = yang::LeafDataTypes::IdentityRef;
     toAdd.m_identBase = base;
     m_nodes.at(location).emplace(name, toAdd);
+    std::string key = joinPaths(location, name);
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
 void StaticSchema::addLeafRef(const std::string& location, const std::string& name, const std::string& source)
@@ -132,6 +138,8 @@ void StaticSchema::addLeafRef(const std::string& location, const std::string& na
     toAdd.m_type = yang::LeafDataTypes::LeafRef;
     toAdd.m_leafRefSource = source;
     m_nodes.at(location).emplace(name, toAdd);
+    std::string key = joinPaths(location, name);
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
 void StaticSchema::addModule(const std::string& name)
