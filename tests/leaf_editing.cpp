@@ -65,6 +65,14 @@ TEST_CASE("leaf editing")
             expected.m_data = std::string("some_data");
         }
 
+        SECTION("set mod:leafString/ some_data")
+        {
+            input = "set mod:leafString/ some_data";
+            expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafString")});
+            expected.m_path.m_trailingSlash = TrailingSlash::Present;
+            expected.m_data = std::string("some_data");
+        }
+
         SECTION("set mod:contA/leafInCont more_data")
         {
             input = "set mod:contA/leafInCont more_data";
