@@ -93,8 +93,13 @@ SysrepoAccess::SysrepoAccess(const std::string& appname)
         return fetchSchema(moduleName, revision, submodule);
     });
 
-    for (const auto& it : listImplementedSchemas()) {
-        m_schema->loadModule(it);
+    for (const auto& it : listSchemas()) {
+        if (it->implemented()) {
+            m_schema->loadModule(it->module_name());
+            for (unsigned int i = 0; i < it->enabled_feature_cnt(); i++) {
+                m_schema->enableFeature(it->module_name(), it->enabled_features(i));
+            }
+        }
     }
 }
 
@@ -205,9 +210,9 @@ std::string SysrepoAccess::fetchSchema(const char* module, const char* revision,
     return schema;
 }
 
-std::vector<std::string> SysrepoAccess::listImplementedSchemas()
+std::vector<std::shared_ptr<sysrepo::Yang_Schema>> SysrepoAccess::listSchemas()
 {
-    std::vector<std::string> res;
+    std::vector<sysrepo::S_Yang_Schema> res;
     std::shared_ptr<sysrepo::Yang_Schemas> schemas;
     try {
         schemas = m_session->list_schemas();
@@ -216,8 +221,7 @@ std::vector<std::string> SysrepoAccess::listImplementedSchemas()
     }
     for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
         auto schema = schemas->schema(i);
-        if (schema->implemented())
-            res.push_back(schema->module_name());
+        res.push_back(schema);
     }
     return res;
 }

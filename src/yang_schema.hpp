@@ -50,6 +50,9 @@ public:
     /** @short Loads a module called moduleName. */
     void loadModule(const std::string& moduleName);
 
+    /** @short Enables a feature called featureName on a module called moduleName. */
+    void enableFeature(const std::string& moduleName, const std::string& featureName);
+
     /** @short Adds a new module passed as a YANG string. */
     void addSchemaString(const char* schema);
 
