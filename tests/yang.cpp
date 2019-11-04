@@ -250,6 +250,18 @@ module example-schema {
         }
     }
 
+    feature bigPizzas;
+
+    leaf pizzaSize {
+        type enumeration {
+            enum large {
+                if-feature "bigPizzas";
+            }
+            enum medium;
+            enum small;
+        }
+    }
+
 })";
 
 namespace std {
@@ -432,6 +444,28 @@ TEST_CASE("yangschema")
 
                 SECTION("data")
                     value = "data";
+            }
+
+            SECTION("pizzaSize")
+            {
+                node.first = "example-schema";
+                node.second = "pizzaSize";
+
+                SECTION("small")
+                {
+                    value = "small";
+
+                }
+                SECTION("medium")
+                {
+                    value = "medium";
+                }
+
+                SECTION("large")
+                {
+                    ys.enableFeature("example-schema", "bigPizzas");
+                    value = "large";
+                }
             }
 
             REQUIRE(ys.leafEnumHasValue(path, node, value));
@@ -692,7 +726,8 @@ TEST_CASE("yangschema")
                        "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla",
                        "example-schema:carry", "example-schema:zero", "example-schema:direction",
                        "example-schema:interrupt",
-                       "example-schema:ethernet", "example-schema:loopback"};
+                       "example-schema:ethernet", "example-schema:loopback",
+                       "example-schema:pizzaSize"};
             }
 
             SECTION("example-schema:a")
@@ -868,6 +903,16 @@ TEST_CASE("yangschema")
             REQUIRE(!ys.isList(path, node));
             REQUIRE(!ys.isLeaf(path, node));
             REQUIRE(!ys.isContainer(path, node));
+        }
+
+        SECTION("enum is disabled by if-feature if feature is not enabled")
+        {
+            node.first = "example-schema";
+            node.second = "pizzaSize";
+
+            std::string value = "large";
+
+            REQUIRE(!ys.leafEnumHasValue(path, node, value));
         }
     }
 }
