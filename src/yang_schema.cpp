@@ -135,8 +135,20 @@ const std::set<std::string> YangSchema::enumValues(const schemaPath_& location, 
         enm = type->info()->enums()->enm();
     }
 
+    std::vector<libyang::S_Type_Enum> enabled;
+    std::copy_if(enm.begin(), enm.end(), std::back_inserter(enabled), [] (libyang::S_Type_Enum it) {
+        for (const auto& ifFeature : it->iffeature()) {
+            for (const auto& feature : ifFeature->features()) {
+                if (!(feature->flags() & LYS_FENABLED)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    });
+
     std::set<std::string> enumSet;
-    std::transform(enm.begin(), enm.end(), std::inserter(enumSet, enumSet.end()), [](auto it) { return it->name(); });
+    std::transform(enabled.begin(), enabled.end(), std::inserter(enumSet, enumSet.end()), [](auto it) { return it->name(); });
     return enumSet;
 }
 
