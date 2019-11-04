@@ -370,6 +370,11 @@ void YangSchema::loadModule(const std::string& moduleName)
     m_context->load_module(moduleName.c_str());
 }
 
+void YangSchema::enableFeature(const std::string& moduleName, const std::string& featureName)
+{
+    m_context->get_module(moduleName.c_str())->feature_enable(featureName.c_str());
+}
+
 void YangSchema::registerModuleCallback(const std::function<std::string(const char*, const char*, const char*)>& clb)
 {
     auto lambda = [clb](const char* mod_name, const char* mod_revision, const char* submod_name, const char* submod_revision) {
