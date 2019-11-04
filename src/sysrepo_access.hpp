@@ -18,6 +18,7 @@
 namespace sysrepo {
 class Connection;
 class Session;
+class Yang_Schema;
 }
 
 class Schema;
@@ -43,7 +44,7 @@ private:
     [[noreturn]] void reportErrors();
 
     std::string fetchSchema(const char* module, const char* revision, const char* submodule);
-    std::vector<std::string> listImplementedSchemas();
+    std::vector<std::shared_ptr<sysrepo::Yang_Schema>> listSchemas();
 
     std::shared_ptr<sysrepo::Connection> m_connection;
     std::shared_ptr<sysrepo::Session> m_session;
