@@ -62,7 +62,14 @@ int main(int argc, char* argv[])
     while (true) {
         auto line = lineEditor.input(parser.currentNode() + "> ");
         if (!line) {
-            break;
+            // If user pressed CTRL-C to abort the line, errno gets set to EAGAIN.
+            // If user pressed CTRL-D (for EOF), errno doesn't get set to EAGAIN, so we exit the program.
+            // I have no idea why replxx uses errno for this.
+            if (errno == EAGAIN) {
+                continue;
+            } else {
+                break;
+            }
         }
 
         std::locale C_locale("C");
