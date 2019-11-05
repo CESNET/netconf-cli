@@ -7,9 +7,22 @@
  *
  */
 
+#include <experimental/iterator>
 #include "trompeloeil_doctest.h"
 #include "parser.hpp"
 #include "static_schema.hpp"
+
+
+namespace std {
+std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
+{
+    s << std::endl << "{";
+    std::copy(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", "));
+    s << "}" << std::endl;
+    return s;
+}
+}
+
 
 TEST_CASE("enum completion")
 {
@@ -32,9 +45,21 @@ TEST_CASE("enum completion")
         expected = {"lala", "lol", "data", "coze"};
     }
 
+    SECTION("set mod:leafEnum/ ")
+    {
+        input = "set mod:leafEnum/ ";
+        expected = {"lala", "lol", "data", "coze"};
+    }
+
     SECTION("set mod:leafEnum c")
     {
         input = "set mod:leafEnum c";
+        expected = {"coze"};
+    }
+
+    SECTION("set mod:leafEnum/ c")
+    {
+        input = "set mod:leafEnum/ c";
         expected = {"coze"};
     }
 
