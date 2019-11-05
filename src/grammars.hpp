@@ -118,13 +118,13 @@ auto const number =
     +x3::digit;
 
 auto const createKeySuggestions_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
 
 auto const suggestKeysStart_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
 
 auto const suggestKeysEnd_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
 
 auto const keyValue_def =
     key_identifier > '=' > (quotedValue | number);
@@ -168,7 +168,7 @@ auto const leaf_def =
     node_identifier;
 
 auto const createPathSuggestions_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
 
 // leaf cannot be in the middle of a path, however, I need the grammar's attribute to be a vector of variants
 auto const schemaNode_def =
@@ -188,10 +188,10 @@ auto const space_separator_def =
 
 // This is a pseudo-parser, that fails if we're not completing a command
 auto const completing_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
 
 auto const suggestSlash_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
 
 auto const pathSeparator_def =
     -(!char_('/') >> suggestSlash) >> '/';
@@ -230,7 +230,7 @@ auto const listInstancePath_def =
     dataPath;
 
 auto const createEnumSuggestions_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
 
 auto const leaf_data_enum_def =
     createEnumSuggestions >> +char_;
@@ -278,7 +278,7 @@ auto const leaf_data_identityRef_data_def =
     -module  >> node_identifier;
 
 auto const createIdentitySuggestions_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
 
 auto const leaf_data_identityRef_def =
     createIdentitySuggestions >> leaf_data_identityRef_data;
@@ -310,7 +310,7 @@ struct ls_options_table : x3::symbols<LsOption> {
 
 // A "nothing" parser, which is used to indicate we tried to parse a path
 auto const initializePath_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
 
 auto const ls_def =
     ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> ((dataPathListEnd | dataPath | schemaPath) | (module >> "*")));
@@ -349,7 +349,7 @@ auto const help_def =
     help_::name > createCommandSuggestions >> -command_names;
 
 auto const createCommandSuggestions_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
 
 auto const command_def =
     createCommandSuggestions >> x3::expect[cd | create | delete_rule | set | commit | get | ls | discard | help];
