@@ -556,6 +556,11 @@ struct createPathSuggestions_class {
         const auto& schema = parserContext.m_schema;
 
         parserContext.m_completionIterator = begin;
+        if (!parserContext.m_curPath.m_nodes.empty() && parserContext.m_curPath.m_nodes.back().m_suffix.type() == typeid(leaf_)) {
+            parserContext.m_suggestions = {};
+            return;
+        }
+
         parserContext.m_suggestions = schema.childNodes(parserContext.m_curPath, Recursion::NonRecursive);
     }
 };
