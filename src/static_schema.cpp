@@ -26,6 +26,10 @@ bool StaticSchema::nodeExists(const std::string& location, const std::string& no
 {
     if (node.empty())
         return true;
+
+    if (m_nodes.find(location) == m_nodes.end())
+        return false;
+
     const auto& childrenRef = children(location);
 
     return childrenRef.find(node) != childrenRef.end();
