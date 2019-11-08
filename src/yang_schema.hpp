@@ -69,6 +69,11 @@ private:
     /** @short Returns a set of nodes, that match the location and name criteria. */
 
     /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
+    std::shared_ptr<libyang::Schema_Node> getSchemaNode(const std::string& node) const;
+
+    /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
     std::shared_ptr<libyang::Schema_Node> getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const;
     std::shared_ptr<libyang::Context> m_context;
+
+    std::shared_ptr<libyang::Schema_Node> impl_getSchemaNode(const std::string& node) const;
 };

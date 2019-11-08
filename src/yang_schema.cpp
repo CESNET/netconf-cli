@@ -188,11 +188,8 @@ bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& n
     return keys.find(key) != keys.end();
 }
 
-libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const
+libyang::S_Schema_Node YangSchema::impl_getSchemaNode(const std::string& node) const
 {
-    std::string absPath = location.m_nodes.empty() ? "" : "/";
-    absPath += pathToAbsoluteSchemaString(location) + "/" + fullNodeName(location, node);
-
     // If no node is found find_path prints an error message, so we have to
     // disable logging
     // https://github.com/CESNET/libyang/issues/753
@@ -205,8 +202,22 @@ libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, co
             [&oldOptions]() {
                 libyang::set_log_options(oldOptions);
             });
-        return m_context->get_node(nullptr, absPath.c_str());
+        return m_context->get_node(nullptr, node.c_str());
     }
+}
+
+
+libyang::S_Schema_Node YangSchema::getSchemaNode(const std::string& node) const
+{
+    return impl_getSchemaNode(node);
+}
+
+libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    std::string absPath = location.m_nodes.empty() ? "" : "/";
+    absPath += pathToAbsoluteSchemaString(location) + "/" + fullNodeName(location, node);
+
+    return impl_getSchemaNode(absPath);
 }
 
 const std::set<std::string> YangSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
@@ -309,9 +320,8 @@ std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recu
         nodes = m_context->data_instantiables(0);
     } else {
         const auto absolutePath = "/" + pathToAbsoluteSchemaString(path);
-        const auto set = m_context->find_path(absolutePath.c_str());
-        const auto schemaSet = set->schema();
-        nodes = (*schemaSet.begin())->child_instantiables(0);
+        const auto node = getSchemaNode(absolutePath);
+        nodes = node->child_instantiables(0);
     }
 
     for (const auto node : nodes) {
