@@ -6,6 +6,7 @@
  *
 */
 
+#include <experimental/iterator>
 #include "trompeloeil_doctest.h"
 #include "yang_schema.hpp"
 
@@ -250,6 +251,16 @@ module example-schema {
     }
 
 })";
+
+namespace std {
+std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
+{
+    s << std::endl << "{";
+    std::copy(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", "));
+    s << "}" << std::endl;
+    return s;
+}
+}
 
 TEST_CASE("yangschema")
 {
@@ -694,6 +705,12 @@ TEST_CASE("yangschema")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"second-schema"}, container_("bla")));
                 set = {"bla2"};
+            }
+
+            SECTION("example-schema:ethernet")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("ethernet")));
+                set = {"ip"};
             }
 
             REQUIRE(ys.childNodes(path, Recursion::NonRecursive) == set);
