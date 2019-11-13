@@ -307,8 +307,10 @@ std::set<std::string> YangSchema::modules() const
 {
     const auto& modules = m_context->get_module_iter();
 
+    std::vector<libyang::S_Module> implementedOnly;
+    std::copy_if(modules.begin(), modules.end(), std::back_inserter(implementedOnly), [] (const auto& module) { return module->implemented(); });
     std::set<std::string> res;
-    std::transform(modules.begin(), modules.end(), std::inserter(res, res.end()), [](const auto module) { return module->name(); });
+    std::transform(modules.begin(), modules.end(), std::inserter(res, res.end()), [] (const auto& module) { return module->name(); });
     return res;
 }
 
