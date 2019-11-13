@@ -278,3 +278,8 @@ std::set<std::string> StaticSchema::moduleNodes(const module_& module, const Rec
     }
     return res;
 }
+
+std::set<std::string> StaticSchema::modules() const
+{
+    return m_modules;
+}

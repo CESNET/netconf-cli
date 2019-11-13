@@ -560,6 +560,12 @@ struct createPathSuggestions_class {
 
         parserContext.m_completionIterator = begin;
         parserContext.m_suggestions = schema.childNodes(parserContext.m_curPath, Recursion::NonRecursive);
+        if (parserContext.m_curPath.m_nodes.empty()) {
+            auto modules = schema.modules();
+            std::set<std::string> transformed;
+            std::transform(modules.begin(), modules.end(), std::inserter(transformed, transformed.end()), [] (auto it) { return it + ":*"; });
+            parserContext.m_suggestions.insert(transformed.begin(), transformed.end());
+        }
     }
 };
 
