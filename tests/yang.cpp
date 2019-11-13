@@ -749,6 +749,11 @@ TEST_CASE("yangschema")
 
             REQUIRE(ys.childNodes(path, Recursion::NonRecursive) == set);
         }
+        SECTION("modules")
+        {
+            std::set<std::string> set = {"example-schema", "ietf-yang-library", "second-schema", "yang"};
+            REQUIRE(ys.modules() == set);
+        }
     }
 
     SECTION("negative")

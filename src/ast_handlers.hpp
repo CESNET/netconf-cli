@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/mpl/for_each.hpp>
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/support/utility/error_reporting.hpp>
@@ -563,10 +564,27 @@ struct createPathSuggestions_class {
 
         parserContext.m_completionIterator = begin;
         auto suggestions = schema.childNodes(parserContext.m_curPath, Recursion::NonRecursive);
+        if (parserContext.m_curPath.m_nodes.empty()) {
+            auto modules = schema.modules();
+            for (const auto& module : modules) {
+                // Only add the module to the suggestions if at least one node is available from the module
+                if (std::find_if(suggestions.begin(),
+                                 suggestions.end(),
+                                 [&module] (const auto& it) {
+                                     return boost::starts_with(it, module + ":");
+                                 }
+                            ) != suggestions.end()) {
+                    suggestions.insert(module);
+                }
+            }
+        }
         std::set<std::string> suffixesAdded;
         std::transform(suggestions.begin(), suggestions.end(),
             std::inserter(suffixesAdded, suffixesAdded.end()),
             [&parserContext, &schema] (auto it) {
+                if (schema.isModule(it)) {
+                    return it + ":*";
+                }
                 ModuleNodePair node;
                 if (auto colonPos = it.find(":"); colonPos != it.npos) {
                     node.first = it.substr(0, colonPos);
