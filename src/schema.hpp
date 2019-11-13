@@ -80,4 +80,5 @@ public:
     virtual const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const = 0;
     virtual std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const = 0;
+    virtual std::set<std::string> modules() const = 0;
 };
