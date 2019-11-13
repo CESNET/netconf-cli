@@ -51,13 +51,13 @@ TEST_CASE("path_completion")
         SECTION("ls ")
         {
             input = "ls ";
-            expected = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/"};
+            expected = {"example:*", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:*", "second:amelie/"};
         }
 
         SECTION("ls e")
         {
             input = "ls e";
-            expected = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
+            expected = {"example:*", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
         }
 
         SECTION("ls example:ano")
@@ -81,13 +81,13 @@ TEST_CASE("path_completion")
         SECTION("ls /")
         {
             input = "ls /";
-            expected = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/"};
+            expected = {"example:*", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:*", "second:amelie/"};
         }
 
         SECTION("ls /e")
         {
             input = "ls /e";
-            expected = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
+            expected = {"example:*", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
         }
 
         SECTION("ls example:bota")
@@ -105,7 +105,7 @@ TEST_CASE("path_completion")
         SECTION("ls /s")
         {
             input = "ls /s";
-            expected = {"second:amelie/"};
+            expected = {"second:*", "second:amelie/"};
         }
 
         SECTION("ls /example:list[number=3]/")
