@@ -461,6 +461,11 @@ struct leaf_data_enum_class : leaf_data_base_class<yang::LeafDataTypes::Enum> {
 
         if (!schema.leafEnumHasValue(location, {module, leaf.m_name}, ast.m_value)) {
             _pass(context) = false;
+
+            parserContext.m_errorMsg = "Expected an enum here. Allowed values:";
+            for (const auto& it : schema.enumValues(location, {module, leaf.m_name})) {
+                parserContext.m_errorMsg += " " + it;
+            }
         }
     }
 };
