@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ade770a_8bcb3133",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-11-18T11:02:43Z",
+      "side": 1,
+      "message": "I think we talked about this one and decided that the trailing slash only makes sense for \"nodes which might have inner content\" and definitely not for leaf statements. Perhaps I remember it wrong?",
+      "revId": "2b0b6486cde7298ed031a32fb0bdbb5966d164be",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
