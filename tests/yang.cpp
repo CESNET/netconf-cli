@@ -454,7 +454,6 @@ TEST_CASE("yangschema")
                 SECTION("small")
                 {
                     value = "small";
-
                 }
                 SECTION("medium")
                 {

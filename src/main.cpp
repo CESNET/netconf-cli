@@ -7,9 +7,9 @@
 */
 #include <docopt.h>
 #include <iostream>
-#include <sstream>
 #include <optional>
 #include <replxx.hxx>
+#include <sstream>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
 #include "sysrepo_access.hpp"

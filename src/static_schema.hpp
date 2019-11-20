@@ -40,7 +40,6 @@ struct module {
 using NodeType = boost::variant<yang::container, yang::list, yang::leaf, yang::module>;
 
 
-
 /*! \class StaticSchema
  *     \brief Static schema, used mainly for testing
  *         */

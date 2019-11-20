@@ -408,7 +408,7 @@ struct leaf_data_class {
     }
 };
 
-template<yang::LeafDataTypes TYPE>
+template <yang::LeafDataTypes TYPE>
 struct leaf_data_base_class {
     yang::LeafDataTypes m_type;
 
