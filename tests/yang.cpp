@@ -360,7 +360,7 @@ TEST_CASE("yangschema")
         }
         SECTION("isModule")
         {
-            REQUIRE(ys.isModule(path, "example-schema"));
+            REQUIRE(ys.isModule("example-schema"));
         }
         SECTION("isList")
         {
@@ -809,7 +809,7 @@ TEST_CASE("yangschema")
 
         SECTION("nonexistent module")
         {
-            REQUIRE(!ys.isModule(path, "notAModule"));
+            REQUIRE(!ys.isModule("notAModule"));
         }
 
         SECTION("leafIdentityIsValid")

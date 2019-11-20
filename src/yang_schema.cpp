@@ -81,7 +81,7 @@ void YangSchema::addSchemaFile(const char* filename)
     }
 }
 
-bool YangSchema::isModule(const schemaPath_&, const std::string& name) const
+bool YangSchema::isModule(const std::string& name) const
 {
     const auto set = modules();
     return set.find(name) != set.end();
