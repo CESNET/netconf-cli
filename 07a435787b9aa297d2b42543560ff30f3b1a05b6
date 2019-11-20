@@ -16,6 +16,24 @@
       "revId": "07a435787b9aa297d2b42543560ff30f3b1a05b6",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f7e44fe_7645ccdd",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-11-20T18:04:05Z",
+      "side": 1,
+      "message": "I always split lines like this because of line length, but now, my screen do around 230 chars, so 120~ characters is fine by me. I wouldn\u0027t say it\u0027s an improvement, but there is no real reason for this line to be split like before. I\u0027m kinda looking forward to C++20 and the Ranges library. Hopefully it will then look something like this:\nstd::transform(childrenRef, res, [](auto it) { return it.first; });\nwhich is pretty clear to me on a single line. The current line is the same only with more boilerplate, and the code is really only the lambda.",
+      "parentUuid": "0df5205a_7d1bd85f",
+      "revId": "07a435787b9aa297d2b42543560ff30f3b1a05b6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
