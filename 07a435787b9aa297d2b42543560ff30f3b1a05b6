@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0df5205a_7d1bd85f",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-11-20T17:17:29Z",
+      "side": 1,
+      "message": "I know that our clang-format setup suggests this change, but I honestly don\u0027t think it\u0027s an improvement. Do you?\n\nBTW, this appears to have been \"caused\" by BinPackParameters, BinPackArguments and perhaps ColumnLimit.",
+      "revId": "07a435787b9aa297d2b42543560ff30f3b1a05b6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
