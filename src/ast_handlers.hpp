@@ -183,7 +183,7 @@ struct module_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
 
-        if (schema.isModule(parserContext.m_curPath, ast.m_name)) {
+        if (schema.isModule(ast.m_name)) {
             parserContext.m_curModule = ast.m_name;
             parserContext.m_topLevelModulePresent = true;
         } else {

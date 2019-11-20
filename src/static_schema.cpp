@@ -31,7 +31,7 @@ bool StaticSchema::nodeExists(const std::string& location, const std::string& no
     return childrenRef.find(node) != childrenRef.end();
 }
 
-bool StaticSchema::isModule(const schemaPath_&, const std::string& name) const
+bool StaticSchema::isModule(const std::string& name) const
 {
     return m_modules.find(name) != m_modules.end();
 }
