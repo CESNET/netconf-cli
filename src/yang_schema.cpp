@@ -136,9 +136,9 @@ const std::set<std::string> YangSchema::enumValues(const schemaPath_& location, 
     }
 
     std::vector<libyang::S_Type_Enum> enabled;
-    std::copy_if(enm.begin(), enm.end(), std::back_inserter(enabled), [] (const libyang::S_Type_Enum& it) {
+    std::copy_if(enm.begin(), enm.end(), std::back_inserter(enabled), [](const libyang::S_Type_Enum& it) {
         auto iffeatures = it->iffeature();
-        return std::all_of(iffeatures.begin(), iffeatures.end(), [] (auto it) {return it->value();});
+        return std::all_of(iffeatures.begin(), iffeatures.end(), [](auto it) { return it->value(); });
     });
 
     std::set<std::string> enumSet;
@@ -234,8 +234,7 @@ const std::set<std::string> YangSchema::listKeys(const schemaPath_& location, co
     libyang::Schema_Node_List list(getSchemaNode(location, node));
     const auto& keysVec = list.keys();
 
-    std::transform(keysVec.begin(), keysVec.end(), std::inserter(keys, keys.begin()),
-            [] (const auto& it) {return it->name();});
+    std::transform(keysVec.begin(), keysVec.end(), std::inserter(keys, keys.begin()), [](const auto& it) { return it->name(); });
     return keys;
 }
 
@@ -276,7 +275,6 @@ yang::LeafDataTypes lyTypeToLeafDataTypes(LY_DATA_TYPE type)
         using namespace std::string_literals;
         throw std::logic_error{"internal error: unsupported libyang data type "s + std::to_string(type)};
     }
-
 }
 
 yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
@@ -289,18 +287,18 @@ yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const Modu
     auto baseType{leaf.type()->base()};
     try {
         return lyTypeToLeafDataTypes(baseType);
-    } catch(std::logic_error& ex) {
+    } catch (std::logic_error& ex) {
         throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported: " + ex.what());
     }
 }
 
-yang::LeafDataTypes YangSchema::leafrefBase(const schemaPath_& location, const ModuleNodePair & node) const
+yang::LeafDataTypes YangSchema::leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const
 {
     using namespace std::string_literals;
     libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
     try {
         return lyTypeToLeafDataTypes(leaf.type()->info()->lref()->target()->type()->base());
-    } catch(std::logic_error& ex) {
+    } catch (std::logic_error& ex) {
         throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported: " + ex.what());
     }
 }
@@ -310,9 +308,7 @@ std::set<std::string> YangSchema::modules() const
     const auto& modules = m_context->get_module_iter();
 
     std::set<std::string> res;
-    std::transform(modules.begin(), modules.end(),
-                   std::inserter(res, res.end()),
-                   [] (const auto module) { return module->name(); });
+    std::transform(modules.begin(), modules.end(), std::inserter(res, res.end()), [](const auto module) { return module->name(); });
     return res;
 }
 

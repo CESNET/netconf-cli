@@ -1,5 +1,5 @@
-#include <doctest/doctest.h>
 #include <chrono>
+#include <doctest/doctest.h>
 #include <thread>
 #include <trompeloeil.hpp>
 

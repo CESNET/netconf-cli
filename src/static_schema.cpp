@@ -258,9 +258,7 @@ std::set<std::string> StaticSchema::childNodes(const schemaPath_& path, const Re
 
     auto childrenRef = children(locationString);
 
-    std::transform(childrenRef.begin(), childrenRef.end(),
-                std::inserter(res, res.end()),
-                [] (auto it) { return it.first; });
+    std::transform(childrenRef.begin(), childrenRef.end(), std::inserter(res, res.end()), [](auto it) { return it.first; });
     return res;
 }
 

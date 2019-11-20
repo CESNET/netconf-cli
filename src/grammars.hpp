@@ -222,6 +222,7 @@ auto const createEnumSuggestions_def =
 
 auto const leaf_data_enum_def =
     createEnumSuggestions >> +char_;
+
 auto const leaf_data_decimal_def =
     double_;
 

@@ -88,7 +88,6 @@ TEST_CASE("path_completion")
         {
             input = "ls /e";
             expected = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
-
         }
 
         SECTION("ls example:bota")
