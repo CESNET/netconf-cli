@@ -34,6 +34,24 @@
       "revId": "07a435787b9aa297d2b42543560ff30f3b1a05b6",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93ef0eb2_2e5d29a7",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-11-21T12:31:26Z",
+      "side": 1,
+      "message": "OK, this is your project :).",
+      "parentUuid": "9f7e44fe_7645ccdd",
+      "revId": "07a435787b9aa297d2b42543560ff30f3b1a05b6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
