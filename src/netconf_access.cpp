@@ -153,3 +153,26 @@ std::shared_ptr<Schema> NetconfAccess::schema()
 {
     return m_schema;
 }
+
+std::vector<std::map<std::string, leaf_data_>> NetconfAccess::listInstances(const std::string& path)
+{
+    std::vector<std::map<std::string, leaf_data_>> res;
+    auto list = m_schema->dataNodeFromPath(path);
+
+    auto instances = m_session->getConfig(NC_DATASTORE_RUNNING, list->print_mem(LYD_XML, 0));
+
+
+    for (const auto& instance : instances->find_path(path.c_str())->data()) {
+        std::map<std::string, leaf_data_> instanceRes;
+
+        // I take the first child here, because the first element (the parent of the child()) will be the list
+        for (const auto& keyLeaf : instance->child()->tree_for()) {
+            auto leafData = libyang::Data_Node_Leaf_List{keyLeaf};
+            auto leafSchema = libyang::Schema_Node_Leaf{leafData.schema()};
+            instanceRes.insert({ leafSchema.name(), leafValueFromValue(leafData.value(), leafSchema.type()->base())});
+        }
+        res.push_back(instanceRes);
+    }
+
+    return res;
+}
