@@ -71,6 +71,7 @@ add_library(schemas STATIC
 target_link_libraries(schemas PUBLIC Boost::boost)
 
 add_library(datastoreaccess STATIC
+    src/data_query.cpp
     src/datastore_access.cpp
     )
 target_link_libraries(datastoreaccess PUBLIC Boost::boost)
@@ -264,7 +265,9 @@ if(BUILD_TESTING)
 
     setup_datastore_tests()
     datastore_test(setting_values ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
-    set_tests_properties(kill_daemons PROPERTIES DEPENDS test_setting_values_netconf_cleanup)
+    datastore_test(data_query ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
+    set_tests_properties(test_data_query_sysrepo_init PROPERTIES DEPENDS test_setting_values_netconf_cleanup)
+    set_tests_properties(kill_daemons PROPERTIES DEPENDS test_data_query_netconf_cleanup)
 
 
 endif()

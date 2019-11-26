@@ -26,6 +26,7 @@ public:
 
 class SysrepoSubscription {
 public:
+    SysrepoSubscription();
     SysrepoSubscription(Recorder* rec);
 
 private:
