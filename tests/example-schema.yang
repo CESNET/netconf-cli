@@ -83,4 +83,48 @@ module example-schema {
     container lol {
         uses upAndDown;
     }
+
+    list selectedNumbers {
+        key 'value';
+        leaf value {
+            type int8;
+        }
+    }
+
+    list animalWithColor {
+        key 'name color';
+        leaf name {
+            type string;
+        }
+        leaf color {
+            type string;
+        }
+    }
+
+    list ports {
+        key 'name';
+        leaf name {
+            type enumeration {
+                enum A;
+                enum B;
+                enum C;
+                enum D;
+                enum E;
+            }
+        }
+    }
+
+    list org {
+        key 'department';
+        leaf department {
+            type string;
+        }
+
+        list people {
+            key 'name';
+            leaf name {
+                type string;
+            }
+        }
+    }
 }
