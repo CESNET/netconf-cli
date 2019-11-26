@@ -160,3 +160,33 @@ std::shared_ptr<Schema> NetconfAccess::schema()
 {
     return m_schema;
 }
+
+std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
+{
+    std::vector<ListInstance> res;
+    auto list = m_schema->dataNodeFromPath(path);
+
+    // This inserts selection nodes - I only want keys not other data
+    for (const auto& keyLeaf : libyang::Schema_Node_List{list->schema()}.keys()) {
+        // Have to call find_path here - otherwise I'll have the list, not the leaf inside it
+        auto selectionLeaf = *(m_schema->dataNodeFromPath(keyLeaf->path())->find_path(keyLeaf->name())->data().begin());
+        list->insert(selectionLeaf);
+    }
+
+    auto instances = m_session->getConfig(NC_DATASTORE_RUNNING, list->print_mem(LYD_XML, 0));
+
+
+    for (const auto& instance : instances->find_path(path.c_str())->data()) {
+        ListInstance instanceRes;
+
+        // I take the first child here, because the first element (the parent of the child()) will be the list
+        for (const auto& keyLeaf : instance->child()->tree_for()) {
+            auto leafData = libyang::Data_Node_Leaf_List{keyLeaf};
+            auto leafSchema = libyang::Schema_Node_Leaf{leafData.schema()};
+            instanceRes.insert({ leafSchema.name(), leafValueFromValue(leafData.value(), leafSchema.type()->base())});
+        }
+        res.push_back(instanceRes);
+    }
+
+    return res;
+}
