@@ -7,41 +7,11 @@
 
 #include <libyang/Libyang.hpp>
 #include <libyang/Tree_Data.hpp>
+#include "libyang_utils.hpp"
 #include "netconf-client.h"
 #include "netconf_access.hpp"
 #include "utils.hpp"
 #include "yang_schema.hpp"
-
-leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
-{
-    using namespace std::string_literals;
-    switch (type) {
-    case LY_TYPE_INT8:
-        return value->int8();
-    case LY_TYPE_INT16:
-        return value->int16();
-    case LY_TYPE_INT32:
-        return value->int32();
-    case LY_TYPE_INT64:
-        return value->int64();
-    case LY_TYPE_UINT8:
-        return value->uint8();
-    case LY_TYPE_UINT16:
-        return value->uint16();
-    case LY_TYPE_UINT32:
-        return value->uintu32();
-    case LY_TYPE_UINT64:
-        return value->uint64();
-    case LY_TYPE_BOOL:
-        return bool(value->bln());
-    case LY_TYPE_STRING:
-        return std::string(value->string());
-    case LY_TYPE_ENUM:
-        return enum_{std::string(value->enm()->name())};
-    default: // TODO: implement all types
-        return "(can't print)"s;
-    }
-}
 
 NetconfAccess::~NetconfAccess() = default;
 
@@ -182,4 +152,30 @@ std::vector<std::string> NetconfAccess::listImplementedSchemas()
 std::shared_ptr<Schema> NetconfAccess::schema()
 {
     return m_schema;
+}
+
+std::vector<std::map<std::string, leaf_data_>> NetconfAccess::listInstances(const std::string& path)
+{
+    std::vector<std::map<std::string, leaf_data_>> res;
+    auto list = m_schema->dataNodeFromPath(path);
+
+    auto keys = libyang::Schema_Node_List{list->schema()}.keys();
+    for (const auto& keySchemaLeaf : keys) {
+        auto keyDataLeaf = m_schema->dataNodeFromPath(keySchemaLeaf->path())->child();
+        list->insert(keyDataLeaf);
+    }
+
+    auto instances = m_session->getConfig(NC_DATASTORE_RUNNING, list->print_mem(LYD_XML, 0));
+
+    for (const auto& instance : instances->tree_for()) {
+        std::map<std::string, leaf_data_> instanceRes;
+        for (const auto& key : keys) {
+            auto instanceLeaf = libyang::Data_Node_Leaf_List{*(instance->find_path(key->name())->data().begin())};
+            instanceRes.emplace(key->name(), leafValueFromValue(instanceLeaf.value(), instanceLeaf.leaf_type()->base()));
+        }
+        res.push_back(instanceRes);
+    }
+
+
+    return res;
 }

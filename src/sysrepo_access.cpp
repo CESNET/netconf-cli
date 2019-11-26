@@ -6,7 +6,10 @@
  *
 */
 
+#include <libyang/Tree_Data.hpp>
+#include <libyang/Tree_Schema.hpp>
 #include <sysrepo-cpp/Session.hpp>
+#include "libyang_utils.hpp"
 #include "sysrepo_access.hpp"
 #include "yang_schema.hpp"
 
@@ -255,4 +258,33 @@ std::shared_ptr<Schema> SysrepoAccess::schema()
     }
 
     throw DatastoreException(res);
+}
+
+std::vector<std::map<std::string, leaf_data_>> SysrepoAccess::listInstances(const std::string& path)
+{
+    std::vector<std::map<std::string, leaf_data_>> res;
+    auto lists = getItems(path);
+
+    decltype(lists) instances;
+    std::copy_if(lists.begin(), lists.end(), std::inserter(instances, instances.end()), [](const auto& item) {
+        return item.second.type() == typeid(special_) && boost::get<special_>(item.second).m_value == SpecialValue::List;
+    });
+
+    if (instances.empty()) {
+        return res;
+    }
+
+    auto keys = libyang::Schema_Node_List{m_schema->dataNodeFromPath(instances.begin()->first)->schema()}.keys();
+
+    for (const auto& instance : instances) {
+        auto tree = m_schema->dataNodeFromPath(instance.first);
+        std::map<std::string, leaf_data_> instanceRes;
+        for (const auto& key : keys) {
+            auto leaf = libyang::Data_Node_Leaf_List{*(tree->find_path(key->name())->data().begin())};
+            instanceRes.emplace(key->name(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
+        }
+        res.push_back(instanceRes);
+    }
+
+    return res;
 }
