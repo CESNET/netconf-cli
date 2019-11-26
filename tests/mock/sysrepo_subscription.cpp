@@ -49,7 +49,11 @@ SysrepoSubscription::SysrepoSubscription(Recorder* rec)
     m_session = std::make_shared<sysrepo::Session>(m_connection);
     m_subscription = std::make_shared<sysrepo::Subscribe>(m_session);
     const char* modName = "example-schema";
-    m_callback = std::make_shared<MyCallback>(modName, rec);
+    if (rec) {
+        m_callback = std::make_shared<MyCallback>(modName, rec);
+    } else {
+        m_callback = std::make_shared<sysrepo::Callback>();
+    }
 
     m_subscription->module_change_subscribe(modName, m_callback);
 }
