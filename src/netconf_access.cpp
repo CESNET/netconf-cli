@@ -55,14 +55,16 @@ std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& pat
     // returns libyang::Data_Node
     auto fillMap = [&res](auto items) {
         for (const auto& it : items) {
-            if (!it)
-                continue;
-            if (it->schema()->nodetype() == LYS_LIST) {
-                res.emplace(it->path(), special_{"(list)"});
-            }
-            if (it->schema()->nodetype() == LYS_LEAF) {
-                libyang::Data_Node_Leaf_List leaf(it);
-                res.emplace(leaf.path(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
+            for (const auto& node : it->tree_dfs()) {
+                if (!node)
+                    continue;
+                if (node->schema()->nodetype() == LYS_LIST) {
+                    res.emplace(node->path(), special_{"(list)"});
+                }
+                if (node->schema()->nodetype() == LYS_LEAF) {
+                    libyang::Data_Node_Leaf_List leaf(node);
+                    res.emplace(leaf.path(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
+                }
             }
         }
     };
@@ -70,9 +72,12 @@ std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& pat
     auto config = m_session->getConfig(NC_DATASTORE_RUNNING, (path != "/") ? std::optional{path} : std::nullopt);
 
     if (config) {
-        for (auto it : config->tree_for()) {
-            fillMap(it->tree_dfs());
-        }
+        // libnetconf always returns libyang data trees, including all the mandatory nodes.
+        // For example, if getting a leaf which is a key of a multi-key list, the tree will include the list itself and also all of its other keys.
+        // This means I have to use find_path to filter out nodes I actually wanted.
+        // This also means I use `path` twice to filter the results, but that's how sysrepo does it:
+        // https://github.com/CESNET/Netopeer2/issues/500
+        fillMap(config->find_path(path.c_str())->data());
     }
     return res;
 }
