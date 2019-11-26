@@ -367,6 +367,20 @@ std::set<std::string> YangSchema::moduleNodes(const module_& module, const Recur
     return res;
 }
 
+// TODO: implement this
+std::set<std::string> YangSchema::listKeyPaths(const schemaPath_& path) const
+{
+    libyang::Schema_Node_List list(getSchemaNode("/" + pathToAbsoluteSchemaString(path)));
+    std::set<std::string> res;
+    for (const auto& it : list.keys()) {
+        res.insert(it->path());
+    }
+
+
+    return res;
+}
+
+
 void YangSchema::loadModule(const std::string& moduleName)
 {
     m_context->load_module(moduleName.c_str());

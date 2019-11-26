@@ -276,3 +276,9 @@ std::set<std::string> StaticSchema::moduleNodes(const module_& module, const Rec
     }
     return res;
 }
+
+// TODO: implement this
+std::set<std::string> StaticSchema::listKeyPaths([[maybe_unused]] const schemaPath_& path) const
+{
+    return {};
+}

@@ -9,10 +9,20 @@
 #include <sysrepo-cpp/Session.hpp>
 #include "sysrepo_subscription.hpp"
 
-
-class MyCallback : public sysrepo::Callback {
+class DoNothingCallback : public sysrepo::Callback {
 public:
-    MyCallback(const std::string& moduleName, Recorder* rec)
+    int module_change([[maybe_unused]] sysrepo::S_Session sess, [[maybe_unused]] const char* module_name, [[maybe_unused]] sr_notif_event_t event, void*) override
+    {
+        return SR_ERR_OK;
+    }
+
+private:
+};
+
+
+class RecorderCallback : public sysrepo::Callback {
+public:
+    RecorderCallback(const std::string& moduleName, Recorder* rec)
         : m_moduleName(moduleName)
         , m_recorder(rec)
     {
@@ -43,13 +53,24 @@ private:
 
 Recorder::~Recorder() = default;
 
+SysrepoSubscription::SysrepoSubscription()
+    : m_connection(new sysrepo::Connection("netconf-cli-test-subscription"))
+{
+    m_session = std::make_shared<sysrepo::Session>(m_connection);
+    m_subscription = std::make_shared<sysrepo::Subscribe>(m_session);
+    const char* modName = "example-schema";
+    m_callback = std::make_shared<DoNothingCallback>();
+
+    m_subscription->module_change_subscribe(modName, m_callback);
+}
+
 SysrepoSubscription::SysrepoSubscription(Recorder* rec)
     : m_connection(new sysrepo::Connection("netconf-cli-test-subscription"))
 {
     m_session = std::make_shared<sysrepo::Session>(m_connection);
     m_subscription = std::make_shared<sysrepo::Subscribe>(m_session);
     const char* modName = "example-schema";
-    m_callback = std::make_shared<MyCallback>(modName, rec);
+    m_callback = std::make_shared<RecorderCallback>(modName, rec);
 
     m_subscription->module_change_subscribe(modName, m_callback);
 }
