@@ -78,7 +78,7 @@ target_link_libraries(ast_values Boost::boost)
 add_library(utils STATIC
     src/utils.cpp
     )
-target_link_libraries(utils path Boost::boost)
+target_link_libraries(utils path ast_values Boost::boost)
 
 add_library(schemas STATIC
     src/static_schema.cpp
@@ -94,6 +94,11 @@ target_link_libraries(datastoreaccess PUBLIC Boost::boost)
 add_library(sysrepoaccess STATIC
     src/sysrepo_access.cpp
     )
+
+add_library(dataquery STATIC
+    src/data_query.cpp
+    )
+target_link_libraries(dataquery PRIVATE Boost::boost)
 
 target_link_libraries(sysrepoaccess datastoreaccess ast_values ${SYSREPO_LIBRARIES})
 link_directories(${SYSREPO_LIBRARY_DIRS})
@@ -112,7 +117,7 @@ add_library(yangschema STATIC
     src/yang_schema.cpp
     src/libyang_utils.cpp
     )
-target_link_libraries(yangschema schemas ${LIBYANG_LIBRARIES})
+target_link_libraries(yangschema schemas utils ${LIBYANG_LIBRARIES})
 # Ensure that this doesn't override Boost's -isystem -- see the log for details.
 target_include_directories(yangschema SYSTEM PRIVATE ${LIBYANG_INCLUDEDIR})
 link_directories(${LIBYANG_LIBRARY_DIRS})
@@ -281,7 +286,11 @@ if(BUILD_TESTING)
 
     setup_datastore_tests()
     datastore_test(datastore_access ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
-    set_tests_properties(kill_daemons PROPERTIES DEPENDS test_datastore_access_netconf_cleanup)
+    datastore_test(data_query ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
+    target_link_libraries(test_data_query_sysrepo dataquery)
+    target_link_libraries(test_data_query_netconf dataquery)
+    set_tests_properties(test_data_query_sysrepo_init PROPERTIES DEPENDS test_datastore_access_netconf_cleanup)
+    set_tests_properties(kill_daemons PROPERTIES DEPENDS test_data_query_netconf_cleanup)
 
 
 endif()
