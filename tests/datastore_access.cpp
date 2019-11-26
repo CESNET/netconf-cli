@@ -50,7 +50,7 @@ TEST_CASE("setting/getting values")
 {
     trompeloeil::sequence seq1;
     MockRecorder mock;
-    SysrepoSubscription subscription(&mock);
+    SysrepoSubscription subscription("example-schema", &mock);
 
 #ifdef sysrepo_BACKEND
     SysrepoAccess datastore("netconf-cli-test");

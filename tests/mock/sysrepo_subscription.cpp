@@ -45,13 +45,16 @@ private:
 
 Recorder::~Recorder() = default;
 
-SysrepoSubscription::SysrepoSubscription(Recorder* rec)
+SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder* rec)
     : m_connection(new sysrepo::Connection("netconf-cli-test-subscription"))
 {
     m_session = std::make_shared<sysrepo::Session>(m_connection);
     m_subscription = std::make_shared<sysrepo::Subscribe>(m_session);
-    const char* modName = "example-schema";
-    m_callback = std::make_shared<MyCallback>(modName, rec);
+    if (rec) {
+        m_callback = std::make_shared<MyCallback>(moduleName, rec);
+    } else {
+        m_callback = std::make_shared<sysrepo::Callback>();
+    }
 
-    m_subscription->module_change_subscribe(modName, m_callback);
+    m_subscription->module_change_subscribe(moduleName.c_str(), m_callback);
 }
