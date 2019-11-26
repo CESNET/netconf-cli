@@ -54,6 +54,15 @@ public:
     ~InvalidNodeException() override;
 };
 
+struct ListKeyInfo {
+    std::string m_path;
+    std::string m_leafName;
+    bool operator<(const ListKeyInfo& b) const
+    {
+        return this->m_path < b.m_path && this->m_leafName < b.m_leafName;
+    }
+};
+
 /*! \class Schema
  *     \brief A base schema class for schemas
  *         */
@@ -80,4 +89,5 @@ public:
     virtual const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const = 0;
     virtual std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const = 0;
+    virtual std::set<ListKeyInfo> listKeyInfo(const schemaPath_& path) const = 0;
 };
