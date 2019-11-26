@@ -6,7 +6,10 @@
  *
 */
 
+#include <libyang/Tree_Data.hpp>
+#include <libyang/Tree_Schema.hpp>
 #include <sysrepo-cpp/Session.hpp>
+#include "libyang_utils.hpp"
 #include "sysrepo_access.hpp"
 #include "utils.hpp"
 #include "yang_schema.hpp"
@@ -316,4 +319,55 @@ std::shared_ptr<Schema> SysrepoAccess::schema()
     }
 
     throw DatastoreException(res);
+}
+
+std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
+{
+    std::vector<ListInstance> res;
+    auto lists = getItems(path);
+
+    decltype(lists) instances;
+    auto wantedTree = *(m_schema->dataNodeFromPath(path)->find_path(path.c_str())->data().begin());
+    std::copy_if(lists.begin(), lists.end(), std::inserter(instances, instances.end()), [this, pathToCheck=wantedTree->schema()->path()](const auto& item) {
+        // This filters out non-instances.
+        if (item.second.type() != typeid(special_) || boost::get<special_>(item.second).m_value != SpecialValue::List) {
+            return false;
+        }
+
+        // Now, getItems is recursive: it gives everything including nested lists. So I try create a tree from the instance...
+        auto instanceTree = *(m_schema->dataNodeFromPath(item.first)->find_path(item.first.c_str())->data().begin());
+        // And then check if its schema path matches the list we actually want. This filters out lists which are not the ones I requested.
+        return instanceTree->schema()->path() == pathToCheck;
+    });
+
+    // If there are no instances, then just return
+    if (instances.empty()) {
+        return res;
+    }
+
+    // I need to find out which keys does the list have. To do that, I create a
+    // tree from the first instance. This is gives me some top level node,
+    // which will be our list in case out list is a top-level node. In case it
+    // isn't, we have call find_path on the top level node. After that, I just
+    // retrieve the keys.
+    auto topLevelTree = m_schema->dataNodeFromPath(instances.begin()->first);
+    auto list = *(topLevelTree->find_path(path.c_str())->data().begin());
+    auto keys = libyang::Schema_Node_List{list->schema()}.keys();
+
+    // Creating a full tree at the same time from the values sysrepo gives me
+    // would be a pain (and after sysrepo switches to libyang meaningless), so
+    // I just use this algorithm to create data nodes one by one and get the
+    // key values from them.
+    for (const auto& instance : instances) {
+        auto wantedList = *(m_schema->dataNodeFromPath(instance.first)->find_path(path.c_str())->data().begin());
+        ListInstance instanceRes;
+        for (const auto& key : keys) {
+            auto vec = wantedList->find_path(key->name())->data();
+            auto leaf = libyang::Data_Node_Leaf_List{*(vec.begin())};
+            instanceRes.emplace(key->name(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
+        }
+        res.push_back(instanceRes);
+    }
+
+    return res;
 }

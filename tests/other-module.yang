@@ -1,0 +1,7 @@
+module other-module {
+    prefix aha;
+    namespace "http://other.com";
+
+    container parking-lot;
+
+}
