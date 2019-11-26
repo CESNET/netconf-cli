@@ -78,7 +78,7 @@ target_link_libraries(ast_values Boost::boost)
 add_library(utils STATIC
     src/utils.cpp
     )
-target_link_libraries(utils path Boost::boost)
+target_link_libraries(utils path ast_values Boost::boost)
 
 add_library(schemas STATIC
     src/static_schema.cpp
@@ -88,6 +88,7 @@ target_link_libraries(schemas PUBLIC path Boost::boost)
 
 add_library(datastoreaccess STATIC
     src/datastore_access.cpp
+    src/data_query.cpp
     )
 target_link_libraries(datastoreaccess PUBLIC Boost::boost)
 
@@ -112,7 +113,7 @@ add_library(yangschema STATIC
     src/yang_schema.cpp
     src/libyang_utils.cpp
     )
-target_link_libraries(yangschema schemas ${LIBYANG_LIBRARIES})
+target_link_libraries(yangschema schemas utils ${LIBYANG_LIBRARIES})
 # Ensure that this doesn't override Boost's -isystem -- see the log for details.
 target_include_directories(yangschema SYSTEM PRIVATE ${LIBYANG_INCLUDEDIR})
 link_directories(${LIBYANG_LIBRARY_DIRS})
@@ -283,6 +284,7 @@ if(BUILD_TESTING)
 
     setup_datastore_tests()
     datastore_test(datastore_access example-schema)
+    datastore_test(data_query example-schema)
 endif()
 
 option(WITH_PYTHON_BINDINGS "Create and install Python3 bindings for accessing datastores" OFF)

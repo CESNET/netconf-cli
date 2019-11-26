@@ -399,7 +399,7 @@ std::shared_ptr<libyang::Data_Node> YangSchema::dataNodeFromPath(const std::stri
                                                 path.c_str(),
                                                 value ? value.value().c_str() : nullptr,
                                                 LYD_ANYDATA_CONSTSTRING,
-                                                0);
+                                                LYD_PATH_OPT_EDIT);
 }
 
 std::shared_ptr<libyang::Module> YangSchema::getYangModule(const std::string& name)

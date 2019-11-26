@@ -33,9 +33,19 @@ binary_::binary_(const std::string& value)
 {
 }
 
+bool module_::operator<(const module_& b) const
+{
+    return this->m_name < b.m_name;
+}
+
 bool identityRef_::operator==(const identityRef_& b) const
 {
     return this->m_prefix == b.m_prefix && this->m_value == b.m_value;
+}
+
+bool identityRef_::operator<(const identityRef_& b) const
+{
+    return std::tie(this->m_prefix, this->m_value) < std::tie(b.m_prefix, b.m_value);
 }
 
 bool binary_::operator==(const binary_& b) const
@@ -43,14 +53,29 @@ bool binary_::operator==(const binary_& b) const
     return this->m_value == b.m_value;
 }
 
+bool binary_::operator<(const binary_& b) const
+{
+    return this->m_value < b.m_value;
+}
+
 bool enum_::operator==(const enum_& b) const
 {
     return this->m_value == b.m_value;
 }
 
+bool enum_::operator<(const enum_& b) const
+{
+    return this->m_value < b.m_value;
+}
+
 bool special_::operator==(const special_& b) const
 {
     return this->m_value == b.m_value;
+}
+
+bool special_::operator<(const special_& b) const
+{
+    return this->m_value < b.m_value;
 }
 
 std::string specialValueToString(const special_& value)
