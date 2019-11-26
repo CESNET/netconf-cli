@@ -67,9 +67,12 @@ std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& pat
     auto config = m_session->getConfig(NC_DATASTORE_RUNNING, (path != "/") ? std::optional{path} : std::nullopt);
 
     if (config) {
-        for (auto it : config->tree_for()) {
-            fillMap(it->tree_dfs());
-        }
+        // libnetconf always returns libyang data trees, including all the mandatory nodes.
+        // For example, if getting a leaf which is a key of a list, the tree will include the list itself and also all of its other keys.
+        // This means I have to use find_path to filter out nodes I actually wanted.
+        // This also means I use `path` twice to filter the results, but that's how sysrepo does it:
+        // https://github.com/CESNET/Netopeer2/issues/500
+        fillMap(config->find_path(path.c_str())->data());
     }
     return res;
 }
