@@ -36,6 +36,8 @@ private:
 
 class Schema;
 
+using ListInstance = std::map<std::string, leaf_data_>;
+
 class DatastoreAccess {
 public:
     virtual ~DatastoreAccess() = 0;
@@ -50,4 +52,8 @@ public:
 
     virtual void commitChanges() = 0;
     virtual void discardChanges() = 0;
+
+private:
+    friend class DataQuery;
+    virtual std::vector<ListInstance> listInstances(const std::string& path) = 0;
 };
