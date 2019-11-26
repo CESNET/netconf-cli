@@ -78,7 +78,7 @@ target_link_libraries(ast_values Boost::boost)
 add_library(utils STATIC
     src/utils.cpp
     )
-target_link_libraries(utils path Boost::boost)
+target_link_libraries(utils path ast_values Boost::boost)
 
 add_library(schemas STATIC
     src/static_schema.cpp
@@ -88,6 +88,7 @@ target_link_libraries(schemas PUBLIC path Boost::boost)
 
 add_library(datastoreaccess STATIC
     src/datastore_access.cpp
+    src/data_query.cpp
     )
 target_link_libraries(datastoreaccess PUBLIC Boost::boost)
 
@@ -112,7 +113,7 @@ add_library(yangschema STATIC
     src/yang_schema.cpp
     src/libyang_utils.cpp
     )
-target_link_libraries(yangschema schemas ${LIBYANG_LIBRARIES})
+target_link_libraries(yangschema schemas utils ${LIBYANG_LIBRARIES})
 # Ensure that this doesn't override Boost's -isystem -- see the log for details.
 target_include_directories(yangschema SYSTEM PRIVATE ${LIBYANG_INCLUDEDIR})
 link_directories(${LIBYANG_LIBRARY_DIRS})
@@ -283,6 +284,8 @@ if(BUILD_TESTING)
 
     setup_datastore_tests()
     datastore_test(datastore_access ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
+    datastore_test(data_query ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
+    set_tests_properties(test_data_query_sysrepo_init PROPERTIES DEPENDS test_datastore_access_netconf_cleanup)
 endif()
 
 option(WITH_PYTHON_BINDINGS "Create and install Python3 bindings for accessing datastores" OFF)
@@ -296,7 +299,7 @@ if(WITH_PYTHON_BINDINGS)
         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/python_netconfaccess.py
             ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py @ONLY)
         add_test(NAME test_netconf_cli_py COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py)
-        set_tests_properties(test_netconf_cli_py PROPERTIES FIXTURES_REQUIRED netopeer_running RESOURCE_LOCK sysrepo DEPENDS test_datastore_access_netconf_cleanup)
+        set_tests_properties(test_netconf_cli_py PROPERTIES FIXTURES_REQUIRED netopeer_running RESOURCE_LOCK sysrepo DEPENDS test_data_query_netconf_cleanup)
         set_property(TEST kill_daemons APPEND PROPERTY DEPENDS test_netconf_cli_py)
 
         set(sanitizer_active OFF)
