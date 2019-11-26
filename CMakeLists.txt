@@ -264,6 +264,7 @@ if(BUILD_TESTING)
 
     setup_datastore_tests()
     datastore_test(setting_values ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
+    datastore_test(data_query ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
     set_tests_properties(kill_daemons PROPERTIES DEPENDS test_setting_values_netconf_cleanup)
 
 
