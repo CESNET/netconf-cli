@@ -137,7 +137,7 @@ struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
         std::ostringstream res;
         res << node.m_name + "[";
         std::transform(node.m_keys.begin(), node.m_keys.end(),
-                std::experimental::make_ostream_joiner(res, ' '),
+                std::experimental::make_ostream_joiner(res, "]["),
                 [] (const auto& it) { return it.first + "=" + escapeListKeyString(it.second); });
         res << "]";
         return res.str();
@@ -161,6 +161,9 @@ std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node)
 std::string pathToDataString(const dataPath_& path)
 {
     std::string res;
+    if (path.m_scope == Scope::Absolute) {
+        res = "/";
+    }
     for (const auto it : path.m_nodes)
         if (it.m_prefix)
             res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToDataStringVisitor(), it.m_suffix));
