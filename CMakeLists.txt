@@ -261,6 +261,7 @@ if(BUILD_TESTING)
     cli_test(enum_completion)
     cli_test(list_manipulation)
     cli_test(parser_methods)
+    cli_test(path_utils)
 
     setup_datastore_tests()
     datastore_test(setting_values ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
