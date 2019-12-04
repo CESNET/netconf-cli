@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dce00cea_3b98f127",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-04T14:27:15Z",
+      "side": 1,
+      "message": "I don\u0027t think this one needs to be ignored. In my testing, it\u0027s always the actual data request that fails; I have not seen a failure for a schema request. Have you?",
+      "revId": "b158b004bc4ce6da1c260e837807e6592035ebfe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96544a91_a1180463",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-04T14:27:15Z",
+      "side": 1,
+      "message": "please make the exception more specific, i.e., only react to ACL/permissions/NACM issues",
+      "revId": "b158b004bc4ce6da1c260e837807e6592035ebfe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "263f7d7e_16e26fa8",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-04T14:27:15Z",
+      "side": 1,
+      "message": "I think that a correct approach is printing out an error message and continuing. The error message should clearly say what\u0027s going on (I hope the sysrepo exception contains some useful error string).",
+      "revId": "b158b004bc4ce6da1c260e837807e6592035ebfe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
