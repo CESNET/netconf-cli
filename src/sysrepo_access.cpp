@@ -89,7 +89,10 @@ SysrepoAccess::SysrepoAccess(const std::string& appname)
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
-    m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule) {
+
+    // If fetching a submodule, sysrepo::Session::get_schema will determine the revision from the main module.
+    // That's why submoduleRevision is ignored.
+    m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule, [[maybe_unused]] const char* submoduleRevision) {
         return fetchSchema(moduleName, revision, submodule);
     });
 
@@ -199,7 +202,7 @@ std::string SysrepoAccess::fetchSchema(const char* module, const char* revision,
 {
     std::string schema;
     try {
-        schema = m_session->get_schema(module, revision, submodule, SR_SCHEMA_YANG); // FIXME: maybe we should use get_submodule_schema for submodules?
+        schema = m_session->get_schema(module, revision, submodule, SR_SCHEMA_YANG);
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }

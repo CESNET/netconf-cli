@@ -45,7 +45,7 @@ public:
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const override;
     std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const override;
 
-    void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*)>& clb);
+    void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb);
 
     /** @short Loads a module called moduleName. */
     void loadModule(const std::string& moduleName);

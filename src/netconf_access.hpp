@@ -44,7 +44,10 @@ public:
     std::shared_ptr<Schema> schema() override;
 
 private:
-    std::string fetchSchema(const std::string_view module, const std::optional<std::string_view> revision, const std::optional<std::string_view>);
+    std::string fetchSchema(const std::string_view module, const
+            std::optional<std::string_view> revision, const
+            std::optional<std::string_view> submodule, const
+            std::optional<std::string_view> submoduleRevision);
     std::vector<std::string> listImplementedSchemas();
     void datastoreInit();
     void doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode);

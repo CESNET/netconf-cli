@@ -278,7 +278,7 @@ TEST_CASE("yangschema")
 {
     using namespace std::string_view_literals;
     YangSchema ys;
-    ys.registerModuleCallback([]([[maybe_unused]] auto modName, auto, auto) {
+    ys.registerModuleCallback([]([[maybe_unused]] auto modName, auto, auto, auto) {
         assert("example-schema"sv == modName);
         return example_schema;
     });

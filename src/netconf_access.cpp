@@ -76,10 +76,11 @@ std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& pat
 
 void NetconfAccess::datastoreInit()
 {
-    m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule) {
+    m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule, const char* submoduleRevision) {
         return fetchSchema(moduleName,
                            revision ? std::optional{revision} : std::nullopt,
-                           submodule ? std::optional{submodule} : std::nullopt);
+                           submodule ? std::optional{submodule} : std::nullopt,
+                           submoduleRevision ? std::optional{submoduleRevision} : std::nullopt);
     });
 
     for (const auto& it : listImplementedSchemas()) {
@@ -149,8 +150,14 @@ void NetconfAccess::discardChanges()
     m_session->discard();
 }
 
-std::string NetconfAccess::fetchSchema(const std::string_view module, const std::optional<std::string_view> revision, const std::optional<std::string_view>)
+std::string NetconfAccess::fetchSchema(const std::string_view module, const
+        std::optional<std::string_view> revision, const
+        std::optional<std::string_view> submodule, const
+        std::optional<std::string_view> submoduleRevision)
 {
+    if (submodule) {
+        return m_session->getSchema(*submodule, submoduleRevision);
+    }
     return m_session->getSchema(module, revision);
 }
 
