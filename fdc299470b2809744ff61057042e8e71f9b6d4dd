@@ -52,6 +52,24 @@
       "revId": "fdc299470b2809744ff61057042e8e71f9b6d4dd",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5c65cc8_fcd8c4f3",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-04T13:01:55Z",
+      "side": 1,
+      "message": "I think it\u0027s due time to ask upstream, you\u0027ve already done more than your homework here, IMHO.",
+      "parentUuid": "0a4f1c3b_c40e23c4",
+      "revId": "fdc299470b2809744ff61057042e8e71f9b6d4dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
