@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "337e4813_73d78679",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-04T12:19:34Z",
+      "side": 1,
+      "message": "And is that a correct thing to do? What is the difference between sr_get_submodule_schema and sr_get_schema?",
+      "revId": "fdc299470b2809744ff61057042e8e71f9b6d4dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
