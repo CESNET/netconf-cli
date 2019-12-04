@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "52c7d482_4a09bdd5",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-04T15:06:11Z",
+      "side": 1,
+      "message": "If I set permissions of a schema to 000, the application crashes. An example is in Taiga.",
+      "parentUuid": "dce00cea_3b98f127",
+      "revId": "b158b004bc4ce6da1c260e837807e6592035ebfe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "96544a91_a1180463",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "b86a390e_0a0ee6ac",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-04T15:06:11Z",
+      "side": 1,
+      "message": "I could parse ex.what() for \"Operation not authorized\" for permission issues",
+      "parentUuid": "96544a91_a1180463",
+      "revId": "b158b004bc4ce6da1c260e837807e6592035ebfe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "263f7d7e_16e26fa8",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 3
@@ -47,6 +83,24 @@
       "writtenOn": "2019-12-04T14:27:15Z",
       "side": 1,
       "message": "I think that a correct approach is printing out an error message and continuing. The error message should clearly say what\u0027s going on (I hope the sysrepo exception contains some useful error string).",
+      "revId": "b158b004bc4ce6da1c260e837807e6592035ebfe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21ba5e9e_a06c4540",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-04T15:06:11Z",
+      "side": 1,
+      "message": "sysrepo exception contains the string \"Operation not authorized\". in this scope I do have some additional info that I could pass to reportErrors();",
+      "parentUuid": "263f7d7e_16e26fa8",
       "revId": "b158b004bc4ce6da1c260e837807e6592035ebfe",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
