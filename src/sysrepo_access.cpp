@@ -90,7 +90,11 @@ SysrepoAccess::SysrepoAccess(const std::string& appname)
         reportErrors();
     }
     m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule) {
-        return fetchSchema(moduleName, revision, submodule);
+        try {
+            return fetchSchema(moduleName, revision, submodule);
+        } catch (DatastoreException& ex) {
+            return std::string{""};
+        }
     });
 
     for (const auto& it : listSchemas()) {
