@@ -89,7 +89,8 @@ SysrepoAccess::SysrepoAccess(const std::string& appname)
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
-    m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule) {
+    // sysrepo doesn't need the submoduleRevision argument, because I use get_schema and not get_submodule_schema, so it will get the revision from main schema
+    m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule, [[maybe_unused]] const char* submoduleRevision) {
         return fetchSchema(moduleName, revision, submodule);
     });
 

@@ -377,11 +377,11 @@ void YangSchema::enableFeature(const std::string& moduleName, const std::string&
     m_context->get_module(moduleName.c_str())->feature_enable(featureName.c_str());
 }
 
-void YangSchema::registerModuleCallback(const std::function<std::string(const char*, const char*, const char*)>& clb)
+void YangSchema::registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb)
 {
     auto lambda = [clb](const char* mod_name, const char* mod_revision, const char* submod_name, const char* submod_revision) {
         (void)submod_revision;
-        auto moduleSource = clb(mod_name, mod_revision, submod_name);
+        auto moduleSource = clb(mod_name, mod_revision, submod_name, submod_revision);
         if (moduleSource.empty()) {
             return libyang::Context::mod_missing_cb_return{LYS_IN_YANG, nullptr};
         }
