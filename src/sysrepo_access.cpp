@@ -90,7 +90,11 @@ SysrepoAccess::SysrepoAccess(const std::string& appname)
         reportErrors();
     }
     m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule) {
-        return fetchSchema(moduleName, revision, submodule);
+        try {
+            return fetchSchema(moduleName, revision, submodule);
+        } catch (DatastoreException& ex) {
+            return std::string{""};
+        }
     });
 
     for (const auto& it : listSchemas()) {
@@ -106,6 +110,7 @@ SysrepoAccess::SysrepoAccess(const std::string& appname)
 std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& path)
 {
     using namespace std::string_literals;
+    using namespace std::string_view_literals;
     std::map<std::string, leaf_data_> res;
 
     auto fillMap = [&res](auto items) {
@@ -116,18 +121,24 @@ std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& pat
         }
     };
 
-    try {
-        if (path == "/") {
-            // Sysrepo doesn't have a root node ("/"), so we take all top-level nodes from all schemas
-            auto schemas = m_session->list_schemas();
-            for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
+    if (path == "/") {
+        // Sysrepo doesn't have a root node ("/"), so we take all top-level nodes from all schemas
+        auto schemas = m_session->list_schemas();
+        for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
+            try {
                 fillMap(m_session->get_items(("/"s + schemas->schema(i)->module_name() + ":*//.").c_str()));
+            } catch (sysrepo::sysrepo_exception& ex) {
+                if (ex.what() != "Operation not authorized"sv) {
+                    reportErrors();
+                }
             }
-        } else {
-            fillMap(m_session->get_items((path + "//.").c_str()));
         }
-    } catch (sysrepo::sysrepo_exception& ex) {
-        reportErrors();
+    } else {
+        try {
+            fillMap(m_session->get_items((path + "//.").c_str()));
+        } catch (sysrepo::sysrepo_exception& ex) {
+            reportErrors();
+        }
     }
     return res;
 }
