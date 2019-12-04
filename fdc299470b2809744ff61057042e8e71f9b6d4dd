@@ -16,6 +16,24 @@
       "revId": "fdc299470b2809744ff61057042e8e71f9b6d4dd",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79fe144e_4fe8ce3d",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-04T12:46:14Z",
+      "side": 1,
+      "message": "The difference is that sr_get_submodule_schema can either fetch the latest revision of a submodule or fetch a specific revision of it (supplied by an argument). sr_get_schema can also fetch submodules if I specify the submodule_name argument and in that case, it will give me the revision that\u0027s written in the parent module (I\u0027m not 100% sure about this). So, sr_get_schema can only fetch submodules in the context of a parent module. sr_get_submodule_schema can be used to fetch arbitrary revision of any submodule.\n\nI could probably use sr_get_submodule_schema, but since I always fetch submodules in the context of a module, I would say that using sr_get_schema is appropriate here.",
+      "parentUuid": "337e4813_73d78679",
+      "revId": "fdc299470b2809744ff61057042e8e71f9b6d4dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
