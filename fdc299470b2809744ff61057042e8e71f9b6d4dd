@@ -34,6 +34,24 @@
       "revId": "fdc299470b2809744ff61057042e8e71f9b6d4dd",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a4f1c3b_c40e23c4",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-04T12:55:02Z",
+      "side": 1,
+      "message": "I\u0027ve been looking through the code, and it seems that sysrepo eventually calls ly_ctx_get_submodule which can also takes submodule_revision as an argument:\n[in]\tsub_revision\tOptional revision date of submodule. If NULL, the newest revision of submodule is returned.\n\nIf this function is really called with the sub_revision I pass to it (that\u0027s always nullptr right now), that would mean sr_get_schema fetches the latest revision of the submodule and NOT the revision that\u0027s included in the main module. So, two options: just use sr_get_submodule_schema when fetching a submodule (that would also mean implementing it in the C++ bindings, because it doesn\u0027t exist there AFAIK), or, ask on Github, what I should use and if how exactly does sr_get_schema behave when used with submodule_name argument.",
+      "parentUuid": "79fe144e_4fe8ce3d",
+      "revId": "fdc299470b2809744ff61057042e8e71f9b6d4dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
