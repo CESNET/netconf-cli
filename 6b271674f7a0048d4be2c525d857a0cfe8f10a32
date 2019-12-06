@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "35116353_7f88c7c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T15:43:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e89e5f44_d2d15429",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f7191a47_e4d64f78",
         "filename": "CMakeLists.txt",
         "patchSetId": 11
@@ -107,6 +125,30 @@
       "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07f73040_7844a50a",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T15:43:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57519ab9_752e13ab",
+      "range": {
+        "startLine": 71,
+        "startChar": 60,
+        "endLine": 71,
+        "endChar": 66
+      },
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -201,6 +243,30 @@
     },
     {
       "key": {
+        "uuid": "d5385ecb_2666baaa",
+        "filename": "tests/data_query.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T15:43:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "488dd7a4_782cb95f",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 52
+      },
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "68d3c501_df1256f0",
         "filename": "tests/mock/sysrepo_subscription.cpp",
         "patchSetId": 11
@@ -224,6 +290,30 @@
     },
     {
       "key": {
+        "uuid": "76e38d00_8fdcbd45",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T15:43:21Z",
+      "side": 1,
+      "message": "You\u0027re right, I didn\u0027t realize the base class does this. Changed.",
+      "parentUuid": "68d3c501_df1256f0",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 2
+      },
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "822841ad_038bc6ac",
         "filename": "tests/mock/sysrepo_subscription.cpp",
         "patchSetId": 11
@@ -235,6 +325,30 @@
       "writtenOn": "2019-12-06T15:06:21Z",
       "side": 1,
       "message": "So the point here is that there are scenarios where you do not care about what you\u0027re actually storing to sysrepo, and you\u0027re only interested in obtaining the data from there (and you also do not care about the communication, just about the result). OK.\n\nNot sure which one is more elegant, but what about doing it like this, without an extra constructor?\n\n  if (rec) {\n      m_callback \u003d std::make_shared\u003cRecorderCallback\u003e(rec);\n  } else {\n      m_callback \u003d std::make_shared\u003csysrepo::Callback\u003e();\n  }\n  m_subscription-\u003emodule_change_subscribe(modName, m_callback);\n\nFeel free to disagree and explain why this one is better.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 65
+      },
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62101234_301cb78b",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T15:43:21Z",
+      "side": 1,
+      "message": "The point is that when testing DataQuery, I don\u0027t need to test DatastoreAccess again, but I still need to create an instance of it and also an instance of SysrepoSubscription (so I can add some data for DataQuery to fetch).\n\nI don\u0027t like the idea of passing nullptr to the constructor, it makes much more sense to me to pass nothing. The logic behind the argument is: \"You want to use the recorder in the Callback function? Pass me a pointer to a Recorder. You don\u0027t want to use Recorder? Well, don\u0027t pass anything\". This could also be done be specifying a default value for the constructor, which would still allow passing nullptr, but it would also allow passing nothing. I just really don\u0027t like passing random nullptrs.\nI could also refactor the inside of the constructors to a private function (so that there\u0027s less duplicate code).",
+      "parentUuid": "822841ad_038bc6ac",
       "range": {
         "startLine": 73,
         "startChar": 0,
