@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "b2966dc1_21a7eadb",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T15:57:06Z",
+      "side": 1,
+      "message": "Seems like a remainder from previous development.",
+      "parentUuid": "f7191a47_e4d64f78",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "41f88d36_68d95fbc",
         "filename": "CMakeLists.txt",
         "patchSetId": 11
@@ -65,6 +83,24 @@
       "writtenOn": "2019-12-06T15:06:21Z",
       "side": 1,
       "message": "I do not really like this manual ordering (what\u0027s gonna happen when we\u0027re running just a subset of these tests via -R, for example?), but given that the old code was already done like that, OKish.\n\nI\u0027 have some WIP work (a few months old...) which converts this to a RESOURCE_LOCK, so just FYI.",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a56fca61_93f20d13",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T15:57:06Z",
+      "side": 1,
+      "message": "-R works for me. I know my solution is not exactly the best, but it\u0027s better than before (the Improve ctest logic improved it a lot).",
+      "parentUuid": "41f88d36_68d95fbc",
       "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
@@ -203,6 +239,24 @@
     },
     {
       "key": {
+        "uuid": "c8623746_dc377495",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T15:57:06Z",
+      "side": 1,
+      "message": "When testing with StaticSchema, I never care about data - and this method really only exists because of list keys completion. I guess I could implement it anyway (even though it\u0027s output is never used).",
+      "parentUuid": "9e6fed3a_307c5018",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a5a20bbb_6720e389",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 11
@@ -217,6 +271,24 @@
       "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "271f4eac_448bbde0",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T15:57:06Z",
+      "side": 1,
+      "message": "I forgot to remove this.",
+      "parentUuid": "a5a20bbb_6720e389",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
