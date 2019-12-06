@@ -195,6 +195,24 @@
     },
     {
       "key": {
+        "uuid": "02391632_3552db42",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T17:27:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3aa46b24_03ac33ab",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "57519ab9_752e13ab",
         "filename": "src/netconf_access.cpp",
         "patchSetId": 11
