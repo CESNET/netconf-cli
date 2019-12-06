@@ -259,6 +259,24 @@
     },
     {
       "key": {
+        "uuid": "ce525fdc_8032e1c5",
+        "filename": "src/schema.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T17:25:58Z",
+      "side": 1,
+      "message": "I realized I don\u0027t need this. The newest patch doesn\u0027t have this.",
+      "parentUuid": "fc12c5f1_a9214534",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "29dcee61_baadec68",
         "filename": "src/schema.hpp",
         "patchSetId": 11
@@ -273,6 +291,24 @@
       "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8dadda36_06a0ed97",
+        "filename": "src/schema.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T17:25:58Z",
+      "side": 1,
+      "message": "I realized I don\u0027t need this. The newest patch doesn\u0027t have this.",
+      "parentUuid": "29dcee61_baadec68",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
