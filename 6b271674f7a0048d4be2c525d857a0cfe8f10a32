@@ -347,6 +347,24 @@
     },
     {
       "key": {
+        "uuid": "c800d874_23701cdc",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T17:27:00Z",
+      "side": 1,
+      "message": "I realized I don\u0027t need this. The newest patch doesn\u0027t have this.",
+      "parentUuid": "c8623746_dc377495",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a5a20bbb_6720e389",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 11
