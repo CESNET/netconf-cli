@@ -124,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "467220ab_0fe4333d",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T16:07:04Z",
+      "side": 1,
+      "message": "This type of pair is also elsewhere in the program (the same using is also defined ast_path.hpp, but I didn\u0027t want to include the whole header). I could change this to a struct and ideally also change the other std::pair (the one in ast_path.hpp). This would be a bigger change, I would put that in other another commit (preferably before this one).",
+      "parentUuid": "5567809b_34a36ffb",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "406f9583_609aaf4b",
         "filename": "src/data_query.hpp",
         "patchSetId": 11
@@ -135,6 +153,24 @@
       "writtenOn": "2019-12-06T15:06:21Z",
       "side": 1,
       "message": "So this one operates on a schmea path, which means that the path does not specify any list keys. I think it would be nice to add a comment (with an example, perhaps?) specifying that the result is gonna be a container of all possible key-value combinations among all list entries.",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3aa46b24_03ac33ab",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T16:07:04Z",
+      "side": 1,
+      "message": "This was a mistake - this method should take a data path. I forgot that data paths can also end with a list_ (and not only listElement_). That\u0027s why I used schemaPath_, but it doesn\u0027t make sense. I\u0027m going to change it.",
+      "parentUuid": "406f9583_609aaf4b",
       "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
