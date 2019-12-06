@@ -70,6 +70,24 @@
       "revId": "fdc299470b2809744ff61057042e8e71f9b6d4dd",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7021af1d_f38cb3b6",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T13:16:48Z",
+      "side": 1,
+      "message": "https://github.com/sysrepo/sysrepo/issues/1695\n\nOkay, sr_get_schema really does give the correct revision specified in the main module. I could still use sr_get_submodule_schema if I REALLY don\u0027t want to believe sysrepo will give me the correct revision, but, since I get the main schema from there anyway, I don\u0027t think there really is a reason. It might make the code clearer though. Clarity is very important when dealing with foreign libraries.",
+      "parentUuid": "f5c65cc8_fcd8c4f3",
+      "revId": "fdc299470b2809744ff61057042e8e71f9b6d4dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
