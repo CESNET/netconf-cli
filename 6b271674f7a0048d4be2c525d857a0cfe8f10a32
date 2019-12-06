@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "a7e84b7b_b13d09d0",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-06T16:08:32Z",
+      "side": 1,
+      "message": "Apparently not, CI refuses to build data_query.cpp without this",
+      "parentUuid": "b2966dc1_21a7eadb",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "41f88d36_68d95fbc",
         "filename": "CMakeLists.txt",
         "patchSetId": 11
