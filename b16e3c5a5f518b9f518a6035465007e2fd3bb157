@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "79bc394f_81dcf049",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-09T08:50:32Z",
+      "side": 1,
+      "message": "What about other YANG types such as binary or enum? (And test coverage, please.)",
+      "revId": "b16e3c5a5f518b9f518a6035465007e2fd3bb157",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6aeb11b_f540b842",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-09T08:50:32Z",
+      "side": 1,
+      "message": "From this snippet, I do not understand how the class is going to be used. I have not written the code, so I do not know, but I can imagine a few very different scenarios:\n\n- perhaps it dumps me all possible key/value pairs for the latest list in the path,\n- hmm, but it\u0027s a set, that\u0027s weird, why is not indexed by the key name, i.e. a map\u003cstring, set\u003cstring\u003e\u003e?\n- does it really work on just the last list, then? What about a /foo:foo[k1\u003d5]/bar[k2\u003d6]?\n- I see it takes a data path, not a schema path now. How does it handle \"partial indexing\", i.e. scenarios where paths specify just a subset of all keys for a given list?\n\nSo, this needs more:\n\n- docs,\n- test coverage",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 2
+      },
+      "revId": "b16e3c5a5f518b9f518a6035465007e2fd3bb157",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

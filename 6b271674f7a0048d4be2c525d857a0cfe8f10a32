@@ -90,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "f05ac3be_d4f4069c",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-09T08:50:32Z",
+      "side": 1,
+      "message": "/home/ci/src/cesnet-gerrit-public/CzechLight/netconf-cli/src/ast_values.hpp:10:10: fatal error: boost/optional.hpp: No such file or directory\n  #include \u003cboost/optional.hpp\u003e\n           ^~~~~~~~~~~~~~~~~~~~\n\n...so this means that boost is used from the included header. A proper fix is to find the CMake target which \"knows\" about this header and add an appropriate INTERFACE or PUBLIC dependency on Boost. If that is not possible for some reason (perhaps CMake doesn\u0027t detect headers that easily?), then that would mean that the dependency is needed, but it should not be a PUBLIC one.",
+      "parentUuid": "a7e84b7b_b13d09d0",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "41f88d36_68d95fbc",
         "filename": "CMakeLists.txt",
         "patchSetId": 11
@@ -154,6 +172,24 @@
       "side": 1,
       "message": "This type of pair is also elsewhere in the program (the same using is also defined ast_path.hpp, but I didn\u0027t want to include the whole header). I could change this to a struct and ideally also change the other std::pair (the one in ast_path.hpp). This would be a bigger change, I would put that in other another commit (preferably before this one).",
       "parentUuid": "5567809b_34a36ffb",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60e9161c_5182f756",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-09T08:50:32Z",
+      "side": 1,
+      "message": "I think that the preference for a struct over a random pair is a sound one, so please go ahead.",
+      "parentUuid": "467220ab_0fe4333d",
       "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
