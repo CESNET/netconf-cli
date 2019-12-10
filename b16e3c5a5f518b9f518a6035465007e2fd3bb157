@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2c724889_b392f3eb",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-10T15:36:53Z",
+      "side": 1,
+      "message": "This is just a helper function, it\u0027s not exposed in any header, but I added more `listKeys` tests which test this function.",
+      "parentUuid": "79bc394f_81dcf049",
+      "revId": "b16e3c5a5f518b9f518a6035465007e2fd3bb157",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b6aeb11b_f540b842",
         "filename": "src/data_query.hpp",
         "patchSetId": 17
