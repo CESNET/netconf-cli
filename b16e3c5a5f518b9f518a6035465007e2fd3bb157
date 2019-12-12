@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "3d060b1a_8372739e",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-12T11:55:32Z",
+      "side": 1,
+      "message": "What I\u0027m saying is that this code puts strings into \u0027quotes\u0027 for list keys if the key YANG data type is a string.\n\nMy question is, what happens if the YANG data type of the key is:\n\n- enum,\n- identityref,\n- binary,\n- anything else?\n\nPerhaps it\u0027s somehow OK, it\u0027s just that I cannot find the answer to this in the RFCs (and I don\u0027t remember reading about that one in sysrepo/libyang docs, either). Just convince me that you\u0027ve thought about the answer, preferably via a test :).",
+      "parentUuid": "2c724889_b392f3eb",
+      "revId": "b16e3c5a5f518b9f518a6035465007e2fd3bb157",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b6aeb11b_f540b842",
         "filename": "src/data_query.hpp",
         "patchSetId": 17
