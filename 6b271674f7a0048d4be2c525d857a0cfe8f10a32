@@ -126,6 +126,24 @@
     },
     {
       "key": {
+        "uuid": "a2639cf5_cb7fa9fb",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-12T11:48:09Z",
+      "side": 1,
+      "message": "Is this still unsolved with that change that adds extra static libs?",
+      "parentUuid": "f9f4f60f_471f8bea",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "41f88d36_68d95fbc",
         "filename": "CMakeLists.txt",
         "patchSetId": 11
@@ -625,6 +643,30 @@
       "side": 1,
       "message": "Now that I think of it, you could always pass a nullptr to the constructor right...\n\nThis almost makes me want to change everything to references. I don\u0027t like using pointers and especially nullptrs, when references are enough (this class doesn\u0027t even use shared pointers, so I definitely could use references).",
       "parentUuid": "62101234_301cb78b",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 65
+      },
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3fd53656_d24f5104",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-12T11:48:09Z",
+      "side": 1,
+      "message": "Please at least make the common body of code shared. I don\u0027t mind much about references vs. smart pointers vs. naked pointers in this context. If you have plenty of time, you can also investigate https://github.com/Microsoft/GSL , but please let\u0027s focus on merging this feature first before performing (much) refactoring.",
+      "parentUuid": "74b9927a_be37bec1",
       "range": {
         "startLine": 73,
         "startChar": 0,

@@ -81,6 +81,30 @@
       "revId": "b16e3c5a5f518b9f518a6035465007e2fd3bb157",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a2b51b0f_72f4f974",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-12T11:48:09Z",
+      "side": 1,
+      "message": "\u003e Yes, it does only work on the last list. Why would you think it works for something else?\n\nBecause of that return type which was used by a previous version of this patch.",
+      "parentUuid": "02a23fb7_1186bfab",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 2
+      },
+      "revId": "b16e3c5a5f518b9f518a6035465007e2fd3bb157",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
