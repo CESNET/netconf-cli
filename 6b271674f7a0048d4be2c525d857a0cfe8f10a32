@@ -144,6 +144,24 @@
     },
     {
       "key": {
+        "uuid": "44ae54b6_e65c5eff",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-13T12:20:23Z",
+      "side": 1,
+      "message": "It\u0027s not, because data_query.hpp also includes boost :\u003c",
+      "parentUuid": "a2639cf5_cb7fa9fb",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "41f88d36_68d95fbc",
         "filename": "CMakeLists.txt",
         "patchSetId": 11
