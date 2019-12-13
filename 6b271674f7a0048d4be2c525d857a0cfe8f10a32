@@ -694,6 +694,30 @@
       "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dc05259_d4836861",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-13T12:41:47Z",
+      "side": 1,
+      "message": "I used the version with default value. I would have to refactor to references to get rid of nullptr (but I don\u0027t want to do that right now)",
+      "parentUuid": "3fd53656_d24f5104",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 65
+      },
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
