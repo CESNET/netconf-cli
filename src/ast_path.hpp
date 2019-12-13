@@ -112,6 +112,7 @@ std::string pathToDataString(const dataPath_& path);
 std::string pathToSchemaString(const schemaPath_& path);
 schemaNode_ dataNodeToSchemaNode(const dataNode_& node);
 schemaPath_ dataPathToSchemaPath(const dataPath_& path);
+std::string escapeListKeyString(const std::string& what);
 
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
