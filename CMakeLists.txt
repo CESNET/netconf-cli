@@ -64,6 +64,16 @@ pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=0.12.47)
 # we don't need filename tracking, and we prefer to use header-only Boost
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
 
+add_library(path STATIC
+    src/ast_path.cpp
+    )
+target_link_libraries(path Boost::boost)
+
+add_library(utils STATIC
+    src/utils.cpp
+    )
+target_link_libraries(utils path Boost::boost)
+
 add_library(schemas STATIC
     src/static_schema.cpp
     src/schema.cpp
@@ -103,13 +113,11 @@ link_directories(${LIBYANG_LIBRARY_DIRS})
 add_library(parser STATIC
     src/parser.cpp
     src/ast_commands.cpp
-    src/ast_path.cpp
-    src/utils.cpp
     src/parser_context.cpp
     src/interpreter.cpp
     src/ast_handlers.cpp
     )
-target_link_libraries(parser schemas)
+target_link_libraries(parser schemas utils)
 
 
 add_library(sysreposubscription STATIC
@@ -262,6 +270,7 @@ if(BUILD_TESTING)
     cli_test(list_manipulation)
     cli_test(parser_methods)
     cli_test(path_utils)
+    target_link_libraries(test_path_utils path)
 
     setup_datastore_tests()
     datastore_test(setting_values ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
