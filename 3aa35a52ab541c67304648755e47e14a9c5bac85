@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e7462599_19746eb0",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 19
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-13T11:55:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1062947a_3cb7315d",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 46
+      },
+      "revId": "3aa35a52ab541c67304648755e47e14a9c5bac85",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ec48906a_5059e642",
         "filename": "src/ast_path.hpp",
         "patchSetId": 19
