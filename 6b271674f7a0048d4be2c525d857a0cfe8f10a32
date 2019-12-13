@@ -162,6 +162,24 @@
     },
     {
       "key": {
+        "uuid": "f256cc85_4dac0c4f",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-13T20:13:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44ae54b6_e65c5eff",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "41f88d36_68d95fbc",
         "filename": "CMakeLists.txt",
         "patchSetId": 11
@@ -265,6 +283,24 @@
       "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5f5a521_a0c98bf7",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-13T20:13:25Z",
+      "side": 1,
+      "message": "this one is gone, so let\u0027s mark this as closed",
+      "parentUuid": "6691506a_10ac0ab7",
+      "revId": "6b271674f7a0048d4be2c525d857a0cfe8f10a32",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
