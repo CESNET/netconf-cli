@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "a3585a36_1d82c486",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-19T15:33:50Z",
+      "side": 1,
+      "message": "I looked at other types and it seemes everything will need quotes except number types. We talked about this a while ago: when typing values for keys, only number values don\u0027t need quotes. This really makes me want to just get rid of this difference and make quotes mandatory even for numbers. This behavior comes from the way the values are parsed: they are parsed as quoted strings OR as unquoted strings consisting of only digits (so, a number).\n\nSo, the if statement really should look like this: \"if (value.type() !\u003d typeid(uint8_t) \u0026\u0026 value.type() !\u003d typeid(uint16_t) \u0026\u0026 \u003call the other integer types here\u003e)\"",
+      "parentUuid": "9c920c21_537c1fe4",
+      "revId": "b16e3c5a5f518b9f518a6035465007e2fd3bb157",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b6aeb11b_f540b842",
         "filename": "src/data_query.hpp",
         "patchSetId": 17
