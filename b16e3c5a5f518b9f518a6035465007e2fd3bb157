@@ -91,6 +91,24 @@
     },
     {
       "key": {
+        "uuid": "8f59b792_44294313",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-19T23:41:00Z",
+      "side": 1,
+      "message": "\u003e This really makes me want to just get rid of this difference and make quotes mandatory even for numbers. \n\nWhat does the definition say -- do they allow foo\u003d5 syntax, or do they insist on foo\u003d\u00275\u0027?\n\n\u003e So, the if statement really should look like this: \"if (value.type() !\u003d typeid(uint8_t) \u0026\u0026 value.type() !\u003d typeid(uint16_t) \u0026\u0026 \u003call the other integer types here\u003e)\"\n\nIf the standard allows unquoted numbers, please make it happen.",
+      "parentUuid": "a3585a36_1d82c486",
+      "revId": "b16e3c5a5f518b9f518a6035465007e2fd3bb157",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b6aeb11b_f540b842",
         "filename": "src/data_query.hpp",
         "patchSetId": 17
