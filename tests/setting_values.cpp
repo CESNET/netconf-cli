@@ -213,5 +213,17 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:*") == expected);
     }
 
+    SECTION("getItems returns correct datatypes")
+    {
+        {
+            REQUIRE_CALL(mock, write("/example-schema:leafEnum", "", "lol"));
+            datastore.setLeaf("/example-schema:leafEnum", enum_{"lol"});
+            datastore.commitChanges();
+        }
+        std::map<std::string, leaf_data_> expected{{"/example-schema:leafEnum", enum_{"lol"}}};
+
+        REQUIRE(datastore.getItems("/example-schema:leafEnum") == expected);
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
