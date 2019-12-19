@@ -16,6 +16,24 @@
       "revId": "7edb537a3686c5632719d215a70294ed52e7777f",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79b9608c_92ab2582",
+        "filename": "src/ast_values.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2019-12-19T16:02:28Z",
+      "side": 1,
+      "message": "I had to move these definitions because of linking issues. Before, they were in ast_commands.cpp, which doesn\u0027t make much sense.",
+      "parentUuid": "6375b328_b3395e3f",
+      "revId": "7edb537a3686c5632719d215a70294ed52e7777f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
