@@ -34,6 +34,24 @@
       "revId": "7edb537a3686c5632719d215a70294ed52e7777f",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8b8236b_25fe8e19",
+        "filename": "src/ast_values.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2019-12-19T23:33:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79b9608c_92ab2582",
+      "revId": "7edb537a3686c5632719d215a70294ed52e7777f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
