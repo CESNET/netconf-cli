@@ -35,7 +35,7 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
     case SR_STRING_T:
         return std::string(value->data()->get_string());
     case SR_ENUM_T:
-        return std::string(value->data()->get_enum());
+        return enum_{std::string(value->data()->get_enum())};
     case SR_DECIMAL64_T:
         return value->data()->get_decimal64();
     case SR_CONTAINER_T:
