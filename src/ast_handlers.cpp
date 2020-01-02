@@ -1,10 +1,13 @@
 #include "ast_handlers.hpp"
-std::set<std::string> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::set<std::string> currentSet)
+std::set<std::string> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::map<std::string, std::string> currentKeys)
 {
     std::set<std::string> missingKeys;
-    std::set_difference(keysNeeded.begin(), keysNeeded.end(),
-            currentSet.begin(), currentSet.end(),
-            std::inserter(missingKeys, missingKeys.end()));
+
+    for (const auto& key : keysNeeded) {
+        if (currentKeys.find(key) == currentKeys.end()) {
+            missingKeys.insert(key);
+        }
+    }
 
     std::set<std::string> res;
 

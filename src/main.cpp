@@ -36,7 +36,8 @@ int main(int argc, char* argv[])
     std::cout << "Welcome to netconf-cli" << std::endl;
 
     SysrepoAccess datastore("netconf-cli");
-    Parser parser(datastore.schema());
+    auto dataQuery = std::make_shared<DataQuery>(datastore);
+    Parser parser(datastore.schema(), dataQuery);
     replxx::Replxx lineEditor;
     lineEditor.set_completion_callback([&parser](const std::string& input, int&) {
         std::stringstream stream;

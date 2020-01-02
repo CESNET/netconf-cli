@@ -9,6 +9,7 @@
 #include <experimental/iterator>
 #include "trompeloeil_doctest.h"
 #include "ast_commands.hpp"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 
@@ -39,7 +40,14 @@ TEST_CASE("parser methods")
     schema->addList("", "example:list", {"number"});
     schema->addContainer("example:list", "example:contInList");
     schema->addList("", "example:twoKeyList", {"number", "name"});
-    Parser parser(schema);
+    auto mockDatastore = std::make_shared<MockDatastoreAccess>();
+
+    // DataQuery gets the schema from DatastoreAccess once
+    auto expectation = NAMED_REQUIRE_CALL(*mockDatastore, schema())
+        .RETURN(schema);
+    auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
+    expectation.reset();
+    Parser parser(schema, dataQuery);
 
     SECTION("availableNodes")
     {

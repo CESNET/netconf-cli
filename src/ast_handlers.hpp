@@ -34,7 +34,7 @@ struct keyValue_class {
             _pass(context) = false;
             parserContext.m_errorMsg = parserContext.m_tmpListName + " is not indexed by \"" + ast.first + "\".";
         } else {
-            parserContext.m_tmpListKeys.insert(ast.first);
+            parserContext.m_tmpListKeys.insert({ast.first, ast.second});
         }
     }
 
@@ -61,7 +61,14 @@ struct node_identifier_class {
     }
 };
 
-struct key_identifier_class;
+struct key_identifier_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_tmpListKeyName = ast;
+    }
+};
 
 struct module_identifier_class;
 
@@ -574,7 +581,7 @@ struct createPathSuggestions_class {
     }
 };
 
-std::set<std::string> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::set<std::string> currentSet);
+std::set<std::string> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::map<std::string, std::string> currentSet);
 
 struct createKeySuggestions_class {
     template <typename T, typename Iterator, typename Context>
@@ -587,6 +594,35 @@ struct createKeySuggestions_class {
 
         const auto& keysNeeded = schema.listKeys(parserContext.curPathSchema(), {parserContext.m_curModule, parserContext.m_tmpListName});
         parserContext.m_suggestions = generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys);
+    }
+};
+
+struct createValueSuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& dataQuery = parserContext.m_dataquery;
+
+        parserContext.m_completionIterator = begin;
+        auto listInstances = dataQuery.listKeys(parserContext.curPathData(), {parserContext.m_curModule, parserContext.m_tmpListName});
+
+        // Filter out instances, which correspond to the key-values already present m_tmpListKeys
+        decltype(listInstances) filteredInstances;
+        std::copy_if(listInstances.begin(), listInstances.end(), std::inserter(filteredInstances, filteredInstances.end()), [&parserContext] (const auto& instance) {
+            return std::all_of(parserContext.m_tmpListKeys.begin(),
+                               parserContext.m_tmpListKeys.end(),
+                               [&instance] (const auto& keyValue) {
+                                   return instance.find(keyValue.first) != instance.end() && instance.at(keyValue.first) == keyValue.second;
+                               });
+        });
+        std::set<std::string> validValues;
+
+        std::transform(filteredInstances.begin(), filteredInstances.end(), std::inserter(validValues, validValues.end()), [&parserContext] (const auto& instance) {
+            return instance.at(parserContext.m_tmpListKeyName);
+        });
+
+        parserContext.m_suggestions = validValues;
     }
 };
 
