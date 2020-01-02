@@ -9,6 +9,7 @@
 #pragma once
 #include "ast_commands.hpp"
 #include "ast_path.hpp"
+#include "data_query.hpp"
 #include "schema.hpp"
 
 
@@ -32,7 +33,7 @@ struct Completions {
 
 class Parser {
 public:
-    Parser(const std::shared_ptr<const Schema> schema);
+    Parser(const std::shared_ptr<const Schema> schema, const std::shared_ptr<const DataQuery> dataQuery = nullptr);
     command_ parseCommand(const std::string& line, std::ostream& errorStream);
     void changeNode(const dataPath_& name);
     std::string currentNode() const;
@@ -41,5 +42,6 @@ public:
 
 private:
     const std::shared_ptr<const Schema> m_schema;
+    const std::shared_ptr<const DataQuery> m_dataquery;
     dataPath_ m_curDir;
 };
