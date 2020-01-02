@@ -30,7 +30,7 @@ struct keyValue_class {
             _pass(context) = false;
             parserContext.m_errorMsg = "Key \"" + ast.first + "\" was entered more than once.";
         } else {
-            parserContext.m_tmpListKeys.insert(ast.first);
+            parserContext.m_tmpListKeys.insert({ast.first, ast.second});
         }
     }
 
@@ -68,11 +68,11 @@ struct key_identifier_class {
 
         if (schema.listHasKey(location, list, ast)) {
             schemaNode_ listNode;
-            listNode.m_prefix = parserContext.m_curModule ? boost::optional<module_>{{*parserContext.m_curModule}} : boost::none;
+            listNode.m_prefix = parserContext.m_curModule.flat_map([] (auto mod) { return boost::optional<module_>{{mod}}; });;
             listNode.m_suffix = list_{parserContext.m_tmpListName};
             location.m_nodes.push_back(listNode);
             parserContext.m_tmpListKeyLeafPath.m_location = location;
-            parserContext.m_tmpListKeyLeafPath.m_node = {boost::none, ast};
+            parserContext.m_tmpListKeyLeafPath.m_node = { parserContext.m_curModule, ast };
         } else {
             parserContext.m_errorMsg = parserContext.m_tmpListName + " is not indexed by \"" + ast + "\".";
             _pass(context) = false;
@@ -577,7 +577,7 @@ struct createPathSuggestions_class {
     }
 };
 
-std::set<std::string> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::set<std::string> currentSet);
+std::set<std::string> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::map<std::string, leaf_data_> currentSet);
 
 struct createKeySuggestions_class {
     template <typename T, typename Iterator, typename Context>
@@ -590,6 +590,37 @@ struct createKeySuggestions_class {
 
         const auto& keysNeeded = schema.listKeys(parserContext.currentSchemaPath(), {parserContext.m_curModule, parserContext.m_tmpListName});
         parserContext.m_suggestions = generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys);
+    }
+};
+
+std::string leafDataToCompletion(const leaf_data_& value);
+
+struct createValueSuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& dataQuery = parserContext.m_dataquery;
+
+        parserContext.m_completionIterator = begin;
+        auto listInstances = dataQuery.listKeys(parserContext.currentDataPath(), {parserContext.m_curModule, parserContext.m_tmpListName});
+
+        // Filter out instances, which correspond to the key-values already present m_tmpListKeys
+        decltype(listInstances) filteredInstances;
+        std::copy_if(listInstances.begin(), listInstances.end(), std::inserter(filteredInstances, filteredInstances.end()), [&parserContext] (const auto& instance) {
+            return std::all_of(parserContext.m_tmpListKeys.begin(),
+                               parserContext.m_tmpListKeys.end(),
+                               [&instance] (const auto& keyValue) {
+                                   return instance.find(keyValue.first) != instance.end() && instance.at(keyValue.first) == keyValue.second;
+                               });
+        });
+        std::set<std::string> validValues;
+
+        std::transform(filteredInstances.begin(), filteredInstances.end(), std::inserter(validValues, validValues.end()), [&parserContext] (const auto& instance) {
+            return leafDataToCompletion(instance.at(parserContext.m_tmpListKeyLeafPath.m_node.second));
+        });
+
+        parserContext.m_suggestions = validValues;
     }
 };
 
