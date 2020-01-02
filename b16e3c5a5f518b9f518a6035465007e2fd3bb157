@@ -109,6 +109,24 @@
     },
     {
       "key": {
+        "uuid": "cdb372b6_72d0e018",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-02T10:42:51Z",
+      "side": 1,
+      "message": "https://www.w3.org/TR/2010/REC-xpath20-20101214/#terminal-symbols\n\nIn XPath, number literals are supposed to be unquoted and string-like literals need to be quoted, however, Sysrepo wants EVERYTHING quoted. That\u0027s a little bit of an inconsistency. I have now made the code quote everything except number types.",
+      "parentUuid": "8f59b792_44294313",
+      "revId": "b16e3c5a5f518b9f518a6035465007e2fd3bb157",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b6aeb11b_f540b842",
         "filename": "src/data_query.hpp",
         "patchSetId": 17
