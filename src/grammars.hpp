@@ -71,6 +71,7 @@ x3::rule<command_class, command_> const command = "command";
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
 x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestions = "createPathSuggestions";
 x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
+x3::rule<createValueSuggestions_class, x3::unused_type> const createValueSuggestions = "createValueSuggestions";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
 x3::rule<completing_class, x3::unused_type> const completing = "completing";
@@ -110,11 +111,14 @@ auto const key_identifier_def =
 auto const createKeySuggestions_def =
     x3::eps;
 
+auto const createValueSuggestions_def =
+    x3::eps;
+
 auto const suggestKeysEnd_def =
     x3::eps;
 
 auto const keyValue_def =
-    key_identifier > '=' > leaf_data;
+    key_identifier > '=' > createValueSuggestions > leaf_data;
 
 auto const keyValueWrapper =
     lexeme['[' > createKeySuggestions > keyValue > suggestKeysEnd > ']'];
@@ -396,6 +400,7 @@ BOOST_SPIRIT_DEFINE(help)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
+BOOST_SPIRIT_DEFINE(createValueSuggestions)
 BOOST_SPIRIT_DEFINE(suggestKeysEnd)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)
 BOOST_SPIRIT_DEFINE(completing)
