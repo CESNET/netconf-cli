@@ -9,6 +9,7 @@
 #include "trompeloeil_doctest.h"
 #include <boost/core/demangle.hpp>
 #include "ast_commands.hpp"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 #include "utils.hpp"
@@ -51,7 +52,18 @@ TEST_CASE("leaf editing")
     schema->addLeaf("/mod:list", "mod:leafInList", yang::LeafDataTypes::String);
     schema->addLeafRef("/", "mod:refToString", "/mod:leafString");
     schema->addLeafRef("/", "mod:refToInt8", "/mod:leafInt8");
-    Parser parser(schema);
+    auto mockDatastore = std::make_shared<MockDatastoreAccess>();
+
+    // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
+    ALLOW_CALL(*mockDatastore, listInstances("/mod:list"))
+        .RETURN(std::vector<ListInstance>{});
+
+    // DataQuery gets the schema from DatastoreAccess once
+    auto expectation = NAMED_REQUIRE_CALL(*mockDatastore, schema())
+        .RETURN(schema);
+    auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
+    expectation.reset();
+    Parser parser(schema, dataQuery);
     std::string input;
     std::ostringstream errorStream;
 
