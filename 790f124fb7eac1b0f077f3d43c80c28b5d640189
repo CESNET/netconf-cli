@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f4b9383b_041d7527",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-02T11:07:14Z",
+      "side": 1,
+      "message": "- nit: switch?\n- Perhaps only eplicitly listing numbers would make it a tiny bit easier to see that the code is indeed handling everything correctly. Right now I have no idea if something is missing (instanceid), but if it included {u,}int{8,16,32,64} and double, then I would have known immediately. Just a suggestion, anyway.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 43
+      },
+      "revId": "790f124fb7eac1b0f077f3d43c80c28b5d640189",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
