@@ -6,23 +6,25 @@
  *
 */
 
+#include "data_query.hpp"
 #include "schema.hpp"
 struct ParserContext {
-    ParserContext(const Schema& schema, const dataPath_& curDir);
+    ParserContext(const Schema& schema, const DataQuery& dataQuery, const dataPath_& curDir);
     schemaPath_ curPathSchema();
     dataPath_ curPathData();
     void clearCurPath();
     void pushCurPath(const dataNode_& node);
     void pushCurPath(const schemaNode_& node);
     void resetCurPathToOrig();
-
     const Schema& m_schema;
     const dataPath_ m_curPathOrig;
+    const DataQuery& m_dataquery;
     boost::optional<std::string> m_curModule;
     std::string m_errorMsg;
     std::string m_tmpListName;
     bool m_topLevelModulePresent = false;
     std::set<std::string> m_tmpListKeys;
+    std::string m_tmpListKeyName;
     bool m_errorHandled = false;
     bool m_completing = false;
     std::set<std::string> m_suggestions;

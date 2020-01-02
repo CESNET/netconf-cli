@@ -61,7 +61,14 @@ struct node_identifier_class {
     }
 };
 
-struct key_identifier_class;
+struct key_identifier_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        parserContext.m_tmpListKeyName = ast;
+    }
+};
 
 struct module_identifier_class;
 
@@ -587,6 +594,19 @@ struct createKeySuggestions_class {
 
         const auto& keysNeeded = schema.listKeys(parserContext.curPathSchema(), {parserContext.m_curModule, parserContext.m_tmpListName});
         parserContext.m_suggestions = generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys);
+    }
+};
+
+struct createValueSuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const auto& dataQuery = parserContext.m_dataquery;
+
+        parserContext.m_completionIterator = begin;
+        auto keysAndValues = dataQuery.listKeys(parserContext.curPathData(), {parserContext.m_curModule, parserContext.m_tmpListName});
+        parserContext.m_suggestions = keysAndValues.at(parserContext.m_tmpListKeyName);
     }
 };
 

@@ -8,6 +8,7 @@
  */
 
 #include "trompeloeil_doctest.h"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 
@@ -20,7 +21,18 @@ TEST_CASE("enum completion")
     schema->addLeafEnum("mod:contA", "mod:leafInCont", {"abc", "def"});
     schema->addList("", "mod:list", {"number"});
     schema->addLeafEnum("mod:list", "mod:leafInList", {"ano", "anoda", "ne", "katoda"});
-    Parser parser(schema);
+    auto mockDatastore = std::make_shared<MockDatastoreAccess>();
+
+    // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
+    ALLOW_CALL(*mockDatastore, getItems("mod:list/number"))
+        .RETURN(std::map<std::string, leaf_data_>{});
+
+    // DataQuery gets the schema from DatastoreAccess once
+    auto expectation = NAMED_REQUIRE_CALL(*mockDatastore, schema())
+        .RETURN(schema);
+    auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
+    expectation.reset();
+    Parser parser(schema, dataQuery);
     std::string input;
     std::ostringstream errorStream;
 

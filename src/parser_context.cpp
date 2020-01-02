@@ -7,9 +7,10 @@
 */
 
 #include "parser_context.hpp"
-ParserContext::ParserContext(const Schema& schema, const dataPath_& curDir)
+ParserContext::ParserContext(const Schema& schema, const DataQuery& dataQuery, const dataPath_& curDir)
     : m_schema(schema)
     , m_curPathOrig(curDir)
+    , m_dataquery(dataQuery)
     , m_curPath(curDir)
 {
     if (!curPathData().m_nodes.empty() && curPathData().m_nodes.at(0).m_prefix)
