@@ -8,6 +8,7 @@
 
 #include "trompeloeil_doctest.h"
 #include "ast_commands.hpp"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 
@@ -29,7 +30,20 @@ TEST_CASE("cd")
     schema->addList("/", "example:twoKeyList", {"number", "name"});
     schema->addLeaf("/example:twoKeyList", "example:number", yang::LeafDataTypes::Int32);
     schema->addLeaf("/example:twoKeyList", "example:name", yang::LeafDataTypes::String);
-    Parser parser(schema);
+    auto mockDatastore = std::make_shared<MockDatastoreAccess>();
+
+    // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
+    ALLOW_CALL(*mockDatastore, getItems("/example:list"))
+        .RETURN(std::map<std::string, leaf_data_>{});
+    ALLOW_CALL(*mockDatastore, getItems("/example:twoKeyList"))
+        .RETURN(std::map<std::string, leaf_data_>{});
+
+    // DataQuery gets the schema from DatastoreAccess once
+    auto expectation = NAMED_REQUIRE_CALL(*mockDatastore, schema())
+        .RETURN(schema);
+    auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
+    expectation.reset();
+    Parser parser(schema, dataQuery);
     std::string input;
     std::ostringstream errorStream;
 
