@@ -9,6 +9,7 @@
 #include "trompeloeil_doctest.h"
 #include <boost/core/demangle.hpp>
 #include "ast_commands.hpp"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 #include "utils.hpp"
@@ -50,7 +51,9 @@ TEST_CASE("leaf editing")
     schema->addLeaf("mod:list", "mod:leafInList", yang::LeafDataTypes::String);
     schema->addLeafRef("", "mod:refToString", "mod:leafString");
     schema->addLeafRef("", "mod:refToInt8", "mod:leafInt8");
-    Parser parser(schema);
+    std::shared_ptr<DatastoreAccess> mockDatastore = std::make_shared<MockDatastoreAccess>();
+    auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
+    Parser parser(schema, dataQuery);
     std::string input;
     std::ostringstream errorStream;
 

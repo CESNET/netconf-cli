@@ -8,6 +8,7 @@
  */
 
 #include "trompeloeil_doctest.h"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 
@@ -20,7 +21,9 @@ TEST_CASE("enum completion")
     schema->addLeafEnum("mod:contA", "mod:leafInCont", {"abc", "def"});
     schema->addList("", "mod:list", {"number"});
     schema->addLeafEnum("mod:list", "mod:leafInList", {"ano", "anoda", "ne", "katoda"});
-    Parser parser(schema);
+    std::shared_ptr<DatastoreAccess> mockDatastore = std::make_shared<MockDatastoreAccess>();
+    auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
+    Parser parser(schema, dataQuery);
     std::string input;
     std::ostringstream errorStream;
 

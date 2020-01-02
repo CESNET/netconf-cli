@@ -9,6 +9,7 @@
 
 #include "trompeloeil_doctest.h"
 #include "ast_commands.hpp"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 
@@ -23,7 +24,9 @@ TEST_CASE("presence containers")
     schema->addContainer("mod:b", "mod:b2", yang::ContainerTraits::Presence);
     schema->addList("", "mod:list", {"quote"});
     schema->addContainer("mod:list", "mod:contInList", yang::ContainerTraits::Presence);
-    Parser parser(schema);
+    std::shared_ptr<DatastoreAccess> mockDatastore = std::make_shared<MockDatastoreAccess>();
+    auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
+    Parser parser(schema, dataQuery);
     std::string input;
     std::ostringstream errorStream;
 

@@ -8,6 +8,7 @@
 
 #include "trompeloeil_doctest.h"
 #include "ast_commands.hpp"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 
@@ -26,7 +27,9 @@ TEST_CASE("cd")
     schema->addList("", "example:list", {"number"});
     schema->addContainer("example:list", "example:contInList");
     schema->addList("", "example:twoKeyList", {"number", "name"});
-    Parser parser(schema);
+    std::shared_ptr<DatastoreAccess> mockDatastore = std::make_shared<MockDatastoreAccess>();
+    auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
+    Parser parser(schema, dataQuery);
     std::string input;
     std::ostringstream errorStream;
 

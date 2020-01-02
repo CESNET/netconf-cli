@@ -15,15 +15,16 @@ TooManyArgumentsException::~TooManyArgumentsException() = default;
 InvalidCommandException::~InvalidCommandException() = default;
 
 
-Parser::Parser(const std::shared_ptr<const Schema> schema)
+Parser::Parser(const std::shared_ptr<const Schema> schema, const std::shared_ptr<const DataQuery> dataQuery)
     : m_schema(schema)
+    , m_dataquery(dataQuery)
 {
 }
 
 command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream)
 {
     command_ parsedCommand;
-    ParserContext ctx(*m_schema, dataPathToSchemaPath(m_curDir));
+    ParserContext ctx(*m_schema, *m_dataquery, dataPathToSchemaPath(m_curDir));
     auto it = line.begin();
 
     boost::spirit::x3::error_handler<std::string::const_iterator> errorHandler(it, line.end(), errorStream);
@@ -45,7 +46,7 @@ std::set<std::string> Parser::completeCommand(const std::string& line, std::ostr
 {
     std::set<std::string> completions;
     command_ parsedCommand;
-    ParserContext ctx(*m_schema, dataPathToSchemaPath(m_curDir));
+    ParserContext ctx(*m_schema, *m_dataquery, dataPathToSchemaPath(m_curDir));
     ctx.m_completing = true;
     auto it = line.begin();
     boost::spirit::x3::error_handler<std::string::const_iterator> errorHandler(it, line.end(), errorStream);

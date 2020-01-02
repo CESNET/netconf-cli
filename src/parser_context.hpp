@@ -6,10 +6,12 @@
  *
 */
 
+#include "data_query.hpp"
 #include "schema.hpp"
 struct ParserContext {
-    ParserContext(const Schema& schema, const schemaPath_& curDir);
+    ParserContext(const Schema& schema, const DataQuery& dataQuery, const schemaPath_& curDir);
     const Schema& m_schema;
+    const DataQuery& m_dataquery;
     schemaPath_ m_curPath;
     const schemaPath_ m_curPathOrig;
     boost::optional<std::string> m_curModule;

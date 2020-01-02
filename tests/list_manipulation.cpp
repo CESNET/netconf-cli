@@ -6,6 +6,7 @@
 */
 
 #include "trompeloeil_doctest.h"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 
@@ -15,7 +16,9 @@ TEST_CASE("list manipulation")
     schema->addModule("mod");
     schema->addList("", "mod:list", {"number"});
     schema->addLeaf("mod:list", "mod:leafInList", yang::LeafDataTypes::String);
-    Parser parser(schema);
+    std::shared_ptr<DatastoreAccess> mockDatastore = std::make_shared<MockDatastoreAccess>();
+    auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
+    Parser parser(schema, dataQuery);
     std::string input;
     std::ostringstream errorStream;
 

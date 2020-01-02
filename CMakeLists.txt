@@ -142,7 +142,7 @@ add_executable(netconf-cli
     src/main.cpp
     )
 target_include_directories(netconf-cli PRIVATE ${REPLXX_PATH})
-target_link_libraries(netconf-cli netconfaccess sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
+target_link_libraries(netconf-cli dataquery netconfaccess sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
 if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
     target_link_libraries(netconf-cli c++experimental)
 else()
@@ -232,7 +232,7 @@ if(BUILD_TESTING)
                 tests/${name}.cpp
                 )
         endif()
-        target_link_libraries(test_${name} DoctestIntegration parser)
+        target_link_libraries(test_${name} DoctestIntegration parser datastoreaccess dataquery)
         if(NOT CMAKE_CROSSCOMPILING)
             add_test(test_${name} test_${name})
         endif()

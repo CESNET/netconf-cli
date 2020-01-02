@@ -7,13 +7,16 @@
 */
 
 #include "trompeloeil_doctest.h"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 
 TEST_CASE("command completion")
 {
     auto schema = std::make_shared<StaticSchema>();
-    Parser parser(schema);
+    std::shared_ptr<DatastoreAccess> mockDatastore = std::make_shared<MockDatastoreAccess>();
+    auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
+    Parser parser(schema, dataQuery);
     std::string input;
     std::ostringstream errorStream;
     std::set<std::string> expected;

@@ -61,7 +61,9 @@ struct node_identifier_class {
     }
 };
 
-struct key_identifier_class;
+struct key_identifier_class {
+
+};
 
 struct module_identifier_class;
 
@@ -604,6 +606,17 @@ struct createKeySuggestions_class {
 
         const auto& keysNeeded = schema.listKeys(parserContext.m_curPath, {parserContext.m_curModule, parserContext.m_tmpListName});
         parserContext.m_suggestions = generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys);
+    }
+};
+
+struct createValueSuggestions_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        // const auto& schema = parserContext.m_dataquery;
+
+        parserContext.m_completionIterator = begin;
     }
 };
 

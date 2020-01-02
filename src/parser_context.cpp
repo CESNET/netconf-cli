@@ -7,8 +7,9 @@
 */
 
 #include "parser_context.hpp"
-ParserContext::ParserContext(const Schema& schema, const schemaPath_& curDir)
+ParserContext::ParserContext(const Schema& schema, const DataQuery& dataQuery, const schemaPath_& curDir)
     : m_schema(schema)
+    , m_dataquery(dataQuery)
     , m_curPath(curDir)
     , m_curPathOrig(curDir)
 {
