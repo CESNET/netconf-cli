@@ -8,10 +8,16 @@
 
 #include "schema.hpp"
 struct ParserContext {
-    ParserContext(const Schema& schema, const schemaPath_& curDir);
+    ParserContext(const Schema& schema, const dataPath_& curDir);
+    schemaPath_ curPathSchema();
+    dataPath_ curPathData();
+    void clearCurPath();
+    void pushCurPath(const dataNode_& node);
+    void pushCurPath(const schemaNode_& node);
+    void resetCurPathToOrig();
+
     const Schema& m_schema;
-    schemaPath_ m_curPath;
-    const schemaPath_ m_curPathOrig;
+    const dataPath_ m_curPathOrig;
     boost::optional<std::string> m_curModule;
     std::string m_errorMsg;
     std::string m_tmpListName;
@@ -26,4 +32,7 @@ struct ParserContext {
     // filtering by prefix), this suffix gets added to the completion (for
     // example a left bracket after a list)
     std::string m_completionSuffix;
+
+private:
+    boost::variant<dataPath_, schemaPath_> m_curPath;
 };
