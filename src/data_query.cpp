@@ -32,7 +32,7 @@ std::set<std::map<std::string, std::string>> DataQuery::listKeys(const dataPath_
 
     decltype(lists) allInstances;
     std::copy_if(lists.begin(), lists.end(), std::inserter(allInstances, allInstances.end()), [] (const auto& item) {
-        return item.second.type() == typeid(special_) && boost::get<special_>(item.second).m_value == "(list)";
+        return item.second.type() == typeid(special_) && boost::get<special_>(item.second).m_value == SpecialValue::List;
     });
 
     auto keys = m_schema->listKeys(dataPathToSchemaPath(location), node);

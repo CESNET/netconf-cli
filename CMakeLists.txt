@@ -77,7 +77,7 @@ target_link_libraries(ast_values Boost::boost)
 add_library(utils STATIC
     src/utils.cpp
     )
-target_link_libraries(utils path Boost::boost)
+target_link_libraries(utils path ast_values Boost::boost)
 
 add_library(schemas STATIC
     src/static_schema.cpp
