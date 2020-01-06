@@ -37,7 +37,7 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
     case LY_TYPE_STRING:
         return std::string(value->string());
     case LY_TYPE_ENUM:
-        return std::string(value->enm()->name());
+        return enum_{std::string(value->enm()->name())};
     default: // TODO: implement all types
         return "(can't print)"s;
     }
