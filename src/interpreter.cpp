@@ -109,7 +109,7 @@ template <typename T>
 std::string Interpreter::absolutePathFromCommand(const T& command) const
 {
     if (command.m_path.m_scope == Scope::Absolute)
-        return "/" + pathToDataString(command.m_path);
+        return pathToDataString(command.m_path);
     else
         return joinPaths(m_parser.currentNode(), pathToDataString(command.m_path));
 }
@@ -143,14 +143,13 @@ std::string Interpreter::absolutePathFromCommand(const get_& get) const
     const auto path = *get.m_path;
     if (path.type() == typeid(module_)) {
         return "/"s + boost::get<module_>(path).m_name + ":*";
-
     } else {
         auto actualPath = boost::get<boost::variant<dataPath_, schemaPath_>>(path);
         std::string pathString = boost::apply_visitor(pathToStringVisitor(), actualPath);
         auto pathScope{boost::apply_visitor(getPathScopeVisitor(), actualPath)};
 
         if (pathScope == Scope::Absolute) {
-            return "/" + pathString;
+            return pathString;
         } else {
             return joinPaths(m_parser.currentNode(), pathString);
         }

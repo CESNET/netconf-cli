@@ -18,6 +18,7 @@ InvalidCommandException::~InvalidCommandException() = default;
 Parser::Parser(const std::shared_ptr<const Schema> schema)
     : m_schema(schema)
 {
+    m_curDir.m_scope = Scope::Absolute;
 }
 
 command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream)
@@ -79,7 +80,7 @@ void Parser::changeNode(const dataPath_& name)
 
 std::string Parser::currentNode() const
 {
-    return "/" + pathToDataString(m_curDir);
+    return pathToDataString(m_curDir);
 }
 
 struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {
