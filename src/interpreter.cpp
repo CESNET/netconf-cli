@@ -109,7 +109,7 @@ template <typename T>
 std::string Interpreter::absolutePathFromCommand(const T& command) const
 {
     if (command.m_path.m_scope == Scope::Absolute)
-        return "/" + pathToDataString(command.m_path);
+        return pathToDataString(command.m_path);
     else
         return joinPaths(m_parser.currentNode(), pathToDataString(command.m_path));
 }
