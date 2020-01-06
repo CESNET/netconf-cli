@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "74b326f9_9ccda1dd",
+        "filename": "src/parser_context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-06T21:41:30Z",
+      "side": 1,
+      "message": "it\u0027s a style preference (perhaps I\u0027m getting too Pythonic), but I personally prefer something like:\n\n try {\n    return get\u003cFoo\u003e(xx);\n } catch (some_bad_variant_cast\u0026) {\n    throw ...;\n }\n\nThe same pattern can be also applied above in the other getter.\n\nPlease consider this and decide for yourself which pattern you like better.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 44
+      },
+      "revId": "fdf3b493d6dd2c845f6351f3e64afa0b9c858b71",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62cb90cb_a7551774",
+        "filename": "src/parser_context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-06T21:41:30Z",
+      "side": 1,
+      "message": "what about:\n\n  m_topLevelModulePresent \u003d !curPathData().m_nodes.empty() \u0026\u0026 curPathData().m_nodes.at(0).m_prefix;",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 40
+      },
+      "revId": "fdf3b493d6dd2c845f6351f3e64afa0b9c858b71",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61f4c637_990baff0",
+        "filename": "src/parser_context.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-06T21:41:30Z",
+      "side": 1,
+      "message": "it\u0027s bikeshedding, but please consider some IMHO cleaner indentifiers:\n\n- currentSchemaPath()\n- currentDataPath()\n- clearPath()\n- pushPathFragment()\n- void resetPath()\n\nI think that they are a bit more readable.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 30
+      },
+      "revId": "fdf3b493d6dd2c845f6351f3e64afa0b9c858b71",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
