@@ -197,8 +197,8 @@ auto const dataNodeList_def =
 // Spirit wouldn't know we want it to collapse.
 // https://github.com/boostorg/spirit/issues/408
 auto const dataNodesListEnd_def =
-    initializePath >> dataNode % '/' >> '/' >> dataNodeList >> -(&char_('/') >> createPathSuggestions) |
-    initializePath >> x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
+    dataNode % '/' >> '/' >> dataNodeList >> -(&char_('/') >> createPathSuggestions) |
+    x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
 
 auto const dataPathListEnd_def =
     initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |

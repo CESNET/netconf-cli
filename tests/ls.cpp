@@ -135,6 +135,14 @@ TEST_CASE("ls")
                 expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, list_{"list"})}};
             }
 
+            SECTION("ls /example:list")
+            {
+                SECTION("cwd: /") {}
+                SECTION("cwd: /example:a") { parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}}); }
+                input = "ls /example:list";
+                expected.m_path = dataPath_{Scope::Absolute, {dataNode_(module_{"example"}, list_{"list"})}};
+            }
+
             SECTION("ls example:a/example:listInCont")
             {
                 input = "ls example:a/example:listInCont";
