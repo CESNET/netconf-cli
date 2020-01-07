@@ -225,5 +225,31 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:leafEnum") == expected);
     }
 
+    SECTION("getItems on a list")
+    {
+        {
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Jan']", "", ""));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Jan']/name", "", "Jan"));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Michal']", "", ""));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Michal']/name", "", "Michal"));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Petr']", "", ""));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Petr']/name", "", "Petr"));
+            datastore.createListInstance("/example-schema:person[name='Jan']");
+            datastore.createListInstance("/example-schema:person[name='Michal']");
+            datastore.createListInstance("/example-schema:person[name='Petr']");
+            datastore.commitChanges();
+        }
+        std::map<std::string, leaf_data_> expected{
+            {"/example-schema:person[name='Jan']", std::string{"(list)"}},
+            {"/example-schema:person[name='Jan']/name", std::string{"Jan"}},
+            {"/example-schema:person[name='Michal']", std::string{"(list)"}},
+            {"/example-schema:person[name='Michal']/name", std::string{"Michal"}},
+            {"/example-schema:person[name='Petr']", std::string{"(list)"}},
+            {"/example-schema:person[name='Petr']/name", std::string{"Petr"}}
+        };
+
+        REQUIRE(datastore.getItems("/example-schema:person") == expected);
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
