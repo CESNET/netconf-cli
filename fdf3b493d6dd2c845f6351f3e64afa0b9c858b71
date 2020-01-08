@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "36a53b6f_65498140",
+        "filename": "src/parser_context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-08T18:27:22Z",
+      "side": 1,
+      "message": "I think it makes sense in this function, because if a bad_get is thrown, it\u0027s always an error. However, in the other function, the try-catch block would serve to control program flow and I think that\u0027s a bad idea (idk, if it\u0027s a good idea in Python). It\u0027s probably not possible, but catching bad_get and discarding it could mean a throw away some information (for example, an unexpected error; this applies mainly to the top function).",
+      "parentUuid": "74b326f9_9ccda1dd",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 44
+      },
+      "revId": "fdf3b493d6dd2c845f6351f3e64afa0b9c858b71",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "62cb90cb_a7551774",
         "filename": "src/parser_context.cpp",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "d894825e_38be8f93",
+        "filename": "src/parser_context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-08T18:27:22Z",
+      "side": 1,
+      "message": "sure",
+      "parentUuid": "62cb90cb_a7551774",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 40
+      },
+      "revId": "fdf3b493d6dd2c845f6351f3e64afa0b9c858b71",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "61f4c637_990baff0",
         "filename": "src/parser_context.hpp",
         "patchSetId": 2
@@ -68,6 +116,30 @@
       "revId": "fdf3b493d6dd2c845f6351f3e64afa0b9c858b71",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebde74ea_8ecdbf18",
+        "filename": "src/parser_context.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-08T18:27:22Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "61f4c637_990baff0",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 30
+      },
+      "revId": "fdf3b493d6dd2c845f6351f3e64afa0b9c858b71",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
