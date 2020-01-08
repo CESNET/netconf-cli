@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "f1b739c7_a393b600",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-08T21:50:06Z",
+      "side": 1,
+      "message": "Huh, the format didn\u0027t work as I wanted it to :D only the first and the third line were supposed to be quotations",
+      "parentUuid": "a11d84f1_a8b77fd0",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 34
+      },
+      "revId": "f5e42d3742cf18e438d4c7089de9582dbd7ea057",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e91b4f33_183a21af",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 1
