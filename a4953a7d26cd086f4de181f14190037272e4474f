@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8e47b9c4_d0946e1c",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-08T17:33:50Z",
+      "side": 1,
+      "message": "This needs an example. What items are present at the first level, and what is that map from -\u003e to.\n\n(as a doxygen comment, please)",
+      "revId": "a4953a7d26cd086f4de181f14190037272e4474f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf87e9ad_56bd8bab",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-08T17:33:50Z",
+      "side": 1,
+      "message": "I think that this change belongs to an extra commit. If it changes behavior of that method, then it should be accompanied by a test as well (because apparently the previous behavior was wrong, and we did not know it).",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 13
+      },
+      "revId": "a4953a7d26cd086f4de181f14190037272e4474f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33bb0310_0b849f18",
+        "filename": "tests/data_query.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-08T17:33:50Z",
+      "side": 1,
+      "message": "There are no nested lists in this test (right?) -- at least looking at the test results, the resulting item always has just one value at the top level.",
+      "revId": "a4953a7d26cd086f4de181f14190037272e4474f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
