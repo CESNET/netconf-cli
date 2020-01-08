@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "400bf910_921445b4",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-08T18:12:13Z",
+      "side": 1,
+      "message": "I can already distinguish these types by the strings. I don\u0027t think making extra structs is meaningful, although changing the string to an enum might make sense (so I dont\u0027 have to compare strings to find the type).",
+      "parentUuid": "90df7845_ec69f0d7",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 34
+      },
+      "revId": "f5e42d3742cf18e438d4c7089de9582dbd7ea057",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e91b4f33_183a21af",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 1
