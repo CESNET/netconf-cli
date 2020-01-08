@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "90df7845_ec69f0d7",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-08T17:25:44Z",
+      "side": 1,
+      "message": "Do you expect a need to distinguish between various types of these special nodes programmatically? I think that it makes sense to, e.g., hide containers all the time (that\u0027s what the YANG RFC more or less says, it doesn\u0027t matter whether that node is present or not), but show presence containers if they are present (because that carries a meaning).\n\nIf that\u0027s indeed the case, then it would be better to have several extra structs so that the code can react appropriately.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 34
+      },
+      "revId": "f5e42d3742cf18e438d4c7089de9582dbd7ea057",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e91b4f33_183a21af",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-08T17:25:44Z",
+      "side": 1,
+      "message": "it\u0027s being used for other purposes, not just a list",
+      "range": {
+        "startLine": 71,
+        "startChar": 66,
+        "endLine": 71,
+        "endChar": 70
+      },
+      "revId": "f5e42d3742cf18e438d4c7089de9582dbd7ea057",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
