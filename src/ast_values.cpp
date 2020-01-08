@@ -48,3 +48,19 @@ bool enum_::operator==(const enum_& b) const
     return this->m_value == b.m_value;
 }
 
+bool special_::operator==(const special_& b) const
+{
+    return this->m_value == b.m_value;
+}
+
+std::string specialValueToString(const special_& value)
+{
+    switch (value.m_value) {
+    case SpecialValue::Container:
+        return "(container)";
+    case SpecialValue::PresenceContainer:
+        return "(presence container)";
+    case SpecialValue::List:
+        return "(list)";
+    }
+}
