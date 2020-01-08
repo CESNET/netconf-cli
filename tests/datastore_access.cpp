@@ -207,7 +207,7 @@ TEST_CASE("setting/getting values")
         // because it'll use the same data structure as libnetconf, so the
         // results will be consistent.
 #ifdef sysrepo_BACKEND
-                                                   {"/example-schema:lol", std::string{"(container)"}},
+                                                   {"/example-schema:lol", special_{"(container)"}},
 #endif
                                                    {"/example-schema:up", bool{true}}};
         REQUIRE(datastore.getItems("/example-schema:*") == expected);
@@ -240,11 +240,11 @@ TEST_CASE("setting/getting values")
             datastore.commitChanges();
         }
         std::map<std::string, leaf_data_> expected{
-            {"/example-schema:person[name='Jan']", std::string{"(list)"}},
+            {"/example-schema:person[name='Jan']", special_{"(list)"}},
             {"/example-schema:person[name='Jan']/name", std::string{"Jan"}},
-            {"/example-schema:person[name='Michal']", std::string{"(list)"}},
+            {"/example-schema:person[name='Michal']", special_{"(list)"}},
             {"/example-schema:person[name='Michal']/name", std::string{"Michal"}},
-            {"/example-schema:person[name='Petr']", std::string{"(list)"}},
+            {"/example-schema:person[name='Petr']", special_{"(list)"}},
             {"/example-schema:person[name='Petr']/name", std::string{"Petr"}}
         };
 

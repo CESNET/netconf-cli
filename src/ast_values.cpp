@@ -48,3 +48,7 @@ bool enum_::operator==(const enum_& b) const
     return this->m_value == b.m_value;
 }
 
+bool special_::operator==(const special_& b) const
+{
+    return this->m_value == b.m_value;
+}

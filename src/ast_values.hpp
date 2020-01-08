@@ -38,9 +38,15 @@ struct identityRef_ {
     std::string m_value;
 };
 
+struct special_ {
+    bool operator==(const special_& b) const;
+    std::string m_value;
+};
+
 using leaf_data_ = boost::variant<enum_,
                                   binary_,
                                   identityRef_,
+                                  special_,
                                   double,
                                   bool,
                                   int8_t,

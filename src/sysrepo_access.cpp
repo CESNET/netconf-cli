@@ -39,11 +39,11 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
     case SR_DECIMAL64_T:
         return value->data()->get_decimal64();
     case SR_CONTAINER_T:
-        return "(container)"s;
+        return special_{"(container)"};
     case SR_CONTAINER_PRESENCE_T:
-        return "(presence container)"s;
+        return special_{"(presence container)"};
     case SR_LIST_T:
-        return "(list)"s;
+        return special_{"(list)"};
     default: // TODO: implement all types
         return value->val_to_string();
     }
@@ -64,6 +64,11 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
     {
         auto res = value.m_prefix.value().m_name + ":" + value.m_value;
         return std::make_shared<sysrepo::Val>(res.c_str(), SR_IDENTITYREF_T);
+    }
+
+    sysrepo::S_Val operator()(const special_&) const
+    {
+        throw std::runtime_error("Tried constructing S_Val from a list");
     }
 
     sysrepo::S_Val operator()(const std::string& value) const
