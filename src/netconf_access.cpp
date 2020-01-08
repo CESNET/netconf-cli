@@ -57,6 +57,9 @@ std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& pat
         for (const auto& it : items) {
             if (!it)
                 continue;
+            if (it->schema()->nodetype() == LYS_LIST) {
+                res.emplace(it->path(), std::string{"(list)"});
+            }
             if (it->schema()->nodetype() == LYS_LEAF) {
                 libyang::Data_Node_Leaf_List leaf(it);
                 res.emplace(leaf.path(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));

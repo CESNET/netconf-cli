@@ -278,8 +278,8 @@ if(BUILD_TESTING)
     target_link_libraries(test_path_utils path)
 
     setup_datastore_tests()
-    datastore_test(setting_values ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
-    set_tests_properties(kill_daemons PROPERTIES DEPENDS test_setting_values_netconf_cleanup)
+    datastore_test(datastore_access ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
+    set_tests_properties(kill_daemons PROPERTIES DEPENDS test_datastore_access_netconf_cleanup)
 
 
 endif()
