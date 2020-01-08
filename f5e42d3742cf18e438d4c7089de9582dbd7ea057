@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "a11d84f1_a8b77fd0",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-08T21:46:01Z",
+      "side": 1,
+      "message": "\u003e I meant that as a hint that string comparison doesn\u0027t count\nIn principle, it wouldn\u0027t be too different I think. (or more programmatical)\n\u003e because the code already has to handle stuff explicitly\nWhat do you mean by this? What stuff?\n\nAnyway, the `special_` is really only there to store the representation of all the non-value leaf_data_ instances. There is no more additional data. I do think, that changing the string to an enum brings a lot of advantages. I also think new types don\u0027t make sense, since that would put them on the same level as the other types (but they are only special non-leaf non-values).",
+      "parentUuid": "507b4cbb_2f710a8e",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 34
+      },
+      "revId": "f5e42d3742cf18e438d4c7089de9582dbd7ea057",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e91b4f33_183a21af",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 1
