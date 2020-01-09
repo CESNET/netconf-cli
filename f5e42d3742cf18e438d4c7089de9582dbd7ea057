@@ -121,6 +121,30 @@
     },
     {
       "key": {
+        "uuid": "ae3d6a83_19005688",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-09T08:52:09Z",
+      "side": 1,
+      "message": "I meant that whenever the code is dealing with that variant, the operator() overloads already have to account for all cases.\n\nI think we\u0027ve reached an agreement to go with and enum within a single `special` struct.",
+      "parentUuid": "f1b739c7_a393b600",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 34
+      },
+      "revId": "f5e42d3742cf18e438d4c7089de9582dbd7ea057",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e91b4f33_183a21af",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 1
