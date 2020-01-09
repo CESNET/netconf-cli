@@ -189,6 +189,30 @@
       "revId": "f5e42d3742cf18e438d4c7089de9582dbd7ea057",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03452bb5_9cb5ebed",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-09T12:21:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e91b4f33_183a21af",
+      "range": {
+        "startLine": 71,
+        "startChar": 66,
+        "endLine": 71,
+        "endChar": 70
+      },
+      "revId": "f5e42d3742cf18e438d4c7089de9582dbd7ea057",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
