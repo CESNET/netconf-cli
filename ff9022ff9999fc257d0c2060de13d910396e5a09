@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ff0339c_4f4b5f6a",
+        "filename": "src/ast_values.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-09T12:24:33Z",
+      "side": 1,
+      "message": "nit: this looks like one level too deep indentation",
+      "revId": "ff9022ff9999fc257d0c2060de13d910396e5a09",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
