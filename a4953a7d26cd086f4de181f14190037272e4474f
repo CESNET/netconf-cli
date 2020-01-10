@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "e36c2a16_819ebd5d",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-10T15:26:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf87e9ad_56bd8bab",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 13
+      },
+      "revId": "a4953a7d26cd086f4de181f14190037272e4474f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "33bb0310_0b849f18",
         "filename": "tests/data_query.cpp",
         "patchSetId": 31
