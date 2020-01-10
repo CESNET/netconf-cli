@@ -16,13 +16,13 @@ TEST_CASE("presence containers")
 {
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("mod");
-    schema->addContainer("", "mod:a", yang::ContainerTraits::Presence);
-    schema->addContainer("", "mod:b");
-    schema->addContainer("mod:a", "mod:a2");
-    schema->addContainer("mod:a/mod:a2", "mod:a3", yang::ContainerTraits::Presence);
-    schema->addContainer("mod:b", "mod:b2", yang::ContainerTraits::Presence);
-    schema->addList("", "mod:list", {"quote"});
-    schema->addContainer("mod:list", "mod:contInList", yang::ContainerTraits::Presence);
+    schema->addContainer("/", "mod:a", yang::ContainerTraits::Presence);
+    schema->addContainer("/", "mod:b");
+    schema->addContainer("/mod:a", "mod:a2");
+    schema->addContainer("/mod:a/mod:a2", "mod:a3", yang::ContainerTraits::Presence);
+    schema->addContainer("/mod:b", "mod:b2", yang::ContainerTraits::Presence);
+    schema->addList("/", "mod:list", {"quote"});
+    schema->addContainer("/mod:list", "mod:contInList", yang::ContainerTraits::Presence);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -80,7 +80,7 @@ TEST_CASE("presence containers")
         create_ create = boost::get<create_>(commandCreate);
         REQUIRE(create == expectedCreate);
 
-        REQUIRE(pathToDataString(create.m_path) == input);
+        REQUIRE(pathToDataString(create.m_path, Prefixes::WhenNeeded) == input);
 
         delete_ expectedDelete;
         expectedDelete.m_path = expectedPath;

@@ -284,7 +284,7 @@ TEST_CASE("yangschema")
     });
     ys.addSchemaString(second_schema);
 
-    schemaPath_ path;
+    schemaPath_ path{Scope::Absolute, {}};
     ModuleNodePair node;
 
     SECTION("positive")

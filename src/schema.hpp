@@ -42,11 +42,6 @@ enum class Recursion {
     Recursive
 };
 
-enum class Prefixes {
-    Always,
-    WhenNeeded
-};
-
 
 class InvalidNodeException : public std::invalid_argument {
 public:
