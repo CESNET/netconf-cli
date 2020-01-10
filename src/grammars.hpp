@@ -273,7 +273,7 @@ auto const leaf_data_identityRef_def =
     createIdentitySuggestions >> leaf_data_identityRef_data;
 
 auto const leaf_data_def =
-x3::expect[
+x3::no_skip[x3::expect[
     leaf_data_enum |
     leaf_data_decimal |
     leaf_data_bool |
@@ -287,7 +287,7 @@ x3::expect[
     leaf_data_uint64 |
     leaf_data_binary |
     leaf_data_identityRef |
-    leaf_data_string];
+    leaf_data_string]];
 
 struct ls_options_table : x3::symbols<LsOption> {
     ls_options_table()
