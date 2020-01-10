@@ -127,6 +127,24 @@
     },
     {
       "key": {
+        "uuid": "1c36cd30_35bad977",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-10T17:07:03Z",
+      "side": 1,
+      "message": "Function is deleted, let\u0027s resolve this, when the issue comes up again (possibly in the integrate dataquery patch)",
+      "parentUuid": "cdb372b6_72d0e018",
+      "revId": "b16e3c5a5f518b9f518a6035465007e2fd3bb157",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b6aeb11b_f540b842",
         "filename": "src/data_query.hpp",
         "patchSetId": 17
