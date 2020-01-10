@@ -22,6 +22,30 @@
       "revId": "790f124fb7eac1b0f077f3d43c80c28b5d640189",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d29f8477_95f6d0f1",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-10T17:06:00Z",
+      "side": 1,
+      "message": "This function is no longer needed, so I\u0027m deleting it.",
+      "parentUuid": "f4b9383b_041d7527",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 43
+      },
+      "revId": "790f124fb7eac1b0f077f3d43c80c28b5d640189",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
