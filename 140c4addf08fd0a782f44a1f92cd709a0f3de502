@@ -46,6 +46,30 @@
       "revId": "140c4addf08fd0a782f44a1f92cd709a0f3de502",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1b81425_5d755caa",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-10T15:49:23Z",
+      "side": 1,
+      "message": "yes, explaining exactly this in a commit message is a good fix for this comment.",
+      "parentUuid": "a659277c_7074cfba",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 5
+      },
+      "revId": "140c4addf08fd0a782f44a1f92cd709a0f3de502",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
