@@ -46,6 +46,30 @@
       "revId": "790f124fb7eac1b0f077f3d43c80c28b5d640189",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2e14193_c781e998",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-10T17:13:46Z",
+      "side": 1,
+      "message": "will be removed -\u003e done",
+      "parentUuid": "f4b9383b_041d7527",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 43
+      },
+      "revId": "790f124fb7eac1b0f077f3d43c80c28b5d640189",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }

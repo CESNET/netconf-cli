@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "faccd6f8_46f19b07",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-10T17:13:46Z",
+      "side": 1,
+      "message": "so this is not needed anymore, right? (it makes sense, after all, and grep agrees -- it\u0027s unused)",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 1
+      },
+      "revId": "5c83a4348f8f3a3a7db2f93696206a1ace2be132",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b2057be_2a4f7244",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-10T17:13:46Z",
+      "side": 1,
+      "message": "I think that this is kind of inefficient -- it\u0027s talking to the datastore backend, requesting a full tree of data, and then disregarding a subset of that. I think that NETCONF\u0027s \u003cget\u003e and \u003cget-config\u003e allow retrieval of just the selcted nodes (https://tools.ietf.org/html/rfc6241#section-6.2.4).\n\nIf I remember correctly, the reason why we have a separate DataQuery instance is because we did not want to tie the parser into -- technically -- having the capability of making modifications. This does not mean that this key filtering function should remain outside of DatastoreAccess, though.\n\nWhat do you think about adding an appropriate function to the DatastoreAccess (OK to make it private if you don\u0027t think it belongs to the public API) and just blindly accessing it (via a friend class) from here?",
+      "revId": "5c83a4348f8f3a3a7db2f93696206a1ace2be132",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5744c913_53a16346",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-10T17:13:46Z",
+      "side": 1,
+      "message": "If I understand this correctly, given this pseudo-schema:\n\n list foo {\n   key \u0027a b\u0027;\n   leaf a;\n   leaf b;\n }\n\nAsking for `foo/a` will get you `foo[a\u003d...,b\u003d...]/a` and also `foo[a\u003d...,b\u003d...]/b`.\n\nIf this is correct, please move this change to a separate commit and add an explicit test that both backends now return the same amount of data.\n\nIf my understanding is incorrect, please explain (in the code or comments) it better :).",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 57
+      },
+      "revId": "5c83a4348f8f3a3a7db2f93696206a1ace2be132",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
