@@ -16,6 +16,11 @@
 
 #include "ast_values.hpp"
 
+enum class Prefixes {
+    Always,
+    WhenNeeded
+};
+
 struct nodeup_ {
     bool operator==(const nodeup_&) const
     {
@@ -106,10 +111,9 @@ struct dataPath_ {
 
 std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node);
 
-std::string pathToAbsoluteSchemaString(const dataPath_& path);
-std::string pathToAbsoluteSchemaString(const schemaPath_& path);
-std::string pathToDataString(const dataPath_& path);
-std::string pathToSchemaString(const schemaPath_& path);
+std::string pathToDataString(const dataPath_& path, Prefixes prefixes);
+std::string pathToSchemaString(const schemaPath_& path, Prefixes prefixes);
+std::string pathToSchemaString(const dataPath_& path, Prefixes prefixes);
 schemaNode_ dataNodeToSchemaNode(const dataNode_& node);
 schemaPath_ dataPathToSchemaPath(const dataPath_& path);
 std::string escapeListKeyString(const std::string& what);

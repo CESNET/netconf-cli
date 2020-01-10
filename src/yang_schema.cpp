@@ -220,8 +220,7 @@ libyang::S_Schema_Node YangSchema::getSchemaNode(const std::string& node) const
 
 libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const
 {
-    std::string absPath = location.m_nodes.empty() ? "" : "/";
-    absPath += pathToAbsoluteSchemaString(location) + "/" + fullNodeName(location, node);
+    std::string absPath = joinPaths(pathToSchemaString(location, Prefixes::Always), fullNodeName(location, node));
 
     return impl_getSchemaNode(absPath);
 }
@@ -321,8 +320,8 @@ std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recu
     if (path.m_nodes.empty()) {
         nodes = m_context->data_instantiables(0);
     } else {
-        const auto absolutePath = "/" + pathToAbsoluteSchemaString(path);
-        const auto node = getSchemaNode(absolutePath);
+        const auto pathString = pathToSchemaString(path, Prefixes::Always);
+        const auto node = getSchemaNode(pathString);
         nodes = node->child_instantiables(0);
     }
 

@@ -28,6 +28,6 @@ TEST_CASE("path utils")
             path.m_nodes.push_back(dataNode_{module_{"example-schema"}, listElement_{"twoKeyList", {{"first", "a"}, {"second", "b"}}}});
             expected += "example-schema:twoKeyList[first='a'][second='b']";
         }
-        REQUIRE(pathToDataString(path) == expected);
+        REQUIRE(pathToDataString(path, Prefixes::WhenNeeded) == expected);
     }
 }

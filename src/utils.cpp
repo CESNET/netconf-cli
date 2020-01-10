@@ -21,10 +21,13 @@ std::string stripLastNodeFromPath(const std::string& path)
 {
     std::string res = path;
     auto pos = res.find_last_of('/');
-    if (pos == res.npos)
+    if (pos == res.npos) { // path has no backslash - it's either empty, or is a relative path with one fragment
         res.clear();
-    else
+    } else if (pos == 0) { // path has one backslash at the start - it's either "/" or "/one-path-fragment"
+        return "/";
+    } else {
         res.erase(pos);
+    }
     return res;
 }
 

@@ -28,17 +28,17 @@ TEST_CASE("parser methods")
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("example");
     schema->addModule("second");
-    schema->addContainer("", "example:a");
-    schema->addList("example:a", "example:listInCont", {"number"});
-    schema->addContainer("", "second:a");
-    schema->addContainer("", "example:b");
-    schema->addContainer("example:a", "example:a2");
-    schema->addContainer("example:b", "example:b2");
-    schema->addContainer("example:a/example:a2", "example:a3");
-    schema->addContainer("example:b/example:b2", "example:b3");
-    schema->addList("", "example:list", {"number"});
-    schema->addContainer("example:list", "example:contInList");
-    schema->addList("", "example:twoKeyList", {"number", "name"});
+    schema->addContainer("/", "example:a");
+    schema->addList("/example:a", "example:listInCont", {"number"});
+    schema->addContainer("/", "second:a");
+    schema->addContainer("/", "example:b");
+    schema->addContainer("/example:a", "example:a2");
+    schema->addContainer("/example:b", "example:b2");
+    schema->addContainer("/example:a/example:a2", "example:a3");
+    schema->addContainer("/example:b/example:b2", "example:b3");
+    schema->addList("/", "example:list", {"number"});
+    schema->addContainer("/example:list", "example:contInList");
+    schema->addList("/", "example:twoKeyList", {"number", "name"});
     Parser parser(schema);
 
     SECTION("availableNodes")

@@ -80,7 +80,7 @@ void Parser::changeNode(const dataPath_& name)
 
 std::string Parser::currentNode() const
 {
-    return pathToDataString(m_curDir);
+    return pathToDataString(m_curDir, Prefixes::WhenNeeded);
 }
 
 struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {

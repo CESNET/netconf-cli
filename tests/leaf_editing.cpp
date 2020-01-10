@@ -15,7 +15,7 @@
 
 std::ostream& operator<<(std::ostream& s, const set_ cmd)
 {
-    return s << "Command SET {path: " << pathToAbsoluteSchemaString(cmd.m_path) << ", type " << boost::core::demangle(cmd.m_data.type().name()) << ", data: " << leafDataToString(cmd.m_data) << "}";
+    return s << "Command SET {path: " << pathToSchemaString(cmd.m_path, Prefixes::Always) << ", type " << boost::core::demangle(cmd.m_data.type().name()) << ", data: " << leafDataToString(cmd.m_data) << "}";
 }
 
 TEST_CASE("leaf editing")
@@ -23,33 +23,33 @@ TEST_CASE("leaf editing")
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("mod");
     schema->addModule("pizza-module");
-    schema->addContainer("", "mod:contA");
-    schema->addLeaf("", "mod:leafString", yang::LeafDataTypes::String);
-    schema->addLeaf("", "mod:leafDecimal", yang::LeafDataTypes::Decimal);
-    schema->addLeaf("", "mod:leafBool", yang::LeafDataTypes::Bool);
-    schema->addLeaf("", "mod:leafInt8", yang::LeafDataTypes::Int8);
-    schema->addLeaf("", "mod:leafInt16", yang::LeafDataTypes::Int16);
-    schema->addLeaf("", "mod:leafInt32", yang::LeafDataTypes::Int32);
-    schema->addLeaf("", "mod:leafInt64", yang::LeafDataTypes::Int64);
-    schema->addLeaf("", "mod:leafUint8", yang::LeafDataTypes::Uint8);
-    schema->addLeaf("", "mod:leafUint16", yang::LeafDataTypes::Uint16);
-    schema->addLeaf("", "mod:leafUint32", yang::LeafDataTypes::Uint32);
-    schema->addLeaf("", "mod:leafUint64", yang::LeafDataTypes::Uint64);
-    schema->addLeaf("", "mod:leafBinary", yang::LeafDataTypes::Binary);
+    schema->addContainer("/", "mod:contA");
+    schema->addLeaf("/", "mod:leafString", yang::LeafDataTypes::String);
+    schema->addLeaf("/", "mod:leafDecimal", yang::LeafDataTypes::Decimal);
+    schema->addLeaf("/", "mod:leafBool", yang::LeafDataTypes::Bool);
+    schema->addLeaf("/", "mod:leafInt8", yang::LeafDataTypes::Int8);
+    schema->addLeaf("/", "mod:leafInt16", yang::LeafDataTypes::Int16);
+    schema->addLeaf("/", "mod:leafInt32", yang::LeafDataTypes::Int32);
+    schema->addLeaf("/", "mod:leafInt64", yang::LeafDataTypes::Int64);
+    schema->addLeaf("/", "mod:leafUint8", yang::LeafDataTypes::Uint8);
+    schema->addLeaf("/", "mod:leafUint16", yang::LeafDataTypes::Uint16);
+    schema->addLeaf("/", "mod:leafUint32", yang::LeafDataTypes::Uint32);
+    schema->addLeaf("/", "mod:leafUint64", yang::LeafDataTypes::Uint64);
+    schema->addLeaf("/", "mod:leafBinary", yang::LeafDataTypes::Binary);
     schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "food"});
     schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "vehicle"});
     schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "pizza"});
     schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "spaghetti"});
     schema->addIdentity(ModuleValuePair{"mod", "pizza"}, ModuleValuePair{"pizza-module", "hawaii"});
-    schema->addLeafIdentityRef("", "mod:foodIdentRef", ModuleValuePair{"mod", "food"});
-    schema->addLeafIdentityRef("", "mod:pizzaIdentRef", ModuleValuePair{"mod", "pizza"});
-    schema->addLeafIdentityRef("mod:contA", "mod:identInCont", ModuleValuePair{"mod", "pizza"});
-    schema->addLeafEnum("", "mod:leafEnum", {"lol", "data", "coze"});
-    schema->addLeaf("mod:contA", "mod:leafInCont", yang::LeafDataTypes::String);
-    schema->addList("", "mod:list", {"number"});
-    schema->addLeaf("mod:list", "mod:leafInList", yang::LeafDataTypes::String);
-    schema->addLeafRef("", "mod:refToString", "mod:leafString");
-    schema->addLeafRef("", "mod:refToInt8", "mod:leafInt8");
+    schema->addLeafIdentityRef("/", "mod:foodIdentRef", ModuleValuePair{"mod", "food"});
+    schema->addLeafIdentityRef("/", "mod:pizzaIdentRef", ModuleValuePair{"mod", "pizza"});
+    schema->addLeafIdentityRef("/mod:contA", "mod:identInCont", ModuleValuePair{"mod", "pizza"});
+    schema->addLeafEnum("/", "mod:leafEnum", {"lol", "data", "coze"});
+    schema->addLeaf("/mod:contA", "mod:leafInCont", yang::LeafDataTypes::String);
+    schema->addList("/", "mod:list", {"number"});
+    schema->addLeaf("/mod:list", "mod:leafInList", yang::LeafDataTypes::String);
+    schema->addLeafRef("/", "mod:refToString", "/mod:leafString");
+    schema->addLeafRef("/", "mod:refToInt8", "/mod:leafInt8");
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;

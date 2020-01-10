@@ -109,19 +109,19 @@ template <typename T>
 std::string Interpreter::absolutePathFromCommand(const T& command) const
 {
     if (command.m_path.m_scope == Scope::Absolute)
-        return pathToDataString(command.m_path);
+        return pathToDataString(command.m_path, Prefixes::WhenNeeded);
     else
-        return joinPaths(m_parser.currentNode(), pathToDataString(command.m_path));
+        return joinPaths(m_parser.currentNode(), pathToDataString(command.m_path, Prefixes::WhenNeeded));
 }
 
 struct pathToStringVisitor : boost::static_visitor<std::string> {
     std::string operator()(const schemaPath_& path) const
     {
-        return pathToSchemaString(path);
+        return pathToSchemaString(path, Prefixes::WhenNeeded);
     }
     std::string operator()(const dataPath_& path) const
     {
-        return pathToDataString(path);
+        return pathToDataString(path, Prefixes::WhenNeeded);
     }
 };
 
