@@ -22,6 +22,30 @@
       "revId": "140c4addf08fd0a782f44a1f92cd709a0f3de502",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a659277c_7074cfba",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-10T15:46:09Z",
+      "side": 1,
+      "message": "You mean for this function? It\u0027s an internal function, not included in the header. This change was needed because StaticSchema now does absolute paths with a leading slash, so I had to account for that case. Maybe I should put that into the commit message.\n\nThis function is used throughout at least the leaf_editing test. Testing this function would mean testing the StaticSchema class, which is used for testing.",
+      "parentUuid": "85e8ca65_f18bde70",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 5
+      },
+      "revId": "140c4addf08fd0a782f44a1f92cd709a0f3de502",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
