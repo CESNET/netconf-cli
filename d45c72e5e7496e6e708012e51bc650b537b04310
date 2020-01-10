@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "534448f2_acd82fbb",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-10T16:11:20Z",
+      "side": 1,
+      "message": "This returns a set, which means that each insertion (as the set is getting built) involves checking all other maps in that (temporary) set. The maps themselves still have just one item per each list key, but it\u0027s a rather lot of checking for no benefit.\n\nPlease let it return something simpler, such as a vector.",
+      "revId": "d45c72e5e7496e6e708012e51bc650b537b04310",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bac35f3c_539165ec",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-10T16:11:20Z",
+      "side": 1,
+      "message": "we agreed to make this a leaf_data_ (or some other variant) to preserve the type infromation",
+      "range": {
+        "startLine": 34,
+        "startChar": 35,
+        "endLine": 34,
+        "endChar": 46
+      },
+      "revId": "d45c72e5e7496e6e708012e51bc650b537b04310",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
