@@ -158,58 +158,42 @@ std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node)
     return boost::apply_visitor(nodeToSchemaStringVisitor(), node.m_suffix);
 }
 
-std::string pathToDataString(const dataPath_& path)
+std::string pathToDataString(const dataPath_& path, Prefixes prefixes)
 {
     std::string res;
     if (path.m_scope == Scope::Absolute) {
         res = "/";
     }
-    for (const auto it : path.m_nodes)
+
+    for (const auto it : path.m_nodes) {
         if (it.m_prefix)
             res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToDataStringVisitor(), it.m_suffix));
         else
-            res = joinPaths(res, boost::apply_visitor(nodeToDataStringVisitor(), it.m_suffix));
+            res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + boost::apply_visitor(nodeToDataStringVisitor(), it.m_suffix));
+    }
 
     return res;
 }
 
-std::string pathToAbsoluteSchemaString(const dataPath_& path)
-{
-    return pathToAbsoluteSchemaString(dataPathToSchemaPath(path));
-}
-
-std::string pathToAbsoluteSchemaString(const schemaPath_& path)
+std::string pathToSchemaString(const schemaPath_& path, Prefixes prefixes)
 {
     std::string res;
-    if (path.m_nodes.empty()) {
-        return "";
+    if (path.m_scope == Scope::Absolute) {
+        res = "/";
     }
 
-    auto topLevelModule = path.m_nodes.at(0).m_prefix.value();
     for (const auto it : path.m_nodes) {
         if (it.m_prefix)
             res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
         else
-            res = joinPaths(res, topLevelModule.m_name + ":" + boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
+            res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
     }
     return res;
 }
 
-std::string pathToSchemaString(const schemaPath_& path)
+std::string pathToSchemaString(const dataPath_& path, Prefixes prefixes)
 {
-    std::string res;
-    for (const auto it : path.m_nodes) {
-        if (it.m_prefix)
-            res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
-        else
-            res = joinPaths(res, boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
-    }
-    return res;
-}
-
-std::string pathToSchemaString(const dataPath_& path)
-{
-    return pathToSchemaString(dataPathToSchemaPath(path));
+    return pathToSchemaString(dataPathToSchemaPath(path), prefixes);
 }
 
 struct dataSuffixToSchemaSuffix : boost::static_visitor<decltype(schemaNode_::m_suffix)> {

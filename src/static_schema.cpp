@@ -14,7 +14,7 @@ InvalidNodeException::~InvalidNodeException() = default;
 
 StaticSchema::StaticSchema()
 {
-    m_nodes.emplace("", std::unordered_map<std::string, NodeType>());
+    m_nodes.emplace("/", std::unordered_map<std::string, NodeType>());
 }
 
 const std::unordered_map<std::string, NodeType>& StaticSchema::children(const std::string& name) const
@@ -38,7 +38,7 @@ bool StaticSchema::isModule(const std::string& name) const
 
 bool StaticSchema::isContainer(const schemaPath_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(location);
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
     auto fullName = fullNodeName(location, node);
     if (!nodeExists(locationString, fullName))
         return false;
@@ -57,7 +57,7 @@ void StaticSchema::addContainer(const std::string& location, const std::string& 
 
 bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(location);
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
     assert(isList(location, node));
 
     const auto& child = children(locationString).at(fullNodeName(location, node));
@@ -67,7 +67,7 @@ bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair&
 
 const std::set<std::string> StaticSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(location);
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
     assert(isList(location, node));
 
     const auto& child = children(locationString).at(fullNodeName(location, node));
@@ -77,7 +77,7 @@ const std::set<std::string> StaticSchema::listKeys(const schemaPath_& location, 
 
 bool StaticSchema::isList(const schemaPath_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(location);
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
     auto fullName = fullNodeName(location, node);
     if (!nodeExists(locationString, fullName))
         return false;
@@ -100,7 +100,7 @@ bool StaticSchema::isPresenceContainer(const schemaPath_& location, const Module
 {
     if (!isContainer(location, node))
         return false;
-    std::string locationString = pathToAbsoluteSchemaString(location);
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
     return boost::get<yang::container>(children(locationString).at(fullNodeName(location, node))).m_presence == yang::ContainerTraits::Presence;
 }
 
@@ -172,7 +172,7 @@ void StaticSchema::getIdentSet(const ModuleValuePair& ident, std::set<ModuleValu
 
 const std::set<std::string> StaticSchema::validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(location);
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
     assert(isLeaf(location, node));
 
     const auto& child = children(locationString).at(fullNodeName(location, node));
@@ -207,7 +207,7 @@ bool StaticSchema::leafIdentityIsValid(const schemaPath_& location, const Module
 
 bool StaticSchema::isLeaf(const schemaPath_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(location);
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
     auto fullName = fullNodeName(location, node);
     if (!nodeExists(locationString, fullName))
         return false;
@@ -219,14 +219,22 @@ std::string lastNodeOfSchemaPath(const std::string& path)
 {
     std::string res = path;
     auto pos = res.find_last_of('/');
-    if (pos != res.npos)
+    if (pos == 0) { // path had only one path fragment - "/something:something"
+        res.erase(0, 1);
+        return res;
+    }
+    if (pos != res.npos) { // path had more fragments
         res.erase(0, pos);
+        return res;
+    }
+
+    // path was empty
     return res;
 }
 
 yang::LeafDataTypes StaticSchema::leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(location);
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
     auto leaf{boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node)))};
     auto locationOfSource = stripLastNodeFromPath(leaf.m_leafRefSource);
     auto nameOfSource = lastNodeOfSchemaPath(leaf.m_leafRefSource);
@@ -235,13 +243,13 @@ yang::LeafDataTypes StaticSchema::leafrefBase(const schemaPath_& location, const
 
 yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(location);
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
 }
 
 const std::set<std::string> StaticSchema::enumValues(const schemaPath_& location, const ModuleNodePair& node) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(location);
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
     assert(isLeaf(location, node));
 
     const auto& child = children(locationString).at(fullNodeName(location, node));
@@ -253,7 +261,7 @@ const std::set<std::string> StaticSchema::enumValues(const schemaPath_& location
 // for this class.
 std::set<std::string> StaticSchema::childNodes(const schemaPath_& path, const Recursion) const
 {
-    std::string locationString = pathToAbsoluteSchemaString(path);
+    std::string locationString = pathToSchemaString(path, Prefixes::Always);
     std::set<std::string> res;
 
     auto childrenRef = children(locationString);

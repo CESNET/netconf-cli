@@ -15,11 +15,11 @@ TEST_CASE("enum completion")
 {
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("mod");
-    schema->addContainer("", "mod:contA");
-    schema->addLeafEnum("", "mod:leafEnum", {"lala", "lol", "data", "coze"});
-    schema->addLeafEnum("mod:contA", "mod:leafInCont", {"abc", "def"});
-    schema->addList("", "mod:list", {"number"});
-    schema->addLeafEnum("mod:list", "mod:leafInList", {"ano", "anoda", "ne", "katoda"});
+    schema->addContainer("/", "mod:contA");
+    schema->addLeafEnum("/", "mod:leafEnum", {"lala", "lol", "data", "coze"});
+    schema->addLeafEnum("/mod:contA", "mod:leafInCont", {"abc", "def"});
+    schema->addList("/", "mod:list", {"number"});
+    schema->addLeafEnum("/mod:list", "mod:leafInList", {"ano", "anoda", "ne", "katoda"});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
