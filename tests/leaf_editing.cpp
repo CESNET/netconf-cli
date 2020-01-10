@@ -73,6 +73,14 @@ TEST_CASE("leaf editing")
             expected.m_data = std::string("more_data");
         }
 
+        SECTION("set mod:contA/leafInCont   more   d\tata") // spaces in string
+        {
+            input = "set mod:contA/leafInCont more   d\tata";
+            expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, container_("contA")});
+            expected.m_path.m_nodes.push_back(dataNode_{leaf_("leafInCont")});
+            expected.m_data = std::string("more   d\tata");
+        }
+
         SECTION("set mod:list[number=1]/leafInList another_data")
         {
             input = "set mod:list[number=1]/leafInList another_data";
