@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7eb784e0_1285cc93",
+        "filename": "src/parser_context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-10T09:31:53Z",
+      "side": 1,
+      "message": "wondering why this one was necessary and why there\u0027s no test for it",
+      "revId": "512a69ad6ec0cf6bf1d64d8e986cc7f15a72d76f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
