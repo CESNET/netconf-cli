@@ -254,7 +254,8 @@ auto const leaf_data_uint32_def =
 auto const leaf_data_uint64_def =
     uint64;
 auto const leaf_data_string_def =
-    *char_;
+    '\'' >> *(char_-'\'') >> '\'' |
+    '\"' >> *(char_-'\"') >> '\"';
 
 // This intermediate rule is neccessary for coercing to std::string.
 auto const leaf_data_binary_data_def =
