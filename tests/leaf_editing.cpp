@@ -306,84 +306,86 @@ TEST_CASE("leaf editing")
 
     SECTION("invalid input")
     {
+        std::string expectedError;
         SECTION("missing space between a command and its arguments")
         {
-            SECTION("setleaf some_data")
+            SECTION("setmod:leafString some_data")
             {
-                input = "setleaf some_data";
+                input = "setmod:leafString some_data";
             }
         }
 
         SECTION("missing space between arguments")
         {
-            SECTION("set leaflol")
+            SECTION("set mod:leafStringlol")
             {
-                input = "set leaflol";
+                input = "set mod:leafStringlol";
             }
         }
 
         SECTION("non-leaf identifiers")
         {
-            SECTION("set nonexistent blabla")
+            SECTION("set mod:nonexistent blabla")
             {
-                input = "set nonexistent blabla";
+                input = "set mod:nonexistent blabla";
             }
 
-            SECTION("set contA abde")
+            SECTION("set mod:contA abde")
             {
-                input = "set contA abde";
+                input = "set mod:contA abde";
             }
         }
 
         SECTION("wrong types")
         {
-            SECTION("set leafBool blabla")
+            expectedError = "leaf data type mismatch";
+            SECTION("set mod:leafBool blabla")
             {
-                input = "set leafBool blabla";
+                input = "set mod:leafBool blabla";
             }
-            SECTION("set leafUint8 blabla")
+            SECTION("set mod:leafUint8 blabla")
             {
-                input = "set leafUint8 blabla";
+                input = "set mod:leafUint8 blabla";
             }
-            SECTION("set leafUint8 -5")
+            SECTION("set mod:leafUint8 -5")
             {
-                input = "set leafUint8 -5";
+                input = "set mod:leafUint8 -5";
             }
-            SECTION("set leafInt8 blabla")
+            SECTION("set mod:leafInt8 blabla")
             {
-                input = "set leafInt8 blabla";
+                input = "set mod:leafInt8 blabla";
             }
-            SECTION("set leafInt8 130")
+            SECTION("set mod:leafInt8 130")
             {
-                input = "set leafInt8 130";
+                input = "set mod:leafInt8 130";
             }
-            SECTION("set leafUint16 blabla")
+            SECTION("set mod:leafUint16 blabla")
             {
-                input = "set leafUint16 blabla";
+                input = "set mod:leafUint16 blabla";
             }
-            SECTION("set leafInt16 blabla")
+            SECTION("set mod:leafInt16 blabla")
             {
-                input = "set leafInt16 blabla";
+                input = "set mod:leafInt16 blabla";
             }
-            SECTION("set leafUint32 blabla")
+            SECTION("set mod:leafUint32 blabla")
             {
-                input = "set leafUint32 blabla";
+                input = "set mod:leafUint32 blabla";
             }
-            SECTION("set leafInt32 blabla")
+            SECTION("set mod:leafInt32 blabla")
             {
-                input = "set leafInt32 blabla";
+                input = "set mod:leafInt32 blabla";
             }
-            SECTION("set leafUint64 blabla")
+            SECTION("set mod:leafUint64 blabla")
             {
-                input = "set leafUint64 blabla";
+                input = "set mod:leafUint64 blabla";
             }
-            SECTION("set leafInt64 blabla")
+            SECTION("set mod:leafInt64 blabla")
             {
-                input = "set leafInt64 blabla";
+                input = "set mod:leafInt64 blabla";
             }
-            SECTION("set leafEnum blabla")
+            SECTION("set mod:leafEnum blabla")
             {
-                input = "set leafEnum blabla";
+                input = "set mod:leafEnum blabla";
             }
             SECTION("set mod:refToInt8 blabla")
             {
@@ -394,9 +396,9 @@ TEST_CASE("leaf editing")
         SECTION("wrong base64 strings")
         {
             SECTION("invalid character")
-                input = "set leafBinary dbahj-";
+                input = "set mod:leafBinary dbahj-";
             SECTION("equal sign in the middle")
-                input = "set leafBinary db=ahj";
+                input = "set mod:leafBinary db=ahj";
         }
 
         SECTION("non-existing identity")
@@ -425,5 +427,6 @@ TEST_CASE("leaf editing")
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
+        REQUIRE(errorStream.str().find(expectedError) != std::string::npos);
     }
 }

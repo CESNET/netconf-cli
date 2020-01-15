@@ -388,7 +388,7 @@ struct leaf_data_class {
             boost::optional<std::string> module;
             if (parserContext.currentSchemaPath().m_nodes.back().m_prefix)
                 module = parserContext.currentSchemaPath().m_nodes.back().m_prefix.value().m_name;
-            parserContext.m_errorMsg = "Expected " + leafDataTypeToString(schema.leafType(location, {module, leaf.m_name})) + " here:";
+            parserContext.m_errorMsg = "leaf data type mismatch: Expected " + leafDataTypeToString(schema.leafType(location, {module, leaf.m_name})) + " here:";
             return x3::error_handler_result::fail;
         }
         return x3::error_handler_result::rethrow;
@@ -450,7 +450,7 @@ struct leaf_data_enum_class : leaf_data_base_class<yang::LeafDataTypes::Enum> {
         if (!schema.leafEnumHasValue(location, {module, leaf.m_name}, ast.m_value)) {
             _pass(context) = false;
 
-            parserContext.m_errorMsg = "Expected an enum here. Allowed values:";
+            parserContext.m_errorMsg = "leaf data type mismatch: Expected an enum here. Allowed values:";
             for (const auto& it : schema.enumValues(location, {module, leaf.m_name})) {
                 parserContext.m_errorMsg += " " + it;
             }
