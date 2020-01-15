@@ -58,32 +58,48 @@ TEST_CASE("leaf editing")
     {
         set_ expected;
 
-        SECTION("set mod:leafString some_data")
+        SECTION("set mod:leafString \"some_data\"")
         {
-            input = "set mod:leafString some_data";
+            input = "set mod:leafString \'some_data\'";
             expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafString")});
             expected.m_data = std::string("some_data");
         }
 
-        SECTION("set mod:contA/leafInCont more_data")
+        SECTION("set mod:contA/leafInCont 'more_data'")
         {
-            input = "set mod:contA/leafInCont more_data";
+            input = "set mod:contA/leafInCont 'more_data'";
             expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, container_("contA")});
             expected.m_path.m_nodes.push_back(dataNode_{leaf_("leafInCont")});
             expected.m_data = std::string("more_data");
         }
 
-        SECTION("set mod:contA/leafInCont   more   d\tata") // spaces in string
+        SECTION("set mod:contA/leafInCont \"data with' a quote\"")
         {
-            input = "set mod:contA/leafInCont more   d\tata";
+            input = "set mod:contA/leafInCont \"data with' a quote\"";
+            expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, container_("contA")});
+            expected.m_path.m_nodes.push_back(dataNode_{leaf_("leafInCont")});
+            expected.m_data = std::string("data with' a quote");
+        }
+
+        SECTION("set mod:contA/leafInCont 'data with\" a quote'")
+        {
+            input = "set mod:contA/leafInCont 'data with\" a quote'";
+            expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, container_("contA")});
+            expected.m_path.m_nodes.push_back(dataNode_{leaf_("leafInCont")});
+            expected.m_data = std::string("data with\" a quote");
+        }
+
+        SECTION("set mod:contA/leafInCont   'more   d\tata'") // spaces in string
+        {
+            input = "set mod:contA/leafInCont 'more   d\tata'";
             expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, container_("contA")});
             expected.m_path.m_nodes.push_back(dataNode_{leaf_("leafInCont")});
             expected.m_data = std::string("more   d\tata");
         }
 
-        SECTION("set mod:list[number=1]/leafInList another_data")
+        SECTION("set mod:list[number=1]/leafInList \"another_data\"")
         {
-            input = "set mod:list[number=1]/leafInList another_data";
+            input = "set mod:list[number=1]/leafInList \"another_data\"";
             auto keys = std::map<std::string, std::string>{
                 {"number", "1"}};
             expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
@@ -95,7 +111,7 @@ TEST_CASE("leaf editing")
         {
             SECTION("string")
             {
-                input = "set mod:leafString somedata";
+                input = "set mod:leafString \"somedata\"";
                 expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafString")});
                 expected.m_data = std::string("somedata");
             }
@@ -285,7 +301,7 @@ TEST_CASE("leaf editing")
             {
                 SECTION("refToString")
                 {
-                    input = "set mod:refToString blabal";
+                    input = "set mod:refToString \"blabal\"";
                     expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("refToString")});
                     expected.m_data = std::string("blabal");
                 }
@@ -308,86 +324,86 @@ TEST_CASE("leaf editing")
     {
         SECTION("missing space between a command and its arguments")
         {
-            SECTION("setleaf some_data")
+            SECTION("setmod:leafString some_data")
             {
-                input = "setleaf some_data";
+                input = "setmod:leafString 'some_data'";
             }
         }
 
         SECTION("missing space between arguments")
         {
-            SECTION("set leaflol")
+            SECTION("set mod:leafString'lol'")
             {
-                input = "set leaflol";
+                input = "set mod:leafString'lol'";
             }
         }
 
         SECTION("non-leaf identifiers")
         {
-            SECTION("set nonexistent blabla")
+            SECTION("set mod:nonexistent 'blabla'")
             {
-                input = "set nonexistent blabla";
+                input = "set mod:nonexistent 'blabla'";
             }
 
-            SECTION("set contA abde")
+            SECTION("set mod:contA 'abde'")
             {
-                input = "set contA abde";
+                input = "set mod:contA 'abde'";
             }
         }
 
         SECTION("wrong types")
         {
-            SECTION("set leafBool blabla")
+            SECTION("set mod:leafBool 'blabla'")
             {
-                input = "set leafBool blabla";
+                input = "set mod:leafBool 'blabla'";
             }
-            SECTION("set leafUint8 blabla")
+            SECTION("set mod:leafUint8 'blabla'")
             {
-                input = "set leafUint8 blabla";
+                input = "set mod:leafUint8 'blabla'";
             }
-            SECTION("set leafUint8 -5")
+            SECTION("set mod:leafUint8 -5")
             {
-                input = "set leafUint8 -5";
+                input = "set mod:leafUint8 -5";
             }
-            SECTION("set leafInt8 blabla")
+            SECTION("set mod:leafInt8 'blabla'")
             {
-                input = "set leafInt8 blabla";
+                input = "set mod:leafInt8 'blabla'";
             }
-            SECTION("set leafInt8 130")
+            SECTION("set mod:leafInt8 130")
             {
-                input = "set leafInt8 130";
+                input = "set mod:leafInt8 130";
             }
-            SECTION("set leafUint16 blabla")
+            SECTION("set mod:leafUint16 'blabla'")
             {
-                input = "set leafUint16 blabla";
+                input = "set mod:leafUint16 'blabla'";
             }
-            SECTION("set leafInt16 blabla")
+            SECTION("set mod:leafInt16 'blabla'")
             {
-                input = "set leafInt16 blabla";
+                input = "set mod:leafInt16 'blabla'";
             }
-            SECTION("set leafUint32 blabla")
+            SECTION("set mod:leafUint32 'blabla'")
             {
-                input = "set leafUint32 blabla";
+                input = "set mod:leafUint32 'blabla'";
             }
-            SECTION("set leafInt32 blabla")
+            SECTION("set mod:leafInt32 'blabla'")
             {
-                input = "set leafInt32 blabla";
+                input = "set mod:leafInt32 'blabla'";
             }
-            SECTION("set leafUint64 blabla")
+            SECTION("set mod:leafUint64 'blabla'")
             {
-                input = "set leafUint64 blabla";
+                input = "set mod:leafUint64 'blabla'";
             }
-            SECTION("set leafInt64 blabla")
+            SECTION("set mod:leafInt64 'blabla'")
             {
-                input = "set leafInt64 blabla";
+                input = "set mod:leafInt64 'blabla'";
             }
-            SECTION("set leafEnum blabla")
+            SECTION("set mod:leafEnum 'blabla'")
             {
-                input = "set leafEnum blabla";
+                input = "set mod:leafEnum 'blabla'";
             }
-            SECTION("set mod:refToInt8 blabla")
+            SECTION("set mod:refToInt8 'blabla'")
             {
-                input = "set mod:refToInt8 blabla";
+                input = "set mod:refToInt8 'blabla'";
             }
         }
 
