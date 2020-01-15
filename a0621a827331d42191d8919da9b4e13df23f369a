@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8be02055_5db1de81",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-15T17:14:32Z",
+      "side": 1,
+      "message": "this should mention why",
+      "revId": "a0621a827331d42191d8919da9b4e13df23f369a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "099845a7_1693d069",
+        "filename": "src/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-15T17:14:32Z",
+      "side": 1,
+      "message": "extra commit, please",
+      "revId": "a0621a827331d42191d8919da9b4e13df23f369a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8fbd4aa2_e77726a5",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-15T17:14:32Z",
+      "side": 1,
+      "message": "some of these changes also add the mod: prefix -- some just to the description, others to the actual test data as well. Please separate this cleanup to an extra commit.",
+      "range": {
+        "startLine": 327,
+        "startChar": 0,
+        "endLine": 406,
+        "endChar": 53
+      },
+      "revId": "a0621a827331d42191d8919da9b4e13df23f369a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
