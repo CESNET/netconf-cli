@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "637dea86_1ff74c5e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-15T17:57:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8be02055_5db1de81",
+      "revId": "a0621a827331d42191d8919da9b4e13df23f369a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "099845a7_1693d069",
         "filename": "src/utils.cpp",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2020-01-15T17:14:32Z",
       "side": 1,
       "message": "extra commit, please",
+      "revId": "a0621a827331d42191d8919da9b4e13df23f369a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9fbfe65f_569c6474",
+        "filename": "src/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-15T17:57:01Z",
+      "side": 1,
+      "message": "This change is connected to this commit. I added a test for this",
+      "parentUuid": "099845a7_1693d069",
       "revId": "a0621a827331d42191d8919da9b4e13df23f369a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -56,6 +92,30 @@
       "revId": "a0621a827331d42191d8919da9b4e13df23f369a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c80f7b78_add0abac",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-15T17:57:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fbd4aa2_e77726a5",
+      "range": {
+        "startLine": 327,
+        "startChar": 0,
+        "endLine": 406,
+        "endChar": 53
+      },
+      "revId": "a0621a827331d42191d8919da9b4e13df23f369a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
