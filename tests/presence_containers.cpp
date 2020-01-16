@@ -22,6 +22,7 @@ TEST_CASE("presence containers")
     schema->addContainer("/mod:a/mod:a2", "mod:a3", yang::ContainerTraits::Presence);
     schema->addContainer("/mod:b", "mod:b2", yang::ContainerTraits::Presence);
     schema->addList("/", "mod:list", {"quote"});
+    schema->addLeaf("/mod:list", "mod:quote", yang::LeafDataTypes::String);
     schema->addContainer("/mod:list", "mod:contInList", yang::ContainerTraits::Presence);
     Parser parser(schema);
     std::string input;
@@ -52,24 +53,24 @@ TEST_CASE("presence containers")
         SECTION("mod:list[quote='lol']/contInList")
         {
             input = "mod:list[quote='lol']/contInList";
-            auto keys = std::map<std::string, std::string>{
-                {"quote", "lol"}};
+            auto keys = std::map<std::string, leaf_data_>{
+                {"quote", std::string{"lol"}}};
             expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
         }
 
         SECTION("mod:list[quote='double\"quote']/contInList")
         {
             input = "mod:list[quote='double\"quote']/contInList";
-            auto keys = std::map<std::string, std::string>{
-                {"quote", "double\"quote"}};
+            auto keys = std::map<std::string, leaf_data_>{
+                {"quote", std::string{"double\"quote"}}};
             expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
         }
 
         SECTION("mod:list[quote=\"single'quote\"]/contInList")
         {
             input = "mod:list[quote=\"single'quote\"]/contInList";
-            auto keys = std::map<std::string, std::string>{
-                {"quote", "single'quote"}};
+            auto keys = std::map<std::string, leaf_data_>{
+                {"quote", std::string{"single'quote"}}};
             expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
         }
 

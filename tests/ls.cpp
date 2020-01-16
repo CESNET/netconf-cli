@@ -25,8 +25,11 @@ TEST_CASE("ls")
     schema->addContainer("/example:a/example:a2", "example:a3");
     schema->addContainer("/example:b/example:b2", "example:b3");
     schema->addList("/", "example:list", {"number"});
+    schema->addLeaf("/example:list", "example:number", yang::LeafDataTypes::Int32);
     schema->addContainer("/example:list", "example:contInList");
     schema->addList("/", "example:twoKeyList", {"number", "name"});
+    schema->addLeaf("/example:twoKeyList", "example:number", yang::LeafDataTypes::Int32);
+    schema->addLeaf("/example:twoKeyList", "example:name", yang::LeafDataTypes::String);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -153,8 +156,8 @@ TEST_CASE("ls")
             SECTION("ls example:list[number=342]/contInList")
             {
                 input = "ls example:list[number=342]/contInList";
-                auto keys = std::map<std::string, std::string>{
-                    {"number", "342"}};
+                auto keys = std::map<std::string, leaf_data_>{
+                    {"number", int32_t{342}}};
                 expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, listElement_{"list", keys}),
                                                                 dataNode_(container_{"contInList"})}};
             }

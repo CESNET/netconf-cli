@@ -48,12 +48,12 @@ struct leaf_ {
 
 struct listElement_ {
     listElement_() {}
-    listElement_(const std::string& listName, const std::map<std::string, std::string>& keys);
+    listElement_(const std::string& listName, const std::map<std::string, leaf_data_>& keys);
 
     bool operator==(const listElement_& b) const;
 
     std::string m_name;
-    std::map<std::string, std::string> m_keys;
+    std::map<std::string, leaf_data_> m_keys;
 };
 
 struct list_ {

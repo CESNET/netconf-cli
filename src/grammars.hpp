@@ -107,13 +107,6 @@ auto const key_identifier_def =
         ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
     ];
 
-auto const quotedValue =
-    ('\'' > +(char_-'\'') > '\'') |
-    ('\"' > +(char_-'\"') > '\"');
-
-auto const number =
-    +x3::digit;
-
 auto const createKeySuggestions_def =
     x3::eps;
 
@@ -121,7 +114,7 @@ auto const suggestKeysEnd_def =
     x3::eps;
 
 auto const keyValue_def =
-    key_identifier > '=' > (quotedValue | number);
+    key_identifier > '=' > leaf_data;
 
 auto const keyValueWrapper =
     lexeme['[' > createKeySuggestions > keyValue > suggestKeysEnd > ']'];
