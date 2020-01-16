@@ -285,6 +285,21 @@ if(BUILD_TESTING)
 
 endif()
 
+option(WITH_PYTHON_BINDINGS "Create and install Python3 bindings for accessing datastores" OFF)
+if(WITH_PYTHON_BINDINGS)
+    set(PYBIND11_CPP_STANDARD -std=c++17)
+    find_package(pybind11 REQUIRED)
+    pybind11_add_module(netconf_cli_py src/python_netconf.cpp)
+    target_link_libraries(netconf_cli_py PUBLIC netconfaccess)
+
+    if(BUILD_TESTING)
+        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/python_netconfaccess.py
+            ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py @ONLY)
+        add_test(NAME test_netconf_cli_py COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py)
+        set_tests_properties(test_netconf_cli_py PROPERTIES FIXTURES_REQUIRED netopeer_running)
+    endif()
+endif()
+
 if(WITH_DOCS)
     set(doxyfile_in ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
     set(doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)

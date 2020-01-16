@@ -40,6 +40,14 @@ if [[ $ZUUL_JOB_NAME =~ .*-tsan ]]; then
     export LDFLAGS="-fsanitize=thread ${LDFLAGS}"
 fi
 
+if [[ $ZUUL_JOB_NAME =~ -gcc$ ]]; then
+    # Python and ASAN (and, presumably, all other sanitizers) are tricky to use from a Python DSO,
+    # I was, e.g., getting unrelated failures from libyang's thread-local global access (ly_errno)
+    # even when correctly injecting the ASAN runtime via LD_PRELOAD. Let's just give up and only
+    # enable this when not using sanitizers.
+    CMAKE_OPTIONS="${CMAKE_OPTIONS} -DWITH_PYTHON_BINDINGS=ON"
+fi
+
 PREFIX=~/target
 mkdir ${PREFIX}
 BUILD_DIR=~/build
