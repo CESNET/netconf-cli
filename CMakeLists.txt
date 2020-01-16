@@ -210,7 +210,7 @@ if(BUILD_TESTING)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/netopeer_vars.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/netopeer_vars.hpp @ONLY)
 
     function(setup_datastore_tests)
-        add_test(NAME setup_netopeer COMMAND ${SYSREPOCFG_EXECUTABLE} ietf-netconf-server -i ${CMAKE_CURRENT_SOURCE_DIR}/netopeer-test-config --datastore=startup --format=xml)
+        add_test(NAME setup_netopeer COMMAND ${SYSREPOCFG_EXECUTABLE} ietf-netconf-server -i ${CMAKE_CURRENT_SOURCE_DIR}/tests/netopeer-test-config.xml --datastore=startup --format=xml)
         add_test(NAME start_daemons COMMAND ${FAKEROOT_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/start_daemons.sh)
         add_test(NAME kill_daemons COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/kill_daemons.sh)
         set_tests_properties(setup_netopeer start_daemons kill_daemons PROPERTIES RESOURCE_LOCK sysrepo)
