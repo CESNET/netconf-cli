@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b9ef620e_3c1e3a93",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-16T17:28:15Z",
+      "side": 1,
+      "message": "I think it\u0027s cleaner to write std::string::npos here because it\u0027s a static member. If errorStream.str() had any side effects, the code would have triggered them here.",
+      "range": {
+        "startLine": 430,
+        "startChar": 57,
+        "endLine": 430,
+        "endChar": 74
+      },
+      "revId": "9112d58aa89991a157089a8a92a2dc1ea8539a87",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
