@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "df960d43_1505e017",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-16T17:26:56Z",
+      "side": 1,
+      "message": "IOW, there\u0027s nothing which makes sure that you don\u0027t do something like:\n\n schema-\u003eaddList(\"/\", \"example:list\", {\"number\"});\n schema-\u003eaddLeaf(\"/example:list\", \"example:DIFFERENT\", yang::LeafDataTypes::Int32);\n\nbut as I said, this is just for tests, so OK with me.",
+      "parentUuid": "dfcbcb3b_62cf5bbc",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 83
+      },
+      "revId": "9d4f7a8b8b1ac27ee540cc5bc7142af3e3bef9eb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1f5e8e88_9a52c121",
         "filename": "tests/path_completion.cpp",
         "patchSetId": 1
