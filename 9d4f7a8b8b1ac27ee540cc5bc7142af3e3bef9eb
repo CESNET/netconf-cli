@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a9365ede_2c1dec74",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-16T15:18:22Z",
+      "side": 1,
+      "message": "Where was this getting caught before? If it was never triggered (perhaps because it\u0027s guarded somewhere else), then this can be changed to an assert or some exception (because the code assumes that it cannot happen). If this was not checked before this change, please add a test which exercises this path.",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 35
+      },
+      "revId": "9d4f7a8b8b1ac27ee540cc5bc7142af3e3bef9eb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fb8dae2_d0cca638",
+        "filename": "src/parser_context.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-16T15:18:22Z",
+      "side": 1,
+      "message": "\"Location\" suggests to me that this is about a position in the input string, but this is about an XPath -\u003e can you use \"Path\", please?",
+      "range": {
+        "startLine": 26,
+        "startChar": 32,
+        "endLine": 26,
+        "endChar": 40
+      },
+      "revId": "9d4f7a8b8b1ac27ee540cc5bc7142af3e3bef9eb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f2af934_f5f9a33d",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-16T15:18:22Z",
+      "side": 1,
+      "message": "I dislike this API because it\u0027s essentially adding the list keys in two stages. But considering that it\u0027s only for tests, I\u0027m willing to live with it.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 83
+      },
+      "revId": "9d4f7a8b8b1ac27ee540cc5bc7142af3e3bef9eb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1f5e8e88_9a52c121",
+        "filename": "tests/path_completion.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-16T15:18:22Z",
+      "side": 1,
+      "message": "This is just something which synces behavior of the static schema with actual real YANG-talking one, correct? If so, turning it into a separate commit would not hurt, IMHO.\n\nFeel free to disagree and mark this as resolved.",
+      "revId": "9d4f7a8b8b1ac27ee540cc5bc7142af3e3bef9eb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
