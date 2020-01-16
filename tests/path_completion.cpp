@@ -36,10 +36,15 @@ TEST_CASE("path_completion")
     schema->addContainer("/example:ano/example:a2", "example:a3");
     schema->addContainer("/example:bota/example:b2", "example:b3");
     schema->addList("/", "example:list", {"number"});
-    schema->addList("/", "example:ovoce", {"name"});
-    schema->addList("/", "example:ovocezelenina", {"name"});
+    schema->addLeaf("/example:list", "example:number", yang::LeafDataTypes::Int32);
     schema->addContainer("/example:list", "example:contInList");
+    schema->addList("/", "example:ovoce", {"name"});
+    schema->addLeaf("/example:ovoce", "example:name", yang::LeafDataTypes::String);
+    schema->addList("/", "example:ovocezelenina", {"name"});
+    schema->addLeaf("/example:ovocezelenina", "example:name", yang::LeafDataTypes::String);
     schema->addList("/", "example:twoKeyList", {"number", "name"});
+    schema->addLeaf("/example:twoKeyList", "example:name", yang::LeafDataTypes::String);
+    schema->addLeaf("/example:twoKeyList", "example:number", yang::LeafDataTypes::Int32);
     schema->addLeaf("/", "example:leafInt", yang::LeafDataTypes::Int32);
     Parser parser(schema);
     std::string input;
@@ -111,13 +116,13 @@ TEST_CASE("path_completion")
         SECTION("ls /example:list[number=3]/")
         {
             input = "ls /example:list[number=3]/";
-            expected = {"example:contInList/"};
+            expected = {"example:contInList/", "example:number "};
         }
 
         SECTION("ls /example:list[number=3]/c")
         {
             input = "ls /example:list[number=3]/e";
-            expected = {"example:contInList/"};
+            expected = {"example:contInList/", "example:number "};
         }
 
         SECTION("ls /example:list[number=3]/a")

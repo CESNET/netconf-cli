@@ -23,6 +23,8 @@ struct ParserContext {
     std::string m_tmpListName;
     bool m_topLevelModulePresent = false;
     std::set<std::string> m_tmpListKeys;
+    schemaPath_ m_tmpListKeyLeafLocation;
+    ModuleNodePair m_tmpListKeyLeafNode;
     bool m_errorHandled = false;
     bool m_completing = false;
     std::set<std::string> m_suggestions;

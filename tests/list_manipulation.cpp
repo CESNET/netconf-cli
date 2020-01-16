@@ -14,6 +14,7 @@ TEST_CASE("list manipulation")
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("mod");
     schema->addList("/", "mod:list", {"number"});
+    schema->addLeaf("/mod:list", "mod:number", yang::LeafDataTypes::Int32);
     schema->addLeaf("/mod:list", "mod:leafInList", yang::LeafDataTypes::String);
     Parser parser(schema);
     std::string input;
@@ -25,8 +26,8 @@ TEST_CASE("list manipulation")
         SECTION("mod:list[number=3]")
         {
             input = "mod:list[number=3]";
-            auto keys = std::map<std::string, std::string>{
-                {"number", "3"}};
+            auto keys = std::map<std::string, leaf_data_>{
+                {"number", int32_t{3}}};
             expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
         }
 
