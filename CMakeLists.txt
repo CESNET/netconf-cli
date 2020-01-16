@@ -285,6 +285,61 @@ if(BUILD_TESTING)
 
 endif()
 
+option(WITH_PYTHON_BINDINGS "Create and install Python3 bindings for accessing datastores" OFF)
+if(WITH_PYTHON_BINDINGS)
+    set(PYBIND11_CPP_STANDARD -std=c++17)
+    find_package(pybind11 REQUIRED)
+    pybind11_add_module(netconf_cli_py src/python_netconf.cpp)
+    target_link_libraries(netconf_cli_py PUBLIC netconfaccess)
+
+    if(BUILD_TESTING)
+        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/python_netconfaccess.py
+            ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py @ONLY)
+        add_test(NAME test_netconf_cli_py COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py)
+        set_tests_properties(test_netconf_cli_py PROPERTIES FIXTURES_REQUIRED netopeer_running RESOURCE_LOCK sysrepo DEPENDS test_datastore_access_netconf_cleanup)
+        set_tests_properties(kill_daemons PROPERTIES DEPENDS test_netconf_cli_py)
+
+        set(sanitizer_active OFF)
+        # FIXME: this just sucks. The detection is very unreliable (one could use something like
+        # -fsanitize=address,undefined and we are screwed), and especially clang's query for preload
+        # is obviously unportable because we hardcode host's architecture.
+        # This is super-ugly. Perhaps it would be better just to outright disable everything, but hey,
+        # I need to test this on my laptop where I'm using ASAN by default, and it kinda-almost-works
+        # there with just one patch to libyang :).
+        if (${CMAKE_CXX_FLAGS} MATCHES "-fsanitize=address")
+            set(sanitizer_active ON)
+            set(gcc_sanitizer_preload libasan.so)
+            set(clang_sanitizer_preload libclang_rt.asan-x86_64.so)
+        endif()
+        if (${CMAKE_CXX_FLAGS} MATCHES "-fsanitize=thread")
+            set(sanitizer_active ON)
+            set(gcc_sanitizer_preload libtsan.so)
+            set(clang_sanitizer_preload libclang_rt.tsan-x86_64.so)
+        endif()
+        if (${CMAKE_CXX_FLAGS} MATCHES "-fsanitize=undefined")
+            set(sanitizer_active ON)
+            set(gcc_sanitizer_preload libubsan.so)
+            set(clang_sanitizer_preload libclang_rt.ubsan-x86_64.so)
+        endif()
+
+        if (sanitizer_active)
+            if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+                execute_process(COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=${clang_sanitizer_preload}
+                    OUTPUT_VARIABLE LIBxSAN_FULL_PATH OUTPUT_STRIP_TRAILING_WHITESPACE)
+            elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+                execute_process(COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=${gcc_sanitizer_preload}
+                    OUTPUT_VARIABLE LIBxSAN_FULL_PATH OUTPUT_STRIP_TRAILING_WHITESPACE)
+            else()
+                message(ERROR "Cannot determine correct sanitizer library for LD_PRELOAD")
+            endif()
+            set_property(TEST test_netconf_cli_py APPEND PROPERTY ENVIRONMENT
+                LD_PRELOAD=${LIBxSAN_FULL_PATH}
+                ASAN_OPTIONS=detect_leaks=0 # they look harmless, but they are annoying
+                )
+        endif()
+    endif()
+endif()
+
 if(WITH_DOCS)
     set(doxyfile_in ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
     set(doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
