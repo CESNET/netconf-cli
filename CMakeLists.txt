@@ -206,13 +206,13 @@ if(BUILD_TESTING)
     endif()
 
     set(NETOPEER_SOCKET_PATH "${CMAKE_CURRENT_BINARY_DIR}/netopeer2-server.sock")
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start_daemons.sh.in ${CMAKE_CURRENT_BINARY_DIR}/start_daemons.sh @ONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/netopeer_vars.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/netopeer_vars.hpp @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/start_daemons.sh.in ${CMAKE_CURRENT_BINARY_DIR}/start_daemons.sh @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/netopeer_vars.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/netopeer_vars.hpp @ONLY)
 
     function(setup_datastore_tests)
-        add_test(NAME setup_netopeer COMMAND ${SYSREPOCFG_EXECUTABLE} ietf-netconf-server -i ${CMAKE_CURRENT_SOURCE_DIR}/netopeer-test-config --datastore=startup --format=xml)
+        add_test(NAME setup_netopeer COMMAND ${SYSREPOCFG_EXECUTABLE} ietf-netconf-server -i ${CMAKE_CURRENT_SOURCE_DIR}/tests/netopeer-test-config.xml --datastore=startup --format=xml)
         add_test(NAME start_daemons COMMAND ${FAKEROOT_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/start_daemons.sh)
-        add_test(NAME kill_daemons COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/kill_daemons.sh)
+        add_test(NAME kill_daemons COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tests/kill_daemons.sh)
         set_tests_properties(setup_netopeer start_daemons kill_daemons PROPERTIES RESOURCE_LOCK sysrepo)
         set_tests_properties(setup_netopeer PROPERTIES FIXTURES_SETUP netopeer_configured)
         set_tests_properties(start_daemons PROPERTIES FIXTURES_REQUIRED netopeer_configured FIXTURES_SETUP netopeer_running)
@@ -258,8 +258,8 @@ if(BUILD_TESTING)
 
     function(datastore_test name model_path)
         set(TESTNAME test_${name})
-        datastore_test_impl(${name} ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang sysrepo)
-        datastore_test_impl(${name} ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang netconf)
+        datastore_test_impl(${name} ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang sysrepo)
+        datastore_test_impl(${name} ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang netconf)
         set_tests_properties(${TESTNAME}_netconf_init PROPERTIES DEPENDS ${TESTNAME}_sysrepo_cleanup)
     endfunction()
 
@@ -279,7 +279,7 @@ if(BUILD_TESTING)
     target_link_libraries(test_path_utils path)
 
     setup_datastore_tests()
-    datastore_test(datastore_access ${CMAKE_CURRENT_SOURCE_DIR}/example-schema.yang)
+    datastore_test(datastore_access ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
     set_tests_properties(kill_daemons PROPERTIES DEPENDS test_datastore_access_netconf_cleanup)
 
 
