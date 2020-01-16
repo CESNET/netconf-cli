@@ -22,6 +22,30 @@
       "revId": "9112d58aa89991a157089a8a92a2dc1ea8539a87",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9fd4ecd6_e3ca41a8",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-16T17:44:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9ef620e_3c1e3a93",
+      "range": {
+        "startLine": 430,
+        "startChar": 57,
+        "endLine": 430,
+        "endChar": 74
+      },
+      "revId": "9112d58aa89991a157089a8a92a2dc1ea8539a87",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
