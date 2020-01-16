@@ -72,7 +72,7 @@ bool leaf_::operator==(const leaf_& b) const
     return this->m_name == b.m_name;
 }
 
-listElement_::listElement_(const std::string& listName, const std::map<std::string, std::string>& keys)
+listElement_::listElement_(const std::string& listName, const std::map<std::string, leaf_data_>& keys)
     : m_name(listName)
     , m_keys(keys)
 {
@@ -138,7 +138,7 @@ struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
         res << node.m_name + "[";
         std::transform(node.m_keys.begin(), node.m_keys.end(),
                 std::experimental::make_ostream_joiner(res, "]["),
-                [] (const auto& it) { return it.first + "=" + escapeListKeyString(it.second); });
+                [] (const auto& it) { return it.first + "=" + escapeListKeyString(leafDataToString(it.second)); });
         res << "]";
         return res.str();
     }
