@@ -24,8 +24,11 @@ TEST_CASE("cd")
     schema->addContainer("/example:a/example:a2", "example:a3");
     schema->addContainer("/example:b/example:b2", "example:b3");
     schema->addList("/", "example:list", {"number"});
+    schema->addLeaf("/example:list", "example:number", yang::LeafDataTypes::Int32);
     schema->addContainer("/example:list", "example:contInList");
     schema->addList("/", "example:twoKeyList", {"number", "name"});
+    schema->addLeaf("/example:twoKeyList", "example:number", yang::LeafDataTypes::Int32);
+    schema->addLeaf("/example:twoKeyList", "example:name", yang::LeafDataTypes::String);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -98,16 +101,16 @@ TEST_CASE("cd")
             SECTION("example:list[number=1]")
             {
                 input = "cd example:list[number=1]";
-                auto keys = std::map<std::string, std::string>{
-                    {"number", "1"}};
+                auto keys = std::map<std::string, leaf_data_>{
+                    {"number", int32_t{1}}};
                 expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("list", keys)));
             }
 
             SECTION("example:list[number=1]/contInList")
             {
                 input = "cd example:list[number=1]/contInList";
-                auto keys = std::map<std::string, std::string>{
-                    {"number", "1"}};
+                auto keys = std::map<std::string, leaf_data_>{
+                    {"number", int32_t{1}}};
                 expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("list", keys)));
                 expected.m_path.m_nodes.push_back(dataNode_(container_("contInList")));
             }
@@ -115,9 +118,9 @@ TEST_CASE("cd")
             SECTION("example:twoKeyList[number=4][name='abcd']")
             {
                 input = "cd example:twoKeyList[number=4][name='abcd']";
-                auto keys = std::map<std::string, std::string>{
-                    {"number", "4"},
-                    {"name", "abcd"}};
+                auto keys = std::map<std::string, leaf_data_>{
+                    {"number", int32_t{4}},
+                    {"name", std::string{"abcd"}}};
                 expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("twoKeyList", keys)));
             }
         }

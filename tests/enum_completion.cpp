@@ -19,6 +19,7 @@ TEST_CASE("enum completion")
     schema->addLeafEnum("/", "mod:leafEnum", {"lala", "lol", "data", "coze"});
     schema->addLeafEnum("/mod:contA", "mod:leafInCont", {"abc", "def"});
     schema->addList("/", "mod:list", {"number"});
+    schema->addLeaf("/mod:list", "mod:number", yang::LeafDataTypes::Int32);
     schema->addLeafEnum("/mod:list", "mod:leafInList", {"ano", "anoda", "ne", "katoda"});
     Parser parser(schema);
     std::string input;

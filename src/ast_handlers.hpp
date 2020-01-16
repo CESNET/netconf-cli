@@ -25,14 +25,10 @@ struct keyValue_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        const Schema& schema = parserContext.m_schema;
 
         if (parserContext.m_tmpListKeys.find(ast.first) != parserContext.m_tmpListKeys.end()) {
             _pass(context) = false;
             parserContext.m_errorMsg = "Key \"" + ast.first + "\" was entered more than once.";
-        } else if (!schema.listHasKey(parserContext.currentSchemaPath(), {parserContext.m_curModule, parserContext.m_tmpListName}, ast.first)) {
-            _pass(context) = false;
-            parserContext.m_errorMsg = parserContext.m_tmpListName + " is not indexed by \"" + ast.first + "\".";
         } else {
             parserContext.m_tmpListKeys.insert(ast.first);
         }
@@ -61,7 +57,28 @@ struct node_identifier_class {
     }
 };
 
-struct key_identifier_class;
+struct key_identifier_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        const Schema& schema = parserContext.m_schema;
+        schemaPath_ location = parserContext.currentSchemaPath();
+        ModuleNodePair list{parserContext.m_curModule, parserContext.m_tmpListName};
+
+        if (schema.listHasKey(location, list, ast)) {
+            schemaNode_ listNode;
+            listNode.m_prefix = parserContext.m_curModule ? boost::optional<module_>{{*parserContext.m_curModule}} : boost::none;
+            listNode.m_suffix = list_{parserContext.m_tmpListName};
+            location.m_nodes.push_back(listNode);
+            parserContext.m_tmpListKeyLeafPath.m_location = location;
+            parserContext.m_tmpListKeyLeafPath.m_node = {boost::none, ast};
+        } else {
+            parserContext.m_errorMsg = parserContext.m_tmpListName + " is not indexed by \"" + ast + "\".";
+            _pass(context) = false;
+        }
+    }
+};
 
 struct module_identifier_class;
 
@@ -348,11 +365,18 @@ struct delete_class {
 
 struct leaf_path_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         try {
-            auto leaf = boost::get<leaf_>(ast.m_nodes.back().m_suffix);
+            auto lastNode = parserContext.currentSchemaPath().m_nodes.back();
+            auto leaf = boost::get<leaf_>(lastNode.m_suffix);
+            auto location = pathWithoutLastNode(parserContext.currentSchemaPath());
+            ModuleNodePair node{lastNode.m_prefix.flat_map([](const auto& it) { return boost::optional<std::string>{it.m_name}; }), leaf.m_name};
+
+            parserContext.m_tmpListKeyLeafPath.m_location = location;
+            parserContext.m_tmpListKeyLeafPath.m_node = node;
+
         } catch (boost::bad_get&) {
             parserContext.m_errorMsg = "This is not a path to leaf.";
             _pass(context) = false;
@@ -383,12 +407,8 @@ struct leaf_data_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
         if (parserContext.m_errorMsg.empty()) {
-            leaf_ leaf = boost::get<leaf_>(parserContext.currentSchemaPath().m_nodes.back().m_suffix);
-            schemaPath_ location = pathWithoutLastNode(parserContext.currentSchemaPath());
-            boost::optional<std::string> module;
-            if (parserContext.currentSchemaPath().m_nodes.back().m_prefix)
-                module = parserContext.currentSchemaPath().m_nodes.back().m_prefix.value().m_name;
-            parserContext.m_errorMsg = "leaf data type mismatch: Expected " + leafDataTypeToString(schema.leafType(location, {module, leaf.m_name})) + " here:";
+            parserContext.m_errorMsg = "leaf data type mismatch: Expected " +
+                leafDataTypeToString(schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node)) + " here:";
             return x3::error_handler_result::fail;
         }
         return x3::error_handler_result::rethrow;
@@ -409,17 +429,12 @@ struct leaf_data_base_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
-        boost::optional<std::string> module;
-        if (parserContext.currentSchemaPath().m_nodes.back().m_prefix)
-            module = parserContext.currentSchemaPath().m_nodes.back().m_prefix.value().m_name;
 
-        leaf_ leaf = boost::get<leaf_>(parserContext.currentSchemaPath().m_nodes.back().m_suffix);
-        schemaPath_ location = pathWithoutLastNode(parserContext.currentSchemaPath());
-
-        auto type = schema.leafType(location, {module, leaf.m_name});
+        auto type = schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
         if (type == yang::LeafDataTypes::LeafRef) {
-            type = schema.leafrefBase(location, {module, leaf.m_name});
+            type = schema.leafrefBase(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
         }
+
         if (type != m_type) {
             _pass(context) = false;
         }
@@ -440,18 +455,11 @@ struct leaf_data_enum_class : leaf_data_base_class<yang::LeafDataTypes::Enum> {
             return;
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
-        boost::optional<std::string> module;
-        if (parserContext.currentSchemaPath().m_nodes.back().m_prefix)
-            module = parserContext.currentSchemaPath().m_nodes.back().m_prefix.value().m_name;
 
-        leaf_ leaf = boost::get<leaf_>(parserContext.currentSchemaPath().m_nodes.back().m_suffix);
-        schemaPath_ location = pathWithoutLastNode(parserContext.currentSchemaPath());
-
-        if (!schema.leafEnumHasValue(location, {module, leaf.m_name}, ast.m_value)) {
+        if (!schema.leafEnumHasValue(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node, ast.m_value)) {
             _pass(context) = false;
-
             parserContext.m_errorMsg = "leaf data type mismatch: Expected an enum here. Allowed values:";
-            for (const auto& it : schema.enumValues(location, {module, leaf.m_name})) {
+            for (const auto& it : schema.enumValues(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node)) {
                 parserContext.m_errorMsg += " " + it;
             }
         }
@@ -473,12 +481,6 @@ struct leaf_data_identityRef_class : leaf_data_base_class<yang::LeafDataTypes::I
             return;
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
-        boost::optional<std::string> module;
-        if (parserContext.currentSchemaPath().m_nodes.back().m_prefix)
-            module = parserContext.currentSchemaPath().m_nodes.back().m_prefix.value().m_name;
-
-        leaf_ leaf = boost::get<leaf_>(parserContext.currentSchemaPath().m_nodes.back().m_suffix);
-        schemaPath_ location = pathWithoutLastNode(parserContext.currentSchemaPath());
 
         ModuleValuePair pair;
         if (ast.m_prefix) {
@@ -486,7 +488,7 @@ struct leaf_data_identityRef_class : leaf_data_base_class<yang::LeafDataTypes::I
         }
         pair.second = ast.m_value;
 
-        if (!schema.leafIdentityIsValid(location, {module, leaf.m_name}, pair)) {
+        if (!schema.leafIdentityIsValid(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node, pair)) {
             _pass(context) = false;
         }
     }
@@ -645,20 +647,14 @@ struct createEnumSuggestions_class {
     void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.m_completionIterator = begin;
         const Schema& schema = parserContext.m_schema;
 
-        boost::optional<std::string> module;
-        if (parserContext.currentSchemaPath().m_nodes.back().m_prefix)
-            module = parserContext.currentSchemaPath().m_nodes.back().m_prefix.value().m_name;
-
-        leaf_ leaf = boost::get<leaf_>(parserContext.currentSchemaPath().m_nodes.back().m_suffix);
-        schemaPath_ location = pathWithoutLastNode(parserContext.currentSchemaPath());
+        parserContext.m_completionIterator = begin;
 
         // Only generate completions if the type is enum so that we don't
         // overwrite some other completions.
-        if (schema.leafType(location, {module, leaf.m_name}) == yang::LeafDataTypes::Enum)
-            parserContext.m_suggestions = schema.enumValues(location, {module, leaf.m_name});
+        if (schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node) == yang::LeafDataTypes::Enum)
+            parserContext.m_suggestions = schema.enumValues(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
     }
 };
 
@@ -668,19 +664,13 @@ struct createIdentitySuggestions_class {
     void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.m_completionIterator = begin;
         const Schema& schema = parserContext.m_schema;
 
-        boost::optional<std::string> module;
-        if (parserContext.currentSchemaPath().m_nodes.back().m_prefix)
-            module = parserContext.currentSchemaPath().m_nodes.back().m_prefix.value().m_name;
-
-        leaf_ leaf = boost::get<leaf_>(parserContext.currentSchemaPath().m_nodes.back().m_suffix);
-        schemaPath_ location = pathWithoutLastNode(parserContext.currentSchemaPath());
+        parserContext.m_completionIterator = begin;
 
         // Only generate completions if the type is identityref so that we
         // don't overwrite some other completions.
-        if (schema.leafType(location, {module, leaf.m_name}) == yang::LeafDataTypes::IdentityRef)
-            parserContext.m_suggestions = schema.validIdentities(location, {module, leaf.m_name}, Prefixes::WhenNeeded);
+        if (schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node) == yang::LeafDataTypes::IdentityRef)
+            parserContext.m_suggestions = schema.validIdentities(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node, Prefixes::WhenNeeded);
     }
 };
