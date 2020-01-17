@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c64c2039_5ce0a86c",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-17T17:52:52Z",
+      "side": 1,
+      "message": "previously, the code handled a nullptr `it` (when iterating over items). This does not appear to be handled anymore, but what is new is handling nullptr items within it-\u003etree_dfs().\n\nWhen does this actually happen? IOW, can you remove that newly added check, considering that the original one was apparently not required? Or is it somehow moot because you\u0027re iterating on something else (from the code below)?",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 29
+      },
+      "revId": "07e58bd5e76471707fee18a33562f9e8536e7230",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
