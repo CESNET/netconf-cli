@@ -2,6 +2,7 @@ project(netconf-cli LANGUAGES CXX)
 cmake_minimum_required(VERSION 3.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
 include(GNUInstallDirs)
 
@@ -83,7 +84,7 @@ add_library(schemas STATIC
     src/static_schema.cpp
     src/schema.cpp
     )
-target_link_libraries(schemas PUBLIC Boost::boost)
+target_link_libraries(schemas PUBLIC path Boost::boost)
 
 add_library(datastoreaccess STATIC
     src/datastore_access.cpp
@@ -103,14 +104,14 @@ add_library(netconfaccess STATIC
     src/netconf_access.cpp
     )
 
-target_link_libraries(netconfaccess datastoreaccess ast_values ${LIBNETCONF2_LIBRARIES})
+target_link_libraries(netconfaccess datastoreaccess yangschema ast_values utils ${LIBNETCONF2_LIBRARIES})
 link_directories(${LIBNETCONF2_LIBRARY_DIRS})
 target_include_directories(netconfaccess SYSTEM PRIVATE ${LIBNETCONF2_INCLUDE_DIRS})
 
 add_library(yangschema STATIC
     src/yang_schema.cpp
     )
-target_link_libraries(yangschema ${LIBYANG_LIBRARIES})
+target_link_libraries(yangschema schemas ${LIBYANG_LIBRARIES})
 # Ensure that this doesn't override Boost's -isystem -- see the log for details.
 target_include_directories(yangschema SYSTEM PRIVATE ${LIBYANG_INCLUDEDIR})
 link_directories(${LIBYANG_LIBRARY_DIRS})

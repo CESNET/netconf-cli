@@ -26,7 +26,6 @@ class Session {
 public:
     Session(struct nc_session* session);
     ~Session();
-    static std::unique_ptr<Session> viaSSH(const std::string& host, const uint16_t port, const std::string& user);
     static std::unique_ptr<Session> connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath);
     static std::unique_ptr<Session> connectSocket(const std::string& path);
     std::vector<std::string_view> capabilities() const;
