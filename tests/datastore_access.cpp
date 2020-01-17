@@ -225,7 +225,7 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:leafEnum") == expected);
     }
 
-    SECTION("getItems on a list")
+    SECTION("getItems on a path with a list")
     {
         {
             REQUIRE_CALL(mock, write("/example-schema:person[name='Jan']", "", ""));
@@ -239,16 +239,34 @@ TEST_CASE("setting/getting values")
             datastore.createListInstance("/example-schema:person[name='Petr']");
             datastore.commitChanges();
         }
-        std::map<std::string, leaf_data_> expected{
-            {"/example-schema:person[name='Jan']", special_{SpecialValue::List}},
-            {"/example-schema:person[name='Jan']/name", std::string{"Jan"}},
-            {"/example-schema:person[name='Michal']", special_{SpecialValue::List}},
-            {"/example-schema:person[name='Michal']/name", std::string{"Michal"}},
-            {"/example-schema:person[name='Petr']", special_{SpecialValue::List}},
-            {"/example-schema:person[name='Petr']/name", std::string{"Petr"}}
-        };
 
-        REQUIRE(datastore.getItems("/example-schema:person") == expected);
+        std::string path;
+        std::map<std::string, leaf_data_> expected;
+
+        SECTION("getting the actual list")
+        {
+            path = "/example-schema:person";
+            expected = {
+                {"/example-schema:person[name='Jan']", special_{SpecialValue::List}},
+                {"/example-schema:person[name='Jan']/name", std::string{"Jan"}},
+                {"/example-schema:person[name='Michal']", special_{SpecialValue::List}},
+                {"/example-schema:person[name='Michal']/name", std::string{"Michal"}},
+                {"/example-schema:person[name='Petr']", special_{SpecialValue::List}},
+                {"/example-schema:person[name='Petr']/name", std::string{"Petr"}}
+            };
+        }
+
+        SECTION("getting a leaf inside the list")
+        {
+            path = "/example-schema:person/name";
+            expected = {
+                {"/example-schema:person[name='Jan']/name", std::string{"Jan"}},
+                {"/example-schema:person[name='Michal']/name", std::string{"Michal"}},
+                {"/example-schema:person[name='Petr']/name", std::string{"Petr"}}
+            };
+        }
+
+        REQUIRE(datastore.getItems(path) == expected);
     }
 
     waitForCompletionAndBitMore(seq1);
