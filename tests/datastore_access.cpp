@@ -184,7 +184,7 @@ TEST_CASE("setting/getting values")
         }
 
         std::map<std::string, leaf_data_> expected{{"/example-schema:down", bool{true}}};
-        REQUIRE(datastore.getItems("/example-schema:down") == expected);
+        REQUIRE(datastore.getItems("/example-schema:down", Recursion::Recursive) == expected);
     }
 
     SECTION("getting items from the whole module")
@@ -210,7 +210,7 @@ TEST_CASE("setting/getting values")
                                                    {"/example-schema:lol", special_{SpecialValue::Container}},
 #endif
                                                    {"/example-schema:up", bool{true}}};
-        REQUIRE(datastore.getItems("/example-schema:*") == expected);
+        REQUIRE(datastore.getItems("/example-schema:*", Recursion::Recursive) == expected);
     }
 
     SECTION("getItems returns correct datatypes")
@@ -222,7 +222,7 @@ TEST_CASE("setting/getting values")
         }
         std::map<std::string, leaf_data_> expected{{"/example-schema:leafEnum", enum_{"lol"}}};
 
-        REQUIRE(datastore.getItems("/example-schema:leafEnum") == expected);
+        REQUIRE(datastore.getItems("/example-schema:leafEnum", Recursion::Recursive) == expected);
     }
 
     SECTION("getItems on a path with a list")
@@ -242,22 +242,37 @@ TEST_CASE("setting/getting values")
 
         std::string path;
         std::map<std::string, leaf_data_> expected;
+        Recursion recursion;
 
         SECTION("getting the actual list")
         {
             path = "/example-schema:person";
-            expected = {
-                {"/example-schema:person[name='Jan']", special_{SpecialValue::List}},
-                {"/example-schema:person[name='Jan']/name", std::string{"Jan"}},
-                {"/example-schema:person[name='Michal']", special_{SpecialValue::List}},
-                {"/example-schema:person[name='Michal']/name", std::string{"Michal"}},
-                {"/example-schema:person[name='Petr']", special_{SpecialValue::List}},
-                {"/example-schema:person[name='Petr']/name", std::string{"Petr"}}
-            };
+            SECTION("recursive")
+            {
+                recursion = Recursion::Recursive;
+                expected = {
+                    {"/example-schema:person[name='Jan']", special_{SpecialValue::List}},
+                    {"/example-schema:person[name='Jan']/name", std::string{"Jan"}},
+                    {"/example-schema:person[name='Michal']", special_{SpecialValue::List}},
+                    {"/example-schema:person[name='Michal']/name", std::string{"Michal"}},
+                    {"/example-schema:person[name='Petr']", special_{SpecialValue::List}},
+                    {"/example-schema:person[name='Petr']/name", std::string{"Petr"}}
+                };
+            }
+            SECTION("non-recursive")
+            {
+                recursion = Recursion::NonRecursive;
+                expected = {
+                    {"/example-schema:person[name='Jan']", special_{SpecialValue::List}},
+                    {"/example-schema:person[name='Michal']", special_{SpecialValue::List}},
+                    {"/example-schema:person[name='Petr']", special_{SpecialValue::List}},
+                };
+            }
         }
 
         SECTION("getting a leaf inside the list")
         {
+            recursion = Recursion::Recursive;
             path = "/example-schema:person/name";
             expected = {
                 {"/example-schema:person[name='Jan']/name", std::string{"Jan"}},
@@ -266,7 +281,7 @@ TEST_CASE("setting/getting values")
             };
         }
 
-        REQUIRE(datastore.getItems(path) == expected);
+        REQUIRE(datastore.getItems(path, recursion) == expected);
     }
 
     waitForCompletionAndBitMore(seq1);

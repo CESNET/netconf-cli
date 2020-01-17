@@ -32,7 +32,7 @@ public:
     NetconfAccess(const std::string& hostname, uint16_t port, const std::string& user, const std::string& pubKey, const std::string& privKey);
     NetconfAccess(const std::string& socketPath);
     ~NetconfAccess() override;
-    std::map<std::string, leaf_data_> getItems(const std::string& path) override;
+    std::map<std::string, leaf_data_> getItems(const std::string& path, Recursion recursion) override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createPresenceContainer(const std::string& path) override;
     void deletePresenceContainer(const std::string& path) override;

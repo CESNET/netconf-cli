@@ -39,7 +39,7 @@ void Interpreter::operator()(const set_& set) const
 
 void Interpreter::operator()(const get_& get) const
 {
-    auto items = m_datastore.getItems(absolutePathFromCommand(get));
+    auto items = m_datastore.getItems(absolutePathFromCommand(get), Recursion::Recursive);
     for (auto it : items) {
         std::cout << it.first << " = " << leafDataToString(it.second) << std::endl;
     }

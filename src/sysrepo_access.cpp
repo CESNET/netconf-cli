@@ -111,7 +111,7 @@ SysrepoAccess::SysrepoAccess(const std::string& appname)
     }
 }
 
-std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& path)
+std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& path, Recursion recursion)
 {
     using namespace std::string_literals;
     std::map<std::string, leaf_data_> res;
@@ -129,10 +129,12 @@ std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& pat
             // Sysrepo doesn't have a root node ("/"), so we take all top-level nodes from all schemas
             auto schemas = m_session->list_schemas();
             for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
-                fillMap(m_session->get_items(("/"s + schemas->schema(i)->module_name() + ":*//.").c_str()));
+                auto toGet = "/"s + schemas->schema(i)->module_name() + ":*" + (recursion == Recursion::Recursive ? "//." : "");
+                fillMap(m_session->get_items((toGet).c_str()));
             }
         } else {
-            fillMap(m_session->get_items((path + "//.").c_str()));
+            auto toGet = path + (recursion == Recursion::Recursive ? "//." : "");
+            fillMap(m_session->get_items((toGet).c_str()));
         }
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();

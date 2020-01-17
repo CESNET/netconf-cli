@@ -45,7 +45,7 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
 
 NetconfAccess::~NetconfAccess() = default;
 
-std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& path)
+std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& path, Recursion recursion)
 {
     using namespace std::string_literals;
     std::map<std::string, leaf_data_> res;
@@ -53,19 +53,15 @@ std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& pat
     // This is very similar to the fillMap lambda in SysrepoAccess, however,
     // Sysrepo returns a weird array-like structure, while libnetconf
     // returns libyang::Data_Node
-    auto fillMap = [&res](auto items) {
-        for (const auto& it : items) {
-            for (const auto& node : it->tree_dfs()) {
-                if (!node)
-                    continue;
-                if (node->schema()->nodetype() == LYS_LIST) {
-                    res.emplace(it->path(), special_{SpecialValue::List});
-                }
-                if (node->schema()->nodetype() == LYS_LEAF) {
-                    libyang::Data_Node_Leaf_List leaf(node);
-                    res.emplace(leaf.path(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
-                }
-            }
+    auto insertToMap = [&res](auto node) {
+        if (!node)
+            return;
+        if (node->schema()->nodetype() == LYS_LIST) {
+            res.emplace(node->path(), special_{SpecialValue::List});
+        }
+        if (node->schema()->nodetype() == LYS_LEAF) {
+            libyang::Data_Node_Leaf_List leaf(node);
+            res.emplace(leaf.path(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
         }
     };
 
@@ -77,7 +73,15 @@ std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& pat
         // This means I have to use find_path to filter out nodes I actually wanted.
         // This also means I use `path` twice to filter the results, but that's how sysrepo does it:
         // https://github.com/CESNET/Netopeer2/issues/500
-        fillMap(config->find_path(path.c_str())->data());
+        for (const auto& node :config->find_path(path.c_str())->data()) {
+            if (recursion == Recursion::Recursive) {
+                for (const auto& it : node->tree_dfs()) {
+                    insertToMap(it);
+                }
+            } else {
+                insertToMap(node);
+            }
+        }
     }
     return res;
 }
