@@ -1,0 +1,7 @@
+Code-Review+2: Václav Kubernát <kubernat@cesnet.cz>
+Verified+1: Zuul CI <cesnet-zuul+public@gerrit.cesnet.cz>
+Submitted-by: Jan Kundrát <kundrat@cesnet.cz>
+Submitted-at: Fri, 17 Jan 2020 11:29:02 +0100
+Reviewed-on: https://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/2210
+Project: CzechLight/netconf-cli
+Branch: refs/heads/master
