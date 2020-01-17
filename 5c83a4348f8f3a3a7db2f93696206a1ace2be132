@@ -86,6 +86,30 @@
       "revId": "5c83a4348f8f3a3a7db2f93696206a1ace2be132",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d37505ac_e3cb32a3",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-17T16:32:06Z",
+      "side": 1,
+      "message": "A new patch fixes this (and it will be removed from this patch)",
+      "parentUuid": "5744c913_53a16346",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 57
+      },
+      "revId": "5c83a4348f8f3a3a7db2f93696206a1ace2be132",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
