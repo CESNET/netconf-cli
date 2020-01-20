@@ -66,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "71fcdb91_f7624e31",
+        "filename": "src/data_query.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-20T13:53:34Z",
+      "side": 1,
+      "message": "I don\u0027t know. The main problem is in the difference between netconf and sysrepo. I suppose it\u0027s not too difficult to use an XML tree with libnetconf to filter the data, but sysrepo only accepts xpath. Maybe I should create the friend function then? Something like `listInstances`. Then I could probably use the XML filter in netconf. Sysrepo would have to use libyang to get required keys and retrieve them manually. DataQuery::listKeys (which I will probably rename to listInstances or something) would probably only be wrapping the DatastoreAccess method.",
+      "parentUuid": "1b2057be_2a4f7244",
+      "revId": "5c83a4348f8f3a3a7db2f93696206a1ace2be132",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5744c913_53a16346",
         "filename": "src/netconf_access.cpp",
         "patchSetId": 39
