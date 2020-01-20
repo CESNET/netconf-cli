@@ -22,6 +22,30 @@
       "revId": "07e58bd5e76471707fee18a33562f9e8536e7230",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3d2b248_376e7336",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-20T09:19:27Z",
+      "side": 1,
+      "message": "you explained me on Friday that this is essentially just a refactoring that is required by a different return type",
+      "parentUuid": "c64c2039_5ce0a86c",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 29
+      },
+      "revId": "07e58bd5e76471707fee18a33562f9e8536e7230",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
