@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "89328563_3f1e52fa",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-21T15:10:45Z",
+      "side": 1,
+      "message": "What about this:\n using ListInstance \u003d std::map\u003cstd::string, leaf_data_\u003e;\n std::vector\u003cListInstance\u003e",
+      "parentUuid": "6a16866c_2d1c87ce",
+      "range": {
+        "startLine": 35,
+        "startChar": 4,
+        "endLine": 35,
+        "endChar": 50
+      },
+      "revId": "372b5d0e9185ac2edc02a9e3743156dbdc1fa756",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c659ab0d_39661da7",
         "filename": "tests/data_query.cpp",
         "patchSetId": 45

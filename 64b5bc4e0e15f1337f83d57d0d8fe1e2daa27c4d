@@ -16,6 +16,24 @@
       "revId": "64b5bc4e0e15f1337f83d57d0d8fe1e2daa27c4d",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b396d91_99883be6",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-21T15:10:45Z",
+      "side": 1,
+      "message": "The reason is that this is how I store this data in ParserContext. This is also how methods in the Schema interface look like. I\u0027ll add some info in the commit message.",
+      "parentUuid": "ef6cd650_f9bcc077",
+      "revId": "64b5bc4e0e15f1337f83d57d0d8fe1e2daa27c4d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }

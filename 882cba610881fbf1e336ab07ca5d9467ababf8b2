@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fefabdf8_17b44bbe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 43
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-21T15:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "652c1867_b63d1ae5",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 56
+      },
+      "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cf45ef4b_dbbe839c",
         "filename": "CMakeLists.txt",
         "patchSetId": 43
@@ -83,6 +107,24 @@
       "writtenOn": "2020-01-21T14:14:16Z",
       "side": 1,
       "message": "I like this, I have never used it like this before. Nice!",
+      "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a4b7349b_3f7bdf80",
+        "filename": "src/ast_values.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-21T15:10:45Z",
+      "side": 1,
+      "message": "I also like it, it works on references, so no copying. Found it when googling for \"how to compare structs\", because I didn\u0027t want to do a bunch of if statements.",
+      "parentUuid": "33951ef3_27e2e29c",
       "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
