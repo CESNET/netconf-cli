@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aea4db45_adbdf9ec",
+        "filename": "tests/python_netconfaccess.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-21T13:07:53Z",
+      "side": 1,
+      "message": "nit: some strings here use single quotes, some double quotes",
+      "revId": "e89b215b44aad0478fcf24988446d5465305c8ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
