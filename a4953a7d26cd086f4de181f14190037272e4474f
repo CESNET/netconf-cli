@@ -98,6 +98,24 @@
       "revId": "a4953a7d26cd086f4de181f14190037272e4474f",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e43471c_dd29a5f8",
+        "filename": "tests/data_query.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-21T14:14:16Z",
+      "side": 1,
+      "message": "(ported to a new patchset with an example)",
+      "parentUuid": "33bb0310_0b849f18",
+      "revId": "a4953a7d26cd086f4de181f14190037272e4474f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }

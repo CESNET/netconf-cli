@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "652c1867_b63d1ae5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 43
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-21T14:14:16Z",
+      "side": 1,
+      "message": "This should be much, much expanded as this patch is a result of quite some amount of work :). The commit message should therefore describe what was done and did not work that well, such as result filtering within DatastoreAccess::getItems, various return types that you tried, etc.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 56
+      },
+      "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf45ef4b_dbbe839c",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 43
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-21T14:14:16Z",
+      "side": 1,
+      "message": "I think this can be placed into the datastoreaccess library, there\u0027s IMHO not much gained by splitting it in such a fine detail.",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 53
+      },
+      "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33951ef3_27e2e29c",
+        "filename": "src/ast_values.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-21T14:14:16Z",
+      "side": 1,
+      "message": "I like this, I have never used it like this before. Nice!",
+      "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a5a9acb9_b3d3211a",
+        "filename": "src/ast_values.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-21T14:14:16Z",
+      "side": 1,
+      "message": "These changes are \"harmless\", but I think they are not needed now that the result is a vector of `thing`s which does not need an operator\u003c for `thing`. Or is it needed?\n\n(Feel free to tell me \"hey, screw that, I just want them in\".)",
+      "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21256830_c115533b",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-21T14:14:16Z",
+      "side": 1,
+      "message": "I think that a bit of include bloat is better than a duplicate definition, so this would be my preference:\n\n #include \"schema.hpp\"",
+      "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
