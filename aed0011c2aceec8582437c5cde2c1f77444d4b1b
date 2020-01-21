@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "087579a4_0aee19e0",
+        "filename": "tests/python_netconfaccess.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-21T13:26:10Z",
+      "side": 1,
+      "message": "Is this intentionally a string? If so, is it intentionally in single quotes to make it different from the other strings?",
+      "range": {
+        "startLine": 13,
+        "startChar": 26,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "aed0011c2aceec8582437c5cde2c1f77444d4b1b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
