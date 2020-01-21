@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "d496eb3a_aa4920be",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 43
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-21T14:31:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf45ef4b_dbbe839c",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 53
+      },
+      "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "33951ef3_27e2e29c",
         "filename": "src/ast_values.cpp",
         "patchSetId": 43
@@ -82,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "1fb74208_fd7ea72a",
+        "filename": "src/ast_values.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-21T14:31:47Z",
+      "side": 1,
+      "message": "They are needed, because I still need to sort the vector in the test (otherwise I get differences in order)",
+      "parentUuid": "a5a9acb9_b3d3211a",
+      "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "21256830_c115533b",
         "filename": "src/data_query.hpp",
         "patchSetId": 43
@@ -96,6 +138,24 @@
       "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00d1934d_60d6d678",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-21T14:31:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21256830_c115533b",
+      "revId": "882cba610881fbf1e336ab07ca5d9467ababf8b2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
