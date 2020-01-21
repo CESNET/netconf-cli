@@ -47,6 +47,30 @@
       "revId": "aed0011c2aceec8582437c5cde2c1f77444d4b1b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3f812444_eda7f679",
+        "filename": "tests/python_netconfaccess.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-21T13:42:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3e31c060_6af05b90",
+      "range": {
+        "startLine": 13,
+        "startChar": 26,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "aed0011c2aceec8582437c5cde2c1f77444d4b1b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
