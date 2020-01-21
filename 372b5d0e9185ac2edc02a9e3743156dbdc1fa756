@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "6a16866c_2d1c87ce",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-21T14:42:31Z",
+      "side": 1,
+      "message": "I think this is reasonably straightforward:\n\n using ListKeys \u003d std::vector\u003cstd::map\u003cstd::string, leaf_data_\u003e\u003e;",
+      "parentUuid": "c4d1845b_fcce5e57",
+      "range": {
+        "startLine": 35,
+        "startChar": 4,
+        "endLine": 35,
+        "endChar": 50
+      },
+      "revId": "372b5d0e9185ac2edc02a9e3743156dbdc1fa756",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c659ab0d_39661da7",
         "filename": "tests/data_query.cpp",
         "patchSetId": 45
@@ -101,6 +125,30 @@
       "side": 1,
       "message": "Not sure if this means \"good\" or \"bad\" lol",
       "parentUuid": "ea3dea94_3b48db8b",
+      "range": {
+        "startLine": 31,
+        "startChar": 48,
+        "endLine": 31,
+        "endChar": 69
+      },
+      "revId": "372b5d0e9185ac2edc02a9e3743156dbdc1fa756",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5e5ec610_a7370c25",
+        "filename": "tests/data_query.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-21T14:42:31Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "939bb8db_deac50e6",
       "range": {
         "startLine": 31,
         "startChar": 48,
