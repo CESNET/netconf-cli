@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef6cd650_f9bcc077",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-21T14:18:51Z",
+      "side": 1,
+      "message": "Is there a reason why this takes `location` and `node`? Perhaps yes, but then it should be explained in the commit message.\n\nThe tests are always testing with empty location AFAIU.",
+      "revId": "64b5bc4e0e15f1337f83d57d0d8fe1e2daa27c4d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
