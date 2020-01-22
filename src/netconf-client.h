@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <libnetconf2/messages_client.h>
 #include <memory>
 #include <optional>
@@ -22,11 +23,14 @@ public:
     ~ReportedError() override;
 };
 
+using KbdInteractiveCb = std::function<std::string(const std::string&, const std::string&, const std::string&, bool)>;
+
 class Session {
 public:
     Session(struct nc_session* session);
     ~Session();
     static std::unique_ptr<Session> connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath);
+    static std::unique_ptr<Session> connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback);
     static std::unique_ptr<Session> connectSocket(const std::string& path);
     std::vector<std::string_view> capabilities() const;
     std::shared_ptr<libyang::Data_Node> getConfig(const NC_DATASTORE datastore,
