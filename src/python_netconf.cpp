@@ -5,9 +5,11 @@
  *
 */
 
+#include <pybind11/functional.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include "netconf_access.hpp"
+#include "netconf-client.h"
 
 using namespace std::literals;
 using namespace pybind11::literals;
@@ -58,6 +60,12 @@ PYBIND11_MODULE(netconf_cli_py, m) {
 
     pybind11::class_<NetconfAccess>(m, "NetconfAccess")
             .def(pybind11::init<const std::string&>(), "socketPath"_a)
+            .def(pybind11::init(
+                     [](const std::string& host, const uint16_t port, const std::string& user, const libnetconf::client::KbdInteractiveCb interactiveAuth) {
+                        auto session = libnetconf::client::Session::connectKbdInteractive(host, port, user, interactiveAuth);
+                        return std::make_unique<NetconfAccess>(std::move(session));
+                    }),
+                    "server"_a, "port"_a=830, "username"_a, "interactive_auth"_a)
             .def("getItems", &NetconfAccess::getItems, "xpath"_a)
             .def("setLeaf", &NetconfAccess::setLeaf, "xpath"_a, "value"_a)
             .def("commitChanges", &NetconfAccess::commitChanges)
