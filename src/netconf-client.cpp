@@ -13,6 +13,7 @@ extern "C" {
 }
 #include <sstream>
 #include "netconf-client.h"
+#include "UniqueResource.h"
 
 namespace libnetconf {
 
@@ -56,6 +57,13 @@ inline void custom_free_nc_reply_data(nc_reply_data* reply)
 inline void custom_free_nc_reply_error(nc_reply_error* reply)
 {
     nc_reply_free(reinterpret_cast<nc_reply*>(reply));
+}
+
+char *ssh_auth_interactive_cb(const char *auth_name, const char *instruction, const char *prompt, int echo, void *priv)
+{
+    const auto cb = static_cast<const client::KbdInteractiveCb*>(priv);
+    auto res = (*cb)(auth_name, instruction, prompt, echo);
+    return ::strdup(res.c_str());
 }
 
 template <auto fn>
@@ -215,6 +223,27 @@ std::unique_ptr<Session> Session::connectPubkey(const std::string& host, const u
         nc_client_ssh_set_auth_pref(NC_SSH_AUTH_PUBLICKEY, 5);
         nc_client_ssh_add_keypair(pubPath.c_str(), privPath.c_str());
     }
+    auto session = std::make_unique<Session>(nc_connect_ssh(host.c_str(), port, nullptr));
+    if (!session->m_session) {
+        throw std::runtime_error{"nc_connect_ssh failed"};
+    }
+    return session;
+}
+
+std::unique_ptr<Session> Session::connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback)
+{
+    impl::ClientInit::instance();
+
+    std::lock_guard lk(impl::clientOptions);
+    auto cb_guard = make_unique_resource([user, &callback]() {
+        nc_client_ssh_set_username(user.c_str());
+        nc_client_ssh_set_auth_pref(NC_SSH_AUTH_INTERACTIVE, 5);
+        nc_client_ssh_set_auth_interactive_clb(impl::ssh_auth_interactive_cb, static_cast<void *>(&const_cast<KbdInteractiveCb&>(callback)));
+    }, []() {
+        nc_client_ssh_set_auth_interactive_clb(nullptr, nullptr);
+        nc_client_ssh_set_username(nullptr);
+    });
+
     auto session = std::make_unique<Session>(nc_connect_ssh(host.c_str(), port, nullptr));
     if (!session->m_session) {
         throw std::runtime_error{"nc_connect_ssh failed"};
