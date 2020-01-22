@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "189ff6c3_1fd1123f",
+        "filename": "src/data_query.hpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-22T10:59:22Z",
+      "side": 1,
+      "message": "I think that a class-level comment generally goes right before the class.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 2
+      },
+      "revId": "9825effa0b6e74ab7784fe1d6debf5cb08562988",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
