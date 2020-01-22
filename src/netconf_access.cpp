@@ -98,6 +98,13 @@ NetconfAccess::NetconfAccess(const std::string& hostname, uint16_t port, const s
     datastoreInit();
 }
 
+NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session)
+    : m_session(std::move(session))
+    , m_schema(new YangSchema())
+{
+    datastoreInit();
+}
+
 NetconfAccess::NetconfAccess(const std::string& socketPath)
     : m_schema(new YangSchema())
 {
