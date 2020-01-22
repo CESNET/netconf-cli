@@ -261,6 +261,8 @@ if(BUILD_TESTING)
         datastore_test_impl(${name} ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang sysrepo)
         datastore_test_impl(${name} ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang netconf)
         set_tests_properties(${TESTNAME}_netconf_init PROPERTIES DEPENDS ${TESTNAME}_sysrepo_cleanup)
+        set_property(TEST kill_daemons APPEND PROPERTY DEPENDS ${TESTNAME}_sysrepo_cleanup)
+        set_property(TEST kill_daemons APPEND PROPERTY DEPENDS ${TESTNAME}_netconf_cleanup)
     endfunction()
 
     cli_test(cd)
@@ -280,9 +282,6 @@ if(BUILD_TESTING)
 
     setup_datastore_tests()
     datastore_test(datastore_access ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
-    set_tests_properties(kill_daemons PROPERTIES DEPENDS test_datastore_access_netconf_cleanup)
-
-
 endif()
 
 option(WITH_PYTHON_BINDINGS "Create and install Python3 bindings for accessing datastores" OFF)
@@ -297,7 +296,7 @@ if(WITH_PYTHON_BINDINGS)
             ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py @ONLY)
         add_test(NAME test_netconf_cli_py COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py)
         set_tests_properties(test_netconf_cli_py PROPERTIES FIXTURES_REQUIRED netopeer_running RESOURCE_LOCK sysrepo DEPENDS test_datastore_access_netconf_cleanup)
-        set_tests_properties(kill_daemons PROPERTIES DEPENDS test_netconf_cli_py)
+        set_property(TEST kill_daemons APPEND PROPERTY DEPENDS test_netconf_cli_py)
 
         set(sanitizer_active OFF)
         # FIXME: this just sucks. The detection is very unreliable (one could use something like
