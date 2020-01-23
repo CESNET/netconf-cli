@@ -650,12 +650,12 @@ struct createEnumSuggestions_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const Schema& schema = parserContext.m_schema;
 
-        parserContext.m_completionIterator = begin;
-
         // Only generate completions if the type is enum so that we don't
         // overwrite some other completions.
-        if (schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node) == yang::LeafDataTypes::Enum)
+        if (schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node) == yang::LeafDataTypes::Enum) {
+            parserContext.m_completionIterator = begin;
             parserContext.m_suggestions = schema.enumValues(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+        }
     }
 };
 
@@ -667,11 +667,11 @@ struct createIdentitySuggestions_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const Schema& schema = parserContext.m_schema;
 
-        parserContext.m_completionIterator = begin;
-
         // Only generate completions if the type is identityref so that we
         // don't overwrite some other completions.
-        if (schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node) == yang::LeafDataTypes::IdentityRef)
+        if (schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node) == yang::LeafDataTypes::IdentityRef) {
+            parserContext.m_completionIterator = begin;
             parserContext.m_suggestions = schema.validIdentities(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node, Prefixes::WhenNeeded);
+        }
     }
 };
