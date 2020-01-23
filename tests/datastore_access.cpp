@@ -25,7 +25,7 @@ public:
 };
 
 namespace std {
-std::ostream& operator<<(std::ostream& s, const std::map<std::string, leaf_data_> map)
+std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& map)
 {
     s << std::endl
       << "{";
@@ -183,7 +183,7 @@ TEST_CASE("setting/getting values")
             datastore.commitChanges();
         }
 
-        std::map<std::string, leaf_data_> expected{{"/example-schema:down", bool{true}}};
+        DatastoreAccess::Tree expected{{"/example-schema:down", bool{true}}};
         REQUIRE(datastore.getItems("/example-schema:down") == expected);
     }
 
@@ -197,7 +197,7 @@ TEST_CASE("setting/getting values")
             datastore.commitChanges();
         }
 
-        std::map<std::string, leaf_data_> expected{{"/example-schema:down", bool{false}},
+        DatastoreAccess::Tree expected{{"/example-schema:down", bool{false}},
         // Sysrepo always returns containers when getting values, but
         // libnetconf does not. This is fine by the YANG standard:
         // https://tools.ietf.org/html/rfc7950#section-7.5.7 Furthermore,
@@ -220,7 +220,7 @@ TEST_CASE("setting/getting values")
             datastore.setLeaf("/example-schema:leafEnum", enum_{"lol"});
             datastore.commitChanges();
         }
-        std::map<std::string, leaf_data_> expected{{"/example-schema:leafEnum", enum_{"lol"}}};
+        DatastoreAccess::Tree expected{{"/example-schema:leafEnum", enum_{"lol"}}};
 
         REQUIRE(datastore.getItems("/example-schema:leafEnum") == expected);
     }
@@ -239,7 +239,7 @@ TEST_CASE("setting/getting values")
             datastore.createListInstance("/example-schema:person[name='Petr']");
             datastore.commitChanges();
         }
-        std::map<std::string, leaf_data_> expected{
+        DatastoreAccess::Tree expected{
             {"/example-schema:person[name='Jan']", special_{SpecialValue::List}},
             {"/example-schema:person[name='Jan']/name", std::string{"Jan"}},
             {"/example-schema:person[name='Michal']", special_{SpecialValue::List}},

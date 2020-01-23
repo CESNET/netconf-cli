@@ -45,10 +45,9 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
 
 NetconfAccess::~NetconfAccess() = default;
 
-std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& path)
+DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path)
 {
-    using namespace std::string_literals;
-    std::map<std::string, leaf_data_> res;
+    Tree res;
 
     // This is very similar to the fillMap lambda in SysrepoAccess, however,
     // Sysrepo returns a weird array-like structure, while libnetconf
