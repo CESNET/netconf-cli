@@ -6,20 +6,10 @@
  *
 */
 
-#include <experimental/iterator>
 #include "trompeloeil_doctest.h"
 #include "parser.hpp"
+#include "pretty_printers.hpp"
 #include "static_schema.hpp"
-
-namespace std {
-std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
-{
-    s << std::endl << "{";
-    std::copy(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", "));
-    s << "}" << std::endl;
-    return s;
-}
-}
 
 TEST_CASE("path_completion")
 {
@@ -49,86 +39,105 @@ TEST_CASE("path_completion")
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
-    std::set<std::string> expected;
+
+    std::set<std::string> expectedCompletions;
+    // GCC complains here with -Wmaybe-uninitialized if I don't assign
+    // something here. I suspect it's because of nested SECTIONs. -1 is an
+    // invalid value (as in, I'll never expect expectedContextLength to be -1),
+    // so let's go with that.
+    int expectedContextLength = -1;
 
     SECTION("node name completion")
     {
         SECTION("ls ")
         {
             input = "ls ";
-            expected = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/"};
+            expectedContextLength = 0;
         }
 
         SECTION("ls e")
         {
             input = "ls e";
-            expected = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
+            expectedContextLength = 1;
         }
 
         SECTION("ls example:ano")
         {
             input = "ls example:ano";
-            expected = {"example:ano/", "example:anoda/"};
+            expectedCompletions = {"example:ano/", "example:anoda/"};
+            expectedContextLength = 11;
         }
 
         SECTION("ls example:ano/example:a")
         {
             input = "ls example:ano/example:a";
-            expected = {"example:a2/"};
+            expectedCompletions = {"example:a2/"};
+            expectedContextLength = 9;
         }
 
         SECTION("ls x")
         {
             input = "ls x";
-            expected = {};
+            expectedCompletions = {};
+            expectedContextLength = 1;
         }
 
         SECTION("ls /")
         {
             input = "ls /";
-            expected = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/"};
+            expectedContextLength = 0;
         }
 
         SECTION("ls /e")
         {
             input = "ls /e";
-            expected = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
+            expectedContextLength = 1;
         }
 
         SECTION("ls example:bota")
         {
             input = "ls example:bota";
-            expected = {"example:bota/"};
+            expectedCompletions = {"example:bota/"};
+            expectedContextLength = 12;
         }
 
         SECTION("ls /example:bota")
         {
             input = "ls /example:bota";
-            expected = {"example:bota/"};
+            expectedCompletions = {"example:bota/"};
+            expectedContextLength = 12;
         }
 
         SECTION("ls /s")
         {
             input = "ls /s";
-            expected = {"second:amelie/"};
+            expectedCompletions = {"second:amelie/"};
+            expectedContextLength = 1;
         }
 
         SECTION("ls /example:list[number=3]/")
         {
             input = "ls /example:list[number=3]/";
-            expected = {"example:contInList/", "example:number "};
+            expectedCompletions = {"example:contInList/", "example:number "};
+            expectedContextLength = 0;
         }
 
         SECTION("ls /example:list[number=3]/c")
         {
             input = "ls /example:list[number=3]/e";
-            expected = {"example:contInList/", "example:number "};
+            expectedCompletions = {"example:contInList/", "example:number "};
+            expectedContextLength = 1;
         }
 
         SECTION("ls /example:list[number=3]/a")
         {
             input = "ls /example:list[number=3]/a";
-            expected = {};
+            expectedCompletions = {};
+            expectedContextLength = 1;
         }
     }
 
@@ -137,105 +146,122 @@ TEST_CASE("path_completion")
         SECTION("cd example:lis")
         {
             input = "cd example:lis";
-            expected = {"example:list["};
+            expectedCompletions = {"example:list["};
+            expectedContextLength = 11;
         }
 
         SECTION("set example:list")
         {
             input = "set example:list";
-            expected = {"example:list["};
+            expectedCompletions = {"example:list["};
+            expectedContextLength = 12;
         }
 
         SECTION("cd example:list")
         {
             input = "cd example:list";
-            expected = {"example:list["};
+            expectedCompletions = {"example:list["};
+            expectedContextLength = 12;
         }
 
         SECTION("cd example:list[")
         {
             input = "cd example:list[";
-            expected = {"number="};
+            expectedCompletions = {"number="};
+            expectedContextLength = 0;
         }
 
         SECTION("cd example:list[numb")
         {
             input = "cd example:list[numb";
-            expected = {"number="};
+            expectedCompletions = {"number="};
+            expectedContextLength = 4;
         }
 
         SECTION("cd example:list[number")
         {
             input = "cd example:list[number";
-            expected = {"number="};
+            expectedCompletions = {"number="};
+            expectedContextLength = 6;
         }
 
         SECTION("cd example:list[number=12")
         {
             input = "cd example:list[number=12";
-            expected = {"]/"};
+            expectedCompletions = {"]/"};
+            expectedContextLength = 0;
         }
 
         SECTION("cd example:list[number=12]")
         {
             input = "cd example:list[number=12]";
-            expected = {"]/"};
+            expectedCompletions = {"]/"};
+            expectedContextLength = 1;
         }
 
         SECTION("cd example:twoKeyList[")
         {
             input = "cd example:twoKeyList[";
-            expected = {"name=", "number="};
+            expectedCompletions = {"name=", "number="};
+            expectedContextLength = 0;
         }
 
         SECTION("cd example:twoKeyList[name=\"AHOJ\"")
         {
             input = "cd example:twoKeyList[name=\"AHOJ\"";
-            expected = {"]["};
+            expectedCompletions = {"]["};
+            expectedContextLength = 0;
         }
 
         SECTION("cd example:twoKeyList[name=\"AHOJ\"]")
         {
             input = "cd example:twoKeyList[name=\"AHOJ\"]";
-            expected = {"]["};
+            expectedCompletions = {"]["};
+            expectedContextLength = 1;
         }
 
         SECTION("cd example:twoKeyList[name=\"AHOJ\"][")
         {
             input = "cd example:twoKeyList[name=\"AHOJ\"][";
-            expected = {"number="};
+            expectedCompletions = {"number="};
+            expectedContextLength = 0;
         }
 
         SECTION("cd example:twoKeyList[number=42][")
         {
             input = "cd example:twoKeyList[number=42][";
-            expected = {"name="};
+            expectedCompletions = {"name="};
+            expectedContextLength = 0;
         }
 
         SECTION("cd example:twoKeyList[name=\"AHOJ\"][number=123")
         {
             input = "cd example:twoKeyList[name=\"AHOJ\"][number=123";
-            expected = {"]/"};
+            expectedCompletions = {"]/"};
+            expectedContextLength = 0;
         }
 
         SECTION("cd example:twoKeyList[name=\"AHOJ\"][number=123]")
         {
             input = "cd example:twoKeyList[name=\"AHOJ\"][number=123]";
-            expected = {"]/"};
+            expectedCompletions = {"]/"};
+            expectedContextLength = 1;
         }
 
         SECTION("cd example:ovoce")
         {
             input = "cd example:ovoce";
-            expected = {"example:ovoce[", "example:ovocezelenina["};
+            expectedCompletions = {"example:ovoce[", "example:ovocezelenina["};
+            expectedContextLength = 13;
         }
     }
 
     SECTION("clear completions when no longer inputting path")
     {
         input = "set example:leafInt ";
-        expected = {};
+        expectedCompletions = {};
+        expectedContextLength = 0;
     }
 
-    REQUIRE(parser.completeCommand(input, errorStream) == expected);
+    REQUIRE(parser.completeCommand(input, errorStream) == (Completions{expectedCompletions, expectedContextLength}));
 }
