@@ -7,9 +7,23 @@
  *
  */
 
+#include <experimental/iterator>
 #include "trompeloeil_doctest.h"
 #include "parser.hpp"
 #include "static_schema.hpp"
+
+namespace std {
+std::ostream& operator<<(std::ostream& s, const Completions& completion)
+{
+    s << std::endl << "Completions {" << std::endl << "    m_completions: ";
+    std::transform(completion.m_completions.begin(), completion.m_completions.end(),
+            std::experimental::make_ostream_joiner(s, ", "),
+            [] (auto it) { return '"' + it + '"'; });
+    s << std::endl << "    m_contextLength: " << completion.m_contextLength << std::endl;
+    s << "}" << std::endl;
+    return s;
+}
+}
 
 TEST_CASE("enum completion")
 {
@@ -25,38 +39,44 @@ TEST_CASE("enum completion")
     std::string input;
     std::ostringstream errorStream;
 
-    std::set<std::string> expected;
+    std::set<std::string> expectedCompletions;
+    int expectedContextLength;
 
     SECTION("set mod:leafEnum ")
     {
         input = "set mod:leafEnum ";
-        expected = {"lala", "lol", "data", "coze"};
+        expectedCompletions = {"lala", "lol", "data", "coze"};
+        expectedContextLength = 0;
     }
 
     SECTION("set mod:leafEnum c")
     {
         input = "set mod:leafEnum c";
-        expected = {"coze"};
+        expectedCompletions = {"coze"};
+        expectedContextLength = 1;
     }
 
     SECTION("set mod:leafEnum l")
     {
         input = "set mod:leafEnum l";
-        expected = {"lala", "lol"};
+        expectedCompletions = {"lala", "lol"};
+        expectedContextLength = 1;
     }
 
 
     SECTION("set mod:contA/leafInCont ")
     {
         input = "set mod:contA/leafInCont ";
-        expected = {"abc", "def"};
+        expectedCompletions = {"abc", "def"};
+        expectedContextLength = 0;
     }
 
     SECTION("set mod:list[number=42]/leafInList ")
     {
         input = "set mod:list[number=42]/leafInList ";
-        expected = {"ano", "anoda", "ne", "katoda"};
+        expectedCompletions = {"ano", "anoda", "ne", "katoda"};
+        expectedContextLength = 0;
     }
 
-    REQUIRE(parser.completeCommand(input, errorStream) == expected);
+    REQUIRE(parser.completeCommand(input, errorStream) == (Completions{expectedCompletions, expectedContextLength}));
 }
