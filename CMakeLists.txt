@@ -110,6 +110,7 @@ target_include_directories(netconfaccess SYSTEM PRIVATE ${LIBNETCONF2_INCLUDE_DI
 
 add_library(yangschema STATIC
     src/yang_schema.cpp
+    src/libyang_utils.cpp
     )
 target_link_libraries(yangschema schemas ${LIBYANG_LIBRARIES})
 # Ensure that this doesn't override Boost's -isystem -- see the log for details.
