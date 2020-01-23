@@ -21,6 +21,11 @@ Parser::Parser(const std::shared_ptr<const Schema> schema)
     m_curDir.m_scope = Scope::Absolute;
 }
 
+bool Completions::operator==(const Completions& b) const
+{
+    return this->m_completions == b.m_completions && this->m_contextLength == b.m_contextLength;
+}
+
 command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream)
 {
     command_ parsedCommand;
@@ -42,7 +47,7 @@ command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream
     return parsedCommand;
 }
 
-std::set<std::string> Parser::completeCommand(const std::string& line, std::ostream& errorStream) const
+Completions Parser::completeCommand(const std::string& line, std::ostream& errorStream) const
 {
     std::set<std::string> completions;
     command_ parsedCommand;
@@ -57,11 +62,15 @@ std::set<std::string> Parser::completeCommand(const std::string& line, std::ostr
     ];
     x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
 
-    auto set = filterByPrefix(ctx.m_suggestions, std::string(ctx.m_completionIterator, line.end()));
+    auto completionIterator = ctx.m_completionIterator? *ctx.m_completionIterator : line.end();
+
+    int completionContext = line.end() - completionIterator;
+
+    auto set = filterByPrefix(ctx.m_suggestions, std::string(completionIterator, line.end()));
     if (set.size() == 1) {
-        return {(*set.begin()) + ctx.m_completionSuffix};
+        return {{(*set.begin()) + ctx.m_completionSuffix}, completionContext};
     }
-    return set;
+    return {set, completionContext};
 }
 
 void Parser::changeNode(const dataPath_& name)
