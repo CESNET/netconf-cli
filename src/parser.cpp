@@ -42,7 +42,7 @@ command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream
     return parsedCommand;
 }
 
-std::set<std::string> Parser::completeCommand(const std::string& line, std::ostream& errorStream) const
+Completions Parser::completeCommand(const std::string& line, std::ostream& errorStream) const
 {
     std::set<std::string> completions;
     command_ parsedCommand;
@@ -57,11 +57,13 @@ std::set<std::string> Parser::completeCommand(const std::string& line, std::ostr
     ];
     x3::phrase_parse(it, line.end(), grammar, space, parsedCommand);
 
+    int completionLocation = line.end() - ctx.m_completionIterator;
+
     auto set = filterByPrefix(ctx.m_suggestions, std::string(ctx.m_completionIterator, line.end()));
     if (set.size() == 1) {
-        return {(*set.begin()) + ctx.m_completionSuffix};
+        return {{(*set.begin()) + ctx.m_completionSuffix}, completionLocation};
     }
-    return set;
+    return {set, completionLocation};
 }
 
 void Parser::changeNode(const dataPath_& name)

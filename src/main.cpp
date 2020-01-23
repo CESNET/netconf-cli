@@ -38,16 +38,15 @@ int main(int argc, char* argv[])
     SysrepoAccess datastore("netconf-cli");
     Parser parser(datastore.schema());
     replxx::Replxx lineEditor;
-    lineEditor.set_completion_callback([&parser](const std::string& input, int&) {
+    lineEditor.set_completion_callback([&parser](const std::string& input, int& context) {
         std::stringstream stream;
-        auto completionsSet = parser.completeCommand(input, stream);
+        auto completions = parser.completeCommand(input, stream);
 
         std::vector<replxx::Replxx::Completion> res;
-        std::transform(completionsSet.begin(), completionsSet.end(), std::back_inserter(res),
-                [input](auto it) { return it; });
+        std::copy(completions.m_completions.begin(), completions.m_completions.end(), std::back_inserter(res));
+        context = completions.m_context;
         return res;
     });
-    lineEditor.set_word_break_characters(" '/[");
 
     std::optional<std::string> historyFile;
     if (auto xdgHome = getenv("XDG_DATA_HOME")) {

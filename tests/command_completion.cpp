@@ -60,5 +60,5 @@ TEST_CASE("command completion")
         expected = {"create"};
     }
 
-    REQUIRE(parser.completeCommand(input, errorStream) == expected);
+    REQUIRE(parser.completeCommand(input, errorStream).m_completions == expected);
 }

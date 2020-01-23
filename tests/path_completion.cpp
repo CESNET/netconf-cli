@@ -237,5 +237,5 @@ TEST_CASE("path_completion")
         expected = {};
     }
 
-    REQUIRE(parser.completeCommand(input, errorStream) == expected);
+    REQUIRE(parser.completeCommand(input, errorStream).m_completions == expected);
 }

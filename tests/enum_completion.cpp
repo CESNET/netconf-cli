@@ -58,5 +58,5 @@ TEST_CASE("enum completion")
         expected = {"ano", "anoda", "ne", "katoda"};
     }
 
-    REQUIRE(parser.completeCommand(input, errorStream) == expected);
+    REQUIRE(parser.completeCommand(input, errorStream).m_completions == expected);
 }
