@@ -185,6 +185,13 @@ TEST_CASE("path_completion")
             expectedContextLength = 6;
         }
 
+        SECTION("cd example:list[number=")
+        {
+            input = "cd example:list[number=";
+            expectedCompletions = {"number="};
+            expectedContextLength = 7;
+        }
+
         SECTION("cd example:list[number=12")
         {
             input = "cd example:list[number=12";
