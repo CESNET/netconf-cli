@@ -8,6 +8,7 @@
 
 #include "trompeloeil_doctest.h"
 #include "parser.hpp"
+#include "pretty_printers.hpp"
 #include "static_schema.hpp"
 
 TEST_CASE("command completion")
@@ -16,49 +17,57 @@ TEST_CASE("command completion")
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
-    std::set<std::string> expected;
+    std::set<std::string> expectedCompletions;
+    int expectedContextLength;
     SECTION("")
     {
         input = "";
-        expected = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard", "help"};
+        expectedCompletions = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard", "help"};
+        expectedContextLength = 0;
     }
 
     SECTION(" ")
     {
         input = " ";
-        expected = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard", "help"};
+        expectedCompletions = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard", "help"};
+        expectedContextLength = 0;
     }
 
     SECTION("c")
     {
         input = "c";
-        expected = {"cd", "commit", "create"};
+        expectedCompletions = {"cd", "commit", "create"};
+        expectedContextLength = 1;
     }
 
     SECTION("d")
     {
         input = "d";
-        expected = {"delete", "discard"};
+        expectedCompletions = {"delete", "discard"};
+        expectedContextLength = 1;
     }
 
     SECTION("x")
     {
         input = "x";
-        expected = {};
+        expectedCompletions = {};
+        expectedContextLength = 1;
     }
 
     SECTION("cd")
     {
         input = "cd";
         // TODO: depending on how Readline works, this will have to be changed to include a space
-        expected = {"cd"};
+        expectedCompletions = {"cd"};
+        expectedContextLength = 2;
     }
 
     SECTION("create")
     {
         input = "create";
-        expected = {"create"};
+        expectedCompletions = {"create"};
+        expectedContextLength = 6;
     }
 
-    REQUIRE(parser.completeCommand(input, errorStream) == expected);
+    REQUIRE(parser.completeCommand(input, errorStream) == (Completions{expectedCompletions, expectedContextLength}));
 }

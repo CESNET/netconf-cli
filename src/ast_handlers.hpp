@@ -337,6 +337,7 @@ struct space_separator_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.m_suggestions.clear();
+        parserContext.m_completionIterator = boost::none;
         parserContext.m_completionSuffix.clear();
     }
 };
