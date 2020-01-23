@@ -24,6 +24,12 @@ public:
     ~TooManyArgumentsException() override;
 };
 
+struct Completions {
+    bool operator==(const Completions& b) const;
+    std::set<std::string> m_completions;
+    int m_contextLength;
+};
+
 class Parser {
 public:
     Parser(const std::shared_ptr<const Schema> schema);
@@ -31,7 +37,7 @@ public:
     void changeNode(const dataPath_& name);
     std::string currentNode() const;
     std::set<std::string> availableNodes(const boost::optional<boost::variant<boost::variant<dataPath_, schemaPath_>, module_>>& path, const Recursion& option) const;
-    std::set<std::string> completeCommand(const std::string& line, std::ostream& errorStream) const;
+    Completions completeCommand(const std::string& line, std::ostream& errorStream) const;
 
 private:
     const std::shared_ptr<const Schema> m_schema;
