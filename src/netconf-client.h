@@ -43,6 +43,7 @@ public:
                     const NC_RPC_EDIT_ERROPT errorOption,
                     const std::string& data);
     void copyConfigFromString(const NC_DATASTORE target, const std::string& data);
+    std::shared_ptr<libyang::Data_Node> rpc(const std::string& xmlData);
     void commit();
     void discard();
     struct nc_session* session_internal(); // FIXME: remove me

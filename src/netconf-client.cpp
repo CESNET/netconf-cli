@@ -365,6 +365,21 @@ void Session::discard()
     impl::do_rpc_ok(this, std::move(rpc));
 }
 
+std::shared_ptr<libyang::Data_Node> Session::rpc(const std::string& xmlData)
+{
+    auto rpc = impl::guarded(nc_rpc_act_generic_xml(xmlData.c_str(), NC_PARAMTYPE_CONST));
+    if (!rpc) {
+        throw std::runtime_error("Cannot create generic RPC");
+    }
+    auto reply = impl::do_rpc_data_or_ok(this, std::move(rpc));
+    if (reply) {
+        auto dataNode = libyang::create_new_Data_Node((*reply)->data);
+        return dataNode->dup_withsiblings(1);
+    } else {
+        return nullptr;
+    }
+}
+
 ReportedError::ReportedError(const std::string& what)
     : std::runtime_error(what)
 {
