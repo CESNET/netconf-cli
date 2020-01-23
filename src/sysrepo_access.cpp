@@ -111,10 +111,10 @@ SysrepoAccess::SysrepoAccess(const std::string& appname)
     }
 }
 
-std::map<std::string, leaf_data_> SysrepoAccess::getItems(const std::string& path)
+DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path)
 {
     using namespace std::string_literals;
-    std::map<std::string, leaf_data_> res;
+    Tree res;
 
     auto fillMap = [&res](auto items) {
         if (!items)
