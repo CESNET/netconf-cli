@@ -23,6 +23,15 @@ void fillMap(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libya
     for (const auto& it : items) {
         if (!it)
             continue;
+        if (it->schema()->nodetype() == LYS_CONTAINER) {
+            libyang::Schema_Node_Container container{it->schema()};
+            if (container.presence()) {
+                // The fact that the container is included in the data tree
+                // means that it is present and I don't need to check any
+                // value.
+                res.emplace(it->path(), special_{SpecialValue::PresenceContainer});
+            }
+        }
         if (it->schema()->nodetype() == LYS_LIST) {
             res.emplace(it->path(), special_{SpecialValue::List});
         }
