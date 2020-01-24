@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7f0913b0_c49ff523",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-24T11:23:05Z",
+      "side": 1,
+      "message": "Bug: https://tree.taiga.io/project/jktjkt-netconf-cli/issue/150",
+      "revId": "4359bd09306fbc76cb4d9c331c159873cd833fb2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
