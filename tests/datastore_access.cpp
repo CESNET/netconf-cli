@@ -7,6 +7,7 @@
 */
 
 #include "trompeloeil_doctest.h"
+#include <sysrepo-cpp/Session.hpp>
 
 #ifdef sysrepo_BACKEND
 #include "sysrepo_access.hpp"
@@ -18,6 +19,8 @@
 #endif
 #include "sysrepo_subscription.hpp"
 #include "utils.hpp"
+
+using namespace std::literals::string_literals;
 
 class MockRecorder : public trompeloeil::mock_interface<Recorder> {
 public:
@@ -57,7 +60,6 @@ TEST_CASE("setting/getting values")
 #error "Unknown backend"
 #endif
 
-    using namespace std::literals::string_literals;
 
     SECTION("set leafInt8 to -128")
     {
@@ -285,6 +287,116 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
 
     }
+
+    waitForCompletionAndBitMore(seq1);
+}
+
+class RpcCb: public sysrepo::Callback {
+    int rpc(const char *xpath, const ::sysrepo::S_Vals input, ::sysrepo::S_Vals_Holder output, void *) override
+    {
+        const auto nukes = "/example-schema:launch-nukes"s;
+        if (xpath == "/example-schema:noop"s) {
+            return SR_ERR_OK;
+        } else if (xpath == nukes) {
+            uint64_t kilotons = 0;
+            bool hasCities = false;
+            for (size_t i = 0; i < input->val_cnt(); ++i) {
+                const auto& val = input->val(i);
+                if (val->xpath() == nukes + "/payload/kilotons") {
+                    kilotons = val->data()->get_uint64();
+                } else if (val->xpath() == nukes + "/payload") {
+                    // ignore, container
+                } else if (val->xpath() == nukes + "/description") {
+                    // unused
+                } else if (std::string_view{val->xpath()}.find(nukes + "/cities") == 0) {
+                    hasCities = true;
+                } else {
+                    throw std::runtime_error("RPC launch-nukes: unexpected input "s + val->xpath());
+                }
+            }
+            if (kilotons == 333'666) {
+                // magic, just do not generate any output. This is important because the NETCONF RPC returns just <ok/>.
+                return SR_ERR_OK;
+            }
+            auto buf = output->allocate(2);
+            size_t i = 0;
+            buf->val(i++)->set((nukes + "/blast-radius").c_str(), uint32_t{33'666});
+            buf->val(i++)->set((nukes + "/actual-yield").c_str(), static_cast<uint64_t>(1.33 * kilotons));
+            if (hasCities) {
+                buf = output->reallocate(output->val_cnt() + 2);
+                buf->val(i++)->set((nukes + "/damaged-places/targets[city='London']/city").c_str(), "London");
+                buf->val(i++)->set((nukes + "/damaged-places/targets[city='Berlin']/city").c_str(), "Berlin");
+            }
+            return SR_ERR_OK;
+        }
+        throw std::runtime_error("unrecognized RPC");
+    }
+};
+
+TEST_CASE("rpc") {
+    trompeloeil::sequence seq1;
+    auto srConn = std::make_shared<sysrepo::Connection>("netconf-cli-test-rpc");
+    auto srSession = std::make_shared<sysrepo::Session>(srConn);
+    auto srSubscription = std::make_shared<sysrepo::Subscribe>(srSession);
+    auto cb = std::make_shared<RpcCb>();
+    sysrepo::Logs{}.set_stderr(SR_LL_INF);
+    srSubscription->rpc_subscribe("/example-schema:noop", cb, nullptr, SR_SUBSCR_CTX_REUSE);
+    srSubscription->rpc_subscribe("/example-schema:launch-nukes", cb, nullptr, SR_SUBSCR_CTX_REUSE);
+
+#ifdef sysrepo_BACKEND
+    SysrepoAccess datastore("netconf-cli-test");
+#elif defined(netconf_BACKEND)
+    NetconfAccess datastore(NETOPEER_SOCKET_PATH);
+#else
+#error "Unknown backend"
+#endif
+
+    std::string rpc;
+    DatastoreAccess::Tree input, output;
+
+    SECTION("noop") {
+        rpc = "/example-schema:noop";
+    }
+
+    SECTION("small nuke") {
+        rpc = "/example-schema:launch-nukes";
+        input = {
+            {"description", "dummy"s},
+            {"payload/kilotons", uint64_t{333'666}},
+        };
+        // no data are returned
+    }
+
+    SECTION("small nuke") {
+        rpc = "/example-schema:launch-nukes";
+        input = {
+            {"description", "dummy"s},
+            {"payload/kilotons", uint64_t{4}},
+        };
+        output = {
+            {"blast-radius", uint32_t{33'666}},
+            {"actual-yield", uint64_t{5}},
+        };
+    }
+
+    SECTION("with lists") {
+        rpc = "/example-schema:launch-nukes";
+        input = {
+            {"payload/kilotons", uint64_t{6}},
+            {"cities/targets[city='Prague']/city", "Prague"s},
+        };
+        output = {
+            {"blast-radius", uint32_t{33'666}},
+            {"actual-yield", uint64_t{7}},
+            {"damaged-places", special_{SpecialValue::PresenceContainer}},
+            {"damaged-places/targets[city='London']", special_{SpecialValue::List}},
+            {"damaged-places/targets[city='London']/city", "London"s},
+            {"damaged-places/targets[city='Berlin']", special_{SpecialValue::List}},
+            {"damaged-places/targets[city='Berlin']/city", "Berlin"s},
+        };
+    }
+
+    REQUIRE(datastore.executeRpc(rpc, input) == output);
 
     waitForCompletionAndBitMore(seq1);
 }
