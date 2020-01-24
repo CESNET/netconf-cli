@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <optional>
 #include <memory>
 
 namespace sysrepo {
@@ -21,7 +22,7 @@ class YangSchema;
 class Recorder {
 public:
     virtual ~Recorder();
-    virtual void write(const std::string& xpath, const std::string& oldValue, const std::string& newValue) = 0;
+    virtual void write(const std::string& xpath, const std::optional<std::string>& oldValue, const std::optional<std::string>& newValue) = 0;
 };
 
 class SysrepoSubscription {
