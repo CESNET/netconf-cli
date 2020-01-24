@@ -46,6 +46,7 @@ public:
     virtual void deletePresenceContainer(const std::string& path) = 0;
     virtual void createListInstance(const std::string& path) = 0;
     virtual void deleteListInstance(const std::string& path) = 0;
+    virtual Tree executeRpc(const std::string& path, const Tree& input) = 0;
 
     virtual std::shared_ptr<Schema> schema() = 0;
 
