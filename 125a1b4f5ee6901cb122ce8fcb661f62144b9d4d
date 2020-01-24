@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "423d074e_474bf5ca",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-24T16:36:39Z",
+      "side": 1,
+      "message": "Let me know whether you think this is meaningful or not.",
+      "range": {
+        "startLine": 23,
+        "startChar": 9,
+        "endLine": 23,
+        "endChar": 25
+      },
+      "revId": "125a1b4f5ee6901cb122ce8fcb661f62144b9d4d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
