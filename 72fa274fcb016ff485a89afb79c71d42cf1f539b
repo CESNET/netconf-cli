@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c3b49e8_fa9a9513",
+        "filename": "tests/data_query.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-24T11:24:16Z",
+      "side": 1,
+      "message": "do you have plans for a three-level list as well? :)",
+      "revId": "72fa274fcb016ff485a89afb79c71d42cf1f539b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
