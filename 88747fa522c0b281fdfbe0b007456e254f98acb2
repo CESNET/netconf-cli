@@ -140,6 +140,30 @@
       "revId": "88747fa522c0b281fdfbe0b007456e254f98acb2",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecd4d202_6055ee28",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-24T11:20:09Z",
+      "side": 1,
+      "message": "I will be happy if you fix this (perhaps as an extra patch right before this commit)",
+      "parentUuid": "0885bdb4_012e547a",
+      "range": {
+        "startLine": 357,
+        "startChar": 0,
+        "endLine": 360,
+        "endChar": 6
+      },
+      "revId": "88747fa522c0b281fdfbe0b007456e254f98acb2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
