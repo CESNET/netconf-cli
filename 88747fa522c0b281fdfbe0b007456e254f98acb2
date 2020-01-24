@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bef4f06d_40f551d2",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-24T11:19:18Z",
+      "side": 1,
+      "message": "in some other context, I needed this *and* also an integer index. A stackoverflow suggestion used something like:\n\n for (auto [i, it] \u003d std::tuple{size_t{0}, container.begin()}; it \u003c container.end(); ++i; ++it)\n\n...but that one was failing for some reason for me.",
+      "parentUuid": "b3b533cb_c5c98123",
+      "range": {
+        "startLine": 168,
+        "startChar": 21,
+        "endLine": 168,
+        "endChar": 27
+      },
+      "revId": "88747fa522c0b281fdfbe0b007456e254f98acb2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bf0bd851_f60ec933",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "88747fa522c0b281fdfbe0b007456e254f98acb2",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06776cc9_a6b52d94",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-24T11:19:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf0bd851_f60ec933",
+      "range": {
+        "startLine": 254,
+        "startChar": 54,
+        "endLine": 254,
+        "endChar": 64
+      },
+      "revId": "88747fa522c0b281fdfbe0b007456e254f98acb2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
