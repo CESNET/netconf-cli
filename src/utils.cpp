@@ -11,10 +11,15 @@
 
 std::string joinPaths(const std::string& prefix, const std::string& suffix)
 {
-    if (prefix.empty() || suffix.empty() || prefix == "/")
+    if (prefix.empty() || suffix.empty() || prefix == "/") {
         return prefix + suffix;
-    else
+    } else if (prefix.at(prefix.length() - 1) == '/' && suffix.at(0) == '/' ) {
+        return prefix + suffix.substr(1);
+    } else if (prefix.at(prefix.length() - 1) == '/' || suffix.at(0) == '/' ) {
+        return prefix + suffix;
+    } else {
         return prefix + '/' + suffix;
+    }
 }
 
 std::string stripLastNodeFromPath(const std::string& path)
