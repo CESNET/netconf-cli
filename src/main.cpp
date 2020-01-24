@@ -37,7 +37,16 @@ int main(int argc, char* argv[])
 
     SysrepoAccess datastore("netconf-cli");
     Parser parser(datastore.schema());
-    replxx::Replxx lineEditor;
+
+    using replxx::Replxx;
+
+    Replxx lineEditor;
+
+    lineEditor.bind_key(Replxx::KEY::meta(Replxx::KEY::BACKSPACE), std::bind(&Replxx::invoke, &lineEditor, Replxx::ACTION::KILL_TO_BEGINING_OF_WORD, std::placeholders::_1));
+    lineEditor.bind_key(Replxx::KEY::control('W'), std::bind(&Replxx::invoke, &lineEditor, Replxx::ACTION::KILL_TO_WHITESPACE_ON_LEFT, std::placeholders::_1));
+
+    lineEditor.set_word_break_characters("\t _[]/:'\"=-%");
+
     lineEditor.set_completion_callback([&parser](const std::string& input, int& context) {
         std::stringstream stream;
         auto completions = parser.completeCommand(input, stream);
