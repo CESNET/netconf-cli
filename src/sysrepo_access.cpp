@@ -83,6 +83,47 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
     }
 };
 
+struct updateSrValFromValue : boost::static_visitor<void> {
+    std::string xpath;
+    sysrepo::S_Val v;
+    updateSrValFromValue(const std::string& xpath, sysrepo::S_Val v)
+        : xpath(xpath)
+        , v(v)
+    {
+    }
+
+    void operator()(const enum_& value) const
+    {
+        v->set(xpath.c_str(), value.m_value.c_str(), SR_ENUM_T);
+    }
+
+    void operator()(const binary_& value) const
+    {
+        v->set(xpath.c_str(), value.m_value.c_str(), SR_BINARY_T);
+    }
+
+    void operator()(const identityRef_& value) const
+    {
+        v->set(xpath.c_str(), (value.m_prefix.value().m_name + ":" + value.m_value).c_str(), SR_IDENTITYREF_T);
+    }
+
+    void operator()(const special_& value) const
+    {
+        throw std::runtime_error("Tried constructing S_Val from a " + specialValueToString(value));
+    }
+
+    void operator()(const std::string& value) const
+    {
+        v->set(xpath.c_str(), value.c_str(), SR_STRING_T);
+    }
+
+    template <typename T>
+    void operator()(const T value) const
+    {
+        v->set(xpath.c_str(), value);
+    }
+};
+
 SysrepoAccess::~SysrepoAccess() = default;
 
 SysrepoAccess::SysrepoAccess(const std::string& appname)
@@ -201,6 +242,26 @@ void SysrepoAccess::discardChanges()
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
+}
+
+DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string &path, const Tree &input)
+{
+    const auto prefix = path + "/";
+    auto srInput = std::make_shared<sysrepo::Vals>(input.size());
+    {
+        size_t i = 0;
+        for (const auto& [k, v] : input) {
+            boost::apply_visitor(updateSrValFromValue(prefix + k, srInput->val(i)), v);
+            ++i;
+        }
+    }
+    auto output = m_session->rpc_send(path.c_str(), srInput);
+    Tree res;
+    for (size_t i = 0; i < output->val_cnt(); ++i) {
+        const auto& v = output->val(i);
+        res.emplace(v->xpath() + prefix.size(), leafValueFromVal(v));
+    }
+    return res;
 }
 
 std::string SysrepoAccess::fetchSchema(const char* module, const char* revision, const char* submodule)

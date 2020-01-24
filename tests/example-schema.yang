@@ -83,4 +83,48 @@ module example-schema {
     container lol {
         uses upAndDown;
     }
+
+    grouping targets_def {
+        list targets {
+            key 'city';
+            leaf city {
+                type string;
+            }
+        }
+    }
+
+    rpc launch-nukes {
+        input {
+            container payload {
+                leaf kilotons {
+                    type uint64;
+                    mandatory true;
+                    units "kilotons";
+                }
+            }
+            leaf description {
+                type string;
+            }
+            container cities {
+                presence true;
+                uses targets_def;
+            }
+        }
+        output {
+            leaf blast-radius {
+                type uint32;
+                units "m";
+            }
+            leaf actual-yield {
+                type uint64;
+                units "kilotons";
+            }
+            container damaged-places {
+                presence true;
+                uses targets_def;
+            }
+        }
+    }
+
+    rpc noop {}
 }

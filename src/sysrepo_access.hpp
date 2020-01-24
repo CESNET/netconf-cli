@@ -34,6 +34,7 @@ public:
     void deletePresenceContainer(const std::string& path) override;
     void createListInstance(const std::string& path) override;
     void deleteListInstance(const std::string& path) override;
+    Tree executeRpc(const std::string& path, const Tree& input) override;
 
     std::shared_ptr<Schema> schema() override;
 
