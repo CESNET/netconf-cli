@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c6594dda_d8ef7b1e",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-24T11:19:00Z",
+      "side": 1,
+      "message": "These are internal functions, not to be used by ano other TU. While the lack of their declarations in any .h makes them \"hard to use from outside\", they are still visible from a linker. This namespace {} effectively hides them.\n\nhttps://en.cppreference.com/w/cpp/language/namespace#Unnamed_namespaces",
+      "parentUuid": "4b65eb72_1874debb",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 9
+      },
+      "revId": "c4c4e2f5f416fd2b034dc24ff8bc37f9b45e9b3f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "061ef804_e683e4bd",
         "filename": "src/netconf_access.cpp",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "c4c4e2f5f416fd2b034dc24ff8bc37f9b45e9b3f",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c25e327b_44c6ca5a",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-24T11:19:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "061ef804_e683e4bd",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 4
+      },
+      "revId": "c4c4e2f5f416fd2b034dc24ff8bc37f9b45e9b3f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
