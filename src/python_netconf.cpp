@@ -69,5 +69,6 @@ PYBIND11_MODULE(netconf_cli_py, m) {
             .def("getItems", &NetconfAccess::getItems, "xpath"_a)
             .def("setLeaf", &NetconfAccess::setLeaf, "xpath"_a, "value"_a)
             .def("commitChanges", &NetconfAccess::commitChanges)
+            .def("executeRpc", &NetconfAccess::executeRpc, "rpc"_a, "input"_a=DatastoreAccess::Tree{})
             ;
 }
