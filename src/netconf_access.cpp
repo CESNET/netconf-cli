@@ -12,6 +12,8 @@
 #include "utils.hpp"
 #include "yang_schema.hpp"
 
+namespace {
+
 leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
 {
     using namespace std::string_literals;
@@ -43,34 +45,35 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
     }
 }
 
+// This is very similar to the fillMap lambda in SysrepoAccess, however,
+// Sysrepo returns a weird array-like structure, while libnetconf
+// returns libyang::Data_Node
+auto fillMap(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items) {
+    for (const auto& it : items) {
+        if (!it)
+            continue;
+        if (it->schema()->nodetype() == LYS_LIST) {
+            res.emplace(it->path(), special_{SpecialValue::List});
+        }
+        if (it->schema()->nodetype() == LYS_LEAF) {
+            libyang::Data_Node_Leaf_List leaf(it);
+            res.emplace(leaf.path(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
+        }
+    }
+}
+}
+
+
 NetconfAccess::~NetconfAccess() = default;
 
 DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path)
 {
     Tree res;
-
-    // This is very similar to the fillMap lambda in SysrepoAccess, however,
-    // Sysrepo returns a weird array-like structure, while libnetconf
-    // returns libyang::Data_Node
-    auto fillMap = [&res](auto items) {
-        for (const auto& it : items) {
-            if (!it)
-                continue;
-            if (it->schema()->nodetype() == LYS_LIST) {
-                res.emplace(it->path(), special_{SpecialValue::List});
-            }
-            if (it->schema()->nodetype() == LYS_LEAF) {
-                libyang::Data_Node_Leaf_List leaf(it);
-                res.emplace(leaf.path(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
-            }
-        }
-    };
-
     auto config = m_session->getConfig(NC_DATASTORE_RUNNING, (path != "/") ? std::optional{path} : std::nullopt);
 
     if (config) {
         for (auto it : config->tree_for()) {
-            fillMap(it->tree_dfs());
+            fillMap(res, it->tree_dfs());
         }
     }
     return res;
