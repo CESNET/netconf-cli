@@ -28,9 +28,12 @@ public:
             return SR_ERR_OK;
 
         while (auto change = sess->get_change_next(it)) {
-            m_recorder->write(change->new_val()->xpath(),
-                              change->old_val() ? change->old_val()->val_to_string() : "",
-                              change->new_val()->val_to_string());
+            auto xpath = change->new_val() ? change->new_val()->xpath() :
+                         change->old_val() ? change->old_val()->xpath() :
+                         "<no-xpath>";
+            auto oldValue = change->old_val() ? std::optional<std::string>{change->old_val()->val_to_string()} : std::nullopt;
+            auto newValue = change->new_val() ? std::optional<std::string>{change->new_val()->val_to_string()} : std::nullopt;
+            m_recorder->write(xpath, oldValue, newValue);
         }
 
         return SR_ERR_OK;
