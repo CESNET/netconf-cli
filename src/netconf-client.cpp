@@ -162,7 +162,7 @@ client::ReportedError make_error(unique_ptr_for<struct nc_reply>&& reply)
     return client::ReportedError{ss.str()};
 }
 
-unique_ptr_for<struct nc_reply_data> do_rpc_data(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
+std::optional<unique_ptr_for<struct nc_reply_data>> do_rpc_data_or_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
 {
     auto x = do_rpc(session, std::move(rpc));
 
@@ -170,27 +170,29 @@ unique_ptr_for<struct nc_reply_data> do_rpc_data(client::Session* session, uniqu
     case NC_RPL_DATA:
         return guarded(reinterpret_cast<struct nc_reply_data*>(x.release()));
     case NC_RPL_OK:
-        throw std::runtime_error{"Received OK instead of a data reply"};
+        return std::nullopt;
     case NC_RPL_ERROR:
         throw make_error(std::move(x));
     default:
         throw std::runtime_error{"Unhandled reply type"};
     }
+
+}
+
+unique_ptr_for<struct nc_reply_data> do_rpc_data(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
+{
+    auto x = do_rpc_data_or_ok(session, std::move(rpc));
+    if (!x) {
+        throw std::runtime_error{"Received OK instead of a data reply"};
+    }
+    return std::move(*x);
 }
 
 void do_rpc_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
 {
-    auto x = do_rpc(session, std::move(rpc));
-
-    switch (x->type) {
-    case NC_RPL_DATA:
+    auto x = do_rpc_data_or_ok(session, std::move(rpc));
+    if (x) {
         throw std::runtime_error{"Unexpected DATA reply"};
-    case NC_RPL_OK:
-        return;
-    case NC_RPL_ERROR:
-        throw make_error(std::move(x));
-    default:
-        throw std::runtime_error{"Unhandled reply type"};
     }
 }
 }
