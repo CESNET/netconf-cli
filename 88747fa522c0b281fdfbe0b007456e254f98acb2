@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "bf0bd851_f60ec933",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-24T10:36:08Z",
+      "side": 1,
+      "message": "Maybe do joinPaths(path, k) here?",
+      "range": {
+        "startLine": 254,
+        "startChar": 54,
+        "endLine": 254,
+        "endChar": 64
+      },
+      "revId": "88747fa522c0b281fdfbe0b007456e254f98acb2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "12150160_1aabe6e5",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 1
@@ -13,6 +36,30 @@
       "writtenOn": "2020-01-24T01:17:50Z",
       "side": 1,
       "message": "Vasek, do you think that this is sane? Does it look like a libnetconf2/libyang bug to you by any chance?",
+      "range": {
+        "startLine": 357,
+        "startChar": 0,
+        "endLine": 360,
+        "endChar": 6
+      },
+      "revId": "88747fa522c0b281fdfbe0b007456e254f98acb2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0885bdb4_012e547a",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-24T10:36:08Z",
+      "side": 1,
+      "message": "It\u0027s a bug in fillMap. fillMap skips everything that\u0027s not a list or a leaf.",
+      "parentUuid": "12150160_1aabe6e5",
       "range": {
         "startLine": 357,
         "startChar": 0,
