@@ -6,6 +6,7 @@
  *
 */
 
+#include <boost/optional/optional_io.hpp>
 #include "trompeloeil_doctest.h"
 
 #ifdef sysrepo_BACKEND
@@ -19,9 +20,9 @@
 #include "sysrepo_subscription.hpp"
 #include "utils.hpp"
 
-class MockRecorder : public Recorder {
+class MockRecorder : public trompeloeil::mock_interface<Recorder> {
 public:
-    MAKE_MOCK3(write, void(const std::string&, const std::string&, const std::string&), override);
+    IMPLEMENT_MOCK3(write);
 };
 
 namespace std {
@@ -51,87 +52,89 @@ TEST_CASE("setting/getting values")
 #error "Unknown backend"
 #endif
 
+    using namespace std::literals::string_literals;
+
     SECTION("set leafInt8 to -128")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafInt8", "", "-128"));
+        REQUIRE_CALL(mock, write("/example-schema:leafInt8", boost::none, "-128"s));
         datastore.setLeaf("/example-schema:leafInt8", int8_t{-128});
         datastore.commitChanges();
     }
 
     SECTION("set leafInt16 to -32768")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafInt16", "", "-32768"));
+        REQUIRE_CALL(mock, write("/example-schema:leafInt16", boost::none, "-32768"s));
         datastore.setLeaf("/example-schema:leafInt16", int16_t{-32768});
         datastore.commitChanges();
     }
 
     SECTION("set leafInt32 to -2147483648")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafInt32", "", "-2147483648"));
+        REQUIRE_CALL(mock, write("/example-schema:leafInt32", boost::none, "-2147483648"s));
         datastore.setLeaf("/example-schema:leafInt32", int32_t{-2147483648});
         datastore.commitChanges();
     }
 
     SECTION("set leafInt64 to -50000000000")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafInt64", "", "-50000000000"));
+        REQUIRE_CALL(mock, write("/example-schema:leafInt64", boost::none, "-50000000000"s));
         datastore.setLeaf("/example-schema:leafInt64", int64_t{-50000000000});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt8 to 255")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafUInt8", "", "255"));
+        REQUIRE_CALL(mock, write("/example-schema:leafUInt8", boost::none, "255"s));
         datastore.setLeaf("/example-schema:leafUInt8", uint8_t{255});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt16 to 65535")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafUInt16", "", "65535"));
+        REQUIRE_CALL(mock, write("/example-schema:leafUInt16", boost::none, "65535"s));
         datastore.setLeaf("/example-schema:leafUInt16", uint16_t{65535});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt32 to 4294967295")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafUInt32", "", "4294967295"));
+        REQUIRE_CALL(mock, write("/example-schema:leafUInt32", boost::none, "4294967295"s));
         datastore.setLeaf("/example-schema:leafUInt32", uint32_t{4294967295});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt64 to 50000000000")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafUInt64", "", "50000000000"));
+        REQUIRE_CALL(mock, write("/example-schema:leafUInt64", boost::none, "50000000000"s));
         datastore.setLeaf("/example-schema:leafUInt64", uint64_t{50000000000});
         datastore.commitChanges();
     }
 
     SECTION("set leafEnum to coze")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafEnum", "", "coze"));
+        REQUIRE_CALL(mock, write("/example-schema:leafEnum", boost::none, "coze"s));
         datastore.setLeaf("/example-schema:leafEnum", enum_{"coze"});
         datastore.commitChanges();
     }
 
     SECTION("set leafDecimal to 123.544")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafDecimal", "", "123.544"));
+        REQUIRE_CALL(mock, write("/example-schema:leafDecimal", boost::none, "123.544"s));
         datastore.setLeaf("/example-schema:leafDecimal", 123.544);
         datastore.commitChanges();
     }
 
     SECTION("create presence container")
     {
-        REQUIRE_CALL(mock, write("/example-schema:pContainer", "", ""));
+        REQUIRE_CALL(mock, write("/example-schema:pContainer", boost::none, ""s));
         datastore.createPresenceContainer("/example-schema:pContainer");
         datastore.commitChanges();
     }
 
     SECTION("create a list instance")
     {
-        REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']", "", ""));
-        REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", "", "Nguyen"));
+        REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']", boost::none, ""s));
+        REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", boost::none, "Nguyen"s));
         datastore.createListInstance("/example-schema:person[name='Nguyen']");
         datastore.commitChanges();
     }
@@ -139,12 +142,12 @@ TEST_CASE("setting/getting values")
     SECTION("leafref pointing to a key of a list")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Dan']", "", ""));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Dan']/name", "", "Dan"));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']", "", ""));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']/name", "", "Elfi"));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']", "", ""));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']/name", "", "Kolafa"));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Dan']", boost::none, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Dan']/name", boost::none, "Dan"s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']", boost::none, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']/name", boost::none, "Elfi"s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']", boost::none, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']/name", boost::none, "Kolafa"s));
             datastore.createListInstance("/example-schema:person[name='Dan']");
             datastore.createListInstance("/example-schema:person[name='Elfi']");
             datastore.createListInstance("/example-schema:person[name='Kolafa']");
@@ -156,21 +159,21 @@ TEST_CASE("setting/getting values")
         // SECTION.
         SECTION("Dan")
         {
-            REQUIRE_CALL(mock, write("/example-schema:bossPerson", "", "Dan"));
+            REQUIRE_CALL(mock, write("/example-schema:bossPerson", boost::none, "Dan"s));
             datastore.setLeaf("/example-schema:bossPerson", std::string{"Dan"});
             datastore.commitChanges();
         }
 
         SECTION("Elfi")
         {
-            REQUIRE_CALL(mock, write("/example-schema:bossPerson", "", "Elfi"));
+            REQUIRE_CALL(mock, write("/example-schema:bossPerson", boost::none, "Elfi"s));
             datastore.setLeaf("/example-schema:bossPerson", std::string{"Elfi"});
             datastore.commitChanges();
         }
 
         SECTION("Kolafa")
         {
-            REQUIRE_CALL(mock, write("/example-schema:bossPerson", "", "Kolafa"));
+            REQUIRE_CALL(mock, write("/example-schema:bossPerson", boost::none, "Kolafa"s));
             datastore.setLeaf("/example-schema:bossPerson", std::string{"Kolafa"});
             datastore.commitChanges();
         }
@@ -178,7 +181,7 @@ TEST_CASE("setting/getting values")
     SECTION("bool values get correctly represented as bools")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:down", "", "true"));
+            REQUIRE_CALL(mock, write("/example-schema:down", boost::none, "true"s));
             datastore.setLeaf("/example-schema:down", bool{true});
             datastore.commitChanges();
         }
@@ -190,8 +193,8 @@ TEST_CASE("setting/getting values")
     SECTION("getting items from the whole module")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:up", "", "true"));
-            REQUIRE_CALL(mock, write("/example-schema:down", "", "false"));
+            REQUIRE_CALL(mock, write("/example-schema:up", boost::none, "true"s));
+            REQUIRE_CALL(mock, write("/example-schema:down", boost::none, "false"s));
             datastore.setLeaf("/example-schema:up", bool{true});
             datastore.setLeaf("/example-schema:down", bool{false});
             datastore.commitChanges();
@@ -216,7 +219,7 @@ TEST_CASE("setting/getting values")
     SECTION("getItems returns correct datatypes")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:leafEnum", "", "lol"));
+            REQUIRE_CALL(mock, write("/example-schema:leafEnum", boost::none, "lol"s));
             datastore.setLeaf("/example-schema:leafEnum", enum_{"lol"});
             datastore.commitChanges();
         }
@@ -228,12 +231,12 @@ TEST_CASE("setting/getting values")
     SECTION("getItems on a list")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Jan']", "", ""));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Jan']/name", "", "Jan"));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Michal']", "", ""));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Michal']/name", "", "Michal"));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Petr']", "", ""));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Petr']/name", "", "Petr"));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Jan']", boost::none, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Jan']/name", boost::none, "Jan"s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Michal']", boost::none, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Michal']/name", boost::none, "Michal"s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Petr']", boost::none, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Petr']/name", boost::none, "Petr"s));
             datastore.createListInstance("/example-schema:person[name='Jan']");
             datastore.createListInstance("/example-schema:person[name='Michal']");
             datastore.createListInstance("/example-schema:person[name='Petr']");
@@ -249,6 +252,33 @@ TEST_CASE("setting/getting values")
         };
 
         REQUIRE(datastore.getItems("/example-schema:person") == expected);
+    }
+
+    SECTION("presence containers")
+    {
+        DatastoreAccess::Tree expected;
+        // Make sure it's not there before we create it
+        REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
+
+        {
+            REQUIRE_CALL(mock, write("/example-schema:pContainer", boost::none, ""s));
+            datastore.createPresenceContainer("/example-schema:pContainer");
+            datastore.commitChanges();
+        }
+        expected = {
+            {"/example-schema:pContainer", special_{SpecialValue::PresenceContainer}}
+        };
+        REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
+
+        // Make sure it's not there after we delete it
+        {
+            REQUIRE_CALL(mock, write("/example-schema:pContainer", ""s, boost::none));
+            datastore.deletePresenceContainer("/example-schema:pContainer");
+            datastore.commitChanges();
+        }
+        expected = {};
+        REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
+
     }
 
     waitForCompletionAndBitMore(seq1);

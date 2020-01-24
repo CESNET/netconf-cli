@@ -23,7 +23,21 @@ void fillMap(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libya
     for (const auto& it : items) {
         if (!it)
             continue;
-        if (it->schema()->nodetype() == LYS_LIST) {
+        if (it->schema()->nodetype() == LYS_CONTAINER) {
+            libyang::Schema_Node_Container container{it->schema()};
+            // presence() is const char* (I don't what this string is), but it
+            // is also used as a flag (if nullptr, then it's not a presence
+            // container)
+            // It's pointless to check this, since libnetconf2 doesn't include
+            // non-presence (and non-present) container, but I guess it doesn't
+            // hurt.
+            if (container.presence()) {
+                // The fact that the container is included in the data tree
+                // means that it is present and I don't need to check any
+                // value.
+                res.emplace(it->path(), special_{SpecialValue::PresenceContainer});
+            }
+        } if (it->schema()->nodetype() == LYS_LIST) {
             res.emplace(it->path(), special_{SpecialValue::List});
         }
         if (it->schema()->nodetype() == LYS_LEAF) {
