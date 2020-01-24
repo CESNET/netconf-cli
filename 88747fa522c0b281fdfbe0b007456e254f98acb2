@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "b3b533cb_c5c98123",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-24T10:38:10Z",
+      "side": 1,
+      "message": "wow nice, I forgot this existed",
+      "range": {
+        "startLine": 168,
+        "startChar": 21,
+        "endLine": 168,
+        "endChar": 27
+      },
+      "revId": "88747fa522c0b281fdfbe0b007456e254f98acb2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bf0bd851_f60ec933",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 1
