@@ -8,6 +8,7 @@
 
 #include <sysrepo-cpp/Session.hpp>
 #include "sysrepo_access.hpp"
+#include "utils.hpp"
 #include "yang_schema.hpp"
 
 leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
@@ -80,6 +81,47 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
     sysrepo::S_Val operator()(const T& value) const
     {
         return std::make_shared<sysrepo::Val>(value);
+    }
+};
+
+struct updateSrValFromValue : boost::static_visitor<void> {
+    std::string xpath;
+    sysrepo::S_Val v;
+    updateSrValFromValue(const std::string& xpath, sysrepo::S_Val v)
+        : xpath(xpath)
+        , v(v)
+    {
+    }
+
+    void operator()(const enum_& value) const
+    {
+        v->set(xpath.c_str(), value.m_value.c_str(), SR_ENUM_T);
+    }
+
+    void operator()(const binary_& value) const
+    {
+        v->set(xpath.c_str(), value.m_value.c_str(), SR_BINARY_T);
+    }
+
+    void operator()(const identityRef_& value) const
+    {
+        v->set(xpath.c_str(), (value.m_prefix.value().m_name + ":" + value.m_value).c_str(), SR_IDENTITYREF_T);
+    }
+
+    void operator()(const special_& value) const
+    {
+        throw std::runtime_error("Tried constructing S_Val from a " + specialValueToString(value));
+    }
+
+    void operator()(const std::string& value) const
+    {
+        v->set(xpath.c_str(), value.c_str(), SR_STRING_T);
+    }
+
+    template <typename T>
+    void operator()(const T value) const
+    {
+        v->set(xpath.c_str(), value);
     }
 };
 
@@ -201,6 +243,25 @@ void SysrepoAccess::discardChanges()
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
+}
+
+DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string &path, const Tree &input)
+{
+    auto srInput = std::make_shared<sysrepo::Vals>(input.size());
+    {
+        size_t i = 0;
+        for (const auto& [k, v] : input) {
+            boost::apply_visitor(updateSrValFromValue(joinPaths(path, k), srInput->val(i)), v);
+            ++i;
+        }
+    }
+    auto output = m_session->rpc_send(path.c_str(), srInput);
+    Tree res;
+    for (size_t i = 0; i < output->val_cnt(); ++i) {
+        const auto& v = output->val(i);
+        res.emplace(std::string(v->xpath()).substr(joinPaths(path, "/").size()), leafValueFromVal(v));
+    }
+    return res;
 }
 
 std::string SysrepoAccess::fetchSchema(const char* module, const char* revision, const char* submodule)
