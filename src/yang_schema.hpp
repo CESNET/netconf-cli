@@ -36,8 +36,8 @@ public:
     bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const override;
     bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const override;
-    bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
-    const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
+    bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const KeyIdentifier& key) const override;
+    const std::set<KeyIdentifier> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const override;

@@ -599,18 +599,18 @@ TEST_CASE("yangschema")
         }
         SECTION("listKeys")
         {
-            std::set<std::string> set;
+            std::set<KeyIdentifier> set;
 
             SECTION("_list")
             {
-                set = {"number"};
+                set = {{"number"}};
                 node.first = "example-schema";
                 node.second = "_list";
             }
 
             SECTION("twoKeyList")
             {
-                set = {"number", "name"};
+                set = {{"number"}, {"name"}};
                 node.first = "example-schema";
                 node.second = "twoKeyList";
             }
@@ -804,7 +804,7 @@ TEST_CASE("yangschema")
             node.second = "a2";
 
             REQUIRE(!ys.leafEnumHasValue(path, node, "haha"));
-            REQUIRE(!ys.listHasKey(path, node, "chacha"));
+            REQUIRE(!ys.listHasKey(path, node, {"chacha"}));
         }
 
         SECTION("nonexistent module")

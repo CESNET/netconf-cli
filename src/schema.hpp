@@ -66,8 +66,8 @@ public:
     virtual bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const = 0;
     virtual bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const = 0;
-    virtual bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const = 0;
-    virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const KeyIdentifier& key) const = 0;
+    virtual const std::set<KeyIdentifier> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const = 0;
 

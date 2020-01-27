@@ -14,7 +14,7 @@
 
 
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
-x3::rule<key_identifier_class, std::string> const key_identifier = "key_identifier";
+x3::rule<key_identifier_class, KeyIdentifier> const key_identifier = "key_identifier";
 x3::rule<node_identifier_class, std::string> const node_identifier = "node_identifier";
 x3::rule<module_identifier_class, std::string> const module_identifier = "module_identifier";
 x3::rule<listPrefix_class, std::string> const listPrefix = "listPrefix";
@@ -103,9 +103,9 @@ using x3::uint32;
 using x3::uint64;
 
 auto const key_identifier_def =
-    lexeme[
+    -module >> (x3::rule<class KeyName, std::string>{"KeyName"} = lexeme[
         ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
-    ];
+    ]);
 
 auto const createKeySuggestions_def =
     x3::eps;

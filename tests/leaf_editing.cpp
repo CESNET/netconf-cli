@@ -46,7 +46,7 @@ TEST_CASE("leaf editing")
     schema->addLeafIdentityRef("/mod:contA", "mod:identInCont", ModuleValuePair{"mod", "pizza"});
     schema->addLeafEnum("/", "mod:leafEnum", {"lol", "data", "coze"});
     schema->addLeaf("/mod:contA", "mod:leafInCont", yang::LeafDataTypes::String);
-    schema->addList("/", "mod:list", {"number"});
+    schema->addList("/", "mod:list", {{"number"}});
     schema->addLeaf("/mod:list", "mod:number", yang::LeafDataTypes::Int32);
     schema->addLeaf("/mod:list", "mod:leafInList", yang::LeafDataTypes::String);
     schema->addLeafRef("/", "mod:refToString", "/mod:leafString");
@@ -101,9 +101,9 @@ TEST_CASE("leaf editing")
         SECTION("set mod:list[number=1]/leafInList \"another_data\"")
         {
             input = "set mod:list[number=1]/leafInList \"another_data\"";
-            auto keys = std::map<std::string, leaf_data_>{
-                {"number", int32_t{1}}};
-            expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
+            auto keys = std::map<KeyIdentifier, leaf_data_>{
+                {{"number"}, int32_t{1}}};
+            expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_({"list"}, keys)});
             expected.m_path.m_nodes.push_back(dataNode_{leaf_("leafInList")});
             expected.m_data = std::string("another_data");
         }

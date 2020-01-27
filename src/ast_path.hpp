@@ -46,14 +46,25 @@ struct leaf_ {
     std::string m_name;
 };
 
+struct KeyIdentifier {
+    KeyIdentifier();
+    KeyIdentifier(const std::string& name);
+    KeyIdentifier(const std::string& module, const std::string& name);
+    KeyIdentifier(const boost::optional<module_>& module, const std::string& name);
+    bool operator==(const KeyIdentifier& b) const;
+    bool operator<(const KeyIdentifier& b) const;
+    boost::optional<module_> m_module;
+    std::string m_name;
+};
+
 struct listElement_ {
     listElement_() {}
-    listElement_(const std::string& listName, const std::map<std::string, leaf_data_>& keys);
+    listElement_(const std::string& listName, const std::map<KeyIdentifier, leaf_data_>& keys);
 
     bool operator==(const listElement_& b) const;
 
     std::string m_name;
-    std::map<std::string, leaf_data_> m_keys;
+    std::map<KeyIdentifier, leaf_data_> m_keys;
 };
 
 struct list_ {
@@ -117,8 +128,10 @@ std::string pathToSchemaString(const dataPath_& path, Prefixes prefixes);
 schemaNode_ dataNodeToSchemaNode(const dataNode_& node);
 schemaPath_ dataPathToSchemaPath(const dataPath_& path);
 std::string escapeListKeyString(const std::string& what);
+std::string keyIdentifierToString(const KeyIdentifier& keyIdentifier);
 
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
+BOOST_FUSION_ADAPT_STRUCT(KeyIdentifier, m_module, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
 BOOST_FUSION_ADAPT_STRUCT(module_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(dataNode_, m_prefix, m_suffix)

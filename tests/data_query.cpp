@@ -159,7 +159,7 @@ TEST_CASE("data query")
                 SECTION("accounting department")
                 {
                     list.m_keys = {
-                        {"department", std::string{"accounting"}}
+                        {{"department"}, std::string{"accounting"}}
                     };
                     expected = {
                         {{"name", std::string{"Alice"}}},
@@ -169,7 +169,7 @@ TEST_CASE("data query")
                 SECTION("sales department")
                 {
                     list.m_keys = {
-                        {"department", std::string{"sales"}}
+                        {{"department"}, std::string{"sales"}}
                     };
                     expected = {
                         {{"name", std::string{"Alice"}}},
@@ -179,7 +179,7 @@ TEST_CASE("data query")
                 SECTION("programmers department")
                 {
                     list.m_keys = {
-                        {"department", std::string{"programmers"}}
+                        {{"department"}, std::string{"programmers"}}
                     };
                     expected = {
                     };
@@ -192,7 +192,7 @@ TEST_CASE("data query")
                 listElement_ listOrg;
                 listOrg.m_name = "org";
                 listOrg.m_keys = {
-                    {"department", std::string{"sales"}}
+                    {{"department"}, std::string{"sales"}}
                 };
 
                 listElement_ listPeople;
@@ -202,7 +202,7 @@ TEST_CASE("data query")
                 {
                     listPeople.m_name = "people";
                     listPeople.m_keys = {
-                        {"name", std::string{"Alice"}}
+                        {{"name"}, std::string{"Alice"}}
                     };
                     expected = {
                         {{"type", enum_{"laptop"}}},
@@ -215,7 +215,7 @@ TEST_CASE("data query")
                 {
                     listPeople.m_name = "people";
                     listPeople.m_keys = {
-                        {"name", std::string{"Cyril"}}
+                        {{"name"}, std::string{"Cyril"}}
                     };
                     expected = {
                         {{"type", enum_{"PC"}}},

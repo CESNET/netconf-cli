@@ -72,7 +72,7 @@ bool leaf_::operator==(const leaf_& b) const
     return this->m_name == b.m_name;
 }
 
-listElement_::listElement_(const std::string& listName, const std::map<std::string, leaf_data_>& keys)
+listElement_::listElement_(const std::string& listName, const std::map<KeyIdentifier, leaf_data_>& keys)
     : m_name(listName)
     , m_keys(keys)
 {
@@ -138,7 +138,9 @@ struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
         res << node.m_name + "[";
         std::transform(node.m_keys.begin(), node.m_keys.end(),
                 std::experimental::make_ostream_joiner(res, "]["),
-                [] (const auto& it) { return it.first + "=" + escapeListKeyString(leafDataToString(it.second)); });
+                [] (const auto& it) {
+                    return keyIdentifierToString(it.first) + "=" + escapeListKeyString(leafDataToString(it.second));
+                });
         res << "]";
         return res.str();
     }
@@ -226,4 +228,42 @@ schemaPath_ dataPathToSchemaPath(const dataPath_& path)
                    [](const dataNode_& node) { return dataNodeToSchemaNode(node); });
 
     return res;
+}
+
+KeyIdentifier::KeyIdentifier()
+{
+}
+
+KeyIdentifier::KeyIdentifier(const std::string& name)
+    : m_name(name)
+{
+}
+
+KeyIdentifier::KeyIdentifier(const std::string& module, const std::string& name)
+    : m_module(module_{module})
+    , m_name(name)
+{
+
+}
+
+KeyIdentifier::KeyIdentifier(const boost::optional<module_>& module, const std::string& name)
+    : m_module(module)
+    , m_name(name)
+{
+
+}
+
+bool KeyIdentifier::operator==(const KeyIdentifier& b) const
+{
+    return this->m_module == b.m_module && this->m_name == b.m_name;
+}
+
+bool KeyIdentifier::operator<(const KeyIdentifier& b) const
+{
+    return std::tie(this->m_module, this->m_name) < std::tie(b.m_module, b.m_name);
+}
+
+std::string keyIdentifierToString(const KeyIdentifier& keyIdentifier)
+{
+    return (keyIdentifier.m_module ? keyIdentifier.m_module->m_name : "") + keyIdentifier.m_name;
 }

@@ -28,7 +28,7 @@ struct keyValue_class {
 
         if (parserContext.m_tmpListKeys.find(ast.first) != parserContext.m_tmpListKeys.end()) {
             _pass(context) = false;
-            parserContext.m_errorMsg = "Key \"" + ast.first + "\" was entered more than once.";
+            parserContext.m_errorMsg = "Key \"" + keyIdentifierToString(ast.first) + "\" was entered more than once.";
         } else {
             parserContext.m_tmpListKeys.insert(ast.first);
         }
@@ -72,9 +72,9 @@ struct key_identifier_class {
             listNode.m_suffix = list_{parserContext.m_tmpListName};
             location.m_nodes.push_back(listNode);
             parserContext.m_tmpListKeyLeafPath.m_location = location;
-            parserContext.m_tmpListKeyLeafPath.m_node = {boost::none, ast};
+            parserContext.m_tmpListKeyLeafPath.m_node = {ast.m_module.flat_map([] (auto mod) { return boost::optional<std::string>(mod.m_name); }), ast.m_name};
         } else {
-            parserContext.m_errorMsg = parserContext.m_tmpListName + " is not indexed by \"" + ast + "\".";
+            parserContext.m_errorMsg = parserContext.m_tmpListName + " is not indexed by \"" + keyIdentifierToString(ast) + "\".";
             _pass(context) = false;
         }
     }
@@ -105,20 +105,20 @@ struct listSuffix_class {
         const Schema& schema = parserContext.m_schema;
 
         const auto& keysNeeded = schema.listKeys(parserContext.currentSchemaPath(), {parserContext.m_curModule, parserContext.m_tmpListName});
-        std::set<std::string> keysSupplied;
+        std::set<KeyIdentifier> keysSupplied;
         for (const auto& it : ast)
             keysSupplied.insert(it.first);
 
         if (keysNeeded != keysSupplied) {
             parserContext.m_errorMsg = "Not enough keys for " + parserContext.m_tmpListName + ". " +
                                        "These keys were not supplied:";
-            std::set<std::string> missingKeys;
+            std::set<KeyIdentifier> missingKeys;
             std::set_difference(keysNeeded.begin(), keysNeeded.end(),
                                 keysSupplied.begin(), keysSupplied.end(),
                                 std::inserter(missingKeys, missingKeys.end()));
 
             for (const auto& it : missingKeys)
-                parserContext.m_errorMsg += " " + it;
+                parserContext.m_errorMsg += " " + keyIdentifierToString(it);
             parserContext.m_errorMsg += ".";
 
             _pass(context) = false;
@@ -577,7 +577,7 @@ struct createPathSuggestions_class {
     }
 };
 
-std::set<std::string> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::set<std::string> currentSet);
+std::set<std::string> generateMissingKeyCompletionSet(std::set<KeyIdentifier> keysNeeded, std::set<KeyIdentifier> currentSet);
 
 struct createKeySuggestions_class {
     template <typename T, typename Iterator, typename Context>

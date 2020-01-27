@@ -23,7 +23,7 @@ struct container {
     yang::ContainerTraits m_presence;
 };
 struct list {
-    std::set<std::string> m_keys;
+    std::set<KeyIdentifier> m_keys;
 };
 
 struct leaf {
@@ -55,8 +55,8 @@ public:
     bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const override;
     bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const override;
-    bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
-    const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
+    bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const KeyIdentifier& key) const override;
+    const std::set<KeyIdentifier> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
@@ -69,7 +69,7 @@ public:
     void addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues);
     void addLeafIdentityRef(const std::string& location, const std::string& name, const ModuleValuePair& base);
     void addLeafRef(const std::string& location, const std::string& name, const std::string& source);
-    void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
+    void addList(const std::string& location, const std::string& name, const std::set<KeyIdentifier>& keys);
     void addModule(const std::string& name);
     void addIdentity(const std::optional<ModuleValuePair>& base, const ModuleValuePair& name);
 
