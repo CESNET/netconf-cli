@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7738a985_1e0a1c4c",
+        "filename": "tests/enum_completion.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-27T09:36:29Z",
+      "side": 1,
+      "message": "this looks like it\u0027s copy-pasted from the other test",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 1
+      },
+      "revId": "979bf5e41889073bd361e535d3f77c209d03d672",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a56d11e_ed76bc3e",
+        "filename": "tests/path_completion.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-27T09:36:29Z",
+      "side": 1,
+      "message": "same here -- duplicate",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 1
+      },
+      "revId": "979bf5e41889073bd361e535d3f77c209d03d672",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
