@@ -116,6 +116,30 @@
       "revId": "a84c1f0337fa8d3db6950797b699cb11b207a726",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f9097fa_94c783bd",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-27T13:53:09Z",
+      "side": 1,
+      "message": "\u003e Why parentheses? Where?\n\nWhen I saw code like this:\n\n auto x \u003d a ? b : c ? d : e;\n\nI had to stop for a while to verify what it is doing, that\u0027s all. I think that if it was rewritten like this:\n\n auto x \u003d a ? b : (c ? d : e);\n\n...preferably with some newlines, it would be a bit easier to understand. Sure, the ternary operator is (I think) always well-formed, and there\u0027s no ambiguity compared to {}-less nested if/else, but I still think that this is not awesomely readable.\n\n\u003e I can\u0027t always take xpath from new val, because it\u0027s nullptr when deleting a presence container (and old val is nullptr when creating it).\n\nsorry, you\u0027re right\n\n\u003e But I can probably assume they won\u0027t be both nullptr.\n\nyes please",
+      "parentUuid": "6dcc7ab8_70765143",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 38
+      },
+      "revId": "a84c1f0337fa8d3db6950797b699cb11b207a726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
