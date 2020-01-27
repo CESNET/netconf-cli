@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f560a988_f5620fab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-27T08:49:57Z",
+      "side": 1,
+      "message": "I checked the sources and there\u0027s no callback for this, so yeah, let\u0027s use this.",
+      "revId": "5cd6e9e6c72cc5b96545cfe65e25ada155e8dc8f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
