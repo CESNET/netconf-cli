@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d144fed1_b946a1fa",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-27T10:10:20Z",
+      "side": 1,
+      "message": "The code does not use that temporary variable outside of the if-statement\u0027s condition, so I think it\u0027s not needed to bind a name to it. Here\u0027s how I would do it:\n\n  if (libyang::Schema_Node_Container{it-\u003eschema()}.presence()) {\n      // ...\n      res.emplace(...);\n  }\n\nJust my two cents, feel free to disagree and not change the code.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 39
+      },
+      "revId": "a84c1f0337fa8d3db6950797b699cb11b207a726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2392ab8f_3139da27",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-27T10:10:20Z",
+      "side": 1,
+      "message": "nice",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 2
+      },
+      "revId": "a84c1f0337fa8d3db6950797b699cb11b207a726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a3ef9f74_2f0a32ad",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-27T10:10:20Z",
+      "side": 1,
+      "message": "I think that nested ?: should include parentheses. In this context, however, I am quite convinced that sysrepo won\u0027t ever tell you about a nullptr XPath, so you can rewrite this as:\n\n  auto xpath \u003d change-\u003enew_val() ? change-\u003enew_val()-\u003expath() : change-\u003eold_val()-\u003expath();\n\nOr just keep it as-is, always taking the XPath from the new val because the test does not appear to change, and it used to work.",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 38
+      },
+      "revId": "a84c1f0337fa8d3db6950797b699cb11b207a726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
