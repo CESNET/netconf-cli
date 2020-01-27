@@ -16,26 +16,29 @@ TEST_CASE("path_completion")
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("example");
     schema->addModule("second");
+    schema->addModule("tomatoPizzas");
     schema->addContainer("/", "example:ano");
     schema->addContainer("/", "example:anoda");
-    schema->addList("/example:ano", "example:listInCont", {"number"});
+    schema->addList("/example:ano", "example:listInCont", {{"number"}});
     schema->addContainer("/", "second:amelie");
     schema->addContainer("/", "example:bota");
     schema->addContainer("/example:ano", "example:a2");
     schema->addContainer("/example:bota", "example:b2");
     schema->addContainer("/example:ano/example:a2", "example:a3");
     schema->addContainer("/example:bota/example:b2", "example:b3");
-    schema->addList("/", "example:list", {"number"});
+    schema->addList("/", "example:list", {{"number"}});
     schema->addLeaf("/example:list", "example:number", yang::LeafDataTypes::Int32);
     schema->addContainer("/example:list", "example:contInList");
-    schema->addList("/", "example:ovoce", {"name"});
+    schema->addList("/", "example:ovoce", {{"name"}});
     schema->addLeaf("/example:ovoce", "example:name", yang::LeafDataTypes::String);
-    schema->addList("/", "example:ovocezelenina", {"name"});
+    schema->addList("/", "example:ovocezelenina", {{"name"}});
     schema->addLeaf("/example:ovocezelenina", "example:name", yang::LeafDataTypes::String);
-    schema->addList("/", "example:twoKeyList", {"number", "name"});
+    schema->addList("/", "example:twoKeyList", {{"number"}, {"name"}});
     schema->addLeaf("/example:twoKeyList", "example:name", yang::LeafDataTypes::String);
     schema->addLeaf("/example:twoKeyList", "example:number", yang::LeafDataTypes::Int32);
     schema->addLeaf("/", "example:leafInt", yang::LeafDataTypes::Int32);
+    schema->addList("/", "example:pizzas", {{"tomatoPizzas", "name"}});
+    schema->addLeaf("/example:pizzas", "tomatoPizzas:name", yang::LeafDataTypes::String);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -52,14 +55,14 @@ TEST_CASE("path_completion")
         SECTION("ls ")
         {
             input = "ls ";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/", "example:pizzas["};
             expectedContextLength = 0;
         }
 
         SECTION("ls e")
         {
             input = "ls e";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "example:pizzas["};
             expectedContextLength = 1;
         }
 
@@ -87,14 +90,14 @@ TEST_CASE("path_completion")
         SECTION("ls /")
         {
             input = "ls /";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/", "example:pizzas["};
             expectedContextLength = 0;
         }
 
         SECTION("ls /e")
         {
             input = "ls /e";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "example:pizzas["};
             expectedContextLength = 1;
         }
 
@@ -260,6 +263,20 @@ TEST_CASE("path_completion")
             input = "cd example:ovoce";
             expectedCompletions = {"example:ovoce[", "example:ovocezelenina["};
             expectedContextLength = 13;
+        }
+
+        SECTION("cd example:pizzas[")
+        {
+            input = "cd example:pizzas[";
+            expectedCompletions = {"tomatoPizzas:name="};
+            expectedContextLength = 0;
+        }
+
+        SECTION("cd example:pizzas[tomatoPizzas:name=")
+        {
+            input = "cd example:pizzas[tomatoPizzas:name=";
+            expectedCompletions = {"tomatoPizzas:name="};
+            expectedContextLength = 18;
         }
     }
 

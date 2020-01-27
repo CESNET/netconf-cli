@@ -14,7 +14,7 @@
 
 
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
-x3::rule<key_identifier_class, std::string> const key_identifier = "key_identifier";
+x3::rule<key_identifier_class, KeyIdentifier> const key_identifier = "key_identifier";
 x3::rule<node_identifier_class, std::string> const node_identifier = "node_identifier";
 x3::rule<module_identifier_class, std::string> const module_identifier = "module_identifier";
 x3::rule<listPrefix_class, std::string> const listPrefix = "listPrefix";
@@ -24,7 +24,9 @@ x3::rule<list_class, list_> const list = "list";
 x3::rule<nodeup_class, nodeup_> const nodeup = "nodeup";
 x3::rule<container_class, container_> const container = "container";
 x3::rule<leaf_class, leaf_> const leaf = "leaf";
-x3::rule<module_class, module_> const module = "module";
+// FIXME: Make this better. Get rid of duplicate grammar definitions.
+x3::rule<module_class<SaveFlags::Save>, module_> const module = "module";
+x3::rule<module_class<SaveFlags::DontSave>, module_> const moduleNoSave = "module";
 x3::rule<dataNode_class, dataNode_> const dataNode = "dataNode";
 x3::rule<schemaNode_class, schemaNode_> const schemaNode = "schemaNode";
 x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
@@ -103,9 +105,9 @@ using x3::uint32;
 using x3::uint64;
 
 auto const key_identifier_def =
-    lexeme[
+    -moduleNoSave >> (x3::rule<class KeyName, std::string>{"KeyName"} = lexeme[
         ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
-    ];
+    ]);
 
 auto const createKeySuggestions_def =
     x3::eps;
@@ -147,6 +149,9 @@ auto const nodeup_def =
 
 auto const container_def =
     node_identifier;
+
+auto const moduleNoSave_def =
+    module_identifier >> x3::no_skip[':'] >> !x3::no_skip[space];
 
 auto const module_def =
     module_identifier >> x3::no_skip[':'] >> !x3::no_skip[space];
@@ -366,6 +371,7 @@ BOOST_SPIRIT_DEFINE(dataPathListEnd)
 BOOST_SPIRIT_DEFINE(absoluteStart)
 BOOST_SPIRIT_DEFINE(trailingSlash)
 BOOST_SPIRIT_DEFINE(module)
+BOOST_SPIRIT_DEFINE(moduleNoSave)
 BOOST_SPIRIT_DEFINE(leaf_data)
 BOOST_SPIRIT_DEFINE(leaf_data_enum)
 BOOST_SPIRIT_DEFINE(leaf_data_decimal)

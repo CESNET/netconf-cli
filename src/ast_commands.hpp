@@ -14,7 +14,7 @@
 
 namespace x3 = boost::spirit::x3;
 
-using keyValue_ = std::pair<std::string, leaf_data_>;
+using keyValue_ = std::pair<KeyIdentifier, leaf_data_>;
 
 enum class LsOption {
     Recursive

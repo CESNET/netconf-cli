@@ -55,7 +55,7 @@ void StaticSchema::addContainer(const std::string& location, const std::string& 
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
-bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
+bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const KeyIdentifier& key) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     assert(isList(location, node));
@@ -65,7 +65,7 @@ bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair&
     return list.m_keys.find(key) != list.m_keys.end();
 }
 
-const std::set<std::string> StaticSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
+const std::set<KeyIdentifier> StaticSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     assert(isList(location, node));
@@ -88,7 +88,7 @@ bool StaticSchema::isList(const schemaPath_& location, const ModuleNodePair& nod
     return true;
 }
 
-void StaticSchema::addList(const std::string& location, const std::string& name, const std::set<std::string>& keys)
+void StaticSchema::addList(const std::string& location, const std::string& name, const std::set<KeyIdentifier>& keys)
 {
     m_nodes.at(location).emplace(name, yang::list{keys});
 

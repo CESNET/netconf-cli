@@ -16,6 +16,7 @@ TEST_CASE("cd")
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("example");
     schema->addModule("second");
+    schema->addModule("tomatoPizzas");
     schema->addContainer("/", "example:a");
     schema->addContainer("/", "second:a");
     schema->addContainer("/", "example:b");
@@ -23,12 +24,14 @@ TEST_CASE("cd")
     schema->addContainer("/example:b", "example:b2");
     schema->addContainer("/example:a/example:a2", "example:a3");
     schema->addContainer("/example:b/example:b2", "example:b3");
-    schema->addList("/", "example:list", {"number"});
+    schema->addList("/", "example:list", {{"number"}});
     schema->addLeaf("/example:list", "example:number", yang::LeafDataTypes::Int32);
     schema->addContainer("/example:list", "example:contInList");
-    schema->addList("/", "example:twoKeyList", {"number", "name"});
+    schema->addList("/", "example:twoKeyList", {{"number"}, {"name"}});
     schema->addLeaf("/example:twoKeyList", "example:number", yang::LeafDataTypes::Int32);
     schema->addLeaf("/example:twoKeyList", "example:name", yang::LeafDataTypes::String);
+    schema->addList("/", "example:pizzas", {{"tomatoPizzas", "name"}});
+    schema->addLeaf("/example:pizzas", "tomatoPizzas:name", yang::LeafDataTypes::String);
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -101,27 +104,35 @@ TEST_CASE("cd")
             SECTION("example:list[number=1]")
             {
                 input = "cd example:list[number=1]";
-                auto keys = std::map<std::string, leaf_data_>{
-                    {"number", int32_t{1}}};
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("list", keys)));
+                auto keys = std::map<KeyIdentifier, leaf_data_>{
+                    {{"number"}, int32_t{1}}};
+                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_({"list"}, keys)));
             }
 
             SECTION("example:list[number=1]/contInList")
             {
                 input = "cd example:list[number=1]/contInList";
-                auto keys = std::map<std::string, leaf_data_>{
-                    {"number", int32_t{1}}};
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("list", keys)));
+                auto keys = std::map<KeyIdentifier, leaf_data_>{
+                    {{"number"}, int32_t{1}}};
+                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_({"list"}, keys)));
                 expected.m_path.m_nodes.push_back(dataNode_(container_("contInList")));
             }
 
             SECTION("example:twoKeyList[number=4][name='abcd']")
             {
                 input = "cd example:twoKeyList[number=4][name='abcd']";
-                auto keys = std::map<std::string, leaf_data_>{
-                    {"number", int32_t{4}},
-                    {"name", std::string{"abcd"}}};
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("twoKeyList", keys)));
+                auto keys = std::map<KeyIdentifier, leaf_data_>{
+                    {{"number"}, int32_t{4}},
+                    {{"name"}, std::string{"abcd"}}};
+                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_({"twoKeyList"}, keys)));
+            }
+
+            SECTION("example:pizzas[tomatoPizzas:name='hawaii']")
+            {
+                input = "cd example:pizzas[tomatoPizzas:name='hawaii']";
+                auto keys = std::map<KeyIdentifier, leaf_data_>{
+                    {{"tomatoPizzas", "name"}, std::string{"hawaii"}}};
+                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_({"pizzas"}, keys)));
             }
         }
 

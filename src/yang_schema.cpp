@@ -186,7 +186,7 @@ bool YangSchema::leafIdentityIsValid(const schemaPath_& location, const ModuleNo
     return std::any_of(identities.begin(), identities.end(), [toFind = identModule + ":" + value.second](const auto& x) { return x == toFind; });
 }
 
-bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
+bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const KeyIdentifier& key) const
 {
     if (!isList(location, node))
         return false;
@@ -225,15 +225,22 @@ libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, co
     return impl_getSchemaNode(absPath);
 }
 
-const std::set<std::string> YangSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
+const std::set<KeyIdentifier> YangSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
 {
-    std::set<std::string> keys;
+    std::set<KeyIdentifier> keys;
     if (!isList(location, node))
         return keys;
     libyang::Schema_Node_List list(getSchemaNode(location, node));
     const auto& keysVec = list.keys();
 
-    std::transform(keysVec.begin(), keysVec.end(), std::inserter(keys, keys.begin()), [](const auto& it) { return it->name(); });
+    auto topLevelModule = location.m_nodes.empty() ? *node.first : location.m_nodes.front().m_prefix.get().m_name;
+    std::transform(keysVec.begin(), keysVec.end(), std::inserter(keys, keys.begin()), [topLevelModule] (const libyang::S_Schema_Node_Leaf& it) {
+        boost::optional<module_> module;
+        if (it->module()->name() != topLevelModule) {
+            module = module_{it->module()->name()};
+        }
+        return KeyIdentifier{module, it->name()};
+    });
     return keys;
 }
 

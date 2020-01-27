@@ -22,7 +22,7 @@ struct ParserContext {
     std::string m_errorMsg;
     std::string m_tmpListName;
     bool m_topLevelModulePresent = false;
-    std::set<std::string> m_tmpListKeys;
+    std::set<KeyIdentifier> m_tmpListKeys;
 
     struct {
         schemaPath_ m_location;
