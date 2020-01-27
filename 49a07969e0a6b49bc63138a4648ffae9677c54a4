@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "235f7a2e_c8a03f77",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-27T15:43:04Z",
+      "side": 1,
+      "message": "These aren\u0027t needed, but I don\u0027t mind them.",
+      "range": {
+        "startLine": 363,
+        "startChar": 16,
+        "endLine": 363,
+        "endChar": 37
+      },
+      "revId": "49a07969e0a6b49bc63138a4648ffae9677c54a4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
