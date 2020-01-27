@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e1da01b9_5103a7b5",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-27T13:44:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d144fed1_b946a1fa",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 39
+      },
+      "revId": "a84c1f0337fa8d3db6950797b699cb11b207a726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2392ab8f_3139da27",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 2
@@ -59,6 +83,30 @@
       "writtenOn": "2020-01-27T10:10:20Z",
       "side": 1,
       "message": "I think that nested ?: should include parentheses. In this context, however, I am quite convinced that sysrepo won\u0027t ever tell you about a nullptr XPath, so you can rewrite this as:\n\n  auto xpath \u003d change-\u003enew_val() ? change-\u003enew_val()-\u003expath() : change-\u003eold_val()-\u003expath();\n\nOr just keep it as-is, always taking the XPath from the new val because the test does not appear to change, and it used to work.",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 38
+      },
+      "revId": "a84c1f0337fa8d3db6950797b699cb11b207a726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6dcc7ab8_70765143",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-27T13:44:29Z",
+      "side": 1,
+      "message": "Why parentheses? Where?\n\nI can\u0027t always take xpath from new val, because it\u0027s nullptr when deleting a presence container (and old val is nullptr when creating it). But I can probably assume they won\u0027t be both nullptr.",
+      "parentUuid": "a3ef9f74_2f0a32ad",
       "range": {
         "startLine": 31,
         "startChar": 0,
