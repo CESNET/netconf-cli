@@ -162,7 +162,7 @@ client::ReportedError make_error(unique_ptr_for<struct nc_reply>&& reply)
     return client::ReportedError{ss.str()};
 }
 
-unique_ptr_for<struct nc_reply_data> do_rpc_data(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
+std::optional<unique_ptr_for<struct nc_reply_data>> do_rpc_data_or_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
 {
     auto x = do_rpc(session, std::move(rpc));
 
@@ -170,27 +170,29 @@ unique_ptr_for<struct nc_reply_data> do_rpc_data(client::Session* session, uniqu
     case NC_RPL_DATA:
         return guarded(reinterpret_cast<struct nc_reply_data*>(x.release()));
     case NC_RPL_OK:
-        throw std::runtime_error{"Received OK instead of a data reply"};
+        return std::nullopt;
     case NC_RPL_ERROR:
         throw make_error(std::move(x));
     default:
         throw std::runtime_error{"Unhandled reply type"};
     }
+
+}
+
+unique_ptr_for<struct nc_reply_data> do_rpc_data(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
+{
+    auto x = do_rpc_data_or_ok(session, std::move(rpc));
+    if (!x) {
+        throw std::runtime_error{"Received OK instead of a data reply"};
+    }
+    return std::move(*x);
 }
 
 void do_rpc_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
 {
-    auto x = do_rpc(session, std::move(rpc));
-
-    switch (x->type) {
-    case NC_RPL_DATA:
+    auto x = do_rpc_data_or_ok(session, std::move(rpc));
+    if (x) {
         throw std::runtime_error{"Unexpected DATA reply"};
-    case NC_RPL_OK:
-        return;
-    case NC_RPL_ERROR:
-        throw make_error(std::move(x));
-    default:
-        throw std::runtime_error{"Unhandled reply type"};
     }
 }
 }
@@ -361,6 +363,21 @@ void Session::discard()
         throw std::runtime_error("Cannot create discard RPC");
     }
     impl::do_rpc_ok(this, std::move(rpc));
+}
+
+std::shared_ptr<libyang::Data_Node> Session::rpc(const std::string& xmlData)
+{
+    auto rpc = impl::guarded(nc_rpc_act_generic_xml(xmlData.c_str(), NC_PARAMTYPE_CONST));
+    if (!rpc) {
+        throw std::runtime_error("Cannot create generic RPC");
+    }
+    auto reply = impl::do_rpc_data_or_ok(this, std::move(rpc));
+    if (reply) {
+        auto dataNode = libyang::create_new_Data_Node((*reply)->data);
+        return dataNode->dup_withsiblings(1);
+    } else {
+        return nullptr;
+    }
 }
 
 ReportedError::ReportedError(const std::string& what)

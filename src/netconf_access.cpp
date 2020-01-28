@@ -13,35 +13,50 @@
 #include "utils.hpp"
 #include "yang_schema.hpp"
 
-NetconfAccess::~NetconfAccess() = default;
+namespace {
 
-std::map<std::string, leaf_data_> NetconfAccess::getItems(const std::string& path)
+// This is very similar to the fillMap lambda in SysrepoAccess, however,
+// Sysrepo returns a weird array-like structure, while libnetconf
+// returns libyang::Data_Node
+void fillMap(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix = std::nullopt)
 {
-    using namespace std::string_literals;
-    std::map<std::string, leaf_data_> res;
-
-    // This is very similar to the fillMap lambda in SysrepoAccess, however,
-    // Sysrepo returns a weird array-like structure, while libnetconf
-    // returns libyang::Data_Node
-    auto fillMap = [&res](auto items) {
-        for (const auto& it : items) {
-            if (!it)
-                continue;
-            if (it->schema()->nodetype() == LYS_LIST) {
-                res.emplace(it->path(), special_{SpecialValue::List});
-            }
-            if (it->schema()->nodetype() == LYS_LEAF) {
-                libyang::Data_Node_Leaf_List leaf(it);
-                res.emplace(leaf.path(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
-            }
-        }
+    auto stripXPathPrefix = [&ignoredXPathPrefix] (auto path) {
+        return ignoredXPathPrefix ? path.substr(ignoredXPathPrefix->size()) : path;
     };
 
+    for (const auto& it : items) {
+        if (!it)
+            continue;
+        if (it->schema()->nodetype() == LYS_CONTAINER) {
+            if (libyang::Schema_Node_Container{it->schema()}.presence()) {
+                // The fact that the container is included in the data tree
+                // means that it is present and I don't need to check any
+                // value.
+                res.emplace(stripXPathPrefix(it->path()), special_{SpecialValue::PresenceContainer});
+            }
+        }
+        if (it->schema()->nodetype() == LYS_LIST) {
+            res.emplace(stripXPathPrefix(it->path()), special_{SpecialValue::List});
+        }
+        if (it->schema()->nodetype() == LYS_LEAF) {
+            libyang::Data_Node_Leaf_List leaf(it);
+            res.emplace(stripXPathPrefix(it->path()), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
+        }
+    }
+}
+}
+
+
+NetconfAccess::~NetconfAccess() = default;
+
+DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path)
+{
+    Tree res;
     auto config = m_session->getConfig(NC_DATASTORE_RUNNING, (path != "/") ? std::optional{path} : std::nullopt);
 
     if (config) {
         for (auto it : config->tree_for()) {
-            fillMap(it->tree_dfs());
+            fillMap(res, it->tree_dfs());
         }
     }
     return res;
@@ -128,6 +143,25 @@ void NetconfAccess::commitChanges()
 void NetconfAccess::discardChanges()
 {
     m_session->discard();
+}
+
+DatastoreAccess::Tree NetconfAccess::executeRpc(const std::string& path, const Tree& input)
+{
+    auto root = m_schema->dataNodeFromPath(path);
+    for (const auto& [k, v] : input) {
+        auto node = m_schema->dataNodeFromPath(joinPaths(path, k), leafDataToString(v));
+        root->merge(node, 0);
+    }
+    auto data = root->print_mem(LYD_XML, 0);
+
+    Tree res;
+    auto output = m_session->rpc(data);
+    if (output) {
+        for (auto it : output->tree_for()) {
+            fillMap(res, it->tree_dfs(), joinPaths(path, "/"));
+        }
+    }
+    return res;
 }
 
 std::string NetconfAccess::fetchSchema(const std::string_view module, const

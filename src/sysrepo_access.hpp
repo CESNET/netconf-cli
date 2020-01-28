@@ -28,12 +28,13 @@ class SysrepoAccess : public DatastoreAccess {
 public:
     ~SysrepoAccess() override;
     SysrepoAccess(const std::string& appname);
-    std::map<std::string, leaf_data_> getItems(const std::string& path) override;
+    Tree getItems(const std::string& path) override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createPresenceContainer(const std::string& path) override;
     void deletePresenceContainer(const std::string& path) override;
     void createListInstance(const std::string& path) override;
     void deleteListInstance(const std::string& path) override;
+    Tree executeRpc(const std::string& path, const Tree& input) override;
 
     std::shared_ptr<Schema> schema() override;
 

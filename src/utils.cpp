@@ -11,10 +11,26 @@
 
 std::string joinPaths(const std::string& prefix, const std::string& suffix)
 {
-    if (prefix.empty() || suffix.empty() || prefix == "/")
-        return prefix + suffix;
-    else
-        return prefix + '/' + suffix;
+    // These two if statements are essential for the algorithm:
+    // The first one solves joining nothing and a relative path - the algorithm
+    // down below adds a leading slash, turning it into an absolute path.
+    // The second one would always add a trailing slash to the path.
+    if (prefix.empty()) {
+        return suffix;
+    }
+
+    if (suffix.empty()) {
+        return prefix;
+    }
+
+    // Otherwise, strip slashes where the join is going to happen. This will
+    // also change "/" to "", but the return statement takes care of that and
+    // inserts the slash again.
+    auto prefixWithoutTrailingSlash = !prefix.empty() && prefix.back() == '/' ? prefix.substr(0, prefix.length() - 1) : prefix;
+    auto suffixWithoutLeadingSlash = !suffix.empty() && suffix.front() == '/' ? suffix.substr(1) : suffix;
+
+    // And join the result with a slash.
+    return prefixWithoutTrailingSlash + '/' + suffixWithoutLeadingSlash;
 }
 
 std::string stripLastNodeFromPath(const std::string& path)

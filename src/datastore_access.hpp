@@ -38,13 +38,15 @@ class Schema;
 
 class DatastoreAccess {
 public:
+    using Tree = std::map<std::string, leaf_data_>;
     virtual ~DatastoreAccess() = 0;
-    virtual std::map<std::string, leaf_data_> getItems(const std::string& path) = 0;
+    virtual Tree getItems(const std::string& path) = 0;
     virtual void setLeaf(const std::string& path, leaf_data_ value) = 0;
     virtual void createPresenceContainer(const std::string& path) = 0;
     virtual void deletePresenceContainer(const std::string& path) = 0;
     virtual void createListInstance(const std::string& path) = 0;
     virtual void deleteListInstance(const std::string& path) = 0;
+    virtual Tree executeRpc(const std::string& path, const Tree& input) = 0;
 
     virtual std::shared_ptr<Schema> schema() = 0;
 

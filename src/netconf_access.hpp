@@ -33,7 +33,7 @@ public:
     NetconfAccess(const std::string& socketPath);
     NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session);
     ~NetconfAccess() override;
-    std::map<std::string, leaf_data_> getItems(const std::string& path) override;
+    Tree getItems(const std::string& path) override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createPresenceContainer(const std::string& path) override;
     void deletePresenceContainer(const std::string& path) override;
@@ -41,6 +41,7 @@ public:
     void deleteListInstance(const std::string& path) override;
     void commitChanges() override;
     void discardChanges() override;
+    Tree executeRpc(const std::string& path, const Tree& input) override;
 
     std::shared_ptr<Schema> schema() override;
 
