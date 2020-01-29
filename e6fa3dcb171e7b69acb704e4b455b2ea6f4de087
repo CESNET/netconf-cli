@@ -289,6 +289,24 @@
       "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04f4728a_9b1acb3a",
+        "filename": "tests/keyvalue_completion.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-29T16:29:39Z",
+      "side": 1,
+      "message": "Done, but the parser is weird. I explained it in another comment",
+      "parentUuid": "dd4b7498_f4d928fb",
+      "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
