@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "307147ad_22a346ad",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-29T13:53:34Z",
+      "side": 1,
+      "message": "I made a new version of the algorithm. It doesn\u0027t use std::all_of, but I think it\u0027s a lot clearer. Check the newest PS.",
+      "parentUuid": "2f126e0a_54c08cc9",
+      "range": {
+        "startLine": 610,
+        "startChar": 0,
+        "endLine": 616,
+        "endChar": 11
+      },
+      "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e184768e_697869d6",
         "filename": "tests/cd.cpp",
         "patchSetId": 16
@@ -36,6 +60,30 @@
       "writtenOn": "2020-01-27T16:32:43Z",
       "side": 1,
       "message": "I dislike the extra dance with deallocating the expectation. An obvious first thing is this, but that means typing that blurb about the return type twice, so I don\u0027t think this is strictly better:\n\n  std::shared_ptr\u003cDataQuery\u003e dataQuery;\n  {\n    REQUIRE_CALL(*mockDatastore, schema()).RETURN(schema);\n    dataquery \u003d std::make_shared\u003cDataQuery\u003e(*mockDatastore);\n  }\n\nSo, what about an immediately-called lambda?\n\n  auto dataQuery \u003d [\u0026]() {\n    REQUIRE_CALL(*mockDataStore, schema()).RETURN(schema);\n    return std::make_shared\u003cDataQuery\u003e(*mockDatastore);\n  }();\n\nDunno, perhaps this one is too complex?\n\nAnyway, given that they are called from essentially all generic unit tests which cover Parser, I think that this deserves a helper returning empty sets all the time (for those unit tests which do not trigger completion requests), or \"something similar\".\n\nAlso, would a nullptr work here, given that the parser \"should not\" call out to DataQuery at all unless tab-completing key names?",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a625e924_1410c3a2",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-29T13:53:34Z",
+      "side": 1,
+      "message": "The parser always uses DataQuery even if just parsing commands. This could be controlled with a flag.",
+      "parentUuid": "e184768e_697869d6",
       "range": {
         "startLine": 41,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "5eec9117_0a20a25a",
+        "filename": "tests/datastoreaccess_mock.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-29T13:53:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab74447a_71a480ef",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 45
+      },
+      "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2e7b2574_c1480b50",
         "filename": "tests/keyvalue_completion.cpp",
         "patchSetId": 16
@@ -82,6 +154,24 @@
       "writtenOn": "2020-01-27T16:32:43Z",
       "side": 1,
       "message": "SECTION(\"both keys set\")",
+      "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a12e196_3d0f67ea",
+        "filename": "tests/keyvalue_completion.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-29T13:53:34Z",
+      "side": 1,
+      "message": "What do you mean? Completing the bracket?",
+      "parentUuid": "2e7b2574_c1480b50",
       "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
