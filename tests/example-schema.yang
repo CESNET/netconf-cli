@@ -127,4 +127,40 @@ module example-schema {
     }
 
     rpc noop {}
+
+typedef port-number {
+  type uint8 {
+    range "1..36";
+  }
+  description "Port number";
+}
+
+typedef power-dbm {
+  type decimal64 {
+    fraction-digits 2;
+      range "-100.00..10.00";
+  }
+  units dBm;
+  description "Optical power in dBm";
+}
+
+rpc measure {
+  description "Get measuring values at specific port";
+
+  input {
+    leaf port {
+        type port-number;
+        mandatory true;
+        description "Port at which power will be measured";
+    }
+  }
+  output {
+    leaf power {
+      type power-dbm;
+      //type uint32;
+      mandatory true;
+      description "Measured power";
+    }
+  }
+}
 }

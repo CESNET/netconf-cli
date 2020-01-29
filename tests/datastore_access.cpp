@@ -46,6 +46,7 @@ std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& map)
 }
 }
 
+#if 0
 TEST_CASE("setting/getting values")
 {
     trompeloeil::sequence seq1;
@@ -290,11 +291,13 @@ TEST_CASE("setting/getting values")
 
     waitForCompletionAndBitMore(seq1);
 }
+#endif
 
 class RpcCb: public sysrepo::Callback {
     int rpc(const char *xpath, const ::sysrepo::S_Vals input, ::sysrepo::S_Vals_Holder output, void *) override
     {
         const auto nukes = "/example-schema:launch-nukes"s;
+        const auto measure = "/example-schema:measure"s;
         if (xpath == "/example-schema:noop"s) {
             return SR_ERR_OK;
         } else if (xpath == nukes) {
@@ -328,6 +331,20 @@ class RpcCb: public sysrepo::Callback {
                 buf->val(i++)->set((nukes + "/damaged-places/targets[city='Berlin']/city").c_str(), "Berlin");
             }
             return SR_ERR_OK;
+        } else if (xpath == measure) {
+            for (size_t i = 0; i < input->val_cnt(); ++i) {
+                const auto& val = input->val(i);
+                if (val->xpath() == measure + "/port") {
+                    val->data()->get_uint8();
+                } else {
+                    throw std::runtime_error("RPC measure: pwned XPath "s + val->xpath());
+                }
+            }
+            auto buf = output->allocate(1);
+            size_t i = 0;
+            buf->val(i++)->set((measure + "/power").c_str(), double{-12.34});
+            //buf->val(i++)->set((measure + "/power").c_str(), uint32_t{123'456});
+            return SR_ERR_OK;
         }
         throw std::runtime_error("unrecognized RPC");
     }
@@ -342,6 +359,7 @@ TEST_CASE("rpc") {
     sysrepo::Logs{}.set_stderr(SR_LL_INF);
     srSubscription->rpc_subscribe("/example-schema:noop", cb, nullptr, SR_SUBSCR_CTX_REUSE);
     srSubscription->rpc_subscribe("/example-schema:launch-nukes", cb, nullptr, SR_SUBSCR_CTX_REUSE);
+    srSubscription->rpc_subscribe("/example-schema:measure", cb, nullptr, SR_SUBSCR_CTX_REUSE);
 
 #ifdef sysrepo_BACKEND
     SysrepoAccess datastore("netconf-cli-test");
@@ -354,6 +372,7 @@ TEST_CASE("rpc") {
     std::string rpc;
     DatastoreAccess::Tree input, output;
 
+#if 0
     SECTION("noop") {
         rpc = "/example-schema:noop";
     }
@@ -395,6 +414,21 @@ TEST_CASE("rpc") {
             {"damaged-places/targets[city='Berlin']/city", "Berlin"s},
         };
     }
+
+    SECTION("measure") {
+#endif
+        rpc = "/example-schema:measure";
+        input = {
+            {"port", uint8_t{6}},
+        };
+        output = {
+            {"power", double{-12.34}},
+            //{"power", uint32_t{123'456}},
+        };
+#if 0
+    }
+#endif
+
 
     REQUIRE(datastore.executeRpc(rpc, input) == output);
 
