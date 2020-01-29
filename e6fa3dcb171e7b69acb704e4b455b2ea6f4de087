@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "7fa05bde_78c061ef",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-29T14:08:35Z",
+      "side": 1,
+      "message": "Yes please -- do not request data when not needed.\n\n(I think it\u0027s high time we actually start using the CLI via NETCONF. I have a feeling that a \u003cget\u003e NETCONF operation is going to be rather visible over a high-latency link.)",
+      "parentUuid": "a625e924_1410c3a2",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ab74447a_71a480ef",
         "filename": "tests/datastoreaccess_mock.hpp",
         "patchSetId": 16
@@ -172,6 +196,24 @@
       "side": 1,
       "message": "What do you mean? Completing the bracket?",
       "parentUuid": "2e7b2574_c1480b50",
+      "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd4b7498_f4d928fb",
+        "filename": "tests/keyvalue_completion.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-29T14:08:35Z",
+      "side": 1,
+      "message": "I think it\u0027s useful to test tab completion also for:\n\n- get example:twoKeyList[number\u003d123][name\u003d\u0027Petr\u0027\n- get example:twoKeyList[number\u003d123][name\u003d\u0027Petr\u0027]\n- get example:twoKeyList[number\u003d123][name\u003d\u0027Petr\u0027][\n\n(especially the last one)",
+      "parentUuid": "0a12e196_3d0f67ea",
       "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
