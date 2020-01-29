@@ -144,6 +144,30 @@
     },
     {
       "key": {
+        "uuid": "1ac1ddab_d9fd4203",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-29T15:56:52Z",
+      "side": 1,
+      "message": "Maybe I should implement some sort of a caching mechanism? Right now, DataQuery is being used twice when completing the second key for a two key lists, similarly for more keys.",
+      "parentUuid": "a9f9058a_22576957",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ab74447a_71a480ef",
         "filename": "tests/datastoreaccess_mock.hpp",
         "patchSetId": 16
