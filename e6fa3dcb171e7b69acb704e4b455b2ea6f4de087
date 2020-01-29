@@ -168,6 +168,30 @@
     },
     {
       "key": {
+        "uuid": "37239d9b_bc2c60a9",
+        "filename": "tests/cd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-29T16:10:29Z",
+      "side": 1,
+      "message": "It actually queries even more times, because of how the parser is implemented... it\u0027s kinda dumb. A path ending with a list (with no keys) has higher precedence then a normal data. So, sometimes we\u0027re parsing the same path twice and that means we\u0027re querying two times as much. I wish X3 implemented the lazy parser, it would make everything so much easier :(",
+      "parentUuid": "1ac1ddab_d9fd4203",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "e6fa3dcb171e7b69acb704e4b455b2ea6f4de087",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ab74447a_71a480ef",
         "filename": "tests/datastoreaccess_mock.hpp",
         "patchSetId": 16
