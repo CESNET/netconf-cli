@@ -1,3 +1,6 @@
+
+#define private public // johoho!
+
 #include "libyang_utils.hpp"
 
 leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
@@ -28,6 +31,14 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
         return enum_{std::string(value->enm()->name())};
     case LY_TYPE_BINARY:
         return std::string{value->binary()};
+    case LY_TYPE_DEC64:
+    {
+        double v = value->dec64();
+        for (int i = 0; i < value->type->info.dec64.dig; ++i) {
+            v /= 10.0;
+        }
+        return v;
+    }
     default: // TODO: implement all types
         return "(can't print)"s;
     }
