@@ -6,6 +6,7 @@
  *
 */
 
+#define private public
 #include <libyang/Libyang.hpp>
 #include <libyang/Tree_Data.hpp>
 #include <libyang/Tree_Schema.hpp>
@@ -368,7 +369,11 @@ std::set<std::string> YangSchema::moduleNodes(const module_& module, const Recur
 
 void YangSchema::loadModule(const std::string& moduleName)
 {
-    m_context->load_module(moduleName.c_str());
+    auto s = m_context->load_module(moduleName.c_str());
+    if (moduleName == "czechlight-roadm-device") {
+        lys_features_enable(s->module, "hw-line-9");
+        lys_features_enable(s->module, "hw-add-drop-20");
+    }
 }
 
 void YangSchema::enableFeature(const std::string& moduleName, const std::string& featureName)
