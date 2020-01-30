@@ -35,7 +35,7 @@ public:
     std::vector<std::string_view> capabilities() const;
     std::shared_ptr<libyang::Data_Node> getConfig(const NC_DATASTORE datastore,
                                                   const std::optional<const std::string> filter = std::nullopt); // TODO: arguments...
-    std::shared_ptr<libyang::Data_Node> get(const std::string& filter);
+    std::shared_ptr<libyang::Data_Node> get(const std::optional<std::string>& filter = std::nullopt);
     std::string getSchema(const std::string_view identifier, const std::optional<std::string_view> version);
     void editConfig(const NC_DATASTORE datastore,
                     const NC_RPC_EDIT_DFLTOP defaultOperation,

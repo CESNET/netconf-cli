@@ -276,9 +276,9 @@ std::vector<std::string_view> Session::capabilities() const
     return res;
 }
 
-std::shared_ptr<libyang::Data_Node> Session::get(const std::string& filter)
+std::shared_ptr<libyang::Data_Node> Session::get(const std::optional<std::string>& filter)
 {
-    auto rpc = impl::guarded(nc_rpc_get(filter.c_str(), NC_WD_ALL, NC_PARAMTYPE_CONST));
+    auto rpc = impl::guarded(nc_rpc_get(filter ? filter->c_str() : nullptr, NC_WD_ALL, NC_PARAMTYPE_CONST));
     if (!rpc) {
         throw std::runtime_error("Cannot create get RPC");
     }
