@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "515eb9b9_5801caf5",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-31T15:24:04Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "ed52fce8_ce3e75e2",
+      "range": {
+        "startLine": 604,
+        "startChar": 0,
+        "endLine": 606,
+        "endChar": 9
+      },
+      "revId": "4efa8dd21e8f1d6ed2d8b5270ef5387d30bd6613",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b046b4c8_ca17ab45",
         "filename": "tests/keyvalue_completion.cpp",
         "patchSetId": 22
