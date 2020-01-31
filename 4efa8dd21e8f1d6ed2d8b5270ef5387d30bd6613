@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "372f7862_5875c07f",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-31T15:16:53Z",
+      "side": 1,
+      "message": "I think this is ugly, it only affects the test suite. When working \"for real\", the DataQuery instance will be always present, and the code will keep fetching data from the NETCONF server over network.\n\nPlease make this a no-op unless the code is tab-completing; do not make it conditional on a test setup.",
+      "range": {
+        "startLine": 604,
+        "startChar": 0,
+        "endLine": 606,
+        "endChar": 9
+      },
+      "revId": "4efa8dd21e8f1d6ed2d8b5270ef5387d30bd6613",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b046b4c8_ca17ab45",
+        "filename": "tests/keyvalue_completion.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-01-31T15:16:53Z",
+      "side": 1,
+      "message": "One of my past comments asked what you think about this pattern:\n\n  auto dataQuery \u003d [\u0026]() {\n    REQUIRE_CALL(*mockDataStore, schema()).RETURN(schema);\n    return std::make_shared\u003cDataQuery\u003e(*mockDatastore);\n  }();\n\nI think that the discussion then moved to some other direction, so I\u0027m bringing it up for consideration again. Feel free to say \"nope, that\u0027s too complex IMHO\" :).",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 24
+      },
+      "revId": "4efa8dd21e8f1d6ed2d8b5270ef5387d30bd6613",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
