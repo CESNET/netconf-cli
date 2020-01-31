@@ -93,6 +93,30 @@
       "revId": "4efa8dd21e8f1d6ed2d8b5270ef5387d30bd6613",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3d0208b_647413cd",
+        "filename": "tests/keyvalue_completion.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-01-31T15:54:21Z",
+      "side": 1,
+      "message": "I think the original solution is less dancing for the same profit",
+      "parentUuid": "b046b4c8_ca17ab45",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 24
+      },
+      "revId": "4efa8dd21e8f1d6ed2d8b5270ef5387d30bd6613",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
