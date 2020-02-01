@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1fe8dbfb_1d92c00d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-01T01:01:05Z",
+      "side": 1,
+      "message": "Bug: https://github.com/sysrepo/sysrepo/issues/1792",
+      "revId": "d5ca75755d1fcab034f5253c7c1d561796459a74",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
