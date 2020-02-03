@@ -315,14 +315,9 @@ std::shared_ptr<libyang::Data_Node> Session::getConfig(const NC_DATASTORE datast
         throw std::runtime_error("Cannot create get-config RPC");
     }
     auto reply = impl::do_rpc_data(this, std::move(rpc));
-    // TODO: can we do without copying?
-    // If we just default-construct a new node (or use the create_new_Data_Node) and then set reply->data to nullptr,
-    // there are mem leaks and even libnetconf2 complains loudly.
     auto dataNode = libyang::create_new_Data_Node(reply->data);
-    if (!dataNode)
-        return nullptr;
-    else
-        return dataNode->dup_withsiblings(1);
+    // TODO: can we do without copying? See Session::get() for details.
+    return dataNode ? dataNode->dup_withsiblings(1) : nullptr;
 }
 
 void Session::editConfig(const NC_DATASTORE datastore,
