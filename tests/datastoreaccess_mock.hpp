@@ -7,7 +7,7 @@
 
 #include <map>
 #include "datastore_access.hpp"
-#include "trompeloeil_doctest.h"
+#include "trompeloeil_doctest.hpp"
 #include "utils.hpp"
 
 namespace trompeloeil {

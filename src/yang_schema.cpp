@@ -10,7 +10,7 @@
 #include <libyang/Tree_Data.hpp>
 #include <libyang/Tree_Schema.hpp>
 #include <string_view>
-#include "UniqueResource.h"
+#include "UniqueResource.hpp"
 #include "utils.hpp"
 #include "yang_schema.hpp"
 

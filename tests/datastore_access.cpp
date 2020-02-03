@@ -6,7 +6,7 @@
  *
 */
 
-#include "trompeloeil_doctest.h"
+#include "trompeloeil_doctest.hpp"
 #include <sysrepo-cpp/Session.hpp>
 
 #ifdef sysrepo_BACKEND
