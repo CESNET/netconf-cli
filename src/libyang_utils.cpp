@@ -17,7 +17,7 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
     case LY_TYPE_UINT16:
         return value->uint16();
     case LY_TYPE_UINT32:
-        return value->uintu32();
+        return value->uint32();
     case LY_TYPE_UINT64:
         return value->uint64();
     case LY_TYPE_BOOL:
