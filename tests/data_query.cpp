@@ -6,7 +6,7 @@
 */
 
 #include <experimental/iterator>
-#include "trompeloeil_doctest.h"
+#include "trompeloeil_doctest.hpp"
 
 #ifdef sysrepo_BACKEND
 #include "sysrepo_access.hpp"
