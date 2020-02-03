@@ -52,7 +52,7 @@ NetconfAccess::~NetconfAccess() = default;
 DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path)
 {
     Tree res;
-    auto config = m_session->getConfig(NC_DATASTORE_RUNNING, (path != "/") ? std::optional{path} : std::nullopt);
+    auto config = m_session->get((path != "/") ? std::optional{path} : std::nullopt);
 
     if (config) {
         for (auto it : config->tree_for()) {
