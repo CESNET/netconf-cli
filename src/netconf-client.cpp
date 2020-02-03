@@ -283,10 +283,11 @@ std::shared_ptr<libyang::Data_Node> Session::get(const std::optional<std::string
         throw std::runtime_error("Cannot create get RPC");
     }
     auto reply = impl::do_rpc_data(this, std::move(rpc));
+    auto dataNode = libyang::create_new_Data_Node(reply->data);
     // TODO: can we do without copying?
     // If we just default-construct a new node (or use the create_new_Data_Node) and then set reply->data to nullptr,
     // there are mem leaks and even libnetconf2 complains loudly.
-    return libyang::create_new_Data_Node(reply->data)->dup_withsiblings(1);
+    return dataNode ? dataNode->dup_withsiblings(1) : nullptr;
 }
 
 std::string Session::getSchema(const std::string_view identifier, const std::optional<std::string_view> version)
