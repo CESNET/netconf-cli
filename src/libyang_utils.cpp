@@ -1,4 +1,5 @@
 #include "libyang_utils.hpp"
+#include <cmath>
 
 leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
 {
@@ -28,6 +29,11 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
         return enum_{std::string(value->enm()->name())};
     case LY_TYPE_BINARY:
         return std::string{value->binary()};
+    case LY_TYPE_DEC64:
+    {
+        auto v = value->dec64();
+        return v.value * std::pow(10, -v.digits);
+    }
     default: // TODO: implement all types
         return "(can't print)"s;
     }

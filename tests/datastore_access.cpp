@@ -288,6 +288,17 @@ TEST_CASE("setting/getting values")
 
     }
 
+    SECTION("floats")
+    {
+        datastore.setLeaf("/example-schema:leafDecimal", 123.4);
+        REQUIRE_CALL(mock, write("/example-schema:leafDecimal", std::nullopt, "123.4"s));
+        datastore.commitChanges();
+        DatastoreAccess::Tree expected {
+            {"/example-schema:leafDecimal", 123.4},
+        };
+        REQUIRE(datastore.getItems("/example-schema:leafDecimal") == expected);
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
 
