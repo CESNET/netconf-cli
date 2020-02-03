@@ -62,39 +62,22 @@ DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path)
     return res;
 }
 
-void NetconfAccess::datastoreInit()
-{
-    m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule, const char* submoduleRevision) {
-        return fetchSchema(moduleName,
-                           revision ? std::optional{revision} : std::nullopt,
-                           submodule ? std::optional{submodule} : std::nullopt,
-                           submoduleRevision ? std::optional{submoduleRevision} : std::nullopt);
-    });
-
-    for (const auto& it : listImplementedSchemas()) {
-        m_schema->loadModule(it);
-    }
-}
-
 NetconfAccess::NetconfAccess(const std::string& hostname, uint16_t port, const std::string& user, const std::string& pubKey, const std::string& privKey)
-    : m_schema(new YangSchema())
+    : m_session(libnetconf::client::Session::connectPubkey(hostname, port, user, pubKey, privKey))
+    , m_schema(std::make_shared<YangSchema>(m_session->getLyCtx()))
 {
-    m_session = libnetconf::client::Session::connectPubkey(hostname, port, user, pubKey, privKey);
-    datastoreInit();
 }
 
 NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session)
     : m_session(std::move(session))
-    , m_schema(new YangSchema())
+    , m_schema(std::make_shared<YangSchema>(m_session->getLyCtx()))
 {
-    datastoreInit();
 }
 
 NetconfAccess::NetconfAccess(const std::string& socketPath)
-    : m_schema(new YangSchema())
+    : m_session(libnetconf::client::Session::connectSocket(socketPath))
+    , m_schema(std::make_shared<YangSchema>(m_session->getLyCtx()))
 {
-    m_session = libnetconf::client::Session::connectSocket(socketPath);
-    datastoreInit();
 }
 
 void NetconfAccess::setLeaf(const std::string& path, leaf_data_ value)
