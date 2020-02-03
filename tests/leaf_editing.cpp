@@ -6,7 +6,7 @@
  *
 */
 
-#include "trompeloeil_doctest.h"
+#include "trompeloeil_doctest.hpp"
 #include <boost/core/demangle.hpp>
 #include "ast_commands.hpp"
 #include "parser.hpp"

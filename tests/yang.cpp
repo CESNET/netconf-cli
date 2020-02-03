@@ -7,7 +7,7 @@
 */
 
 #include <experimental/iterator>
-#include "trompeloeil_doctest.h"
+#include "trompeloeil_doctest.hpp"
 #include "yang_schema.hpp"
 
 const char* second_schema = R"(

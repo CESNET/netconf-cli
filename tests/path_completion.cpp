@@ -6,7 +6,7 @@
  *
 */
 
-#include "trompeloeil_doctest.h"
+#include "trompeloeil_doctest.hpp"
 #include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
 #include "pretty_printers.hpp"

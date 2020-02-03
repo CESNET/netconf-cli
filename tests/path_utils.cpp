@@ -5,7 +5,7 @@
  *
 */
 
-#include "trompeloeil_doctest.h"
+#include "trompeloeil_doctest.hpp"
 #include "ast_path.hpp"
 
 TEST_CASE("path utils")

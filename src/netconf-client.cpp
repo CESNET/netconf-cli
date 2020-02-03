@@ -13,8 +13,8 @@ extern "C" {
 #include <nc_client.h>
 }
 #include <sstream>
-#include "netconf-client.h"
-#include "UniqueResource.h"
+#include "netconf-client.hpp"
+#include "UniqueResource.hpp"
 
 namespace libnetconf {
 

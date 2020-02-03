@@ -7,7 +7,7 @@
 
 #include <experimental/iterator>
 #include <iostream>
-#include "trompeloeil_doctest.h"
+#include "trompeloeil_doctest.hpp"
 #include "ast_commands.hpp"
 #include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
