@@ -12,6 +12,7 @@ struct nc_session;
 
 namespace libyang {
 class Data_Node;
+class Context;
 }
 
 namespace libnetconf {
@@ -46,6 +47,8 @@ public:
     std::shared_ptr<libyang::Data_Node> rpc(const std::string& xmlData);
     void commit();
     void discard();
+
+    std::shared_ptr<libyang::Context> libyangContext();
     struct nc_session* session_internal(); // FIXME: remove me
 protected:
     struct nc_session* m_session;

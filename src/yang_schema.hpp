@@ -27,6 +27,7 @@ class Module;
 class YangSchema : public Schema {
 public:
     YangSchema();
+    YangSchema(std::shared_ptr<libyang::Context> lyCtx);
     ~YangSchema() override;
 
     bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const override;

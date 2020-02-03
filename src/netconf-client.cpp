@@ -204,6 +204,11 @@ struct nc_session* Session::session_internal()
     return m_session;
 }
 
+libyang::S_Context Session::libyangContext()
+{
+    return std::make_shared<libyang::Context>(nc_session_get_ctx(m_session), nullptr);
+}
+
 Session::Session(struct nc_session* session)
     : m_session(session)
 {
