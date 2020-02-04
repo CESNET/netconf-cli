@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e267583e_e4e9616b",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-04T13:18:51Z",
+      "side": 1,
+      "message": "can you check that the container exists from here?",
+      "revId": "93aa2a3ee6506d9620af2151170c7aa85c24960f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "389aecca_61b5e0cb",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-04T13:18:51Z",
+      "side": 1,
+      "message": "...and that it does not exist anymore from here",
+      "revId": "93aa2a3ee6506d9620af2151170c7aa85c24960f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

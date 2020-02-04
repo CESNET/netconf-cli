@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2a493441_25b23764",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-04T13:18:51Z",
+      "side": 1,
+      "message": "This is the key change, sysrepo\u0027s callbacks generally \"let you know\" about non-presence containers being \"created\" when their children are set. That\u0027s what I rmember from cla-sysrepo, anyway.",
+      "revId": "47ee6d29ee0f17bd2bf23a4d0c9e8509ebe66070",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
