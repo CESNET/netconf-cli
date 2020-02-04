@@ -8,7 +8,7 @@
 #include <libyang/Libyang.hpp>
 #include <libyang/Tree_Data.hpp>
 #include "libyang_utils.hpp"
-#include "netconf-client.h"
+#include "netconf-client.hpp"
 #include "netconf_access.hpp"
 #include "utils.hpp"
 #include "yang_schema.hpp"

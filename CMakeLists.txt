@@ -158,7 +158,7 @@ if(BUILD_TESTING)
 
     add_library(DoctestIntegration STATIC
         tests/doctest_integration.cpp
-        tests/trompeloeil_doctest.h
+        tests/trompeloeil_doctest.hpp
         tests/wait-a-bit-longer.cpp
         )
     target_include_directories(DoctestIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
