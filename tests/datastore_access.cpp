@@ -226,6 +226,7 @@ TEST_CASE("setting/getting values")
         // results will be consistent.
 #ifdef sysrepo_BACKEND
                                                    {"/example-schema:lol", special_{SpecialValue::Container}},
+                                                   {"/example-schema:inventory", special_{SpecialValue::Container}},
 #endif
                                                    {"/example-schema:up", bool{true}}};
         REQUIRE(datastore.getItems("/example-schema:*") == expected);
@@ -293,7 +294,31 @@ TEST_CASE("setting/getting values")
         }
         expected = {};
         REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
+    }
 
+    SECTION("nested presence container")
+    {
+        DatastoreAccess::Tree expected;
+        // Make sure it's not there before we create it
+        REQUIRE(datastore.getItems("/example-schema:inventory/stuff") == expected);
+        {
+            REQUIRE_CALL(mock, write("/example-schema:inventory", std::nullopt, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:inventory/stuff", std::nullopt, ""s));
+            datastore.createPresenceContainer("/example-schema:inventory/stuff");
+            datastore.commitChanges();
+        }
+        expected = {
+            {"/example-schema:inventory/stuff", special_{SpecialValue::PresenceContainer}}
+        };
+        REQUIRE(datastore.getItems("/example-schema:inventory/stuff") == expected);
+        {
+            REQUIRE_CALL(mock, write("/example-schema:inventory", ""s, std::nullopt));
+            REQUIRE_CALL(mock, write("/example-schema:inventory/stuff", ""s, std::nullopt));
+            datastore.deletePresenceContainer("/example-schema:inventory/stuff");
+            datastore.commitChanges();
+        }
+        expected = {};
+        REQUIRE(datastore.getItems("/example-schema:inventory/stuff") == expected);
     }
 
     SECTION("floats")
