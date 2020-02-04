@@ -95,7 +95,8 @@ void NetconfAccess::createPresenceContainer(const std::string& path)
 void NetconfAccess::deletePresenceContainer(const std::string& path)
 {
     auto node = m_schema->dataNodeFromPath(path);
-    node->insert_attr(m_schema->getYangModule("ietf-netconf"), "operation", "delete");
+    auto container = *(node->find_path(path.c_str())->data().begin());
+    container->insert_attr(m_schema->getYangModule("ietf-netconf"), "operation", "delete");
     doEditFromDataNode(node);
 }
 

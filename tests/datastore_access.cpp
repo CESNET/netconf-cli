@@ -226,6 +226,7 @@ TEST_CASE("setting/getting values")
         // results will be consistent.
 #ifdef sysrepo_BACKEND
                                                    {"/example-schema:lol", special_{SpecialValue::Container}},
+                                                   {"/example-schema:inventory", special_{SpecialValue::Container}},
 #endif
                                                    {"/example-schema:up", bool{true}}};
         REQUIRE(datastore.getItems("/example-schema:*") == expected);
