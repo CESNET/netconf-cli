@@ -14,15 +14,15 @@
 #include "interpreter.hpp"
 #include "sysrepo_access.hpp"
 
-const auto HISTORY_FILE_NAME = "netconf-cli_history";
+const auto HISTORY_FILE_NAME = "sysrepo-cli_history";
 
 static const char usage[] =
-    R"(CLI interface to remote NETCONF hosts
+    R"(CLI interface to a local sysrepo daemon
 
 Usage:
-  netconf-cli
-  netconf-cli (-h | --help)
-  netconf-cli --version
+  sysrepo-cli
+  sysrepo-cli (-h | --help)
+  sysrepo-cli --version
 )";
 
 
@@ -31,11 +31,11 @@ int main(int argc, char* argv[])
     auto args = docopt::docopt(usage,
                                {argv + 1, argv + argc},
                                true,
-                               "netconf-cli " NETCONF_CLI_VERSION,
+                               "sysrepo-cli " NETCONF_CLI_VERSION,
                                true);
-    std::cout << "Welcome to netconf-cli" << std::endl;
+    std::cout << "Welcome to sysrepo-cli" << std::endl;
 
-    SysrepoAccess datastore("netconf-cli");
+    SysrepoAccess datastore("sysrepo-cli");
     auto dataQuery = std::make_shared<DataQuery>(datastore);
     Parser parser(datastore.schema(), dataQuery);
 

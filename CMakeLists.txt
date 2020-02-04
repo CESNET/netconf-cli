@@ -136,19 +136,19 @@ target_link_libraries(sysreposubscription ${SYSREPO_LIBRARIES})
 link_directories(${SYSREPO_LIBRARY_DIRS})
 target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_DIRS})
 
-add_executable(netconf-cli
-    src/main.cpp
+add_executable(sysrepo-cli
+    src/sysrepo-cli.cpp
     )
-target_include_directories(netconf-cli PRIVATE ${REPLXX_PATH})
-target_link_libraries(netconf-cli netconfaccess sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
+target_include_directories(sysrepo-cli PRIVATE ${REPLXX_PATH})
+target_link_libraries(sysrepo-cli netconfaccess sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
 if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
-    target_link_libraries(netconf-cli c++experimental)
+    target_link_libraries(sysrepo-cli c++experimental)
 else()
-    target_link_libraries(netconf-cli stdc++fs)
+    target_link_libraries(sysrepo-cli stdc++fs)
 endif()
 
-add_dependencies(netconf-cli target-NETCONF_CLI_VERSION)
-target_include_directories(netconf-cli PRIVATE ${PROJECT_BINARY_DIR})
+add_dependencies(sysrepo-cli target-NETCONF_CLI_VERSION)
+target_include_directories(sysrepo-cli PRIVATE ${PROJECT_BINARY_DIR})
 
 include(CTest)
 if(BUILD_TESTING)
@@ -347,5 +347,5 @@ if(WITH_DOCS)
 endif()
 
 install(TARGETS
-    netconf-cli
+    sysrepo-cli
     RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/)
