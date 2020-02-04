@@ -108,7 +108,8 @@ void NetconfAccess::createListInstance(const std::string& path)
 void NetconfAccess::deleteListInstance(const std::string& path)
 {
     auto node = m_schema->dataNodeFromPath(path);
-    node->child()->insert_attr(m_schema->getYangModule("ietf-netconf"), "operation", "delete");
+    auto list = *(node->find_path(path.c_str())->data().begin());
+    list->insert_attr(m_schema->getYangModule("ietf-netconf"), "operation", "delete");
     doEditFromDataNode(node);
 }
 

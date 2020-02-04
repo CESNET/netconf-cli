@@ -138,12 +138,20 @@ TEST_CASE("setting/getting values")
         datastore.commitChanges();
     }
 
-    SECTION("create a list instance")
+    SECTION("create/delete a list instance")
     {
-        REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']", std::nullopt, ""s));
-        REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", std::nullopt, "Nguyen"s));
-        datastore.createListInstance("/example-schema:person[name='Nguyen']");
-        datastore.commitChanges();
+        {
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']", std::nullopt, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", std::nullopt, "Nguyen"s));
+            datastore.createListInstance("/example-schema:person[name='Nguyen']");
+            datastore.commitChanges();
+        }
+        {
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']", ""s, std::nullopt));
+            REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", "Nguyen"s, std::nullopt));
+            datastore.deleteListInstance("/example-schema:person[name='Nguyen']");
+            datastore.commitChanges();
+        }
     }
 
     SECTION("leafref pointing to a key of a list")
