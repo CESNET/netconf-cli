@@ -226,6 +226,7 @@ TEST_CASE("setting/getting values")
         // results will be consistent.
 #ifdef sysrepo_BACKEND
                                                    {"/example-schema:lol", special_{SpecialValue::Container}},
+                                                   {"/example-schema:inventory", special_{SpecialValue::Container}},
 #endif
                                                    {"/example-schema:up", bool{true}}};
         REQUIRE(datastore.getItems("/example-schema:*") == expected);
@@ -293,6 +294,16 @@ TEST_CASE("setting/getting values")
         }
         expected = {};
         REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
+    }
+
+    SECTION("nested presence container")
+    {
+        {
+            REQUIRE_CALL(mock, write("/example-schema:inventory", std::nullopt, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:inventory/stuff", std::nullopt, ""s));
+            datastore.createPresenceContainer("/example-schema:inventory/stuff");
+            datastore.commitChanges();
+        }
 
     }
 

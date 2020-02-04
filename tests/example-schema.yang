@@ -6,6 +6,12 @@ module example-schema {
         prefix other;
     }
 
+    container inventory {
+        container stuff {
+            presence true;
+        }
+    }
+
     leaf leafUInt8 {
         type uint8;
     }
