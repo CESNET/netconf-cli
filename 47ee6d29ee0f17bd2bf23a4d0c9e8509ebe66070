@@ -34,6 +34,24 @@
       "revId": "47ee6d29ee0f17bd2bf23a4d0c9e8509ebe66070",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e0a6956d_8cada294",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-04T13:29:08Z",
+      "side": 1,
+      "message": "When I run it locally, I first got an unhandled exception via doctest because there was no pres-et expectation to deal with that first-level container \"write\". I think it\u0027s plausible that this might have led to a timeout in sysrepo\u0027s subscriber handling code.",
+      "parentUuid": "447ce552_9279af5a",
+      "revId": "47ee6d29ee0f17bd2bf23a4d0c9e8509ebe66070",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
