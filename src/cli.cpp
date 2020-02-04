@@ -12,18 +12,26 @@
 #include <sstream>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
+#if defined(SYSREPO_CLI)
 #include "sysrepo_access.hpp"
+#define PROGRAM_NAME "sysrepo-cli"
+#define PROGRAM_DESCRIPTION R"(CLI interface to sysrepo \
+\
+Usage: \
+  sysrepo-cli \
+  sysrepo-cli (-h | --help) \
+  sysrepo-cli --version \
+)"
+#else
+#error "Unknown CLI backend"
+#endif
 
-const auto HISTORY_FILE_NAME = "netconf-cli_history";
 
-static const char usage[] =
-    R"(CLI interface to remote NETCONF hosts
 
-Usage:
-  netconf-cli
-  netconf-cli (-h | --help)
-  netconf-cli --version
-)";
+
+const auto HISTORY_FILE_NAME = PROGRAM_NAME "_history";
+
+static const char usage[] = PROGRAM_DESCRIPTION;
 
 
 int main(int argc, char* argv[])
@@ -31,11 +39,16 @@ int main(int argc, char* argv[])
     auto args = docopt::docopt(usage,
                                {argv + 1, argv + argc},
                                true,
-                               "netconf-cli " NETCONF_CLI_VERSION,
+                               PROGRAM_NAME " " NETCONF_CLI_VERSION,
                                true);
-    std::cout << "Welcome to netconf-cli" << std::endl;
+    std::cout << "Welcome to " PROGRAM_NAME << std::endl;
 
-    SysrepoAccess datastore("netconf-cli");
+#if defined(SYSREPO_CLI)
+    SysrepoAccess datastore(PROGRAM_NAME);
+#else
+#error "Unknown CLI backend"
+#endif
+
     auto dataQuery = std::make_shared<DataQuery>(datastore);
     Parser parser(datastore.schema(), dataQuery);
 
