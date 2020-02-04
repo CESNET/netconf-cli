@@ -27,6 +27,30 @@ public:
     IMPLEMENT_MOCK3(write);
 };
 
+class MockDataSupplier : public trompeloeil::mock_interface<DataSupplier> {
+public:
+    IMPLEMENT_CONST_MOCK1(get_data);
+};
+
+namespace std {
+std::ostream& operator<<(std::ostream& s, const std::optional<std::string>& opt)
+{
+    s << (opt ? *opt : "std::nullopt");
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& map)
+{
+    s << std::endl
+      << "{";
+    for (const auto& it : map) {
+        s << "{\"" << it.first << "\", " << leafDataToString(it.second) << "}" << std::endl;
+    }
+    s << "}" << std::endl;
+    return s;
+}
+}
+
 TEST_CASE("setting/getting values")
 {
     trompeloeil::sequence seq1;
@@ -312,6 +336,22 @@ TEST_CASE("setting/getting values")
         };
         REQUIRE(datastore.getItems("/example-schema:leafDecimal") == expected);
     }
+
+    SECTION("operational data")
+    {
+        MockDataSupplier mockOpsData;
+        OperationalDataSubscription opsDataSub("example-schema", mockOpsData);
+        DatastoreAccess::Tree expected;
+        std::string xpath;
+        SECTION("temperature")
+        {
+            expected = {{"/example-schema:temperature", int32_t{22}}};
+        }
+
+        REQUIRE_CALL(mockOpsData, get_data(xpath)).RETURN(expected);
+        REQUIRE(datastore.getItems(xpath) == expected);
+    }
+
 
     waitForCompletionAndBitMore(seq1);
 }

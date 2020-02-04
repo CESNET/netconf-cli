@@ -195,7 +195,7 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
         actualList->insert(selectionLeaf);
     }
 
-    auto instances = m_session->getConfig(NC_DATASTORE_RUNNING, list->print_mem(LYD_XML, 0));
+    auto instances = m_session->get(list->print_mem(LYD_XML, 0));
 
     if (!instances) {
         return res;

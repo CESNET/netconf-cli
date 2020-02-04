@@ -45,6 +45,8 @@ private:
 
 Recorder::~Recorder() = default;
 
+DataSupplier::~DataSupplier() = default;
+
 SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder* rec)
     : m_connection(new sysrepo::Connection("netconf-cli-test-subscription"))
 {
@@ -57,4 +59,30 @@ SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder
     }
 
     m_subscription->module_change_subscribe(moduleName.c_str(), m_callback);
+}
+#include <iostream>
+class OperationalDataCallback : public sysrepo::Callback {
+public:
+    OperationalDataCallback(const DataSupplier& dataSupplier)
+        : m_dataSupplier(dataSupplier)
+    {
+    }
+    int dp_get_items(const char *xpath, [[maybe_unused]] sysrepo::S_Vals_Holder vals, [[maybe_unused]] uint64_t request_id, [[maybe_unused]] const char *original_xpath, [[maybe_unused]] void *private_ctx) override
+    {
+        auto data = m_dataSupplier.get_data(xpath);
+        std::cout << "lol" << std::endl;
+        // Oh god, now I have to create whatever S_Vals_Holder is
+        return SR_ERR_OK;
+    }
+private:
+    const DataSupplier& m_dataSupplier;
+};
+
+OperationalDataSubscription::OperationalDataSubscription(const std::string& moduleName, const DataSupplier& dataSupplier)
+    : m_connection(new sysrepo::Connection("netconf-cli-test-subscription"))
+    , m_session(std::make_shared<sysrepo::Session>(m_connection))
+    , m_subscription(std::make_shared<sysrepo::Subscribe>(m_session))
+    , m_callback(std::make_shared<OperationalDataCallback>(dataSupplier))
+{
+    m_subscription->dp_get_items_subscribe(moduleName.c_str(), m_callback);
 }
