@@ -195,6 +195,9 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
 
     auto instances = m_session->getConfig(NC_DATASTORE_RUNNING, list->print_mem(LYD_XML, 0));
 
+    if (!instances) {
+        return res;
+    }
 
     for (const auto& instance : instances->find_path(path.c_str())->data()) {
         ListInstance instanceRes;

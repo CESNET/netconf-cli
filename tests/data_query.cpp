@@ -75,6 +75,14 @@ TEST_CASE("data query")
             };
         }
 
+        SECTION("example-schema:person - no instances")
+        {
+            node.first = "example-schema";
+            node.second = "person";
+            expected = {
+            };
+        }
+
         SECTION("example-schema:selectedNumbers")
         {
             datastore.createListInstance("/example-schema:selectedNumbers[value='45']");
