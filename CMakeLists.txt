@@ -134,7 +134,7 @@ add_library(sysreposubscription STATIC
 
 target_link_libraries(sysreposubscription ${SYSREPO_LIBRARIES})
 link_directories(${SYSREPO_LIBRARY_DIRS})
-target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_DIRS})
+target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
 add_executable(netconf-cli
     src/main.cpp
