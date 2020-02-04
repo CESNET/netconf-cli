@@ -45,6 +45,8 @@ private:
 
 Recorder::~Recorder() = default;
 
+DataSupplier::~DataSupplier() = default;
+
 SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder* rec)
     : m_connection(new sysrepo::Connection("netconf-cli-test-subscription"))
 {
@@ -57,4 +59,76 @@ SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder
     }
 
     m_subscription->module_change_subscribe(moduleName.c_str(), m_callback);
+}
+
+struct leafDataToSysrepoVal {
+    leafDataToSysrepoVal (sysrepo::S_Val v, const std::string& xpath)
+        : v(v)
+        , xpath(xpath)
+    {
+    }
+
+    void operator()(const binary_& what)
+    {
+        v->set(xpath.c_str(), what.m_value.c_str(), SR_BINARY_T);
+    }
+
+    void operator()(const enum_& what)
+    {
+        v->set(xpath.c_str(), what.m_value.c_str(), SR_ENUM_T);
+    }
+
+    void operator()(const identityRef_& what)
+    {
+        v->set(xpath.c_str(), (what.m_prefix->m_name + what.m_value).c_str(), SR_IDENTITYREF_T);
+    }
+
+    void operator()(const std::string& what)
+    {
+        v->set(xpath.c_str(), what.c_str());
+    }
+
+    template <typename Type>
+    void operator()(const Type what)
+    {
+        v->set(xpath.c_str(), what);
+    }
+
+    void operator()([[maybe_unused]] const special_ what)
+    {
+        throw std::logic_error("Attempted to create a SR val from a special_ value");
+    }
+
+    ::sysrepo::S_Val v;
+    std::string xpath;
+};
+
+class OperationalDataCallback : public sysrepo::Callback {
+public:
+    OperationalDataCallback(const DataSupplier& dataSupplier)
+        : m_dataSupplier(dataSupplier)
+    {
+    }
+    int dp_get_items(const char *xpath, sysrepo::S_Vals_Holder vals, [[maybe_unused]] uint64_t request_id, [[maybe_unused]] const char *original_xpath, [[maybe_unused]] void *private_ctx) override
+    {
+        auto data = m_dataSupplier.get_data(xpath);
+        auto out = vals->allocate(data.size());
+        size_t i = 0;
+        for (auto it = data.cbegin(); it != data.cend(); ++it, ++i) {
+            std::string valuePath = it->first;
+            boost::apply_visitor(leafDataToSysrepoVal(out->val(i), valuePath), it->second);
+        }
+        return SR_ERR_OK;
+    }
+private:
+    const DataSupplier& m_dataSupplier;
+};
+
+OperationalDataSubscription::OperationalDataSubscription(const std::string& moduleName, const DataSupplier& dataSupplier)
+    : m_connection(new sysrepo::Connection("netconf-cli-test-subscription"))
+    , m_session(std::make_shared<sysrepo::Session>(m_connection))
+    , m_subscription(std::make_shared<sysrepo::Subscribe>(m_session))
+    , m_callback(std::make_shared<OperationalDataCallback>(dataSupplier))
+{
+    m_subscription->dp_get_items_subscribe(moduleName.c_str(), m_callback);
 }

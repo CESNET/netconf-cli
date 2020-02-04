@@ -64,6 +64,8 @@ pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=0.12.64 IMPORTED_TARGET libn
 # we don't need filename tracking, and we prefer to use header-only Boost
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/)
+
 add_library(ast_values STATIC
     src/ast_values.cpp
     )
@@ -125,15 +127,6 @@ add_library(parser STATIC
     )
 target_link_libraries(parser schemas utils ast_values)
 
-
-add_library(sysreposubscription STATIC
-    tests/mock/sysrepo_subscription.cpp
-    )
-
-target_link_libraries(sysreposubscription ${SYSREPO_LIBRARIES})
-link_directories(${SYSREPO_LIBRARY_DIRS})
-target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_DIRS})
-
 add_executable(sysrepo-cli
     src/cli.cpp
     )
@@ -163,6 +156,11 @@ if(BUILD_TESTING)
     target_include_directories(DoctestIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
     target_link_libraries(DoctestIntegration doctest::doctest trompeloeil)
     target_compile_definitions(DoctestIntegration PUBLIC DOCTEST_CONFIG_SUPER_FAST_ASSERTS)
+
+    add_library(sysreposubscription STATIC
+        tests/mock/sysrepo_subscription.cpp
+        )
+    target_link_libraries(sysreposubscription PUBLIC PkgConfig::SYSREPO datastoreaccess)
 
     if (NOT SYSREPOCTL_EXECUTABLE)
         find_program(SYSREPOCTL_EXECUTABLE sysrepoctl)

@@ -209,4 +209,9 @@ module example-schema {
             }
         }
     }
+
+    leaf temperature {
+        type int32;
+        config false;
+    }
 }
