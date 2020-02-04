@@ -226,6 +226,7 @@ TEST_CASE("setting/getting values")
         // results will be consistent.
 #ifdef sysrepo_BACKEND
                                                    {"/example-schema:lol", special_{SpecialValue::Container}},
+                                                   {"/example-schema:inventory", special_{SpecialValue::Container}},
 #endif
                                                    {"/example-schema:up", bool{true}}};
         REQUIRE(datastore.getItems("/example-schema:*") == expected);
@@ -271,29 +272,39 @@ TEST_CASE("setting/getting values")
 
     SECTION("presence containers")
     {
+        std::string path;
+        SECTION("top-level")
+        {
+            path = "/example-schema:pContainer";
+        }
+
+        SECTION("nested")
+        {
+            path = "/example-schema:inventory/stuff";
+        }
+
         DatastoreAccess::Tree expected;
         // Make sure it's not there before we create it
-        REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
+        REQUIRE(datastore.getItems(path) == expected);
 
         {
-            REQUIRE_CALL(mock, write("/example-schema:pContainer", std::nullopt, ""s));
-            datastore.createPresenceContainer("/example-schema:pContainer");
+            REQUIRE_CALL(mock, write(path, std::nullopt, ""s));
+            datastore.createPresenceContainer(path);
             datastore.commitChanges();
         }
         expected = {
-            {"/example-schema:pContainer", special_{SpecialValue::PresenceContainer}}
+            {path, special_{SpecialValue::PresenceContainer}}
         };
-        REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
+        REQUIRE(datastore.getItems(path) == expected);
 
         // Make sure it's not there after we delete it
         {
-            REQUIRE_CALL(mock, write("/example-schema:pContainer", ""s, std::nullopt));
-            datastore.deletePresenceContainer("/example-schema:pContainer");
+            REQUIRE_CALL(mock, write(path, ""s, std::nullopt));
+            datastore.deletePresenceContainer(path);
             datastore.commitChanges();
         }
         expected = {};
-        REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
-
+        REQUIRE(datastore.getItems(path) == expected);
     }
 
     SECTION("floats")
