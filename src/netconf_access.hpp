@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <libnetconf2/log.h>
 #include <string>
 #include "datastore_access.hpp"
 
@@ -27,6 +28,8 @@ class Data_Node;
 class Schema;
 class YangSchema;
 
+using LogCb = std::function<void(NC_VERB_LEVEL, const char*)>;
+
 class NetconfAccess : public DatastoreAccess {
 public:
     NetconfAccess(const std::string& hostname, uint16_t port, const std::string& user, const std::string& pubKey, const std::string& privKey);
@@ -35,6 +38,9 @@ public:
     NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session);
     ~NetconfAccess() override;
     [[nodiscard]] Tree getItems(const std::string& path) const override;
+
+    static void setNcLogLevel(NC_VERB_LEVEL level);
+    static void setNcLogCallback(const LogCb& callback);
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createItem(const std::string& path) override;
     void deleteItem(const std::string& path) override;
