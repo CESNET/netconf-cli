@@ -24,6 +24,10 @@ namespace libyang {
 class Data_Node;
 }
 
+namespace ssh {
+class Session;
+}
+
 class Schema;
 class YangSchema;
 
@@ -32,6 +36,7 @@ public:
     NetconfAccess(const std::string& hostname, uint16_t port, const std::string& user, const std::string& pubKey, const std::string& privKey);
     NetconfAccess(const std::string& socketPath);
     NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session);
+    NetconfAccess(std::unique_ptr<ssh::Session>&& session);
     ~NetconfAccess() override;
     Tree getItems(const std::string& path) override;
     void setLeaf(const std::string& path, leaf_data_ value) override;

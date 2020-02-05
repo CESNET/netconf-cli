@@ -15,6 +15,10 @@ class Data_Node;
 class Context;
 }
 
+namespace ssh {
+class Session;
+}
+
 namespace libnetconf {
 namespace client {
 
@@ -30,6 +34,7 @@ class Session {
 public:
     Session(struct nc_session* session);
     ~Session();
+    static std::unique_ptr<Session> fromSshSession(std::unique_ptr<ssh::Session>&& sshSession);
     static std::unique_ptr<Session> connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath);
     static std::unique_ptr<Session> connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback);
     static std::unique_ptr<Session> connectSocket(const std::string& path);
