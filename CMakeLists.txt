@@ -165,6 +165,13 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSI
     target_link_libraries(yang-cli stdc++fs)
 endif()
 
+add_executable(netconf-cli
+    src/cli.cpp
+    src/cli-netconf.cpp
+    )
+target_compile_definitions(netconf-cli PRIVATE NETCONF_CLI)
+target_link_libraries(netconf-cli ssh netconfaccess)
+cli_link_required(netconf-cli)
 
 
 include(CTest)

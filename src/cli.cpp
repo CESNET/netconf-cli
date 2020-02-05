@@ -13,9 +13,9 @@
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
 #include "proxy_datastore.hpp"
+#include "yang_schema.hpp"
 #if defined(SYSREPO_CLI)
 #include "sysrepo_access.hpp"
-#include "yang_schema.hpp"
 #define PROGRAM_NAME "sysrepo-cli"
 static const auto usage = R"(CLI interface to sysrepo
 
@@ -47,6 +47,16 @@ Options:
   -e <enable_features>  Feature to enable after modules are loaded. This option can be supplied more than once. Format: <module_name>:<feature>
   -i <data_file>        File to import data from
   --configonly          Disable editing of operational data)";
+#elif defined(NETCONF_CLI)
+// FIXME: improve usage
+static const auto usage = R"(CLI interface for NETCONF
+
+Usage:
+  netconf-cli -- <OpenSSH arguments>
+)";
+#include "netconf_access.hpp"
+#include "cli-netconf.hpp"
+#define PROGRAM_NAME "netconf-access"
 #else
 #error "Unknown CLI backend"
 #endif
@@ -121,11 +131,21 @@ int main(int argc, char* argv[])
             datastore->addDataFile(dataFile);
         }
     }
+#elif defined(NETCONF_CLI)
+    const size_t MAX_ARGS = 99; // FIXME: this should be the number of max arguments
+    char* opensshArgs[MAX_ARGS] = {0};
+    for (auto i = 2; i < argc; i++) {
+        opensshArgs[i] = argv[i];
+        std::cout << "opensshArgs[i] " << " = " << opensshArgs[i]  << "\n";
+
+    }
+    auto fds = getSshFds(opensshArgs);
+    auto datastore = std::make_shared<NetconfAccess>(fds.in, fds.out);
 #else
 #error "Unknown CLI backend"
 #endif
 
-#if defined(SYSREPO_CLI)
+#if defined(SYSREPO_CLI) || defined(NETCONF_CLI)
     auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {
         return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
     };
