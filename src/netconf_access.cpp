@@ -51,6 +51,16 @@ NetconfAccess::NetconfAccess(const std::string& socketPath)
 {
 }
 
+void NetconfAccess::setNcLogLevel(NC_VERB_LEVEL level)
+{
+    libnetconf::client::setLogLevel(level);
+}
+
+void NetconfAccess::setNcLogCallback(const LogCb& callback)
+{
+    libnetconf::client::setLogCallback(callback);
+}
+
 void NetconfAccess::setLeaf(const std::string& path, leaf_data_ value)
 {
     auto lyValue = value.type() == typeid(empty_) ? std::nullopt : std::optional(leafDataToString(value));

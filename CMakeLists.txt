@@ -49,7 +49,7 @@ find_package(Doxygen)
 option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${DOXYGEN_FOUND})
 
 find_package(docopt REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost REQUIRED COMPONENTS filesystem)
 find_library(REPLXX_LIBRARY NAMES replxx replxx-d REQUIRED)
 find_path(REPLXX_PATH replxx.hxx)
 if("${REPLXX_PATH}" STREQUAL REPLXX_PATH-NOTFOUND)
@@ -61,8 +61,8 @@ pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=1.0.190 IMPORTED_TARGET libyang)
 pkg_check_modules(SYSREPO REQUIRED sysrepo-cpp>=1.4.79 IMPORTED_TARGET sysrepo)
 pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=1.1.32 IMPORTED_TARGET libnetconf2)
 
-# we don't need filename tracking, and we prefer to use header-only Boost
-add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
@@ -165,6 +165,13 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSI
     target_link_libraries(yang-cli stdc++fs)
 endif()
 
+add_executable(netconf-cli
+    src/cli.cpp
+    src/cli-netconf.cpp
+    )
+target_compile_definitions(netconf-cli PRIVATE NETCONF_CLI)
+target_link_libraries(netconf-cli netconfaccess Threads::Threads Boost::filesystem)
+cli_link_required(netconf-cli)
 
 
 include(CTest)
@@ -372,6 +379,7 @@ if(WITH_DOCS)
 endif()
 
 install(TARGETS
+    netconf-cli
     sysrepo-cli
     yang-cli
     RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/)
