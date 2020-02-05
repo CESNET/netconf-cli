@@ -7,6 +7,7 @@
 */
 
 #include <cstring>
+#include <libssh/libsshpp.hpp>
 #include <libyang/Tree_Data.hpp>
 #include <mutex>
 extern "C" {
@@ -218,6 +219,16 @@ Session::Session(struct nc_session* session)
 Session::~Session()
 {
     ::nc_session_free(m_session, nullptr);
+}
+
+std::unique_ptr<Session> Session::fromSshSession(std::unique_ptr<ssh::Session>&& sshSession)
+{
+    impl::ClientInit::instance();
+    auto session = std::make_unique<Session>(nc_connect_libssh(sshSession.release()->getCSession(), nullptr));
+    if (!session->m_session) {
+        throw std::runtime_error{"nc_connect_ssh failed"};
+    }
+    return session;
 }
 
 std::unique_ptr<Session> Session::connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath)

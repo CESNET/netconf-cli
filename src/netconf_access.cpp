@@ -7,6 +7,7 @@
 
 #include <libyang/Libyang.hpp>
 #include <libyang/Tree_Data.hpp>
+#include <libssh/libsshpp.hpp>
 #include "libyang_utils.hpp"
 #include "netconf-client.hpp"
 #include "netconf_access.hpp"
@@ -70,6 +71,12 @@ NetconfAccess::NetconfAccess(const std::string& hostname, uint16_t port, const s
 
 NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session)
     : m_session(std::move(session))
+    , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
+{
+}
+
+NetconfAccess::NetconfAccess(std::unique_ptr<ssh::Session>&& session)
+    : m_session(libnetconf::client::Session::fromSshSession(std::move(session)))
     , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
 }
