@@ -136,20 +136,23 @@ target_link_libraries(sysreposubscription ${SYSREPO_LIBRARIES})
 link_directories(${SYSREPO_LIBRARY_DIRS})
 target_include_directories(sysreposubscription SYSTEM PRIVATE ${SYSREPO_INCLUDE_DIRS})
 
-add_executable(sysrepo-cli
-    src/cli.cpp
-    )
-target_compile_definitions(sysrepo-cli PRIVATE SYSREPO_CLI)
-target_include_directories(sysrepo-cli PRIVATE ${REPLXX_PATH})
-target_link_libraries(sysrepo-cli sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
-if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
-    target_link_libraries(sysrepo-cli c++experimental)
-else()
-    target_link_libraries(sysrepo-cli stdc++fs)
-endif()
+foreach(backend sysrepo netconf)
+    add_executable(${backend}-cli
+        src/cli.cpp
+        )
+    target_compile_definitions(${backend}-cli PRIVATE ${backend}_CLI)
+    target_include_directories(${backend}-cli PRIVATE ${REPLXX_PATH})
+    if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
+        target_link_libraries(${backend}-cli c++experimental)
+    else()
+        target_link_libraries(${backend}-cli stdc++fs)
+    endif()
 
-add_dependencies(sysrepo-cli target-NETCONF_CLI_VERSION)
-target_include_directories(sysrepo-cli PRIVATE ${PROJECT_BINARY_DIR})
+    add_dependencies(${backend}-cli target-NETCONF_CLI_VERSION)
+    target_include_directories(${backend}-cli PRIVATE ${PROJECT_BINARY_DIR})
+endforeach()
+target_link_libraries(sysrepo-cli sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
+target_link_libraries(netconf-cli ssh netconfaccess yangschema docopt parser ${REPLXX_LIBRARY})
 
 include(CTest)
 if(BUILD_TESTING)

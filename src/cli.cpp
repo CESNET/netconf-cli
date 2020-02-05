@@ -12,27 +12,210 @@
 #include <sstream>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
-#if defined(SYSREPO_CLI)
+#if defined(sysrepo_CLI)
 #include "sysrepo_access.hpp"
 #define PROGRAM_NAME "sysrepo-cli"
-#define PROGRAM_DESCRIPTION R"(CLI interface to sysrepo \
-\
-Usage: \
-  sysrepo-cli \
-  sysrepo-cli (-h | --help) \
-  sysrepo-cli --version \
-)"
+static const char usage[] = R"(CLI interface to sysrepo
+
+Usage:
+  sysrepo-cli
+  sysrepo-cli (-h | --help)
+  sysrepo-cli --version
+)";
+#elif defined(netconf_CLI)
+#include <boost/spirit/home/x3.hpp>
+#include <libssh/callbacks.h>
+#include <libssh/libssh.h>
+#include "netconf_access.hpp"
+#include "utils.hpp"
+#define PROGRAM_NAME "netconf-cli"
+static const char usage[] = R"(CLI interface to remote NETCONF hosts
+
+Usage:
+  netconf-cli [-v] [USER@]<hostname>[:PORT]
+  netconf-cli (-h | --help)
+  netconf-cli --version
+
+Options:
+  -v  enable verbose mode
+)";
 #else
 #error "Unknown CLI backend"
 #endif
 
 
+#if defined (netconf_CLI)
+struct SshOptions {
+    std::string m_hostname;
+    std::optional<unsigned int> m_port = std::nullopt;
+    std::optional<std::string> m_user = std::nullopt;
+};
+BOOST_FUSION_ADAPT_STRUCT(SshOptions, m_user, m_hostname, m_port)
 
+namespace x3 = boost::spirit::x3;
+namespace cliParsers {
+using x3::alnum;
+using x3::char_;
+using x3::uint_;
+auto atSignIfNotLast = &('@' >> *(char_-'@') >> '@') >> char_("@");
+// TODO: check which characters should be allowed
+auto userAllowedChar = x3::rule<class UserAllowedChar, char>{"UserAllowedChar"} = (alnum | char_('.') | char_('-') | atSignIfNotLast);
+auto user = x3::rule<class User, std::string>{"User"} = alnum >> *userAllowedChar >> '@';
+auto host = x3::rule<class Host, std::string>{"Host"} = (alnum >> *(-char_('.') >> (alnum | '-')));
+auto port = x3::rule<class Port, unsigned int>{"Port"} = ":" >> uint_;
+
+auto sshOptions = x3::rule<class Host, SshOptions>{"Hostname"} = -user >> host >> -port;
+}
+
+template<> struct std::default_delete<ssh_key_struct> {
+    void operator()(ssh_key_struct* key) const
+    {
+        ssh_key_free(key);
+    }
+};
+
+namespace {
+SshOptions parseHostname(const std::string& hostname)
+{
+    using namespace std::string_literals;
+    SshOptions res;
+
+    auto it = hostname.begin();
+    auto parseResult = x3::parse(it, hostname.end(), cliParsers::sshOptions, res);
+    if (!parseResult || it != hostname.end()) {
+        auto error = "Failed to parse hostname here:\n"s;
+        error += hostname + "\n";
+        error += std::string(it - hostname.begin(), ' ');
+        error += '^';
+        throw std::runtime_error{error};
+    }
+
+    return res;
+}
+
+std::string getKeyDir(ssh_session_struct* session)
+{
+    auto homeEnv = getenv("HOME");
+    std::string homePath;
+    if (homeEnv) {
+        homePath = homeEnv;
+    } else {
+        char* user;
+        ssh_options_get(session, SSH_OPTIONS_USER, &user);
+        homePath = joinPaths("/home", user);
+    }
+
+    return joinPaths(homePath, ".ssh");
+}
+
+int unlockPrivKeyCallback([[maybe_unused]]const char *prompt, char *buf, size_t len, int echo, int verify, void *userdata)
+{
+    using namespace std::string_literals;
+    auto keyPath = reinterpret_cast<std::string*>(userdata);
+    return ssh_getpass(("Enter passphrase for "s + *keyPath + ": ").c_str() , buf, len, echo, verify);
+}
+
+auto defaultPubKeyFilename = "id_rsa.pub";
+auto defaultPrivKeyFilename = "id_rsa";
+
+enum class KeyType {
+    Private,
+    Public
+};
+
+template <KeyType TYPE>
+std::unique_ptr<ssh_key_struct> importKey(std::string path)
+{
+    ssh_key_struct* keyPtr;
+    int status;
+    switch (TYPE) {
+    case KeyType::Public:
+        status = ssh_pki_import_pubkey_file(path.c_str(), &keyPtr);
+        break;
+    case KeyType::Private:
+        status = ssh_pki_import_privkey_file(path.c_str(),
+                nullptr,
+                unlockPrivKeyCallback,
+                static_cast<void*>(&path),
+                &keyPtr);
+        break;
+    }
+
+    return std::unique_ptr<ssh_key_struct>{status == SSH_OK ? keyPtr : nullptr};
+}
+
+bool authenticatePubKey(ssh_session_struct* session)
+{
+    // Use a default key dir.
+    auto keyDir = getKeyDir(session);
+
+    // Let's try to import the pubkey.
+    auto pubKeyPath = joinPaths(keyDir, defaultPubKeyFilename);
+    auto pubKey = importKey<KeyType::Public>(pubKeyPath);
+    if (!pubKey) {
+        return false;
+    }
+
+    // Okay, the pubkey was imported successfully, let's see if the server accepts it.
+    if (ssh_userauth_try_publickey(session, nullptr, pubKey.get()) != SSH_OK) {
+        return false;
+    }
+
+    // Good, the server will accept our key, let's import the private key.
+    auto privKeyPath = joinPaths(keyDir, defaultPrivKeyFilename);
+    auto privKey = importKey<KeyType::Private>(privKeyPath);
+    if (!privKey) {
+        return false;
+    }
+
+    // Great, the privkey was imported successfully, let's try to authenticate.
+    if (ssh_userauth_publickey(session, nullptr, privKey.get()) != SSH_AUTH_SUCCESS) {
+        return false;
+    }
+
+    // Wonderful, pubkey authentication was successful!
+    return true;
+}
+
+
+// I would love to use ssh::Session wrapper libssh has, but libnetconf2 wants
+// to manage the session by itself and while it is possible to get the session
+// pointer from the wrapper, I can't stop the wrapper it from freeing it. Also,
+// I'm not using the `ssh_session` typedef, it's very misleading.
+ssh_session_struct* createSshSession(const SshOptions& options)
+{
+    auto session = ssh_new();
+    ssh_options_set(session, SSH_OPTIONS_HOST, options.m_hostname.c_str());
+    if (options.m_port) {
+        ssh_options_set(session, SSH_OPTIONS_PORT, &(*options.m_port));
+    }
+    if (options.m_user) {
+        ssh_options_set(session, SSH_OPTIONS_USER, options.m_user->c_str());
+    }
+
+    if (ssh_connect(session) != SSH_OK) {
+        std::ostringstream ss;
+        ss << "ssh: " << ssh_get_error(session) << " (" << ssh_get_error_code(session) << ")";
+        throw std::runtime_error{ss.str()};
+    }
+
+    // Try ssh-agent.
+    if (ssh_userauth_agent(session, nullptr) == SSH_AUTH_SUCCESS) {
+        return session;
+    }
+
+    // Try pubkey authentication
+    if (authenticatePubKey(session)) {
+        return session;
+    }
+
+
+    throw std::runtime_error{"ssh: Permission denied."};
+}
+}
+#endif
 
 const auto HISTORY_FILE_NAME = PROGRAM_NAME "_history";
-
-static const char usage[] = PROGRAM_DESCRIPTION;
-
 
 int main(int argc, char* argv[])
 {
@@ -43,8 +226,20 @@ int main(int argc, char* argv[])
                                true);
     std::cout << "Welcome to " PROGRAM_NAME << std::endl;
 
-#if defined(SYSREPO_CLI)
+#if defined(sysrepo_CLI)
     SysrepoAccess datastore(PROGRAM_NAME);
+#elif defined(netconf_CLI)
+    auto options = parseHostname(args.at("<hostname>").asString());
+    auto verbose = args.at("-v").asBool();
+
+    auto session = createSshSession(options);
+    if (verbose) {
+        NetconfAccess::setNcLogLevel(NC_VERB_DEBUG);
+    }
+    NetconfAccess::setNcLogCallback([] (NC_VERB_LEVEL level, const char* message) {
+        std::cerr << "libnetconf[" << level << "]" << ": " << message << std::endl;
+    });
+    NetconfAccess datastore(session);
 #else
 #error "Unknown CLI backend"
 #endif
