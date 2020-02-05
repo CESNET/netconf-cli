@@ -12,27 +12,36 @@
 #include <sstream>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
-#if defined(SYSREPO_CLI)
+#if defined(sysrepo_CLI)
 #include "sysrepo_access.hpp"
 #define PROGRAM_NAME "sysrepo-cli"
-#define PROGRAM_DESCRIPTION R"(CLI interface to sysrepo \
-\
-Usage: \
-  sysrepo-cli \
-  sysrepo-cli (-h | --help) \
-  sysrepo-cli --version \
-)"
+static const char usage[] = R"(CLI interface to sysrepo
+
+Usage:
+  sysrepo-cli
+  sysrepo-cli (-h | --help)
+  sysrepo-cli --version
+)";
+#elif defined(netconf_CLI)
+#include "cli-netconf.hpp"
+#include "netconf_access.hpp"
+#define PROGRAM_NAME "netconf-cli"
+static const char usage[] = R"(CLI interface to remote NETCONF hosts
+
+Usage:
+  netconf-cli [-v] [USER@]<hostname>[:PORT]
+  netconf-cli (-h | --help)
+  netconf-cli --version
+
+Options:
+  -v  enable verbose mode
+)";
 #else
 #error "Unknown CLI backend"
 #endif
 
 
-
-
 const auto HISTORY_FILE_NAME = PROGRAM_NAME "_history";
-
-static const char usage[] = PROGRAM_DESCRIPTION;
-
 
 int main(int argc, char* argv[])
 {
@@ -43,8 +52,28 @@ int main(int argc, char* argv[])
                                true);
     std::cout << "Welcome to " PROGRAM_NAME << std::endl;
 
-#if defined(SYSREPO_CLI)
+#if defined(sysrepo_CLI)
     SysrepoAccess datastore(PROGRAM_NAME);
+#elif defined(netconf_CLI)
+    auto options = parseHostname(args.at("<hostname>").asString());
+    auto verbose = args.at("-v").asBool();
+
+    SshSessionUniquePtr session;
+
+    try {
+        session = createSshSession(options);
+    } catch (std::runtime_error& ex) {
+        std::cerr << ex.what() << std::endl;
+        return 1;
+    }
+
+    if (verbose) {
+        NetconfAccess::setNcLogLevel(NC_VERB_DEBUG);
+    }
+    NetconfAccess::setNcLogCallback([] (NC_VERB_LEVEL level, const char* message) {
+        std::cerr << "libnetconf[" << level << "]" << ": " << message << std::endl;
+    });
+    NetconfAccess datastore(session.release());
 #else
 #error "Unknown CLI backend"
 #endif
