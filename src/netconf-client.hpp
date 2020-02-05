@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <libnetconf2/log.h>
 #include <libnetconf2/messages_client.h>
 #include <memory>
 #include <optional>
@@ -25,6 +26,10 @@ public:
 };
 
 using KbdInteractiveCb = std::function<std::string(const std::string&, const std::string&, const std::string&, bool)>;
+using LogCb = std::function<void(NC_VERB_LEVEL, const char*)>;
+
+void setLogLevel(NC_VERB_LEVEL level);
+void setLogCallback(const LogCb& callback);
 
 class Session {
 public:
