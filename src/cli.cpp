@@ -13,9 +13,9 @@
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
 #include "proxy_datastore.hpp"
+#include "yang_schema.hpp"
 #if defined(SYSREPO_CLI)
 #include "sysrepo_access.hpp"
-#include "yang_schema.hpp"
 #define PROGRAM_NAME "sysrepo-cli"
 static const auto usage = R"(CLI interface to sysrepo
 
@@ -47,6 +47,22 @@ Options:
   -e <enable_features>  Feature to enable after modules are loaded. This option can be supplied more than once. Format: <module_name>:<feature>
   -i <data_file>        File to import data from
   --configonly          Disable editing of operational data)";
+#elif defined(NETCONF_CLI)
+// FIXME: improve usage
+static const auto usage = R"(CLI interface for NETCONF
+
+Usage:
+  netconf-cli [-v] [-p <port>] <host>
+  netconf-cli (-h | --help)
+  netconf-cli --version
+
+Options:
+  -v         enable verbose mode
+  -p <port>  port number [default: 830]
+)";
+#include "netconf_access.hpp"
+#include "cli-netconf.hpp"
+#define PROGRAM_NAME "netconf-access"
 #else
 #error "Unknown CLI backend"
 #endif
@@ -121,11 +137,27 @@ int main(int argc, char* argv[])
             datastore->addDataFile(dataFile);
         }
     }
+#elif defined(NETCONF_CLI)
+    auto verbose = args.at("-v").asBool();
+    if (verbose) {
+        NetconfAccess::setNcLogLevel(NC_VERB_DEBUG);
+    }
+
+    SshProcess process;
+    std::shared_ptr<NetconfAccess> datastore;
+
+    try {
+        process = sshProcess(args.at("<host>").asString(), args.at("-p").asString());
+        datastore = std::make_shared<NetconfAccess>(process.std_out.native_source(), process.std_in.native_sink());
+    } catch (std::runtime_error& ex) {
+        std::cerr << "SSH connection failed: " << ex.what() << "\n";
+        return 1;
+    }
 #else
 #error "Unknown CLI backend"
 #endif
 
-#if defined(SYSREPO_CLI)
+#if defined(SYSREPO_CLI) || defined(NETCONF_CLI)
     auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {
         return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
     };
