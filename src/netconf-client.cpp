@@ -20,6 +20,14 @@ namespace libnetconf {
 
 namespace impl {
 
+static client::LogCb logCallback;
+
+static void logViaCallback(NC_VERB_LEVEL level, const char* message)
+{
+    logCallback(level, message);
+}
+
+
 /** @short Initialization of the libnetconf2 library client
 
 Just a safe wrapper over nc_client_init and nc_client_destroy, really.
@@ -28,7 +36,7 @@ class ClientInit {
     ClientInit()
     {
         nc_client_init();
-        nc_verbosity(NC_VERB_DEBUG);
+        nc_verbosity(NC_VERB_WARNING);
     }
 
     ~ClientInit()
@@ -178,6 +186,17 @@ void do_rpc_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
 
 namespace client {
 
+void setLogLevel(NC_VERB_LEVEL level)
+{
+    nc_verbosity(level);
+}
+
+void setLogCallback(const client::LogCb& callback)
+{
+    impl::logCallback = callback;
+    nc_set_print_clb(impl::logViaCallback);
+}
+
 struct nc_session* Session::session_internal()
 {
     return m_session;
@@ -197,6 +216,16 @@ Session::Session(struct nc_session* session)
 Session::~Session()
 {
     ::nc_session_free(m_session, nullptr);
+}
+
+std::unique_ptr<Session> Session::fromSshSession(ssh_session_struct* sshSession)
+{
+    impl::ClientInit::instance();
+    auto session = std::make_unique<Session>(nc_connect_libssh(sshSession, nullptr));
+    if (!session->m_session) {
+        throw std::runtime_error{"nc_connect_ssh failed"};
+    }
+    return session;
 }
 
 std::unique_ptr<Session> Session::connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath)
