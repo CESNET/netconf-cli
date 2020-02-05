@@ -1,7 +1,9 @@
 #pragma once
 
 #include <functional>
+#include <libnetconf2/log.h>
 #include <libnetconf2/messages_client.h>
+#include <libssh/libssh.h>
 #include <memory>
 #include <optional>
 #include <string>
@@ -15,6 +17,10 @@ class Data_Node;
 class Context;
 }
 
+namespace ssh {
+class Session;
+}
+
 namespace libnetconf {
 namespace client {
 
@@ -25,11 +31,16 @@ public:
 };
 
 using KbdInteractiveCb = std::function<std::string(const std::string&, const std::string&, const std::string&, bool)>;
+using LogCb = std::function<void(NC_VERB_LEVEL, const char*)>;
+
+void setLogLevel(NC_VERB_LEVEL level);
+void setLogCallback(const LogCb& callback);
 
 class Session {
 public:
     Session(struct nc_session* session);
     ~Session();
+    static std::unique_ptr<Session> fromSshSession(ssh_session_struct* sshSession);
     static std::unique_ptr<Session> connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath);
     static std::unique_ptr<Session> connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback);
     static std::unique_ptr<Session> connectSocket(const std::string& path);
