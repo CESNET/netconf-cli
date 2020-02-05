@@ -33,8 +33,8 @@ NetconfAccess::NetconfAccess(const std::string& hostname, uint16_t port, const s
 {
 }
 
-NetconfAccess::NetconfAccess(const int inFd, const int outFd)
-    : m_session(libnetconf::client::Session::connectFd(inFd, outFd))
+NetconfAccess::NetconfAccess(const int source, const int sink)
+    : m_session(libnetconf::client::Session::connectFd(source, sink))
     , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
 }
@@ -45,10 +45,26 @@ NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& sess
 {
 }
 
+NetconfAccess::NetconfAccess(ssh_session_struct* session)
+    : m_session(libnetconf::client::Session::fromSshSession(session))
+    , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
+{
+}
+
 NetconfAccess::NetconfAccess(const std::string& socketPath)
     : m_session(libnetconf::client::Session::connectSocket(socketPath))
     , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
+}
+
+void NetconfAccess::setNcLogLevel(NC_VERB_LEVEL level)
+{
+    libnetconf::client::setLogLevel(level);
+}
+
+void NetconfAccess::setNcLogCallback(const LogCb& callback)
+{
+    libnetconf::client::setLogCallback(callback);
 }
 
 void NetconfAccess::setLeaf(const std::string& path, leaf_data_ value)
