@@ -20,6 +20,14 @@ namespace libnetconf {
 
 namespace impl {
 
+static client::LogCb logCallback;
+
+static void logViaCallback(NC_VERB_LEVEL level, const char* message)
+{
+    logCallback(level, message);
+}
+
+
 /** @short Initialization of the libnetconf2 library client
 
 Just a safe wrapper over nc_client_init and nc_client_destroy, really.
@@ -28,7 +36,6 @@ class ClientInit {
     ClientInit()
     {
         nc_client_init();
-        nc_verbosity(NC_VERB_DEBUG);
     }
 
     ~ClientInit()
@@ -177,6 +184,17 @@ void do_rpc_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
 }
 
 namespace client {
+
+void setLogLevel(NC_VERB_LEVEL level)
+{
+    nc_verbosity(level);
+}
+
+void setLogCallback(const client::LogCb& callback)
+{
+    impl::logCallback = callback;
+    nc_set_print_clb(impl::logViaCallback);
+}
 
 struct nc_session* Session::session_internal()
 {
