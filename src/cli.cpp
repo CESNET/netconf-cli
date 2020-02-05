@@ -12,27 +12,88 @@
 #include <sstream>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
-#if defined(SYSREPO_CLI)
+#if defined(sysrepo_CLI)
 #include "sysrepo_access.hpp"
 #define PROGRAM_NAME "sysrepo-cli"
-#define PROGRAM_DESCRIPTION R"(CLI interface to sysrepo \
-\
-Usage: \
-  sysrepo-cli \
-  sysrepo-cli (-h | --help) \
-  sysrepo-cli --version \
-)"
+static const char usage[] = R"(CLI interface to sysrepo
+
+Usage:
+  sysrepo-cli
+  sysrepo-cli (-h | --help)
+  sysrepo-cli --version
+)";
+#elif defined(netconf_CLI)
+#include <boost/spirit/home/x3.hpp>
+#include <libssh/libsshpp.hpp>
+#include "netconf_access.hpp"
+#define PROGRAM_NAME "netconf-cli"
+static const char usage[] = R"(CLI interface to remote NETCONF hosts
+
+Usage:
+  netconf-cli [-v] [USER@]<hostname>[:PORT]
+  netconf-cli (-h | --help)
+  netconf-cli --version
+
+Options:
+  -v  enable verbose mode
+)";
 #else
 #error "Unknown CLI backend"
 #endif
 
 
+#if defined (netconf_CLI)
+struct SshOptions {
+    std::string m_hostname;
+    std::optional<unsigned int> m_port = std::nullopt;
+    std::optional<std::string> m_user = std::nullopt;
+};
+BOOST_FUSION_ADAPT_STRUCT(SshOptions, m_user, m_hostname, m_port)
 
+namespace x3 = boost::spirit::x3;
+namespace cliParsers {
+// TODO: allow more usernames
+auto user = x3::rule<class User, std::string>{"user"} = x3::alnum >> *(x3::alnum | "-") >> "@";
+auto host = x3::rule<class Host, std::string>{"name of the host"} = x3::alnum >> *(x3::alnum | "-");
+auto port = ":" >> x3::uint_;
+
+auto sshOptions = x3::rule<class Host, SshOptions>{"Hostname"} = -user >> host >> -port;
+}
+
+
+SshOptions parseHostname(const std::string& hostname)
+{
+    SshOptions res;
+
+    auto it = hostname.begin();
+    x3::parse(it, hostname.end(), cliParsers::sshOptions, res);
+
+    return res;
+}
+
+// I would love to use ssh::Session wrapper libssh has, but libnetconf2 wants
+// to manage the session by itself and while it is possible to get the session
+// pointer from the wrapper, I can't stop the wrapper it from freeing it. Also,
+// I'm not using the `ssh_session` typedef, it's very misleading.
+ssh_session_struct* createSshSession(const SshOptions& options)
+{
+    auto session = ssh_new();
+    ssh_options_set(session, SSH_OPTIONS_HOST, options.m_hostname.c_str());
+    if (options.m_port) {
+        ssh_options_set(session, SSH_OPTIONS_PORT, &(*options.m_port));
+    }
+    if (options.m_user) {
+        ssh_options_set(session, SSH_OPTIONS_USER, options.m_user->c_str());
+    }
+
+    ssh_connect(session);
+    ssh_userauth_agent(session, nullptr);
+
+    return session;
+}
+#endif
 
 const auto HISTORY_FILE_NAME = PROGRAM_NAME "_history";
-
-static const char usage[] = PROGRAM_DESCRIPTION;
-
 
 int main(int argc, char* argv[])
 {
@@ -43,8 +104,27 @@ int main(int argc, char* argv[])
                                true);
     std::cout << "Welcome to " PROGRAM_NAME << std::endl;
 
-#if defined(SYSREPO_CLI)
+#if defined(sysrepo_CLI)
     SysrepoAccess datastore(PROGRAM_NAME);
+#elif defined(netconf_CLI)
+    auto options = parseHostname(args.at("<hostname>").asString());
+    auto verbose = args.at("-v").asBool();
+
+    ssh_session_struct* session;
+    try {
+        session = createSshSession(options);
+    } catch (ssh::SshException& ex) {
+        std::cerr << "SSH server connection failed." << std::endl;
+        std::cerr << "Reason: " << ex.getError() << std::endl;
+        std::cerr << "Error code: " << ex.getCode() << std::endl;
+        return 1;
+    }
+    NetconfAccess::setNcLogCallback([verbose] (NC_VERB_LEVEL level, const char* message) {
+        if (verbose) {
+            std::cerr << "libnetconf[" << level << "]" << ": " << message << std::endl;
+        }
+    });
+    NetconfAccess datastore(session);
 #else
 #error "Unknown CLI backend"
 #endif

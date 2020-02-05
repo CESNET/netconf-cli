@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <libnetconf2/log.h>
 #include <string>
 #include "datastore_access.hpp"
 
@@ -24,15 +25,22 @@ namespace libyang {
 class Data_Node;
 }
 
+struct ssh_session_struct;
+
 class Schema;
 class YangSchema;
+
+using LogCb = std::function<void(NC_VERB_LEVEL, const char*)>;
 
 class NetconfAccess : public DatastoreAccess {
 public:
     NetconfAccess(const std::string& hostname, uint16_t port, const std::string& user, const std::string& pubKey, const std::string& privKey);
     NetconfAccess(const std::string& socketPath);
     NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session);
+    NetconfAccess(ssh_session_struct* session);
     ~NetconfAccess() override;
+
+    static void setNcLogCallback(const LogCb& callback);
     Tree getItems(const std::string& path) override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createPresenceContainer(const std::string& path) override;
