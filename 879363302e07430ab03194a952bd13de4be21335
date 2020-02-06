@@ -1,0 +1,141 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "199a8ac3_967ad471",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-06T22:19:06Z",
+      "side": 1,
+      "message": "OpenSSH by default uses the -p flag for specifying another port number, but I think I actually prefer this syntax.",
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "59ebac0d_caf818c4",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-06T22:19:06Z",
+      "side": 1,
+      "message": "I don\u0027t think we\u0027ll really hard-require this, but other software actually allows @ in usernames (that\u0027s how we\u0027re logging to Gerrit, for example). The rule should therefore be \"the rightmost @ separates username from host\". Unless it\u0027s much trouble, can you please make it so?",
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be631ee1_ecebb2bc",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-06T22:19:06Z",
+      "side": 1,
+      "message": "have you brought this up upstream?",
+      "range": {
+        "startLine": 75,
+        "startChar": 39,
+        "endLine": 76,
+        "endChar": 72
+      },
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "479c4aca_0c721037",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-06T22:19:06Z",
+      "side": 1,
+      "message": "What about making this a bit more compact, e.g.:\n\n  ssh: Connection refused (666)\n\n                           ^^^-- ex.getCode()\n       ^^^^^^^^^^^^^^^^^^^-- ex.getError()\n  ^^^^-- hardcoded literal",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 65
+      },
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46151f3b_2c1737c4",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-06T22:19:06Z",
+      "side": 1,
+      "message": "better just instruct libnetconf2 on what level to use, and then log unconditionally. There\u0027s no need to enable all the logging and then discard the resulting messages.",
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93590f48_e888e5da",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-06T22:19:06Z",
+      "side": 1,
+      "message": "NC_VERB_WARNING (or even no call at all) would be appropriate now that there\u0027s a way of switching it on again. That way, the C++ wrapper itself won\u0027t affect libnetconf2\u0027s operation (I want this for my Python stuff).",
+      "range": {
+        "startLine": 39,
+        "startChar": 21,
+        "endLine": 39,
+        "endChar": 34
+      },
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db0a891e_33777c56",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-06T22:19:06Z",
+      "side": 1,
+      "message": "what is this lock guarding against?",
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
