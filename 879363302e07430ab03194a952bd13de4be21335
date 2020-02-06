@@ -136,6 +136,24 @@
       "revId": "879363302e07430ab03194a952bd13de4be21335",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd785778_42c00709",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-06T23:23:12Z",
+      "side": 1,
+      "message": "Against multiple people calling this function at once, I guess? I don\u0027t know, other methods lock this too, so I thought it was for the same reason.",
+      "parentUuid": "db0a891e_33777c56",
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
