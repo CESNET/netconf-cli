@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "f57078ec_931a1179",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T11:51:31Z",
+      "side": 1,
+      "message": "It was a little difficult, but I think I got it. I also allowed dots in the username. It seems that there are quite a lot of allowed characters in a username.",
+      "parentUuid": "59ebac0d_caf818c4",
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "be631ee1_ecebb2bc",
         "filename": "src/cli.cpp",
         "patchSetId": 4
@@ -47,6 +65,30 @@
       "writtenOn": "2020-02-06T22:19:06Z",
       "side": 1,
       "message": "have you brought this up upstream?",
+      "range": {
+        "startLine": 75,
+        "startChar": 39,
+        "endLine": 76,
+        "endChar": 72
+      },
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73f2f1ec_2adccf4c",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T11:51:31Z",
+      "side": 1,
+      "message": "I didn\u0027t.",
+      "parentUuid": "be631ee1_ecebb2bc",
       "range": {
         "startLine": 75,
         "startChar": 39,
@@ -82,6 +124,30 @@
     },
     {
       "key": {
+        "uuid": "135d7cb1_b2076ea3",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T11:51:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "479c4aca_0c721037",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 65
+      },
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46151f3b_2c1737c4",
         "filename": "src/cli.cpp",
         "patchSetId": 4
@@ -96,6 +162,24 @@
       "revId": "879363302e07430ab03194a952bd13de4be21335",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0e4e94c_dcfd7d0c",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T11:51:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46151f3b_2c1737c4",
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -119,6 +203,30 @@
       "revId": "879363302e07430ab03194a952bd13de4be21335",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e2b4fbb_82bbe7f2",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T11:51:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93590f48_e888e5da",
+      "range": {
+        "startLine": 39,
+        "startChar": 21,
+        "endLine": 39,
+        "endChar": 34
+      },
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
