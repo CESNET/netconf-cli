@@ -30,7 +30,7 @@ set(CMAKE_CXX_FLAGS "-O2 ${CMAKE_CXX_FLAGS}")
 
 # Build warnings are useful tools (and this project should be warning-free anyway), enable them on all
 # configurations. They are warnings, not errors.
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Woverloaded-virtual ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Woverloaded-virtual -Wimplicit-fallthrough ${CMAKE_CXX_FLAGS}")
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "-Wsuggest-override ${CMAKE_CXX_FLAGS}")
