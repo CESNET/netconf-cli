@@ -153,6 +153,13 @@ TEST_CASE("path_completion")
             expectedCompletions = {};
             expectedContextLength = 1;
         }
+
+        SECTION("ls /example:list/example:contInList/")
+        {
+            input = "ls /example:list/example:contInList/";
+            expectedCompletions = {};
+            expectedContextLength = 0;
+        }
     }
 
     SECTION("list keys completion")

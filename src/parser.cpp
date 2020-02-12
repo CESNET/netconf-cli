@@ -67,14 +67,18 @@ Completions Parser::completeCommand(const std::string& line, std::ostream& error
 
     int completionContext = line.end() - completionIterator;
 
-    auto set = filterByPrefix(ctx.m_suggestions, std::string(completionIterator, line.end()));
-    if (set.size() == 1) {
-        auto suffix =
-            ctx.m_completionSuffix.m_whenToAdd == ParserContext::WhenToAdd::IfFullMatch
-            && *set.begin() == std::string{completionIterator, line.end()} ? ctx.m_completionSuffix.m_suffix : "";
-        return {{(*set.begin()) + suffix}, completionContext};
+    auto filtered = filterByPrefix(ctx.m_suggestions, std::string(completionIterator, line.end()));
+    if (filtered.size() == 1) {
+        auto suffix = filtered.begin()->m_whenToAdd == Completion::WhenToAdd::IfFullMatch
+                && filtered.begin()->m_value == std::string{completionIterator, line.end()}
+            ? filtered.begin()->m_suffix
+            : "";
+        return {{filtered.begin()->m_value + suffix}, completionContext};
     }
-    return {set, completionContext};
+
+    std::set<std::string> res;
+    std::transform(filtered.begin(), filtered.end(), std::inserter(res, res.end()), [](auto it) { return it.m_value; } );
+    return {res, completionContext};
 }
 
 void Parser::changeNode(const dataPath_& name)
