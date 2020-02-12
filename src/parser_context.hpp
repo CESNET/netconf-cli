@@ -7,6 +7,7 @@
 */
 #pragma once
 
+#include "completion.hpp"
 #include "data_query.hpp"
 #include "schema.hpp"
 struct ParserContext {
@@ -33,13 +34,10 @@ struct ParserContext {
     std::map<std::string, leaf_data_> m_tmpListKeys;
     bool m_errorHandled = false;
     bool m_completing = false;
-    std::set<std::string> m_suggestions;
+
+    std::set<Completion> m_suggestions;
     // Iterator pointing to where suggestions were created
     boost::optional<std::string::const_iterator> m_completionIterator;
-    // If the parser determines that suggestions are unambiguous (after
-    // filtering by prefix), this suffix gets added to the completion (for
-    // example a left bracket after a list)
-    std::string m_completionSuffix;
 
 private:
     boost::variant<dataPath_, schemaPath_> m_curPath;

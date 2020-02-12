@@ -7,20 +7,21 @@
 */
 
 #include "trompeloeil_doctest.hpp"
+#include "completion.hpp"
 #include "utils.hpp"
 
 TEST_CASE("utils")
 {
     SECTION("filterByPrefix")
     {
-        std::set<std::string> set{"ahoj", "coze", "copak", "aha", "polivka"};
+        std::set<Completion> set{{"ahoj"}, {"coze"}, {"copak"}, {"aha"}, {"polivka"}};
 
-        REQUIRE((filterByPrefix(set, "a") == std::set<std::string>{"ahoj", "aha"}));
-        REQUIRE((filterByPrefix(set, "ah") == std::set<std::string>{"ahoj", "aha"}));
-        REQUIRE((filterByPrefix(set, "aho") == std::set<std::string>{"ahoj"}));
-        REQUIRE((filterByPrefix(set, "polivka") == std::set<std::string>{"polivka"}));
-        REQUIRE((filterByPrefix(set, "polivkax") == std::set<std::string>{}));
-        REQUIRE((filterByPrefix(set, "co") == std::set<std::string>{"copak", "coze"}));
+        REQUIRE((filterByPrefix(set, "a") == std::set<Completion>{{"ahoj"}, {"aha"}}));
+        REQUIRE((filterByPrefix(set, "ah") == std::set<Completion>{{"ahoj"}, {"aha"}}));
+        REQUIRE((filterByPrefix(set, "aho") == std::set<Completion>{{"ahoj"}}));
+        REQUIRE((filterByPrefix(set, "polivka") == std::set<Completion>{{"polivka"}}));
+        REQUIRE((filterByPrefix(set, "polivkax") == std::set<Completion>{}));
+        REQUIRE((filterByPrefix(set, "co") == std::set<Completion>{{"copak"}, {"coze"}}));
     }
 
     SECTION("joinPaths") {
