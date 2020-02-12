@@ -5,6 +5,7 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#pragma once
 
 #include "data_query.hpp"
 #include "schema.hpp"
@@ -35,10 +36,18 @@ struct ParserContext {
     std::set<std::string> m_suggestions;
     // Iterator pointing to where suggestions were created
     boost::optional<std::string::const_iterator> m_completionIterator;
+    enum class WhenToAdd {
+        Always,
+        IfFullMatch
+    };
     // If the parser determines that suggestions are unambiguous (after
     // filtering by prefix), this suffix gets added to the completion (for
-    // example a left bracket after a list)
-    std::string m_completionSuffix;
+    // example a left bracket after a list). If m_whenToAdd is IfFullMatch, the
+    // suffix only gets added if the prefix matches fully.
+    struct CompletionSuffix {
+        std::string m_suffix;
+        WhenToAdd m_whenToAdd = WhenToAdd::Always;
+    } m_completionSuffix;
 
 private:
     boost::variant<dataPath_, schemaPath_> m_curPath;

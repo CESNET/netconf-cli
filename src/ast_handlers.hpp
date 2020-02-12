@@ -14,6 +14,7 @@
 
 
 #include "ast_commands.hpp"
+#include "parser_context.hpp"
 #include "schema.hpp"
 #include "utils.hpp"
 namespace x3 = boost::spirit::x3;
@@ -338,7 +339,7 @@ struct space_separator_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.m_suggestions.clear();
         parserContext.m_completionIterator = boost::none;
-        parserContext.m_completionSuffix.clear();
+        parserContext.m_completionSuffix = {};
     }
 };
 
@@ -569,7 +570,8 @@ struct createPathSuggestions_class {
                     return it + "/";
                 }
                 if (schema.isList(parserContext.currentSchemaPath(), node)) {
-                    return it + "[";
+                    parserContext.m_completionSuffix = {"[", ParserContext::WhenToAdd::IfFullMatch};
+                    return it;
                 }
                 return it;
         });
