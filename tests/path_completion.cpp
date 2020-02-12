@@ -66,14 +66,14 @@ TEST_CASE("path_completion")
         SECTION("ls ")
         {
             input = "ls ";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie/"};
             expectedContextLength = 0;
         }
 
         SECTION("ls e")
         {
             input = "ls e";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList"};
             expectedContextLength = 1;
         }
 
@@ -101,14 +101,14 @@ TEST_CASE("path_completion")
         SECTION("ls /")
         {
             input = "ls /";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList[", "second:amelie/"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie/"};
             expectedContextLength = 0;
         }
 
         SECTION("ls /e")
         {
             input = "ls /e";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list[", "example:ovoce[", "example:ovocezelenina[", "example:twoKeyList["};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList"};
             expectedContextLength = 1;
         }
 
@@ -160,7 +160,7 @@ TEST_CASE("path_completion")
         SECTION("cd example:lis")
         {
             input = "cd example:lis";
-            expectedCompletions = {"example:list["};
+            expectedCompletions = {"example:list"};
             expectedContextLength = 11;
         }
 
@@ -272,8 +272,22 @@ TEST_CASE("path_completion")
         SECTION("cd example:ovoce")
         {
             input = "cd example:ovoce";
-            expectedCompletions = {"example:ovoce[", "example:ovocezelenina["};
+            expectedCompletions = {"example:ovoce", "example:ovocezelenina"};
             expectedContextLength = 13;
+        }
+
+        SECTION("cd example:ovoceze")
+        {
+            input = "cd example:ovoceze";
+            expectedCompletions = {"example:ovocezelenina"};
+            expectedContextLength = 15;
+        }
+
+        SECTION("cd example:ovocezelenina")
+        {
+            input = "cd example:ovocezelenina";
+            expectedCompletions = {"example:ovocezelenina["};
+            expectedContextLength = 21;
         }
     }
 
