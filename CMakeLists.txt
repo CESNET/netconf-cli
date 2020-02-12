@@ -124,6 +124,7 @@ add_library(parser STATIC
     src/parser_context.cpp
     src/interpreter.cpp
     src/ast_handlers.cpp
+    src/completion.cpp
     )
 target_link_libraries(parser schemas utils ast_values)
 

@@ -339,7 +339,6 @@ struct space_separator_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.m_suggestions.clear();
         parserContext.m_completionIterator = boost::none;
-        parserContext.m_completionSuffix.clear();
     }
 };
 
@@ -539,7 +538,7 @@ struct createPathSuggestions_class {
 
         parserContext.m_completionIterator = begin;
         auto suggestions = schema.childNodes(parserContext.currentSchemaPath(), Recursion::NonRecursive);
-        std::set<std::string> suffixesAdded;
+        std::set<Completion> suffixesAdded;
         std::transform(suggestions.begin(), suggestions.end(),
             std::inserter(suffixesAdded, suffixesAdded.end()),
             [&parserContext, &schema] (auto it) {
@@ -553,21 +552,21 @@ struct createPathSuggestions_class {
                 }
 
                 if (schema.isLeaf(parserContext.currentSchemaPath(), node)) {
-                    return it + " ";
+                    return Completion{it + " "};
                 }
                 if (schema.isContainer(parserContext.currentSchemaPath(), node)) {
-                    return it + "/";
+                    return Completion{it + "/"};
                 }
                 if (schema.isList(parserContext.currentSchemaPath(), node)) {
-                    return it + "[";
+                    return Completion{it, "[", Completion::WhenToAdd::IfFullMatch};
                 }
-                return it;
+                return Completion{it};
         });
         parserContext.m_suggestions = suffixesAdded;
     }
 };
 
-std::set<std::string> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::map<std::string, leaf_data_> currentSet);
+std::set<Completion> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::map<std::string, leaf_data_> currentSet);
 
 struct createKeySuggestions_class {
     template <typename T, typename Iterator, typename Context>
@@ -609,10 +608,10 @@ struct createValueSuggestions_class {
         };
         std::copy_if(listInstances.begin(), listInstances.end(), std::inserter(filteredInstances, filteredInstances.end()), partialFitsComplete);
 
-        std::set<std::string> validValues;
+        std::set<Completion> validValues;
 
         std::transform(filteredInstances.begin(), filteredInstances.end(), std::inserter(validValues, validValues.end()), [&parserContext] (const auto& instance) {
-            return leafDataToCompletion(instance.at(parserContext.m_tmpListKeyLeafPath.m_node.second));
+            return Completion{leafDataToCompletion(instance.at(parserContext.m_tmpListKeyLeafPath.m_node.second))};
         });
 
         parserContext.m_suggestions = validValues;
@@ -629,16 +628,16 @@ struct suggestKeysEnd_class {
         parserContext.m_completionIterator = begin;
         const auto& keysNeeded = schema.listKeys(parserContext.currentSchemaPath(), {parserContext.m_curModule, parserContext.m_tmpListName});
         if (generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys).empty()) {
-            parserContext.m_suggestions = {"]/"};
+            parserContext.m_suggestions = {Completion{"]/"}};
         } else {
-            parserContext.m_suggestions = {"]["};
+            parserContext.m_suggestions = {Completion{"]["}};
         }
     }
 };
 
 struct commandNamesVisitor {
     template <typename T>
-    auto operator()(boost::type<T>)
+    std::string operator()(boost::type<T>)
     {
         return T::name;
     }
@@ -653,7 +652,7 @@ struct createCommandSuggestions_class {
 
         parserContext.m_suggestions.clear();
         boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([&parserContext](auto cmd) {
-            parserContext.m_suggestions.emplace(commandNamesVisitor()(cmd));
+            parserContext.m_suggestions.insert({commandNamesVisitor()(cmd)});
         });
     }
 };
@@ -671,7 +670,7 @@ struct completing_class {
 
 template<yang::LeafDataTypes TYPE>
 struct createSetSuggestions_class {
-    decltype(ParserContext::m_suggestions) getSuggestions(const ParserContext& ctx, const Schema& schema) const;
+    std::set<std::string> getSuggestions(const ParserContext& ctx, const Schema& schema) const;
 
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
@@ -683,7 +682,10 @@ struct createSetSuggestions_class {
         // overwrite some other completions.
         if (schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node) == TYPE) {
             parserContext.m_completionIterator = begin;
-            parserContext.m_suggestions = getSuggestions(parserContext, schema);
+            auto suggestions = getSuggestions(parserContext, schema);
+            std::set<Completion> res;
+            std::transform(suggestions.begin(), suggestions.end(), std::inserter(res, res.end()), [](auto it) { return Completion{it}; });
+            parserContext.m_suggestions = res;
         }
     }
 };
