@@ -334,6 +334,11 @@ std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recu
     for (const auto node : nodes) {
         if (node->module()->name() == "ietf-yang-library"sv)
             continue;
+        // FIXME: This is a temporary fix to filter out RPC nodes in
+        // tab-completion. The method will have to be changed/reworked when RPC
+        // support gets added.
+        if (node->nodetype() == LYS_RPC)
+            continue;
         if (recursion == Recursion::Recursive) {
             for (auto it : node->tree_dfs()) {
                 res.insert(it->path(LYS_PATH_FIRST_PREFIX));
