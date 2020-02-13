@@ -1,0 +1,238 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73ba66c8_c3edf53c",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "Do you *have* to filter the allowed characters here at all? The reason why I\u0027m asking is that e.g. POSIX apparently says (https://serverfault.com/a/578264) that it\u0027s alnum, \u0027.\u0027, \u0027_\u0027 and \u0027-\u0027 (so this parser is missing \u0027_\u0027), but we\u0027re already using also \u0027@\u0027 when logging into Gerrit. So, why not make the parser super-relaxed, including consuming whitespace and other funny characters? I.e., when invoked from shell, I think that all of these should pass:\n\n netconf-cli žluťoučký.kůň@stáj@host.example.org\n netconf-cli \"žluťoučký kůň, st@j a st0d0la s hromadou sena a jiných #\u0027\\\"!\u0026 () nemsyslů@host.example.org\"",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "feb3222e_b4bfa57b",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "I think that reading env var $HOME is good, but then the followup should be from getpwnam/getpwuid. If all that fails, do not assume /home/something, just error out (disable history? hard fail?).\n\nI actually think that disabling history is the best option because one has to do that on a R/O FS anyway.",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6bbc84e8_54498402",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "nit: why is this in (), and why is it assigned to a variable? something like this works, too, and is IMHO about on par, readability-wise:\n\n ssh_getpass((\"Enter passphrase for key \u0027\" + data-\u003em_path + \"\u0027: \").c_str(), buf, len, echo, verify);\n\nAlso, please file a bug upstream asking them to change their default CB/prompt so that it includes a path to that key file in their original prompt, so that you do not have to reimplement it here in future. Once that\u0027s done, include a link as a comment to this function so that we know that it will become redundant some time in future.",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24e3b46d_bcf8835f",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "This means that the code only supports RSA user keys, not the ECDSA keys (or any other keys that future might bring or that I do not know now; my first SSH key was a DSA one, and ECDSA was not a thing in OpenSSH back then IIRC).",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 39
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e35adc6_0c75d543",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "I see the value of uniformity with the rest of the code above, but that if-statement along its return reads strange to me. What about just this?\n\n return ssh_userauth_publickey(...) \u003d\u003d SSH_AUTH_SUCCESS;",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 16
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bf89768_1b2d4be8",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "this is IMHO a good candidate for that UniqueResource pattern. RAII means that the terminal will always be restored to a proper state even if an exception is thrown (now I have no clue if getline() throws, but you get the point).",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 5
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5edb2e7_ba917c17",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "I think this line can be removed. I see that it\u0027s useful for the code author to be able to tell whether it\u0027s \"password auth\" or \"kbd interactive auth\", but to a user, I don\u0027t think there\u0027s any difference. I think that OpenSSH doesn\u0027t say that, does it?",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40eb6246_ec33e711",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "same here as above for that if/return pattern with a check for SSH_AUTH_SUCCESS",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bc7666c_6884c671",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "unlike the other occurrences where the code returns a unique_ptr with a custom deleter, this one does not check the return value of the previous call to a libssh function. Based on a quick glance to the docs, I think it\u0027s wrong.",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "379d05d4_6ed2c246",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "how do you know it\u0027s an ECDSA host key? As far as I can tell, this is up for the server to offer its pubkey, and the key type is determine by the server\u0027s config unless I\u0027m mistaken.",
+      "range": {
+        "startLine": 266,
+        "startChar": 22,
+        "endLine": 266,
+        "endChar": 27
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc3e9c6a_89fd090b",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "How does OpenSSH handle this? This, BTW, is exactly one of these places where I think we should not be reimplementing what an \"SSH library\" should do for us...",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25812b4d_fd212065",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-13T12:55:34Z",
+      "side": 1,
+      "message": "This means that the code will always try pubkey auth even if ssh_config disables that. I think that\u0027s a bug; can it be fixed, or is it a limitation of libssh\u0027s API for reading out the parsed configuration?",
+      "range": {
+        "startLine": 355,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 5
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
