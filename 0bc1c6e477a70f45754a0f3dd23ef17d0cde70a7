@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "04687f4e_97f622c5",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "73ba66c8_c3edf53c",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "feb3222e_b4bfa57b",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
@@ -30,6 +48,24 @@
       "writtenOn": "2020-02-13T12:55:34Z",
       "side": 1,
       "message": "I think that reading env var $HOME is good, but then the followup should be from getpwnam/getpwuid. If all that fails, do not assume /home/something, just error out (disable history? hard fail?).\n\nI actually think that disabling history is the best option because one has to do that on a R/O FS anyway.",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "177ff24d_0a64b053",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "... what? What history?\nI changed the code to use getpwuid",
+      "parentUuid": "feb3222e_b4bfa57b",
       "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "0758fc88_792b7da5",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "I changed the \"nit\" part and created a feature request here: https://bugs.libssh.org/T217",
+      "parentUuid": "6bbc84e8_54498402",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "24e3b46d_bcf8835f",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
@@ -64,6 +118,30 @@
       "writtenOn": "2020-02-13T12:55:34Z",
       "side": 1,
       "message": "This means that the code only supports RSA user keys, not the ECDSA keys (or any other keys that future might bring or that I do not know now; my first SSH key was a DSA one, and ECDSA was not a thing in OpenSSH back then IIRC).",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 39
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2a0f1e3_ad8d91dc",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "Yes, it does. libssh does have the ssh_userauth_publickey_auto function, which can try more filenames, but ít doesn\u0027t support specifying a password callback, so that\u0027s why I don\u0027t use it. But if they add https://bugs.libssh.org/T217, then I probably could use it!",
+      "parentUuid": "24e3b46d_bcf8835f",
       "range": {
         "startLine": 86,
         "startChar": 0,
@@ -99,6 +177,30 @@
     },
     {
       "key": {
+        "uuid": "b39a76cd_72c7c940",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e35adc6_0c75d543",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 16
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7bf89768_1b2d4be8",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
@@ -122,6 +224,30 @@
     },
     {
       "key": {
+        "uuid": "1c34b1f1_682d354e",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bf89768_1b2d4be8",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 5
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e5edb2e7_ba917c17",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
@@ -136,6 +262,24 @@
       "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa0e8292_f4504351",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "I have no idea, I never use kbd-interactive auth, or password. I\u0027ll remove it.",
+      "parentUuid": "e5edb2e7_ba917c17",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -156,6 +300,24 @@
     },
     {
       "key": {
+        "uuid": "6093adc3_40b34150",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40eb6246_ec33e711",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7bc7666c_6884c671",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
@@ -173,6 +335,24 @@
     },
     {
       "key": {
+        "uuid": "d71118d7_b0603c1c",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bc7666c_6884c671",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "379d05d4_6ed2c246",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
@@ -184,6 +364,30 @@
       "writtenOn": "2020-02-13T12:55:34Z",
       "side": 1,
       "message": "how do you know it\u0027s an ECDSA host key? As far as I can tell, this is up for the server to offer its pubkey, and the key type is determine by the server\u0027s config unless I\u0027m mistaken.",
+      "range": {
+        "startLine": 266,
+        "startChar": 22,
+        "endLine": 266,
+        "endChar": 27
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad77472b_a543406c",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "I have no idea, I know very little about keys, cryptography and ssh, I just copied the message from OpenSSH. But it seems that the ssh_get_server_publickey function can tell me this info, so I\u0027ll change that.",
+      "parentUuid": "379d05d4_6ed2c246",
       "range": {
         "startLine": 266,
         "startChar": 22,
@@ -213,6 +417,24 @@
     },
     {
       "key": {
+        "uuid": "25866243_0792ee3c",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "I think OpenSSH does exactly this.",
+      "parentUuid": "bc3e9c6a_89fd090b",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "25812b4d_fd212065",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
@@ -224,6 +446,30 @@
       "writtenOn": "2020-02-13T12:55:34Z",
       "side": 1,
       "message": "This means that the code will always try pubkey auth even if ssh_config disables that. I think that\u0027s a bug; can it be fixed, or is it a limitation of libssh\u0027s API for reading out the parsed configuration?",
+      "range": {
+        "startLine": 355,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 5
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "824ae801_05a8e2a4",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T14:39:46Z",
+      "side": 1,
+      "message": "libssh does parse this info from the ssh_config file, but there is currently no API for retrieving that information (it does get saved directly in the ssh_session_struct, but it\u0027s fields are private).",
+      "parentUuid": "25812b4d_fd212065",
       "range": {
         "startLine": 355,
         "startChar": 0,
