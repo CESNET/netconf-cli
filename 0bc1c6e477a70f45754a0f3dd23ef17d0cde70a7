@@ -400,6 +400,30 @@
     },
     {
       "key": {
+        "uuid": "1d912a83_4e0674c1",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T15:08:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad77472b_a543406c",
+      "range": {
+        "startLine": 266,
+        "startChar": 22,
+        "endLine": 266,
+        "endChar": 27
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bc3e9c6a_89fd090b",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
