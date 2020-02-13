@@ -262,6 +262,8 @@ module example-schema {
         }
     }
 
+    rpc myRpc {}
+
 })";
 
 namespace std {

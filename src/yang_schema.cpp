@@ -334,6 +334,8 @@ std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recu
     for (const auto node : nodes) {
         if (node->module()->name() == "ietf-yang-library"sv)
             continue;
+        if (node->nodetype() == LYS_RPC)
+            continue;
         if (recursion == Recursion::Recursive) {
             for (auto it : node->tree_dfs()) {
                 res.insert(it->path(LYS_PATH_FIRST_PREFIX));
