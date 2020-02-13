@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "6e6a5a96_bc6f46dd",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T15:18:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f57078ec_931a1179",
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "be631ee1_ecebb2bc",
         "filename": "src/cli.cpp",
         "patchSetId": 4
@@ -89,6 +107,30 @@
       "side": 1,
       "message": "I didn\u0027t.",
       "parentUuid": "be631ee1_ecebb2bc",
+      "range": {
+        "startLine": 75,
+        "startChar": 39,
+        "endLine": 76,
+        "endChar": 72
+      },
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57e83f76_ae586d16",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T15:18:26Z",
+      "side": 1,
+      "message": "I still didn\u0027t.",
+      "parentUuid": "73f2f1ec_2adccf4c",
       "range": {
         "startLine": 75,
         "startChar": 39,
