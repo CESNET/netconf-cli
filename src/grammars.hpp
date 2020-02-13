@@ -179,12 +179,13 @@ auto const space_separator_def =
 
 // This is a pseudo-parser, that fails if we're not completing a command
 auto const completing_def =
-    x3::eps;
+    x3::no_skip[x3::eps];
+
+auto const rest =
+    x3::omit[x3::no_skip[+(char_ - '/' - space_separator)]];
 
 // I have to insert an empty vector to the first alternative, otherwise they won't have the same attribute
-auto const dataPath_def =
-    initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-    initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % '/' >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
+auto const dataPath_def = initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi | initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % '/' >> (-(trailingSlash >> createPathSuggestions) >> -(completing >> rest) >> (&space_separator | x3::eoi));
 
 auto const dataNodeList_def =
     createPathSuggestions >> -(module) >> list;
@@ -197,13 +198,9 @@ auto const dataNodesListEnd_def =
     dataNode % '/' >> '/' >> dataNodeList >> -(&char_('/') >> createPathSuggestions) |
     x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
 
-auto const dataPathListEnd_def =
-    initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-    initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNodesListEnd >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
+auto const dataPathListEnd_def = initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi | initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNodesListEnd >> (-(trailingSlash >> createPathSuggestions) >> -(completing >> rest) >> (&space_separator | x3::eoi));
 
-auto const schemaPath_def =
-    initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi |
-    initializePath >> -(absoluteStart >> createPathSuggestions) >> schemaNode % '/' >> (trailingSlash >> createPathSuggestions >> (completing | x3::eoi) | (&space_separator | x3::eoi));
+auto const schemaPath_def = initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi | initializePath >> -(absoluteStart >> createPathSuggestions) >> schemaNode % '/' >> (-(trailingSlash >> createPathSuggestions) >> -(completing >> rest) >> (&space_separator | x3::eoi));
 
 auto const leafPath_def =
     dataPath;
