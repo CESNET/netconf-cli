@@ -154,6 +154,30 @@
     },
     {
       "key": {
+        "uuid": "bdc3dd24_9593602d",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-13T15:34:06Z",
+      "side": 1,
+      "message": "Well, it\u0027s not really about supporting a type of key, it\u0027s more about the filepath really. One could put any type of key to $HOME/.ssh/id_rsa and it would still work",
+      "parentUuid": "c2a0f1e3_ad8d91dc",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 39
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9e35adc6_0c75d543",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
