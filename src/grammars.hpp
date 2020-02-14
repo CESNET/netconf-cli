@@ -75,8 +75,8 @@ x3::rule<createValueSuggestions_class, x3::unused_type> const createValueSuggest
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
 x3::rule<completing_class, x3::unused_type> const completing = "completing";
-x3::rule<createEnumSuggestions_class, x3::unused_type> const createEnumSuggestions = "createEnumSuggestions";
-x3::rule<createIdentitySuggestions_class, x3::unused_type> const createIdentitySuggestions = "createIdentitySuggestions";
+x3::rule<createDefinedSetSuggestions_class<yang::LeafDataTypes::Enum>, x3::unused_type> const createEnumSuggestions = "createEnumSuggestions";
+x3::rule<createDefinedSetSuggestions_class<yang::LeafDataTypes::IdentityRef>, x3::unused_type> const createIdentitySuggestions = "createIdentitySuggestions";
 
 #if __clang__
 #pragma GCC diagnostic push

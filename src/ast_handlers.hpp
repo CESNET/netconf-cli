@@ -14,6 +14,7 @@
 
 
 #include "ast_commands.hpp"
+#include "parser_context.hpp"
 #include "schema.hpp"
 #include "utils.hpp"
 namespace x3 = boost::spirit::x3;
@@ -679,35 +680,35 @@ struct completing_class {
     }
 };
 
-struct createEnumSuggestions_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        const Schema& schema = parserContext.m_schema;
+template<yang::LeafDataTypes TYPE>
+struct createDefinedSetSuggestions_class { // TODO: Figure out a better name for this.
 
-        // Only generate completions if the type is enum so that we don't
-        // overwrite some other completions.
-        if (schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node) == yang::LeafDataTypes::Enum) {
-            parserContext.m_completionIterator = begin;
-            parserContext.m_suggestions = schema.enumValues(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
-        }
+    template<yang::LeafDataTypes>
+    auto getSuggestions(const ParserContext& ctx, const Schema& schema) const;
+
+    template<>
+    auto getSuggestions<yang::LeafDataTypes::Enum>(const ParserContext& parserContext, const Schema& schema) const
+    {
+        return schema.enumValues(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
     }
-};
 
-// FIXME: can I reuse createEnumSuggestions?
-struct createIdentitySuggestions_class {
+    template<>
+    auto getSuggestions<yang::LeafDataTypes::IdentityRef>(const ParserContext& parserContext, const Schema& schema) const
+    {
+        return schema.validIdentities(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node, Prefixes::WhenNeeded);
+    }
+
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const Schema& schema = parserContext.m_schema;
 
-        // Only generate completions if the type is identityref so that we
-        // don't overwrite some other completions.
-        if (schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node) == yang::LeafDataTypes::IdentityRef) {
+        // Only generate completions if the type is correct so that we don't
+        // overwrite some other completions.
+        if (schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node) == TYPE) {
             parserContext.m_completionIterator = begin;
-            parserContext.m_suggestions = schema.validIdentities(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node, Prefixes::WhenNeeded);
+            parserContext.m_suggestions = getSuggestions<TYPE>(parserContext, schema);
         }
     }
 };
