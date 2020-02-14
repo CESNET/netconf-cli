@@ -419,13 +419,6 @@ struct leaf_data_class {
 
 template <yang::LeafDataTypes TYPE>
 struct leaf_data_base_class {
-    yang::LeafDataTypes m_type;
-
-    leaf_data_base_class()
-        : m_type(TYPE)
-    {
-    }
-
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const& context)
     {
@@ -437,7 +430,7 @@ struct leaf_data_base_class {
             type = schema.leafrefBase(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
         }
 
-        if (type != m_type) {
+        if (type != TYPE) {
             _pass(context) = false;
         }
     }
@@ -446,8 +439,6 @@ struct leaf_data_base_class {
 struct leaf_data_binary_data_class;
 
 struct leaf_data_enum_class : leaf_data_base_class<yang::LeafDataTypes::Enum> {
-    using leaf_data_base_class::leaf_data_base_class;
-
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const& start, Iterator const& end, T& ast, Context const& context)
     {
@@ -471,8 +462,6 @@ struct leaf_data_enum_class : leaf_data_base_class<yang::LeafDataTypes::Enum> {
 struct leaf_data_identityRef_data_class;
 
 struct leaf_data_identityRef_class : leaf_data_base_class<yang::LeafDataTypes::IdentityRef> {
-    using leaf_data_base_class::leaf_data_base_class;
-
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const& start, Iterator const& end, T& ast, Context const& context)
     {
