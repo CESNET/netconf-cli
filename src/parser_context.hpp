@@ -5,6 +5,7 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#pragma once
 
 #include "data_query.hpp"
 #include "schema.hpp"
