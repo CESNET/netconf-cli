@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "514e71e2_1f6c4685",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-14T15:05:37Z",
+      "side": 1,
+      "message": "I\u0027m OK with this name, but if you need something shorter, then `createSetSuggestions_class` looks good to me as well.",
+      "revId": "7ea49442c9fe6b9dfa5211e78385d9ccd26fb244",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5f0a2a09_60977be2",
+        "filename": "src/parser_context.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-14T15:05:37Z",
+      "side": 1,
+      "message": "this should go to a separate commit, but I\u0027ll let it pass",
+      "revId": "7ea49442c9fe6b9dfa5211e78385d9ccd26fb244",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
