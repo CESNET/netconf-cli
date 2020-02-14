@@ -33,6 +33,24 @@
       "revId": "7ea49442c9fe6b9dfa5211e78385d9ccd26fb244",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e9af433_e5a380ec",
+        "filename": "src/parser_context.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-14T15:52:43Z",
+      "side": 1,
+      "message": "I split it into a separate commit",
+      "parentUuid": "5f0a2a09_60977be2",
+      "revId": "7ea49442c9fe6b9dfa5211e78385d9ccd26fb244",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
