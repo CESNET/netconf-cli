@@ -412,3 +412,9 @@ std::shared_ptr<libyang::Module> YangSchema::getYangModule(const std::string& na
 {
     return m_context->get_module(name.c_str(), nullptr, 0);
 }
+
+std::string YangSchema::description(const std::string& path) const
+{
+    auto node = getSchemaNode(path.c_str());
+    return "Description for " + path + ":\n" + node->dsc();
+}

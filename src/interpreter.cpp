@@ -79,6 +79,11 @@ void Interpreter::operator()(const ls_& ls) const
         std::cout << it << std::endl;
 }
 
+void Interpreter::operator()(const describe_& describe) const
+{
+    std::cout << m_datastore.schema()->description(absolutePathFromCommand(describe)) << std::endl;
+}
+
 struct commandLongHelpVisitor : boost::static_visitor<const char*> {
     template <typename T>
     auto constexpr operator()(boost::type<T>) const
@@ -154,6 +159,15 @@ std::string Interpreter::absolutePathFromCommand(const get_& get) const
             return joinPaths(m_parser.currentNode(), pathString);
         }
     }
+}
+
+std::string Interpreter::absolutePathFromCommand(const describe_& describe) const
+{
+    auto pathStr = boost::apply_visitor(pathToStringVisitor(), describe.m_path);
+    if (boost::apply_visitor(getPathScopeVisitor(), describe.m_path) == Scope::Absolute)
+        return pathStr;
+    else
+        return joinPaths(m_parser.currentNode(), pathStr);
 }
 
 Interpreter::Interpreter(Parser& parser, DatastoreAccess& datastore)
