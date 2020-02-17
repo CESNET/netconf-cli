@@ -284,3 +284,8 @@ std::set<std::string> StaticSchema::moduleNodes(const module_& module, const Rec
     }
     return res;
 }
+
+std::string StaticSchema::description([[maybe_unused]] const std::string& path) const
+{
+    return "STUB"; // FIXME: implement this?
+}

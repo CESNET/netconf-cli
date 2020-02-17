@@ -22,14 +22,14 @@ TEST_CASE("command completion")
     SECTION("")
     {
         input = "";
-        expectedCompletions = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard", "help"};
+        expectedCompletions = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard", "help", "describe"};
         expectedContextLength = 0;
     }
 
     SECTION(" ")
     {
         input = " ";
-        expectedCompletions = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard", "help"};
+        expectedCompletions = {"cd", "create", "delete", "set", "commit", "get", "ls", "discard", "help", "describe"};
         expectedContextLength = 0;
     }
 
@@ -43,7 +43,7 @@ TEST_CASE("command completion")
     SECTION("d")
     {
         input = "d";
-        expectedCompletions = {"delete", "discard"};
+        expectedCompletions = {"delete", "discard", "describe"};
         expectedContextLength = 1;
     }
 
