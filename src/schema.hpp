@@ -70,6 +70,8 @@ public:
     virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual std::optional<std::string> description(const std::string& location) const = 0;
+    virtual std::optional<std::string> units(const std::string& location) const = 0;
 
     virtual const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const = 0;
     virtual const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const = 0;

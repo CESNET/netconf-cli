@@ -412,3 +412,23 @@ std::shared_ptr<libyang::Module> YangSchema::getYangModule(const std::string& na
 {
     return m_context->get_module(name.c_str(), nullptr, 0);
 }
+
+std::optional<std::string> YangSchema::description(const std::string& path) const
+{
+    auto node = getSchemaNode(path.c_str());
+    return node->dsc() ? std::optional{node->dsc()} : std::nullopt;
+}
+
+std::optional<std::string> YangSchema::units(const std::string& path) const
+{
+    std::optional<std::string> res;
+    auto node = getSchemaNode(path.c_str());
+    if (node->nodetype() == LYS_LEAF) {
+        libyang::Schema_Node_Leaf leaf{node};
+        if (auto units = leaf.units()) {
+            res = units;
+        }
+    }
+
+    return res;
+}
