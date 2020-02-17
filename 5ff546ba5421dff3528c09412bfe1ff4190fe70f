@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "15326551_5f1828c3",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-17T17:11:31Z",
+      "side": 1,
+      "message": "\"Print information about YANG tree path\"",
+      "range": {
+        "startLine": 149,
+        "startChar": 50,
+        "endLine": 149,
+        "endChar": 78
+      },
+      "revId": "5ff546ba5421dff3528c09412bfe1ff4190fe70f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cc49b17_8efb1eec",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-17T17:11:31Z",
+      "side": 1,
+      "message": "\"Show documentation of YANG tree paths. In the YANG model, each item may have an optional `description` which often explains the function of that node to the end user. This command takes the description from the YANG model and shows it to the user along with additional data, such as the type of the node, units of leaf values, etc.\"",
+      "revId": "5ff546ba5421dff3528c09412bfe1ff4190fe70f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a756110b_35a45533",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-17T17:11:31Z",
+      "side": 1,
+      "message": "This should be expanded:\n\n- show the \"kind\" of the node here. Is that a leaf? Container? Presence container? A list? What keys are there? Default value? Mandatory item?\n- add information about `units`, if any (this will need an extension of the Schema class)\n- *then* show the `description`\n- (optional, for later consideration): perhaps also add info about `must` or `when` or `if-feature`",
+      "revId": "5ff546ba5421dff3528c09412bfe1ff4190fe70f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "079bc836_c2c46e6f",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-17T17:11:31Z",
+      "side": 1,
+      "message": "I think you can throw runtime_error from here.",
+      "revId": "5ff546ba5421dff3528c09412bfe1ff4190fe70f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e16a2689_4c7f9d53",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-17T17:11:31Z",
+      "side": 1,
+      "message": "This class should not deal with human-facing message formatting. Just return what is there, if anything.",
+      "revId": "5ff546ba5421dff3528c09412bfe1ff4190fe70f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
