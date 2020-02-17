@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd998050_6ca4d85e",
+        "filename": "src/completion.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-17T14:11:20Z",
+      "side": 1,
+      "message": "I do not understand this. What is the difference bwteen \"unambiguous suggestions\" and a \"fully matched prefix\"? Please try to improve this explanation and move it to the struct\u0027s doxygen, and also add real examples.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 58
+      },
+      "revId": "94598135c8b4508530aee35e25388f9e82935540",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
