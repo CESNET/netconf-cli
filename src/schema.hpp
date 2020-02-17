@@ -35,6 +35,13 @@ enum class LeafDataTypes {
     IdentityRef,
     LeafRef,
 };
+
+enum class NodeTypes {
+    Container,
+    PresenceContainer,
+    List,
+    Leaf
+};
 }
 
 enum class Recursion {
@@ -59,6 +66,7 @@ class Schema {
 public:
     virtual ~Schema();
 
+    virtual yang::NodeTypes nodeType(const std::string& path) const = 0;
     virtual bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool isModule(const std::string& name) const = 0;
@@ -70,6 +78,8 @@ public:
     virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual std::optional<std::string> description(const std::string& location) const = 0;
+    virtual std::optional<std::string> units(const std::string& location) const = 0;
 
     virtual const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const = 0;
     virtual const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const = 0;

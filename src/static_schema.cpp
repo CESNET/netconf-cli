@@ -284,3 +284,18 @@ std::set<std::string> StaticSchema::moduleNodes(const module_& module, const Rec
     }
     return res;
 }
+
+std::optional<std::string> StaticSchema::description([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"StaticSchema::description not implemented"};
+}
+
+std::optional<std::string> StaticSchema::units([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"StaticSchema::units not implemented"};
+}
+
+yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"StaticSchema::nodeType not implemented"};
+}

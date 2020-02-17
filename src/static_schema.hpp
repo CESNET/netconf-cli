@@ -48,6 +48,7 @@ class StaticSchema : public Schema {
 public:
     StaticSchema();
 
+    yang::NodeTypes nodeType(const std::string& path) const override;
     bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool isModule(const std::string& name) const override;
     bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const override;
@@ -63,6 +64,8 @@ public:
     const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion) const override;
     std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const override;
+    std::optional<std::string> description(const std::string& path) const override;
+    std::optional<std::string> units(const std::string& path) const override;
 
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
     void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);
