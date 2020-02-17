@@ -57,15 +57,14 @@ TEST_CASE("command completion")
     SECTION("cd")
     {
         input = "cd";
-        // TODO: depending on how Readline works, this will have to be changed to include a space
-        expectedCompletions = {"cd"};
+        expectedCompletions = {"cd "};
         expectedContextLength = 2;
     }
 
     SECTION("create")
     {
         input = "create";
-        expectedCompletions = {"create"};
+        expectedCompletions = {"create "};
         expectedContextLength = 6;
     }
 

@@ -652,7 +652,7 @@ struct createCommandSuggestions_class {
 
         parserContext.m_suggestions.clear();
         boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([&parserContext](auto cmd) {
-            parserContext.m_suggestions.insert({commandNamesVisitor()(cmd)});
+            parserContext.m_suggestions.insert({commandNamesVisitor()(cmd), " "});
         });
     }
 };
