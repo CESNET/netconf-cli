@@ -335,6 +335,9 @@ struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
 auto const help_def =
     help_::name > createCommandSuggestions >> -command_names;
 
+auto const describe_def =
+    describe_::name > space_separator > (dataPathListEnd | dataPath | schemaPath);
+
 auto const createCommandSuggestions_def =
     x3::eps;
 
