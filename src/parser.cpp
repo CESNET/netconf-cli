@@ -69,8 +69,8 @@ Completions Parser::completeCommand(const std::string& line, std::ostream& error
 
     auto filtered = filterByPrefix(ctx.m_suggestions, std::string(completionIterator, line.end()));
     if (filtered.size() == 1) {
-        auto suffix = filtered.begin()->m_whenToAdd == Completion::WhenToAdd::IfFullMatch
-                && filtered.begin()->m_value == std::string{completionIterator, line.end()}
+        auto suffix = filtered.begin()->m_whenToAdd == Completion::WhenToAdd::Always
+            || filtered.begin()->m_value == std::string{completionIterator, line.end()}
             ? filtered.begin()->m_suffix
             : "";
         return {{filtered.begin()->m_value + suffix}, completionContext};
