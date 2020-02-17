@@ -27,25 +27,6 @@ public:
     IMPLEMENT_MOCK3(write);
 };
 
-namespace std {
-std::ostream& operator<<(std::ostream& s, const std::optional<std::string>& opt)
-{
-    s << (opt ? *opt : "std::nullopt");
-    return s;
-}
-
-std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& map)
-{
-    s << std::endl
-      << "{";
-    for (const auto& it : map) {
-        s << "{\"" << it.first << "\", " << leafDataToString(it.second) << "}" << std::endl;
-    }
-    s << "}" << std::endl;
-    return s;
-}
-}
-
 TEST_CASE("setting/getting values")
 {
     trompeloeil::sequence seq1;
