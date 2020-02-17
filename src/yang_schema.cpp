@@ -415,3 +415,23 @@ yang::NodeTypes YangSchema::nodeType(const std::string& path) const
 {
     return impl_nodeType(getSchemaNode(path));
 }
+
+std::optional<std::string> YangSchema::description(const std::string& path) const
+{
+    auto node = getSchemaNode(path.c_str());
+    return node->dsc() ? std::optional{node->dsc()} : std::nullopt;
+}
+
+std::optional<std::string> YangSchema::units(const std::string& path) const
+{
+    auto node = getSchemaNode(path.c_str());
+    if (node->nodetype() != LYS_LEAF) {
+        return std::nullopt;
+    }
+    libyang::Schema_Node_Leaf leaf{node};
+    auto units = leaf.units();
+    if (!units) {
+        return std::nullopt;
+    }
+    return units;
+}

@@ -43,6 +43,8 @@ public:
     const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const override;
     std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const override;
+    std::optional<std::string> description(const std::string& path) const override;
+    std::optional<std::string> units(const std::string& path) const override;
 
     void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb);
 
