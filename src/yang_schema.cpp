@@ -416,3 +416,33 @@ yang::NodeTypes YangSchema::nodeType(const std::string& path) const
 {
     return impl_nodeType(getSchemaNode(path));
 }
+
+std::optional<std::string> YangSchema::description(const std::string& path) const
+{
+    auto node = getSchemaNode(path.c_str());
+    return node->dsc() ? std::optional{node->dsc()} : std::nullopt;
+}
+
+std::optional<std::string> YangSchema::units(const std::string& path) const
+{
+    auto node = getSchemaNode(path.c_str());
+    if (node->nodetype() != LYS_LEAF) {
+        return std::nullopt;
+    }
+    libyang::Schema_Node_Leaf leaf{node};
+    auto units = leaf.units();
+
+    // A leaf can specify units as part of its definition.
+    if (units) {
+        return units;
+    }
+
+    // A typedef (or its parent typedefs) can specify units too. We'll use the first `units` we find.
+    for (auto parentTypedef = leaf.type()->der(); parentTypedef; parentTypedef = parentTypedef->type()->der()) {
+        if (auto units = parentTypedef->units()) {
+            return units;
+        }
+    }
+
+    return std::nullopt;
+}

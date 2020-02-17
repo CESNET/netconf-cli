@@ -7,6 +7,7 @@
 */
 
 #include <experimental/iterator>
+#include "pretty_printers.hpp"
 #include "trompeloeil_doctest.hpp"
 #include "yang_schema.hpp"
 
@@ -114,6 +115,7 @@ module example-schema {
     }
 
     leaf leafInt32 {
+        description "A 32-bit integer leaf.";
         type int32;
     }
 
@@ -260,6 +262,32 @@ module example-schema {
             enum medium;
             enum small;
         }
+    }
+
+    leaf length {
+        type int32;
+        units "m";
+    }
+
+    leaf wavelength {
+        type decimal64 {
+            fraction-digits 10;
+        }
+        units "nm";
+    }
+
+    typedef seconds {
+        type int32;
+        units "s";
+    }
+
+    leaf duration {
+        type seconds;
+    }
+
+    leaf another-duration {
+        type seconds;
+        units "vt";
     }
 
 })";
@@ -726,7 +754,9 @@ TEST_CASE("yangschema")
                        "example-schema:carry", "example-schema:zero", "example-schema:direction",
                        "example-schema:interrupt",
                        "example-schema:ethernet", "example-schema:loopback",
-                       "example-schema:pizzaSize"};
+                       "example-schema:pizzaSize",
+                       "example-schema:length", "example-schema:wavelength",
+                       "example-schema:duration", "example-schema:another-duration"};
             }
 
             SECTION("example-schema:a")
@@ -749,6 +779,90 @@ TEST_CASE("yangschema")
 
             REQUIRE(ys.childNodes(path, Recursion::NonRecursive) == set);
         }
+        SECTION("nodeType")
+        {
+            yang::NodeTypes expected;
+            SECTION("leafInt32")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafInt32")));
+                expected = yang::NodeTypes::Leaf;
+            }
+
+            SECTION("a")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
+                expected = yang::NodeTypes::Container;
+            }
+
+            SECTION("a/a2/a3")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.push_back(schemaNode_(container_("a2")));
+                path.m_nodes.push_back(schemaNode_(container_("a3")));
+                expected = yang::NodeTypes::PresenceContainer;
+            }
+
+            SECTION("_list")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, list_("_list")));
+                expected = yang::NodeTypes::List;
+            }
+
+            REQUIRE(ys.nodeType(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
+        }
+
+        SECTION("description")
+        {
+            std::optional<std::string> expected;
+            SECTION("leafInt32")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafInt32")));
+                expected = "A 32-bit integer leaf.";
+            }
+
+            SECTION("leafString")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafString")));
+            }
+
+            REQUIRE(ys.description(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
+        }
+
+        SECTION("units")
+        {
+            std::optional<std::string> expected;
+            SECTION("length")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("length")));
+                expected = "m";
+            }
+
+            SECTION("wavelength")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("wavelength")));
+                expected = "nm";
+            }
+
+            SECTION("leafInt32")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafInt32")));
+            }
+
+            SECTION("duration")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("duration")));
+                expected = "s";
+            }
+
+            SECTION("another-duration")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("another-duration")));
+                expected = "vt";
+            }
+
+            REQUIRE(ys.units(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
+        }
+
         SECTION("nodeType")
         {
             yang::NodeTypes expected;
