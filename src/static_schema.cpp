@@ -271,6 +271,16 @@ yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const Module
     }
 }
 
+std::optional<std::string> StaticSchema::description([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"StaticSchema::description not implemented"};
+}
+
+std::optional<std::string> StaticSchema::units([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"StaticSchema::units not implemented"};
+}
+
 yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path) const
 {
     throw std::runtime_error{"Internal error: StaticSchema::nodeType(std::string) not implemented. The tests should not have called this overload."};
