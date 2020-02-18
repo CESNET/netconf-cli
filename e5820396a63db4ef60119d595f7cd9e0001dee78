@@ -22,6 +22,30 @@
       "revId": "e5820396a63db4ef60119d595f7cd9e0001dee78",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a1d60fee_5f199168",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-18T13:34:22Z",
+      "side": 1,
+      "message": "I uploaded a new version, I don\u0027t like this pattern too much anyway, I just wanted to try it.",
+      "parentUuid": "ef4eb6c2_27f82bae",
+      "range": {
+        "startLine": 424,
+        "startChar": 0,
+        "endLine": 433,
+        "endChar": 15
+      },
+      "revId": "e5820396a63db4ef60119d595f7cd9e0001dee78",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
