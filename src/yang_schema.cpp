@@ -93,31 +93,6 @@ bool YangSchema::isModule(const std::string& name) const
     return set.find(name) != set.end();
 }
 
-bool YangSchema::isContainer(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    const auto schemaNode = getSchemaNode(location, node);
-    return schemaNode && schemaNode->nodetype() == LYS_CONTAINER;
-}
-
-bool YangSchema::isLeaf(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    const auto schemaNode = getSchemaNode(location, node);
-    return schemaNode && schemaNode->nodetype() == LYS_LEAF;
-}
-
-bool YangSchema::isList(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    const auto schemaNode = getSchemaNode(location, node);
-    return schemaNode && schemaNode->nodetype() == LYS_LIST;
-}
-
-bool YangSchema::isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    if (!isContainer(location, node))
-        return false;
-    return libyang::Schema_Node_Container(getSchemaNode(location, node)).presence();
-}
-
 bool YangSchema::leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const
 {
     auto enums = enumValues(location, node);
@@ -427,7 +402,7 @@ yang::NodeTypes impl_nodeType(const libyang::S_Schema_Node& node)
     case LYS_LIST:
         return yang::NodeTypes::List;
     default:
-        throw std::runtime_error{"YangSchema::nodeType: unsupported type"};
+        throw InvalidNodeException(); // FIXME: Implement all types.
     }
 }
 }

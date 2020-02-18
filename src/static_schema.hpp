@@ -48,13 +48,9 @@ class StaticSchema : public Schema {
 public:
     StaticSchema();
 
-    bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::NodeTypes nodeType(const std::string& path) const override;
     yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool isModule(const std::string& name) const override;
-    bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const override;
-    bool isList(const schemaPath_& location, const ModuleNodePair& node) const override;
-    bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const override;
     bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const override;
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
