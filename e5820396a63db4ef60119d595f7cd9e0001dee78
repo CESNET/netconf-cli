@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef4eb6c2_27f82bae",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-18T13:23:02Z",
+      "side": 1,
+      "message": "nit: it Does Not Really Matter™, but the pattern where the code has a `std::optional\u003cFooBar\u003e res;` as the first stanza IMHO makes sense when used with early returns upon error conditions, which are in turn used for reducing `if` nesting. So, I would have written the code like this:\n\n  std::optional\u003cstd::string\u003e res;\n  auto node \u003d getSchemaNode(path.c_str());\n  if (node-\u003enodetype() !\u003d LYS_LEAF)\n      return res;\n  libyang::Schema_Node_Leaf leaf{node};\n  auto units \u003d leaf.units();\n  if (!units)\n      return res;\n  return units;\n\nThe code in this patch set only assigns to `res` once, so IMHO the other nice option is to just write it like this, going without that temporary variable:\n\n  auto node \u003d getSchemaNode(path.c_str());\n  if (node-\u003enodetype() \u003d\u003d LYS_LEAF) {\n      libyang::Schema_Node_Leaf leaf{node};\n      if (auto units \u003d leaf.units()) {\n          return std::string{units};\n      }\n  }\n  return std::nullopt;\n\nBut as I said, it does not matter and the code is fine, hence CR+2.",
+      "range": {
+        "startLine": 424,
+        "startChar": 0,
+        "endLine": 433,
+        "endChar": 15
+      },
+      "revId": "e5820396a63db4ef60119d595f7cd9e0001dee78",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
