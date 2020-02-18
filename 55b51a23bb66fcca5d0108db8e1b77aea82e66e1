@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e48d5a3e_b0c030b5",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-18T13:38:03Z",
+      "side": 1,
+      "message": "This adds something unrelated to this commit, please split it out.\n\nAlso, I think that the implementation is wrong. Even the StaticSchema already knows whether a node is a leaf or a container or a list, etc. In fact, isXyz() can easily be reimplemented on top of this function, IMHO, if you really need this method to exist. Or you could get rid of the isXyz() and just use this nodeType() thing everywhere (one more reason for splitting it out).",
+      "revId": "55b51a23bb66fcca5d0108db8e1b77aea82e66e1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
