@@ -79,6 +79,42 @@ void Interpreter::operator()(const ls_& ls) const
         std::cout << it << std::endl;
 }
 
+std::string Interpreter::buildTypeInfo(const std::string& path) const
+{
+    std::string res;
+    switch (m_datastore.schema()->nodeType(path)) {
+    case yang::NodeTypes::Container:
+        res = "Container";
+        break;
+    case yang::NodeTypes::PresenceContainer:
+        res = "Presence container";
+        break;
+    case yang::NodeTypes::Leaf:
+    {
+        res = "Leaf, ";
+        res += leafDataTypeToString(m_datastore.schema()->leafType(path));
+        if (auto units = m_datastore.schema()->units(path)) {
+            res += ", units: " + *units;
+        }
+        break;
+    }
+    case yang::NodeTypes::List:
+        res = "List";
+        break;
+    }
+    return res;
+}
+
+void Interpreter::operator()(const describe_& describe) const
+{
+    auto path = absolutePathFromCommand(describe);
+    std::cout << "Info for " << path << std::endl;
+    std::cout << buildTypeInfo(path) << std::endl;
+    if (auto description = m_datastore.schema()->description(path)) {
+        std::cout << *description << std::endl;
+    }
+}
+
 struct commandLongHelpVisitor : boost::static_visitor<const char*> {
     template <typename T>
     auto constexpr operator()(boost::type<T>) const
@@ -154,6 +190,15 @@ std::string Interpreter::absolutePathFromCommand(const get_& get) const
             return joinPaths(m_parser.currentNode(), pathString);
         }
     }
+}
+
+std::string Interpreter::absolutePathFromCommand(const describe_& describe) const
+{
+    auto pathStr = boost::apply_visitor(pathToStringVisitor(), describe.m_path);
+    if (boost::apply_visitor(getPathScopeVisitor(), describe.m_path) == Scope::Absolute)
+        return pathStr;
+    else
+        return joinPaths(m_parser.currentNode(), pathStr);
 }
 
 Interpreter::Interpreter(Parser& parser, DatastoreAccess& datastore)
