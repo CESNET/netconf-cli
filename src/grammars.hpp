@@ -65,6 +65,7 @@ x3::rule<get_class, get_> const get = "get";
 x3::rule<create_class, create_> const create = "create";
 x3::rule<delete_class, delete_> const delete_rule = "delete_rule";
 x3::rule<commit_class, commit_> const commit = "commit";
+x3::rule<describe_class, describe_> const describe = "describe";
 x3::rule<help_class, help_> const help = "help";
 x3::rule<command_class, command_> const command = "command";
 
@@ -332,11 +333,14 @@ struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
 auto const help_def =
     help_::name > createCommandSuggestions >> -command_names;
 
+auto const describe_def =
+    describe_::name >> space_separator > (dataPathListEnd | dataPath | schemaPath);
+
 auto const createCommandSuggestions_def =
     x3::eps;
 
 auto const command_def =
-    createCommandSuggestions >> x3::expect[cd | create | delete_rule | set | commit | get | ls | discard | help];
+    createCommandSuggestions >> x3::expect[cd | create | delete_rule | set | commit | get | ls | discard | describe | help];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -393,6 +397,7 @@ BOOST_SPIRIT_DEFINE(discard)
 BOOST_SPIRIT_DEFINE(cd)
 BOOST_SPIRIT_DEFINE(create)
 BOOST_SPIRIT_DEFINE(delete_rule)
+BOOST_SPIRIT_DEFINE(describe)
 BOOST_SPIRIT_DEFINE(help)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
