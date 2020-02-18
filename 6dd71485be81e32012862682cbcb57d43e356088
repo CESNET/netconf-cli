@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c103b3b8_616a0868",
+        "filename": "tests/pretty_printers.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-18T16:45:34Z",
+      "side": 1,
+      "message": "I would have preferred this move to happen in a separate commit, but I won\u0027t insist on that one.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 1
+      },
+      "revId": "6dd71485be81e32012862682cbcb57d43e356088",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
