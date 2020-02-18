@@ -32,6 +32,8 @@ public:
 
     bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const override;
+    yang::NodeTypes nodeType(const std::string& path) const override;
+    yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool isModule(const std::string& name) const override;
     bool isList(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const override;

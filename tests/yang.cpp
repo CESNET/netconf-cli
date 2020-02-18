@@ -749,6 +749,37 @@ TEST_CASE("yangschema")
 
             REQUIRE(ys.childNodes(path, Recursion::NonRecursive) == set);
         }
+        SECTION("nodeType")
+        {
+            yang::NodeTypes expected;
+            SECTION("leafInt32")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafInt32")));
+                expected = yang::NodeTypes::Leaf;
+            }
+
+            SECTION("a")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
+                expected = yang::NodeTypes::Container;
+            }
+
+            SECTION("a/a2/a3")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.push_back(schemaNode_(container_("a2")));
+                path.m_nodes.push_back(schemaNode_(container_("a3")));
+                expected = yang::NodeTypes::PresenceContainer;
+            }
+
+            SECTION("_list")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, list_("_list")));
+                expected = yang::NodeTypes::List;
+            }
+
+            REQUIRE(ys.nodeType(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
+        }
     }
 
     SECTION("negative")
