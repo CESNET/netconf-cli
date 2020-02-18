@@ -22,6 +22,7 @@ struct Interpreter : boost::static_visitor<void> {
     void operator()(const create_&) const;
     void operator()(const delete_&) const;
     void operator()(const ls_&) const;
+    void operator()(const describe_&) const;
     void operator()(const discard_&) const;
     void operator()(const help_&) const;
 
@@ -29,6 +30,8 @@ private:
     template <typename T>
     std::string absolutePathFromCommand(const T& command) const;
     std::string absolutePathFromCommand(const get_& command) const;
+    std::string absolutePathFromCommand(const describe_& describe) const;
+    std::string buildTypeInfo(const std::string& path) const;
 
     Parser& m_parser;
     DatastoreAccess& m_datastore;
