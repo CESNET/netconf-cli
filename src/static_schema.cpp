@@ -284,3 +284,37 @@ std::set<std::string> StaticSchema::moduleNodes(const module_& module, const Rec
     }
     return res;
 }
+
+yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
+    auto fullName = fullNodeName(location, node);
+    try {
+        auto targetNode = children(locationString).at(fullName);
+
+        if (targetNode.type() == typeid(yang::container)) {
+            if (boost::get<yang::container>(targetNode).m_presence == yang::ContainerTraits::Presence) {
+                return yang::NodeTypes::PresenceContainer;
+            }
+            return yang::NodeTypes::Container;
+        }
+
+        if (targetNode.type() == typeid(yang::list)) {
+            return yang::NodeTypes::List;
+        }
+
+        if (targetNode.type() == typeid(yang::leaf)) {
+            return yang::NodeTypes::Leaf;
+        }
+
+        throw std::runtime_error{"YangSchema::nodeType: unsupported type"};
+
+    } catch (std::out_of_range&) {
+        throw InvalidNodeException();
+    }
+}
+
+yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"StaticSchema::nodeType not implemented"};
+}

@@ -412,3 +412,31 @@ std::shared_ptr<libyang::Module> YangSchema::getYangModule(const std::string& na
 {
     return m_context->get_module(name.c_str(), nullptr, 0);
 }
+
+namespace {
+yang::NodeTypes impl_nodeType(const libyang::S_Schema_Node& node) {
+    if (!node) {
+        throw InvalidNodeException();
+    }
+    switch (node->nodetype()) {
+        case LYS_CONTAINER:
+            return libyang::Schema_Node_Container{node}.presence() ? yang::NodeTypes::PresenceContainer : yang::NodeTypes::Container;
+        case LYS_LEAF:
+            return yang::NodeTypes::Leaf;
+        case LYS_LIST:
+            return yang::NodeTypes::List;
+        default:
+            throw std::runtime_error{"YangSchema::nodeType: unsupported type"};
+    }
+}
+}
+
+yang::NodeTypes YangSchema::nodeType(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    return impl_nodeType(getSchemaNode(location, node));
+}
+
+yang::NodeTypes YangSchema::nodeType(const std::string& path) const
+{
+    return impl_nodeType(getSchemaNode(path));
+}
