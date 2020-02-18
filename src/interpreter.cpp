@@ -79,6 +79,47 @@ void Interpreter::operator()(const ls_& ls) const
         std::cout << it << std::endl;
 }
 
+std::string Interpreter::buildTypeInfo(const std::string& path) const
+{
+    std::ostringstream ss;
+    switch (m_datastore.schema()->nodeType(path)) {
+    case yang::NodeTypes::Container:
+        ss << "container";
+        break;
+    case yang::NodeTypes::PresenceContainer:
+        ss << "presence container";
+        break;
+    case yang::NodeTypes::Leaf:
+    {
+        auto leafType = m_datastore.schema()->leafType(path);
+        if (leafType == yang::LeafDataTypes::LeafRef) {
+            ss << "-> ";
+            ss << m_datastore.schema()->leafrefPath(path);
+            ss << " (" << leafDataTypeToString(m_datastore.schema()->leafrefBaseType(path)) << "(";
+        } else {
+            ss << leafDataTypeToString(m_datastore.schema()->leafrefBaseType(path));
+        }
+        if (auto units = m_datastore.schema()->units(path)) {
+            ss << " [" + *units + "]";
+        }
+        break;
+    }
+    case yang::NodeTypes::List:
+        ss << "list";
+        break;
+    }
+    return ss.str();
+}
+
+void Interpreter::operator()(const describe_& describe) const
+{
+    auto path = absolutePathFromCommand(describe);
+    std::cout << path << ": " << buildTypeInfo(path) << std::endl;
+    if (auto description = m_datastore.schema()->description(path)) {
+        std::cout << std::endl << *description << std::endl;
+    }
+}
+
 struct commandLongHelpVisitor : boost::static_visitor<const char*> {
     template <typename T>
     auto constexpr operator()(boost::type<T>) const
@@ -154,6 +195,15 @@ std::string Interpreter::absolutePathFromCommand(const get_& get) const
             return joinPaths(m_parser.currentNode(), pathString);
         }
     }
+}
+
+std::string Interpreter::absolutePathFromCommand(const describe_& describe) const
+{
+    auto pathStr = boost::apply_visitor(pathToStringVisitor(), describe.m_path);
+    if (boost::apply_visitor(getPathScopeVisitor(), describe.m_path) == Scope::Absolute)
+        return pathStr;
+    else
+        return joinPaths(m_parser.currentNode(), pathStr);
 }
 
 Interpreter::Interpreter(Parser& parser, DatastoreAccess& datastore)

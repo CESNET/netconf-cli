@@ -144,8 +144,27 @@ struct get_ : x3::position_tagged {
     boost::optional<boost::variant<boost::variant<dataPath_, schemaPath_>, module_>> m_path;
 };
 
+struct describe_ : x3::position_tagged {
+    static constexpr auto name = "describe";
+    static constexpr auto shortHelp = "describe - Print information about YANG tree path.";
+    static constexpr auto longHelp = R"(
+    describe <path>
+
+    Show documentation of YANG tree paths. In the YANG model, each item may
+    have an optional `description` which often explains the function of that
+    node to the end user. This command takes the description from the YANG
+    model and shows it to the user along with additional data, such as the type
+    of the node, units of leaf values, etc.
+
+    Usage:
+        /> describe /module:node)";
+    bool operator==(const describe_& b) const;
+
+    boost::variant<schemaPath_, dataPath_> m_path;
+};
+
 struct help_;
-using CommandTypes = boost::mpl::vector<discard_, ls_, cd_, create_, delete_, set_, commit_, get_, help_>;
+using CommandTypes = boost::mpl::vector<discard_, ls_, cd_, create_, delete_, set_, commit_, get_, describe_, help_>;
 struct help_ : x3::position_tagged {
     static constexpr auto name = "help";
     static constexpr auto shortHelp = "help - Print help for commands.";
@@ -186,6 +205,7 @@ BOOST_FUSION_ADAPT_STRUCT(enum_, m_value)
 BOOST_FUSION_ADAPT_STRUCT(binary_, m_value)
 BOOST_FUSION_ADAPT_STRUCT(identityRef_, m_prefix, m_value)
 BOOST_FUSION_ADAPT_STRUCT(commit_)
+BOOST_FUSION_ADAPT_STRUCT(describe_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(help_, m_cmd)
 BOOST_FUSION_ADAPT_STRUCT(discard_)
 BOOST_FUSION_ADAPT_STRUCT(get_, m_path)
