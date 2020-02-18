@@ -34,16 +34,6 @@ bool StaticSchema::isModule(const std::string& name) const
     return m_modules.find(name) != m_modules.end();
 }
 
-bool StaticSchema::isContainer(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    auto fullName = fullNodeName(location, node);
-    if (!nodeExists(locationString, fullName))
-        return false;
-
-    return children(locationString).at(fullName).type() == typeid(yang::container);
-}
-
 void StaticSchema::addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence)
 {
     m_nodes.at(location).emplace(name, yang::container{isPresence});
@@ -73,33 +63,12 @@ const std::set<std::string> StaticSchema::listKeys(const schemaPath_& location, 
     return list.m_keys;
 }
 
-bool StaticSchema::isList(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    auto fullName = fullNodeName(location, node);
-    if (!nodeExists(locationString, fullName))
-        return false;
-    const auto& child = children(locationString).at(fullName);
-    if (child.type() != typeid(yang::list))
-        return false;
-
-    return true;
-}
-
 void StaticSchema::addList(const std::string& location, const std::string& name, const std::set<std::string>& keys)
 {
     m_nodes.at(location).emplace(name, yang::list{keys});
 
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
-}
-
-bool StaticSchema::isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    if (!isContainer(location, node))
-        return false;
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    return boost::get<yang::container>(children(locationString).at(fullNodeName(location, node))).m_presence == yang::ContainerTraits::Presence;
 }
 
 void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type)
@@ -201,16 +170,6 @@ bool StaticSchema::leafIdentityIsValid(const schemaPath_& location, const Module
     auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
     auto identModule = value.first ? value.first.value() : topLevelModule;
     return std::any_of(identities.begin(), identities.end(), [toFind = identModule + ":" + value.second](const auto& x) { return x == toFind; });
-}
-
-bool StaticSchema::isLeaf(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    auto fullName = fullNodeName(location, node);
-    if (!nodeExists(locationString, fullName))
-        return false;
-
-    return children(locationString).at(fullName).type() == typeid(yang::leaf);
 }
 
 std::string lastNodeOfSchemaPath(const std::string& path)
