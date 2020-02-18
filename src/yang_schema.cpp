@@ -317,7 +317,7 @@ std::string YangSchema::leafrefPath(const std::string& leafrefPath) const
 {
     using namespace std::string_literals;
     libyang::Schema_Node_Leaf leaf(getSchemaNode(leafrefPath));
-    return leaf.type()->info()->lref()->target()->path();
+    return leaf.type()->info()->lref()->target()->path(LYS_PATH_FIRST_PREFIX);
 }
 
 std::set<std::string> YangSchema::modules() const
