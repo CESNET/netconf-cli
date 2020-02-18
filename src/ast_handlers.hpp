@@ -497,6 +497,8 @@ struct set_class {
 
 struct commit_class;
 
+struct describe_class;
+
 struct help_class;
 
 struct get_class;

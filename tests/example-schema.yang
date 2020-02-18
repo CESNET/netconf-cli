@@ -57,6 +57,7 @@ module example-schema {
     }
 
     leaf leafDecimal {
+        units "nm";
         type decimal64 {
             fraction-digits 9;
         }
