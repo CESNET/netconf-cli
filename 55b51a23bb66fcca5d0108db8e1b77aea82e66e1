@@ -16,6 +16,24 @@
       "revId": "55b51a23bb66fcca5d0108db8e1b77aea82e66e1",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daf71671_d84792a1",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-18T13:48:39Z",
+      "side": 1,
+      "message": "It\u0027s not unrelated, it\u0027s a method which is going to be used in the UI for node info. These three methods have different arguments from the isXyz methods. I needed this new nodeType method because I only have a std::string in the Interpreter class and it would be troublesome to convert that to the other type. Maybe I\u0027ll get rid of the isXyz methods and use nodeType everywhere.",
+      "parentUuid": "e48d5a3e_b0c030b5",
+      "revId": "55b51a23bb66fcca5d0108db8e1b77aea82e66e1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
