@@ -204,6 +204,11 @@ yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const Mo
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
 }
 
+yang::LeafDataTypes StaticSchema::leafType([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"StaticSchema::leafType not implemented"};
+}
+
 const std::set<std::string> StaticSchema::enumValues(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
