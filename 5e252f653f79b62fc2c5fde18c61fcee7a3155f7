@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b304ba41_122f024e",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-18T16:43:02Z",
+      "side": 1,
+      "message": "This looks a bit ugly, but I think it\u0027s a reasonable compromise to ignore that if the tests pass",
+      "revId": "5e252f653f79b62fc2c5fde18c61fcee7a3155f7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb2e3e2d_80e1414e",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-18T16:43:02Z",
+      "side": 1,
+      "message": "better make it more specific:\n\n Internal error: StaticSchema::nodeType(std::string) not implemented. The tests should not have called this overload.",
+      "range": {
+        "startLine": 319,
+        "startChar": 30,
+        "endLine": 319,
+        "endChar": 68
+      },
+      "revId": "5e252f653f79b62fc2c5fde18c61fcee7a3155f7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
