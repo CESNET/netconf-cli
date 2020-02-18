@@ -9,3 +9,40 @@
 #include "schema.hpp"
 
 Schema::~Schema() = default;
+
+bool Schema::isList(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    try {
+        return nodeType(location, node) == yang::NodeTypes::List;
+    } catch (InvalidNodeException&) {
+        return false;
+    }
+}
+
+bool Schema::isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    try {
+        return nodeType(location, node) == yang::NodeTypes::PresenceContainer;
+    } catch (InvalidNodeException&) {
+        return false;
+    }
+}
+
+bool Schema::isContainer(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    try {
+        auto type = nodeType(location, node);
+        return type == yang::NodeTypes::Container || type == yang::NodeTypes::PresenceContainer;
+    } catch (InvalidNodeException&) {
+        return false;
+    }
+}
+
+bool Schema::isLeaf(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    try {
+        return nodeType(location, node) == yang::NodeTypes::Leaf;
+    } catch (InvalidNodeException&) {
+        return false;
+    }
+}

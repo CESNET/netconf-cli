@@ -50,10 +50,7 @@ enum class Recursion {
 };
 
 
-class InvalidNodeException : public std::invalid_argument {
-public:
-    using std::invalid_argument::invalid_argument;
-    ~InvalidNodeException() override;
+class InvalidNodeException {
 };
 
 /*! \class Schema
@@ -66,13 +63,13 @@ class Schema {
 public:
     virtual ~Schema();
 
-    virtual bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const = 0;
-    virtual bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const;
+    bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const;
+    bool isList(const schemaPath_& location, const ModuleNodePair& node) const;
+    bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const;
     virtual yang::NodeTypes nodeType(const std::string& path) const = 0;
     virtual yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool isModule(const std::string& name) const = 0;
-    virtual bool isList(const schemaPath_& location, const ModuleNodePair& node) const = 0;
-    virtual bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const = 0;
     virtual bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const = 0;
     virtual bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const = 0;
