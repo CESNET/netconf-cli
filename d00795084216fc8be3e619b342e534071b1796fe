@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "c139db7b_0be5303b",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-19T14:55:47Z",
+      "side": 1,
+      "message": "the last one looks best, IMHO, because it makes the intention clear.\n\n if ((units \u003d parentTypedef-\u003eunits()))\n\nIf you kept the original version with a shadow variable, then it would get rather surprising should it change in future to using back that named-variable return. Having two variables named \"units\" doesn\u0027t just look good to me.",
+      "parentUuid": "ecacc854_48a618fb",
+      "range": {
+        "startLine": 442,
+        "startChar": 12,
+        "endLine": 442,
+        "endChar": 16
+      },
+      "revId": "d00795084216fc8be3e619b342e534071b1796fe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "79738eb2_b0b34b32",
         "filename": "tests/yang.cpp",
         "patchSetId": 9
