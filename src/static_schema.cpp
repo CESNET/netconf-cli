@@ -290,3 +290,8 @@ yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path)
 {
     throw std::runtime_error{"Internal error: StaticSchema::nodeType(std::string) not implemented. The tests should not have called this overload."};
 }
+
+yang::LeafDataTypes StaticSchema::leafrefBaseType([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::leafrefBaseType(std::string) not implemented. The tests should not have called this overload."};
+}
