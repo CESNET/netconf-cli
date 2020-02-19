@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "5f314670_afbb3031",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-19T15:01:08Z",
+      "side": 1,
+      "message": "Actually I like this approach more:\n\n units \u003d parentTypedef-\u003eunits()\n if (units)\n\nThe warning is there for a reason and having double parentheses doesn\u0027t really make it clear to me",
+      "parentUuid": "c139db7b_0be5303b",
+      "range": {
+        "startLine": 442,
+        "startChar": 12,
+        "endLine": 442,
+        "endChar": 16
+      },
+      "revId": "d00795084216fc8be3e619b342e534071b1796fe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "79738eb2_b0b34b32",
         "filename": "tests/yang.cpp",
         "patchSetId": 9
