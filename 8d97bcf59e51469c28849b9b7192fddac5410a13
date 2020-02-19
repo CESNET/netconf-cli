@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "386b02a3_23d2973f",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-19T11:22:48Z",
+      "side": 1,
+      "message": "I think that this is a bit verbose:\n\n /\u003e describe czechlight-roadm-device:aggregate-power/common-in \n Info for /czechlight-roadm-device:aggregate-power/common-in\n Leaf, a decimal\n Optical power at the common input port(s)\n\nWhat about something like this:\n\n /\u003e describe czechlight-roadm-device:aggregate-power/common-in \n /czechlight-roadm-device:aggregate-power/common-in: decimal [dBm]\n \n Optical power at the common input port(s)\n\nI.e.:\n- get rid of the \"Info for\"\n- if it\u0027s a leaf, list the data type and skip info about that thing being a leaf,\n- put units into [] for compactness\n- blank line between the header and the actual description from YANG\n\nHere\u0027s how a leafref looks like:\n\n /\u003e describe czechlight-roadm-device:media-channels/channel \n Info for /czechlight-roadm-device:media-channels/channel\n Leaf, a leafref\n\nThat one should, IMHO, say:\n\n /\u003e describe czechlight-roadm-device:media-channels/channel \n /czechlight-roadm-device:media-channels/channel -\u003e /channel-plan/channel/name (string)\n\nPresence containers now:\n\n /\u003e describe czechlight-roadm-device:media-channels/add/\n Info for /czechlight-roadm-device:media-channels/add\n Presence container\n Source port\n\n Add this container if the indicated channel should be routed in the\n direction from the leaf ports towards the common port(s).\n\nIMHO better:\n\n\n /\u003e describe czechlight-roadm-device:media-channels/add/\n /czechlight-roadm-device:media-channels/add: presence container\n \n Source port\n\n Add this container if the indicated channel should be routed in the\n direction from the leaf ports towards the common port(s).\n\nAlso, perhaps there\u0027s some merit in showing the type info not as the fully resolved type, but as a name of the most specific typedef. I.e., for czechlight-roadm-device:media-channels/add/port I\u0027m getting an \"enum\", and for /czechlight-roadm-device:aggregate-power/common-in I\u0027m getting \"decimal\". Maybe output something like:\n\n /\u003e describe czechlight-roadm-device:aggregate-power/common-in \n /czechlight-roadm-device:aggregate-power/common-in: opendevice-types:optical-power-dBm (decimal64) [dBm]\n \n Optical power at the common input port(s)\n\nOpinions welcome, this is largely a topic ripe for bikeshedding.",
+      "revId": "8d97bcf59e51469c28849b9b7192fddac5410a13",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
