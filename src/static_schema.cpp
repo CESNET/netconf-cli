@@ -295,3 +295,8 @@ yang::LeafDataTypes StaticSchema::leafrefBaseType([[maybe_unused]] const std::st
 {
     throw std::runtime_error{"Internal error: StaticSchema::leafrefBaseType(std::string) not implemented. The tests should not have called this overload."};
 }
+
+std::string StaticSchema::leafrefPath([[maybe_unused]] const std::string& leafrefPath) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::leafrefPath(std::string) not implemented. The tests should not have called this overload."};
+}
