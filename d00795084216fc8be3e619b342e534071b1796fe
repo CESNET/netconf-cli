@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "8e22cca4_afebb4c1",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-19T15:01:54Z",
+      "side": 1,
+      "message": "(doesn\u0027t make it clear that I really trying to assign instead of compare in the if-statement)",
+      "parentUuid": "5f314670_afbb3031",
+      "range": {
+        "startLine": 442,
+        "startChar": 12,
+        "endLine": 442,
+        "endChar": 16
+      },
+      "revId": "d00795084216fc8be3e619b342e534071b1796fe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "79738eb2_b0b34b32",
         "filename": "tests/yang.cpp",
         "patchSetId": 9
