@@ -78,6 +78,7 @@ public:
     virtual yang::LeafDataTypes leafType(const std::string& path) const = 0;
     virtual yang::LeafDataTypes leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafrefBaseType(const std::string& path) const = 0;
+    virtual std::string leafrefPath(const std::string& leafrefPath) const = 0;
     virtual std::optional<std::string> description(const std::string& location) const = 0;
     virtual std::optional<std::string> units(const std::string& location) const = 0;
 
