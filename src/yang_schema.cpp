@@ -281,7 +281,7 @@ yang::LeafDataTypes YangSchema::leafType(const std::string& path) const
     return impl_leafType(getSchemaNode(path));
 }
 
-yang::LeafDataTypes YangSchema::leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const
+yang::LeafDataTypes YangSchema::leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     using namespace std::string_literals;
     libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));

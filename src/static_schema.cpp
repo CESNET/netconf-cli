@@ -189,7 +189,7 @@ std::string lastNodeOfSchemaPath(const std::string& path)
     return res;
 }
 
-yang::LeafDataTypes StaticSchema::leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const
+yang::LeafDataTypes StaticSchema::leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     auto leaf{boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node)))};
