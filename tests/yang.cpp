@@ -290,6 +290,12 @@ module example-schema {
         units "vt";
     }
 
+    leaf activeNumber {
+        type leafref {
+            path "/_list/number";
+        }
+    }
+
 })";
 
 namespace std {
@@ -756,7 +762,8 @@ TEST_CASE("yangschema")
                        "example-schema:ethernet", "example-schema:loopback",
                        "example-schema:pizzaSize",
                        "example-schema:length", "example-schema:wavelength",
-                       "example-schema:duration", "example-schema:another-duration"};
+                       "example-schema:duration", "example-schema:another-duration",
+                       "example-schema:activeNumber"};
             }
 
             SECTION("example-schema:a")
@@ -893,6 +900,11 @@ TEST_CASE("yangschema")
             }
 
             REQUIRE(ys.nodeType(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
+        }
+
+        SECTION("leafrefPath")
+        {
+            REQUIRE(ys.leafrefPath("/example-schema:activeNumber") == "/example-schema:_list/number");
         }
     }
 
