@@ -80,6 +80,13 @@ module example-schema {
         }
     }
 
+    leaf unionIntString {
+        type union {
+            type int32;
+            type string;
+        }
+    }
+
     grouping upAndDown {
         leaf up {
             type boolean;

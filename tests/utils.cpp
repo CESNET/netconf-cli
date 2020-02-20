@@ -8,6 +8,7 @@
 
 #include "trompeloeil_doctest.hpp"
 #include "completion.hpp"
+#include "leaf_data_helpers.hpp"
 #include "utils.hpp"
 
 TEST_CASE("utils")
@@ -80,4 +81,24 @@ TEST_CASE("utils")
 
         REQUIRE(joinPaths(prefix, suffix) == result);
     }
+
+    SECTION("leafDataTypeToString")
+    {
+        yang::LeafDataType type;
+        std::string expected;
+        SECTION("union")
+        {
+            type = yang::Union{{
+                yang::String{},
+                createEnum({"foo", "bar"}),
+                yang::Int8{},
+                yang::Int64{},
+            }};
+            expected = "a string, an enum, an 8-bit integer, a 64-bit integer";
+        }
+
+        REQUIRE(leafDataTypeToString(type) == expected);
+
+    }
+
 }
