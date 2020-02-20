@@ -39,6 +39,10 @@ bool LeafRef::operator==(const LeafRef& other) const
 {
     return this->m_targetXPath == other.m_targetXPath && *this->m_targetType == *other.m_targetType;
 }
+bool Union::operator==(const Union& other) const
+{
+    return this->m_unionTypes == other.m_unionTypes;
+}
 bool String::operator==(const String&) const
 {
     return true;

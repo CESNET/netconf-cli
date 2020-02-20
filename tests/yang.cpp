@@ -299,6 +299,61 @@ module example-schema {
 
     rpc myRpc {}
 
+    leaf numberOrString {
+        type union {
+            type int32;
+            type string;
+        }
+        description "Can be an int32 or a string.";
+    }
+
+    list portSettings {
+        key "port";
+        leaf port {
+            type enumeration {
+                enum eth0;
+                enum eth1;
+                enum eth2;
+            }
+        }
+    }
+
+    feature weirdPortNames;
+
+    list portMapping {
+        key "port";
+        leaf port {
+            type enumeration {
+                enum WEIRD {
+                    if-feature "weirdPortNames";
+                }
+                enum utf2;
+                enum utf3;
+            }
+        }
+    }
+
+    leaf activeMappedPort {
+        type leafref {
+            path "../portMapping/port";
+        }
+    }
+
+    leaf activePort {
+        type union {
+            type enumeration {
+                enum wlan0;
+                enum wlan1;
+            }
+            type leafref {
+                path "../portSettings/port";
+            }
+            type leafref {
+                path "../activeMappedPort";
+            }
+        }
+    }
+
 })";
 
 namespace std {
@@ -644,6 +699,39 @@ TEST_CASE("yangschema")
                 );
             }
 
+            SECTION("activePort")
+            {
+                node.first = "example-schema";
+                node.second = "activePort";
+
+                yang::Enum enums = [&ys]() {
+                    SECTION("weird ports disabled")
+                    {
+                        return createEnum({"utf2", "utf3"});
+                    }
+                    SECTION("weird ports enabled")
+                    {
+                        ys.enableFeature("example-schema", "weirdPortNames");
+                        return createEnum({"WEIRD", "utf2", "utf3"});
+                    }
+                    __builtin_unreachable();
+                }();
+
+                type = yang::Union{{
+                    createEnum({"wlan0", "wlan1"}),
+                    yang::LeafRef{
+                        "/example-schema:portSettings/port",
+                        std::make_unique<yang::LeafDataType>(createEnum({"eth0", "eth1", "eth2"}))
+                    },
+                    yang::LeafRef{
+                        "/example-schema:activeMappedPort",
+                        std::make_unique<yang::LeafDataType>(yang::LeafRef{
+                                "/example-schema:portMapping/port",
+                                std::make_unique<yang::LeafDataType>(enums)
+                        })},
+                }};
+            }
+
             REQUIRE(ys.leafType(path, node) == type);
         }
         SECTION("childNodes")
@@ -668,7 +756,12 @@ TEST_CASE("yangschema")
                        "example-schema:pizzaSize",
                        "example-schema:length", "example-schema:wavelength",
                        "example-schema:duration", "example-schema:another-duration",
-                       "example-schema:activeNumber"};
+                       "example-schema:activeNumber",
+                       "example-schema:numberOrString",
+                       "example-schema:portSettings",
+                       "example-schema:portMapping",
+                       "example-schema:activeMappedPort",
+                       "example-schema:activePort"};
             }
 
             SECTION("example-schema:a")
@@ -735,6 +828,12 @@ TEST_CASE("yangschema")
             SECTION("leafString")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafString")));
+            }
+
+            SECTION("numberOrString")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("numberOrString")));
+                expected = "Can be an int32 or a string.";
             }
 
             REQUIRE(ys.description(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
