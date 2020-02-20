@@ -73,7 +73,7 @@ void StaticSchema::addList(const std::string& location, const std::string& name,
 
 void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type)
 {
-    m_nodes.at(location).emplace(name, yang::leaf{type, {}, {}, {}});
+    m_nodes.at(location).emplace(name, yang::leaf{type, {}, {}, {}, {}});
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
@@ -104,6 +104,16 @@ void StaticSchema::addLeafRef(const std::string& location, const std::string& na
     yang::leaf toAdd;
     toAdd.m_type = yang::LeafDataTypes::LeafRef;
     toAdd.m_leafRefSource = source;
+    m_nodes.at(location).emplace(name, toAdd);
+    std::string key = joinPaths(location, name);
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
+}
+
+void StaticSchema::addLeafUnion(const std::string& location, const std::string& name, std::vector<yang::LeafDataTypes> types)
+{
+    yang::leaf toAdd;
+    toAdd.m_type = yang::LeafDataTypes::Union;
+    toAdd.m_unionTypes = types;
     m_nodes.at(location).emplace(name, toAdd);
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
@@ -202,6 +212,16 @@ yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const Mo
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
+}
+
+std::vector<yang::LeafDataTypes> StaticSchema::unionTypes(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
+    assert(isLeaf(location, node));
+
+    const auto& child = children(locationString).at(fullNodeName(location, node));
+    const auto& leaf = boost::get<yang::leaf>(child);
+    return leaf.m_unionTypes;
 }
 
 yang::LeafDataTypes StaticSchema::leafType([[maybe_unused]] const std::string& path) const
