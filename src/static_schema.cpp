@@ -73,7 +73,7 @@ void StaticSchema::addList(const std::string& location, const std::string& name,
 
 void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type)
 {
-    m_nodes.at(location).emplace(name, yang::leaf{type, {}, {}, {}});
+    m_nodes.at(location).emplace(name, yang::leaf{type, {}, {}, {}, {}});
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
@@ -104,6 +104,16 @@ void StaticSchema::addLeafRef(const std::string& location, const std::string& na
     yang::leaf toAdd;
     toAdd.m_type = yang::LeafDataTypes::LeafRef;
     toAdd.m_leafRefSource = source;
+    m_nodes.at(location).emplace(name, toAdd);
+    std::string key = joinPaths(location, name);
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
+}
+
+void StaticSchema::addLeafUnion(const std::string& location, const std::string& name, std::vector<yang::leaf> types)
+{
+    yang::leaf toAdd;
+    toAdd.m_type = yang::LeafDataTypes::Union;
+    toAdd.m_unionTypes = types;
     m_nodes.at(location).emplace(name, toAdd);
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
@@ -189,13 +199,25 @@ std::string lastNodeOfSchemaPath(const std::string& path)
     return res;
 }
 
+yang::LeafDataTypes StaticSchema::leafrefBaseType(const std::string& path) const
+{
+    auto locationOfSource = stripLastNodeFromPath(path);
+    auto nameOfSource = lastNodeOfSchemaPath(path);
+    return boost::get<yang::leaf>(children(locationOfSource).at(nameOfSource)).m_type;
+}
+
 yang::LeafDataTypes StaticSchema::leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     auto leaf{boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node)))};
-    auto locationOfSource = stripLastNodeFromPath(leaf.m_leafRefSource);
-    auto nameOfSource = lastNodeOfSchemaPath(leaf.m_leafRefSource);
-    return boost::get<yang::leaf>(children(locationOfSource).at(nameOfSource)).m_type;
+    if (leaf.m_type == yang::LeafDataTypes::Union) {
+        for (auto unionType : leaf.m_unionTypes) {
+            if (unionType.m_type == yang::LeafDataTypes::LeafRef) {
+                return leafrefBaseType(unionType.m_leafRefSource);
+            }
+        }
+    }
+    return leafrefBaseType(leaf.m_leafRefSource);
 }
 
 yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
@@ -204,9 +226,32 @@ yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const Mo
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
 }
 
+std::vector<yang::LeafDataTypes> StaticSchema::unionTypes(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    std::string locationString = pathToSchemaString(location, Prefixes::Always);
+    assert(isLeaf(location, node));
+
+    const auto& child = children(locationString).at(fullNodeName(location, node));
+    const auto& leaf = boost::get<yang::leaf>(child);
+    std::vector<yang::LeafDataTypes> res;
+
+    for (auto info : leaf.m_unionTypes) {
+        res.push_back(info.m_type);
+    }
+
+    return res;
+}
+
 yang::LeafDataTypes StaticSchema::leafType([[maybe_unused]] const std::string& path) const
 {
     throw std::runtime_error{"StaticSchema::leafType not implemented"};
+}
+
+const std::set<std::string> StaticSchema::enumValues(const std::string& path) const
+{
+    auto locationOfSource = stripLastNodeFromPath(path);
+    auto nameOfSource = lastNodeOfSchemaPath(path);
+    return boost::get<yang::leaf>(children(locationOfSource).at(nameOfSource)).m_enumValues;
 }
 
 const std::set<std::string> StaticSchema::enumValues(const schemaPath_& location, const ModuleNodePair& node) const
@@ -216,6 +261,16 @@ const std::set<std::string> StaticSchema::enumValues(const schemaPath_& location
 
     const auto& child = children(locationString).at(fullNodeName(location, node));
     const auto& leaf = boost::get<yang::leaf>(child);
+    if (leaf.m_type == yang::LeafDataTypes::Union) {
+        for (auto unionType : leaf.m_unionTypes) {
+            if (unionType.m_type == yang::LeafDataTypes::LeafRef) {
+                return enumValues(unionType.m_leafRefSource);
+            }
+            if (unionType.m_type == yang::LeafDataTypes::Enum) {
+                return unionType.m_enumValues;
+            }
+        }
+    }
     return leaf.m_enumValues;
 }
 
@@ -289,11 +344,6 @@ std::optional<std::string> StaticSchema::units([[maybe_unused]] const std::strin
 yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path) const
 {
     throw std::runtime_error{"Internal error: StaticSchema::nodeType(std::string) not implemented. The tests should not have called this overload."};
-}
-
-yang::LeafDataTypes StaticSchema::leafrefBaseType([[maybe_unused]] const std::string& path) const
-{
-    throw std::runtime_error{"Internal error: StaticSchema::leafrefBaseType(std::string) not implemented. The tests should not have called this overload."};
 }
 
 std::string StaticSchema::leafrefPath([[maybe_unused]] const std::string& leafrefPath) const
