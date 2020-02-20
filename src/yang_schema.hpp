@@ -43,6 +43,7 @@ public:
     yang::LeafDataTypes leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafrefBaseType(const std::string& path) const override;
     std::string leafrefPath(const std::string& leafrefPath) const override;
+    std::vector<yang::LeafDataTypes> unionTypes(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const override;
     const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const override;

@@ -260,6 +260,8 @@ yang::LeafDataTypes lyTypeToLeafDataTypes(LY_DATA_TYPE type)
         return yang::LeafDataTypes::IdentityRef;
     case LY_TYPE_LEAFREF:
         return yang::LeafDataTypes::LeafRef;
+    case LY_TYPE_UNION:
+        return yang::LeafDataTypes::Union;
     default:
         using namespace std::string_literals;
         throw std::logic_error{"internal error: unsupported libyang data type "s + std::to_string(type)};
@@ -318,6 +320,19 @@ std::string YangSchema::leafrefPath(const std::string& leafrefPath) const
     using namespace std::string_literals;
     libyang::Schema_Node_Leaf leaf(getSchemaNode(leafrefPath));
     return leaf.type()->info()->lref()->target()->path(LYS_PATH_FIRST_PREFIX);
+}
+
+std::vector<yang::LeafDataTypes> YangSchema::unionTypes(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    auto targetNode = getSchemaNode(location, node);
+
+    std::vector<yang::LeafDataTypes> res;
+    auto types = libyang::Schema_Node_Leaf{targetNode}.type()->info()->uni()->types();
+    std::transform(types.begin(), types.end(), std::back_inserter(res), [] (libyang::S_Type type) {
+        return lyTypeToLeafDataTypes(type->base());
+    });
+
+    return res;
 }
 
 std::set<std::string> YangSchema::modules() const

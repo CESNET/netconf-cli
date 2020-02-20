@@ -290,6 +290,13 @@ module example-schema {
         units "vt";
     }
 
+    leaf numberOrString {
+        type union {
+            type int32;
+            type string;
+        }
+    }
+
 })";
 
 namespace std {
@@ -733,8 +740,25 @@ TEST_CASE("yangschema")
                 type = yang::LeafDataTypes::Enum;
             }
 
+            SECTION("numberOrString")
+            {
+                node.first = "example-schema";
+                node.second = "numberOrString";
+                type = yang::LeafDataTypes::Union;
+            }
+
             REQUIRE(ys.leafType(path, node) == type);
         }
+
+        SECTION("unionTypes")
+        {
+            std::vector expected{yang::LeafDataTypes::Int32, yang::LeafDataTypes::String};
+            node.first = "example-schema";
+            node.second = "numberOrString";
+
+            REQUIRE(ys.unionTypes(path, node) == expected);
+        }
+
         SECTION("childNodes")
         {
             std::set<std::string> set;
@@ -756,7 +780,8 @@ TEST_CASE("yangschema")
                        "example-schema:ethernet", "example-schema:loopback",
                        "example-schema:pizzaSize",
                        "example-schema:length", "example-schema:wavelength",
-                       "example-schema:duration", "example-schema:another-duration"};
+                       "example-schema:duration", "example-schema:another-duration",
+                       "example-schema:numberOrString"};
             }
 
             SECTION("example-schema:a")

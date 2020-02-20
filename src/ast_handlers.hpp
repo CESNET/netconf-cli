@@ -425,6 +425,12 @@ struct leaf_data_base_class {
         auto& schema = parserContext.m_schema;
 
         auto type = schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+        if (type == yang::LeafDataTypes::Union) {
+            auto unionTypes = schema.unionTypes(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+            _pass(context) = std::any_of(unionTypes.begin(), unionTypes.end(), [] (auto unionType) { return unionType == TYPE; });
+            return;
+        }
+
         if (type == yang::LeafDataTypes::LeafRef) {
             type = schema.leafrefBaseType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
         }
