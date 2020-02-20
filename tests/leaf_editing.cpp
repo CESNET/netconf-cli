@@ -51,6 +51,9 @@ TEST_CASE("leaf editing")
     schema->addLeaf("/mod:list", "mod:leafInList", yang::LeafDataTypes::String);
     schema->addLeafRef("/", "mod:refToString", "/mod:leafString");
     schema->addLeafRef("/", "mod:refToInt8", "/mod:leafInt8");
+    schema->addLeafUnion("/", "mod:intOrString", {yang::LeafDataTypes::Int32, yang::LeafDataTypes::String});
+    schema->addLeafUnion("/", "mod:twoInts", {yang::LeafDataTypes::Uint8, yang::LeafDataTypes::Int16});
+    schema->addLeafUnion("/", "mod:unionStringEnumLeafref", {yang::LeafDataTypes::String, yang::LeafDataTypes::Enum});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -199,6 +202,37 @@ TEST_CASE("leaf editing")
                 input = "set mod:leafBool true";
                 expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafBool")});
                 expected.m_data = true;
+            }
+
+            SECTION("union")
+            {
+                SECTION("int")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("intOrString")});
+                    input = "set mod:intOrString 90";
+                    expected.m_data = int32_t{90};
+                }
+                SECTION("string")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("intOrString")});
+                    input = "set mod:intOrString \"test\"";
+                    expected.m_data = std::string{"test"};
+                }
+
+                SECTION("union with two integral types")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("twoInts")});
+                    SECTION("uint8")
+                    {
+                        input = "set mod:twoInts 100";
+                        expected.m_data = uint8_t{100};
+                    }
+                    SECTION("uint8")
+                    {
+                        input = "set mod:twoInts 6666";
+                        expected.m_data = int16_t{6666};
+                    }
+                }
             }
 
             SECTION("binary")
@@ -443,6 +477,11 @@ TEST_CASE("leaf editing")
         SECTION("identity prefix without name")
         {
             input = "set mod:contA/identInCont pizza-module:";
+        }
+
+        SECTION("set a union path to a wrong type")
+        {
+            input = "set mod:intOrString true";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
