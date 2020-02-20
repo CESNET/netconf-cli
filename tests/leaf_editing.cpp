@@ -52,6 +52,25 @@ TEST_CASE("leaf editing")
     schema->addLeaf("/mod:list", "mod:leafInList", yang::String{});
     schema->addLeaf("/", "mod:refToString", yang::LeafRef{"/mod:leafString", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:leafString"))});
     schema->addLeaf("/", "mod:refToInt8", yang::LeafRef{"/mod:leafInt8", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:leafInt8"))});
+    schema->addLeaf("/", "mod:intOrString", yang::Union{{yang::Int32{}, yang::String{}}});
+    schema->addLeaf("/", "mod:twoInts", yang::Union{{yang::Uint8{}, yang::Int16{}}});
+    schema->addLeaf("/", "mod:unionStringEnumLeafref", yang::Union{{
+        yang::String{},
+        createEnum({"foo", "bar"}),
+        yang::LeafRef{"/mod:leafEnum", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:leafEnum"))}
+    }});
+
+    schema->addList("/", "mod:portSettings", {"port"});
+    schema->addLeaf("/mod:portSettings", "mod:port", createEnum({"eth0", "eth1", "eth2"}));
+    schema->addList("/", "mod:portMapping", {"port"});
+    schema->addLeaf("/mod:portMapping", "mod:port", createEnum({"utf1", "utf2", "utf3"}));
+    schema->addLeaf("/", "mod:activeMappedPort", yang::LeafRef{"/mod:portMapping/mod:port", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:portMapping/mod:port"))});
+    schema->addLeaf("/", "mod:activePort", yang::Union{{
+        createEnum({"wlan0", "wlan1"}),
+        yang::LeafRef{"/mod:portSettings/mod:port", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:portSettings/mod:port"))},
+        yang::LeafRef{"/mod:activeMappedPort", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:activeMappedPort"))},
+    }});
+
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -200,6 +219,112 @@ TEST_CASE("leaf editing")
                 input = "set mod:leafBool true";
                 expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafBool")});
                 expected.m_data = true;
+            }
+
+            SECTION("union")
+            {
+                SECTION("int")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("intOrString")});
+                    input = "set mod:intOrString 90";
+                    expected.m_data = int32_t{90};
+                }
+                SECTION("string")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("intOrString")});
+                    input = "set mod:intOrString \"test\"";
+                    expected.m_data = std::string{"test"};
+                }
+
+                SECTION("union with two integral types")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("twoInts")});
+                    SECTION("uint8")
+                    {
+                        input = "set mod:twoInts 100";
+                        expected.m_data = uint8_t{100};
+                    }
+                    SECTION("int16")
+                    {
+                        input = "set mod:twoInts 6666";
+                        expected.m_data = int16_t{6666};
+                    }
+                }
+
+                SECTION("union with enum and leafref to enum")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("unionStringEnumLeafref")});
+                    SECTION("string")
+                    {
+                        input = "set mod:unionStringEnumLeafref \"AHOJ\"";
+                        expected.m_data = std::string{"AHOJ"};
+                    }
+                    SECTION("enum")
+                    {
+                        input = "set mod:unionStringEnumLeafref bar";
+                        expected.m_data = enum_("bar");
+                    }
+                    SECTION("enum leafref")
+                    {
+                        input = "set mod:unionStringEnumLeafref coze";
+                        expected.m_data = enum_("coze");
+                    }
+                }
+
+                SECTION("activePort")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("activePort")});
+                    input = "set mod:activePort ";
+                    SECTION("1. anonymous enum")
+                    {
+                        SECTION("wlan0")
+                        {
+                            input += "wlan0";
+                            expected.m_data = enum_("wlan0");
+                        }
+                        SECTION("wlan1")
+                        {
+                            input += "wlan1";
+                            expected.m_data = enum_("wlan1");
+                        }
+                    }
+                    SECTION("2. leafref to enum")
+                    {
+                        SECTION("eth0")
+                        {
+                            input += "eth0";
+                            expected.m_data = enum_("eth0");
+                        }
+                        SECTION("eth1")
+                        {
+                            input += "eth1";
+                            expected.m_data = enum_("eth1");
+                        }
+                        SECTION("eth2")
+                        {
+                            input += "eth2";
+                            expected.m_data = enum_("eth2");
+                        }
+                    }
+                    SECTION("3. leafref to leafref")
+                    {
+                        SECTION("utf1")
+                        {
+                            input += "utf1";
+                            expected.m_data = enum_("utf1");
+                        }
+                        SECTION("utf2")
+                        {
+                            input += "utf2";
+                            expected.m_data = enum_("utf2");
+                        }
+                        SECTION("utf3")
+                        {
+                            input += "utf3";
+                            expected.m_data = enum_("utf3");
+                        }
+                    }
+                }
             }
 
             SECTION("binary")
@@ -444,6 +569,11 @@ TEST_CASE("leaf editing")
         SECTION("identity prefix without name")
         {
             input = "set mod:contA/identInCont pizza-module:";
+        }
+
+        SECTION("set a union path to a wrong type")
+        {
+            input = "set mod:intOrString true";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
