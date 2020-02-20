@@ -175,6 +175,15 @@ bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& n
     return keys.find(key) != keys.end();
 }
 
+bool YangSchema::leafIsKey(const std::string& leafPath) const
+{
+    auto node = getSchemaNode(leafPath);
+    if (!node || node->nodetype() != LYS_LEAF)
+        return false;
+
+    return libyang::Schema_Node_Leaf{node}.is_key().get();
+}
+
 libyang::S_Schema_Node YangSchema::impl_getSchemaNode(const std::string& node) const
 {
     // If no node is found find_path prints an error message, so we have to
