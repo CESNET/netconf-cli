@@ -5,6 +5,7 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#include <experimental/iterator>
 #include <sstream>
 #include "completion.hpp"
 #include "utils.hpp"
@@ -112,6 +113,14 @@ struct impl_leafDataTypeToString {
     std::string operator()(const yang::LeafRef&)
     {
         return "a leafref";
+    }
+    std::string operator()(const yang::Union& type)
+    {
+        std::ostringstream ss;
+        std::transform(type.m_unionTypes.begin(), type.m_unionTypes.end(), std::experimental::make_ostream_joiner(ss, ", "), [this](const auto& unionType) {
+            return std::visit(*this, unionType);
+        });
+        return ss.str();
     }
 };
 
