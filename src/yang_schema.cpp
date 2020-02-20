@@ -260,6 +260,8 @@ yang::LeafDataTypes lyTypeToLeafDataTypes(LY_DATA_TYPE type)
         return yang::LeafDataTypes::IdentityRef;
     case LY_TYPE_LEAFREF:
         return yang::LeafDataTypes::LeafRef;
+    case LY_TYPE_UNION:
+        return yang::LeafDataTypes::Union;
     default:
         using namespace std::string_literals;
         throw std::logic_error{"internal error: unsupported libyang data type "s + std::to_string(type)};
