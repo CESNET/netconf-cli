@@ -9,6 +9,7 @@
 #include <set>
 #include <string>
 #include <variant>
+#include <vector>
 
 struct enum_;
 struct identityRef_;
@@ -65,6 +66,8 @@ struct LeafRef {
     std::string m_pointsTo;
 };
 
+struct Union;
+
 using LeafDataType = std::variant<
     yang::String,
     yang::Decimal,
@@ -80,6 +83,12 @@ using LeafDataType = std::variant<
     yang::Enum,
     yang::Binary,
     yang::IdentityRef,
-    yang::LeafRef
+    yang::LeafRef,
+    yang::Union
 >;
+
+struct Union {
+    bool operator==(const Union& other) const;
+    std::vector<LeafDataType> m_unionTypes;
+};
 }
