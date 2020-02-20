@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <boost/spirit/home/x3.hpp>
 #include "ast_values.hpp"
 #include "ast_handlers.hpp"
@@ -171,6 +172,13 @@ struct LeafData : x3::parser<LeafData> {
                 return leaf_data_enum.parse(first, last, ctx, rctx, attr);
             case yang::LeafDataTypes::IdentityRef:
                 return leaf_data_identityRef.parse(first, last, ctx, rctx, attr);
+            case yang::LeafDataTypes::Union:
+                for (auto type : schema.unionTypes(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node)) {
+                    if (parse_impl(type)) {
+                        return true;
+                    }
+                }
+                return false;
             case yang::LeafDataTypes::LeafRef:
                 auto actualType = schema.leafrefBaseType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
                 return parse_impl(actualType);

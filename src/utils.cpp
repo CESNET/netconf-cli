@@ -85,6 +85,8 @@ std::string leafDataTypeToString(yang::LeafDataTypes type)
         return "a leafref";
     case yang::LeafDataTypes::Binary:
         return "a base64-encoded binary value";
+    case yang::LeafDataTypes::Union:
+        return "a union";
     default:
         throw std::runtime_error("leafDataTypeToString: unsupported leaf data type");
     }

@@ -31,6 +31,14 @@ struct leaf {
     std::set<std::string> m_enumValues;
     ModuleValuePair m_identBase;
     std::string m_leafRefSource;
+    struct UnionInfo {
+        yang::LeafDataTypes m_type;
+        std::set<std::string> m_enumValues;
+        ModuleValuePair m_identBase;
+        std::string m_leafRefSource;
+        std::vector<UnionInfo> m_unionTypes;
+    };
+    std::vector<UnionInfo> m_unionTypes;
 };
 
 struct module {
@@ -62,6 +70,7 @@ public:
     yang::LeafDataTypes leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafrefBaseType(const std::string& path) const override;
     std::string leafrefPath(const std::string& leafrefPath) const override;
+    std::vector<yang::LeafDataTypes> unionTypes(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion) const override;
@@ -74,6 +83,7 @@ public:
     void addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues);
     void addLeafIdentityRef(const std::string& location, const std::string& name, const ModuleValuePair& base);
     void addLeafRef(const std::string& location, const std::string& name, const std::string& source);
+    void addLeafUnion(const std::string& location, const std::string& name, std::vector<yang::leaf::UnionInfo> types);
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void addModule(const std::string& name);
     void addIdentity(const std::optional<ModuleValuePair>& base, const ModuleValuePair& name);
