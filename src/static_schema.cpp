@@ -300,3 +300,8 @@ std::string StaticSchema::leafrefPath([[maybe_unused]] const std::string& leafre
 {
     throw std::runtime_error{"Internal error: StaticSchema::leafrefPath(std::string) not implemented. The tests should not have called this overload."};
 }
+
+bool StaticSchema::leafIsKey([[maybe_unused]] const std::string& leafPath) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::leafIsKey(std::string) not implemented. The tests should not have called this overload."};
+}
