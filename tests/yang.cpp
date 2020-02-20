@@ -299,6 +299,13 @@ module example-schema {
 
     rpc myRpc {}
 
+    leaf numberOrString {
+        type union {
+            type int32;
+            type string;
+        }
+    }
+
 })";
 
 namespace std {
@@ -658,7 +665,8 @@ TEST_CASE("yangschema")
                        "example-schema:pizzaSize",
                        "example-schema:length", "example-schema:wavelength",
                        "example-schema:duration", "example-schema:another-duration",
-                       "example-schema:activeNumber"};
+                       "example-schema:activeNumber",
+                       "example-schema:numberOrString"};
             }
 
             SECTION("example-schema:a")
