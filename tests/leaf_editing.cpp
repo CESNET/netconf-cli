@@ -52,6 +52,14 @@ TEST_CASE("leaf editing")
     schema->addLeaf("/mod:list", "mod:leafInList", yang::String{});
     schema->addLeaf("/", "mod:refToString", yang::LeafRef{"/mod:leafString"});
     schema->addLeaf("/", "mod:refToInt8", yang::LeafRef{"/mod:leafInt8"});
+    schema->addLeaf("/", "mod:refToInt8", yang::LeafRef{"/mod:leafInt8"});
+    schema->addLeaf("/", "mod:intOrString", yang::Union{{yang::Int32{}, yang::String{}}});
+    schema->addLeaf("/", "mod:twoInts", yang::Union{{yang::Uint8{}, yang::Int16{}}});
+    schema->addLeaf("/", "mod:unionStringEnumLeafref", yang::Union{{
+        yang::String{},
+        createEnum({"foo", "bar"}),
+        yang::LeafRef{"/mod:leafEnum"}
+    }});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -200,6 +208,57 @@ TEST_CASE("leaf editing")
                 input = "set mod:leafBool true";
                 expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafBool")});
                 expected.m_data = true;
+            }
+
+            SECTION("union")
+            {
+                SECTION("int")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("intOrString")});
+                    input = "set mod:intOrString 90";
+                    expected.m_data = int32_t{90};
+                }
+                SECTION("string")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("intOrString")});
+                    input = "set mod:intOrString \"test\"";
+                    expected.m_data = std::string{"test"};
+                }
+
+                SECTION("union with two integral types")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("twoInts")});
+                    SECTION("uint8")
+                    {
+                        input = "set mod:twoInts 100";
+                        expected.m_data = uint8_t{100};
+                    }
+                    SECTION("int16")
+                    {
+                        input = "set mod:twoInts 6666";
+                        expected.m_data = int16_t{6666};
+                    }
+                }
+
+                SECTION("union with enum and leafref to enum")
+                {
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("unionStringEnumLeafref")});
+                    SECTION("string")
+                    {
+                        input = "set mod:unionStringEnumLeafref \"AHOJ\"";
+                        expected.m_data = std::string{"AHOJ"};
+                    }
+                    SECTION("enum")
+                    {
+                        input = "set mod:unionStringEnumLeafref bar";
+                        expected.m_data = enum_("bar");
+                    }
+                    SECTION("enum leafref")
+                    {
+                        input = "set mod:unionStringEnumLeafref coze";
+                        expected.m_data = enum_("coze");
+                    }
+                }
             }
 
             SECTION("binary")
@@ -444,6 +503,11 @@ TEST_CASE("leaf editing")
         SECTION("identity prefix without name")
         {
             input = "set mod:contA/identInCont pizza-module:";
+        }
+
+        SECTION("set a union path to a wrong type")
+        {
+            input = "set mod:intOrString true";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
