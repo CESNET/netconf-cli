@@ -11,7 +11,7 @@
 #include <boost/mpl/for_each.hpp>
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/support/utility/error_reporting.hpp>
-
+#include <experimental/iterator>
 
 #include "ast_commands.hpp"
 #include "parser_context.hpp"
@@ -408,8 +408,15 @@ struct leaf_data_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
         if (parserContext.m_errorMsg.empty()) {
-            parserContext.m_errorMsg = "leaf data type mismatch: Expected " +
-                leafDataTypeToString(schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node)) + " here:";
+            auto expectedType = schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+            std::ostringstream typeStr;
+            if (expectedType == yang::LeafDataTypes::Union) {
+                auto unionTypes = schema.unionTypes(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+                std::transform(unionTypes.begin(), unionTypes.end(), std::experimental::make_ostream_joiner(typeStr, " or "), leafDataTypeToString);
+            } else {
+                typeStr << leafDataTypeToString(expectedType);
+            }
+            parserContext.m_errorMsg = "leaf data type mismatch: Expected " + typeStr.str() + " here:";
             return x3::error_handler_result::fail;
         }
         return x3::error_handler_result::rethrow;
@@ -425,6 +432,12 @@ struct leaf_data_base_class {
         auto& schema = parserContext.m_schema;
 
         auto type = schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+        if (type == yang::LeafDataTypes::Union) {
+            auto unionTypes = schema.unionTypes(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+            _pass(context) = std::any_of(unionTypes.begin(), unionTypes.end(), [](auto unionType) { return unionType == TYPE; });
+            return;
+        }
+
         if (type == yang::LeafDataTypes::LeafRef) {
             type = schema.leafrefBaseType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
         }
