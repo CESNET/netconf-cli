@@ -299,6 +299,14 @@ module example-schema {
 
     rpc myRpc {}
 
+    leaf numberOrString {
+        type union {
+            type int32;
+            type string;
+        }
+        description "Can be an int32 or a string.";
+    }
+
 })";
 
 namespace std {
@@ -669,7 +677,8 @@ TEST_CASE("yangschema")
                        "example-schema:pizzaSize",
                        "example-schema:length", "example-schema:wavelength",
                        "example-schema:duration", "example-schema:another-duration",
-                       "example-schema:activeNumber"};
+                       "example-schema:activeNumber",
+                       "example-schema:numberOrString"};
             }
 
             SECTION("example-schema:a")
@@ -736,6 +745,12 @@ TEST_CASE("yangschema")
             SECTION("leafString")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafString")));
+            }
+
+            SECTION("numberOrString")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("numberOrString")));
+                expected = "Can be an int32 or a string.";
             }
 
             REQUIRE(ys.description(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
