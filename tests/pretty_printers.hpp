@@ -63,6 +63,14 @@ std::ostream& operator<<(std::ostream& s, const yang::LeafDataType& type)
         });
         s << "}";
     }
+    if (std::holds_alternative<yang::LeafRef>(type)) {
+        s << "{" << std::get<yang::LeafRef>(type).m_targetXPath << "," << *std::get<yang::LeafRef>(type).m_targetType  << "}";
+    }
+    if (std::holds_alternative<yang::Union>(type)) {
+        s << "{" << std::endl;
+        auto types = std::get<yang::Union>(type).m_unionTypes;
+        std::copy(types.begin(), types.end(), std::experimental::make_ostream_joiner(s, ",\n"));
+    }
     s << std::endl;
     return s;
 }

@@ -10,6 +10,7 @@
 #include <set>
 #include <string>
 #include <variant>
+#include <vector>
 
 struct enum_;
 struct identityRef_;
@@ -62,6 +63,7 @@ struct IdentityRef {
     std::set<identityRef_> m_allowedValues;
 };
 struct LeafRef;
+struct Union;
 using LeafDataType = std::variant<
     yang::String,
     yang::Decimal,
@@ -77,7 +79,8 @@ using LeafDataType = std::variant<
     yang::Enum,
     yang::Binary,
     yang::IdentityRef,
-    yang::LeafRef
+    yang::LeafRef,
+    yang::Union
 >;
 struct LeafRef {
     LeafRef(const LeafRef& src);
@@ -85,5 +88,10 @@ struct LeafRef {
     bool operator==(const LeafRef& other) const;
     std::string m_targetXPath;
     std::unique_ptr<LeafDataType> m_targetType;
+};
+
+struct Union {
+    bool operator==(const Union& other) const;
+    std::vector<LeafDataType> m_unionTypes;
 };
 }
