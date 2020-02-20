@@ -113,6 +113,10 @@ struct impl_leafDataTypeToString {
     {
         return "a base64-encoded binary value";
     }
+    std::string operator()(const yang::Union&)
+    {
+        return "a union";
+    }
 };
 
 std::string leafDataTypeToString(const yang::LeafDataType& type)

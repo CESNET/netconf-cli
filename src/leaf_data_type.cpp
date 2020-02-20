@@ -28,6 +28,10 @@ bool LeafRef::operator==(const LeafRef& other) const
 {
     return this->m_pointsTo == other.m_pointsTo;
 }
+bool Union::operator==(const Union& other) const
+{
+    return this->m_unionTypes == other.m_unionTypes;
+}
 bool String::operator==(const String&) const
 {
     return true;

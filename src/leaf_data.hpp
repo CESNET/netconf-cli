@@ -194,6 +194,15 @@ struct impl_LeafData {
     {
         return std::visit(*this, parserContext.m_schema.leafType(leafRef.m_pointsTo));
     }
+    bool operator()(const yang::Union& unionInfo) const
+    {
+        for (const auto& it : unionInfo.m_unionTypes) {
+            if (std::visit(*this, it)) {
+                return true;
+            }
+        }
+        return false;
+    }
 };
 
 struct LeafData : x3::parser<LeafData> {
