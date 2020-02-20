@@ -39,6 +39,9 @@ struct ParserContext {
     // Iterator pointing to where suggestions were created
     boost::optional<std::string::const_iterator> m_completionIterator;
 
+    bool m_findingLeafDataType = false;
+    yang::LeafDataTypes m_parseLeafDataAs;
+
 private:
     boost::variant<dataPath_, schemaPath_> m_curPath;
 };

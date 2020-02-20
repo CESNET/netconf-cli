@@ -11,7 +11,7 @@
 #include <boost/mpl/for_each.hpp>
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/support/utility/error_reporting.hpp>
-
+#include <experimental/iterator>
 
 #include "ast_commands.hpp"
 #include "parser_context.hpp"
@@ -198,15 +198,17 @@ struct module_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        const auto& schema = parserContext.m_schema;
+        if constexpr (!std::is_same<T, boost::spirit::x3::unused_type>()) {
+            auto& parserContext = x3::get<parser_context_tag>(context);
+            const auto& schema = parserContext.m_schema;
 
-        if (schema.isModule(ast.m_name)) {
-            parserContext.m_curModule = ast.m_name;
-            parserContext.m_topLevelModulePresent = true;
-        } else {
-            parserContext.m_errorMsg = "Invalid module name.";
-            _pass(context) = false;
+            if (schema.isModule(ast.m_name)) {
+                parserContext.m_curModule = ast.m_name;
+                parserContext.m_topLevelModulePresent = true;
+            } else {
+                parserContext.m_errorMsg = "Invalid module name.";
+                _pass(context) = false;
+            }
         }
     }
 };
@@ -408,8 +410,15 @@ struct leaf_data_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
         if (parserContext.m_errorMsg.empty()) {
-            parserContext.m_errorMsg = "leaf data type mismatch: Expected " +
-                leafDataTypeToString(schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node)) + " here:";
+            auto expectedType = schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+            std::ostringstream typeStr;
+            if (expectedType == yang::LeafDataTypes::Union) {
+                auto unionTypes = schema.unionTypes(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+                std::transform(unionTypes.begin(), unionTypes.end(), std::experimental::make_ostream_joiner(typeStr, " or "), leafDataTypeToString);
+            } else {
+                typeStr << leafDataTypeToString(expectedType);
+            }
+            parserContext.m_errorMsg = "leaf data type mismatch: Expected " + typeStr.str() + " here:";
             return x3::error_handler_result::fail;
         }
         return x3::error_handler_result::rethrow;
@@ -424,12 +433,27 @@ struct leaf_data_base_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& schema = parserContext.m_schema;
 
-        auto type = schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
-        if (type == yang::LeafDataTypes::LeafRef) {
-            type = schema.leafrefBaseType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+        if (parserContext.m_findingLeafDataType) {
+            auto type = schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+            if (type == TYPE) {
+                parserContext.m_parseLeafDataAs = type;
+            } else if (type == yang::LeafDataTypes::LeafRef) {
+                parserContext.m_parseLeafDataAs = schema.leafrefBaseType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+            } else if (type == yang::LeafDataTypes::Union) {
+                auto unionTypes = schema.unionTypes(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+                parserContext.m_parseLeafDataAs = *std::find_if(unionTypes.begin(), unionTypes.end(), [&schema, &parserContext] (auto unionType) {
+                    if (unionType == yang::LeafDataTypes::LeafRef) {
+                        unionType = schema.leafrefBaseType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+                    }
+                    return unionType == TYPE || unionType == parserContext.m_parseLeafDataAs;
+                });
+            }
+            _pass(context) = false;
+            return;
+
         }
 
-        if (type != TYPE) {
+        if (parserContext.m_parseLeafDataAs != TYPE) {
             _pass(context) = false;
         }
     }
@@ -442,17 +466,19 @@ struct leaf_data_enum_class : leaf_data_base_class<yang::LeafDataTypes::Enum> {
     void on_success(Iterator const& start, Iterator const& end, T& ast, Context const& context)
     {
         leaf_data_base_class::on_success(start, end, ast, context);
-        // Base class on_success cannot return for us, so we check if it failed the parser.
-        if (_pass(context) == false)
-            return;
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        auto& schema = parserContext.m_schema;
 
-        if (!schema.leafEnumHasValue(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node, ast.m_value)) {
-            _pass(context) = false;
-            parserContext.m_errorMsg = "leaf data type mismatch: Expected an enum here. Allowed values:";
-            for (const auto& it : schema.enumValues(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node)) {
-                parserContext.m_errorMsg += " " + it;
+        if constexpr (!std::is_same<T, boost::spirit::x3::unused_type>()) {
+            // Base class on_success cannot return for us, so we check if it failed the parser.
+            if (_pass(context) == false)
+                return;
+            auto& parserContext = x3::get<parser_context_tag>(context);
+            auto& schema = parserContext.m_schema;
+            if (!schema.leafEnumHasValue(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node, ast.m_value)) {
+                _pass(context) = false;
+                parserContext.m_errorMsg = "leaf data type mismatch: Expected an enum here. Allowed values:";
+                for (const auto& it : schema.enumValues(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node)) {
+                    parserContext.m_errorMsg += " " + it;
+                }
             }
         }
     }
@@ -466,20 +492,21 @@ struct leaf_data_identityRef_class : leaf_data_base_class<yang::LeafDataTypes::I
     {
         // FIXME: can I reuse leaf_data_enum_class somehow..?
         leaf_data_base_class::on_success(start, end, ast, context);
-        // Base class on_success cannot return for us, so we check if it failed the parser.
-        if (_pass(context) == false)
-            return;
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        auto& schema = parserContext.m_schema;
+        if constexpr (!std::is_same<T, boost::spirit::x3::unused_type>()) {
+            // Base class on_success cannot return for us, so we check if it failed the parser.
+            if (_pass(context) == false)
+                return;
+            auto& parserContext = x3::get<parser_context_tag>(context);
+            auto& schema = parserContext.m_schema;
+            ModuleValuePair pair;
+            if (ast.m_prefix) {
+                pair.first = ast.m_prefix.get().m_name;
+            }
+            pair.second = ast.m_value;
 
-        ModuleValuePair pair;
-        if (ast.m_prefix) {
-            pair.first = ast.m_prefix.get().m_name;
-        }
-        pair.second = ast.m_value;
-
-        if (!schema.leafIdentityIsValid(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node, pair)) {
-            _pass(context) = false;
+            if (!schema.leafIdentityIsValid(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node, pair)) {
+                _pass(context) = false;
+            }
         }
     }
 };

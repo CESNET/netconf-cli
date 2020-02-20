@@ -11,6 +11,7 @@
 #include <boost/spirit/home/x3.hpp>
 #include "ast_commands.hpp"
 #include "ast_handlers.hpp"
+#include "parser_context.hpp"
 
 
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
@@ -104,6 +105,52 @@ using x3::uint16;
 using x3::uint32;
 using x3::uint64;
 
+// This is the implementation of setCtxMember. The template argument specifies, which member you want to
+// change. The main problem is that we need the type of the member (for the method arguments), but we only have `U
+// ParserContext::*` (that's the TYPE of `pointerToMember`, which itself is a value). This `U` is the type of the member
+// and the asterisk is the name of the member. So, `int ParserContext::m_foo`, is "pointer-to-member m_foo of class
+// ParserContext, which is an int".  So, we need to get the `int` part of the whole thing.
+template <auto pointerToMember>
+struct memberCtx_impl {
+    // Firstly, I create a template, which does nothing by itself and its argument is a type.
+    template <typename> struct getTypeOfMember;
+
+    // Then, I create a specialization of this template, that accepts only pointer-to-member of ParserContext types.
+    // Now, here's the trick: when the template gets instantiated with, for example, `int ParserContext::m_foo`,
+    // obviously, this specialization is going to be chosen. However, this specialization is ALSO a template, and,
+    // conveniently, the U argument gets deduced! So in the given example, U = int, which is the underlying type of the
+    // member and that's exactly what I wanted. I save the underlying type in member_type.
+    template <typename U> struct getTypeOfMember<U ParserContext::*> { using member_type = U; };
+
+    // Here, I use getTypeOfMember to get the actual type, for usage in operator()
+    using TypeOfMember = typename getTypeOfMember<decltype(pointerToMember)>::member_type;
+
+    class RuleIdentifier;
+
+    // This method creates a parser that sets a variable in the injected ParserContext.
+    auto set(TypeOfMember value)
+    {
+        auto setVal = [value] (auto ctx) {
+            auto& parserContext = x3::get<parser_context_tag>(ctx);
+            parserContext.*pointerToMember = value;
+        };
+
+        // Some identifying class is mandatory, so I just use a stub class here.
+        return x3::rule<class RuleIdentifier>{"setCtxMember"} = x3::omit[x3::no_skip[x3::eps[setVal]]];
+    }
+};
+
+// This template function returns a parser which sets values of members of the ParserContext class injected in the parser.
+// The member is specified by the template argument. It should be a value of type pointer-to-member to class ParserContext.
+// For example, to set the value of the member "m_foo", one should use "&ParserContext::m_foo" as the template argument.
+// The value you want to set the member to is specified by the function argument. If "m_foo" were an `int` and you wanted to set it 30,
+// you would call this function like this: `setCtxMember<&ParserContext::m_foo>(30);`
+template <auto Member>
+auto setCtxMember(typename memberCtx_impl<Member>::TypeOfMember value)
+{
+    return memberCtx_impl<Member>().set(value);
+};
+
 auto const key_identifier_def =
     lexeme[
         ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
@@ -118,8 +165,11 @@ auto const createValueSuggestions_def =
 auto const suggestKeysEnd_def =
     x3::eps;
 
+auto const leaf_data_find_type = x3::rule<class leaf_data_find_type_class, x3::unused_type>{"leaf_data_find_type"} =
+    setCtxMember<&ParserContext::m_findingLeafDataType>(true) >> -x3::omit[leaf_data] >> setCtxMember<&ParserContext::m_findingLeafDataType>(false);
+
 auto const keyValue_def =
-    key_identifier > '=' > createValueSuggestions > leaf_data;
+    key_identifier > '=' > createValueSuggestions > -leaf_data_find_type > leaf_data;
 
 auto const keyValueWrapper =
     lexeme['[' > createKeySuggestions > keyValue > suggestKeysEnd > ']'];
@@ -269,7 +319,7 @@ auto const leaf_data_identityRef_def =
     createIdentitySuggestions >> leaf_data_identityRef_data;
 
 auto const leaf_data_def =
-x3::no_skip[x3::expect[
+x3::no_skip[
     leaf_data_enum |
     leaf_data_decimal |
     leaf_data_bool |
@@ -283,7 +333,7 @@ x3::no_skip[x3::expect[
     leaf_data_uint64 |
     leaf_data_binary |
     leaf_data_identityRef |
-    leaf_data_string]];
+    leaf_data_string];
 
 struct ls_options_table : x3::symbols<LsOption> {
     ls_options_table()
@@ -313,7 +363,7 @@ auto const get_def =
     get_::name >> -(space_separator >> ((dataPathListEnd | dataPath) | (module >> "*")));
 
 auto const set_def =
-    set_::name >> space_separator > leafPath > space_separator > leaf_data;
+    set_::name >> space_separator > leafPath > space_separator >> -leaf_data_find_type > leaf_data;
 
 auto const commit_def =
     commit_::name >> x3::attr(commit_());
