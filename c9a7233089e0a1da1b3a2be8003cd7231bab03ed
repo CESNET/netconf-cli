@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a72a5e86_53ed95b3",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-21T10:44:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "728d1e31_e45fb0af",
+      "revId": "c9a7233089e0a1da1b3a2be8003cd7231bab03ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a56301d4_22326731",
         "filename": "src/interpreter.cpp",
         "patchSetId": 10
@@ -30,6 +48,24 @@
       "writtenOn": "2020-02-21T09:24:03Z",
       "side": 1,
       "message": "Enums are shown just as enums:\n\n  /\u003e describe czechlight-roadm-device:media-channels/add/port\n  /czechlight-roadm-device:media-channels/add/port: an enum\n\nFeel free to close this as out-of-scope for now, but perhaps including the type name here would not hurt.",
+      "revId": "c9a7233089e0a1da1b3a2be8003cd7231bab03ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bace67ad_eff30f9d",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-21T10:44:12Z",
+      "side": 1,
+      "message": "I could create a method in Schema that gives me the name of the type, but I need help with the design of the method. If the leaf type is derived, then it\u0027s easy: I\u0027ll just return a string with the name (and then use the original leafType method to get the base type). But what if the leaf doesn\u0027t have a derived type? What should the method return then?",
+      "parentUuid": "a56301d4_22326731",
       "revId": "c9a7233089e0a1da1b3a2be8003cd7231bab03ed",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
