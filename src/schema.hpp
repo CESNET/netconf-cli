@@ -77,6 +77,7 @@ public:
     virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const std::string& path) const = 0;
+    virtual std::optional<std::string> leafTypeName(const std::string& path) const = 0;
     virtual yang::LeafDataTypes leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafrefBaseType(const std::string& path) const = 0;
     virtual std::string leafrefPath(const std::string& leafrefPath) const = 0;

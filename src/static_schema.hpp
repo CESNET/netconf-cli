@@ -58,6 +58,7 @@ public:
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const std::string& path) const override;
+    std::optional<std::string> leafTypeName(const std::string& path) const override;
     yang::LeafDataTypes leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafrefBaseType(const std::string& path) const override;
     std::string leafrefPath(const std::string& leafrefPath) const override;
