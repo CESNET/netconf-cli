@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "728d1e31_e45fb0af",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-21T09:24:03Z",
+      "side": 1,
+      "message": "Now it prints this:\n\n /\u003e describe czechlight-roadm-device:media-channels/channel\n /czechlight-roadm-device:media-channels/channel: -\u003e /czechlight-roadm-device:channel-plan/czechlight-roadm-device:channel/czechlight-roadm-device:name (a string) (key)\n\nThat\u0027s a lot of output. If it is not too much work, can you please remove model prefixes where they are not needed?",
+      "revId": "c9a7233089e0a1da1b3a2be8003cd7231bab03ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a56301d4_22326731",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-21T09:24:03Z",
+      "side": 1,
+      "message": "Enums are shown just as enums:\n\n  /\u003e describe czechlight-roadm-device:media-channels/add/port\n  /czechlight-roadm-device:media-channels/add/port: an enum\n\nFeel free to close this as out-of-scope for now, but perhaps including the type name here would not hurt.",
+      "revId": "c9a7233089e0a1da1b3a2be8003cd7231bab03ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
