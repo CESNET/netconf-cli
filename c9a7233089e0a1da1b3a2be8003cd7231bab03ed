@@ -69,6 +69,24 @@
       "revId": "c9a7233089e0a1da1b3a2be8003cd7231bab03ed",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb745a80_aee898f9",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-02-21T14:09:24Z",
+      "side": 1,
+      "message": "So the first situation is like this, right?\n\n typedef druh-rohlicku {\n   type enum ...\n }\n\n leaf ble {\n   type druh-rohlicku;\n }\n\nAnd in this context, `describe` shall probably say \"enum druh-rohlicku\". That makes sense.\n\nThe other case is an \"anonymous enum\" like this one, right?\n\n leaf ble {\n   type enum ...\n }\n\nI think there\u0027s nothing useful to use, IMHO, so the UI should not show anything, and I think a std::nullopt is appropriate as a return type of your helper.",
+      "parentUuid": "bace67ad_eff30f9d",
+      "revId": "c9a7233089e0a1da1b3a2be8003cd7231bab03ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
