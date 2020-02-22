@@ -175,6 +175,15 @@ bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& n
     return keys.find(key) != keys.end();
 }
 
+bool YangSchema::leafIsKey(const std::string& leafPath) const
+{
+    auto node = getSchemaNode(leafPath);
+    if (!node || node->nodetype() != LYS_LEAF)
+        return false;
+
+    return libyang::Schema_Node_Leaf{node}.is_key().get();
+}
+
 libyang::S_Schema_Node YangSchema::impl_getSchemaNode(const std::string& node) const
 {
     // If no node is found find_path prints an error message, so we have to
@@ -257,30 +266,64 @@ yang::LeafDataTypes lyTypeToLeafDataTypes(LY_DATA_TYPE type)
     }
 }
 
-yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
+namespace {
+yang::LeafDataTypes impl_leafType(const libyang::S_Schema_Node& node)
 {
     using namespace std::string_literals;
-    if (!isLeaf(location, node))
-        throw InvalidSchemaQueryException(fullNodeName(location, node) + " is not a leaf");
-
-    libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
+    libyang::Schema_Node_Leaf leaf(node);
     auto baseType{leaf.type()->base()};
     try {
         return lyTypeToLeafDataTypes(baseType);
     } catch (std::logic_error& ex) {
-        throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported: " + ex.what());
+        throw UnsupportedYangTypeException("the type of "s + node->name() + " is not supported: " + ex.what());
     }
 }
+}
 
-yang::LeafDataTypes YangSchema::leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const
+yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    return impl_leafType(getSchemaNode(location, node));
+}
+
+yang::LeafDataTypes YangSchema::leafType(const std::string& path) const
+{
+    return impl_leafType(getSchemaNode(path));
+}
+
+std::optional<std::string> YangSchema::leafTypeName(const std::string& path) const
+{
+    libyang::Schema_Node_Leaf leaf(getSchemaNode(path));
+    return leaf.type()->der().get() ? std::optional{leaf.type()->der()->name()} : std::nullopt;
+}
+
+namespace {
+yang::LeafDataTypes impl_leafrefBaseType(const libyang::S_Schema_Node& node)
 {
     using namespace std::string_literals;
-    libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
+    libyang::Schema_Node_Leaf leaf(node);
     try {
         return lyTypeToLeafDataTypes(leaf.type()->info()->lref()->target()->type()->base());
     } catch (std::logic_error& ex) {
-        throw UnsupportedYangTypeException("the type of "s + fullNodeName(location, node) + " is not supported: " + ex.what());
+        throw UnsupportedYangTypeException("the type of "s + node->name() + " is not supported: " + ex.what());
     }
+}
+}
+
+yang::LeafDataTypes YangSchema::leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    return impl_leafrefBaseType(getSchemaNode(location, node));
+}
+
+yang::LeafDataTypes YangSchema::leafrefBaseType(const std::string& path) const
+{
+    return impl_leafrefBaseType(getSchemaNode(path));
+}
+
+std::string YangSchema::leafrefPath(const std::string& leafrefPath) const
+{
+    using namespace std::string_literals;
+    libyang::Schema_Node_Leaf leaf(getSchemaNode(leafrefPath));
+    return leaf.type()->info()->lref()->target()->path(LYS_PATH_FIRST_PREFIX);
 }
 
 std::set<std::string> YangSchema::modules() const
@@ -420,4 +463,35 @@ yang::NodeTypes YangSchema::nodeType(const schemaPath_& location, const ModuleNo
 yang::NodeTypes YangSchema::nodeType(const std::string& path) const
 {
     return impl_nodeType(getSchemaNode(path));
+}
+
+std::optional<std::string> YangSchema::description(const std::string& path) const
+{
+    auto node = getSchemaNode(path.c_str());
+    return node->dsc() ? std::optional{node->dsc()} : std::nullopt;
+}
+
+std::optional<std::string> YangSchema::units(const std::string& path) const
+{
+    auto node = getSchemaNode(path.c_str());
+    if (node->nodetype() != LYS_LEAF) {
+        return std::nullopt;
+    }
+    libyang::Schema_Node_Leaf leaf{node};
+    auto units = leaf.units();
+
+    // A leaf can specify units as part of its definition.
+    if (units) {
+        return units;
+    }
+
+    // A typedef (or its parent typedefs) can specify units too. We'll use the first `units` we find.
+    for (auto parentTypedef = leaf.type()->der(); parentTypedef; parentTypedef = parentTypedef->type()->der()) {
+        units = parentTypedef->units();
+        if (units) {
+            return units;
+        }
+    }
+
+    return std::nullopt;
 }

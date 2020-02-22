@@ -54,13 +54,20 @@ public:
     bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const override;
     bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const override;
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
+    bool leafIsKey(const std::string& leafPath) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
-    yang::LeafDataTypes leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const override;
+    yang::LeafDataTypes leafType(const std::string& path) const override;
+    std::optional<std::string> leafTypeName(const std::string& path) const override;
+    yang::LeafDataTypes leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const override;
+    yang::LeafDataTypes leafrefBaseType(const std::string& path) const override;
+    std::string leafrefPath(const std::string& leafrefPath) const override;
     const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
     const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion) const override;
     std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const override;
+    std::optional<std::string> description(const std::string& path) const override;
+    std::optional<std::string> units(const std::string& path) const override;
 
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
     void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);

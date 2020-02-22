@@ -189,7 +189,7 @@ std::string lastNodeOfSchemaPath(const std::string& path)
     return res;
 }
 
-yang::LeafDataTypes StaticSchema::leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const
+yang::LeafDataTypes StaticSchema::leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     auto leaf{boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node)))};
@@ -202,6 +202,11 @@ yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const Mo
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
+}
+
+yang::LeafDataTypes StaticSchema::leafType([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"StaticSchema::leafType not implemented"};
 }
 
 const std::set<std::string> StaticSchema::enumValues(const schemaPath_& location, const ModuleNodePair& node) const
@@ -271,7 +276,37 @@ yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const Module
     }
 }
 
+std::optional<std::string> StaticSchema::description([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"StaticSchema::description not implemented"};
+}
+
+std::optional<std::string> StaticSchema::units([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"StaticSchema::units not implemented"};
+}
+
 yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path) const
 {
     throw std::runtime_error{"Internal error: StaticSchema::nodeType(std::string) not implemented. The tests should not have called this overload."};
+}
+
+yang::LeafDataTypes StaticSchema::leafrefBaseType([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::leafrefBaseType(std::string) not implemented. The tests should not have called this overload."};
+}
+
+std::string StaticSchema::leafrefPath([[maybe_unused]] const std::string& leafrefPath) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::leafrefPath(std::string) not implemented. The tests should not have called this overload."};
+}
+
+bool StaticSchema::leafIsKey([[maybe_unused]] const std::string& leafPath) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::leafIsKey(std::string) not implemented. The tests should not have called this overload."};
+}
+
+std::optional<std::string> StaticSchema::leafTypeName([[maybe_unused]] const std::string& path) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::leafTypeName(std::string) not implemented. The tests should not have called this overload."};
 }

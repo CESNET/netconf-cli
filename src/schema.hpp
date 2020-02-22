@@ -73,9 +73,16 @@ public:
     virtual bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const = 0;
     virtual bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const = 0;
     virtual bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const = 0;
+    virtual bool leafIsKey(const std::string& leafPath) const = 0;
     virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
-    virtual yang::LeafDataTypes leafrefBase(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual yang::LeafDataTypes leafType(const std::string& path) const = 0;
+    virtual std::optional<std::string> leafTypeName(const std::string& path) const = 0;
+    virtual yang::LeafDataTypes leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
+    virtual yang::LeafDataTypes leafrefBaseType(const std::string& path) const = 0;
+    virtual std::string leafrefPath(const std::string& leafrefPath) const = 0;
+    virtual std::optional<std::string> description(const std::string& location) const = 0;
+    virtual std::optional<std::string> units(const std::string& location) const = 0;
 
     virtual const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const = 0;
     virtual const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const = 0;

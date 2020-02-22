@@ -426,7 +426,7 @@ struct leaf_data_base_class {
 
         auto type = schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
         if (type == yang::LeafDataTypes::LeafRef) {
-            type = schema.leafrefBase(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+            type = schema.leafrefBaseType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
         }
 
         if (type != TYPE) {
@@ -496,6 +496,8 @@ struct set_class {
 };
 
 struct commit_class;
+
+struct describe_class;
 
 struct help_class;
 
