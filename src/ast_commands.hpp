@@ -164,7 +164,7 @@ struct describe_ : x3::position_tagged {
 };
 
 struct help_;
-using CommandTypes = boost::mpl::vector<discard_, ls_, cd_, create_, delete_, set_, commit_, get_, describe_, help_>;
+using CommandTypes = boost::mpl::vector<cd_, commit_, create_, delete_, describe_, discard_, get_, help_, ls_, set_>;
 struct help_ : x3::position_tagged {
     static constexpr auto name = "help";
     static constexpr auto shortHelp = "help - Print help for commands.";
