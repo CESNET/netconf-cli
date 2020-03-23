@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb91570c_abf28695",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-23T13:36:09Z",
+      "side": 1,
+      "message": "Can you please add a few more tests like:\n\n- a union of string, enumA, leafref-to-enumB,\n- a union of uint8_t and int16_t where I think that \u0027100\u0027 should be parsed as uint8_t{100}, while 6666 should be parsed as int16_t{6666}.\n\nI\u0027m especially curious about the first case.",
+      "revId": "2db2549f82d0bae2e5bb42d3960ee4faf84bde64",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
