@@ -125,6 +125,7 @@ add_library(parser STATIC
     src/interpreter.cpp
     src/ast_handlers.cpp
     src/completion.cpp
+    src/leaf_data.cpp
     )
 target_link_libraries(parser schemas utils ast_values)
 
