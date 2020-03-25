@@ -11,12 +11,12 @@
 #include <boost/spirit/home/x3.hpp>
 #include "ast_commands.hpp"
 #include "ast_handlers.hpp"
+#include "common_parsers.hpp"
+#include "custom_parsers.hpp"
 
 
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
 x3::rule<key_identifier_class, std::string> const key_identifier = "key_identifier";
-x3::rule<node_identifier_class, std::string> const node_identifier = "node_identifier";
-x3::rule<module_identifier_class, std::string> const module_identifier = "module_identifier";
 x3::rule<listPrefix_class, std::string> const listPrefix = "listPrefix";
 x3::rule<listSuffix_class, std::vector<keyValue_>> const listSuffix = "listSuffix";
 x3::rule<listElement_class, listElement_> const listElement = "listElement";
@@ -24,7 +24,6 @@ x3::rule<list_class, list_> const list = "list";
 x3::rule<nodeup_class, nodeup_> const nodeup = "nodeup";
 x3::rule<container_class, container_> const container = "container";
 x3::rule<leaf_class, leaf_> const leaf = "leaf";
-x3::rule<module_class, module_> const module = "module";
 x3::rule<dataNode_class, dataNode_> const dataNode = "dataNode";
 x3::rule<schemaNode_class, schemaNode_> const schemaNode = "schemaNode";
 x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
@@ -38,24 +37,6 @@ x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
 x3::rule<space_separator_class, x3::unused_type> const space_separator = "space_separator";
-
-x3::rule<leaf_data_class, leaf_data_> const leaf_data = "leaf_data";
-x3::rule<leaf_data_enum_class, enum_> const leaf_data_enum = "leaf_data_enum";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Decimal>, double> const leaf_data_decimal = "leaf_data_decimal";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Bool>, bool> const leaf_data_bool = "leaf_data_bool";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Int8>, int8_t> const leaf_data_int8 = "leaf_data_int8";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Uint8>, uint8_t> const leaf_data_uint8 = "leaf_data_uint8";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Int16>, int16_t> const leaf_data_int16 = "leaf_data_int16";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Uint16>, uint16_t> const leaf_data_uint16 = "leaf_data_uint16";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Int32>, int32_t> const leaf_data_int32 = "leaf_data_int32";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Uint32>, uint32_t> const leaf_data_uint32 = "leaf_data_uint32";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Int64>, int64_t> const leaf_data_int64 = "leaf_data_int64";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Uint64>, uint64_t> const leaf_data_uint64 = "leaf_data_uint64";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::String>, std::string> const leaf_data_string = "leaf_data_string";
-x3::rule<leaf_data_binary_data_class, std::string> const leaf_data_binary_data = "leaf_data_binary_data";
-x3::rule<leaf_data_base_class<yang::LeafDataTypes::Binary>, binary_> const leaf_data_binary = "leaf_data_binary";
-x3::rule<leaf_data_identityRef_data_class, identityRef_> const leaf_data_identityRef_data = "leaf_data_identityRef_data";
-x3::rule<leaf_data_identityRef_class, identityRef_> const leaf_data_identityRef = "leaf_data_identityRef";
 
 x3::rule<discard_class, discard_> const discard = "discard";
 x3::rule<ls_class, ls_> const ls = "ls";
@@ -76,8 +57,6 @@ x3::rule<createValueSuggestions_class, x3::unused_type> const createValueSuggest
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
 x3::rule<completing_class, x3::unused_type> const completing = "completing";
-x3::rule<createSetSuggestions_class<yang::LeafDataTypes::Enum>, x3::unused_type> const createEnumSuggestions = "createEnumSuggestions";
-x3::rule<createSetSuggestions_class<yang::LeafDataTypes::IdentityRef>, x3::unused_type> const createIdentitySuggestions = "createIdentitySuggestions";
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -87,22 +66,12 @@ x3::rule<createSetSuggestions_class<yang::LeafDataTypes::IdentityRef>, x3::unuse
 namespace ascii = boost::spirit::x3::ascii;
 
 using ascii::space;
-using x3::_attr;
 using x3::alnum;
 using x3::alpha;
 using x3::char_;
-using x3::double_;
 using x3::expect;
 using x3::lexeme;
 using x3::lit;
-using x3::int8;
-using x3::int16;
-using x3::int32;
-using x3::int64;
-using x3::uint8;
-using x3::uint16;
-using x3::uint32;
-using x3::uint64;
 
 auto const key_identifier_def =
     lexeme[
@@ -124,15 +93,6 @@ auto const keyValue_def =
 auto const keyValueWrapper =
     lexeme['[' > createKeySuggestions > keyValue > suggestKeysEnd > ']'];
 
-auto const module_identifier_def =
-    lexeme[
-            ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
-    ];
-
-auto const node_identifier_def =
-    lexeme[
-            ((alpha | char_("_")) >> *(alnum | char_("_") | char_("-") | char_(".")))
-    ];
 
 auto const listPrefix_def =
     node_identifier;
@@ -152,9 +112,6 @@ auto const nodeup_def =
 
 auto const container_def =
     node_identifier;
-
-auto const module_def =
-    module_identifier >> x3::no_skip[':'] >> !x3::no_skip[space];
 
 auto const leaf_def =
     node_identifier;
@@ -211,79 +168,6 @@ auto const presenceContainerPath_def =
 
 auto const listInstancePath_def =
     dataPath;
-
-auto const createEnumSuggestions_def =
-    x3::eps;
-
-auto const leaf_data_enum_def =
-    createEnumSuggestions >> +char_;
-
-auto const leaf_data_decimal_def =
-    double_;
-
-struct bool_symbol_table : x3::symbols<bool> {
-    bool_symbol_table()
-    {
-    add
-        ("true", true)
-        ("false", false);
-    }
-} const bool_rule;
-
-auto const leaf_data_bool_def =
-    bool_rule;
-auto const leaf_data_int8_def =
-    int8;
-auto const leaf_data_int16_def =
-    int16;
-auto const leaf_data_int32_def =
-    int32;
-auto const leaf_data_int64_def =
-    int64;
-auto const leaf_data_uint8_def =
-    uint8;
-auto const leaf_data_uint16_def =
-    uint16;
-auto const leaf_data_uint32_def =
-    uint32;
-auto const leaf_data_uint64_def =
-    uint64;
-auto const leaf_data_string_def =
-    '\'' >> *(char_-'\'') >> '\'' |
-    '\"' >> *(char_-'\"') >> '\"';
-
-// This intermediate rule is neccessary for coercing to std::string.
-auto const leaf_data_binary_data_def =
-    +(x3::alnum | char_('+') | char_('/')) >> -char_('=') >> -char_('=');
-
-auto const leaf_data_binary_def =
-    leaf_data_binary_data;
-
-auto const leaf_data_identityRef_data_def =
-    -module  >> node_identifier;
-
-auto const createIdentitySuggestions_def =
-    x3::eps;
-
-auto const leaf_data_identityRef_def =
-    createIdentitySuggestions >> leaf_data_identityRef_data;
-
-auto const leaf_data_def =
-x3::no_skip[x3::expect[
-    leaf_data_enum |
-    leaf_data_decimal |
-    leaf_data_bool |
-    leaf_data_int8 |
-    leaf_data_int16 |
-    leaf_data_int32 |
-    leaf_data_int64 |
-    leaf_data_uint8 |
-    leaf_data_uint16 |
-    leaf_data_uint32 |
-    leaf_data_uint64 |
-    leaf_data_binary |
-    leaf_data_identityRef |
-    leaf_data_string]];
 
 struct ls_options_table : x3::symbols<LsOption> {
     ls_options_table()
@@ -348,8 +232,6 @@ auto const command_def =
 
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(key_identifier)
-BOOST_SPIRIT_DEFINE(node_identifier)
-BOOST_SPIRIT_DEFINE(module_identifier)
 BOOST_SPIRIT_DEFINE(listPrefix)
 BOOST_SPIRIT_DEFINE(listSuffix)
 BOOST_SPIRIT_DEFINE(listElement)
@@ -370,24 +252,6 @@ BOOST_SPIRIT_DEFINE(dataNodesListEnd)
 BOOST_SPIRIT_DEFINE(dataPathListEnd)
 BOOST_SPIRIT_DEFINE(absoluteStart)
 BOOST_SPIRIT_DEFINE(trailingSlash)
-BOOST_SPIRIT_DEFINE(module)
-BOOST_SPIRIT_DEFINE(leaf_data)
-BOOST_SPIRIT_DEFINE(leaf_data_enum)
-BOOST_SPIRIT_DEFINE(leaf_data_decimal)
-BOOST_SPIRIT_DEFINE(leaf_data_bool)
-BOOST_SPIRIT_DEFINE(leaf_data_int8)
-BOOST_SPIRIT_DEFINE(leaf_data_int16)
-BOOST_SPIRIT_DEFINE(leaf_data_int32)
-BOOST_SPIRIT_DEFINE(leaf_data_int64)
-BOOST_SPIRIT_DEFINE(leaf_data_uint8)
-BOOST_SPIRIT_DEFINE(leaf_data_uint16)
-BOOST_SPIRIT_DEFINE(leaf_data_uint32)
-BOOST_SPIRIT_DEFINE(leaf_data_uint64)
-BOOST_SPIRIT_DEFINE(leaf_data_string)
-BOOST_SPIRIT_DEFINE(leaf_data_binary_data)
-BOOST_SPIRIT_DEFINE(leaf_data_binary)
-BOOST_SPIRIT_DEFINE(leaf_data_identityRef_data)
-BOOST_SPIRIT_DEFINE(leaf_data_identityRef)
 BOOST_SPIRIT_DEFINE(initializePath)
 BOOST_SPIRIT_DEFINE(set)
 BOOST_SPIRIT_DEFINE(commit)
@@ -406,5 +270,3 @@ BOOST_SPIRIT_DEFINE(createValueSuggestions)
 BOOST_SPIRIT_DEFINE(suggestKeysEnd)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)
 BOOST_SPIRIT_DEFINE(completing)
-BOOST_SPIRIT_DEFINE(createEnumSuggestions)
-BOOST_SPIRIT_DEFINE(createIdentitySuggestions)
