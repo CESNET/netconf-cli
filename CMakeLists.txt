@@ -118,6 +118,10 @@ target_link_libraries(yangschema schemas utils ${LIBYANG_LIBRARIES})
 target_include_directories(yangschema SYSTEM PRIVATE ${LIBYANG_INCLUDEDIR})
 link_directories(${LIBYANG_LIBRARY_DIRS})
 
+# FIXME: Why can't I just put put the file down below?
+add_library(leaf_data STATIC
+    src/leaf_data_type.cpp
+    )
 add_library(parser STATIC
     src/parser.cpp
     src/ast_commands.cpp
@@ -127,7 +131,7 @@ add_library(parser STATIC
     src/completion.cpp
     src/leaf_data.cpp
     )
-target_link_libraries(parser schemas utils ast_values)
+target_link_libraries(parser schemas utils leaf_data ast_values)
 
 
 add_library(sysreposubscription STATIC
