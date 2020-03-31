@@ -27,16 +27,16 @@ TEST_CASE("path_completion")
     schema->addContainer("/example:ano/example:a2", "example:a3");
     schema->addContainer("/example:bota/example:b2", "example:b3");
     schema->addList("/", "example:list", {"number"});
-    schema->addLeaf("/example:list", "example:number", yang::LeafDataTypes::Int32);
+    schema->addLeaf("/example:list", "example:number", yang::Int32{});
     schema->addContainer("/example:list", "example:contInList");
     schema->addList("/", "example:ovoce", {"name"});
-    schema->addLeaf("/example:ovoce", "example:name", yang::LeafDataTypes::String);
+    schema->addLeaf("/example:ovoce", "example:name", yang::String{});
     schema->addList("/", "example:ovocezelenina", {"name"});
-    schema->addLeaf("/example:ovocezelenina", "example:name", yang::LeafDataTypes::String);
+    schema->addLeaf("/example:ovocezelenina", "example:name", yang::String{});
     schema->addList("/", "example:twoKeyList", {"number", "name"});
-    schema->addLeaf("/example:twoKeyList", "example:name", yang::LeafDataTypes::String);
-    schema->addLeaf("/example:twoKeyList", "example:number", yang::LeafDataTypes::Int32);
-    schema->addLeaf("/", "example:leafInt", yang::LeafDataTypes::Int32);
+    schema->addLeaf("/example:twoKeyList", "example:name", yang::String{});
+    schema->addLeaf("/example:twoKeyList", "example:number", yang::Int32{});
+    schema->addLeaf("/", "example:leafInt", yang::Int32{});
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
 
     // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.

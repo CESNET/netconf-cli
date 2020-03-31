@@ -30,10 +30,10 @@ TEST_CASE("keyvalue_completion")
     schema->addContainer("/", "example:a");
     schema->addContainer("/", "example:b");
     schema->addList("/", "example:list", {"number"});
-    schema->addLeaf("/example:list", "example:number", yang::LeafDataTypes::Int32);
+    schema->addLeaf("/example:list", "example:number", yang::Int32{});
     schema->addList("/", "example:twoKeyList", {"number", "name"});
-    schema->addLeaf("/example:twoKeyList", "example:number", yang::LeafDataTypes::Int32);
-    schema->addLeaf("/example:twoKeyList", "example:name", yang::LeafDataTypes::String);
+    schema->addLeaf("/example:twoKeyList", "example:number", yang::Int32{});
+    schema->addLeaf("/example:twoKeyList", "example:name", yang::String{});
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
 
     // DataQuery gets the schema from DatastoreAccess once
