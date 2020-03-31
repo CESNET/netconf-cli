@@ -9,6 +9,7 @@
 #include "trompeloeil_doctest.hpp"
 #include <boost/core/demangle.hpp>
 #include "ast_commands.hpp"
+#include "leaf_data_helpers.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 #include "utils.hpp"
@@ -24,33 +25,33 @@ TEST_CASE("leaf editing")
     schema->addModule("mod");
     schema->addModule("pizza-module");
     schema->addContainer("/", "mod:contA");
-    schema->addLeaf("/", "mod:leafString", yang::LeafDataTypes::String);
-    schema->addLeaf("/", "mod:leafDecimal", yang::LeafDataTypes::Decimal);
-    schema->addLeaf("/", "mod:leafBool", yang::LeafDataTypes::Bool);
-    schema->addLeaf("/", "mod:leafInt8", yang::LeafDataTypes::Int8);
-    schema->addLeaf("/", "mod:leafInt16", yang::LeafDataTypes::Int16);
-    schema->addLeaf("/", "mod:leafInt32", yang::LeafDataTypes::Int32);
-    schema->addLeaf("/", "mod:leafInt64", yang::LeafDataTypes::Int64);
-    schema->addLeaf("/", "mod:leafUint8", yang::LeafDataTypes::Uint8);
-    schema->addLeaf("/", "mod:leafUint16", yang::LeafDataTypes::Uint16);
-    schema->addLeaf("/", "mod:leafUint32", yang::LeafDataTypes::Uint32);
-    schema->addLeaf("/", "mod:leafUint64", yang::LeafDataTypes::Uint64);
-    schema->addLeaf("/", "mod:leafBinary", yang::LeafDataTypes::Binary);
+    schema->addLeaf("/", "mod:leafString", yang::String{});
+    schema->addLeaf("/", "mod:leafDecimal", yang::Decimal{});
+    schema->addLeaf("/", "mod:leafBool", yang::Bool{});
+    schema->addLeaf("/", "mod:leafInt8", yang::Int8{});
+    schema->addLeaf("/", "mod:leafInt16", yang::Int16{});
+    schema->addLeaf("/", "mod:leafInt32", yang::Int32{});
+    schema->addLeaf("/", "mod:leafInt64", yang::Int64{});
+    schema->addLeaf("/", "mod:leafUint8", yang::Uint8{});
+    schema->addLeaf("/", "mod:leafUint16", yang::Uint16{});
+    schema->addLeaf("/", "mod:leafUint32", yang::Uint32{});
+    schema->addLeaf("/", "mod:leafUint64", yang::Uint64{});
+    schema->addLeaf("/", "mod:leafBinary", yang::Binary{});
     schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "food"});
     schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "vehicle"});
     schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "pizza"});
     schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "spaghetti"});
     schema->addIdentity(ModuleValuePair{"mod", "pizza"}, ModuleValuePair{"pizza-module", "hawaii"});
-    schema->addLeafIdentityRef("/", "mod:foodIdentRef", ModuleValuePair{"mod", "food"});
-    schema->addLeafIdentityRef("/", "mod:pizzaIdentRef", ModuleValuePair{"mod", "pizza"});
-    schema->addLeafIdentityRef("/mod:contA", "mod:identInCont", ModuleValuePair{"mod", "pizza"});
-    schema->addLeafEnum("/", "mod:leafEnum", {"lol", "data", "coze"});
-    schema->addLeaf("/mod:contA", "mod:leafInCont", yang::LeafDataTypes::String);
+    schema->addLeaf("/", "mod:foodIdentRef", yang::IdentityRef{schema->validIdentities("mod", "food")});
+    schema->addLeaf("/", "mod:pizzaIdentRef", yang::IdentityRef{schema->validIdentities("mod", "pizza")});
+    schema->addLeaf("/mod:contA", "mod:identInCont", yang::IdentityRef{schema->validIdentities("mod", "pizza")});
+    schema->addLeaf("/", "mod:leafEnum", createEnum({"lol", "data", "coze"}));
+    schema->addLeaf("/mod:contA", "mod:leafInCont", yang::String{});
     schema->addList("/", "mod:list", {"number"});
-    schema->addLeaf("/mod:list", "mod:number", yang::LeafDataTypes::Int32);
-    schema->addLeaf("/mod:list", "mod:leafInList", yang::LeafDataTypes::String);
-    schema->addLeafRef("/", "mod:refToString", "/mod:leafString");
-    schema->addLeafRef("/", "mod:refToInt8", "/mod:leafInt8");
+    schema->addLeaf("/mod:list", "mod:number", yang::Int32{});
+    schema->addLeaf("/mod:list", "mod:leafInList", yang::String{});
+    schema->addLeaf("/", "mod:refToString", yang::LeafRef{"/mod:leafString", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:leafString"))});
+    schema->addLeaf("/", "mod:refToInt8", yang::LeafRef{"/mod:leafInt8", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:leafInt8"))});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
