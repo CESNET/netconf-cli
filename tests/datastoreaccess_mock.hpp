@@ -4,7 +4,7 @@
  * Written by Václav Kubernát <kubernat@cesnet.cz>
  *
 */
-
+#pragma once
 #include <map>
 #include "datastore_access.hpp"
 #include "trompeloeil_doctest.hpp"

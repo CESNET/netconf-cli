@@ -4,6 +4,7 @@
  * Written by Václav Kubernát <kubernat@cesnet.cz>
  *
 */
+#pragma once
 #include <set>
 #include <string>
 struct Completion {

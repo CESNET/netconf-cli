@@ -8,6 +8,7 @@
 /*! \file utils.hpp
     \brief A header containing utility functions
 */
+#pragma once
 #include <string>
 #include "ast_path.hpp"
 #include "ast_values.hpp"
@@ -17,7 +18,7 @@ std::string joinPaths(const std::string& prefix, const std::string& suffix);
 std::string stripLastNodeFromPath(const std::string& path);
 schemaPath_ pathWithoutLastNode(const schemaPath_& path);
 dataPath_ pathWithoutLastNode(const dataPath_& path);
-std::string leafDataTypeToString(yang::LeafDataTypes type);
+std::string leafDataTypeToString(yang::LeafDataType type);
 std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair);
 std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair);
 std::string leafDataToString(const leaf_data_ value);
