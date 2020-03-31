@@ -425,189 +425,6 @@ TEST_CASE("yangschema")
 
             REQUIRE(ys.isPresenceContainer(path, node));
         }
-        SECTION("leafEnumHasValue")
-        {
-            std::string value;
-            SECTION("leafEnum")
-            {
-                node.first = "example-schema";
-                node.second = "leafEnum";
-
-                SECTION("lol")
-                    value = "lol";
-
-                SECTION("data")
-                    value = "data";
-
-                SECTION("coze")
-                    value = "coze";
-            }
-
-            SECTION("leafEnumTypedef")
-            {
-                node.first = "example-schema";
-                node.second = "leafEnumTypedef";
-
-                SECTION("lol")
-                    value = "lol";
-
-                SECTION("data")
-                    value = "data";
-
-                SECTION("coze")
-                    value = "coze";
-            }
-
-            SECTION("leafEnumTypedefRestricted")
-            {
-                node.first = "example-schema";
-                node.second = "leafEnumTypedefRestricted";
-
-                SECTION("data")
-                    value = "data";
-
-                SECTION("coze")
-                    value = "coze";
-            }
-
-            SECTION("leafEnumTypedefRestricted2")
-            {
-                node.first = "example-schema";
-                node.second = "leafEnumTypedefRestricted2";
-
-                SECTION("lol")
-                    value = "lol";
-
-                SECTION("data")
-                    value = "data";
-            }
-
-            SECTION("pizzaSize")
-            {
-                node.first = "example-schema";
-                node.second = "pizzaSize";
-
-                SECTION("small")
-                {
-                    value = "small";
-                }
-                SECTION("medium")
-                {
-                    value = "medium";
-                }
-
-                SECTION("large")
-                {
-                    ys.enableFeature("example-schema", "bigPizzas");
-                    value = "large";
-                }
-            }
-
-            REQUIRE(ys.leafEnumHasValue(path, node, value));
-        }
-        SECTION("leafIdentityIsValid")
-        {
-            ModuleValuePair value;
-
-            SECTION("foodIdentLeaf")
-            {
-                node.first = "example-schema";
-                node.second = "foodIdentLeaf";
-
-                SECTION("food")
-                {
-                    value.second = "food";
-                }
-                SECTION("example-schema:food")
-                {
-                    value.first = "example-schema";
-                    value.second = "food";
-                }
-                SECTION("pizza")
-                {
-                    value.second = "pizza";
-                }
-                SECTION("example-schema:pizza")
-                {
-                    value.first = "example-schema";
-                    value.second = "pizza";
-                }
-                SECTION("hawaii")
-                {
-                    value.second = "hawaii";
-                }
-                SECTION("example-schema:hawaii")
-                {
-                    value.first = "example-schema";
-                    value.second = "hawaii";
-                }
-                SECTION("fruit")
-                {
-                    value.second = "fruit";
-                }
-                SECTION("example-schema:fruit")
-                {
-                    value.first = "example-schema";
-                    value.second = "fruit";
-                }
-                SECTION("second-schema:pineapple")
-                {
-                    value.first = "second-schema";
-                    value.second = "pineapple";
-                }
-            }
-
-            SECTION("pizzaIdentLeaf")
-            {
-                node.first = "example-schema";
-                node.second = "pizzaIdentLeaf";
-
-                SECTION("pizza")
-                {
-                    value.second = "pizza";
-                }
-                SECTION("example-schema:pizza")
-                {
-                    value.first = "example-schema";
-                    value.second = "pizza";
-                }
-                SECTION("hawaii")
-                {
-                    value.second = "hawaii";
-                }
-                SECTION("example-schema:hawaii")
-                {
-                    value.first = "example-schema";
-                    value.second = "hawaii";
-                }
-            }
-
-            SECTION("foodDrinkIdentLeaf")
-            {
-                node.first = "example-schema";
-                node.second = "foodDrinkIdentLeaf";
-
-                SECTION("food")
-                {
-                    value.second = "food";
-                }
-                SECTION("example-schema:food")
-                {
-                    value.first = "example-schema";
-                    value.second = "food";
-                }
-                SECTION("drink")
-                {
-                    value.second = "drink";
-                }
-                SECTION("example-schema:drink")
-                {
-                    value.first = "example-schema";
-                    value.second = "drink";
-                }
-            }
-            REQUIRE(ys.leafIdentityIsValid(path, node, value));
-        }
 
         SECTION("listHasKey")
         {
@@ -655,90 +472,165 @@ TEST_CASE("yangschema")
         }
         SECTION("leafType")
         {
-            yang::LeafDataTypes type;
+            yang::LeafDataType type;
 
             SECTION("leafString")
             {
                 node.first = "example-schema";
                 node.second = "leafString";
-                type = yang::LeafDataTypes::String;
+                type = yang::String{};
             }
 
             SECTION("leafDecimal")
             {
                 node.first = "example-schema";
                 node.second = "leafDecimal";
-                type = yang::LeafDataTypes::Decimal;
+                type = yang::Decimal{};
             }
 
             SECTION("leafBool")
             {
                 node.first = "example-schema";
                 node.second = "leafBool";
-                type = yang::LeafDataTypes::Bool;
+                type = yang::Bool{};
             }
 
             SECTION("leafInt8")
             {
                 node.first = "example-schema";
                 node.second = "leafInt8";
-                type = yang::LeafDataTypes::Int8;
+                type = yang::Int8{};
             }
 
             SECTION("leafUint8")
             {
                 node.first = "example-schema";
                 node.second = "leafUint8";
-                type = yang::LeafDataTypes::Uint8;
+                type = yang::Uint8{};
             }
 
             SECTION("leafInt15")
             {
                 node.first = "example-schema";
                 node.second = "leafInt16";
-                type = yang::LeafDataTypes::Int16;
+                type = yang::Int16{};
             }
 
             SECTION("leafUint16")
             {
                 node.first = "example-schema";
                 node.second = "leafUint16";
-                type = yang::LeafDataTypes::Uint16;
+                type = yang::Uint16{};
             }
 
             SECTION("leafInt32")
             {
                 node.first = "example-schema";
                 node.second = "leafInt32";
-                type = yang::LeafDataTypes::Int32;
+                type = yang::Int32{};
             }
 
             SECTION("leafUint32")
             {
                 node.first = "example-schema";
                 node.second = "leafUint32";
-                type = yang::LeafDataTypes::Uint32;
+                type = yang::Uint32{};
             }
 
             SECTION("leafInt64")
             {
                 node.first = "example-schema";
                 node.second = "leafInt64";
-                type = yang::LeafDataTypes::Int64;
+                type = yang::Int64{};
             }
 
             SECTION("leafUint64")
             {
                 node.first = "example-schema";
                 node.second = "leafUint64";
-                type = yang::LeafDataTypes::Uint64;
+                type = yang::Uint64{};
             }
 
             SECTION("leafEnum")
             {
                 node.first = "example-schema";
                 node.second = "leafEnum";
-                type = yang::LeafDataTypes::Enum;
+                type = yang::Enum{"lol", "data", "coze"};
+            }
+
+            SECTION("leafEnumTypedef")
+            {
+                node.first = "example-schema";
+                node.second = "leafEnumTypedef";
+                type = yang::Enum{"lol", "data", "coze"};
+            }
+
+            SECTION("leafEnumTypedefRestricted")
+            {
+                node.first = "example-schema";
+                node.second = "leafEnumTypedefRestricted";
+                type = yang::Enum{"data", "coze"};
+            }
+
+            SECTION("leafEnumTypedefRestricted2")
+            {
+                node.first = "example-schema";
+                node.second = "leafEnumTypedefRestricted2";
+                type = yang::Enum{"lol", "data"};
+            }
+
+            SECTION("pizzaSize")
+            {
+                node.first = "example-schema";
+                node.second = "pizzaSize";
+
+                SECTION("bigPizzas disabled")
+                {
+                    type = yang::Enum{"small", "medium"};
+                }
+                SECTION("bigPizzas enabled")
+                {
+                    ys.enableFeature("example-schema", "bigPizzas");
+                    type = yang::Enum{"small", "medium", "large"};
+                }
+            }
+
+            SECTION("foodIdentLeaf")
+            {
+                node.first = "example-schema";
+                node.second = "foodIdentLeaf";
+                type = yang::IdentityRef{{{"second-schema", "pineapple"},
+                                          {"example-schema", "food"},
+                                          {"example-schema", "pizza"},
+                                          {"example-schema", "hawaii"},
+                                          {"example-schema", "fruit"}}};
+            }
+
+            SECTION("pizzaIdentLeaf")
+            {
+                node.first = "example-schema";
+                node.second = "pizzaIdentLeaf";
+
+                type = yang::IdentityRef{{
+                    {"example-schema", "pizza"},
+                    {"example-schema", "hawaii"},
+                }};
+            }
+
+            SECTION("foodDrinkIdentLeaf")
+            {
+                node.first = "example-schema";
+                node.second = "foodDrinkIdentLeaf";
+
+                type = yang::IdentityRef{{
+                    {"example-schema", "food"},
+                    {"example-schema", "drink"},
+                    {"example-schema", "fruit"},
+                    {"example-schema", "hawaii"},
+                    {"example-schema", "pizza"},
+                    {"example-schema", "voda"},
+                    {"second-schema", "pineapple"},
+                }};
             }
 
             REQUIRE(ys.leafType(path, node) == type);
@@ -962,51 +854,12 @@ TEST_CASE("yangschema")
             path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
             node.second = "a2";
 
-            REQUIRE(!ys.leafEnumHasValue(path, node, "haha"));
             REQUIRE(!ys.listHasKey(path, node, "chacha"));
         }
 
         SECTION("nonexistent module")
         {
             REQUIRE(!ys.isModule("notAModule"));
-        }
-
-        SECTION("leafIdentityIsValid")
-        {
-            ModuleValuePair value;
-            SECTION("pizzaIdentLeaf")
-            {
-                node.first = "example-schema";
-                node.second = "pizzaIdentLeaf";
-
-                SECTION("wrong base ident")
-                {
-                    SECTION("food")
-                    {
-                        value.second = "food";
-                    }
-                    SECTION("fruit")
-                    {
-                        value.second = "fruit";
-                    }
-                }
-                SECTION("non-existent identity")
-                {
-                    value.second = "nonexistent";
-                }
-                SECTION("weird module")
-                {
-                    value.first = "ahahaha";
-                    value.second = "pizza";
-                }
-            }
-            SECTION("different module identity, but withotu prefix")
-            {
-                node.first = "example-schema";
-                node.second = "foodIdentLeaf";
-                value.second = "pineapple";
-            }
-            REQUIRE_FALSE(ys.leafIdentityIsValid(path, node, value));
         }
 
         SECTION("grouping is not a node")
@@ -1061,16 +914,6 @@ TEST_CASE("yangschema")
             REQUIRE(!ys.isList(path, node));
             REQUIRE(!ys.isLeaf(path, node));
             REQUIRE(!ys.isContainer(path, node));
-        }
-
-        SECTION("enum is disabled by if-feature if feature is not enabled")
-        {
-            node.first = "example-schema";
-            node.second = "pizzaSize";
-
-            std::string value = "large";
-
-            REQUIRE(!ys.leafEnumHasValue(path, node, value));
         }
     }
 }

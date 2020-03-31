@@ -18,11 +18,11 @@ TEST_CASE("enum completion")
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("mod");
     schema->addContainer("/", "mod:contA");
-    schema->addLeafEnum("/", "mod:leafEnum", {"lala", "lol", "data", "coze"});
-    schema->addLeafEnum("/mod:contA", "mod:leafInCont", {"abc", "def"});
+    schema->addLeaf("/", "mod:leafEnum", yang::Enum{"lala", "lol", "data", "coze"});
+    schema->addLeaf("/mod:contA", "mod:leafInCont", yang::Enum{"abc", "def"});
     schema->addList("/", "mod:list", {"number"});
-    schema->addLeaf("/mod:list", "mod:number", yang::LeafDataTypes::Int32);
-    schema->addLeafEnum("/mod:list", "mod:leafInList", {"ano", "anoda", "ne", "katoda"});
+    schema->addLeaf("/mod:list", "mod:number", yang::Int32{});
+    schema->addLeaf("/mod:list", "mod:leafInList", yang::Enum{"ano", "anoda", "ne", "katoda"});
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
     // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
     ALLOW_CALL(*mockDatastore, listInstances("/mod:list"))
