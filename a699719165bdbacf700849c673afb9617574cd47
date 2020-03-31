@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "882761e7_7aee67ce",
+        "filename": "src/leaf_data.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "613a60de_13e82587",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 23
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fcd426a8_03539602",
         "filename": "src/leaf_data.hpp",
         "patchSetId": 14
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "5f4717ad_121d6403",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "I need to construct a new identityRef_ because I\u0027m using it to search on line 69. And I can\u0027t use `ast` directly, because I would sometimes change the value on line 66. Maybe I can change `ast` to from T\u0026 to T, but that would not save the copy ctor anyway.",
+      "parentUuid": "fcd426a8_03539602",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9ec3cc03_377b5987",
         "filename": "src/leaf_data.hpp",
         "patchSetId": 14
@@ -53,6 +95,30 @@
       "writtenOn": "2020-03-31T21:50:21Z",
       "side": 1,
       "message": "please add doxygen comments for all these three members",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 15
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d343ccb_29ca7a8d",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "I don\u0027t have them documented on line 204 either. It\u0027s just something that Spirit needs. But I guess I can do some research on what they mean.",
+      "parentUuid": "9ec3cc03_377b5987",
       "range": {
         "startLine": 130,
         "startChar": 0,
@@ -88,6 +154,54 @@
     },
     {
       "key": {
+        "uuid": "3e8d7492_27b5f03c",
+        "filename": "src/leaf_data_type.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "I moved the helper to another file.",
+      "parentUuid": "3b3105fd_0f77cd06",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 1
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2fb81de_74a8f52b",
+        "filename": "src/leaf_data_type.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "I moved the helper to another file.",
+      "parentUuid": "3b3105fd_0f77cd06",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 1
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "05ef222a_aba9a7c5",
         "filename": "src/leaf_data_type.hpp",
         "patchSetId": 14
@@ -99,6 +213,30 @@
       "writtenOn": "2020-03-31T21:50:21Z",
       "side": 1,
       "message": "nit: these structs (Enum, IdentityRef, LeafRef) do not really have any methods for encapsulation, so I would prefer their members to not use the m_ prefix, but feel free to ignore this",
+      "range": {
+        "startLine": 56,
+        "startChar": 20,
+        "endLine": 56,
+        "endChar": 35
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1b222342_1d34fec0",
+        "filename": "src/leaf_data_type.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "I know what you mean, but I like having the prefix. I still like it even considering it doesn\u0027t have methods.",
+      "parentUuid": "05ef222a_aba9a7c5",
       "range": {
         "startLine": 56,
         "startChar": 20,
@@ -145,6 +283,24 @@
     },
     {
       "key": {
+        "uuid": "e739dfbb_97f68a82",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "I kept it as a function for recursion",
+      "parentUuid": "62c1a794_e292847a",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fcb6668b_59dd5265",
         "filename": "src/static_schema.cpp",
         "patchSetId": 14
@@ -168,6 +324,30 @@
     },
     {
       "key": {
+        "uuid": "7af73912_283a1bd7",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fcb6668b_59dd5265",
+      "range": {
+        "startLine": 139,
+        "startChar": 42,
+        "endLine": 139,
+        "endChar": 59
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d0ccd782_2ebd7e21",
         "filename": "src/static_schema.hpp",
         "patchSetId": 14
@@ -185,6 +365,24 @@
     },
     {
       "key": {
+        "uuid": "a4b74c84_d78887b7",
+        "filename": "src/static_schema.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "I added the comment",
+      "parentUuid": "d0ccd782_2ebd7e21",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d3bb6373_f45e25d6",
         "filename": "src/static_schema.hpp",
         "patchSetId": 14
@@ -196,6 +394,24 @@
       "writtenOn": "2020-03-31T21:50:21Z",
       "side": 1,
       "message": "are you going to fix this in a follow-up comment, or is that just a generic reminder for unspecified future?",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2f6f802_2c99fe04",
+        "filename": "src/static_schema.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "Generic reminder. I\u0027m definitely not changing it in this commit.",
+      "parentUuid": "d3bb6373_f45e25d6",
       "revId": "a699719165bdbacf700849c673afb9617574cd47",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -225,6 +441,30 @@
     },
     {
       "key": {
+        "uuid": "fa4c7072_c8f8e229",
+        "filename": "src/utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10f35cf9_863efa0c",
+      "range": {
+        "startLine": 56,
+        "startChar": 45,
+        "endLine": 56,
+        "endChar": 46
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "66d0b3df_e1dfbb18",
         "filename": "src/utils.cpp",
         "patchSetId": 14
@@ -239,6 +479,24 @@
       "revId": "a699719165bdbacf700849c673afb9617574cd47",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c37ab13_2727cd02",
+        "filename": "src/utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66d0b3df_e1dfbb18",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -262,6 +520,30 @@
       "revId": "a699719165bdbacf700849c673afb9617574cd47",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1d12105_fe353555",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-03-31T22:34:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97076c2c_a1a9167f",
+      "range": {
+        "startLine": 241,
+        "startChar": 96,
+        "endLine": 241,
+        "endChar": 126
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
