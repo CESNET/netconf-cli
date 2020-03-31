@@ -75,6 +75,11 @@ add_library(path STATIC
     )
 target_link_libraries(path PUBLIC ast_values Boost::boost)
 
+add_library(leaf_data_type STATIC
+    src/leaf_data_type.cpp
+    )
+target_link_libraries(leaf_data_type ast_values)
+
 add_library(utils STATIC
     src/utils.cpp
     )
@@ -113,7 +118,7 @@ add_library(yangschema STATIC
     src/yang_schema.cpp
     src/libyang_utils.cpp
     )
-target_link_libraries(yangschema schemas utils ${LIBYANG_LIBRARIES})
+target_link_libraries(yangschema schemas utils leaf_data_type ${LIBYANG_LIBRARIES})
 # Ensure that this doesn't override Boost's -isystem -- see the log for details.
 target_include_directories(yangschema SYSTEM PRIVATE ${LIBYANG_INCLUDEDIR})
 link_directories(${LIBYANG_LIBRARY_DIRS})
@@ -125,7 +130,6 @@ add_library(parser STATIC
     src/interpreter.cpp
     src/ast_handlers.cpp
     src/completion.cpp
-    src/leaf_data.cpp
     )
 target_link_libraries(parser schemas utils ast_values)
 
@@ -274,12 +278,14 @@ if(BUILD_TESTING)
     cli_test(ls)
     cli_test(presence_containers)
     cli_test(leaf_editing)
+    target_link_libraries(test_leaf_editing leaf_data_type)
     cli_test(yang)
     target_link_libraries(test_yang yangschema)
     cli_test(utils)
     cli_test(path_completion)
     cli_test(command_completion)
     cli_test(enum_completion)
+    target_link_libraries(test_enum_completion leaf_data_type)
     cli_test(list_manipulation)
     cli_test(parser_methods)
     cli_test(path_utils)

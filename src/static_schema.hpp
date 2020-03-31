@@ -27,10 +27,7 @@ struct list {
 };
 
 struct leaf {
-    yang::LeafDataTypes m_type;
-    std::set<std::string> m_enumValues;
-    ModuleValuePair m_identBase;
-    std::string m_leafRefSource;
+    yang::LeafDataType m_type;
 };
 
 struct module {
@@ -51,29 +48,24 @@ public:
     yang::NodeTypes nodeType(const std::string& path) const override;
     yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool isModule(const std::string& name) const override;
-    bool leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const override;
-    bool leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const override;
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
     bool leafIsKey(const std::string& leafPath) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
-    yang::LeafDataTypes leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
-    yang::LeafDataTypes leafType(const std::string& path) const override;
+    yang::LeafDataType leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
+    yang::LeafDataType leafType(const std::string& path) const override;
     std::optional<std::string> leafTypeName(const std::string& path) const override;
-    yang::LeafDataTypes leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const override;
-    yang::LeafDataTypes leafrefBaseType(const std::string& path) const override;
     std::string leafrefPath(const std::string& leafrefPath) const override;
-    const std::set<std::string> enumValues(const schemaPath_& location, const ModuleNodePair& node) const override;
-    const std::set<std::string> validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion) const override;
     std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const override;
     std::optional<std::string> description(const std::string& path) const override;
     std::optional<std::string> units(const std::string& path) const override;
 
+    /** A helper for making tests a little bit easier. It returns all
+     * identities which are based on the argument passed and which can then be
+     * used in addLeaf for the `type` argument */
+    std::set<identityRef_> validIdentities(std::string_view module, std::string_view value);
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
-    void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type);
-    void addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues);
-    void addLeafIdentityRef(const std::string& location, const std::string& name, const ModuleValuePair& base);
-    void addLeafRef(const std::string& location, const std::string& name, const std::string& source);
+    void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type);
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void addModule(const std::string& name);
     void addIdentity(const std::optional<ModuleValuePair>& base, const ModuleValuePair& name);
@@ -85,5 +77,7 @@ private:
 
     std::unordered_map<std::string, std::unordered_map<std::string, NodeType>> m_nodes;
     std::set<std::string> m_modules;
+
+    // FIXME: Change the template arguments to identityRef_
     std::map<ModuleValuePair, std::set<ModuleValuePair>> m_identities;
 };
