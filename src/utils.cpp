@@ -52,42 +52,72 @@ schemaPath_ pathWithoutLastNode(const schemaPath_& path)
     return schemaPath_{path.m_scope, decltype(schemaPath_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};
 }
 
-std::string leafDataTypeToString(yang::LeafDataTypes type)
-{
-    switch (type) {
-    case yang::LeafDataTypes::String:
+struct impl_leafDataTypeToString {
+    std::string operator()(const yang::String)
+    {
         return "a string";
-    case yang::LeafDataTypes::Decimal:
-        return "a decimal";
-    case yang::LeafDataTypes::Bool:
-        return "a boolean";
-    case yang::LeafDataTypes::Int8:
-        return "an 8-bit integer";
-    case yang::LeafDataTypes::Uint8:
-        return "an 8-bit unsigned integer";
-    case yang::LeafDataTypes::Int16:
-        return "a 16-bit integer";
-    case yang::LeafDataTypes::Uint16:
-        return "a 16-bit unsigned integer";
-    case yang::LeafDataTypes::Int32:
-        return "a 32-bit integer";
-    case yang::LeafDataTypes::Uint32:
-        return "a 32-bit unsigned integer";
-    case yang::LeafDataTypes::Int64:
-        return "a 64-bit integer";
-    case yang::LeafDataTypes::Uint64:
-        return "a 64-bit unsigned integer";
-    case yang::LeafDataTypes::Enum:
-        return "an enum";
-    case yang::LeafDataTypes::IdentityRef:
-        return "an identity";
-    case yang::LeafDataTypes::LeafRef:
-        return "a leafref";
-    case yang::LeafDataTypes::Binary:
-        return "a base64-encoded binary value";
-    default:
-        throw std::runtime_error("leafDataTypeToString: unsupported leaf data type");
     }
+    std::string operator()(const yang::Decimal)
+    {
+        return "a decimal";
+    }
+    std::string operator()(const yang::Bool)
+    {
+        return "a boolean";
+    }
+    std::string operator()(const yang::Int8)
+    {
+        return "an 8-bit integer";
+    }
+    std::string operator()(const yang::Uint8)
+    {
+        return "an 8-bit unsigned integer";
+    }
+    std::string operator()(const yang::Int16)
+    {
+        return "a 16-bit integer";
+    }
+    std::string operator()(const yang::Uint16)
+    {
+        return "a 16-bit unsigned integer";
+    }
+    std::string operator()(const yang::Int32)
+    {
+        return "a 32-bit integer";
+    }
+    std::string operator()(const yang::Uint32)
+    {
+        return "a 32-bit unsigned integer";
+    }
+    std::string operator()(const yang::Int64)
+    {
+        return "a 64-bit integer";
+    }
+    std::string operator()(const yang::Uint64)
+    {
+        return "a 64-bit unsigned integer";
+    }
+    std::string operator()(const yang::Binary)
+    {
+        return "a base64-encoded binary value";
+    }
+    std::string operator()(const yang::Enum&)
+    {
+        return "an enum";
+    }
+    std::string operator()(const yang::IdentityRef&)
+    {
+        return "an identity";
+    }
+    std::string operator()(const yang::LeafRef&)
+    {
+        return "a leafref";
+    }
+};
+
+std::string leafDataTypeToString(const yang::LeafDataType& type)
+{
+    return std::visit(impl_leafDataTypeToString{}, type);
 }
 
 std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair)

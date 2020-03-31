@@ -95,10 +95,10 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
         auto leafType = m_datastore.schema()->leafType(path);
         auto typedefName = m_datastore.schema()->leafTypeName(path);
         std::string baseTypeStr;
-        if (leafType == yang::LeafDataTypes::LeafRef) {
+        if (std::holds_alternative<yang::LeafRef>(leafType)) {
             ss << "-> ";
             ss << m_datastore.schema()->leafrefPath(path) << " ";
-            baseTypeStr = leafDataTypeToString(m_datastore.schema()->leafrefBaseType(path));
+            baseTypeStr = leafDataTypeToString(m_datastore.schema()->leafType(std::get<yang::LeafRef>(leafType).m_targetXPath));
         } else {
             baseTypeStr = leafDataTypeToString(leafType);
         }
