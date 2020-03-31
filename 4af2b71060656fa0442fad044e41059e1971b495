@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68d375b9_51f4814c",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T22:43:12Z",
+      "side": 1,
+      "message": "nit: \": \" instead of \" :\"",
+      "range": {
+        "startLine": 241,
+        "startChar": 94,
+        "endLine": 241,
+        "endChar": 96
+      },
+      "revId": "4af2b71060656fa0442fad044e41059e1971b495",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
