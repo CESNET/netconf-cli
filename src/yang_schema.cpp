@@ -93,80 +93,6 @@ bool YangSchema::isModule(const std::string& name) const
     return set.find(name) != set.end();
 }
 
-bool YangSchema::leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const
-{
-    auto enums = enumValues(location, node);
-
-    return std::any_of(enums.begin(), enums.end(), [=](const auto& x) { return x == value; });
-}
-
-const std::set<std::string> YangSchema::enumValues(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    if (!isLeaf(location, node) || leafType(location, node) != yang::LeafDataTypes::Enum)
-        return {};
-
-    libyang::Schema_Node_Leaf leaf(getSchemaNode(location, node));
-    auto type = leaf.type();
-    auto enm = type->info()->enums()->enm();
-    // The enum can be a derived type and enm() only returns values,
-    // if that specific typedef changed the possible values. So we go
-    // up the hierarchy until we find a typedef that defined these values.
-    while (enm.empty()) {
-        type = type->der()->type();
-        enm = type->info()->enums()->enm();
-    }
-
-    std::vector<libyang::S_Type_Enum> enabled;
-    std::copy_if(enm.begin(), enm.end(), std::back_inserter(enabled), [](const libyang::S_Type_Enum& it) {
-        auto iffeatures = it->iffeature();
-        return std::all_of(iffeatures.begin(), iffeatures.end(), [](auto it) { return it->value(); });
-    });
-
-    std::set<std::string> enumSet;
-    std::transform(enabled.begin(), enabled.end(), std::inserter(enumSet, enumSet.end()), [](auto it) { return it->name(); });
-    return enumSet;
-}
-
-const std::set<std::string> YangSchema::validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const
-{
-    if (!isLeaf(location, node) || leafType(location, node) != yang::LeafDataTypes::IdentityRef)
-        return {};
-
-    std::set<std::string> identSet;
-
-    auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
-    auto insertToSet = [&identSet, prefixes, topLevelModule](auto module, auto name) {
-        std::string stringIdent;
-        if (prefixes == Prefixes::Always || topLevelModule != module) {
-            stringIdent += module;
-            stringIdent += ":";
-        }
-        stringIdent += name;
-        identSet.emplace(stringIdent);
-    };
-
-    auto leaf = std::make_shared<libyang::Schema_Node_Leaf>(getSchemaNode(location, node));
-    auto info = leaf->type()->info();
-    for (auto base : info->ident()->ref()) { // Iterate over all bases
-        insertToSet(base->module()->name(), base->name());
-        // Iterate over derived identities (this is recursive!)
-        for (auto derived : base->der()->schema()) {
-            insertToSet(derived->module()->name(), derived->name());
-        }
-    }
-
-    return identSet;
-}
-
-bool YangSchema::leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const
-{
-    auto identities = validIdentities(location, node, Prefixes::Always);
-
-    auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
-    auto identModule = value.first ? value.first.value() : topLevelModule;
-    return std::any_of(identities.begin(), identities.end(), [toFind = identModule + ":" + value.second](const auto& x) { return x == toFind; });
-}
-
 bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
 {
     if (!isList(location, node))
@@ -227,65 +153,102 @@ const std::set<std::string> YangSchema::listKeys(const schemaPath_& location, co
     return keys;
 }
 
-yang::LeafDataTypes lyTypeToLeafDataTypes(LY_DATA_TYPE type)
+namespace {
+std::set<enum_> enumValues(const libyang::S_Schema_Node_Leaf& leaf)
 {
-    switch (type) {
-    case LY_TYPE_STRING:
-        return yang::LeafDataTypes::String;
-    case LY_TYPE_DEC64:
-        return yang::LeafDataTypes::Decimal;
-    case LY_TYPE_BOOL:
-        return yang::LeafDataTypes::Bool;
-    case LY_TYPE_INT8:
-        return yang::LeafDataTypes::Int8;
-    case LY_TYPE_INT16:
-        return yang::LeafDataTypes::Int16;
-    case LY_TYPE_INT32:
-        return yang::LeafDataTypes::Int32;
-    case LY_TYPE_INT64:
-        return yang::LeafDataTypes::Int64;
-    case LY_TYPE_UINT8:
-        return yang::LeafDataTypes::Uint8;
-    case LY_TYPE_UINT16:
-        return yang::LeafDataTypes::Uint16;
-    case LY_TYPE_UINT32:
-        return yang::LeafDataTypes::Uint32;
-    case LY_TYPE_UINT64:
-        return yang::LeafDataTypes::Uint64;
-    case LY_TYPE_ENUM:
-        return yang::LeafDataTypes::Enum;
-    case LY_TYPE_BINARY:
-        return yang::LeafDataTypes::Binary;
-    case LY_TYPE_IDENT:
-        return yang::LeafDataTypes::IdentityRef;
-    case LY_TYPE_LEAFREF:
-        return yang::LeafDataTypes::LeafRef;
-    default:
-        using namespace std::string_literals;
-        throw std::logic_error{"internal error: unsupported libyang data type "s + std::to_string(type)};
+    auto type = leaf->type();
+    auto enm = type->info()->enums()->enm();
+    // The enum can be a derived type and enm() only returns values,
+    // if that specific typedef changed the possible values. So we go
+    // up the hierarchy until we find a typedef that defined these values.
+    while (enm.empty()) {
+        type = type->der()->type();
+        enm = type->info()->enums()->enm();
     }
+
+    std::vector<libyang::S_Type_Enum> enabled;
+    std::copy_if(enm.begin(), enm.end(), std::back_inserter(enabled), [](const libyang::S_Type_Enum& it) {
+        auto iffeatures = it->iffeature();
+        return std::all_of(iffeatures.begin(), iffeatures.end(), [](auto it) { return it->value(); });
+    });
+
+    std::set<enum_> enumSet;
+    std::transform(enabled.begin(), enabled.end(), std::inserter(enumSet, enumSet.end()), [](auto it) { return enum_{it->name()}; });
+    return enumSet;
 }
 
-namespace {
-yang::LeafDataTypes impl_leafType(const libyang::S_Schema_Node& node)
+std::set<identityRef_> validIdentities(const libyang::S_Schema_Node_Leaf& leaf)
+{
+    std::set<identityRef_> identSet;
+
+    // auto topLevelModule = leaf->module();
+
+    auto info = leaf->type()->info();
+    for (auto base : info->ident()->ref()) { // Iterate over all bases
+        identSet.emplace(base->module()->name(), base->name());
+        // Iterate over derived identities (this is recursive!)
+        for (auto derived : base->der()->schema()) {
+            identSet.emplace(derived->module()->name(), derived->name());
+        }
+    }
+
+    return identSet;
+}
+
+std::string leafrefPath(const libyang::S_Schema_Node_Leaf& leaf)
+{
+    return leaf->type()->info()->lref()->path();
+}
+
+yang::LeafDataType impl_leafType(const libyang::S_Schema_Node& node)
 {
     using namespace std::string_literals;
-    libyang::Schema_Node_Leaf leaf(node);
-    auto baseType{leaf.type()->base()};
-    try {
-        return lyTypeToLeafDataTypes(baseType);
-    } catch (std::logic_error& ex) {
-        throw UnsupportedYangTypeException("the type of "s + node->name() + " is not supported: " + ex.what());
+    auto leaf = std::make_shared<libyang::Schema_Node_Leaf>(node);
+    auto baseType{leaf->type()->base()};
+    switch (baseType) {
+    case LY_TYPE_STRING:
+        return yang::String{};
+    case LY_TYPE_DEC64:
+        return yang::Decimal{};
+    case LY_TYPE_BOOL:
+        return yang::Bool{};
+    case LY_TYPE_INT8:
+        return yang::Int8{};
+    case LY_TYPE_INT16:
+        return yang::Int16{};
+    case LY_TYPE_INT32:
+        return yang::Int32{};
+    case LY_TYPE_INT64:
+        return yang::Int64{};
+    case LY_TYPE_UINT8:
+        return yang::Uint8{};
+    case LY_TYPE_UINT16:
+        return yang::Uint16{};
+    case LY_TYPE_UINT32:
+        return yang::Uint32{};
+    case LY_TYPE_UINT64:
+        return yang::Uint64{};
+    case LY_TYPE_BINARY:
+        return yang::Binary{};
+    case LY_TYPE_ENUM:
+        return yang::Enum{enumValues(leaf)};
+    case LY_TYPE_IDENT:
+        return yang::IdentityRef{validIdentities(leaf)};
+    case LY_TYPE_LEAFREF:
+        return yang::LeafRef{leafrefPath(leaf)};
+    default:
+        using namespace std::string_literals;
+        throw UnsupportedYangTypeException("the type of "s + node->name() + " is not supported :" + std::to_string(baseType));
     }
 }
 }
 
-yang::LeafDataTypes YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
+yang::LeafDataType YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     return impl_leafType(getSchemaNode(location, node));
 }
 
-yang::LeafDataTypes YangSchema::leafType(const std::string& path) const
+yang::LeafDataType YangSchema::leafType(const std::string& path) const
 {
     return impl_leafType(getSchemaNode(path));
 }
@@ -294,29 +257,6 @@ std::optional<std::string> YangSchema::leafTypeName(const std::string& path) con
 {
     libyang::Schema_Node_Leaf leaf(getSchemaNode(path));
     return leaf.type()->der().get() ? std::optional{leaf.type()->der()->name()} : std::nullopt;
-}
-
-namespace {
-yang::LeafDataTypes impl_leafrefBaseType(const libyang::S_Schema_Node& node)
-{
-    using namespace std::string_literals;
-    libyang::Schema_Node_Leaf leaf(node);
-    try {
-        return lyTypeToLeafDataTypes(leaf.type()->info()->lref()->target()->type()->base());
-    } catch (std::logic_error& ex) {
-        throw UnsupportedYangTypeException("the type of "s + node->name() + " is not supported: " + ex.what());
-    }
-}
-}
-
-yang::LeafDataTypes YangSchema::leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    return impl_leafrefBaseType(getSchemaNode(location, node));
-}
-
-yang::LeafDataTypes YangSchema::leafrefBaseType(const std::string& path) const
-{
-    return impl_leafrefBaseType(getSchemaNode(path));
 }
 
 std::string YangSchema::leafrefPath(const std::string& leafrefPath) const
