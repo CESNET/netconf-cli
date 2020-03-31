@@ -22,7 +22,7 @@ TEST_CASE("presence containers")
     schema->addContainer("/mod:a/mod:a2", "mod:a3", yang::ContainerTraits::Presence);
     schema->addContainer("/mod:b", "mod:b2", yang::ContainerTraits::Presence);
     schema->addList("/", "mod:list", {"quote"});
-    schema->addLeaf("/mod:list", "mod:quote", yang::LeafDataTypes::String);
+    schema->addLeaf("/mod:list", "mod:quote", yang::String{});
     schema->addContainer("/mod:list", "mod:contInList", yang::ContainerTraits::Presence);
     Parser parser(schema);
     std::string input;
