@@ -14,8 +14,8 @@ TEST_CASE("list manipulation")
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("mod");
     schema->addList("/", "mod:list", {"number"});
-    schema->addLeaf("/mod:list", "mod:number", yang::LeafDataTypes::Int32);
-    schema->addLeaf("/mod:list", "mod:leafInList", yang::LeafDataTypes::String);
+    schema->addLeaf("/mod:list", "mod:number", yang::Int32{});
+    schema->addLeaf("/mod:list", "mod:leafInList", yang::String{});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
