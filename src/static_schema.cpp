@@ -71,40 +71,22 @@ void StaticSchema::addList(const std::string& location, const std::string& name,
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
 
-void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataTypes& type)
+std::set<identityRef_> StaticSchema::validIdentities(std::string_view module, std::string_view value)
 {
-    m_nodes.at(location).emplace(name, yang::leaf{type, {}, {}, {}});
-    std::string key = joinPaths(location, name);
-    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
+    std::set<ModuleValuePair> identities;
+    getIdentSet(ModuleNodePair{boost::optional<std::string>{module}, value}, identities);
+    std::set<identityRef_> res;
+
+    std::transform(identities.begin(), identities.end(), std::inserter(res, res.end()), [] (const auto& identity) {
+        return identityRef_{*identity.first, identity.second};
+    });
+
+    return res;
 }
 
-void StaticSchema::addLeafEnum(const std::string& location, const std::string& name, std::set<std::string> enumValues)
+void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type)
 {
-    yang::leaf toAdd;
-    toAdd.m_type = yang::LeafDataTypes::Enum;
-    toAdd.m_enumValues = enumValues;
-    m_nodes.at(location).emplace(name, toAdd);
-    std::string key = joinPaths(location, name);
-    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
-}
-
-void StaticSchema::addLeafIdentityRef(const std::string& location, const std::string& name, const ModuleValuePair& base)
-{
-    assert(base.first); // base identity cannot have an empty module
-    yang::leaf toAdd;
-    toAdd.m_type = yang::LeafDataTypes::IdentityRef;
-    toAdd.m_identBase = base;
-    m_nodes.at(location).emplace(name, toAdd);
-    std::string key = joinPaths(location, name);
-    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
-}
-
-void StaticSchema::addLeafRef(const std::string& location, const std::string& name, const std::string& source)
-{
-    yang::leaf toAdd;
-    toAdd.m_type = yang::LeafDataTypes::LeafRef;
-    toAdd.m_leafRefSource = source;
-    m_nodes.at(location).emplace(name, toAdd);
+    m_nodes.at(location).emplace(name, yang::leaf{type});
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
@@ -122,12 +104,6 @@ void StaticSchema::addIdentity(const std::optional<ModuleValuePair>& base, const
     m_identities.emplace(name, std::set<ModuleValuePair>());
 }
 
-bool StaticSchema::leafEnumHasValue(const schemaPath_& location, const ModuleNodePair& node, const std::string& value) const
-{
-    auto enums = enumValues(location, node);
-    return enums.find(value) != enums.end();
-}
-
 void StaticSchema::getIdentSet(const ModuleValuePair& ident, std::set<ModuleValuePair>& res) const
 {
     res.insert(ident);
@@ -135,41 +111,6 @@ void StaticSchema::getIdentSet(const ModuleValuePair& ident, std::set<ModuleValu
     for (auto it : derivedIdentities) {
         getIdentSet(it, res);
     }
-}
-
-const std::set<std::string> StaticSchema::validIdentities(const schemaPath_& location, const ModuleNodePair& node, const Prefixes prefixes) const
-{
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    assert(isLeaf(location, node));
-
-    const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& leaf = boost::get<yang::leaf>(child);
-
-    std::set<ModuleValuePair> identSet;
-    getIdentSet(leaf.m_identBase, identSet);
-
-    std::set<std::string> res;
-    std::transform(identSet.begin(), identSet.end(), std::inserter(res, res.end()), [location, node, prefixes](const auto& it) {
-        auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
-        std::string stringIdent;
-        if (prefixes == Prefixes::Always || (it.first && it.first.value() != topLevelModule)) {
-            stringIdent += it.first ? it.first.value() : topLevelModule;
-            stringIdent += ":";
-        }
-        stringIdent += it.second;
-        return stringIdent;
-    });
-
-    return res;
-}
-
-bool StaticSchema::leafIdentityIsValid(const schemaPath_& location, const ModuleNodePair& node, const ModuleValuePair& value) const
-{
-    auto identities = validIdentities(location, node, Prefixes::Always);
-
-    auto topLevelModule = location.m_nodes.empty() ? node.first.get() : location.m_nodes.front().m_prefix.get().m_name;
-    auto identModule = value.first ? value.first.value() : topLevelModule;
-    return std::any_of(identities.begin(), identities.end(), [toFind = identModule + ":" + value.second](const auto& x) { return x == toFind; });
 }
 
 std::string lastNodeOfSchemaPath(const std::string& path)
@@ -189,34 +130,17 @@ std::string lastNodeOfSchemaPath(const std::string& path)
     return res;
 }
 
-yang::LeafDataTypes StaticSchema::leafrefBaseType(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    auto leaf{boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node)))};
-    auto locationOfSource = stripLastNodeFromPath(leaf.m_leafRefSource);
-    auto nameOfSource = lastNodeOfSchemaPath(leaf.m_leafRefSource);
-    return boost::get<yang::leaf>(children(locationOfSource).at(nameOfSource)).m_type;
-}
-
-yang::LeafDataTypes StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
+yang::LeafDataType StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
 }
 
-yang::LeafDataTypes StaticSchema::leafType([[maybe_unused]] const std::string& path) const
+yang::LeafDataType StaticSchema::leafType([[maybe_unused]] const std::string& path) const
 {
-    throw std::runtime_error{"StaticSchema::leafType not implemented"};
-}
-
-const std::set<std::string> StaticSchema::enumValues(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    assert(isLeaf(location, node));
-
-    const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& leaf = boost::get<yang::leaf>(child);
-    return leaf.m_enumValues;
+    auto locationString = stripLastNodeFromPath(path);
+    auto node = lastNodeOfSchemaPath(path);
+    return boost::get<yang::leaf>(children(locationString).at(node)).m_type;
 }
 
 // We do not test StaticSchema, so we don't need to implement recursive childNodes
@@ -289,11 +213,6 @@ std::optional<std::string> StaticSchema::units([[maybe_unused]] const std::strin
 yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path) const
 {
     throw std::runtime_error{"Internal error: StaticSchema::nodeType(std::string) not implemented. The tests should not have called this overload."};
-}
-
-yang::LeafDataTypes StaticSchema::leafrefBaseType([[maybe_unused]] const std::string& path) const
-{
-    throw std::runtime_error{"Internal error: StaticSchema::leafrefBaseType(std::string) not implemented. The tests should not have called this overload."};
 }
 
 std::string StaticSchema::leafrefPath([[maybe_unused]] const std::string& leafrefPath) const
