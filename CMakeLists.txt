@@ -65,20 +65,20 @@ pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=0.12.47)
 # we don't need filename tracking, and we prefer to use header-only Boost
 add_definitions(-DBOOST_SPIRIT_X3_NO_FILESYSTEM)
 
-add_library(path STATIC
-    src/ast_path.cpp
-    )
-target_link_libraries(path Boost::boost)
-
 add_library(ast_values STATIC
     src/ast_values.cpp
     )
-target_link_libraries(ast_values Boost::boost)
+target_link_libraries(ast_values PUBLIC Boost::boost)
+
+add_library(path STATIC
+    src/ast_path.cpp
+    )
+target_link_libraries(path PUBLIC ast_values Boost::boost)
 
 add_library(utils STATIC
     src/utils.cpp
     )
-target_link_libraries(utils path ast_values Boost::boost)
+target_link_libraries(utils path ast_values)
 
 add_library(schemas STATIC
     src/static_schema.cpp
