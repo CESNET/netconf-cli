@@ -1,0 +1,267 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "613a60de_13e82587",
+        "filename": "src/leaf_data.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "nit: I would just write:\n\n res \u003d identity.m_prefix.get().m_name + \u0027:\u0027;",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 23
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fcd426a8_03539602",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "My C++-fu is low today, but I wonder if this is needed. Can you perhaps enforce this type of `ast` in the method\u0027s signature and save a copy constructor here? Or would that be ugly because this will not be a template with the same templating parameters as other functions? Or just skip that call to copy ctor anyway, and use `ast` directly in the same manner as done in leaf_data_call\u003cyang::Enum\u003e?",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ec3cc03_377b5987",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "please add doxygen comments for all these three members",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 15
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b3105fd_0f77cd06",
+        "filename": "src/leaf_data_type.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "This looks like a convenience method for a unit test (or a static schema), and there\u0027s no such constructor overload for IdentityRef. I *think* that it\u0027s better to remove this convenience helper.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 1
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05ef222a_aba9a7c5",
+        "filename": "src/leaf_data_type.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "nit: these structs (Enum, IdentityRef, LeafRef) do not really have any methods for encapsulation, so I would prefer their members to not use the m_ prefix, but feel free to ignore this",
+      "range": {
+        "startLine": 56,
+        "startChar": 20,
+        "endLine": 56,
+        "endChar": 35
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "af91bbc9_352e38c9",
+        "filename": "src/schema.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "I spent some time pondering about what to do with this method. If the \"type name\" was part of LeafDataType, that would mean that it could be printed in more places in the UI. However, I think that this would really only make sense for unions, and there\u0027s currently no way of calling describe on individual union \"members\", so I think this is fine as-is.",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "62c1a794_e292847a",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "I think that this can be refactored into that new validIdentities().",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fcb6668b_59dd5265",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "it\u0027s used now",
+      "range": {
+        "startLine": 139,
+        "startChar": 42,
+        "endLine": 139,
+        "endChar": 59
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0ccd782_2ebd7e21",
+        "filename": "src/static_schema.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "This looks a bit fishy to me. Previously, it was a virtual method which is no longer needed. Both of non-abstract Schema implementations however still have a method \"validIdentities\" which is not documented, and whose argument differ, and which is public in StaticSchema and private in YangSchema. Please get rid of that by either:\n\n- turning it into a private helper and listing all possible values in the unit test,\n- or adding a comment which explains that this is for making unit tests a wee bit easier",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3bb6373_f45e25d6",
+        "filename": "src/static_schema.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "are you going to fix this in a follow-up comment, or is that just a generic reminder for unspecified future?",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10f35cf9_863efa0c",
+        "filename": "src/utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "random comment: It\u0027s an empty struct (and same for essentially everything below), so I would not bother with passing as a reference here.",
+      "range": {
+        "startLine": 56,
+        "startChar": 45,
+        "endLine": 56,
+        "endChar": 46
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "66d0b3df_e1dfbb18",
+        "filename": "src/utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "Better leave this out so that adding a new primitive YANG type results in a build error instead of an exception at runtime. It\u0027s a variant now, so the error can be caught at the build time.",
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97076c2c_a1a9167f",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-03-31T21:50:21Z",
+      "side": 1,
+      "message": "nit: I think that it is not needed to preserve that exception string here; if you\u0027re changing it, let\u0027s get rid of this redundant text now",
+      "range": {
+        "startLine": 241,
+        "startChar": 96,
+        "endLine": 241,
+        "endChar": 126
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
