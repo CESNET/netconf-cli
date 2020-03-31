@@ -31,6 +31,7 @@ struct ParserContext {
         schemaPath_ m_location;
         ModuleNodePair m_node;
     } m_tmpListKeyLeafPath;
+
     std::map<std::string, leaf_data_> m_tmpListKeys;
     bool m_errorHandled = false;
     bool m_completing = false;
