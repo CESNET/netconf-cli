@@ -4,7 +4,7 @@
  * Written by Václav Kubernát <kubernat@cesnet.cz>
  *
 */
-
+#pragma once
 #include <libyang/Tree_Data.hpp>
 #include "ast_values.hpp"
 
