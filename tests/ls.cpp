@@ -25,11 +25,11 @@ TEST_CASE("ls")
     schema->addContainer("/example:a/example:a2", "example:a3");
     schema->addContainer("/example:b/example:b2", "example:b3");
     schema->addList("/", "example:list", {"number"});
-    schema->addLeaf("/example:list", "example:number", yang::LeafDataTypes::Int32);
+    schema->addLeaf("/example:list", "example:number", yang::Int32{});
     schema->addContainer("/example:list", "example:contInList");
     schema->addList("/", "example:twoKeyList", {"number", "name"});
-    schema->addLeaf("/example:twoKeyList", "example:number", yang::LeafDataTypes::Int32);
-    schema->addLeaf("/example:twoKeyList", "example:name", yang::LeafDataTypes::String);
+    schema->addLeaf("/example:twoKeyList", "example:number", yang::Int32{});
+    schema->addLeaf("/example:twoKeyList", "example:name", yang::String{});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
