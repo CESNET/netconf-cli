@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f8c3d38e_201eb61c",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-02T19:10:00Z",
+      "side": 1,
+      "message": "Thanks, I forgot this function existed",
+      "parentUuid": "a6c1f81e_52da5b61",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 21
+      },
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91dfe282_83015b5d",
         "filename": "src/utils.cpp",
         "patchSetId": 14
@@ -39,6 +63,24 @@
       "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4fe27c54_8262d7cc",
+        "filename": "src/utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-02T19:10:00Z",
+      "side": 1,
+      "message": "I chose the first option.",
+      "parentUuid": "91dfe282_83015b5d",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "4dbb1cbe_2febef02",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-02T19:10:00Z",
+      "side": 1,
+      "message": "Sure, but I don\u0027t think leaf type really matters when asking for a leaf description",
+      "parentUuid": "5cda42c6_042149e6",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "17c41e53_317ad9b8",
         "filename": "tests/yang.cpp",
         "patchSetId": 14
@@ -70,6 +130,24 @@
       "writtenOn": "2020-04-02T13:48:40Z",
       "side": 1,
       "message": "...and I have a feeling that this will need changing as well (move units to the type info?)",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "906f2c79_7914f7ec",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-02T19:10:00Z",
+      "side": 1,
+      "message": "Yeah, maybe I should move units to the leafType. In a separate commit?",
+      "parentUuid": "17c41e53_317ad9b8",
       "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
