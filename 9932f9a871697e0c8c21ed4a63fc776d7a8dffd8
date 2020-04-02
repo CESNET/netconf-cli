@@ -102,6 +102,24 @@
     },
     {
       "key": {
+        "uuid": "e1e6aa92_86a1b3e3",
+        "filename": "src/utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-02T21:02:46Z",
+      "side": 1,
+      "message": "Oops!",
+      "parentUuid": "28f57b2d_95b06169",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5cda42c6_042149e6",
         "filename": "tests/yang.cpp",
         "patchSetId": 14
@@ -149,6 +167,24 @@
       "side": 1,
       "message": "Sorry -- I did not mean a description, I meant a check for whether union\u0027s inner types are shown in whatever gets called by sysrepo-cli\u0027s `describe` command.",
       "parentUuid": "4dbb1cbe_2febef02",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "063591c1_8e898bb4",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-02T21:02:46Z",
+      "side": 1,
+      "message": "So I should make a test for leafDataTypeToString then",
+      "parentUuid": "7fda162e_e876e56b",
       "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
