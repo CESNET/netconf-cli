@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c1acb02f_4b3bf5fe",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T21:46:15Z",
+      "side": 1,
+      "message": "nit: this can be simplified I think:\n\n if (type.m_allowedValues.count(boost::get\u003cenum_\u003e(attr) \u003e 0) {\n   return true;\n }\n\n first \u003d saveIter;\n parserContext.m_errorMsg \u003d ...;\n ...\n return false;\n\nbut feel free to leave it as-is.",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 27
+      },
+      "revId": "f661eb3baa1dc2dbc5b6a10886a83a5fab1f63d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
