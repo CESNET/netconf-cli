@@ -68,6 +68,24 @@
       "revId": "0ae06d4d9e35e9e561c6c14e41c66df02eef0c77",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cced4638_e4c5a6c2",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-02T22:46:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f9eedcd_fd9e86a0",
+      "revId": "0ae06d4d9e35e9e561c6c14e41c66df02eef0c77",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
