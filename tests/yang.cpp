@@ -692,7 +692,7 @@ TEST_CASE("yangschema")
                 type = yang::LeafDataTypes::Uint8;
             }
 
-            SECTION("leafInt15")
+            SECTION("leafInt16")
             {
                 node.first = "example-schema";
                 node.second = "leafInt16";
@@ -739,6 +739,13 @@ TEST_CASE("yangschema")
                 node.first = "example-schema";
                 node.second = "leafEnum";
                 type = yang::LeafDataTypes::Enum;
+            }
+
+            SECTION("activeNumber")
+            {
+                node.first = "example-schema";
+                node.second = "activeNumber";
+                type = yang::LeafDataTypes::LeafRef;
             }
 
             REQUIRE(ys.leafType(path, node) == type);
