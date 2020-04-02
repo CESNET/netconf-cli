@@ -567,6 +567,30 @@
     },
     {
       "key": {
+        "uuid": "c806c11f_dec486ad",
+        "filename": "src/utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-02T11:38:08Z",
+      "side": 1,
+      "message": "Actually for Enum, IdentityRef and LeafRef (and upcoming Union) it makes sense to pass by reference, what do you think?",
+      "parentUuid": "fa4c7072_c8f8e229",
+      "range": {
+        "startLine": 56,
+        "startChar": 45,
+        "endLine": 56,
+        "endChar": 46
+      },
+      "revId": "a699719165bdbacf700849c673afb9617574cd47",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "66d0b3df_e1dfbb18",
         "filename": "src/utils.cpp",
         "patchSetId": 14
