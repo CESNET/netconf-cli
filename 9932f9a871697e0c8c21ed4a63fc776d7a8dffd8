@@ -259,6 +259,24 @@
       "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff16f1b2_cdb5062b",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-02T23:09:16Z",
+      "side": 1,
+      "message": "Should I wrap LeafDataTypes variant in a struct with the variant as a member and with a std::optional\u003cstd::string\u003e member called m_units?",
+      "parentUuid": "4e291282_3e0303df",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
