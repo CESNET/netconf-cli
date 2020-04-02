@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "b7ff6cc5_d293c41a",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-02T19:44:48Z",
+      "side": 1,
+      "message": "Oh, and also createSetSuggestions has to be reworked to create suggestions in the visitor (but it\u0027s less code).",
+      "parentUuid": "dd2902c8_6f0e4e3f",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 86
+      },
+      "revId": "8b2f894eab72b1bb119dbc32ce744fd10dc8c54d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "556a16f7_ae63c98a",
         "filename": "src/leaf_data_type.hpp",
         "patchSetId": 18
