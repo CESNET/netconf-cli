@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "dd2902c8_6f0e4e3f",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T18:56:36Z",
+      "side": 1,
+      "message": "yup, that sounds good, too",
+      "parentUuid": "b064a997_96b8a20d",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 86
+      },
+      "revId": "8b2f894eab72b1bb119dbc32ce744fd10dc8c54d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "556a16f7_ae63c98a",
         "filename": "src/leaf_data_type.hpp",
         "patchSetId": 18
@@ -78,6 +102,24 @@
       "side": 1,
       "message": "This:\n\n struct LeafRef;\n\n using LeafDataType \u003d std::variant\u003c\n  ...\n \u003e;\n\n struct LeafRef {\n     bool operator\u003d\u003d(const LeafRef\u0026 other) const;\n     std::string m_targetXPath;\n     LeafDataType m_targetType;\n };\n\ndoesn\u0027t work unfortunately, I would have to do std::unique_ptr\u003cLeafDataType\u003e.",
       "parentUuid": "556a16f7_ae63c98a",
+      "revId": "8b2f894eab72b1bb119dbc32ce744fd10dc8c54d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd1c2ec4_3d6bd4dc",
+        "filename": "src/leaf_data_type.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T18:56:36Z",
+      "side": 1,
+      "message": "right, sure, my bad, wrap it in a unique_ptr then",
+      "parentUuid": "1a08e47c_21c7e297",
       "revId": "8b2f894eab72b1bb119dbc32ce744fd10dc8c54d",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
