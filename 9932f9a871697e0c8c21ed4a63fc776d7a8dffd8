@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a6c1f81e_52da5b61",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T13:48:40Z",
+      "side": 1,
+      "message": "consider using:\n\n return std::any_of(unionInfo.m_unionTypes.begin(), unionInfo.m_unionTypes.end(), [this](const auto\u0026 type) { return std::visit(*this, type); });\n\n(and feel free to reply with an explanation why that would be too ugly)",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 21
+      },
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91dfe282_83015b5d",
+        "filename": "src/utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T13:48:40Z",
+      "side": 1,
+      "message": "I think that there\u0027s value in recursively printing all contained types. Two options:\n\n- either from here (and then it would also make sense to move, e.g., leafref destination printing to this visitor as well (in a separate commit)),\n- or from the caller (i.e., in the `describe` command). This will require reimplementing that variant-driven recursion in the `describe` command handler",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cda42c6_042149e6",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T13:48:40Z",
+      "side": 1,
+      "message": "please add a test for describing unions as well",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17c41e53_317ad9b8",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T13:48:40Z",
+      "side": 1,
+      "message": "...and I have a feeling that this will need changing as well (move units to the type info?)",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
