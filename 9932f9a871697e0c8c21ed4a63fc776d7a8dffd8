@@ -84,6 +84,24 @@
     },
     {
       "key": {
+        "uuid": "28f57b2d_95b06169",
+        "filename": "src/utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T19:30:25Z",
+      "side": 1,
+      "message": "looks like the results stored into `ss` are not used",
+      "parentUuid": "4fe27c54_8262d7cc",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5cda42c6_042149e6",
         "filename": "tests/yang.cpp",
         "patchSetId": 14
@@ -119,6 +137,24 @@
     },
     {
       "key": {
+        "uuid": "7fda162e_e876e56b",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T19:30:25Z",
+      "side": 1,
+      "message": "Sorry -- I did not mean a description, I meant a check for whether union\u0027s inner types are shown in whatever gets called by sysrepo-cli\u0027s `describe` command.",
+      "parentUuid": "4dbb1cbe_2febef02",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "17c41e53_317ad9b8",
         "filename": "tests/yang.cpp",
         "patchSetId": 14
@@ -148,6 +184,24 @@
       "side": 1,
       "message": "Yeah, maybe I should move units to the leafType. In a separate commit?",
       "parentUuid": "17c41e53_317ad9b8",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e291282_3e0303df",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T19:30:25Z",
+      "side": 1,
+      "message": "yup",
+      "parentUuid": "906f2c79_7914f7ec",
       "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
