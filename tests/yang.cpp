@@ -741,6 +741,14 @@ TEST_CASE("yangschema")
                 type = yang::LeafDataTypes::Enum;
             }
 
+            SECTION("activeNumber")
+            {
+                node.first = "example-schema";
+                node.second = "activeNumber";
+
+                type = yang::LeafDataTypes::LeafRef;
+            }
+
             REQUIRE(ys.leafType(path, node) == type);
         }
         SECTION("childNodes")
