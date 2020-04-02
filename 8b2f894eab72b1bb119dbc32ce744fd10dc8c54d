@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fb0a48c4_100afe03",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-02T13:34:54Z",
+      "side": 1,
+      "message": "I\u0027m getting lost here (which is not to say that the code is wrong, it\u0027s just confusing to me).\n\nHow come that it is necessary to set ParserContext::m_leafType when parsing `enum` and `identityref` -- why are these two special? Why is it not required when handling \"boring primitive types\" such as int8? Why is it not necessary for a `leafref`?\n\nI went through the code and I think that it\u0027s because ParserContext::m_leafType is only ever used in createSetSuggestions_class\u003cT\u003e specializations for these two types. That feels a bit weird.\n\nRight now there are no unions, so I think each leaf can only possibly ever have just one type. This probably means that whenever the type info for a leaf XPath is needed (i.e., creating suggestions), the type info can be queried from the ParserContext.m_schema once again, right? If so, my preference is to remove ParserContext::m_leafType from this commit. When you reintroduce it for unions, please use a more descriptive name such as \"leafFinalType\", and make sure that its setting is \"uniform\", i.e. probably from outside of this visitor or from each and every overload.",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 86
+      },
+      "revId": "8b2f894eab72b1bb119dbc32ce744fd10dc8c54d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
