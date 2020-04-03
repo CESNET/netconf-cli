@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a36fff59_f4e3ca95",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-03T13:26:25Z",
+      "side": 1,
+      "message": "what about something convoluted like a union of:\n- enum A\n- leafref to enum B\n- leafref to a leafref to enum C guarded by an if-feature (and test both with- and without-feature behavior)\n\nI think that both leafref chaining and leafrefs to different enums have a potential for uncovering some interesting bugs. I have no idea if if-feature is relevant here or not.",
+      "revId": "88df1b01c76796ce59295b997257e3126167db54",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

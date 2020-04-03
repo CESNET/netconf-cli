@@ -277,6 +277,24 @@
       "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37b25144_1c1b0ce3",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-03T13:26:25Z",
+      "side": 1,
+      "message": "Looking at RFC 7950, yeah, it seems to me that we\u0027ll be tracking additional type information:\n\n- config (true/false), not implemented yet at all, leads to bugs (https://tree.taiga.io/project/jktjkt-netconf-cli/us/158)\n- status (current/deprectaed/obsolete), not implemented yet, this is important only for the `describe` command I think,\n- description,\n- reference (text), not implemented yet, relevant only for `describe` again,\n- units, some implementation is there, but I think it won\u0027t work for unions; only relevant for `describe`,\n- default (for a default value), I think also only relevant for `describe`\n\nLet\u0027s defer this until later (can you please create Taiga user stories for them?), it has just started looking like a huge amount of work.",
+      "parentUuid": "ff16f1b2_cdb5062b",
+      "revId": "9932f9a871697e0c8c21ed4a63fc776d7a8dffd8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
