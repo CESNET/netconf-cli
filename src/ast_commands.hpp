@@ -163,8 +163,23 @@ struct describe_ : x3::position_tagged {
     boost::variant<schemaPath_, dataPath_> m_path;
 };
 
+struct copy_ : x3::position_tagged {
+    static constexpr auto name = "copy";
+    static constexpr auto shortHelp = "copy configs around";
+    static constexpr auto longHelp = R"(
+    copy <source> <destination>
+
+    Usage:
+        /> copy running startup
+        /> copy startup running)";
+    bool operator==(const copy_& b) const;
+
+    Datastore m_source;
+    Datastore m_destination;
+};
+
 struct help_;
-using CommandTypes = boost::mpl::vector<cd_, commit_, create_, delete_, describe_, discard_, get_, help_, ls_, set_>;
+using CommandTypes = boost::mpl::vector<cd_, commit_, copy_, create_, delete_, describe_, discard_, get_, help_, ls_, set_>;
 struct help_ : x3::position_tagged {
     static constexpr auto name = "help";
     static constexpr auto shortHelp = "help - Print help for commands.";
@@ -209,3 +224,4 @@ BOOST_FUSION_ADAPT_STRUCT(describe_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(help_, m_cmd)
 BOOST_FUSION_ADAPT_STRUCT(discard_)
 BOOST_FUSION_ADAPT_STRUCT(get_, m_path)
+BOOST_FUSION_ADAPT_STRUCT(copy_, m_source, m_destination)

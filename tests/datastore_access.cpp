@@ -336,6 +336,20 @@ TEST_CASE("setting/getting values")
     }
 
 
+    SECTION("copying data from startup refreshes the data")
+    {
+        {
+            REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{});
+            REQUIRE_CALL(mock, write("/example-schema:leafInt16", std::nullopt, "123"s));
+            datastore.setLeaf("/example-schema:leafInt16", int16_t{123});
+            datastore.commitChanges();
+        }
+        REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{{"/example-schema:leafInt16", int16_t{123}}});
+        REQUIRE_CALL(mock, write("/example-schema:leafInt16", "123"s, std::nullopt));
+        datastore.copyConfig(Datastore::Startup, Datastore::Running);
+        REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{});
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
 

@@ -54,6 +54,11 @@ struct special_ {
     SpecialValue m_value;
 };
 
+enum class Datastore {
+    Running,
+    Startup
+};
+
 std::string specialValueToString(const special_& value);
 
 using leaf_data_ = boost::variant<enum_,
