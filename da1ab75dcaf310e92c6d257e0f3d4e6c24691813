@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eecd3b17_08d6308c",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1000062
+      },
+      "writtenOn": "2020-04-03T09:27:49Z",
+      "side": 1,
+      "message": "nit: typo 15 -\u003e 16",
+      "revId": "da1ab75dcaf310e92c6d257e0f3d4e6c24691813",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a327821a_2bfc3c48",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 1000062
+      },
+      "writtenOn": "2020-04-03T09:27:49Z",
+      "side": 1,
+      "message": "nit: blank line",
+      "revId": "da1ab75dcaf310e92c6d257e0f3d4e6c24691813",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
