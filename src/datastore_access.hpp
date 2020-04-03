@@ -54,6 +54,7 @@ public:
 
     virtual void commitChanges() = 0;
     virtual void discardChanges() = 0;
+    virtual void copyConfig(const Datastore source, const Datastore destination) = 0;
 
 private:
     friend class DataQuery;
