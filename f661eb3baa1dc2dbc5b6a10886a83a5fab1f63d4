@@ -22,6 +22,30 @@
       "revId": "f661eb3baa1dc2dbc5b6a10886a83a5fab1f63d4",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2ac058e_acb17f30",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-03T00:22:00Z",
+      "side": 1,
+      "message": "I tried this:\n\n if (type.m_allowedValues.count(boost::get\u003cenum_\u003e(attr)) !\u003d 0) {\n    return true;\n }\n first \u003d saveIter;\n parserContext.m_errorMsg \u003d \"leaf data type mismatch: Expected an enum here. Allowed values:\";\n\n for (const auto\u0026 it : type.m_allowedValues) {\n    parserContext.m_errorMsg +\u003d \" \" + it.m_value;\n }\n return false;\n\nBut I think I like the current version more. isValidEnum gives more info about what the code does (.count() !\u003d 0 isn\u0027t exactly best thing in C++, C++20 will have a .contains() method).\nAlso the current version is one line shorter 😄",
+      "parentUuid": "c1acb02f_4b3bf5fe",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 27
+      },
+      "revId": "f661eb3baa1dc2dbc5b6a10886a83a5fab1f63d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }

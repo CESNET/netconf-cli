@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "cb88ef8a_d28982e7",
+        "filename": "src/leaf_data_type.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-03T00:22:00Z",
+      "side": 1,
+      "message": "I think it brings nice symmetry",
+      "parentUuid": "0032247d_66b11061",
+      "revId": "0ae06d4d9e35e9e561c6c14e41c66df02eef0c77",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ee6d633_5cc9a3ae",
         "filename": "src/leaf_data_type.hpp",
         "patchSetId": 21
