@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb32901d_7068c921",
+        "filename": "src/parser_context.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-03T10:57:38Z",
+      "side": 1,
+      "message": "nit: looks like whitespace noise, but whatever :), PS24 is a scary high number",
+      "revId": "d86d154251d733e13086b9cd60900806108df5d2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}

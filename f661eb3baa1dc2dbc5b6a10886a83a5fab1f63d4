@@ -46,6 +46,30 @@
       "revId": "f661eb3baa1dc2dbc5b6a10886a83a5fab1f63d4",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "75f2558b_4ed9bae9",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-03T10:57:38Z",
+      "side": 1,
+      "message": "I was mainly suggesting getting rid of that extra boolean flag variable, and then also to (in my opinion) simplify the flow by reversing the if condition. The success branch is shorter, it\u0027s just a return. But I do not have a strong preference, and besides, it makes sense to put all failures up front first. OK.",
+      "parentUuid": "f2ac058e_acb17f30",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 27
+      },
+      "revId": "f661eb3baa1dc2dbc5b6a10886a83a5fab1f63d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
