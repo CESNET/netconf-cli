@@ -80,6 +80,11 @@ void Interpreter::operator()(const ls_& ls) const
         std::cout << it << std::endl;
 }
 
+void Interpreter::operator()(const copy_& copy) const
+{
+    m_datastore.copyConfig(copy.m_source, copy.m_destination);
+}
+
 std::string Interpreter::buildTypeInfo(const std::string& path) const
 {
     std::ostringstream ss;

@@ -11,6 +11,7 @@
 #include <map>
 #include <optional>
 #include <string>
+#include "ast_commands.hpp"
 #include "ast_values.hpp"
 
 /*! \class DatastoreAccess
@@ -54,6 +55,7 @@ public:
 
     virtual void commitChanges() = 0;
     virtual void discardChanges() = 0;
+    virtual void copyConfig(Datastore source, Datastore destination) = 0;
 
 private:
     friend class DataQuery;

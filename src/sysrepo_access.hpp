@@ -40,6 +40,7 @@ public:
 
     void commitChanges() override;
     void discardChanges() override;
+    void copyConfig(Datastore source, Datastore destination) override;
 
 private:
     std::vector<std::map<std::string, leaf_data_>> listInstances(const std::string& path) override;
