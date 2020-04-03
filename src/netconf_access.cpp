@@ -149,6 +149,22 @@ DatastoreAccess::Tree NetconfAccess::executeRpc(const std::string& path, const T
     return res;
 }
 
+NC_DATASTORE toNcDatastore(Datastore datastore)
+{
+    switch (datastore) {
+        case Datastore::Running:
+            return NC_DATASTORE_RUNNING;
+        case Datastore::Startup:
+            return NC_DATASTORE_STARTUP;
+    }
+    __builtin_unreachable();
+}
+
+void NetconfAccess::copyConfig(Datastore source, Datastore destination)
+{
+    m_session->copyConfig(toNcDatastore(source), toNcDatastore(destination));
+}
+
 std::string NetconfAccess::fetchSchema(const std::string_view module, const
         std::optional<std::string_view> revision, const
         std::optional<std::string_view> submodule, const

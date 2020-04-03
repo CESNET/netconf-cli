@@ -267,6 +267,22 @@ DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string &path, const T
     return res;
 }
 
+sr_datastore_t toSrDatastore(Datastore datastore)
+{
+    switch (datastore) {
+        case Datastore::Running:
+            return SR_DS_RUNNING;
+        case Datastore::Startup:
+            return SR_DS_STARTUP;
+    }
+    __builtin_unreachable();
+}
+
+void SysrepoAccess::copyConfig(Datastore source, Datastore destination)
+{
+    m_session->copy_config(nullptr, toSrDatastore(source), toSrDatastore(destination));
+}
+
 std::string SysrepoAccess::fetchSchema(const char* module, const char* revision, const char* submodule)
 {
     std::string schema;
