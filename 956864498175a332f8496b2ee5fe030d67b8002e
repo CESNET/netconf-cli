@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f861349_f5af53b9",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-03T16:19:40Z",
+      "side": 1,
+      "message": "If this path manipulation was somehow broken, can you please fix that (and add a test for it) in an extra commit?",
+      "revId": "956864498175a332f8496b2ee5fe030d67b8002e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
