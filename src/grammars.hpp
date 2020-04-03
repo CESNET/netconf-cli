@@ -36,7 +36,7 @@ x3::rule<dataPath_class, dataPath_> const dataPath = "dataPath";
 x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
-x3::rule<space_separator_class, x3::unused_type> const space_separator = "space_separator";
+x3::rule<space_separator_class, x3::unused_type> const space_separator = "a space";
 
 x3::rule<discard_class, discard_> const discard = "discard";
 x3::rule<ls_class, ls_> const ls = "ls";
@@ -48,6 +48,7 @@ x3::rule<delete_class, delete_> const delete_rule = "delete_rule";
 x3::rule<commit_class, commit_> const commit = "commit";
 x3::rule<describe_class, describe_> const describe = "describe";
 x3::rule<help_class, help_> const help = "help";
+x3::rule<copy_class, copy_> const copy = "copy";
 x3::rule<command_class, command_> const command = "command";
 
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
@@ -217,6 +218,55 @@ struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
 auto const help_def =
     help_::name > createCommandSuggestions >> -command_names;
 
+struct datastore_symbol_table : x3::symbols<Datastore> {
+    datastore_symbol_table()
+    {
+        add
+            ("running", Datastore::Running)
+            ("startup", Datastore::Startup);
+    }
+} const datastore;
+
+auto copy_source = x3::rule<class source, Datastore>{"source datastore"} = datastore;
+auto copy_destination = x3::rule<class source, Datastore>{"destination datastore"} = datastore;
+
+const auto datastoreSuggestions = x3::eps[([](auto& ctx) {
+    auto& parserContext = x3::get<parser_context_tag>(ctx);
+    parserContext.m_suggestions = {Completion{"running", " "}, Completion{"startup", " "}};
+    parserContext.m_completionIterator = _where(ctx).begin();
+})];
+
+struct copy_args : x3::parser<copy_args> {
+    using attribute_type = copy_;
+    template <typename It, typename Ctx, typename RCtx>
+    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, copy_& attr) const
+    {
+        auto& parserContext = x3::get<parser_context_tag>(ctx);
+        auto iterBeforeDestination = begin;
+        auto save_iter = x3::no_skip[x3::eps[([&iterBeforeDestination](auto& ctx) {iterBeforeDestination = _where(ctx).begin();})]];
+        auto grammar = datastoreSuggestions > copy_source > space_separator > datastoreSuggestions > save_iter > copy_destination;
+
+        try {
+            grammar.parse(begin, end, ctx, rctx, attr);
+        } catch (x3::expectation_failure<It>& ex) {
+            using namespace std::string_literals;
+            parserContext.m_errorMsg = "Expected "s + ex.which() + " here:";
+            throw;
+        }
+
+        if (attr.m_source == attr.m_destination) {
+            begin = iterBeforeDestination; // Restoring the iterator here makes the error caret point to the second datastore
+            parserContext.m_errorMsg = "Source datastore and destination datastore can't be the same.";
+            return false;
+        }
+
+        return true;
+    }
+} copy_args;
+
+auto const copy_def =
+    copy_::name > space_separator > copy_args;
+
 auto const describe_def =
     describe_::name >> space_separator > (dataPathListEnd | dataPath | schemaPath);
 
@@ -224,7 +274,7 @@ auto const createCommandSuggestions_def =
     x3::eps;
 
 auto const command_def =
-    createCommandSuggestions >> x3::expect[cd | create | delete_rule | set | commit | get | ls | discard | describe | help];
+    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -263,6 +313,7 @@ BOOST_SPIRIT_DEFINE(create)
 BOOST_SPIRIT_DEFINE(delete_rule)
 BOOST_SPIRIT_DEFINE(describe)
 BOOST_SPIRIT_DEFINE(help)
+BOOST_SPIRIT_DEFINE(copy)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)

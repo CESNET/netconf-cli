@@ -35,6 +35,7 @@ class MockDatastoreAccess : public trompeloeil::mock_interface<DatastoreAccess> 
 
     IMPLEMENT_MOCK0(commitChanges);
     IMPLEMENT_MOCK0(discardChanges);
+    IMPLEMENT_MOCK2(copyConfig);
 };
 
 

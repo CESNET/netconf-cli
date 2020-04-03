@@ -42,6 +42,7 @@ public:
     void commitChanges() override;
     void discardChanges() override;
     Tree executeRpc(const std::string& path, const Tree& input) override;
+    void copyConfig(const Datastore source, const Datastore destination) override;
 
     std::shared_ptr<Schema> schema() override;
 
