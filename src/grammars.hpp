@@ -48,6 +48,7 @@ x3::rule<delete_class, delete_> const delete_rule = "delete_rule";
 x3::rule<commit_class, commit_> const commit = "commit";
 x3::rule<describe_class, describe_> const describe = "describe";
 x3::rule<help_class, help_> const help = "help";
+x3::rule<copy_class, copy_> const copy = "copy";
 x3::rule<command_class, command_> const command = "command";
 
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
@@ -217,6 +218,71 @@ struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
 auto const help_def =
     help_::name > createCommandSuggestions >> -command_names;
 
+struct datastore_symbol_table : x3::symbols<Datastore> {
+    datastore_symbol_table()
+    {
+        add
+            ("running", Datastore::Running)
+            ("startup", Datastore::Startup);
+    }
+} const datastore;
+
+struct copy_args : x3::parser<copy_args> {
+    using attribute_type = copy_;
+    template <typename It>
+    void genSuggestions(ParserContext& ctx, const It& where) const
+    {
+        ctx.m_suggestions = {Completion{"running", " "}, Completion{"startup", " "}};
+        ctx.m_completionIterator = where;
+    }
+    template <typename It, typename Ctx, typename RCtx, typename Attr>
+    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
+    {
+        auto& parserContext = x3::get<parser_context_tag>(ctx);
+        genSuggestions(parserContext, begin);
+
+        // I could use Spirit sequence parser, as in:
+        // auto grammar = genSuggestions > datastore > genSuggestions > datastore
+        // where genSuggestions is some kind of a struct defined inside
+        // copy_args.  However, I chose this more "manual" approach as it
+        // allows for better error messages and the sequence parser would not
+        // really save that many lines.
+        //
+        // FIXME: try to find out a way that easily removes suggestions after
+        // the source arg is parsed and also if there is a better way of doing this
+        auto res = datastore.parse(begin, end, ctx, rctx, attr.m_source);
+        if (!res) {
+            parserContext.m_errorMsg = "Expected source datastore here:";
+            return false;
+        }
+
+        res = space_separator.parse(begin, end, ctx, rctx, x3::unused);
+        if (!res) {
+            parserContext.m_errorMsg = "Expected a space here:";
+            return false;
+        }
+
+        genSuggestions(parserContext, begin);
+        auto save_iter = begin;
+        res = datastore.parse(begin, end, ctx, rctx, attr.m_destination);
+        if (!res) {
+            parserContext.m_errorMsg = "Expected destination datastore here:";
+            return false;
+        }
+
+        if (attr.m_source == attr.m_destination) {
+            begin = save_iter; // Restoring the iterator here makes the error caret point to the second datastore
+            parserContext.m_errorMsg = "Source datastore and destination datastore can't be the same.";
+            return false;
+        }
+
+        return true;
+    }
+} copy_args;
+
+auto const copy_def =
+    copy_::name > space_separator > copy_args;
+
 auto const describe_def =
     describe_::name >> space_separator > (dataPathListEnd | dataPath | schemaPath);
 
@@ -224,7 +290,7 @@ auto const createCommandSuggestions_def =
     x3::eps;
 
 auto const command_def =
-    createCommandSuggestions >> x3::expect[cd | create | delete_rule | set | commit | get | ls | discard | describe | help];
+    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -263,6 +329,7 @@ BOOST_SPIRIT_DEFINE(create)
 BOOST_SPIRIT_DEFINE(delete_rule)
 BOOST_SPIRIT_DEFINE(describe)
 BOOST_SPIRIT_DEFINE(help)
+BOOST_SPIRIT_DEFINE(copy)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)

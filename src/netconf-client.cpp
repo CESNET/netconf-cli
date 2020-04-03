@@ -381,6 +381,15 @@ std::shared_ptr<libyang::Data_Node> Session::rpc(const std::string& xmlData)
     }
 }
 
+void Session::copyConfig(const NC_DATASTORE source, const NC_DATASTORE destination)
+{
+    auto rpc = impl::guarded(nc_rpc_copy(destination, nullptr, source, nullptr, NC_WD_UNKNOWN, NC_PARAMTYPE_CONST));
+    if (!rpc) {
+        throw std::runtime_error("Cannot create copy-config RPC");
+    }
+    impl::do_rpc_ok(this, std::move(rpc));
+}
+
 ReportedError::ReportedError(const std::string& what)
     : std::runtime_error(what)
 {
