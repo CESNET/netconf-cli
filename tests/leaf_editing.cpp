@@ -52,6 +52,7 @@ TEST_CASE("leaf editing")
     schema->addLeaf("/mod:list", "mod:leafInList", yang::String{});
     schema->addLeaf("/", "mod:refToString", yang::LeafRef{"/mod:leafString", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:leafString"))});
     schema->addLeaf("/", "mod:refToInt8", yang::LeafRef{"/mod:leafInt8", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:leafInt8"))});
+    schema->addLeaf("/", "mod:refToLeafInCont", yang::LeafRef{"/mod:contA/identInCont", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:contA/mod:identInCont"))});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -313,6 +314,13 @@ TEST_CASE("leaf editing")
                     input = "set mod:refToInt8 42";
                     expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("refToInt8")});
                     expected.m_data = int8_t{42};
+                }
+
+                SECTION("refToLeafInCont")
+                {
+                    input = "set mod:refToLeafInCont pizza";
+                    expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("refToLeafInCont")});
+                    expected.m_data = identityRef_{"pizza"};
                 }
             }
         }
