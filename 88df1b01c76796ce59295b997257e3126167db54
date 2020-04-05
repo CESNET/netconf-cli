@@ -16,6 +16,24 @@
       "revId": "88df1b01c76796ce59295b997257e3126167db54",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dda504c8_c54bb91a",
+        "filename": "tests/leaf_editing.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-05T11:47:27Z",
+      "side": 1,
+      "message": "If-feature is only relevant in yang.cpp, I can add a test there.",
+      "parentUuid": "a36fff59_f4e3ca95",
+      "revId": "88df1b01c76796ce59295b997257e3126167db54",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
