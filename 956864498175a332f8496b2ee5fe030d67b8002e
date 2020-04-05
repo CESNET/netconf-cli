@@ -16,6 +16,24 @@
       "revId": "956864498175a332f8496b2ee5fe030d67b8002e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54101a08_71c5735f",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-05T12:05:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f861349_f5af53b9",
+      "revId": "956864498175a332f8496b2ee5fe030d67b8002e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
