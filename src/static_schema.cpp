@@ -122,7 +122,7 @@ std::string lastNodeOfSchemaPath(const std::string& path)
         return res;
     }
     if (pos != res.npos) { // path had more fragments
-        res.erase(0, pos);
+        res.erase(0, pos + 1);
         return res;
     }
 
