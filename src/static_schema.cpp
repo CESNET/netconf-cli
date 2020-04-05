@@ -116,17 +116,9 @@ void StaticSchema::getIdentSet(const ModuleValuePair& ident, std::set<ModuleValu
 std::string lastNodeOfSchemaPath(const std::string& path)
 {
     std::string res = path;
-    auto pos = res.find_last_of('/');
-    if (pos == 0) { // path had only one path fragment - "/something:something"
-        res.erase(0, 1);
-        return res;
+    if (auto pos = res.find_last_of('/'); pos != res.npos) {
+        res.erase(0, pos + 1);
     }
-    if (pos != res.npos) { // path had more fragments
-        res.erase(0, pos);
-        return res;
-    }
-
-    // path was empty
     return res;
 }
 
