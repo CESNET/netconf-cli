@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7fe0c99f_62f2b604",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-06T09:14:18Z",
+      "side": 1,
+      "message": "if I\u0027m reading this correctly, I think that this code can now be simplified into this:\n\n if (auto pos \u003d res.find_last_of(\u0027/\u0027); pos !\u003d res.npos) {\n     res.erase(0, pos + 1);\n }\n return res;\n\n...because the code is now chopping off everything before the last slash.",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 15
+      },
+      "revId": "d97dc2721ae3d89f624b385840773752af9dada2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
