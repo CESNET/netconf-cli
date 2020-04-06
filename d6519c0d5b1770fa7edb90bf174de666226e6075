@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6eaea683_e04a4ba1",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-06T09:18:57Z",
+      "side": 1,
+      "message": "nit: I think we don\u0027t indent braces in case branches, but whatever, I don\u0027t really care",
+      "revId": "d6519c0d5b1770fa7edb90bf174de666226e6075",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
