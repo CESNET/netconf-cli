@@ -89,7 +89,10 @@ cd ${BUILD_DIR}
 cmake -GNinja -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Debug} -DCMAKE_INSTALL_PREFIX=${PREFIX} ${CMAKE_OPTIONS} ${ZUUL_PROJECT_SRC_DIR}
 ninja-build
 ctest -j${CI_PARALLEL_JOBS} --output-on-failure
-ninja-build doc
-pushd html
-zip -r ~/zuul-output/docs/html.zip .
-popd
+
+if [[ $JOB_PERFORM_EXTRA_WORK == 1 ]]; then
+    ninja-build doc
+    pushd html
+    zip -r ~/zuul-output/docs/html.zip .
+    popd
+fi
