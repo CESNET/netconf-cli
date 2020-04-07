@@ -50,6 +50,12 @@ if [[ $ZUUL_JOB_NAME =~ -gcc$ ]]; then
     CMAKE_OPTIONS="${CMAKE_OPTIONS} -DWITH_PYTHON_BINDINGS=ON"
 fi
 
+if [[ $ZUUL_JOB_NAME == f29-gcc || $ZUUL_JOB_NAME == f29-gcc-cover-diff ]]; then
+    export CFLAGS="${CFLAGS} --coverage"
+    export CXXFLAGS="${CXXFLAGS} --coverage"
+    export LDFLAGS="${LDFLAGS} --coverage"
+fi
+
 PREFIX=~/target
 mkdir ${PREFIX}
 BUILD_DIR=~/build
@@ -69,7 +75,7 @@ DEP_SUBMODULE_COMMIT=$(git ls-tree -l master submodules/dependencies | cut -d ' 
 
 if [[ -z "${ARTIFACT_URL}" ]]; then
     # fallback to a promoted artifact
-    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME}/${DEP_SUBMODULE_COMMIT}.tar.xz"
+    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME%-cover-diff}/${DEP_SUBMODULE_COMMIT}.tar.xz"
 fi
 
 ARTIFACT_FILE=$(basename ${ARTIFACT_URL})
@@ -95,4 +101,8 @@ if [[ $JOB_PERFORM_EXTRA_WORK == 1 ]]; then
     pushd html
     zip -r ~/zuul-output/docs/html.zip .
     popd
+fi
+
+if [[ $LDFLAGS =~ .*--coverage.* ]]; then
+    gcovr -j ${CI_PARALLEL_JOBS} --object-directory ${BUILD_DIR} --root ${ZUUL_PROJECT_SRC_DIR} --xml --output ${BUILD_DIR}/coverage.xml
 fi
