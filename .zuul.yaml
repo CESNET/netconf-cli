@@ -2,8 +2,6 @@
     check:
       fail-fast: true
       jobs:
-        - clang-format:
-            voting: false
         - f29-gcc-cover:
             requires: CzechLight-deps-f29-gcc
             provides: coverage-f29-gcc
@@ -14,9 +12,3 @@
               - coverage-f29-gcc
             dependencies:
               - f29-gcc-cover
-        - f29-gcc-asan-ubsan:
-            requires: CzechLight-deps-f29-gcc-asan-ubsan
-        - f29-clang-asan:
-            requires: CzechLight-deps-f29-clang-asan
-        - f29-clang-tsan:
-            requires: CzechLight-deps-f29-clang-tsan
