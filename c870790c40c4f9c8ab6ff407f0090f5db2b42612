@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c05f3b1a_31ad5a1a",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-09T11:50:31Z",
+      "side": 1,
+      "message": "This is needed for DatastoreAccess. I think that it belongs to ast_values.hpp, considering that that is a pretty light-weight file, and that this is just an enum. That way you would not have to include ast_commands.hpp into DatastoreAccess.hpp.",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 2
+      },
+      "revId": "c870790c40c4f9c8ab6ff407f0090f5db2b42612",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "753a594f_a57e69f8",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-09T11:50:31Z",
+      "side": 1,
+      "message": "Is there tab-completion for these?",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 40
+      },
+      "revId": "c870790c40c4f9c8ab6ff407f0090f5db2b42612",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
