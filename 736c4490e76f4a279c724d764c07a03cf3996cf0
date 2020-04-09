@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "5b078c34_e7ead1af",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-09T11:43:01Z",
+      "side": 1,
+      "message": "OK, I made a few changes for this:\n\n- always include src/ in the include path; this is needed for tests\n- move that lib to a CTest section,\n- switching to CMake\u0027s imported targets (see previous patch)",
+      "parentUuid": "43546ec0_2cf2077b",
+      "revId": "736c4490e76f4a279c724d764c07a03cf3996cf0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e0e80261_d98a33bd",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 3
@@ -69,6 +87,24 @@
       "revId": "736c4490e76f4a279c724d764c07a03cf3996cf0",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ea73605_230749ae",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-09T11:43:01Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b6fb083c_86cd7e7b",
+      "revId": "736c4490e76f4a279c724d764c07a03cf3996cf0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +157,24 @@
       "revId": "736c4490e76f4a279c724d764c07a03cf3996cf0",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "848382d5_6999b492",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-09T11:43:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84e52c80_d6f31b12",
+      "revId": "736c4490e76f4a279c724d764c07a03cf3996cf0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
