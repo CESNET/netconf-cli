@@ -130,12 +130,23 @@ struct updateSrValFromValue : boost::static_visitor<void> {
 
 SysrepoAccess::~SysrepoAccess() = default;
 
-SysrepoAccess::SysrepoAccess(const std::string& appname)
+sr_datastore_t toSrDatastore(Datastore datastore)
+{
+    switch (datastore) {
+    case Datastore::Running:
+        return SR_DS_RUNNING;
+    case Datastore::Startup:
+        return SR_DS_STARTUP;
+    }
+    __builtin_unreachable();
+}
+
+SysrepoAccess::SysrepoAccess(const std::string& appname, const Datastore datastore)
     : m_connection(new sysrepo::Connection(appname.c_str()))
     , m_schema(new YangSchema())
 {
     try {
-        m_session = std::make_shared<sysrepo::Session>(m_connection);
+        m_session = std::make_shared<sysrepo::Session>(m_connection, toSrDatastore(datastore));
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
@@ -265,17 +276,6 @@ DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string &path, const T
         res.emplace(std::string(v->xpath()).substr(joinPaths(path, "/").size()), leafValueFromVal(v));
     }
     return res;
-}
-
-sr_datastore_t toSrDatastore(Datastore datastore)
-{
-    switch (datastore) {
-    case Datastore::Running:
-        return SR_DS_RUNNING;
-    case Datastore::Startup:
-        return SR_DS_STARTUP;
-    }
-    __builtin_unreachable();
 }
 
 void SysrepoAccess::copyConfig(const Datastore source, const Datastore destination)

@@ -40,7 +40,7 @@ TEST_CASE("setting/getting values")
     SysrepoSubscription subscription("example-schema", &mock);
 
 #ifdef sysrepo_BACKEND
-    SysrepoAccess datastore("netconf-cli-test");
+    SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
 #elif defined(netconf_BACKEND)
     NetconfAccess datastore(NETOPEER_SOCKET_PATH);
 #else
@@ -406,7 +406,7 @@ TEST_CASE("rpc") {
     srSubscription->rpc_subscribe("/example-schema:launch-nukes", cb, nullptr, SR_SUBSCR_CTX_REUSE);
 
 #ifdef sysrepo_BACKEND
-    SysrepoAccess datastore("netconf-cli-test");
+    SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
 #elif defined(netconf_BACKEND)
     NetconfAccess datastore(NETOPEER_SOCKET_PATH);
 #else
