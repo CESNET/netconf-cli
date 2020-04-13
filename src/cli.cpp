@@ -15,24 +15,20 @@
 #if defined(SYSREPO_CLI)
 #include "sysrepo_access.hpp"
 #define PROGRAM_NAME "sysrepo-cli"
-#define PROGRAM_DESCRIPTION R"(CLI interface to sysrepo \
-\
-Usage: \
-  sysrepo-cli \
-  sysrepo-cli (-h | --help) \
-  sysrepo-cli --version \
-)"
+static const auto usage = R"(CLI interface to sysrepo
+
+Usage:
+  sysrepo-cli [-d <datastore>]
+  sysrepo-cli (-h | --help)
+  sysrepo-cli --version
+
+Options:
+  -d <datastore>   can be "running" or "startup" [default: running])";
 #else
 #error "Unknown CLI backend"
 #endif
 
-
-
-
 const auto HISTORY_FILE_NAME = PROGRAM_NAME "_history";
-
-static const char usage[] = PROGRAM_DESCRIPTION;
-
 
 int main(int argc, char* argv[])
 {
@@ -44,7 +40,20 @@ int main(int argc, char* argv[])
     std::cout << "Welcome to " PROGRAM_NAME << std::endl;
 
 #if defined(SYSREPO_CLI)
-    SysrepoAccess datastore(PROGRAM_NAME);
+    auto datastoreType = Datastore::Running;
+    if (args.count("-d") == 1) {
+        auto arg = args.at("-d").asString();
+        if (arg == "running") {
+            datastoreType = Datastore::Running;
+        } else if (arg == "startup") {
+            datastoreType = Datastore::Startup;
+        } else {
+            std::cerr << "Unknown datastore: " << arg << "\n";
+            return 1;
+        }
+
+    }
+    SysrepoAccess datastore(PROGRAM_NAME, datastoreType);
 #else
 #error "Unknown CLI backend"
 #endif
