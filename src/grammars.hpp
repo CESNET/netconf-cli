@@ -245,8 +245,11 @@ struct copy_args : x3::parser<copy_args> {
         // auto grammar = genSuggestions > datastore > genSuggestions > datastore
         // where genSuggestions is some kind of a struct defined inside
         // copy_args.  However, I chose this more "manual" approach as it
-        // allows for better error messages and the sequence parser would
-        // really save that much lines.
+        // allows for better error messages and the sequence parser would not
+        // really save that many lines.
+        //
+        // FIXME: try to find out a way that easily removes suggestions after
+        // the source arg is parsed and also if there is a better way of doing this
         auto res = datastore.parse(begin, end, ctx, rctx, attr.m_source);
         if (!res) {
             parserContext.m_errorMsg = "Expected source datastore here:";
