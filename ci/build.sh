@@ -75,7 +75,7 @@ DEP_SUBMODULE_COMMIT=$(git ls-tree -l master submodules/dependencies | cut -d ' 
 
 if [[ -z "${ARTIFACT_URL}" ]]; then
     # fallback to a promoted artifact
-    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME%%-cover?(-diff)}/${DEP_SUBMODULE_COMMIT}.tar.xz"
+    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME%%-cover?(-previous|-diff)}/${DEP_SUBMODULE_COMMIT}.tar.xz"
 fi
 
 ARTIFACT_FILE=$(basename ${ARTIFACT_URL})
