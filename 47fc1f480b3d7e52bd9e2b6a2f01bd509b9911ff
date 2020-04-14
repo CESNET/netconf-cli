@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8f9e4cda_12a73f9a",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-14T20:44:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a9ef36c_cb78b7ac",
+      "range": {
+        "startLine": 168,
+        "startChar": 39,
+        "endLine": 168,
+        "endChar": 51
+      },
+      "revId": "47fc1f480b3d7e52bd9e2b6a2f01bd509b9911ff",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91b612d7_75d84cf9",
         "filename": "src/grammars.hpp",
         "patchSetId": 5
@@ -36,6 +60,24 @@
       "writtenOn": "2020-04-14T17:45:21Z",
       "side": 1,
       "message": "this doesn\u0027t reject `copy running running`, etc.",
+      "revId": "47fc1f480b3d7e52bd9e2b6a2f01bd509b9911ff",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "326fed54_21818311",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-14T20:44:51Z",
+      "side": 1,
+      "message": "I reworked the `copy` parser. Let me know what you think",
+      "parentUuid": "91b612d7_75d84cf9",
       "revId": "47fc1f480b3d7e52bd9e2b6a2f01bd509b9911ff",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
