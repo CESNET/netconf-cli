@@ -328,28 +328,6 @@ TEST_CASE("leaf editing")
                 }
             }
 
-            SECTION("binary")
-            {
-                SECTION("zero ending '='")
-                {
-                    input = "set mod:leafBinary This/IsABase64EncodedSomething++/342431++";
-                    expected.m_data = binary_{"This/IsABase64EncodedSomething++/342431++"};
-                }
-
-                SECTION("one ending '='")
-                {
-                    input = "set mod:leafBinary This/IsABase64EncodedSomething++/342431++=";
-                    expected.m_data = binary_{"This/IsABase64EncodedSomething++/342431++="};
-                }
-
-                SECTION("two ending '='")
-                {
-                    input = "set mod:leafBinary This/IsABase64EncodedSomething++/342431++==";
-                    expected.m_data = binary_{"This/IsABase64EncodedSomething++/342431++=="};
-                }
-                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafBinary")});
-            }
-
             SECTION("identityRef")
             {
                 SECTION("foodIdentRef")
