@@ -37,14 +37,13 @@ public:
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
     bool leafIsKey(const std::string& leafPath) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
-    yang::LeafDataType leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
-    yang::LeafDataType leafType(const std::string& path) const override;
+    yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
+    yang::TypeInfo leafType(const std::string& path) const override;
     std::optional<std::string> leafTypeName(const std::string& path) const override;
     std::string leafrefPath(const std::string& leafrefPath) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const override;
     std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const override;
     std::optional<std::string> description(const std::string& path) const override;
-    std::optional<std::string> units(const std::string& path) const override;
 
     void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb);
 
@@ -68,7 +67,7 @@ public:
     std::shared_ptr<libyang::Module> getYangModule(const std::string& name);
 
 private:
-    yang::LeafDataType impl_leafType(const std::shared_ptr<libyang::Schema_Node>& node) const;
+    yang::TypeInfo impl_leafType(const std::shared_ptr<libyang::Schema_Node>& node) const;
     std::set<std::string> modules() const;
 
     /** @short Returns a set of nodes, that match the location and name criteria. */

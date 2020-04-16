@@ -8,6 +8,15 @@
 #include "leaf_data_type.hpp"
 
 namespace yang {
+bool TypeInfo::operator==(const TypeInfo& other) const
+{
+    return this->m_type == other.m_type && this->m_units == other.m_units;
+}
+TypeInfo::TypeInfo(const yang::LeafDataType& type, const std::optional<std::string> units)
+    : m_type(type)
+    , m_units(units)
+{
+}
 Enum::Enum(std::set<enum_>&& values)
     : m_allowedValues(std::move(values))
 {
@@ -27,10 +36,10 @@ bool IdentityRef::operator==(const IdentityRef& other) const
 // Copy constructor needed, because unique_ptr is not copy-constructible
 LeafRef::LeafRef(const LeafRef& src)
     : m_targetXPath(src.m_targetXPath)
-    , m_targetType(std::make_unique<LeafDataType>(*src.m_targetType))
+    , m_targetType(std::make_unique<TypeInfo>(*src.m_targetType))
 {
 }
-LeafRef::LeafRef(const std::string& xpath, std::unique_ptr<LeafDataType>&& type)
+LeafRef::LeafRef(const std::string& xpath, std::unique_ptr<TypeInfo>&& type)
     : m_targetXPath(xpath)
     , m_targetType(std::move(type))
 {

@@ -82,16 +82,23 @@ using LeafDataType = std::variant<
     yang::LeafRef,
     yang::Union
 >;
+struct TypeInfo;
 struct LeafRef {
     LeafRef(const LeafRef& src);
-    LeafRef(const std::string& xpath, std::unique_ptr<LeafDataType>&& type);
+    LeafRef(const std::string& xpath, std::unique_ptr<TypeInfo>&& type);
     bool operator==(const LeafRef& other) const;
     std::string m_targetXPath;
-    std::unique_ptr<LeafDataType> m_targetType;
+    std::unique_ptr<TypeInfo> m_targetType;
 };
 
 struct Union {
     bool operator==(const Union& other) const;
-    std::vector<LeafDataType> m_unionTypes;
+    std::vector<TypeInfo> m_unionTypes;
+};
+struct TypeInfo {
+    TypeInfo(const yang::LeafDataType& type, const std::optional<std::string> units = std::nullopt);
+    bool operator==(const TypeInfo& other) const;
+    yang::LeafDataType m_type;
+    std::optional<std::string> m_units;
 };
 }
