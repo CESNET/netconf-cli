@@ -103,7 +103,7 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
         if (std::holds_alternative<yang::LeafRef>(leafType)) {
             ss << "-> ";
             ss << m_datastore.schema()->leafrefPath(path) << " ";
-            baseTypeStr = leafDataTypeToString(m_datastore.schema()->leafType(std::get<yang::LeafRef>(leafType).m_targetXPath));
+            baseTypeStr = leafDataTypeToString(*std::get<yang::LeafRef>(leafType).m_targetType);
         } else {
             baseTypeStr = leafDataTypeToString(leafType);
         }
