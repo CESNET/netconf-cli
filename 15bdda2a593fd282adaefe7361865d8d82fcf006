@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73ce0f7c_2551be13",
+        "filename": "tests/pretty_printers.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-16T23:51:03Z",
+      "side": 1,
+      "message": "missing space between type name and units",
+      "range": {
+        "startLine": 82,
+        "startChar": 41,
+        "endLine": 82,
+        "endChar": 46
+      },
+      "revId": "15bdda2a593fd282adaefe7361865d8d82fcf006",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
