@@ -100,12 +100,12 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
         auto leafType = m_datastore.schema()->leafType(path);
         auto typedefName = m_datastore.schema()->leafTypeName(path);
         std::string baseTypeStr;
-        if (std::holds_alternative<yang::LeafRef>(leafType)) {
+        if (std::holds_alternative<yang::LeafRef>(leafType.m_type)) {
             ss << "-> ";
             ss << m_datastore.schema()->leafrefPath(path) << " ";
-            baseTypeStr = leafDataTypeToString(*std::get<yang::LeafRef>(leafType).m_targetType);
+            baseTypeStr = leafDataTypeToString(std::get<yang::LeafRef>(leafType.m_type).m_targetType->m_type);
         } else {
-            baseTypeStr = leafDataTypeToString(leafType);
+            baseTypeStr = leafDataTypeToString(leafType.m_type);
         }
 
         if (typedefName) {
@@ -114,8 +114,8 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
             ss << baseTypeStr;
         }
 
-        if (auto units = m_datastore.schema()->units(path)) {
-            ss << " [" + *units + "]";
+        if (leafType.m_units) {
+            ss << " [" + *leafType.m_units + "]";
         }
 
         if (m_datastore.schema()->leafIsKey(path)) {

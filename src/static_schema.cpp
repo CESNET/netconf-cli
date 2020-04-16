@@ -86,7 +86,7 @@ std::set<identityRef_> StaticSchema::validIdentities(std::string_view module, st
 
 void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type)
 {
-    m_nodes.at(location).emplace(name, yang::leaf{type});
+    m_nodes.at(location).emplace(name, yang::leaf{yang::TypeInfo{type, std::nullopt}});
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
 }
@@ -122,13 +122,13 @@ std::string lastNodeOfSchemaPath(const std::string& path)
     return res;
 }
 
-yang::LeafDataType StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
+yang::TypeInfo StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
 }
 
-yang::LeafDataType StaticSchema::leafType(const std::string& path) const
+yang::TypeInfo StaticSchema::leafType(const std::string& path) const
 {
     auto locationString = stripLastNodeFromPath(path);
     auto node = lastNodeOfSchemaPath(path);
@@ -195,11 +195,6 @@ yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const Module
 std::optional<std::string> StaticSchema::description([[maybe_unused]] const std::string& path) const
 {
     throw std::runtime_error{"StaticSchema::description not implemented"};
-}
-
-std::optional<std::string> StaticSchema::units([[maybe_unused]] const std::string& path) const
-{
-    throw std::runtime_error{"StaticSchema::units not implemented"};
 }
 
 yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path) const

@@ -64,14 +64,22 @@ std::ostream& operator<<(std::ostream& s, const yang::LeafDataType& type)
         s << "}";
     }
     if (std::holds_alternative<yang::LeafRef>(type)) {
-        s << "{" << std::get<yang::LeafRef>(type).m_targetXPath << "," << *std::get<yang::LeafRef>(type).m_targetType  << "}";
+        s << "{" << std::get<yang::LeafRef>(type).m_targetXPath << "," << std::get<yang::LeafRef>(type).m_targetType->m_type  << "}";
     }
     if (std::holds_alternative<yang::Union>(type)) {
         s << "{" << std::endl;
         auto types = std::get<yang::Union>(type).m_unionTypes;
-        std::copy(types.begin(), types.end(), std::experimental::make_ostream_joiner(s, ",\n"));
+        std::transform(types.begin(), types.end(), std::experimental::make_ostream_joiner(s, ",\n"), [] (const auto& type) {
+            return type.m_type;
+        });
     }
     s << std::endl;
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const yang::TypeInfo& type)
+{
+    s << type.m_type << (type.m_units ? " units: " + *type.m_units : "");
     return s;
 }
 }

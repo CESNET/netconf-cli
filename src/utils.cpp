@@ -118,7 +118,7 @@ struct impl_leafDataTypeToString {
     {
         std::ostringstream ss;
         std::transform(type.m_unionTypes.begin(), type.m_unionTypes.end(), std::experimental::make_ostream_joiner(ss, ", "), [this](const auto& unionType) {
-            return std::visit(*this, unionType);
+            return std::visit(*this, unionType.m_type);
         });
         return ss.str();
     }
