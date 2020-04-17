@@ -695,7 +695,7 @@ TEST_CASE("yangschema")
                 node.second = "activeNumber";
                 type.emplace<yang::LeafRef>(
                     "/example-schema:_list/number",
-                    std::make_unique<yang::LeafDataType>(ys.leafType("/example-schema:_list/number"))
+                    std::make_unique<yang::TypeInfo>(ys.leafType("/example-schema:_list/number"))
                 );
             }
 
@@ -718,17 +718,18 @@ TEST_CASE("yangschema")
                 }();
 
                 type = yang::Union{{
-                    createEnum({"wlan0", "wlan1"}),
-                    yang::LeafRef{
+                    yang::TypeInfo{createEnum({"wlan0", "wlan1"})},
+                    yang::TypeInfo{yang::LeafRef{
                         "/example-schema:portSettings/port",
-                        std::make_unique<yang::LeafDataType>(createEnum({"eth0", "eth1", "eth2"}))
-                    },
-                    yang::LeafRef{
+                        std::make_unique<yang::TypeInfo>(createEnum({"eth0", "eth1", "eth2"}))
+                    }},
+                    yang::TypeInfo{yang::LeafRef{
                         "/example-schema:activeMappedPort",
-                        std::make_unique<yang::LeafDataType>(yang::LeafRef{
+                        std::make_unique<yang::TypeInfo>(yang::LeafRef{
                                 "/example-schema:portMapping/port",
-                                std::make_unique<yang::LeafDataType>(enums)
-                        })},
+                                std::make_unique<yang::TypeInfo>(enums)
+                        })
+                    }},
                 }};
             }
 
@@ -841,37 +842,42 @@ TEST_CASE("yangschema")
 
         SECTION("units")
         {
-            std::optional<std::string> expected;
+            yang::LeafDataType expectedType;
+            std::optional<std::string> expectedUnits;
             SECTION("length")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("length")));
-                expected = "m";
+                expectedType.emplace<yang::Int32>();
+                expectedUnits = "m";
             }
 
             SECTION("wavelength")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("wavelength")));
-                expected = "nm";
+                expectedType.emplace<yang::Decimal>();
+                expectedUnits = "nm";
             }
 
             SECTION("leafInt32")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafInt32")));
+                expectedType.emplace<yang::Int32>();
             }
 
             SECTION("duration")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("duration")));
-                expected = "s";
+                expectedType.emplace<yang::Int32>();
+                expectedUnits = "s";
             }
 
             SECTION("another-duration")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("another-duration")));
-                expected = "vt";
+                expectedType.emplace<yang::Int32>();
+                expectedUnits = "vt";
             }
-
-            REQUIRE(ys.units(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
+            REQUIRE(ys.leafType(pathToSchemaString(path, Prefixes::WhenNeeded)) == yang::TypeInfo{expectedType, expectedUnits});
         }
 
         SECTION("nodeType")

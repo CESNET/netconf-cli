@@ -201,65 +201,99 @@ std::string leafrefPath(const libyang::S_Type& type)
 }
 }
 
-yang::LeafDataType YangSchema::impl_leafType(const libyang::S_Schema_Node& node) const
+yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) const
 {
     using namespace std::string_literals;
     auto leaf = std::make_shared<libyang::Schema_Node_Leaf>(node);
-    std::function<yang::LeafDataType(std::shared_ptr<libyang::Type>)> resolveType;
-    resolveType = [this, &resolveType, leaf] (auto type) -> yang::LeafDataType {
+    auto leafUnits = leaf->units();
+    std::function<yang::TypeInfo(std::shared_ptr<libyang::Type>)> resolveType;
+    resolveType = [this, &resolveType, leaf, leafUnits] (std::shared_ptr<libyang::Type> type) -> yang::TypeInfo {
+        yang::LeafDataType resType;
         switch (type->base()) {
         case LY_TYPE_STRING:
-            return yang::String{};
+            resType.emplace<yang::String>();
+            break;
         case LY_TYPE_DEC64:
-            return yang::Decimal{};
+            resType.emplace<yang::Decimal>();
+            break;
         case LY_TYPE_BOOL:
-            return yang::Bool{};
+            resType.emplace<yang::Bool>();
+            break;
         case LY_TYPE_INT8:
-            return yang::Int8{};
+            resType.emplace<yang::Int8>();
+            break;
         case LY_TYPE_INT16:
-            return yang::Int16{};
+            resType.emplace<yang::Int16>();
+            break;
         case LY_TYPE_INT32:
-            return yang::Int32{};
+            resType.emplace<yang::Int32>();
+            break;
         case LY_TYPE_INT64:
-            return yang::Int64{};
+            resType.emplace<yang::Int64>();
+            break;
         case LY_TYPE_UINT8:
-            return yang::Uint8{};
+            resType.emplace<yang::Uint8>();
+            break;
         case LY_TYPE_UINT16:
-            return yang::Uint16{};
+            resType.emplace<yang::Uint16>();
+            break;
         case LY_TYPE_UINT32:
-            return yang::Uint32{};
+            resType.emplace<yang::Uint32>();
+            break;
         case LY_TYPE_UINT64:
-            return yang::Uint64{};
+            resType.emplace<yang::Uint64>();
+            break;
         case LY_TYPE_BINARY:
-            return yang::Binary{};
+            resType.emplace<yang::Binary>();
+            break;
         case LY_TYPE_ENUM:
-            return yang::Enum{enumValues(type)};
+            resType.emplace<yang::Enum>(enumValues(type));
+            break;
         case LY_TYPE_IDENT:
-            return yang::IdentityRef{validIdentities(type)};
+            resType.emplace<yang::IdentityRef>(validIdentities(type));
+            break;
         case LY_TYPE_LEAFREF:
-            return yang::LeafRef{::leafrefPath(type), std::make_unique<yang::LeafDataType>(leafType(::leafrefPath(type)))};
+            resType.emplace<yang::LeafRef>(::leafrefPath(type), std::make_unique<yang::TypeInfo>(leafType(::leafrefPath(type))));
+            break;
         case LY_TYPE_UNION:
             {
-                auto res = yang::Union{};
+                auto resUnion = yang::Union{};
                 for (auto unionType : type->info()->uni()->types()) {
-                    res.m_unionTypes.push_back(resolveType(unionType));
+                    resUnion.m_unionTypes.push_back(resolveType(unionType));
                 }
-                return res;
+                resType.emplace<yang::Union>(std::move(resUnion));
+                break;
             }
         default:
             using namespace std::string_literals;
             throw UnsupportedYangTypeException("the type of "s + leaf->name() + " is not supported: " + std::to_string(leaf->type()->base()));
         }
-        };
+
+        std::optional<std::string> resUnits;
+
+        if (leafUnits) {
+            resUnits = leafUnits;
+        } else {
+            for (auto parentTypedef = type->der(); parentTypedef; parentTypedef = parentTypedef->type()->der()) {
+                auto units = parentTypedef->units();
+                if (units) {
+                    resUnits = units;
+                    break;
+                }
+            }
+        }
+
+        return yang::TypeInfo(resType, resUnits);
+    };
     return resolveType(leaf->type());
 }
 
-yang::LeafDataType YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
+yang::TypeInfo YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     return impl_leafType(getSchemaNode(location, node));
 }
 
-yang::LeafDataType YangSchema::leafType(const std::string& path) const
+yang::TypeInfo YangSchema::leafType(const std::string& path) const
 {
     return impl_leafType(getSchemaNode(path));
 }
@@ -420,29 +454,4 @@ std::optional<std::string> YangSchema::description(const std::string& path) cons
 {
     auto node = getSchemaNode(path.c_str());
     return node->dsc() ? std::optional{node->dsc()} : std::nullopt;
-}
-
-std::optional<std::string> YangSchema::units(const std::string& path) const
-{
-    auto node = getSchemaNode(path.c_str());
-    if (node->nodetype() != LYS_LEAF) {
-        return std::nullopt;
-    }
-    libyang::Schema_Node_Leaf leaf{node};
-    auto units = leaf.units();
-
-    // A leaf can specify units as part of its definition.
-    if (units) {
-        return units;
-    }
-
-    // A typedef (or its parent typedefs) can specify units too. We'll use the first `units` we find.
-    for (auto parentTypedef = leaf.type()->der(); parentTypedef; parentTypedef = parentTypedef->type()->der()) {
-        units = parentTypedef->units();
-        if (units) {
-            return units;
-        }
-    }
-
-    return std::nullopt;
 }

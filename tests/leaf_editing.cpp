@@ -50,26 +50,26 @@ TEST_CASE("leaf editing")
     schema->addList("/", "mod:list", {"number"});
     schema->addLeaf("/mod:list", "mod:number", yang::Int32{});
     schema->addLeaf("/mod:list", "mod:leafInList", yang::String{});
-    schema->addLeaf("/", "mod:refToString", yang::LeafRef{"/mod:leafString", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:leafString"))});
-    schema->addLeaf("/", "mod:refToInt8", yang::LeafRef{"/mod:leafInt8", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:leafInt8"))});
-    schema->addLeaf("/", "mod:refToLeafInCont", yang::LeafRef{"/mod:contA/identInCont", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:contA/mod:identInCont"))});
-    schema->addLeaf("/", "mod:intOrString", yang::Union{{yang::Int32{}, yang::String{}}});
-    schema->addLeaf("/", "mod:twoInts", yang::Union{{yang::Uint8{}, yang::Int16{}}});
+    schema->addLeaf("/", "mod:refToString", yang::LeafRef{"/mod:leafString", std::make_unique<yang::TypeInfo>(schema->leafType("/mod:leafString"))});
+    schema->addLeaf("/", "mod:refToInt8", yang::LeafRef{"/mod:leafInt8", std::make_unique<yang::TypeInfo>(schema->leafType("/mod:leafInt8"))});
+    schema->addLeaf("/", "mod:refToLeafInCont", yang::LeafRef{"/mod:contA/identInCont", std::make_unique<yang::TypeInfo>(schema->leafType("/mod:contA/mod:identInCont"))});
+    schema->addLeaf("/", "mod:intOrString", yang::Union{{yang::TypeInfo{yang::Int32{}}, yang::TypeInfo{yang::String{}}}});
+    schema->addLeaf("/", "mod:twoInts", yang::Union{{yang::TypeInfo{yang::Uint8{}}, yang::TypeInfo{yang::Int16{}}}});
     schema->addLeaf("/", "mod:unionStringEnumLeafref", yang::Union{{
-        yang::String{},
-        createEnum({"foo", "bar"}),
-        yang::LeafRef{"/mod:leafEnum", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:leafEnum"))}
+            yang::LeafDataType{yang::String{}},
+        yang::LeafDataType{createEnum({"foo", "bar"})},
+        yang::LeafDataType{yang::LeafRef{"/mod:leafEnum", std::make_unique<yang::TypeInfo>(schema->leafType("/mod:leafEnum"))}}
     }});
 
     schema->addList("/", "mod:portSettings", {"port"});
     schema->addLeaf("/mod:portSettings", "mod:port", createEnum({"eth0", "eth1", "eth2"}));
     schema->addList("/", "mod:portMapping", {"port"});
     schema->addLeaf("/mod:portMapping", "mod:port", createEnum({"utf1", "utf2", "utf3"}));
-    schema->addLeaf("/", "mod:activeMappedPort", yang::LeafRef{"/mod:portMapping/mod:port", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:portMapping/mod:port"))});
+    schema->addLeaf("/", "mod:activeMappedPort", yang::LeafRef{"/mod:portMapping/mod:port", std::make_unique<yang::TypeInfo>(schema->leafType("/mod:portMapping/mod:port"))});
     schema->addLeaf("/", "mod:activePort", yang::Union{{
-        createEnum({"wlan0", "wlan1"}),
-        yang::LeafRef{"/mod:portSettings/mod:port", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:portSettings/mod:port"))},
-        yang::LeafRef{"/mod:activeMappedPort", std::make_unique<yang::LeafDataType>(schema->leafType("/mod:activeMappedPort"))},
+        yang::TypeInfo{createEnum({"wlan0", "wlan1"})},
+        yang::TypeInfo{yang::LeafRef{"/mod:portSettings/mod:port", std::make_unique<yang::TypeInfo>(schema->leafType("/mod:portSettings/mod:port"))}},
+        yang::TypeInfo{yang::LeafRef{"/mod:activeMappedPort", std::make_unique<yang::TypeInfo>(schema->leafType("/mod:activeMappedPort"))}},
     }});
 
     Parser parser(schema);

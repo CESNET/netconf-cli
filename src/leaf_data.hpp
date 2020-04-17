@@ -171,12 +171,12 @@ struct impl_LeafData {
     }
     bool operator()(const yang::LeafRef& leafRef) const
     {
-        return std::visit(*this, *leafRef.m_targetType);
+        return std::visit(*this, leafRef.m_targetType->m_type);
     }
     bool operator()(const yang::Union& unionInfo) const
     {
         return std::any_of(unionInfo.m_unionTypes.begin(), unionInfo.m_unionTypes.end(), [this](const auto& type) {
-            return std::visit(*this, type);
+            return std::visit(*this, type.m_type);
         });
     }
 };
@@ -190,14 +190,13 @@ struct LeafData : x3::parser<LeafData> {
     {
         ParserContext& parserContext = x3::get<parser_context_tag>(ctx);
         const Schema& schema = parserContext.m_schema;
-        auto type = schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node);
+        auto type = schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node).m_type;
 
         auto pass = std::visit(impl_LeafData<It, Ctx, RCtx, Attr>{first, last, ctx, rctx, attr, parserContext}, type);
 
         if (!pass) {
             if (parserContext.m_errorMsg.empty()) {
-                parserContext.m_errorMsg = "leaf data type mismatch: Expected " +
-                    leafDataTypeToString(schema.leafType(parserContext.m_tmpListKeyLeafPath.m_location, parserContext.m_tmpListKeyLeafPath.m_node)) + " here:";
+                parserContext.m_errorMsg = "leaf data type mismatch: Expected " + leafDataTypeToString(type) + " here:";
             }
         }
         return pass;

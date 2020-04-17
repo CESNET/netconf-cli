@@ -27,7 +27,7 @@ struct list {
 };
 
 struct leaf {
-    yang::LeafDataType m_type;
+    yang::TypeInfo m_type;
 };
 
 struct module {
@@ -51,14 +51,13 @@ public:
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
     bool leafIsKey(const std::string& leafPath) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
-    yang::LeafDataType leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
-    yang::LeafDataType leafType(const std::string& path) const override;
+    yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
+    yang::TypeInfo leafType(const std::string& path) const override;
     std::optional<std::string> leafTypeName(const std::string& path) const override;
     std::string leafrefPath(const std::string& leafrefPath) const override;
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion) const override;
     std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const override;
     std::optional<std::string> description(const std::string& path) const override;
-    std::optional<std::string> units(const std::string& path) const override;
 
     /** A helper for making tests a little bit easier. It returns all
      * identities which are based on the argument passed and which can then be

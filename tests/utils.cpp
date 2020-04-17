@@ -89,10 +89,10 @@ TEST_CASE("utils")
         SECTION("union")
         {
             type = yang::Union{{
-                yang::String{},
-                createEnum({"foo", "bar"}),
-                yang::Int8{},
-                yang::Int64{},
+                yang::TypeInfo{yang::String{}},
+                yang::TypeInfo{createEnum({"foo", "bar"})},
+                yang::TypeInfo{yang::Int8{}},
+                yang::TypeInfo{yang::Int64{}},
             }};
             expected = "a string, an enum, an 8-bit integer, a 64-bit integer";
         }
