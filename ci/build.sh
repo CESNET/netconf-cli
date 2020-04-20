@@ -32,6 +32,11 @@ if [[ $ZUUL_JOB_NAME =~ .*-asan ]]; then
     export CFLAGS="-fsanitize=address ${CFLAGS}"
     export CXXFLAGS="-fsanitize=address ${CXXFLAGS}"
     export LDFLAGS="-fsanitize=address ${LDFLAGS}"
+
+    if [[ $ZUUL_JOB_NAME =~ f31-.* ]]; then
+        # On Fedora 31, libev's ev_realloc looks fishy for sysrepoctl & sysrepocfg
+        export LSAN_OPTIONS="suppressions=${ZUUL_PROJECT_SRC_DIR}/ci/lsan.supp:print_suppressions=0"
+    fi
 fi
 
 if [[ $ZUUL_JOB_NAME =~ .*-tsan ]]; then
