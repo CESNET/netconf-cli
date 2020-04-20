@@ -2,17 +2,17 @@
     check:
       fail-fast: true
       jobs:
-        - f29-gcc-cover:
-            requires: CzechLight-deps-f29-gcc
-        - f29-gcc-asan-ubsan:
-            requires: CzechLight-deps-f29-gcc-asan-ubsan
-        - f29-clang-asan:
-            requires: CzechLight-deps-f29-clang-asan
-        - f29-clang-tsan:
-            requires: CzechLight-deps-f29-clang-tsan
-        - cpp-coverage-diff:
+        - f31-gcc-cover:
+            requires: CzechLight-deps-f31-gcc
+        - f31-gcc-asan-ubsan:
+            requires: CzechLight-deps-f31-gcc-asan-ubsan
+        - f31-clang-asan:
+            requires: CzechLight-deps-f31-clang-asan
+        - f31-clang-tsan:
+            requires: CzechLight-deps-f31-clang-tsan
+        - f31-cpp-coverage-diff:
             voting: false
         - clang-format:
             voting: false
-        - f29-gcc-cover-previous:
-            requires: CzechLight-deps-f29-gcc
+        - f31-gcc-cover-previous:
+            requires: CzechLight-deps-f31-gcc
