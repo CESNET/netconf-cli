@@ -54,6 +54,7 @@ module example-schema {
             enum data;
             enum coze;
         }
+        default coze;
     }
 
     leaf leafDecimal {
