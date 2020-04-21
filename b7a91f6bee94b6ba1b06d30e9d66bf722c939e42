@@ -34,6 +34,24 @@
       "revId": "b7a91f6bee94b6ba1b06d30e9d66bf722c939e42",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72cf7abf_a0f0aab1",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-21T11:23:03Z",
+      "side": 1,
+      "message": "the condition was wrong, so I flipped the polarity of that test.",
+      "parentUuid": "01388cae_ccbc9d50",
+      "revId": "b7a91f6bee94b6ba1b06d30e9d66bf722c939e42",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
