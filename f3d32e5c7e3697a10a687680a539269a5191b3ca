@@ -16,6 +16,24 @@
       "revId": "f3d32e5c7e3697a10a687680a539269a5191b3ca",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c14c254_67edc43f",
+        "filename": "src/schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-21T08:53:22Z",
+      "side": 1,
+      "message": "should describe say \"rw\" for containers, if it\u0027s not config false?",
+      "parentUuid": "2ef94c5d_6071064a",
+      "revId": "f3d32e5c7e3697a10a687680a539269a5191b3ca",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
