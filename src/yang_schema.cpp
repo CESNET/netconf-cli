@@ -460,3 +460,20 @@ bool YangSchema::isConfig(const std::string& path) const
 {
     return getSchemaNode(path.c_str())->flags() & LYS_CONFIG_W;
 }
+
+std::optional<std::string> YangSchema::defaultValue(const std::string& leafPath) const
+{
+    libyang::Schema_Node_Leaf leaf(getSchemaNode(leafPath));
+
+    if (auto leafDefault = leaf.dflt()) {
+        return leafDefault;
+    }
+
+    for (auto type = leaf.type()->der(); type != nullptr; type = type->type()->der()) {
+        if (auto defaultValue = type->dflt()) {
+            return defaultValue;
+        }
+    }
+
+    return std::nullopt;
+}
