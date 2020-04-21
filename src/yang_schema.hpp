@@ -46,6 +46,7 @@ public:
     std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const override;
     std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const override;
     std::optional<std::string> description(const std::string& path) const override;
+    yang::Status status(const std::string& location) const override;
 
     void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb);
 

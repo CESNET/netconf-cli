@@ -368,6 +368,36 @@ module example-schema {
         }
     }
 
+    leaf obsoleteLeaf {
+        type int32;
+        status obsolete;
+    }
+
+    leaf deprecatedLeaf {
+        type int32;
+        status deprecated;
+    }
+
+    typedef deprecatedType {
+        type int32;
+        status deprecated;
+    }
+
+    leaf obsoleteLeafWithDeprecatedType {
+        type deprecatedType;
+        status obsolete;
+    }
+
+    typedef obsoleteType {
+        type int32;
+        status obsolete;
+    }
+
+    leaf obsoleteLeafWithObsoleteType {
+        type deprecatedType;
+        status obsolete;
+    }
+
 })";
 
 namespace std {
@@ -778,6 +808,10 @@ TEST_CASE("yangschema")
                        "example-schema:activeMappedPort",
                        "example-schema:activePort",
                        "example-schema:clockSpeed",
+                       "example-schema:deprecatedLeaf",
+                       "example-schema:obsoleteLeaf",
+                       "example-schema:obsoleteLeafWithDeprecatedType",
+                       "example-schema:obsoleteLeafWithObsoleteType",
                        "example-schema:systemStats"};
             }
 
@@ -854,6 +888,15 @@ TEST_CASE("yangschema")
             }
 
             REQUIRE(ys.description(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
+        }
+
+        SECTION("status")
+        {
+            REQUIRE(ys.status("/example-schema:leafUint64") == yang::Status::Current);
+            REQUIRE(ys.status("/example-schema:obsoleteLeaf") == yang::Status::Obsolete);
+            REQUIRE(ys.status("/example-schema:deprecatedLeaf") == yang::Status::Deprecated);
+            REQUIRE(ys.status("/example-schema:obsoleteLeafWithDeprecatedType") == yang::Status::Obsolete);
+            REQUIRE(ys.status("/example-schema:obsoleteLeafWithObsoleteType") == yang::Status::Obsolete);
         }
 
         SECTION("units")
@@ -966,6 +1009,7 @@ TEST_CASE("yangschema")
                     "example-schema:b",
                     "example-schema:carry",
                     "example-schema:clockSpeed",
+                    "example-schema:deprecatedLeaf",
                     "example-schema:direction",
                     "example-schema:duration",
                     "example-schema:ethernet",
@@ -991,6 +1035,9 @@ TEST_CASE("yangschema")
                     "example-schema:loopback",
                     "example-schema:myRpc",
                     "example-schema:numberOrString",
+                    "example-schema:obsoleteLeaf",
+                    "example-schema:obsoleteLeafWithDeprecatedType",
+                    "example-schema:obsoleteLeafWithObsoleteType",
                     "example-schema:pizzaIdentLeaf",
                     "example-schema:pizzaSize",
                     "example-schema:portMapping",
@@ -1018,6 +1065,7 @@ TEST_CASE("yangschema")
                     "/example-schema:b/b2/b3",
                     "/example-schema:carry",
                     "/example-schema:clockSpeed",
+                    "/example-schema:deprecatedLeaf",
                     "/example-schema:direction",
                     "/example-schema:duration",
                     "/example-schema:foodDrinkIdentLeaf",
@@ -1047,6 +1095,9 @@ TEST_CASE("yangschema")
                     "/example-schema:myRpc/input",
                     "/example-schema:myRpc/output",
                     "/example-schema:numberOrString",
+                    "/example-schema:obsoleteLeaf",
+                    "/example-schema:obsoleteLeafWithDeprecatedType",
+                    "/example-schema:obsoleteLeafWithObsoleteType",
                     "/example-schema:pizzaIdentLeaf",
                     "/example-schema:pizzaSize",
                     "/example-schema:portMapping",
