@@ -334,7 +334,7 @@ std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recu
         nodes = node->child_instantiables(0);
     }
 
-    for (const auto node : nodes) {
+    for (const auto& node : nodes) {
         if (node->module()->name() == "ietf-yang-library"sv)
             continue;
         // FIXME: This is a temporary fix to filter out RPC nodes in
@@ -367,9 +367,9 @@ std::set<std::string> YangSchema::moduleNodes(const module_& module, const Recur
 
     std::vector<libyang::S_Schema_Node> nodes;
 
-    for (const auto node : yangModule->data_instantiables(0)) {
+    for (const auto& node : yangModule->data_instantiables(0)) {
         if (recursion == Recursion::Recursive) {
-            for (const auto it : node->tree_dfs()) {
+            for (const auto& it : node->tree_dfs()) {
                 res.insert(it->path(LYS_PATH_FIRST_PREFIX));
             }
         } else {

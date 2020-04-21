@@ -165,7 +165,7 @@ std::string pathToDataString(const dataPath_& path, Prefixes prefixes)
         res = "/";
     }
 
-    for (const auto it : path.m_nodes) {
+    for (const auto& it : path.m_nodes) {
         if (it.m_prefix)
             res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToDataStringVisitor(), it.m_suffix));
         else
@@ -182,7 +182,7 @@ std::string pathToSchemaString(const schemaPath_& path, Prefixes prefixes)
         res = "/";
     }
 
-    for (const auto it : path.m_nodes) {
+    for (const auto& it : path.m_nodes) {
         if (it.m_prefix)
             res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
         else
