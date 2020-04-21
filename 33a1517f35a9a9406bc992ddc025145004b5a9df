@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f96d6201_26bde4db",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 944,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-21T08:38:46Z",
+      "side": 1,
+      "message": "can you wrap them, please?",
+      "range": {
+        "startLine": 941,
+        "startChar": 0,
+        "endLine": 944,
+        "endChar": 1872
+      },
+      "revId": "33a1517f35a9a9406bc992ddc025145004b5a9df",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
