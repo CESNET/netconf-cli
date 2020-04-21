@@ -455,3 +455,8 @@ std::optional<std::string> YangSchema::description(const std::string& path) cons
     auto node = getSchemaNode(path.c_str());
     return node->dsc() ? std::optional{node->dsc()} : std::nullopt;
 }
+
+bool YangSchema::isConfig(const std::string& path) const
+{
+    return getSchemaNode(path.c_str())->flags() & LYS_CONFIG_W;
+}
