@@ -127,6 +127,7 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
         ss << "list";
         break;
     }
+    ss << (m_datastore.schema()->isConfig(path) ? "" : " (ro)");
     return ss.str();
 }
 
