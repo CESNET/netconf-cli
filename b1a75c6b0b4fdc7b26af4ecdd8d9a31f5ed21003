@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1384269f_13566203",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-21T17:24:57Z",
+      "side": 1,
+      "message": "What do you mean? It\u0027s the second test in yang.cpp",
+      "parentUuid": "bf96d9de_11ebb5c9",
+      "range": {
+        "startLine": 471,
+        "startChar": 0,
+        "endLine": 476,
+        "endChar": 5
+      },
+      "revId": "b1a75c6b0b4fdc7b26af4ecdd8d9a31f5ed21003",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5027f7f7_c82e612f",
         "filename": "src/yang_schema.hpp",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2020-04-21T17:17:00Z",
       "side": 1,
       "message": "It\u0027s interesting that this is a string, not our variant. I checked libyang and it\u0027s what they give us, OK.",
+      "range": {
+        "startLine": 40,
+        "startChar": 18,
+        "endLine": 40,
+        "endChar": 29
+      },
+      "revId": "b1a75c6b0b4fdc7b26af4ecdd8d9a31f5ed21003",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "44a9fa80_03939dd1",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-21T17:24:57Z",
+      "side": 1,
+      "message": "Yeah, although I probably could create a new libyang value with the string and convert that to leaf_data_. I don\u0027t think there is much value (haha) in that though, because Schema::defaultValue is only used for describe, so the value is going to be converted to a string anyway (and our string representations are the same hopefully). Also, it\u0027s dumb to convert from/to strings all the time right.",
+      "parentUuid": "5027f7f7_c82e612f",
       "range": {
         "startLine": 40,
         "startChar": 18,
