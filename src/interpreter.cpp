@@ -121,6 +121,10 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
         if (m_datastore.schema()->leafIsKey(path)) {
             ss << " (key)";
         }
+
+        if (auto defaultValue = m_datastore.schema()->defaultValue(path)) {
+            ss << " default: " << leafDataToString(*defaultValue);
+        }
         break;
     }
     case yang::NodeTypes::List:

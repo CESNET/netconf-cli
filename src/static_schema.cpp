@@ -221,3 +221,8 @@ bool StaticSchema::isConfig([[maybe_unused]] const std::string& leafPath) const
 {
     throw std::runtime_error{"Internal error: StaticSchema::isConfigLeaf(std::string) not implemented. The tests should not have called this overload."};
 }
+
+std::optional<std::string> StaticSchema::defaultValue([[maybe_unused]] const std::string& leafPath) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::defaultValue(std::string) not implemented. The tests should not have called this overload."};
+}
