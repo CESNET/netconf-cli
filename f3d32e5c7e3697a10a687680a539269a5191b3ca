@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ef94c5d_6071064a",
+        "filename": "src/schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-21T08:41:28Z",
+      "side": 1,
+      "message": "Not just a leaf -- if a container is config:false, the CLI should eventually disallow creating/deleting items, and if a container is config:false, then this applies recursively to all children.\n\n- please change the API so that it doesn\u0027t say \"leaf\"\n- please add a test to the libyang backend to see if a leaf that is not marked in any way, but is a child of a config:false container, is marked as a config node",
+      "revId": "f3d32e5c7e3697a10a687680a539269a5191b3ca",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
