@@ -16,6 +16,24 @@
       "revId": "b7a91f6bee94b6ba1b06d30e9d66bf722c939e42",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "01388cae_ccbc9d50",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-21T11:20:59Z",
+      "side": 1,
+      "message": "Yes, I didn\u0027t realize, I just removed (rw) from the true branch",
+      "parentUuid": "32ca359b_34c4260d",
+      "revId": "b7a91f6bee94b6ba1b06d30e9d66bf722c939e42",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
