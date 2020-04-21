@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "32ca359b_34c4260d",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-21T10:53:48Z",
+      "side": 1,
+      "message": "nit: I think that it would be cleaner to write:\n\n if (... isConfig(path)) {\n     ss \u003c\u003c \" (ro)\";\n }\n\n...but I don\u0027t really mind.",
+      "revId": "b7a91f6bee94b6ba1b06d30e9d66bf722c939e42",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}

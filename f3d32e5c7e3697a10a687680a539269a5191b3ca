@@ -88,6 +88,24 @@
       "revId": "f3d32e5c7e3697a10a687680a539269a5191b3ca",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f33bb12_50951e0f",
+        "filename": "src/schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-21T10:53:48Z",
+      "side": 1,
+      "message": "yup",
+      "parentUuid": "6cd7f2d6_6c9d9043",
+      "revId": "f3d32e5c7e3697a10a687680a539269a5191b3ca",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
