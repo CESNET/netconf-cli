@@ -130,6 +130,7 @@ module example-schema {
 
     leaf leafUint64 {
         type uint64;
+        default 9001;
     }
 
     leaf leafEnum {
@@ -146,6 +147,7 @@ module example-schema {
             enum data;
             enum coze;
         }
+        default data;
     }
 
     typedef enumTypedefRestricted {
@@ -937,6 +939,13 @@ TEST_CASE("yangschema")
             REQUIRE_FALSE(ys.isConfig("/example-schema:clockSpeed"));
             REQUIRE_FALSE(ys.isConfig("/example-schema:systemStats"));
             REQUIRE_FALSE(ys.isConfig("/example-schema:systemStats/upTime"));
+        }
+
+        SECTION("defaultValue")
+        {
+            REQUIRE(ys.defaultValue("/example-schema:leafUint64") == "9001");
+            REQUIRE(ys.defaultValue("/example-schema:leafEnumTypedefRestricted") == "data");
+            REQUIRE(ys.defaultValue("/example-schema:leafInt32") == std::nullopt);
         }
 
         SECTION("moduleNodes")
