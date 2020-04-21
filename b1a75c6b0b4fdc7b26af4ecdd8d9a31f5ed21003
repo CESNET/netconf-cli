@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bf96d9de_11ebb5c9",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-21T17:17:00Z",
+      "side": 1,
+      "message": "Can you add a test for this, please? I see it\u0027s \"covered\" per the report, but I think nothing really checks the return value.",
+      "range": {
+        "startLine": 471,
+        "startChar": 0,
+        "endLine": 476,
+        "endChar": 5
+      },
+      "revId": "b1a75c6b0b4fdc7b26af4ecdd8d9a31f5ed21003",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5027f7f7_c82e612f",
+        "filename": "src/yang_schema.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-21T17:17:00Z",
+      "side": 1,
+      "message": "It\u0027s interesting that this is a string, not our variant. I checked libyang and it\u0027s what they give us, OK.",
+      "range": {
+        "startLine": 40,
+        "startChar": 18,
+        "endLine": 40,
+        "endChar": 29
+      },
+      "revId": "b1a75c6b0b4fdc7b26af4ecdd8d9a31f5ed21003",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
