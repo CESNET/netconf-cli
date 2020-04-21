@@ -52,6 +52,24 @@
       "revId": "f3d32e5c7e3697a10a687680a539269a5191b3ca",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f74e8016_62bcb524",
+        "filename": "src/schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-21T08:59:17Z",
+      "side": 1,
+      "message": "I would prefer highlighting just the R/O state (i.e., please get rid of that explicit (rw) in interpreter.cpp).\n\n- rw container: no change needed, IMHO\n- ro container: \"container (ro)\"\n- rw presence container: no change needed, IMHO\n- ro presence container: this is a strange model, so let\u0027s point it out: \"presence container (ro)\"",
+      "parentUuid": "8c14c254_67edc43f",
+      "revId": "f3d32e5c7e3697a10a687680a539269a5191b3ca",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
