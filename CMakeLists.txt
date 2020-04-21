@@ -133,9 +133,9 @@ add_executable(sysrepo-cli
 target_compile_definitions(sysrepo-cli PRIVATE SYSREPO_CLI)
 target_include_directories(sysrepo-cli PRIVATE ${REPLXX_PATH})
 target_link_libraries(sysrepo-cli sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
-if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
+if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+" AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
     target_link_libraries(sysrepo-cli c++experimental)
-else()
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1)
     target_link_libraries(sysrepo-cli stdc++fs)
 endif()
 
