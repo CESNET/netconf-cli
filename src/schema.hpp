@@ -24,6 +24,12 @@ enum class NodeTypes {
     List,
     Leaf
 };
+
+enum class Status {
+    Current,
+    Deprecated,
+    Obsolete
+};
 }
 
 enum class Recursion {
@@ -62,6 +68,7 @@ public:
     virtual std::optional<std::string> leafTypeName(const std::string& path) const = 0;
     virtual std::string leafrefPath(const std::string& leafrefPath) const = 0;
     virtual std::optional<std::string> description(const std::string& location) const = 0;
+    virtual yang::Status status(const std::string& location) const = 0;
 
     virtual std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const = 0;
     virtual std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const = 0;
