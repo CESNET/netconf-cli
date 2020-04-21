@@ -938,6 +938,136 @@ TEST_CASE("yangschema")
             REQUIRE_FALSE(ys.isConfig("/example-schema:systemStats"));
             REQUIRE_FALSE(ys.isConfig("/example-schema:systemStats/upTime"));
         }
+
+        SECTION("moduleNodes")
+        {
+            std::string module;
+            std::set<std::string> expectedNonRecursive;
+            std::set<std::string> expectedRecursive;
+            SECTION("example-schema")
+            {
+                module = "example-schema";
+                expectedNonRecursive = {
+                    "example-schema:_list",
+                    "example-schema:a",
+                    "example-schema:activeMappedPort",
+                    "example-schema:activeNumber",
+                    "example-schema:activePort",
+                    "example-schema:another-duration",
+                    "example-schema:b",
+                    "example-schema:carry",
+                    "example-schema:clockSpeed",
+                    "example-schema:direction",
+                    "example-schema:duration",
+                    "example-schema:ethernet",
+                    "example-schema:foodDrinkIdentLeaf",
+                    "example-schema:foodIdentLeaf",
+                    "example-schema:interrupt",
+                    "example-schema:leafBool",
+                    "example-schema:leafDecimal",
+                    "example-schema:leafEnum",
+                    "example-schema:leafEnumTypedef",
+                    "example-schema:leafEnumTypedefRestricted",
+                    "example-schema:leafEnumTypedefRestricted2",
+                    "example-schema:leafInt16",
+                    "example-schema:leafInt32",
+                    "example-schema:leafInt64",
+                    "example-schema:leafInt8",
+                    "example-schema:leafString",
+                    "example-schema:leafUint16",
+                    "example-schema:leafUint32",
+                    "example-schema:leafUint64",
+                    "example-schema:leafUint8",
+                    "example-schema:length",
+                    "example-schema:loopback",
+                    "example-schema:myRpc",
+                    "example-schema:numberOrString",
+                    "example-schema:pizzaIdentLeaf",
+                    "example-schema:pizzaSize",
+                    "example-schema:portMapping",
+                    "example-schema:portSettings",
+                    "example-schema:systemStats",
+                    "example-schema:twoKeyList",
+                    "example-schema:wavelength",
+                    "example-schema:zero"
+                };
+                expectedRecursive = {
+                    "/example-schema:_list",
+                    "/example-schema:_list/contInList",
+                    "/example-schema:_list/number",
+                    "/example-schema:a",
+                    "/example-schema:a/a2",
+                    "/example-schema:a/a2/a3",
+                    "/example-schema:a/leafa",
+                    "/example-schema:a/second-schema:augmentedContainer",
+                    "/example-schema:activeMappedPort",
+                    "/example-schema:activeNumber",
+                    "/example-schema:activePort",
+                    "/example-schema:another-duration",
+                    "/example-schema:b",
+                    "/example-schema:b/b2",
+                    "/example-schema:b/b2/b3",
+                    "/example-schema:carry",
+                    "/example-schema:clockSpeed",
+                    "/example-schema:direction",
+                    "/example-schema:duration",
+                    "/example-schema:foodDrinkIdentLeaf",
+                    "/example-schema:foodIdentLeaf",
+                    "/example-schema:interface/caseEthernet/ethernet",
+                    "/example-schema:interface/caseEthernet/ethernet/ip",
+                    "/example-schema:interface/caseLoopback/loopback",
+                    "/example-schema:interface/caseLoopback/loopback/ip",
+                    "/example-schema:interrupt",
+                    "/example-schema:leafBool",
+                    "/example-schema:leafDecimal",
+                    "/example-schema:leafEnum",
+                    "/example-schema:leafEnumTypedef",
+                    "/example-schema:leafEnumTypedefRestricted",
+                    "/example-schema:leafEnumTypedefRestricted2",
+                    "/example-schema:leafInt16",
+                    "/example-schema:leafInt32",
+                    "/example-schema:leafInt64",
+                    "/example-schema:leafInt8",
+                    "/example-schema:leafString",
+                    "/example-schema:leafUint16",
+                    "/example-schema:leafUint32",
+                    "/example-schema:leafUint64",
+                    "/example-schema:leafUint8",
+                    "/example-schema:length",
+                    "/example-schema:myRpc",
+                    "/example-schema:myRpc/input",
+                    "/example-schema:myRpc/output",
+                    "/example-schema:numberOrString",
+                    "/example-schema:pizzaIdentLeaf",
+                    "/example-schema:pizzaSize",
+                    "/example-schema:portMapping",
+                    "/example-schema:portMapping/port",
+                    "/example-schema:portSettings",
+                    "/example-schema:portSettings/port",
+                    "/example-schema:systemStats",
+                    "/example-schema:systemStats/upTime",
+                    "/example-schema:twoKeyList",
+                    "/example-schema:twoKeyList/name",
+                    "/example-schema:twoKeyList/number",
+                    "/example-schema:wavelength",
+                    "/example-schema:zero"
+                };
+            }
+
+            SECTION("second-schema")
+            {
+                module = "second-schema";
+                expectedNonRecursive = {
+                    "second-schema:bla"
+                };
+                expectedRecursive = {
+                    "/second-schema:bla", "/second-schema:bla/bla2"
+                };
+            }
+
+            REQUIRE(ys.moduleNodes(module_{module}, Recursion::NonRecursive) == expectedNonRecursive);
+            REQUIRE(ys.moduleNodes(module_{module}, Recursion::Recursive) == expectedRecursive);
+        }
     }
 
     SECTION("negative")
