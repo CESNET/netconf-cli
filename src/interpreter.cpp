@@ -142,7 +142,12 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
 void Interpreter::operator()(const describe_& describe) const
 {
     auto path = absolutePathFromCommand(describe);
-    std::cout << path << ": " << buildTypeInfo(path) << std::endl;
+    auto status = m_datastore.schema()->status(path);
+    auto statusStr = status == yang::Status::Deprecated ? " (deprecated)" :
+        status == yang::Status::Obsolete ? " (obsolete)" :
+        "";
+
+    std::cout << path << ": " << buildTypeInfo(path) << statusStr << std::endl;
     if (auto description = m_datastore.schema()->description(path)) {
         std::cout << std::endl << *description << std::endl;
     }

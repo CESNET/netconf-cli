@@ -456,6 +456,18 @@ std::optional<std::string> YangSchema::description(const std::string& path) cons
     return node->dsc() ? std::optional{node->dsc()} : std::nullopt;
 }
 
+yang::Status YangSchema::status(const std::string& location) const
+{
+    auto node = getSchemaNode(location.c_str());
+    if (node->flags() & LYS_STATUS_DEPRC) {
+        return yang::Status::Deprecated;
+    } else if (node->flags() & LYS_STATUS_OBSLT) {
+        return yang::Status::Obsolete;
+    } else {
+        return yang::Status::Current;
+    }
+}
+
 bool YangSchema::isConfig(const std::string& path) const
 {
     return getSchemaNode(path.c_str())->flags() & LYS_CONFIG_W;

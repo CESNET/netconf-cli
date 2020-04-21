@@ -197,6 +197,11 @@ std::optional<std::string> StaticSchema::description([[maybe_unused]] const std:
     throw std::runtime_error{"StaticSchema::description not implemented"};
 }
 
+yang::Status StaticSchema::status([[maybe_unused]] const std::string& location) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::status(std::string) not implemented. The tests should not have called this overload."};
+}
+
 yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path) const
 {
     throw std::runtime_error{"Internal error: StaticSchema::nodeType(std::string) not implemented. The tests should not have called this overload."};
