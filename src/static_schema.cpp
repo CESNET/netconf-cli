@@ -216,3 +216,8 @@ std::optional<std::string> StaticSchema::leafTypeName([[maybe_unused]] const std
 {
     throw std::runtime_error{"Internal error: StaticSchema::leafTypeName(std::string) not implemented. The tests should not have called this overload."};
 }
+
+bool StaticSchema::isConfigLeaf([[maybe_unused]] const std::string& leafPath) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::isConfigLeaf(std::string) not implemented. The tests should not have called this overload."};
+}

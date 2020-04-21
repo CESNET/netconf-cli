@@ -354,6 +354,11 @@ module example-schema {
         }
     }
 
+    leaf clockSpeed {
+        type int64;
+        config false;
+    }
+
 })";
 
 namespace std {
@@ -762,7 +767,8 @@ TEST_CASE("yangschema")
                        "example-schema:portSettings",
                        "example-schema:portMapping",
                        "example-schema:activeMappedPort",
-                       "example-schema:activePort"};
+                       "example-schema:activePort",
+                       "example-schema:clockSpeed"};
             }
 
             SECTION("example-schema:a")
@@ -915,6 +921,12 @@ TEST_CASE("yangschema")
         SECTION("leafrefPath")
         {
             REQUIRE(ys.leafrefPath("/example-schema:activeNumber") == "/example-schema:_list/number");
+        }
+
+        SECTION("isConfigLeaf")
+        {
+            REQUIRE(ys.isConfigLeaf("/example-schema:leafInt32"));
+            REQUIRE_FALSE(ys.isConfigLeaf("/example-schema:clockSpeed"));
         }
     }
 

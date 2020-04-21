@@ -121,6 +121,7 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
         if (m_datastore.schema()->leafIsKey(path)) {
             ss << " (key)";
         }
+        ss << " " << (m_datastore.schema()->isConfigLeaf(path) ? "(rw)" : "(ro)");
         break;
     }
     case yang::NodeTypes::List:

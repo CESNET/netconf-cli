@@ -54,6 +54,7 @@ public:
     virtual bool isModule(const std::string& name) const = 0;
     virtual bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const = 0;
     virtual bool leafIsKey(const std::string& leafPath) const = 0;
+    virtual bool isConfigLeaf(const std::string& leafPath) const = 0;
     virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::TypeInfo leafType(const std::string& path) const = 0;

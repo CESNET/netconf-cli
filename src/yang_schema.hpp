@@ -36,6 +36,7 @@ public:
     bool isModule(const std::string& name) const override;
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
     bool leafIsKey(const std::string& leafPath) const override;
+    bool isConfigLeaf(const std::string& leafPath) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::TypeInfo leafType(const std::string& path) const override;
