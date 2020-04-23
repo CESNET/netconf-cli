@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "518a8cfb_1937b98b",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-23T08:32:35Z",
+      "side": 1,
+      "message": "\"status\" applies to data types as well, and I think that a leaf that uses a deprecated type should be marked deprecated as well (with \"obsolete\" having the highest priority, trumping everything, then \"deprecated\", and then \"normal\"). Can you add a test for this, please?",
+      "revId": "8c01602412072090c48b7645fa7aecab0bbbc8bf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
