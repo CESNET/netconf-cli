@@ -16,6 +16,24 @@
       "revId": "8c01602412072090c48b7645fa7aecab0bbbc8bf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c5bd55a_feb7d7f5",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-23T21:30:55Z",
+      "side": 1,
+      "message": "I added the test, but it seems kind of redundant, because the leaf has to be marked with whatever is the same or worse status, so if the leaf\u0027s type is deprecated, then the leaf itself has to be deprecated or obsolete",
+      "parentUuid": "518a8cfb_1937b98b",
+      "revId": "8c01602412072090c48b7645fa7aecab0bbbc8bf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
