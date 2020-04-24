@@ -34,6 +34,24 @@
       "revId": "8c01602412072090c48b7645fa7aecab0bbbc8bf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eeb0628e_ad2201a5",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-24T09:24:54Z",
+      "side": 1,
+      "message": "Sorry for missing this. As you said on the call, it\u0027s good that the code checks that an obsolete leaf overrides a deprecated typedef, so that part was, hopefully, worth it.",
+      "parentUuid": "2c5bd55a_feb7d7f5",
+      "revId": "8c01602412072090c48b7645fa7aecab0bbbc8bf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
