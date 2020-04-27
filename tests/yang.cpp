@@ -781,56 +781,80 @@ TEST_CASE("yangschema")
         }
         SECTION("childNodes")
         {
-            std::set<std::string> set;
+            std::set<ModuleNodePair> set;
 
             SECTION("<root>")
             {
-                set = {"example-schema:a", "example-schema:b", "example-schema:leafString",
-                       "example-schema:leafDecimal", "example-schema:leafBool",
-                       "example-schema:leafInt8", "example-schema:leafUint8",
-                       "example-schema:leafInt16", "example-schema:leafUint16",
-                       "example-schema:leafInt32", "example-schema:leafUint32",
-                       "example-schema:leafInt64", "example-schema:leafUint64",
-                       "example-schema:leafEnum", "example-schema:leafEnumTypedef",
-                       "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
-                       "example-schema:foodIdentLeaf", "example-schema:pizzaIdentLeaf", "example-schema:foodDrinkIdentLeaf",
-                       "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla",
-                       "example-schema:carry", "example-schema:zero", "example-schema:direction",
-                       "example-schema:interrupt",
-                       "example-schema:ethernet", "example-schema:loopback",
-                       "example-schema:pizzaSize",
-                       "example-schema:length", "example-schema:wavelength",
-                       "example-schema:duration", "example-schema:another-duration",
-                       "example-schema:activeNumber",
-                       "example-schema:numberOrString",
-                       "example-schema:portSettings",
-                       "example-schema:portMapping",
-                       "example-schema:activeMappedPort",
-                       "example-schema:activePort",
-                       "example-schema:clockSpeed",
-                       "example-schema:deprecatedLeaf",
-                       "example-schema:obsoleteLeaf",
-                       "example-schema:obsoleteLeafWithDeprecatedType",
-                       "example-schema:obsoleteLeafWithObsoleteType",
-                       "example-schema:systemStats"};
+                set = {
+                    {boost::optional<std::string>{"example-schema"}, "_list"},
+                    {boost::optional<std::string>{"example-schema"}, "a"},
+                    {boost::optional<std::string>{"example-schema"}, "activeMappedPort"},
+                    {boost::optional<std::string>{"example-schema"}, "activeNumber"},
+                    {boost::optional<std::string>{"example-schema"}, "activePort"},
+                    {boost::optional<std::string>{"example-schema"}, "another-duration"},
+                    {boost::optional<std::string>{"example-schema"}, "b"},
+                    {boost::optional<std::string>{"example-schema"}, "carry"},
+                    {boost::optional<std::string>{"example-schema"}, "clockSpeed"},
+                    {boost::optional<std::string>{"example-schema"}, "deprecatedLeaf"},
+                    {boost::optional<std::string>{"example-schema"}, "direction"},
+                    {boost::optional<std::string>{"example-schema"}, "duration"},
+                    {boost::optional<std::string>{"example-schema"}, "ethernet"},
+                    {boost::optional<std::string>{"example-schema"}, "foodDrinkIdentLeaf"},
+                    {boost::optional<std::string>{"example-schema"}, "foodIdentLeaf"},
+                    {boost::optional<std::string>{"example-schema"}, "interrupt"},
+                    {boost::optional<std::string>{"example-schema"}, "leafBool"},
+                    {boost::optional<std::string>{"example-schema"}, "leafDecimal"},
+                    {boost::optional<std::string>{"example-schema"}, "leafEnum"},
+                    {boost::optional<std::string>{"example-schema"}, "leafEnumTypedef"},
+                    {boost::optional<std::string>{"example-schema"}, "leafEnumTypedefRestricted"},
+                    {boost::optional<std::string>{"example-schema"}, "leafEnumTypedefRestricted2"},
+                    {boost::optional<std::string>{"example-schema"}, "leafInt16"},
+                    {boost::optional<std::string>{"example-schema"}, "leafInt32"},
+                    {boost::optional<std::string>{"example-schema"}, "leafInt64"},
+                    {boost::optional<std::string>{"example-schema"}, "leafInt8"},
+                    {boost::optional<std::string>{"example-schema"}, "leafString"},
+                    {boost::optional<std::string>{"example-schema"}, "leafUint16"},
+                    {boost::optional<std::string>{"example-schema"}, "leafUint32"},
+                    {boost::optional<std::string>{"example-schema"}, "leafUint64"},
+                    {boost::optional<std::string>{"example-schema"}, "leafUint8"},
+                    {boost::optional<std::string>{"example-schema"}, "length"},
+                    {boost::optional<std::string>{"example-schema"}, "loopback"},
+                    {boost::optional<std::string>{"example-schema"}, "numberOrString"},
+                    {boost::optional<std::string>{"example-schema"}, "obsoleteLeaf"},
+                    {boost::optional<std::string>{"example-schema"}, "obsoleteLeafWithDeprecatedType"},
+                    {boost::optional<std::string>{"example-schema"}, "obsoleteLeafWithObsoleteType"},
+                    {boost::optional<std::string>{"example-schema"}, "pizzaIdentLeaf"},
+                    {boost::optional<std::string>{"example-schema"}, "pizzaSize"},
+                    {boost::optional<std::string>{"example-schema"}, "portMapping"},
+                    {boost::optional<std::string>{"example-schema"}, "portSettings"},
+                    {boost::optional<std::string>{"example-schema"}, "systemStats"},
+                    {boost::optional<std::string>{"example-schema"}, "twoKeyList"},
+                    {boost::optional<std::string>{"example-schema"}, "wavelength"},
+                    {boost::optional<std::string>{"example-schema"}, "zero"},
+                    {boost::optional<std::string>{"second-schema"}, "bla"},
+                };
             }
 
             SECTION("example-schema:a")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                set = {"a2", "leafa", "second-schema:augmentedContainer"};
+                set = {
+                    {boost::none, "a2"},
+                    {boost::none, "leafa"},
+                    {boost::optional<std::string>{"second-schema"}, "augmentedContainer"}
+                };
             }
 
             SECTION("second-schema:bla")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"second-schema"}, container_("bla")));
-                set = {"bla2"};
+                set = {{boost::none, "bla2"}};
             }
 
             SECTION("example-schema:ethernet")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("ethernet")));
-                set = {"ip"};
+                set = {{boost::none, "ip"}};
             }
 
             REQUIRE(ys.childNodes(path, Recursion::NonRecursive) == set);
