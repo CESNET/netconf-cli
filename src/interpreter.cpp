@@ -88,12 +88,15 @@ void Interpreter::operator()(const ls_& ls) const
             recursion = Recursion::Recursive;
     }
 
-    std::set<std::string> toPrint;
+    std::set<ModuleNodePair> toPrint;
 
     auto pathArg = dataPathToSchemaPath(m_parser.currentPath());
     if (ls.m_path) {
         if (ls.m_path->type() == typeid(module_)) {
-            toPrint = m_datastore.schema()->moduleNodes(boost::get<module_>(*ls.m_path), recursion);
+            auto nodes = m_datastore.schema()->moduleNodes(boost::get<module_>(*ls.m_path), recursion);
+            std::transform(nodes.begin(), nodes.end(), std::inserter(toPrint, toPrint.end()), [] (auto node) {
+                return ModuleNodePair{boost::none, node};
+            });
         } else {
             auto schemaPath = boost::apply_visitor(getSchemaPathVisitor(), boost::get<boost::variant<dataPath_, schemaPath_>>(*ls.m_path));
             if (schemaPath.m_scope == Scope::Absolute) {
@@ -107,8 +110,9 @@ void Interpreter::operator()(const ls_& ls) const
         toPrint = m_datastore.schema()->childNodes(pathArg, recursion);
     }
 
-    for (const auto& it : toPrint)
-        std::cout << it << std::endl;
+    for (const auto& it : toPrint) {
+        std::cout << (it.first ? *it.first + ":" : "" ) + it.second << std::endl;
+    }
 }
 
 void Interpreter::operator()(const copy_& copy) const
