@@ -43,7 +43,7 @@ public:
     yang::TypeInfo leafType(const std::string& path) const override;
     std::optional<std::string> leafTypeName(const std::string& path) const override;
     std::string leafrefPath(const std::string& leafrefPath) const override;
-    std::set<std::string> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const override;
+    std::set<ModuleNodePair> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const override;
     std::optional<std::string> description(const std::string& path) const override;
     yang::Status status(const std::string& location) const override;
 

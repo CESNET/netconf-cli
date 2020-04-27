@@ -784,188 +784,192 @@ TEST_CASE("yangschema")
             // TODO: merge "path" and "module" sections and add recursive versions to the path section
             SECTION("paths")
             {
-                std::set<std::string> set;
+                std::set<ModuleNodePair> set;
 
+                using namespace std::string_literals;
                 SECTION("<root>")
                 {
-                    set = {"example-schema:a", "example-schema:b", "example-schema:leafString",
-                        "example-schema:leafDecimal", "example-schema:leafBool",
-                        "example-schema:leafInt8", "example-schema:leafUint8",
-                        "example-schema:leafInt16", "example-schema:leafUint16",
-                        "example-schema:leafInt32", "example-schema:leafUint32",
-                        "example-schema:leafInt64", "example-schema:leafUint64",
-                        "example-schema:leafEnum", "example-schema:leafEnumTypedef",
-                        "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
-                        "example-schema:foodIdentLeaf", "example-schema:pizzaIdentLeaf", "example-schema:foodDrinkIdentLeaf",
-                        "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla",
-                        "example-schema:carry", "example-schema:zero", "example-schema:direction",
-                        "example-schema:interrupt",
-                        "example-schema:ethernet", "example-schema:loopback",
-                        "example-schema:pizzaSize",
-                        "example-schema:length", "example-schema:wavelength",
-                        "example-schema:duration", "example-schema:another-duration",
-                        "example-schema:activeNumber",
-                        "example-schema:numberOrString",
-                        "example-schema:portSettings",
-                        "example-schema:portMapping",
-                        "example-schema:activeMappedPort",
-                        "example-schema:activePort",
-                        "example-schema:clockSpeed",
-                        "example-schema:deprecatedLeaf",
-                        "example-schema:obsoleteLeaf",
-                        "example-schema:obsoleteLeafWithDeprecatedType",
-                        "example-schema:obsoleteLeafWithObsoleteType",
-                        "example-schema:systemStats"};
+                    set = {{"example-schema"s, "a"}, {"example-schema"s, "b"}, {"example-schema"s, "leafString"},
+                        {"example-schema"s, "leafDecimal"}, {"example-schema"s, "leafBool"},
+                        {"example-schema"s, "leafInt8"}, {"example-schema"s, "leafUint8"},
+                        {"example-schema"s, "leafInt16"}, {"example-schema"s, "leafUint16"},
+                        {"example-schema"s, "leafInt32"}, {"example-schema"s, "leafUint32"},
+                        {"example-schema"s, "leafInt64"}, {"example-schema"s, "leafUint64"},
+                        {"example-schema"s, "leafEnum"}, {"example-schema"s, "leafEnumTypedef"},
+                        {"example-schema"s, "leafEnumTypedefRestricted"}, {"example-schema"s, "leafEnumTypedefRestricted2"},
+                        {"example-schema"s, "foodIdentLeaf"}, {"example-schema"s, "pizzaIdentLeaf"}, {"example-schema"s, "foodDrinkIdentLeaf"},
+                        {"example-schema"s, "_list"}, {"example-schema"s, "twoKeyList"}, {"second-schema"s, "bla"},
+                        {"example-schema"s, "carry"}, {"example-schema"s, "zero"}, {"example-schema"s, "direction"},
+                        {"example-schema"s, "interrupt"},
+                        {"example-schema"s, "ethernet"}, {"example-schema"s, "loopback"},
+                        {"example-schema"s, "pizzaSize"},
+                        {"example-schema"s, "length"}, {"example-schema"s, "wavelength"},
+                        {"example-schema"s, "duration"}, {"example-schema"s, "another-duration"},
+                        {"example-schema"s, "activeNumber"},
+                        {"example-schema"s, "numberOrString"},
+                        {"example-schema"s, "portSettings"},
+                        {"example-schema"s, "portMapping"},
+                        {"example-schema"s, "activeMappedPort"},
+                        {"example-schema"s, "activePort"},
+                        {"example-schema"s, "clockSpeed"},
+                        {"example-schema"s, "deprecatedLeaf"},
+                        {"example-schema"s, "obsoleteLeaf"},
+                        {"example-schema"s, "obsoleteLeafWithDeprecatedType"},
+                        {"example-schema"s, "obsoleteLeafWithObsoleteType"},
+                        {"example-schema"s, "systemStats"}};
                 }
 
                 SECTION("example-schema:a")
                 {
                     path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                    set = {"a2", "leafa", "second-schema:augmentedContainer"};
-                }
-
-                SECTION("second-schema:bla")
-                {
-                    path.m_nodes.push_back(schemaNode_(module_{"second-schema"}, container_("bla")));
-                    set = {"bla2"};
+                    set = {
+                        {boost::none, "a2"},
+                        {boost::none, "leafa"},
+                        {"second-schema"s, "augmentedContainer"}
+                    };
                 }
 
                 SECTION("example-schema:ethernet")
                 {
                     path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("ethernet")));
-                    set = {"ip"};
+                    set = {{boost::none, "ip"}};
                 }
 
-                REQUIRE(ys.availableNodes(path, Recursion::NonRecursive) == set);
+                SECTION("second-schema:bla")
+                {
+                    path.m_nodes.push_back(schemaNode_(module_{"second-schema"}, container_("bla")));
+                    set = {{boost::none, "bla2"}};
+                }
             }
 
             SECTION("modules")
             {
                 std::string module;
-                std::set<std::string> expectedNonRecursive;
-                std::set<std::string> expectedRecursive;
+                std::set<ModuleNodePair> expectedNonRecursive;
+                std::set<ModuleNodePair> expectedRecursive;
+                using namespace std::string_literals;
                 SECTION("example-schema")
                 {
                     module = "example-schema";
                     expectedNonRecursive = {
-                        "example-schema:_list",
-                        "example-schema:a",
-                        "example-schema:activeMappedPort",
-                        "example-schema:activeNumber",
-                        "example-schema:activePort",
-                        "example-schema:another-duration",
-                        "example-schema:b",
-                        "example-schema:carry",
-                        "example-schema:clockSpeed",
-                        "example-schema:deprecatedLeaf",
-                        "example-schema:direction",
-                        "example-schema:duration",
-                        "example-schema:ethernet",
-                        "example-schema:foodDrinkIdentLeaf",
-                        "example-schema:foodIdentLeaf",
-                        "example-schema:interrupt",
-                        "example-schema:leafBool",
-                        "example-schema:leafDecimal",
-                        "example-schema:leafEnum",
-                        "example-schema:leafEnumTypedef",
-                        "example-schema:leafEnumTypedefRestricted",
-                        "example-schema:leafEnumTypedefRestricted2",
-                        "example-schema:leafInt16",
-                        "example-schema:leafInt32",
-                        "example-schema:leafInt64",
-                        "example-schema:leafInt8",
-                        "example-schema:leafString",
-                        "example-schema:leafUint16",
-                        "example-schema:leafUint32",
-                        "example-schema:leafUint64",
-                        "example-schema:leafUint8",
-                        "example-schema:length",
-                        "example-schema:loopback",
-                        "example-schema:numberOrString",
-                        "example-schema:obsoleteLeaf",
-                        "example-schema:obsoleteLeafWithDeprecatedType",
-                        "example-schema:obsoleteLeafWithObsoleteType",
-                        "example-schema:pizzaIdentLeaf",
-                        "example-schema:pizzaSize",
-                        "example-schema:portMapping",
-                        "example-schema:portSettings",
-                        "example-schema:systemStats",
-                        "example-schema:twoKeyList",
-                        "example-schema:wavelength",
-                        "example-schema:zero"
+                        {"example-schema"s, "_list"},
+                        {"example-schema"s, "a"},
+                        {"example-schema"s, "activeMappedPort"},
+                        {"example-schema"s, "activeNumber"},
+                        {"example-schema"s, "activePort"},
+                        {"example-schema"s, "another-duration"},
+                        {"example-schema"s, "b"},
+                        {"example-schema"s, "carry"},
+                        {"example-schema"s, "clockSpeed"},
+                        {"example-schema"s, "deprecatedLeaf"},
+                        {"example-schema"s, "direction"},
+                        {"example-schema"s, "duration"},
+                        {"example-schema"s, "ethernet"},
+                        {"example-schema"s, "foodDrinkIdentLeaf"},
+                        {"example-schema"s, "foodIdentLeaf"},
+                        {"example-schema"s, "interrupt"},
+                        {"example-schema"s, "leafBool"},
+                        {"example-schema"s, "leafDecimal"},
+                        {"example-schema"s, "leafEnum"},
+                        {"example-schema"s, "leafEnumTypedef"},
+                        {"example-schema"s, "leafEnumTypedefRestricted"},
+                        {"example-schema"s, "leafEnumTypedefRestricted2"},
+                        {"example-schema"s, "leafInt16"},
+                        {"example-schema"s, "leafInt32"},
+                        {"example-schema"s, "leafInt64"},
+                        {"example-schema"s, "leafInt8"},
+                        {"example-schema"s, "leafString"},
+                        {"example-schema"s, "leafUint16"},
+                        {"example-schema"s, "leafUint32"},
+                        {"example-schema"s, "leafUint64"},
+                        {"example-schema"s, "leafUint8"},
+                        {"example-schema"s, "length"},
+                        {"example-schema"s, "loopback"},
+                        {"example-schema"s, "numberOrString"},
+                        {"example-schema"s, "obsoleteLeaf"},
+                        {"example-schema"s, "obsoleteLeafWithDeprecatedType"},
+                        {"example-schema"s, "obsoleteLeafWithObsoleteType"},
+                        {"example-schema"s, "pizzaIdentLeaf"},
+                        {"example-schema"s, "pizzaSize"},
+                        {"example-schema"s, "portMapping"},
+                        {"example-schema"s, "portSettings"},
+                        {"example-schema"s, "systemStats"},
+                        {"example-schema"s, "twoKeyList"},
+                        {"example-schema"s, "wavelength"},
+                        {"example-schema"s, "zero"}
                     };
                     expectedRecursive = {
-                        "/example-schema:_list",
-                        "/example-schema:_list/contInList",
-                        "/example-schema:_list/number",
-                        "/example-schema:a",
-                        "/example-schema:a/a2",
-                        "/example-schema:a/a2/a3",
-                        "/example-schema:a/leafa",
-                        "/example-schema:a/second-schema:augmentedContainer",
-                        "/example-schema:activeMappedPort",
-                        "/example-schema:activeNumber",
-                        "/example-schema:activePort",
-                        "/example-schema:another-duration",
-                        "/example-schema:b",
-                        "/example-schema:b/b2",
-                        "/example-schema:b/b2/b3",
-                        "/example-schema:carry",
-                        "/example-schema:clockSpeed",
-                        "/example-schema:deprecatedLeaf",
-                        "/example-schema:direction",
-                        "/example-schema:duration",
-                        "/example-schema:foodDrinkIdentLeaf",
-                        "/example-schema:foodIdentLeaf",
-                        "/example-schema:interface/caseEthernet/ethernet",
-                        "/example-schema:interface/caseEthernet/ethernet/ip",
-                        "/example-schema:interface/caseLoopback/loopback",
-                        "/example-schema:interface/caseLoopback/loopback/ip",
-                        "/example-schema:interrupt",
-                        "/example-schema:leafBool",
-                        "/example-schema:leafDecimal",
-                        "/example-schema:leafEnum",
-                        "/example-schema:leafEnumTypedef",
-                        "/example-schema:leafEnumTypedefRestricted",
-                        "/example-schema:leafEnumTypedefRestricted2",
-                        "/example-schema:leafInt16",
-                        "/example-schema:leafInt32",
-                        "/example-schema:leafInt64",
-                        "/example-schema:leafInt8",
-                        "/example-schema:leafString",
-                        "/example-schema:leafUint16",
-                        "/example-schema:leafUint32",
-                        "/example-schema:leafUint64",
-                        "/example-schema:leafUint8",
-                        "/example-schema:length",
-                        "/example-schema:numberOrString",
-                        "/example-schema:obsoleteLeaf",
-                        "/example-schema:obsoleteLeafWithDeprecatedType",
-                        "/example-schema:obsoleteLeafWithObsoleteType",
-                        "/example-schema:pizzaIdentLeaf",
-                        "/example-schema:pizzaSize",
-                        "/example-schema:portMapping",
-                        "/example-schema:portMapping/port",
-                        "/example-schema:portSettings",
-                        "/example-schema:portSettings/port",
-                        "/example-schema:systemStats",
-                        "/example-schema:systemStats/upTime",
-                        "/example-schema:twoKeyList",
-                        "/example-schema:twoKeyList/name",
-                        "/example-schema:twoKeyList/number",
-                        "/example-schema:wavelength",
-                        "/example-schema:zero"
+                        {boost::none, "/example-schema:_list"},
+                        {boost::none, "/example-schema:_list/contInList"},
+                        {boost::none, "/example-schema:_list/number"},
+                        {boost::none, "/example-schema:a"},
+                        {boost::none, "/example-schema:a/a2"},
+                        {boost::none, "/example-schema:a/a2/a3"},
+                        {boost::none, "/example-schema:a/leafa"},
+                        {boost::none, "/example-schema:a/second-schema:augmentedContainer"},
+                        {boost::none, "/example-schema:activeMappedPort"},
+                        {boost::none, "/example-schema:activeNumber"},
+                        {boost::none, "/example-schema:activePort"},
+                        {boost::none, "/example-schema:another-duration"},
+                        {boost::none, "/example-schema:b"},
+                        {boost::none, "/example-schema:b/b2"},
+                        {boost::none, "/example-schema:b/b2/b3"},
+                        {boost::none, "/example-schema:carry"},
+                        {boost::none, "/example-schema:clockSpeed"},
+                        {boost::none, "/example-schema:deprecatedLeaf"},
+                        {boost::none, "/example-schema:direction"},
+                        {boost::none, "/example-schema:duration"},
+                        {boost::none, "/example-schema:foodDrinkIdentLeaf"},
+                        {boost::none, "/example-schema:foodIdentLeaf"},
+                        {boost::none, "/example-schema:interface/caseEthernet/ethernet"},
+                        {boost::none, "/example-schema:interface/caseEthernet/ethernet/ip"},
+                        {boost::none, "/example-schema:interface/caseLoopback/loopback"},
+                        {boost::none, "/example-schema:interface/caseLoopback/loopback/ip"},
+                        {boost::none, "/example-schema:interrupt"},
+                        {boost::none, "/example-schema:leafBool"},
+                        {boost::none, "/example-schema:leafDecimal"},
+                        {boost::none, "/example-schema:leafEnum"},
+                        {boost::none, "/example-schema:leafEnumTypedef"},
+                        {boost::none, "/example-schema:leafEnumTypedefRestricted"},
+                        {boost::none, "/example-schema:leafEnumTypedefRestricted2"},
+                        {boost::none, "/example-schema:leafInt16"},
+                        {boost::none, "/example-schema:leafInt32"},
+                        {boost::none, "/example-schema:leafInt64"},
+                        {boost::none, "/example-schema:leafInt8"},
+                        {boost::none, "/example-schema:leafString"},
+                        {boost::none, "/example-schema:leafUint16"},
+                        {boost::none, "/example-schema:leafUint32"},
+                        {boost::none, "/example-schema:leafUint64"},
+                        {boost::none, "/example-schema:leafUint8"},
+                        {boost::none, "/example-schema:length"},
+                        {boost::none, "/example-schema:numberOrString"},
+                        {boost::none, "/example-schema:obsoleteLeaf"},
+                        {boost::none, "/example-schema:obsoleteLeafWithDeprecatedType"},
+                        {boost::none, "/example-schema:obsoleteLeafWithObsoleteType"},
+                        {boost::none, "/example-schema:pizzaIdentLeaf"},
+                        {boost::none, "/example-schema:pizzaSize"},
+                        {boost::none, "/example-schema:portMapping"},
+                        {boost::none, "/example-schema:portMapping/port"},
+                        {boost::none, "/example-schema:portSettings"},
+                        {boost::none, "/example-schema:portSettings/port"},
+                        {boost::none, "/example-schema:systemStats"},
+                        {boost::none, "/example-schema:systemStats/upTime"},
+                        {boost::none, "/example-schema:twoKeyList"},
+                        {boost::none, "/example-schema:twoKeyList/name"},
+                        {boost::none, "/example-schema:twoKeyList/number"},
+                        {boost::none, "/example-schema:wavelength"},
+                        {boost::none, "/example-schema:zero"}
                     };
                 }
-
                 SECTION("second-schema")
                 {
                     module = "second-schema";
                     expectedNonRecursive = {
-                        "second-schema:bla"
+                        {"second-schema"s, "bla"}
                     };
                     expectedRecursive = {
-                        "/second-schema:bla", "/second-schema:bla/bla2"
+                        {boost::none, "/second-schema:bla"},
+                        {boost::none, "/second-schema:bla/bla2"}
                     };
                 }
 
