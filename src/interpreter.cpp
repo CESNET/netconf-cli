@@ -76,7 +76,7 @@ void Interpreter::operator()(const ls_& ls) const
             recursion = Recursion::Recursive;
     }
 
-    std::set<std::string> toPrint;
+    std::set<ModuleNodePair> toPrint;
 
     auto pathArg = dataPathToSchemaPath(m_parser.currentPath());
     if (ls.m_path) {
@@ -95,8 +95,9 @@ void Interpreter::operator()(const ls_& ls) const
         toPrint = m_datastore.schema()->availableNodes(pathArg, recursion);
     }
 
-    for (const auto& it : toPrint)
-        std::cout << it << std::endl;
+    for (const auto& it : toPrint) {
+        std::cout << (it.first ? *it.first + ":" : "" ) + it.second << std::endl;
+    }
 }
 
 void Interpreter::operator()(const copy_& copy) const
