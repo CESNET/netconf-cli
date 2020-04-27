@@ -320,10 +320,10 @@ std::set<std::string> YangSchema::modules() const
     return res;
 }
 
-std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recursion recursion) const
+std::set<ModuleNodePair> YangSchema::childNodes(const schemaPath_& path, const Recursion recursion) const
 {
     using namespace std::string_view_literals;
-    std::set<std::string> res;
+    std::set<ModuleNodePair> res;
     std::vector<libyang::S_Schema_Node> nodes;
 
     if (path.m_nodes.empty()) {
@@ -344,15 +344,15 @@ std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recu
             continue;
         if (recursion == Recursion::Recursive) {
             for (auto it : node->tree_dfs()) {
-                res.insert(it->path(LYS_PATH_FIRST_PREFIX));
+                res.insert(ModuleNodePair(boost::none, it->path(LYS_PATH_FIRST_PREFIX)));
             }
         } else {
-            std::string toInsert;
+            ModuleNodePair toInsert;
+
             if (path.m_nodes.empty() || path.m_nodes.front().m_prefix.get().m_name != node->module()->name()) {
-                toInsert += node->module()->name();
-                toInsert += ":";
+                toInsert.first = node->module()->name();
             }
-            toInsert += node->name();
+            toInsert.second = node->name();
             res.insert(toInsert);
         }
     }

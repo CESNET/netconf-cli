@@ -128,5 +128,11 @@ std::set<std::string> Parser::availableNodes(const boost::optional<boost::varian
             pathArg.m_nodes.insert(pathArg.m_nodes.end(), schemaPath.m_nodes.begin(), schemaPath.m_nodes.end());
         }
     }
-    return m_schema->childNodes(pathArg, option);
+
+    std::set<std::string> res;
+    auto children = m_schema->childNodes(pathArg, option);
+    std::transform(children.begin(), children.end(), std::inserter(res, res.end()), [] (const ModuleNodePair& child) {
+        return (child.first ? *child.first + ":" : "" ) + child.second;
+    });
+    return res;
 }

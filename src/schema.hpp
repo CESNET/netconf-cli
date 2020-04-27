@@ -70,6 +70,8 @@ public:
     virtual std::optional<std::string> description(const std::string& location) const = 0;
     virtual yang::Status status(const std::string& location) const = 0;
 
-    virtual std::set<std::string> childNodes(const schemaPath_& path, const Recursion recursion) const = 0;
+    /** Returns child nodes of the current path. The module will be filled if it is different from the top level module.
+    */
+    virtual std::set<ModuleNodePair> childNodes(const schemaPath_& path, const Recursion recursion) const = 0;
     virtual std::set<std::string> moduleNodes(const module_& module, const Recursion recursion) const = 0;
 };

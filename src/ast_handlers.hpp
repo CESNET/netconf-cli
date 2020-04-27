@@ -461,27 +461,20 @@ struct createPathSuggestions_class {
         auto suggestions = schema.childNodes(parserContext.currentSchemaPath(), Recursion::NonRecursive);
         std::set<Completion> suffixesAdded;
         std::transform(suggestions.begin(), suggestions.end(),
-            std::inserter(suffixesAdded, suffixesAdded.end()),
-            [&parserContext, &schema] (auto it) {
-                ModuleNodePair node;
-                if (auto colonPos = it.find(":"); colonPos != it.npos) {
-                    node.first = it.substr(0, colonPos);
-                    node.second = it.substr(colonPos + 1, node.second.npos);
-                } else {
-                    node.first = boost::none;
-                    node.second = it;
-                }
+                std::inserter(suffixesAdded, suffixesAdded.end()),
+                [&parserContext, &schema](const ModuleNodePair& node) {
+            std::string completion = (node.first ? *node.first + ":" : "") + node.second;
 
-                if (schema.isLeaf(parserContext.currentSchemaPath(), node)) {
-                    return Completion{it + " "};
-                }
-                if (schema.isContainer(parserContext.currentSchemaPath(), node)) {
-                    return Completion{it + "/"};
-                }
-                if (schema.isList(parserContext.currentSchemaPath(), node)) {
-                    return Completion{it, "[", Completion::WhenToAdd::IfFullMatch};
-                }
-                return Completion{it};
+            if (schema.isLeaf(parserContext.currentSchemaPath(), node)) {
+                return Completion{completion + " "};
+            }
+            if (schema.isContainer(parserContext.currentSchemaPath(), node)) {
+                return Completion{completion + "/"};
+            }
+            if (schema.isList(parserContext.currentSchemaPath(), node)) {
+                return Completion{completion, "[", Completion::WhenToAdd::IfFullMatch};
+            }
+            return Completion{completion};
         });
         parserContext.m_suggestions = suffixesAdded;
     }

@@ -781,56 +781,61 @@ TEST_CASE("yangschema")
         }
         SECTION("childNodes")
         {
-            std::set<std::string> set;
+            std::set<ModuleNodePair> set;
 
             SECTION("<root>")
             {
-                set = {"example-schema:a", "example-schema:b", "example-schema:leafString",
-                       "example-schema:leafDecimal", "example-schema:leafBool",
-                       "example-schema:leafInt8", "example-schema:leafUint8",
-                       "example-schema:leafInt16", "example-schema:leafUint16",
-                       "example-schema:leafInt32", "example-schema:leafUint32",
-                       "example-schema:leafInt64", "example-schema:leafUint64",
-                       "example-schema:leafEnum", "example-schema:leafEnumTypedef",
-                       "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
-                       "example-schema:foodIdentLeaf", "example-schema:pizzaIdentLeaf", "example-schema:foodDrinkIdentLeaf",
-                       "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla",
-                       "example-schema:carry", "example-schema:zero", "example-schema:direction",
-                       "example-schema:interrupt",
-                       "example-schema:ethernet", "example-schema:loopback",
-                       "example-schema:pizzaSize",
-                       "example-schema:length", "example-schema:wavelength",
-                       "example-schema:duration", "example-schema:another-duration",
-                       "example-schema:activeNumber",
-                       "example-schema:numberOrString",
-                       "example-schema:portSettings",
-                       "example-schema:portMapping",
-                       "example-schema:activeMappedPort",
-                       "example-schema:activePort",
-                       "example-schema:clockSpeed",
-                       "example-schema:deprecatedLeaf",
-                       "example-schema:obsoleteLeaf",
-                       "example-schema:obsoleteLeafWithDeprecatedType",
-                       "example-schema:obsoleteLeafWithObsoleteType",
-                       "example-schema:systemStats"};
+                using namespace std::string_literals;
+                set = {{"example-schema"s, "a"}, {"example-schema"s, "b"}, {"example-schema"s, "leafString"},
+                       {"example-schema"s, "leafDecimal"}, {"example-schema"s, "leafBool"},
+                       {"example-schema"s, "leafInt8"}, {"example-schema"s, "leafUint8"},
+                       {"example-schema"s, "leafInt16"}, {"example-schema"s, "leafUint16"},
+                       {"example-schema"s, "leafInt32"}, {"example-schema"s, "leafUint32"},
+                       {"example-schema"s, "leafInt64"}, {"example-schema"s, "leafUint64"},
+                       {"example-schema"s, "leafEnum"}, {"example-schema"s, "leafEnumTypedef"},
+                       {"example-schema"s, "leafEnumTypedefRestricted"}, {"example-schema"s, "leafEnumTypedefRestricted2"},
+                       {"example-schema"s, "foodIdentLeaf"}, {"example-schema"s, "pizzaIdentLeaf"}, {"example-schema"s, "foodDrinkIdentLeaf"},
+                       {"example-schema"s, "_list"}, {"example-schema"s, "twoKeyList"}, {"second-schema"s, "bla"},
+                       {"example-schema"s, "carry"}, {"example-schema"s, "zero"}, {"example-schema"s, "direction"},
+                       {"example-schema"s, "interrupt"},
+                       {"example-schema"s, "ethernet"}, {"example-schema"s, "loopback"},
+                       {"example-schema"s, "pizzaSize"},
+                       {"example-schema"s, "length"}, {"example-schema"s, "wavelength"},
+                       {"example-schema"s, "duration"}, {"example-schema"s, "another-duration"},
+                       {"example-schema"s, "activeNumber"},
+                       {"example-schema"s, "numberOrString"},
+                       {"example-schema"s, "portSettings"},
+                       {"example-schema"s, "portMapping"},
+                       {"example-schema"s, "activeMappedPort"},
+                       {"example-schema"s, "activePort"},
+                       {"example-schema"s, "clockSpeed"},
+                       {"example-schema"s, "deprecatedLeaf"},
+                       {"example-schema"s, "obsoleteLeaf"},
+                       {"example-schema"s, "obsoleteLeafWithDeprecatedType"},
+                       {"example-schema"s, "obsoleteLeafWithObsoleteType"},
+                       {"example-schema"s, "systemStats"}};
             }
 
             SECTION("example-schema:a")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                set = {"a2", "leafa", "second-schema:augmentedContainer"};
+                set = {
+                    {boost::none, "a2"},
+                    {boost::none, "leafa"},
+                    {boost::optional<std::string>{"second-schema"}, "augmentedContainer"}
+                };
             }
 
             SECTION("second-schema:bla")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"second-schema"}, container_("bla")));
-                set = {"bla2"};
+                set = {{boost::none, "bla2"}};
             }
 
             SECTION("example-schema:ethernet")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("ethernet")));
-                set = {"ip"};
+                set = {{boost::none, "ip"}};
             }
 
             REQUIRE(ys.childNodes(path, Recursion::NonRecursive) == set);
