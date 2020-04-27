@@ -135,17 +135,26 @@ yang::TypeInfo StaticSchema::leafType(const std::string& path) const
     return boost::get<yang::leaf>(children(locationString).at(node)).m_type;
 }
 
+ModuleNodePair splitModuleNode(const std::string& input)
+{
+    auto colonLocation = input.find_first_of(':');
+    if (colonLocation == std::string::npos) {
+        return ModuleNodePair{input.substr(0, colonLocation), input.substr(colonLocation + 1)};
+    }
+    return ModuleNodePair{boost::none, input};
+}
+
 // We do not test StaticSchema, so we don't need to implement recursive childNodes
 // for this class.
-std::set<std::string> StaticSchema::availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, [[maybe_unused]] const Recursion recursion) const
+std::set<ModuleNodePair> StaticSchema::availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, [[maybe_unused]] const Recursion recursion) const
 {
-    std::set<std::string> res;
+    std::set<ModuleNodePair> res;
     if (path.type() == typeid(module_)) {
         auto topLevelNodes = m_nodes.at("");
         auto modulePlusColon = boost::get<module_>(path).m_name + ":";
         for (const auto& it : topLevelNodes) {
             if (boost::algorithm::starts_with(it.first, modulePlusColon)) {
-                res.insert(it.first);
+                res.insert(splitModuleNode(it.first));
             }
         }
         return res;
@@ -158,7 +167,9 @@ std::set<std::string> StaticSchema::availableNodes(const boost::variant<dataPath
 
     auto childrenRef = children(locationString);
 
-    std::transform(childrenRef.begin(), childrenRef.end(), std::inserter(res, res.end()), [](auto it) { return it.first; });
+    std::transform(childrenRef.begin(), childrenRef.end(), std::inserter(res, res.end()), [](auto it) {
+        return splitModuleNode(it.first);
+    });
     return res;
 }
 

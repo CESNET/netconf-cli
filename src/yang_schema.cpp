@@ -320,10 +320,10 @@ std::set<std::string> YangSchema::modules() const
     return res;
 }
 
-std::set<std::string> YangSchema::availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const
+std::set<ModuleNodePair> YangSchema::availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const
 {
     using namespace std::string_view_literals;
-    std::set<std::string> res;
+    std::set<ModuleNodePair> res;
     std::vector<libyang::S_Schema_Node> nodes;
     std::string topLevelModule;
 
@@ -351,15 +351,14 @@ std::set<std::string> YangSchema::availableNodes(const boost::variant<dataPath_,
             continue;
         if (recursion == Recursion::Recursive) {
             for (auto it : node->tree_dfs()) {
-                res.insert(it->path(LYS_PATH_FIRST_PREFIX));
+                res.insert(ModuleNodePair(boost::none, it->path(LYS_PATH_FIRST_PREFIX)));
             }
         } else {
-            std::string toInsert;
+            ModuleNodePair toInsert;
             if (topLevelModule.empty() || topLevelModule != node->module()->name()) {
-                toInsert += node->module()->name();
-                toInsert += ":";
+                toInsert.first = node->module()->name();
             }
-            toInsert += node->name();
+            toInsert.second = node->name();
             res.insert(toInsert);
         }
     }
