@@ -137,6 +137,6 @@ TEST_CASE("ls interpreter")
     REQUIRE_CALL(datastore, schema()).RETURN(schema);
     ls_ ls;
     ls.m_path = lsArg;
-    REQUIRE_CALL(*schema, availableNodes(expectedPath, Recursion::NonRecursive)).RETURN(std::set<std::string>{});
+    REQUIRE_CALL(*schema, availableNodes(expectedPath, Recursion::NonRecursive)).RETURN(std::set<ModuleNodePair>{});
     Interpreter(parser, datastore)(ls);
 }
