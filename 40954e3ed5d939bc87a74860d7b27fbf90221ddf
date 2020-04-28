@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "f12bb7a8_f1019b56",
+        "filename": "src/parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-28T23:48:20Z",
+      "side": 1,
+      "message": "By new patch I mean the 2493 change",
+      "parentUuid": "adbdb60f_e829cdb9",
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9076eccc_5d834c7f",
         "filename": "src/static_schema.cpp",
         "patchSetId": 1
