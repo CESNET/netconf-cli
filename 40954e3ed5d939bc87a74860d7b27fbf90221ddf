@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "adbdb60f_e829cdb9",
+        "filename": "src/parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-28T23:38:40Z",
+      "side": 1,
+      "message": "The actual reason for this method exists is that the m_curDir variable in Parser. The parser needs to hold this context for parsing relative paths. I can still change the implementation, but another problem comes up. Check the new patch for details",
+      "parentUuid": "ff7b2152_2c862327",
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9076eccc_5d834c7f",
         "filename": "src/static_schema.cpp",
         "patchSetId": 1
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "Yeah, so let\u0027s make it even clearer if you don\u0027t mind:\n\n  auto colonLocation \u003d input.find_first_of(\u0027:\u0027);\n  if (colonLocation \u003d\u003d std::string::npos) {\n      return ModuleNodePair{input.substr(0, colonLocation), input.substr(colonLocation + 1)};\n  }\n  return ModuleNodePair{std::nullopt, input};",
       "parentUuid": "1395abc2_b2fefc4e",
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d449cb73_d4b28c7e",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-28T23:38:40Z",
+      "side": 1,
+      "message": "Yes, thank you. I\u0027m (kind of) a fan of the \"make a local var, change it and then return\" approach, but in this case I think it\u0027s better this way. I think I will change my view on these type of algorithms/aproaches/whatever. Maybe the key difference is that the second parameter to the ModuleNodePair is the different in both cases...",
+      "parentUuid": "7bd6e736_6b581454",
       "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
