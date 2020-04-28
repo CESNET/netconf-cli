@@ -43,7 +43,6 @@ TEST_CASE("parser methods")
 
     SECTION("availableNodes")
     {
-        std::set<std::string> expected;
         boost::optional<boost::variant<dataPath_, schemaPath_, module_>> arg{boost::none};
         SECTION("cwd: /")
         {
