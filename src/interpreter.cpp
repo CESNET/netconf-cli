@@ -67,6 +67,18 @@ void Interpreter::operator()(const delete_& delet) const
         m_datastore.deleteListInstance(absolutePathFromCommand(delet));
 }
 
+struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {
+    schemaPath_ operator()(const dataPath_& path) const
+    {
+        return dataPathToSchemaPath(path);
+    }
+
+    schemaPath_ operator()(const schemaPath_& path) const
+    {
+        return path;
+    }
+};
+
 void Interpreter::operator()(const ls_& ls) const
 {
     std::cout << "Possible nodes:" << std::endl;
@@ -76,7 +88,26 @@ void Interpreter::operator()(const ls_& ls) const
             recursion = Recursion::Recursive;
     }
 
-    for (const auto& it : m_parser.availableNodes(ls.m_path, recursion))
+    std::set<std::string> toPrint;
+
+    auto pathArg = dataPathToSchemaPath(m_parser.currentPath());
+    if (ls.m_path) {
+        if (ls.m_path->type() == typeid(module_)) {
+            toPrint = m_datastore.schema()->moduleNodes(boost::get<module_>(*ls.m_path), recursion);
+        } else {
+            auto schemaPath = boost::apply_visitor(getSchemaPathVisitor(), boost::get<boost::variant<dataPath_, schemaPath_>>(*ls.m_path));
+            if (schemaPath.m_scope == Scope::Absolute) {
+                pathArg = schemaPath;
+            } else {
+                pathArg.m_nodes.insert(pathArg.m_nodes.end(), schemaPath.m_nodes.begin(), schemaPath.m_nodes.end());
+            }
+            toPrint = m_datastore.schema()->childNodes(pathArg, recursion);
+        }
+    } else {
+        toPrint = m_datastore.schema()->childNodes(pathArg, recursion);
+    }
+
+    for (const auto& it : toPrint)
         std::cout << it << std::endl;
 }
 
