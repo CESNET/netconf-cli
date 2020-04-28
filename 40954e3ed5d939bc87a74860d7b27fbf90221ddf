@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "ff7b2152_2c862327",
+        "filename": "src/parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-28T18:09:07Z",
+      "side": 1,
+      "message": "Perhaps nuke it first in a parent commit and then do this change?",
+      "parentUuid": "eeeddc7e_1cc34e18",
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9076eccc_5d834c7f",
         "filename": "src/static_schema.cpp",
         "patchSetId": 1
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "But this way, the condition is the same as in the if-statement (the condition means there was a colon in the input string)",
       "parentUuid": "9076eccc_5d834c7f",
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7bd6e736_6b581454",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-28T18:09:07Z",
+      "side": 1,
+      "message": "Yeah, so let\u0027s make it even clearer if you don\u0027t mind:\n\n  auto colonLocation \u003d input.find_first_of(\u0027:\u0027);\n  if (colonLocation \u003d\u003d std::string::npos) {\n      return ModuleNodePair{input.substr(0, colonLocation), input.substr(colonLocation + 1)};\n  }\n  return ModuleNodePair{std::nullopt, input};",
+      "parentUuid": "1395abc2_b2fefc4e",
       "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
