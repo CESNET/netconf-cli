@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9b4a9831_942aa3ed",
+        "filename": "tests/path_completion.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-28T23:37:57Z",
+      "side": 1,
+      "message": "Done. Small rant: if a test in this section were to fail, doctest doesn\u0027t tell me this \"ls example:ano/example:a\" string. Catch did :(",
+      "parentUuid": "6cf44e39_eb9f4c71",
+      "revId": "63170c9ef8760bf1516cd49f5c37e104946e05c3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9f25f707_2b360988",
         "filename": "tests/path_completion.cpp",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2020-04-28T18:06:56Z",
       "side": 1,
       "message": "It\u0027s unclear to me how this plays with completion of user input where the namespace part is explicitly entered. Can you please add (I guess in a separate commit if you aren\u0027t changing the existing behavior) what happens when I try to tab-complete \"example:ano/example:a\"?",
+      "revId": "63170c9ef8760bf1516cd49f5c37e104946e05c3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2493f0c3_4df6f8dc",
+        "filename": "tests/path_completion.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-28T23:37:57Z",
+      "side": 1,
+      "message": "Nothing will happen when you try to complete \"example:ano/example:a\", because nothing will happen in the cli if you do that. This patch targets this difference between StaticSchema and YangSchema. I can add support for completing \"example:ano/example:a\" in a separate patch, but right now, the completion completes prefixed nodes only when the prefix is needed.",
+      "parentUuid": "9f25f707_2b360988",
       "revId": "63170c9ef8760bf1516cd49f5c37e104946e05c3",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
