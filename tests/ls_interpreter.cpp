@@ -9,37 +9,37 @@
 #include <experimental/iterator>
 #include "trompeloeil_doctest.hpp"
 #include "ast_commands.hpp"
+#include "interpreter.hpp"
+#include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
+#include "pretty_printers.hpp"
 #include "static_schema.hpp"
 
-namespace std {
-std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
-{
-    s << std::endl
-      << "{";
-    std::copy(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", "));
-    s << "}" << std::endl;
-    return s;
-}
-}
+class MockSchema : public trompeloeil::mock_interface<Schema> {
+public:
+    IMPLEMENT_CONST_MOCK1(defaultValue);
+    IMPLEMENT_CONST_MOCK1(description);
+    IMPLEMENT_CONST_MOCK2(availableNodes);
+    IMPLEMENT_CONST_MOCK1(isConfig);
+    MAKE_CONST_MOCK1(leafType, yang::TypeInfo(const std::string&), override);
+    MAKE_CONST_MOCK2(leafType, yang::TypeInfo(const schemaPath_&, const ModuleNodePair&), override);
+    IMPLEMENT_CONST_MOCK1(leafTypeName);
+    IMPLEMENT_CONST_MOCK1(isModule);
+    IMPLEMENT_CONST_MOCK1(leafrefPath);
+    IMPLEMENT_CONST_MOCK3(listHasKey);
+    IMPLEMENT_CONST_MOCK1(leafIsKey);
+    IMPLEMENT_CONST_MOCK2(listKeys);
+    MAKE_CONST_MOCK1(nodeType, yang::NodeTypes(const std::string&), override);
+    MAKE_CONST_MOCK2(nodeType, yang::NodeTypes(const schemaPath_&, const ModuleNodePair&), override);
+    IMPLEMENT_CONST_MOCK1(status);
+};
 
 TEST_CASE("parser methods")
 {
-    auto schema = std::make_shared<StaticSchema>();
-    schema->addModule("example");
-    schema->addModule("second");
-    schema->addContainer("/", "example:a");
-    schema->addList("/example:a", "example:listInCont", {"number"});
-    schema->addContainer("/", "second:a");
-    schema->addContainer("/", "example:b");
-    schema->addContainer("/example:a", "example:a2");
-    schema->addContainer("/example:b", "example:b2");
-    schema->addContainer("/example:a/example:a2", "example:a3");
-    schema->addContainer("/example:b/example:b2", "example:b3");
-    schema->addList("/", "example:list", {"number"});
-    schema->addContainer("/example:list", "example:contInList");
-    schema->addList("/", "example:twoKeyList", {"number", "name"});
+    auto schema = std::make_shared<MockSchema>();
+    MockDatastoreAccess datastore;
     Parser parser(schema);
+    Interpreter interpreter(parser, datastore);
 
     SECTION("availableNodes")
     {
@@ -49,31 +49,26 @@ TEST_CASE("parser methods")
         {
             SECTION("arg: <none>")
             {
-                expected = {"example:a", "example:b", "example:list", "example:twoKeyList", "second:a"};
             }
 
             SECTION("arg: example:a")
             {
                 arg = dataPath_{Scope::Relative, {{module_{"example"}, container_{"a"}}}};
-                expected = {"example:a2", "example:listInCont"};
             }
 
             SECTION("arg: example:list")
             {
                 arg = dataPath_{Scope::Relative, {{module_{"example"}, list_{"list"}}}};
-                expected = {"example:contInList"};
             }
 
             SECTION("arg: /example:a")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
-                expected = {"example:a2", "example:listInCont"};
             }
 
             SECTION("arg: /example:list")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
-                expected = {"example:contInList"};
             }
         }
         SECTION("cwd: /example:a")
@@ -82,13 +77,11 @@ TEST_CASE("parser methods")
 
             SECTION("arg: <none>")
             {
-                expected = {"example:a2", "example:listInCont"};
             }
 
             SECTION("arg: example:a2")
             {
                 arg = dataPath_{Scope::Relative, {{container_{"a2"}}}};
-                expected = {"example:a3"};
             }
 
             SECTION("arg: example:listInCont")
@@ -99,13 +92,11 @@ TEST_CASE("parser methods")
             SECTION("arg: /example:a")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
-                expected = {"example:a2", "example:listInCont"};
             }
 
             SECTION("arg: /example:list")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
-                expected = {"example:contInList"};
             }
         }
         SECTION("cwd: /example:list")
@@ -114,7 +105,6 @@ TEST_CASE("parser methods")
 
             SECTION("arg: <none>")
             {
-                expected = {"example:contInList"};
             }
 
             SECTION("arg: example:contInList")
@@ -125,16 +115,15 @@ TEST_CASE("parser methods")
             SECTION("arg: /example:a")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
-                expected = {"example:a2", "example:listInCont"};
             }
 
             SECTION("arg: /example:list")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
-                expected = {"example:contInList"};
             }
         }
-
-        REQUIRE(expected == parser.availableNodes(arg, Recursion::NonRecursive));
+        ls_ ls;
+        ls.m_path = arg;
+        interpreter(ls);
     }
 }
