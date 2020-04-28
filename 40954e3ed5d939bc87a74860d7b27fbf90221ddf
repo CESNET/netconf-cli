@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "08276d85_ab0283bf",
+        "filename": "src/parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-28T07:29:08Z",
+      "side": 1,
+      "message": "This is something for a follow-up commit, but I wonder why we need this function. To me, a Parser should parse stuff, not act as a broker between the `ls` command and the schema implementation. The other commands (create, set, get,...) go via DatastoreAccess, so perhaps this implementation should be moved into the Interpreter::operator()(const ls_\u0026).",
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9076eccc_5d834c7f",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-28T07:29:08Z",
+      "side": 1,
+      "message": "nit: for me, the \"other way round\" is more readable with that ternary operator, i.e.:\n\n  res.second \u003d (colonLocation \u003d\u003d std::string::npos) ? input : input.substr(colonLocation + 1);\n\nOr at least wrapping into three lines (condition, positive, negative). No need to change, just sharing my POV.",
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a9ed4ee_eff0ff3c",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-28T07:29:08Z",
+      "side": 1,
+      "message": "is it neccessary to include boost::optional\u003cstd::string\u003e in there? If the problem is some ambiguity, would \"example-schema\"s with a string literal work?",
+      "range": {
+        "startLine": 789,
+        "startChar": 21,
+        "endLine": 789,
+        "endChar": 67
+      },
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25f24e93_4169c2b5",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-28T07:29:08Z",
+      "side": 1,
+      "message": "The order of these elements is different that it used to be, the formatting is different (one per line vs. not so before) and I think that there\u0027s a new \"second-schema:bla\". This makes it hard to review what was changed and why. Please either split this into two commits (one for reordering and reformatting, the second one for real changes), or explain here in a Gerrit comment what changes were intentional and why.",
+      "range": {
+        "startLine": 789,
+        "startChar": 0,
+        "endLine": 834,
+        "endChar": 75
+      },
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
