@@ -55,25 +55,25 @@ TEST_CASE("parser methods")
             SECTION("arg: example:a")
             {
                 arg = dataPath_{Scope::Relative, {{module_{"example"}, container_{"a"}}}};
-                expected = {"example:a2", "example:listInCont"};
+                expected = {"a2", "listInCont"};
             }
 
             SECTION("arg: example:list")
             {
                 arg = dataPath_{Scope::Relative, {{module_{"example"}, list_{"list"}}}};
-                expected = {"example:contInList"};
+                expected = {"contInList"};
             }
 
             SECTION("arg: /example:a")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
-                expected = {"example:a2", "example:listInCont"};
+                expected = {"a2", "listInCont"};
             }
 
             SECTION("arg: /example:list")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
-                expected = {"example:contInList"};
+                expected = {"contInList"};
             }
         }
         SECTION("cwd: /example:a")
@@ -82,13 +82,13 @@ TEST_CASE("parser methods")
 
             SECTION("arg: <none>")
             {
-                expected = {"example:a2", "example:listInCont"};
+                expected = {"a2", "listInCont"};
             }
 
             SECTION("arg: example:a2")
             {
                 arg = dataPath_{Scope::Relative, {{container_{"a2"}}}};
-                expected = {"example:a3"};
+                expected = {"a3"};
             }
 
             SECTION("arg: example:listInCont")
@@ -99,13 +99,13 @@ TEST_CASE("parser methods")
             SECTION("arg: /example:a")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
-                expected = {"example:a2", "example:listInCont"};
+                expected = {"a2", "listInCont"};
             }
 
             SECTION("arg: /example:list")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
-                expected = {"example:contInList"};
+                expected = {"contInList"};
             }
         }
         SECTION("cwd: /example:list")
@@ -114,7 +114,7 @@ TEST_CASE("parser methods")
 
             SECTION("arg: <none>")
             {
-                expected = {"example:contInList"};
+                expected = {"contInList"};
             }
 
             SECTION("arg: example:contInList")
@@ -125,13 +125,13 @@ TEST_CASE("parser methods")
             SECTION("arg: /example:a")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
-                expected = {"example:a2", "example:listInCont"};
+                expected = {"a2", "listInCont"};
             }
 
             SECTION("arg: /example:list")
             {
                 arg = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
-                expected = {"example:contInList"};
+                expected = {"contInList"};
             }
         }
 
