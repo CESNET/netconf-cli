@@ -95,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "5938f713_0ea37f22",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-28T08:45:03Z",
+      "side": 1,
+      "message": "Yes, that works!, thanks",
+      "parentUuid": "5a9ed4ee_eff0ff3c",
+      "range": {
+        "startLine": 789,
+        "startChar": 21,
+        "endLine": 789,
+        "endChar": 67
+      },
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "25f24e93_4169c2b5",
         "filename": "tests/yang.cpp",
         "patchSetId": 1
@@ -115,6 +139,30 @@
       "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a64a83e_83a13a18",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-28T08:45:03Z",
+      "side": 1,
+      "message": "The diff should now be clearer",
+      "parentUuid": "25f24e93_4169c2b5",
+      "range": {
+        "startLine": 789,
+        "startChar": 0,
+        "endLine": 834,
+        "endChar": 75
+      },
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
