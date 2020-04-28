@@ -82,4 +82,22 @@ std::ostream& operator<<(std::ostream& s, const yang::TypeInfo& type)
     s << type.m_type << (type.m_units ? " units: " + *type.m_units : "");
     return s;
 }
+
+std::ostream& operator<<(std::ostream& s, const boost::optional<std::string>& opt)
+{
+    s << (opt ? *opt : "std::nullopt");
+    return s;
+}
+}
+
+std::ostream& operator<<(std::ostream& s, const boost::variant<dataPath_, schemaPath_, module_>& path)
+{
+    if (path.type() == typeid(module_)) {
+        s << "module: " << boost::get<module_>(path).m_name << "\n";
+    } else if (path.type() == typeid(dataPath_)) {
+        s << "dataPath: " << pathToDataString(boost::get<dataPath_>(path), Prefixes::WhenNeeded) << "\n";
+    } else {
+        s << "schemaPath: " << pathToSchemaString(boost::get<schemaPath_>(path), Prefixes::WhenNeeded) << "\n";
+    }
+    return s;
 }
