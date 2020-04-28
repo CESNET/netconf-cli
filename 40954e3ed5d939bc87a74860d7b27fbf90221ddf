@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "eeeddc7e_1cc34e18",
+        "filename": "src/parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-28T08:21:16Z",
+      "side": 1,
+      "message": "It was a mistake. At first I thought that when implementing `ls`, Interpreter didn\u0027t have access to Schema. But if you do git show 11afac:src/interpreter.{hpp,cpp} (that\u0027s the commit that added ls), you can see that the ctor for Interpreter takes a Schema argument, but just throws it away. So yes, this method isn\u0027t needed.",
+      "parentUuid": "08276d85_ab0283bf",
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9076eccc_5d834c7f",
         "filename": "src/static_schema.cpp",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2020-04-28T07:29:08Z",
       "side": 1,
       "message": "nit: for me, the \"other way round\" is more readable with that ternary operator, i.e.:\n\n  res.second \u003d (colonLocation \u003d\u003d std::string::npos) ? input : input.substr(colonLocation + 1);\n\nOr at least wrapping into three lines (condition, positive, negative). No need to change, just sharing my POV.",
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1395abc2_b2fefc4e",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-28T08:21:16Z",
+      "side": 1,
+      "message": "But this way, the condition is the same as in the if-statement (the condition means there was a colon in the input string)",
+      "parentUuid": "9076eccc_5d834c7f",
       "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
