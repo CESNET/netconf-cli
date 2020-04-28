@@ -26,7 +26,6 @@ x3::rule<initializePath_class, x3::unused_type> const initializePath = "initiali
 x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestions = "createPathSuggestions";
 x3::rule<trailingSlash_class, TrailingSlash> const trailingSlash = "trailingSlash";
 x3::rule<dataNode_class, dataNode_> const dataNode = "dataNode";
-x3::rule<schemaNode_class, schemaNode_> const schemaNode = "schemaNode";
 x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
 x3::rule<key_identifier_class, std::string> const key_identifier = "key_identifier";
@@ -41,6 +40,49 @@ x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions
 x3::rule<createValueSuggestions_class, x3::unused_type> const createValueSuggestions = "createValueSuggestions";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 
+
+struct schemaNode : x3::parser<schemaNode> {
+    using attribute_type = schemaNode_;
+    template <typename It, typename Ctx, typename RCtx, typename Attr>
+    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
+    {
+        x3::symbols<schemaNode_> table(std::string{"schemaNode"}); // The constructor doesn't work with just the string literal
+
+        ParserContext& parserContext = x3::get<parser_context_tag>(ctx);
+        parserContext.m_suggestions.clear();
+        for (const auto& child : parserContext.m_schema.childNodes(parserContext.currentSchemaPath(), Recursion::NonRecursive)) {
+            schemaNode_ out;
+            std::string parseString;
+            if (child.first) {
+                out.m_prefix = module_{*child.first};
+                parseString = *child.first + ":";
+            }
+            parseString += child.second;
+            switch (parserContext.m_schema.nodeType(parserContext.currentSchemaPath(), child)) {
+                // Fallthrough
+                case yang::NodeTypes::Container:
+                case yang::NodeTypes::PresenceContainer:
+                    out.m_suffix = container_{child.second};
+                    parserContext.m_suggestions.emplace(Completion{parseString + "/"});
+                    break;
+                case yang::NodeTypes::Leaf:
+                    out.m_suffix = leaf_{child.second};
+                    parserContext.m_suggestions.emplace(Completion{parseString + " "});
+                    break;
+                case yang::NodeTypes::List:
+                    out.m_suffix = list_{child.second};
+                    parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
+                    break;
+            }
+            table.add(parseString, out);
+        }
+        auto res = table.parse(begin, end, ctx, rctx, attr);
+        if (res) {
+            parserContext.pushPathFragment(attr);
+        }
+        return res;
+    }
+} schemaNode;
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -152,7 +194,6 @@ BOOST_SPIRIT_DEFINE(listSuffix)
 BOOST_SPIRIT_DEFINE(listElement)
 BOOST_SPIRIT_DEFINE(list)
 BOOST_SPIRIT_DEFINE(nodeup)
-BOOST_SPIRIT_DEFINE(schemaNode)
 BOOST_SPIRIT_DEFINE(dataNode)
 BOOST_SPIRIT_DEFINE(container)
 BOOST_SPIRIT_DEFINE(leaf)

@@ -211,16 +211,6 @@ struct module_class {
     }
 };
 
-struct schemaNode_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.pushPathFragment(ast);
-        parserContext.m_curModule = boost::none;
-    }
-};
-
 struct dataNodeList_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
