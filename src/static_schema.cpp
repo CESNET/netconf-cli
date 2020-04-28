@@ -162,15 +162,32 @@ std::set<ModuleNodePair> StaticSchema::availableNodes(const boost::variant<dataP
         return res;
     }
 
-    std::string locationString =
-        path.type() == typeid(schemaPath_) ?
-        pathToSchemaString(boost::get<schemaPath_>(path), Prefixes::Always) :
-        pathToSchemaString(boost::get<dataPath_>(path), Prefixes::Always);
+    auto getTopLevelModule = [] (const auto& path) -> boost::optional<std::string> {
+        if (!path.m_nodes.empty()) {
+            return path.m_nodes.begin()->m_prefix.flat_map([] (const auto& module) {return boost::optional<std::string>(module.m_name);});
+        }
+
+        return boost::none;
+    };
+
+    std::string locationString;
+    boost::optional<std::string> topLevelModule;
+    if (path.type() == typeid(schemaPath_)) {
+        locationString = pathToSchemaString(boost::get<schemaPath_>(path), Prefixes::Always);
+        topLevelModule = getTopLevelModule(boost::get<schemaPath_>(path));
+    } else {
+        locationString = pathToSchemaString(boost::get<dataPath_>(path), Prefixes::Always);
+        topLevelModule = getTopLevelModule(boost::get<dataPath_>(path));
+    }
 
     auto childrenRef = children(locationString);
 
-    std::transform(childrenRef.begin(), childrenRef.end(), std::inserter(res, res.end()), [](const auto& it) {
-        return splitModuleNode(it.first);
+    std::transform(childrenRef.begin(), childrenRef.end(), std::inserter(res, res.end()), [path, topLevelModule](const auto& it) {
+        auto res = splitModuleNode(it.first);
+        if (topLevelModule == res.first) {
+            res.first = boost::none;
+        }
+        return res;
     });
     return res;
 }
