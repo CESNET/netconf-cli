@@ -86,9 +86,9 @@ TEST_CASE("path_completion")
 
         SECTION("ls example:ano/example:a")
         {
-            input = "ls example:ano/example:a";
-            expectedCompletions = {"example:a2/"};
-            expectedContextLength = 9;
+            input = "ls example:ano/a";
+            expectedCompletions = {"a2/"};
+            expectedContextLength = 1;
         }
 
         SECTION("ls x")
@@ -136,21 +136,28 @@ TEST_CASE("path_completion")
         SECTION("ls /example:list/")
         {
             input = "ls /example:list/";
-            expectedCompletions = {"example:contInList/", "example:number "};
+            expectedCompletions = {"contInList/", "number "};
             expectedContextLength = 0;
         }
 
         SECTION("ls /example:list[number=3]/")
         {
             input = "ls /example:list[number=3]/";
-            expectedCompletions = {"example:contInList/", "example:number "};
+            expectedCompletions = {"contInList/", "number "};
             expectedContextLength = 0;
         }
 
         SECTION("ls /example:list[number=3]/c")
         {
-            input = "ls /example:list[number=3]/e";
-            expectedCompletions = {"example:contInList/", "example:number "};
+            input = "ls /example:list[number=3]/c";
+            expectedCompletions = {"contInList/"};
+            expectedContextLength = 1;
+        }
+
+        SECTION("ls /example:list[number=3]/n")
+        {
+            input = "ls /example:list[number=3]/n";
+            expectedCompletions = {"number "};
             expectedContextLength = 1;
         }
 
@@ -161,9 +168,9 @@ TEST_CASE("path_completion")
             expectedContextLength = 1;
         }
 
-        SECTION("ls /example:list/example:contInList/")
+        SECTION("ls /example:list/contInList/")
         {
-            input = "ls /example:list/example:contInList/";
+            input = "ls /example:list/contInList/";
             expectedCompletions = {};
             expectedContextLength = 0;
         }

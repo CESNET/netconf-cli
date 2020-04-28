@@ -156,8 +156,12 @@ std::set<ModuleNodePair> StaticSchema::childNodes(const schemaPath_& path, const
 
     auto childrenRef = children(locationString);
 
-    std::transform(childrenRef.begin(), childrenRef.end(), std::inserter(res, res.end()), [](auto it) {
-        return splitModuleNode(it.first);
+    std::transform(childrenRef.begin(), childrenRef.end(), std::inserter(res, res.end()), [path](auto it) {
+        auto res = splitModuleNode(it.first);
+        if (res.first && !path.m_nodes.empty() && path.m_nodes.begin()->m_prefix->m_name == *res.first) {
+            res.first = boost::none;
+        }
+        return res;
     });
     return res;
 }
