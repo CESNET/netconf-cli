@@ -110,10 +110,15 @@ struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {
     {
         return path;
     }
+
+    [[noreturn]] schemaPath_ operator()([[maybe_unused]] const module_& path) const
+    {
+        throw std::runtime_error("getSchemaPathVisitor: Tried getting a schema path from a module");
+    }
 };
 
 
-std::set<std::string> Parser::availableNodes(const boost::optional<boost::variant<boost::variant<dataPath_, schemaPath_>, module_>>& path, const Recursion& option) const
+std::set<std::string> Parser::availableNodes(const boost::optional<boost::variant<dataPath_, schemaPath_, module_>>& path, const Recursion& option) const
 {
     auto pathArg = dataPathToSchemaPath(m_curDir);
     if (path) {
@@ -121,7 +126,7 @@ std::set<std::string> Parser::availableNodes(const boost::optional<boost::varian
             return m_schema->moduleNodes(boost::get<module_>(*path), option);
         }
 
-        auto schemaPath = boost::apply_visitor(getSchemaPathVisitor(), boost::get<boost::variant<dataPath_, schemaPath_>>(*path));
+        auto schemaPath = boost::apply_visitor(getSchemaPathVisitor(), *path);
         if (schemaPath.m_scope == Scope::Absolute) {
             pathArg = schemaPath;
         } else {
