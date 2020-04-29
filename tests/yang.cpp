@@ -779,61 +779,199 @@ TEST_CASE("yangschema")
 
             REQUIRE(ys.leafType(path, node) == type);
         }
-        SECTION("childNodes")
+        SECTION("availableNodes")
         {
-            std::set<std::string> set;
-
-            SECTION("<root>")
+            // TODO: merge "path" and "module" sections and add recursive versions to the path section
+            SECTION("paths")
             {
-                set = {"example-schema:a", "example-schema:b", "example-schema:leafString",
-                       "example-schema:leafDecimal", "example-schema:leafBool",
-                       "example-schema:leafInt8", "example-schema:leafUint8",
-                       "example-schema:leafInt16", "example-schema:leafUint16",
-                       "example-schema:leafInt32", "example-schema:leafUint32",
-                       "example-schema:leafInt64", "example-schema:leafUint64",
-                       "example-schema:leafEnum", "example-schema:leafEnumTypedef",
-                       "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
-                       "example-schema:foodIdentLeaf", "example-schema:pizzaIdentLeaf", "example-schema:foodDrinkIdentLeaf",
-                       "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla",
-                       "example-schema:carry", "example-schema:zero", "example-schema:direction",
-                       "example-schema:interrupt",
-                       "example-schema:ethernet", "example-schema:loopback",
-                       "example-schema:pizzaSize",
-                       "example-schema:length", "example-schema:wavelength",
-                       "example-schema:duration", "example-schema:another-duration",
-                       "example-schema:activeNumber",
-                       "example-schema:numberOrString",
-                       "example-schema:portSettings",
-                       "example-schema:portMapping",
-                       "example-schema:activeMappedPort",
-                       "example-schema:activePort",
-                       "example-schema:clockSpeed",
-                       "example-schema:deprecatedLeaf",
-                       "example-schema:obsoleteLeaf",
-                       "example-schema:obsoleteLeafWithDeprecatedType",
-                       "example-schema:obsoleteLeafWithObsoleteType",
-                       "example-schema:systemStats"};
+                std::set<std::string> set;
+
+                SECTION("<root>")
+                {
+                    set = {"example-schema:a", "example-schema:b", "example-schema:leafString",
+                        "example-schema:leafDecimal", "example-schema:leafBool",
+                        "example-schema:leafInt8", "example-schema:leafUint8",
+                        "example-schema:leafInt16", "example-schema:leafUint16",
+                        "example-schema:leafInt32", "example-schema:leafUint32",
+                        "example-schema:leafInt64", "example-schema:leafUint64",
+                        "example-schema:leafEnum", "example-schema:leafEnumTypedef",
+                        "example-schema:leafEnumTypedefRestricted", "example-schema:leafEnumTypedefRestricted2",
+                        "example-schema:foodIdentLeaf", "example-schema:pizzaIdentLeaf", "example-schema:foodDrinkIdentLeaf",
+                        "example-schema:_list", "example-schema:twoKeyList", "second-schema:bla",
+                        "example-schema:carry", "example-schema:zero", "example-schema:direction",
+                        "example-schema:interrupt",
+                        "example-schema:ethernet", "example-schema:loopback",
+                        "example-schema:pizzaSize",
+                        "example-schema:length", "example-schema:wavelength",
+                        "example-schema:duration", "example-schema:another-duration",
+                        "example-schema:activeNumber",
+                        "example-schema:numberOrString",
+                        "example-schema:portSettings",
+                        "example-schema:portMapping",
+                        "example-schema:activeMappedPort",
+                        "example-schema:activePort",
+                        "example-schema:clockSpeed",
+                        "example-schema:deprecatedLeaf",
+                        "example-schema:obsoleteLeaf",
+                        "example-schema:obsoleteLeafWithDeprecatedType",
+                        "example-schema:obsoleteLeafWithObsoleteType",
+                        "example-schema:systemStats"};
+                }
+
+                SECTION("example-schema:a")
+                {
+                    path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
+                    set = {"a2", "leafa", "second-schema:augmentedContainer"};
+                }
+
+                SECTION("second-schema:bla")
+                {
+                    path.m_nodes.push_back(schemaNode_(module_{"second-schema"}, container_("bla")));
+                    set = {"bla2"};
+                }
+
+                SECTION("example-schema:ethernet")
+                {
+                    path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("ethernet")));
+                    set = {"ip"};
+                }
+
+                REQUIRE(ys.availableNodes(path, Recursion::NonRecursive) == set);
             }
 
-            SECTION("example-schema:a")
+            SECTION("modules")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                set = {"a2", "leafa", "second-schema:augmentedContainer"};
-            }
+                std::string module;
+                std::set<std::string> expectedNonRecursive;
+                std::set<std::string> expectedRecursive;
+                SECTION("example-schema")
+                {
+                    module = "example-schema";
+                    expectedNonRecursive = {
+                        "example-schema:_list",
+                        "example-schema:a",
+                        "example-schema:activeMappedPort",
+                        "example-schema:activeNumber",
+                        "example-schema:activePort",
+                        "example-schema:another-duration",
+                        "example-schema:b",
+                        "example-schema:carry",
+                        "example-schema:clockSpeed",
+                        "example-schema:deprecatedLeaf",
+                        "example-schema:direction",
+                        "example-schema:duration",
+                        "example-schema:ethernet",
+                        "example-schema:foodDrinkIdentLeaf",
+                        "example-schema:foodIdentLeaf",
+                        "example-schema:interrupt",
+                        "example-schema:leafBool",
+                        "example-schema:leafDecimal",
+                        "example-schema:leafEnum",
+                        "example-schema:leafEnumTypedef",
+                        "example-schema:leafEnumTypedefRestricted",
+                        "example-schema:leafEnumTypedefRestricted2",
+                        "example-schema:leafInt16",
+                        "example-schema:leafInt32",
+                        "example-schema:leafInt64",
+                        "example-schema:leafInt8",
+                        "example-schema:leafString",
+                        "example-schema:leafUint16",
+                        "example-schema:leafUint32",
+                        "example-schema:leafUint64",
+                        "example-schema:leafUint8",
+                        "example-schema:length",
+                        "example-schema:loopback",
+                        "example-schema:numberOrString",
+                        "example-schema:obsoleteLeaf",
+                        "example-schema:obsoleteLeafWithDeprecatedType",
+                        "example-schema:obsoleteLeafWithObsoleteType",
+                        "example-schema:pizzaIdentLeaf",
+                        "example-schema:pizzaSize",
+                        "example-schema:portMapping",
+                        "example-schema:portSettings",
+                        "example-schema:systemStats",
+                        "example-schema:twoKeyList",
+                        "example-schema:wavelength",
+                        "example-schema:zero"
+                    };
+                    expectedRecursive = {
+                        "/example-schema:_list",
+                        "/example-schema:_list/contInList",
+                        "/example-schema:_list/number",
+                        "/example-schema:a",
+                        "/example-schema:a/a2",
+                        "/example-schema:a/a2/a3",
+                        "/example-schema:a/leafa",
+                        "/example-schema:a/second-schema:augmentedContainer",
+                        "/example-schema:activeMappedPort",
+                        "/example-schema:activeNumber",
+                        "/example-schema:activePort",
+                        "/example-schema:another-duration",
+                        "/example-schema:b",
+                        "/example-schema:b/b2",
+                        "/example-schema:b/b2/b3",
+                        "/example-schema:carry",
+                        "/example-schema:clockSpeed",
+                        "/example-schema:deprecatedLeaf",
+                        "/example-schema:direction",
+                        "/example-schema:duration",
+                        "/example-schema:foodDrinkIdentLeaf",
+                        "/example-schema:foodIdentLeaf",
+                        "/example-schema:interface/caseEthernet/ethernet",
+                        "/example-schema:interface/caseEthernet/ethernet/ip",
+                        "/example-schema:interface/caseLoopback/loopback",
+                        "/example-schema:interface/caseLoopback/loopback/ip",
+                        "/example-schema:interrupt",
+                        "/example-schema:leafBool",
+                        "/example-schema:leafDecimal",
+                        "/example-schema:leafEnum",
+                        "/example-schema:leafEnumTypedef",
+                        "/example-schema:leafEnumTypedefRestricted",
+                        "/example-schema:leafEnumTypedefRestricted2",
+                        "/example-schema:leafInt16",
+                        "/example-schema:leafInt32",
+                        "/example-schema:leafInt64",
+                        "/example-schema:leafInt8",
+                        "/example-schema:leafString",
+                        "/example-schema:leafUint16",
+                        "/example-schema:leafUint32",
+                        "/example-schema:leafUint64",
+                        "/example-schema:leafUint8",
+                        "/example-schema:length",
+                        "/example-schema:numberOrString",
+                        "/example-schema:obsoleteLeaf",
+                        "/example-schema:obsoleteLeafWithDeprecatedType",
+                        "/example-schema:obsoleteLeafWithObsoleteType",
+                        "/example-schema:pizzaIdentLeaf",
+                        "/example-schema:pizzaSize",
+                        "/example-schema:portMapping",
+                        "/example-schema:portMapping/port",
+                        "/example-schema:portSettings",
+                        "/example-schema:portSettings/port",
+                        "/example-schema:systemStats",
+                        "/example-schema:systemStats/upTime",
+                        "/example-schema:twoKeyList",
+                        "/example-schema:twoKeyList/name",
+                        "/example-schema:twoKeyList/number",
+                        "/example-schema:wavelength",
+                        "/example-schema:zero"
+                    };
+                }
 
-            SECTION("second-schema:bla")
-            {
-                path.m_nodes.push_back(schemaNode_(module_{"second-schema"}, container_("bla")));
-                set = {"bla2"};
-            }
+                SECTION("second-schema")
+                {
+                    module = "second-schema";
+                    expectedNonRecursive = {
+                        "second-schema:bla"
+                    };
+                    expectedRecursive = {
+                        "/second-schema:bla", "/second-schema:bla/bla2"
+                    };
+                }
 
-            SECTION("example-schema:ethernet")
-            {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("ethernet")));
-                set = {"ip"};
+                REQUIRE(ys.availableNodes(module_{module}, Recursion::NonRecursive) == expectedNonRecursive);
+                REQUIRE(ys.availableNodes(module_{module}, Recursion::Recursive) == expectedRecursive);
             }
-
-            REQUIRE(ys.childNodes(path, Recursion::NonRecursive) == set);
         }
         SECTION("nodeType")
         {
@@ -993,140 +1131,6 @@ TEST_CASE("yangschema")
 
         SECTION("moduleNodes")
         {
-            std::string module;
-            std::set<std::string> expectedNonRecursive;
-            std::set<std::string> expectedRecursive;
-            SECTION("example-schema")
-            {
-                module = "example-schema";
-                expectedNonRecursive = {
-                    "example-schema:_list",
-                    "example-schema:a",
-                    "example-schema:activeMappedPort",
-                    "example-schema:activeNumber",
-                    "example-schema:activePort",
-                    "example-schema:another-duration",
-                    "example-schema:b",
-                    "example-schema:carry",
-                    "example-schema:clockSpeed",
-                    "example-schema:deprecatedLeaf",
-                    "example-schema:direction",
-                    "example-schema:duration",
-                    "example-schema:ethernet",
-                    "example-schema:foodDrinkIdentLeaf",
-                    "example-schema:foodIdentLeaf",
-                    "example-schema:interrupt",
-                    "example-schema:leafBool",
-                    "example-schema:leafDecimal",
-                    "example-schema:leafEnum",
-                    "example-schema:leafEnumTypedef",
-                    "example-schema:leafEnumTypedefRestricted",
-                    "example-schema:leafEnumTypedefRestricted2",
-                    "example-schema:leafInt16",
-                    "example-schema:leafInt32",
-                    "example-schema:leafInt64",
-                    "example-schema:leafInt8",
-                    "example-schema:leafString",
-                    "example-schema:leafUint16",
-                    "example-schema:leafUint32",
-                    "example-schema:leafUint64",
-                    "example-schema:leafUint8",
-                    "example-schema:length",
-                    "example-schema:loopback",
-                    "example-schema:myRpc",
-                    "example-schema:numberOrString",
-                    "example-schema:obsoleteLeaf",
-                    "example-schema:obsoleteLeafWithDeprecatedType",
-                    "example-schema:obsoleteLeafWithObsoleteType",
-                    "example-schema:pizzaIdentLeaf",
-                    "example-schema:pizzaSize",
-                    "example-schema:portMapping",
-                    "example-schema:portSettings",
-                    "example-schema:systemStats",
-                    "example-schema:twoKeyList",
-                    "example-schema:wavelength",
-                    "example-schema:zero"
-                };
-                expectedRecursive = {
-                    "/example-schema:_list",
-                    "/example-schema:_list/contInList",
-                    "/example-schema:_list/number",
-                    "/example-schema:a",
-                    "/example-schema:a/a2",
-                    "/example-schema:a/a2/a3",
-                    "/example-schema:a/leafa",
-                    "/example-schema:a/second-schema:augmentedContainer",
-                    "/example-schema:activeMappedPort",
-                    "/example-schema:activeNumber",
-                    "/example-schema:activePort",
-                    "/example-schema:another-duration",
-                    "/example-schema:b",
-                    "/example-schema:b/b2",
-                    "/example-schema:b/b2/b3",
-                    "/example-schema:carry",
-                    "/example-schema:clockSpeed",
-                    "/example-schema:deprecatedLeaf",
-                    "/example-schema:direction",
-                    "/example-schema:duration",
-                    "/example-schema:foodDrinkIdentLeaf",
-                    "/example-schema:foodIdentLeaf",
-                    "/example-schema:interface/caseEthernet/ethernet",
-                    "/example-schema:interface/caseEthernet/ethernet/ip",
-                    "/example-schema:interface/caseLoopback/loopback",
-                    "/example-schema:interface/caseLoopback/loopback/ip",
-                    "/example-schema:interrupt",
-                    "/example-schema:leafBool",
-                    "/example-schema:leafDecimal",
-                    "/example-schema:leafEnum",
-                    "/example-schema:leafEnumTypedef",
-                    "/example-schema:leafEnumTypedefRestricted",
-                    "/example-schema:leafEnumTypedefRestricted2",
-                    "/example-schema:leafInt16",
-                    "/example-schema:leafInt32",
-                    "/example-schema:leafInt64",
-                    "/example-schema:leafInt8",
-                    "/example-schema:leafString",
-                    "/example-schema:leafUint16",
-                    "/example-schema:leafUint32",
-                    "/example-schema:leafUint64",
-                    "/example-schema:leafUint8",
-                    "/example-schema:length",
-                    "/example-schema:myRpc",
-                    "/example-schema:myRpc/input",
-                    "/example-schema:myRpc/output",
-                    "/example-schema:numberOrString",
-                    "/example-schema:obsoleteLeaf",
-                    "/example-schema:obsoleteLeafWithDeprecatedType",
-                    "/example-schema:obsoleteLeafWithObsoleteType",
-                    "/example-schema:pizzaIdentLeaf",
-                    "/example-schema:pizzaSize",
-                    "/example-schema:portMapping",
-                    "/example-schema:portMapping/port",
-                    "/example-schema:portSettings",
-                    "/example-schema:portSettings/port",
-                    "/example-schema:systemStats",
-                    "/example-schema:systemStats/upTime",
-                    "/example-schema:twoKeyList",
-                    "/example-schema:twoKeyList/name",
-                    "/example-schema:twoKeyList/number",
-                    "/example-schema:wavelength",
-                    "/example-schema:zero"
-                };
-            }
-
-            SECTION("second-schema")
-            {
-                module = "second-schema";
-                expectedNonRecursive = {
-                    "second-schema:bla"
-                };
-                expectedRecursive = {
-                    "/second-schema:bla", "/second-schema:bla/bla2"
-                };
-            }
-
-            REQUIRE(ys.moduleNodes(module_{module}, Recursion::NonRecursive) == expectedNonRecursive);
-            REQUIRE(ys.moduleNodes(module_{module}, Recursion::Recursive) == expectedRecursive);
         }
     }
 

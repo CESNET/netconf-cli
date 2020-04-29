@@ -23,3 +23,20 @@ std::string leafDataTypeToString(const yang::LeafDataType& type);
 std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair);
 std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair);
 std::string leafDataToString(const leaf_data_ value);
+
+struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {
+    schemaPath_ operator()(const dataPath_& path) const
+    {
+        return dataPathToSchemaPath(path);
+    }
+
+    schemaPath_ operator()(const schemaPath_& path) const
+    {
+        return path;
+    }
+
+    [[noreturn]] schemaPath_ operator()([[maybe_unused]] const module_& path) const
+    {
+        throw std::runtime_error("getSchemaPathVisitor: Tried getting a schema path from a module");
+    }
+};

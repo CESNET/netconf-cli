@@ -137,29 +137,28 @@ yang::TypeInfo StaticSchema::leafType(const std::string& path) const
 
 // We do not test StaticSchema, so we don't need to implement recursive childNodes
 // for this class.
-std::set<std::string> StaticSchema::childNodes(const schemaPath_& path, const Recursion) const
+std::set<std::string> StaticSchema::availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, [[maybe_unused]] const Recursion recursion) const
 {
-    std::string locationString = pathToSchemaString(path, Prefixes::Always);
     std::set<std::string> res;
+    if (path.type() == typeid(module_)) {
+        auto topLevelNodes = m_nodes.at("");
+        auto modulePlusColon = boost::get<module_>(path).m_name + ":";
+        for (const auto& it : topLevelNodes) {
+            if (boost::algorithm::starts_with(it.first, modulePlusColon)) {
+                res.insert(it.first);
+            }
+        }
+        return res;
+    }
+
+    std::string locationString =
+        path.type() == typeid(schemaPath_) ?
+        pathToSchemaString(boost::get<schemaPath_>(path), Prefixes::Always) :
+        pathToSchemaString(boost::get<dataPath_>(path), Prefixes::Always);
 
     auto childrenRef = children(locationString);
 
     std::transform(childrenRef.begin(), childrenRef.end(), std::inserter(res, res.end()), [](auto it) { return it.first; });
-    return res;
-}
-
-// We do not test StaticSchema, so we don't need to implement recursive moduleNodes
-// for this class.
-std::set<std::string> StaticSchema::moduleNodes(const module_& module, const Recursion) const
-{
-    std::set<std::string> res;
-    auto topLevelNodes = m_nodes.at("");
-    auto modulePlusColon = module.m_name + ":";
-    for (const auto& it : topLevelNodes) {
-        if (boost::algorithm::starts_with(it.first, modulePlusColon)) {
-            res.insert(it.first);
-        }
-    }
     return res;
 }
 
