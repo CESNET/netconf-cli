@@ -91,6 +91,24 @@
     },
     {
       "key": {
+        "uuid": "99efaac7_0b264a3b",
+        "filename": "src/parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-29T08:01:21Z",
+      "side": 1,
+      "message": "I must be missing something because Parser::m_curDir is not used in this function. Let\u0027s talk about this during the call.",
+      "parentUuid": "f12bb7a8_f1019b56",
+      "revId": "40954e3ed5d939bc87a74860d7b27fbf90221ddf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9076eccc_5d834c7f",
         "filename": "src/static_schema.cpp",
         "patchSetId": 1
