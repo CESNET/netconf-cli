@@ -47,7 +47,7 @@ struct ls_options_table : x3::symbols<LsOption> {
 } const ls_options;
 
 auto const ls_def =
-    ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> ((dataPathListEnd | dataPath | schemaPath) | (module >> "*")));
+    ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> (dataPathListEnd | dataPath | schemaPath | (module >> "*")));
 
 auto const cd_def =
     cd_::name >> space_separator > dataPath;
