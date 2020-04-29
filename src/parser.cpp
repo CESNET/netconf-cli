@@ -9,6 +9,7 @@
 #include "grammars.hpp"
 #include "parser.hpp"
 #include "parser_context.hpp"
+#include "utils.hpp"
 
 TooManyArgumentsException::~TooManyArgumentsException() = default;
 
@@ -100,38 +101,20 @@ std::string Parser::currentNode() const
     return pathToDataString(m_curDir, Prefixes::WhenNeeded);
 }
 
-struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {
-    schemaPath_ operator()(const dataPath_& path) const
-    {
-        return dataPathToSchemaPath(path);
-    }
-
-    schemaPath_ operator()(const schemaPath_& path) const
-    {
-        return path;
-    }
-
-    [[noreturn]] schemaPath_ operator()([[maybe_unused]] const module_& path) const
-    {
-        throw std::logic_error("getSchemaPathVisitor: Tried getting a schema path from a module");
-    }
-};
-
-
 std::set<std::string> Parser::availableNodes(const boost::optional<boost::variant<dataPath_, schemaPath_, module_>>& path, const Recursion& option) const
 {
     auto pathArg = dataPathToSchemaPath(m_curDir);
     if (path) {
         if (path->type() == typeid(module_)) {
-            return m_schema->moduleNodes(boost::get<module_>(*path), option);
+            return m_schema->availableNodes(*path, option);
         }
 
-        auto schemaPath = boost::apply_visitor(getSchemaPathVisitor(), *path);
+        auto schemaPath = anyPathToSchemaPath(*path);
         if (schemaPath.m_scope == Scope::Absolute) {
             pathArg = schemaPath;
         } else {
             pathArg.m_nodes.insert(pathArg.m_nodes.end(), schemaPath.m_nodes.begin(), schemaPath.m_nodes.end());
         }
     }
-    return m_schema->childNodes(pathArg, option);
+    return m_schema->availableNodes(pathArg, option);
 }

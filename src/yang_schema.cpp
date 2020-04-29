@@ -320,18 +320,25 @@ std::set<std::string> YangSchema::modules() const
     return res;
 }
 
-std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recursion recursion) const
+std::set<std::string> YangSchema::availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const
 {
     using namespace std::string_view_literals;
     std::set<std::string> res;
     std::vector<libyang::S_Schema_Node> nodes;
+    std::string topLevelModule;
 
-    if (path.m_nodes.empty()) {
-        nodes = m_context->data_instantiables(0);
+    if (path.type() == typeid(module_)) {
+        nodes = m_context->get_module(boost::get<module_>(path).m_name.c_str())->data_instantiables(0);
     } else {
-        const auto pathString = pathToSchemaString(path, Prefixes::Always);
-        const auto node = getSchemaNode(pathString);
-        nodes = node->child_instantiables(0);
+        auto schemaPath = anyPathToSchemaPath(path);
+        if (schemaPath.m_nodes.empty()) {
+            nodes = m_context->data_instantiables(0);
+        } else {
+            const auto pathString = pathToSchemaString(schemaPath, Prefixes::Always);
+            const auto node = getSchemaNode(pathString);
+            nodes = node->child_instantiables(0);
+            topLevelModule = schemaPath.m_nodes.begin()->m_prefix->m_name;
+        }
     }
 
     for (const auto& node : nodes) {
@@ -348,32 +355,12 @@ std::set<std::string> YangSchema::childNodes(const schemaPath_& path, const Recu
             }
         } else {
             std::string toInsert;
-            if (path.m_nodes.empty() || path.m_nodes.front().m_prefix.get().m_name != node->module()->name()) {
+            if (topLevelModule.empty() || topLevelModule != node->module()->name()) {
                 toInsert += node->module()->name();
                 toInsert += ":";
             }
             toInsert += node->name();
             res.insert(toInsert);
-        }
-    }
-
-    return res;
-}
-
-std::set<std::string> YangSchema::moduleNodes(const module_& module, const Recursion recursion) const
-{
-    std::set<std::string> res;
-    const auto yangModule = m_context->get_module(module.m_name.c_str());
-
-    std::vector<libyang::S_Schema_Node> nodes;
-
-    for (const auto& node : yangModule->data_instantiables(0)) {
-        if (recursion == Recursion::Recursive) {
-            for (const auto& it : node->tree_dfs()) {
-                res.insert(it->path(LYS_PATH_FIRST_PREFIX));
-            }
-        } else {
-            res.insert(module.m_name + ":" + node->name());
         }
     }
 

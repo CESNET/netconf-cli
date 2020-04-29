@@ -188,3 +188,25 @@ std::string leafDataToString(const leaf_data_ value)
 {
     return boost::apply_visitor(leafDataToStringVisitor(), value);
 }
+
+struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {
+    schemaPath_ operator()(const dataPath_& path) const
+    {
+        return dataPathToSchemaPath(path);
+    }
+
+    schemaPath_ operator()(const schemaPath_& path) const
+    {
+        return path;
+    }
+
+    [[noreturn]] schemaPath_ operator()([[maybe_unused]] const module_& path) const
+    {
+        throw std::logic_error("getSchemaPathVisitor: Tried getting a schema path from a module");
+    }
+};
+
+schemaPath_ anyPathToSchemaPath(const boost::variant<dataPath_, schemaPath_, module_>& path)
+{
+    return boost::apply_visitor(getSchemaPathVisitor(), path);
+}

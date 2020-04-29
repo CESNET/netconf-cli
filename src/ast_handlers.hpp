@@ -458,7 +458,7 @@ struct createPathSuggestions_class {
         const auto& schema = parserContext.m_schema;
 
         parserContext.m_completionIterator = begin;
-        auto suggestions = schema.childNodes(parserContext.currentSchemaPath(), Recursion::NonRecursive);
+        auto suggestions = schema.availableNodes(parserContext.currentSchemaPath(), Recursion::NonRecursive);
         std::set<Completion> suffixesAdded;
         std::transform(suggestions.begin(), suggestions.end(),
             std::inserter(suffixesAdded, suffixesAdded.end()),
