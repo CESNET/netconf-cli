@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "633d8f96_6db90b70",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-29T23:56:02Z",
+      "side": 1,
+      "message": "https://en.cppreference.com/w/cpp/language/attributes/fallthrough, but I think these are not needed when using multiple \"labels\" right on top of each other with no code in between.",
+      "revId": "eb8326c27fcac669a6e75dc3a54d15946b470754",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
