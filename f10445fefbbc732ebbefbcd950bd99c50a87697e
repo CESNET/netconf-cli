@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "418b0f62_bad9f5b3",
+        "filename": "src/parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-29T23:58:44Z",
+      "side": 1,
+      "message": "nit: I think that logic_error is more appropriate here because this is definitely an error in the program.",
+      "range": {
+        "startLine": 116,
+        "startChar": 19,
+        "endLine": 116,
+        "endChar": 32
+      },
+      "revId": "f10445fefbbc732ebbefbcd950bd99c50a87697e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
