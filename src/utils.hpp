@@ -8,6 +8,8 @@
 /*! \file utils.hpp
     \brief A header containing utility functions
 */
+#pragma once
+
 #include <string>
 #include "ast_path.hpp"
 #include "ast_values.hpp"
