@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a2ed381a_29e53b8e",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T00:08:32Z",
+      "side": 1,
+      "message": "This is asking for trouble. If this (test-only) function is coded with an assumption that it will never be called with recursion, throw std::logic_error if that invariant is not met.",
+      "range": {
+        "startLine": 140,
+        "startChar": 112,
+        "endLine": 140,
+        "endChar": 128
+      },
+      "revId": "a091dc75f1d2918add58899dca639cf41688ea26",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d36ec41_d3a369ff",
+        "filename": "src/utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T00:08:32Z",
+      "side": 1,
+      "message": "what about making this visitor an implementation detail and exposing only a new method:\n\n // something.hpp\n using AnyPath \u003d boost::variant\u003cdataPath_, schemaPath_, module_\u003e;\n\n // something.cpp\n struct getSchemaPathVisitor ...;\n schemaPath_ anyPathToSchemaPath(const AnyPath\u0026 path) {\n     return boost::apply_visitor(getSchemaPathVisitor(), path);\n }\n\nfeel free to decline.",
+      "revId": "a091dc75f1d2918add58899dca639cf41688ea26",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6827a093_e9099079",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T00:08:32Z",
+      "side": 1,
+      "message": "can you please explain (preferably as a code comment) the difference between data_instantiables and child_instantiables?",
+      "revId": "a091dc75f1d2918add58899dca639cf41688ea26",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
