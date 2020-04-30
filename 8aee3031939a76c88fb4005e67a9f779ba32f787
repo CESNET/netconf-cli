@@ -16,6 +16,24 @@
       "revId": "8aee3031939a76c88fb4005e67a9f779ba32f787",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b3165e7_dd0cb535",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-30T15:29:02Z",
+      "side": 1,
+      "message": "1) it is never called without a colon, because all paths in StaticSchema are stored with the prefix. I\u0027ll change the return statement to a throw statement.\n2) it never hits that line, because availableNodes with a module argument is only used for the output of the ls command and I don\u0027t test that. So maybe I should just throw there?",
+      "parentUuid": "c80a75c0_e826cdb1",
+      "revId": "8aee3031939a76c88fb4005e67a9f779ba32f787",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
