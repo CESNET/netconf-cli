@@ -69,6 +69,24 @@
       "revId": "63170c9ef8760bf1516cd49f5c37e104946e05c3",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "728f3784_7adf5191",
+        "filename": "tests/path_completion.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T00:16:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2493f0c3_4df6f8dc",
+      "revId": "63170c9ef8760bf1516cd49f5c37e104946e05c3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
