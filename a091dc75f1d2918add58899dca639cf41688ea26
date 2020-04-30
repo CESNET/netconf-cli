@@ -134,6 +134,24 @@
       "revId": "a091dc75f1d2918add58899dca639cf41688ea26",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "377ca67b_bd81eee9",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-30T12:28:19Z",
+      "side": 1,
+      "message": "The reason they are named differently is that child_instantiables is called on a node: it retrieves instantiable children. data_instantiables method is present on the Context class and on the Module class. These classes contain only top-level nodes, and although you could say that the top-level nodes are the children of module/context, they aren\u0027t exactly \"children\". That\u0027s why the method can\u0027t be called child_instantiables. But otherwise, they work the same.",
+      "parentUuid": "fa538073_0e36f264",
+      "revId": "a091dc75f1d2918add58899dca639cf41688ea26",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
