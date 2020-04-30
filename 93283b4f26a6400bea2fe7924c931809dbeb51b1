@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2d254eac_bc8a69d7",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T17:22:50Z",
+      "side": 1,
+      "message": "whitespace error in the indent (likely for all this code)",
+      "revId": "93283b4f26a6400bea2fe7924c931809dbeb51b1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "205e9b25_7297b60e",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T17:22:50Z",
+      "side": 1,
+      "message": "This whole SECTION(\"paths\") doesn\u0027t do anything because there\u0027s no test code in here. Caught by the coverage diffing, BTW.",
+      "revId": "93283b4f26a6400bea2fe7924c931809dbeb51b1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

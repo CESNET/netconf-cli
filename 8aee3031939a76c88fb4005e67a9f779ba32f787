@@ -34,6 +34,24 @@
       "revId": "8aee3031939a76c88fb4005e67a9f779ba32f787",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "973045ca_25c04d0d",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T17:22:50Z",
+      "side": 1,
+      "message": "I thought it\u0027s tested by this one in tests/ls.cpp:\n\n            SECTION(\"ls example:*\")\n            {\n                input \u003d \"ls example:*\";\n                expected.m_path \u003d module_{\"example\"};\n            }\n\n...but when you said it\u0027s only triggered by actual *invocation* of ls, right, that makes sense :). Let\u0027s keep it as-is, there\u0027s no need to make StaticSchema deliberately half-functional, IMHO.",
+      "parentUuid": "9b3165e7_dd0cb535",
+      "revId": "8aee3031939a76c88fb4005e67a9f779ba32f787",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
