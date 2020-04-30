@@ -116,6 +116,24 @@
       "revId": "a091dc75f1d2918add58899dca639cf41688ea26",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa538073_0e36f264",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T10:19:29Z",
+      "side": 1,
+      "message": "💓",
+      "parentUuid": "09e0bd53_a13d278c",
+      "revId": "a091dc75f1d2918add58899dca639cf41688ea26",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
