@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5527d42f_a483802a",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T10:23:04Z",
+      "side": 1,
+      "message": "can you please add a test which covers this line as well?",
+      "revId": "21d4e57aa872f52183260b4590e033a7f0fa9851",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
