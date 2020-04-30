@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c80a75c0_e826cdb1",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T14:35:51Z",
+      "side": 1,
+      "message": "Hmmm. This is a good change of course, but given the context in which I saw it (https://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/2488/6..7/src/static_schema.cpp where it got changed from \u003d\u003d to !\u003d), I went to investigate test coverage:\n\n- splitModuleNode is now never called without a \u0027:\u0027,\n- availableNodes() never hits line 159.\n\nThis looks fishy -- can you take a look, please?",
+      "revId": "8aee3031939a76c88fb4005e67a9f779ba32f787",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
