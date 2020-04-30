@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e7855a2f_63fac828",
+        "filename": "tests/ls_interpreter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-04-30T14:15:52Z",
+      "side": 1,
+      "message": "This puzzled me for a while (\"how come I\u0027m getting a module-level wildcard without a leading /\"). Then I realized that this gets produced by the parser because this function works on parsed paths -- and there\u0027s no absolute vs. relative scope on a module-level wildcard. OK :).",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 9
+      },
+      "revId": "8208687691c21bd1ecce188c2deff8fdb949d637",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
