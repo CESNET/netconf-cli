@@ -16,6 +16,24 @@
       "revId": "1c07afa616ecdbe53d1b2c0ceb0c07a2421facb8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58a92c21_60ec21ae",
+        "filename": "src/NETCONF_CLI_VERSION.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-04-30T09:51:33Z",
+      "side": 1,
+      "message": "It\u0027s just a placeholder file I use to stop make from rebuilding cli.cpp all the time. I added it by mistake",
+      "parentUuid": "fc3eb759_1c9ff84d",
+      "revId": "1c07afa616ecdbe53d1b2c0ceb0c07a2421facb8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
