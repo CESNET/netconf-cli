@@ -83,21 +83,6 @@ struct key_identifier_class {
 
 struct module_identifier_class;
 
-struct listPrefix_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        const Schema& schema = parserContext.m_schema;
-
-        if (schema.isList(parserContext.currentSchemaPath(), {parserContext.m_curModule, ast})) {
-            parserContext.m_tmpListName = ast;
-        } else {
-            _pass(context) = false;
-        }
-    }
-};
-
 struct listSuffix_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
@@ -135,18 +120,6 @@ struct listSuffix_class {
         return x3::error_handler_result::rethrow;
     }
 };
-struct listElement_class {
-    template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty()) {
-            return x3::error_handler_result::fail;
-        } else {
-            return x3::error_handler_result::rethrow;
-        }
-    }
-};
 struct list_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
@@ -157,40 +130,6 @@ struct list_class {
         if (!schema.isList(parserContext.currentSchemaPath(), {parserContext.m_curModule, ast.m_name})) {
             _pass(context) = false;
         }
-    }
-};
-struct nodeup_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-
-        if (parserContext.currentSchemaPath().m_nodes.empty())
-            _pass(context) = false;
-    }
-};
-
-struct container_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        const auto& schema = parserContext.m_schema;
-
-        if (!schema.isContainer(parserContext.currentSchemaPath(), {parserContext.m_curModule, ast.m_name}))
-            _pass(context) = false;
-    }
-};
-
-struct leaf_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        const auto& schema = parserContext.m_schema;
-
-        if (!schema.isLeaf(parserContext.currentSchemaPath(), {parserContext.m_curModule, ast.m_name}))
-            _pass(context) = false;
     }
 };
 
@@ -217,16 +156,6 @@ struct dataNodeList_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.pushPathFragment(ast);
-    }
-};
-
-struct dataNode_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.pushPathFragment(ast);
-        parserContext.m_curModule = boost::none;
     }
 };
 

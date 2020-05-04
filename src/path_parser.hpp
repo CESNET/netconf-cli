@@ -25,33 +25,33 @@ x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstan
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
 x3::rule<createPathSuggestions_class, x3::unused_type> const createPathSuggestions = "createPathSuggestions";
 x3::rule<trailingSlash_class, TrailingSlash> const trailingSlash = "trailingSlash";
-x3::rule<dataNode_class, dataNode_> const dataNode = "dataNode";
 x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
 x3::rule<key_identifier_class, std::string> const key_identifier = "key_identifier";
-x3::rule<listPrefix_class, std::string> const listPrefix = "listPrefix";
 x3::rule<listSuffix_class, std::vector<keyValue_>> const listSuffix = "listSuffix";
-x3::rule<listElement_class, listElement_> const listElement = "listElement";
 x3::rule<list_class, list_> const list = "list";
-x3::rule<nodeup_class, nodeup_> const nodeup = "nodeup";
-x3::rule<container_class, container_> const container = "container";
-x3::rule<leaf_class, leaf_> const leaf = "leaf";
 x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
 x3::rule<createValueSuggestions_class, x3::unused_type> const createValueSuggestions = "createValueSuggestions";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 
-
-struct schemaNode : x3::parser<schemaNode> {
-    using attribute_type = schemaNode_;
+template <typename NodeType>
+struct NodeParser : x3::parser<NodeParser<NodeType>> {
+    using attribute_type = NodeType;
     template <typename It, typename Ctx, typename RCtx, typename Attr>
     bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
     {
-        x3::symbols<schemaNode_> table(std::string{"schemaNode"}); // The constructor doesn't work with just the string literal
+        std::string tableName;
+        if constexpr (std::is_same<NodeType, schemaNode_>()) {
+            tableName = "schemaNode";
+        } else {
+            tableName = "dataNode";
+        }
+        x3::symbols<NodeType> table(tableName);
 
         ParserContext& parserContext = x3::get<parser_context_tag>(ctx);
         parserContext.m_suggestions.clear();
         for (const auto& child : parserContext.m_schema.availableNodes(parserContext.currentSchemaPath(), Recursion::NonRecursive)) {
-            schemaNode_ out;
+            NodeType out;
             std::string parseString;
             if (child.first) {
                 out.m_prefix = module_{*child.first};
@@ -69,7 +69,13 @@ struct schemaNode : x3::parser<schemaNode> {
                     parserContext.m_suggestions.emplace(Completion{parseString + " "});
                     break;
                 case yang::NodeTypes::List:
-                    out.m_suffix = list_{child.second};
+                    if constexpr (std::is_same<NodeType, schemaNode_>()) {
+                        out.m_suffix = list_{child.second};
+                    } else {
+                        listElement_ node;
+                        node.m_name = child.second;
+                        out.m_suffix = node;
+                    }
                     parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
                     break;
                 case yang::NodeTypes::Action:
@@ -80,20 +86,49 @@ struct schemaNode : x3::parser<schemaNode> {
                     continue;
             }
             table.add(parseString, out);
-            table.add("..", attribute_type{nodeup_{}});
+            table.add("..", NodeType{nodeup_{}});
             if (!child.first) {
                 auto topLevelModule = parserContext.currentSchemaPath().m_nodes.begin()->m_prefix;
                 out.m_prefix = topLevelModule;
                 table.add(topLevelModule->m_name + ":" + parseString, out);
             }
         }
+        parserContext.m_completionIterator = begin;
         auto res = table.parse(begin, end, ctx, rctx, attr);
+
+        if (attr.m_prefix) {
+            parserContext.m_curModule = attr.m_prefix->m_name;
+        }
+
+        if (attr.m_suffix.type() == typeid(leaf_)) {
+            parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
+            ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
+                return boost::optional<std::string>{it.m_name};
+            }), boost::get<leaf_>(attr.m_suffix).m_name};
+            parserContext.m_tmpListKeyLeafPath.m_node = node;
+        }
+
+        if constexpr (std::is_same<NodeType, dataNode_>()) {
+            if (attr.m_suffix.type() == typeid(listElement_)) {
+                parserContext.m_tmpListName = boost::get<listElement_>(attr.m_suffix).m_name;
+                res = listSuffix.parse(begin, end, ctx, rctx, boost::get<listElement_>(attr.m_suffix).m_keys);
+            }
+        }
+
         if (res) {
             parserContext.pushPathFragment(attr);
+            parserContext.m_topLevelModulePresent = true;
+        }
+
+        if (attr.m_prefix) {
+            parserContext.m_curModule = boost::none;
         }
         return res;
     }
-} schemaNode;
+};
+
+NodeParser<schemaNode_> schemaNode;
+NodeParser<dataNode_> dataNode;
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -123,27 +158,12 @@ auto const keyValue_def =
 auto const keyValueWrapper =
     x3::lexeme['[' > createKeySuggestions > keyValue > suggestKeysEnd > ']'];
 
-auto const listPrefix_def =
-    node_identifier;
-
 // even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
 auto const listSuffix_def =
     *keyValueWrapper;
 
-auto const listElement_def =
-    listPrefix >> &char_('[') > listSuffix;
-
 auto const list_def =
     node_identifier >> !char_('[');
-
-auto const nodeup_def =
-    x3::lit("..") > x3::attr(nodeup_());
-
-auto const container_def =
-    node_identifier;
-
-auto const leaf_def =
-    node_identifier;
 
 auto const absoluteStart_def =
     x3::omit['/'] >> x3::attr(Scope::Absolute);
@@ -153,9 +173,6 @@ auto const trailingSlash_def =
 
 auto const createPathSuggestions_def =
     x3::eps;
-
-auto const dataNode_def =
-    createPathSuggestions >> -(module) >> (container | listElement | nodeup | leaf);
 
 // I have to insert an empty vector to the first alternative, otherwise they won't have the same attribute
 auto const dataPath_def = initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi | initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % '/' >> (-(trailingSlash >> createPathSuggestions) >> -(completing >> rest) >> (&space_separator | x3::eoi));
@@ -196,14 +213,8 @@ auto const initializePath_def =
 
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(key_identifier)
-BOOST_SPIRIT_DEFINE(listPrefix)
 BOOST_SPIRIT_DEFINE(listSuffix)
-BOOST_SPIRIT_DEFINE(listElement)
 BOOST_SPIRIT_DEFINE(list)
-BOOST_SPIRIT_DEFINE(nodeup)
-BOOST_SPIRIT_DEFINE(dataNode)
-BOOST_SPIRIT_DEFINE(container)
-BOOST_SPIRIT_DEFINE(leaf)
 BOOST_SPIRIT_DEFINE(dataNodeList)
 BOOST_SPIRIT_DEFINE(dataNodesListEnd)
 BOOST_SPIRIT_DEFINE(leafPath)
