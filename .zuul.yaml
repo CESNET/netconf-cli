@@ -1,6 +1,5 @@
 - project:
     check:
-      fail-fast: true
       jobs:
         - f31-gcc-cover:
             requires: CzechLight-deps-f31-gcc
