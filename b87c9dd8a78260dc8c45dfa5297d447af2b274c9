@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f6dbc44d_d4b0e4e3",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-05T17:49:58Z",
+      "side": 1,
+      "message": "This is not hit by any test case. Looks like it should be covered if you add an RPC node to a tab-completion test.",
+      "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
