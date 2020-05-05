@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70ef8251_e447e26b",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-05T17:55:16Z",
+      "side": 1,
+      "message": "Oops, this means that the previous patch breaks .., then -- right? If so, please make sure it works. A perfect approach would be, IMHO, adding a test for .. first, then as a child commit of that an updated version of https://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/2490/10, and then this patch.",
+      "revId": "66d120ea4902dca9f2fdaf64ab3b7e9f2faeedfe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5da5770_976617e8",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-05T17:55:16Z",
+      "side": 1,
+      "message": "Is this really related to data nodes? To me it seems like something which adds support for parsing both /foo:a/foo:b instead of just /foo:a/b. If that\u0027s the case, can you please split it out?",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 13
+      },
+      "revId": "66d120ea4902dca9f2fdaf64ab3b7e9f2faeedfe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
