@@ -88,6 +88,15 @@ std::ostream& operator<<(std::ostream& s, const boost::optional<std::string>& op
     s << (opt ? *opt : "std::nullopt");
     return s;
 }
+
+std::ostream& operator<<(std::ostream& s, const std::set<ModuleNodePair>& set)
+{
+    std::transform(set.begin(), set.end(),
+            std::experimental::make_ostream_joiner(s, ", "),
+            [] (const ModuleNodePair& it) { return (it.first ? *it.first + ":" : "") + it.second; });
+    return s;
+}
+
 }
 
 std::ostream& operator<<(std::ostream& s, const boost::variant<dataPath_, schemaPath_, module_>& path)
