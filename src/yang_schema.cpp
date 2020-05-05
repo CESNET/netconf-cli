@@ -344,11 +344,7 @@ std::set<ModuleNodePair> YangSchema::availableNodes(const boost::variant<dataPat
     for (const auto& node : nodes) {
         if (node->module()->name() == "ietf-yang-library"sv)
             continue;
-        // FIXME: This is a temporary fix to filter out RPC nodes in
-        // tab-completion. The method will have to be changed/reworked when RPC
-        // support gets added.
-        if (node->nodetype() == LYS_RPC)
-            continue;
+
         if (recursion == Recursion::Recursive) {
             for (auto it : node->tree_dfs()) {
                 res.insert(ModuleNodePair(boost::none, it->path(LYS_PATH_FIRST_PREFIX)));
@@ -420,6 +416,16 @@ yang::NodeTypes impl_nodeType(const libyang::S_Schema_Node& node)
         return yang::NodeTypes::Leaf;
     case LYS_LIST:
         return yang::NodeTypes::List;
+    case LYS_RPC:
+        return yang::NodeTypes::Rpc;
+    case LYS_ACTION:
+        return yang::NodeTypes::Action;
+    case LYS_NOTIF:
+        return yang::NodeTypes::Notification;
+    case LYS_ANYXML:
+        return yang::NodeTypes::AnyXml;
+    case LYS_LEAFLIST:
+        return yang::NodeTypes::LeafList;
     default:
         throw InvalidNodeException(); // FIXME: Implement all types.
     }
