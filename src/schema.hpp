@@ -22,7 +22,12 @@ enum class NodeTypes {
     Container,
     PresenceContainer,
     List,
-    Leaf
+    Leaf,
+    Rpc,
+    Action,
+    Notification,
+    AnyXml,
+    LeafList
 };
 
 enum class Status {

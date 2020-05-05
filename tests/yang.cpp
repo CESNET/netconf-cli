@@ -816,6 +816,7 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "obsoleteLeaf"},
                         {"example-schema"s, "obsoleteLeafWithDeprecatedType"},
                         {"example-schema"s, "obsoleteLeafWithObsoleteType"},
+                        {"example-schema"s, "myRpc"},
                         {"example-schema"s, "systemStats"}};
                 }
 
@@ -887,6 +888,7 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "leafUint8"},
                         {"example-schema"s, "length"},
                         {"example-schema"s, "loopback"},
+                        {"example-schema"s, "myRpc"},
                         {"example-schema"s, "numberOrString"},
                         {"example-schema"s, "obsoleteLeaf"},
                         {"example-schema"s, "obsoleteLeafWithDeprecatedType"},
@@ -944,6 +946,9 @@ TEST_CASE("yangschema")
                         {boost::none, "/example-schema:leafUint64"},
                         {boost::none, "/example-schema:leafUint8"},
                         {boost::none, "/example-schema:length"},
+                        {boost::none, "/example-schema:myRpc"},
+                        {boost::none, "/example-schema:myRpc/input"},
+                        {boost::none, "/example-schema:myRpc/output"},
                         {boost::none, "/example-schema:numberOrString"},
                         {boost::none, "/example-schema:obsoleteLeaf"},
                         {boost::none, "/example-schema:obsoleteLeafWithDeprecatedType"},

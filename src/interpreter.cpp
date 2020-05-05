@@ -150,6 +150,11 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
     case yang::NodeTypes::List:
         ss << "list";
         break;
+    case yang::NodeTypes::Action:
+    case yang::NodeTypes::AnyXml:
+    case yang::NodeTypes::Notification:
+    case yang::NodeTypes::Rpc:
+        throw std::logic_error("describe got an rpc or an action: this should never happen, because their paths cannot be parsed");
     }
 
     if (!m_datastore.schema()->isConfig(path)) {
