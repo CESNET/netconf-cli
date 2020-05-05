@@ -169,6 +169,20 @@ TEST_CASE("ls")
                                                                 schemaNode_(container_{"contInList"})}};
             }
 
+            SECTION("ls example:list[number=343]/..")
+            {
+                input = "ls example:list[number=343]/..";
+                auto keys = std::map<std::string, leaf_data_>{
+                    {"number", int32_t{343}}};
+                expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, listElement_{"list", keys}), dataNode_{nodeup_{}}}};
+            }
+
+            SECTION("ls example:list/..")
+            {
+                input = "ls example:list/..";
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, list_{"list"}), schemaNode_{nodeup_{}}}};
+            }
+
             SECTION("ls example:*")
             {
                 input = "ls example:*";
