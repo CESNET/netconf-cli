@@ -169,6 +169,13 @@ TEST_CASE("ls")
                                                                 schemaNode_(container_{"contInList"})}};
             }
 
+            SECTION("ls example:list/example:contInList")
+            {
+                input = "ls example:list/example:contInList";
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, list_{"list"}),
+                                                                schemaNode_(module_{"example"},container_{"contInList"})}};
+            }
+
             SECTION("ls example:list[number=343]/..")
             {
                 input = "ls example:list[number=343]/..";
