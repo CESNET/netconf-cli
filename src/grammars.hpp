@@ -47,7 +47,7 @@ struct ls_options_table : x3::symbols<LsOption> {
 } const ls_options;
 
 auto const ls_def =
-    ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> (dataPathListEnd | dataPath | schemaPath | (module >> "*")));
+    ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> (dataPathListEnd | anyPath | (module >> "*")));
 
 auto const cd_def =
     cd_::name >> space_separator > dataPath;
@@ -132,7 +132,7 @@ auto const copy_def =
     copy_::name > space_separator > copy_args;
 
 auto const describe_def =
-    describe_::name >> space_separator > (dataPathListEnd | dataPath | schemaPath);
+    describe_::name >> space_separator > (dataPathListEnd | anyPath);
 
 auto const createCommandSuggestions_def =
     x3::eps;
