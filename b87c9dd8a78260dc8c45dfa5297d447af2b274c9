@@ -34,6 +34,24 @@
       "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "855a2c59_d780d526",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-06T09:27:16Z",
+      "side": 1,
+      "message": "I understand, but I think this should be changed. Now that the code was extended and the \"real\" YangSchema can and does return RPCs (and others), it makes sense to extend the StaticSchema with support for at least the RPCs as well. It could be very simple:\n\n StaticSchema s;\n s.addRpc(\"/example:launch-nukes\");\n s.addContainer(\"/example:launch-nukes/input\");\n s.addLeaf(\"/example:launch-nukes/input/megatons\", ...);\n s.addContainer(\"/example:launch-nukes/output\");\n s.addLeaf(\"/example:launch-nukes/output/mushroom-cloud-height\", ...);\n\nI think it\u0027s OK to keep the \"special containers\" \"input\" and \"output\" as they are in libyang. The downside is that callers would have to know how to work with them, but the advantage is that one can use availableNodes() to query RPC\u0027s input and output parameters. An alternative would be making this explicit via two new methods, inputNodes(std::string path) and outputNodes(std::string path).\n\nAre you OK with making this change in the StaticSchema?",
+      "parentUuid": "0edc95ef_4bd8a41d",
+      "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
