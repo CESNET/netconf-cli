@@ -16,6 +16,24 @@
       "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0edc95ef_4bd8a41d",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-06T00:27:06Z",
+      "side": 1,
+      "message": "It can\u0027t be covered in the tab-completion test, because the test uses StaticSchema. StaticSchema can\u0027t deal with RPC nodes. And that\u0027s because I don\u0027t support RPC nodes whatsoever (outside yangschema, kind of)",
+      "parentUuid": "f6dbc44d_d4b0e4e3",
+      "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
