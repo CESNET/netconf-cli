@@ -88,6 +88,24 @@
       "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3cd98748_a1a9b4c7",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-06T22:20:05Z",
+      "side": 1,
+      "message": "Yes, StaticSchema has the same interface as YangSchema, but its purpose is testing the parser. IMHO, if StaticSchema were to get some sort of rpc support, it should only be because the parser got some of that support too and I want to test the parser through StaticSchema. In other words - the parser is designed with whatever YANG has, and StaticSchema is designed after whatever the parser supports. I do understand that there is some value in having the above code covered with tests, but I don\u0027t think it\u0027s really that big of a deal, since the test wouldn\u0027t be covering any (new) features (because the parser doesn\u0027t support any of these nodes).",
+      "parentUuid": "aa3d2744_3d42b1d8",
+      "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
