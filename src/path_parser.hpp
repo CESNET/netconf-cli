@@ -15,7 +15,6 @@
 namespace x3 = boost::spirit::x3;
 
 x3::rule<dataPath_class, dataPath_> const dataPath = "dataPath";
-x3::rule<schemaPath_class, schemaPath_> const schemaPath = "schemaPath";
 x3::rule<dataNodeList_class, decltype(dataPath_::m_nodes)::value_type> const dataNodeList = "dataNodeList";
 x3::rule<dataNodesListEnd_class, decltype(dataPath_::m_nodes)> const dataNodesListEnd = "dataNodesListEnd";
 x3::rule<dataPathListEnd_class, dataPath_> const dataPathListEnd = "dataPathListEnd";
@@ -128,6 +127,21 @@ struct NodeParser : x3::parser<NodeParser<NodeType>> {
 NodeParser<schemaNode_> schemaNode;
 NodeParser<dataNode_> dataNode;
 
+struct SchemaPathParser : x3::parser<SchemaPathParser> {
+    using attribute_type = schemaPath_;
+    template <typename It, typename Ctx, typename RCtx, typename Attr>
+    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
+    {
+        auto grammar = -absoluteStart >> schemaNode % '/' >> -trailingSlash;
+
+        auto res = grammar.parse(begin, end, ctx, rctx, attr);
+
+        return res;
+    }
+};
+
+auto const schemaPath = x3::rule<class Foo, schemaPath_>{"schemaPath"} = SchemaPathParser();
+
 #if __clang__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Woverloaded-shift-op-parentheses"
@@ -188,8 +202,6 @@ auto const dataNodesListEnd_def =
 
 auto const dataPathListEnd_def = initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi | initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNodesListEnd >> (-(trailingSlash >> createPathSuggestions) >> -(completing >> rest) >> (&space_separator | x3::eoi));
 
-auto const schemaPath_def = initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(schemaPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi | initializePath >> -(absoluteStart >> createPathSuggestions) >> schemaNode % '/' >> (-(trailingSlash >> createPathSuggestions) >> -(completing >> rest) >> (&space_separator | x3::eoi));
-
 auto const leafPath_def =
     dataPath;
 
@@ -218,7 +230,6 @@ BOOST_SPIRIT_DEFINE(dataNodesListEnd)
 BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
-BOOST_SPIRIT_DEFINE(schemaPath)
 BOOST_SPIRIT_DEFINE(dataPath)
 BOOST_SPIRIT_DEFINE(dataPathListEnd)
 BOOST_SPIRIT_DEFINE(initializePath)
