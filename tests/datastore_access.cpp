@@ -319,6 +319,17 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:leafDecimal") == expected);
     }
 
+    SECTION("unions")
+    {
+        datastore.setLeaf("/example-schema:unionIntString", int32_t{10});
+        REQUIRE_CALL(mock, write("/example-schema:unionIntString", std::nullopt, "10"s));
+        datastore.commitChanges();
+        DatastoreAccess::Tree expected {
+            {"/example-schema:unionIntString", int32_t{10}},
+        };
+        REQUIRE(datastore.getItems("/example-schema:unionIntString") == expected);
+    }
+
     SECTION("operational data")
     {
         MockDataSupplier mockOpsData;
