@@ -52,6 +52,24 @@
       "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a089c861_27ba8190",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-06T19:08:44Z",
+      "side": 1,
+      "message": "This seems like a weird idea, to support any more of rpc stuff right now. The support is mainly driven by what the parser supports. So to support something I need to extend the parser AST with structs like `rpc_`. If I implemented what you suggest, it would mean adding something, that isn\u0027t really a feature. The entire Add more types to YangSchema::nodeType change is about adding the least amount of stuff, so that my node parser rework can work. Imho it makes little sense to add any more support just so that we can be sure that the code here really ignores rpcs/leaflist/whatever. I\u0027m fine with adding a FIXME here that will be resolved when support for rpcs/leaflist/whatever gets added.",
+      "parentUuid": "855a2c59_d780d526",
+      "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
