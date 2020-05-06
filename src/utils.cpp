@@ -53,6 +53,15 @@ schemaPath_ pathWithoutLastNode(const schemaPath_& path)
     return schemaPath_{path.m_scope, decltype(schemaPath_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};
 }
 
+ModuleNodePair splitModuleNode(const std::string& input)
+{
+    auto colonLocation = input.find_first_of(':');
+    if (colonLocation != std::string::npos) {
+        return ModuleNodePair{input.substr(0, colonLocation), input.substr(colonLocation + 1)};
+    }
+    throw std::logic_error("Tried to split a string without a colon (StaticSchema node names should always be stored with prefixes)");
+}
+
 struct impl_leafDataTypeToString {
     std::string operator()(const yang::String)
     {
