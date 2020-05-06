@@ -70,6 +70,24 @@
       "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa3d2744_3d42b1d8",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-06T21:38:10Z",
+      "side": 1,
+      "message": "This project is using the StaticSchema as a mock data provider. Given that the *real* data provider returns these \"extended\" data, in my opinion it makes a lot of sense to test how the consumers deal with these unsupported pieces of data. Extending the mock in the simplest possible manner is an obvious approach, IMHO.\n\nBut I won\u0027t force this upon you of course, so let\u0027s merge this one as-is. I\u0027ll push a followup change for this one.",
+      "parentUuid": "a089c861_27ba8190",
+      "revId": "b87c9dd8a78260dc8c45dfa5297d447af2b274c9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
