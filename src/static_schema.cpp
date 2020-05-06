@@ -135,15 +135,6 @@ yang::TypeInfo StaticSchema::leafType(const std::string& path) const
     return boost::get<yang::leaf>(children(locationString).at(node)).m_type;
 }
 
-ModuleNodePair splitModuleNode(const std::string& input)
-{
-    auto colonLocation = input.find_first_of(':');
-    if (colonLocation != std::string::npos) {
-        return ModuleNodePair{input.substr(0, colonLocation), input.substr(colonLocation + 1)};
-    }
-    throw std::logic_error("Tried to split a string without a colon (StaticSchema node names should always be stored with prefixes)");
-}
-
 std::set<ModuleNodePair> StaticSchema::availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const
 {
     if (recursion == Recursion::Recursive) {
