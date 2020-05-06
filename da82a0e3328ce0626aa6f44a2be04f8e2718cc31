@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bffdd0ac_e4301e54",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-06T09:32:00Z",
+      "side": 1,
+      "message": "nit: for me, it would be more readable to write it like this:\n\n out.m_suffix \u003d listElement_{child.second, {}};",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 44
+      },
+      "revId": "da82a0e3328ce0626aa6f44a2be04f8e2718cc31",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
