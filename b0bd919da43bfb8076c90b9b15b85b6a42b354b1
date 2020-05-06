@@ -46,6 +46,30 @@
       "revId": "b0bd919da43bfb8076c90b9b15b85b6a42b354b1",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ec2a9d7a_4b90b890",
+        "filename": "tests/pretty_printers.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-06T08:40:36Z",
+      "side": 1,
+      "message": "Sorry, I have not realized that this poped up when the Schema started returning RPCs.",
+      "parentUuid": "4c1c208b_7f6ff402",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 1
+      },
+      "revId": "b0bd919da43bfb8076c90b9b15b85b6a42b354b1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
