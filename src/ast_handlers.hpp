@@ -172,34 +172,6 @@ struct dataNodesListEnd_class;
 
 struct dataPathListEnd_class;
 
-struct dataPath_class {
-    template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty()) {
-            parserContext.m_errorMsg = "Expected path.";
-            return x3::error_handler_result::fail;
-        } else {
-            return x3::error_handler_result::rethrow;
-        }
-    }
-};
-
-struct schemaPath_class {
-    template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty()) {
-            parserContext.m_errorMsg = "Expected path.";
-            return x3::error_handler_result::fail;
-        } else {
-            return x3::error_handler_result::rethrow;
-        }
-    }
-};
-
 struct discard_class;
 
 struct ls_class;
