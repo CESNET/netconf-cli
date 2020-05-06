@@ -22,6 +22,30 @@
       "revId": "da82a0e3328ce0626aa6f44a2be04f8e2718cc31",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e9280bcd_7a3b436d",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-06T10:13:35Z",
+      "side": 1,
+      "message": "Oh yeah, I don\u0027t know why I didn\u0027t think of that 👍",
+      "parentUuid": "bffdd0ac_e4301e54",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 44
+      },
+      "revId": "da82a0e3328ce0626aa6f44a2be04f8e2718cc31",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
