@@ -22,6 +22,30 @@
       "revId": "b0bd919da43bfb8076c90b9b15b85b6a42b354b1",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c1c208b_7f6ff402",
+        "filename": "tests/pretty_printers.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-06T00:27:20Z",
+      "side": 1,
+      "message": "Well, it helped me debug a test. I always add these printers to a patch, if they help me debug it. But I can split it I guess.",
+      "parentUuid": "1385a0a2_61a05e5a",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 1
+      },
+      "revId": "b0bd919da43bfb8076c90b9b15b85b6a42b354b1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
