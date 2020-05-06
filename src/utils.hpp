@@ -19,6 +19,7 @@ std::string joinPaths(const std::string& prefix, const std::string& suffix);
 std::string stripLastNodeFromPath(const std::string& path);
 schemaPath_ pathWithoutLastNode(const schemaPath_& path);
 dataPath_ pathWithoutLastNode(const dataPath_& path);
+ModuleNodePair splitModuleNode(const std::string& input);
 std::string leafDataTypeToString(const yang::LeafDataType& type);
 std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair);
 std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair);
