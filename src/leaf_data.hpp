@@ -54,7 +54,7 @@ auto const leaf_data_binary_def =
     leaf_data_binary_data;
 
 auto const leaf_data_identityRef_data_def =
-    -module  >> node_identifier;
+    -module >> node_identifier;
 
 // TODO: get rid of this and use leaf_data_identityRef_data directly
 auto const leaf_data_identityRef_def =
