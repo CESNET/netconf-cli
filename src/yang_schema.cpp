@@ -246,6 +246,9 @@ yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) con
         case LY_TYPE_BINARY:
             resType.emplace<yang::Binary>();
             break;
+        case LY_TYPE_EMPTY:
+            resType.emplace<yang::Empty>();
+            break;
         case LY_TYPE_ENUM:
             resType.emplace<yang::Enum>(enumValues(type));
             break;
