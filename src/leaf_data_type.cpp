@@ -100,4 +100,8 @@ bool Binary::operator==(const Binary&) const
 {
     return true;
 }
+bool Empty::operator==(const Empty&) const
+{
+    return true;
+}
 }

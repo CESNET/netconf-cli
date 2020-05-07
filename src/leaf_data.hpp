@@ -117,6 +117,10 @@ struct impl_LeafData {
     {
         return leaf_data_string.parse(first, last, ctx, rctx, attr);
     }
+    bool operator()(const yang::Empty) const
+    {
+        return x3::attr(empty_{}).parse(first, last, ctx, rctx, attr);
+    }
     template <typename Type>
     void createSetSuggestions(const Type& type) const
     {
