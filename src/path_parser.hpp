@@ -14,7 +14,6 @@
 
 namespace x3 = boost::spirit::x3;
 
-x3::rule<dataPath_class, dataPath_> const dataPath = "dataPath";
 x3::rule<dataNodeList_class, decltype(dataPath_::m_nodes)::value_type> const dataNodeList = "dataNodeList";
 x3::rule<dataNodesListEnd_class, decltype(dataPath_::m_nodes)> const dataNodesListEnd = "dataNodesListEnd";
 x3::rule<dataPathListEnd_class, dataPath_> const dataPathListEnd = "dataPathListEnd";
@@ -127,20 +126,35 @@ struct NodeParser : x3::parser<NodeParser<NodeType>> {
 NodeParser<schemaNode_> schemaNode;
 NodeParser<dataNode_> dataNode;
 
-struct SchemaPathParser : x3::parser<SchemaPathParser> {
-    using attribute_type = schemaPath_;
+struct PathParser : x3::parser<PathParser> {
     template <typename It, typename Ctx, typename RCtx, typename Attr>
     bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
     {
-        auto grammar = -absoluteStart >> schemaNode % '/' >> -trailingSlash;
+        initializePath.parse(begin, end, ctx, rctx, attr);
 
-        auto res = grammar.parse(begin, end, ctx, rctx, attr);
+        auto grammar = [] {
+            if constexpr (std::is_same<Attr, schemaPath_>()) {
+                return -absoluteStart >> schemaNode % '/' >> -trailingSlash;
+            } else {
+                return -absoluteStart >> dataNode % '/' >> -trailingSlash;
+            }
+        }();
 
-        return res;
+        return grammar.parse(begin, end, ctx, rctx, attr);
     }
-};
+} pathParser;
 
-auto const schemaPath = x3::rule<class Foo, schemaPath_>{"schemaPath"} = SchemaPathParser();
+// Need to use these wrappers so that my PathParser class gets the proper
+// attribute. Otherwise, Spirit injects the attribute of the outer parser that
+// uses my PathParser.
+// Example grammar: schemaPath | dataPath.
+// The PathParser class would get a boost::variant as the attribute, but I
+// don't want to deal with that, so I use these wrappers to ensure the
+// attribute I want (and let Spirit deal with boost::variant). Also, the
+// attribute gets passed to PathParser::parse via a template argument, so the
+// class doesn't even to need to be a template. Convenient!
+auto const schemaPath = x3::rule<class schemaPath_class, schemaPath_>{"schemaPath"} = pathParser;
+auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = pathParser;
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -186,9 +200,6 @@ auto const trailingSlash_def =
 auto const createPathSuggestions_def =
     x3::eps;
 
-// I have to insert an empty vector to the first alternative, otherwise they won't have the same attribute
-auto const dataPath_def = initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi | initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNode % '/' >> (-(trailingSlash >> createPathSuggestions) >> -(completing >> rest) >> (&space_separator | x3::eoi));
-
 auto const dataNodeList_def =
     createPathSuggestions >> -(module) >> list;
 
@@ -230,7 +241,6 @@ BOOST_SPIRIT_DEFINE(dataNodesListEnd)
 BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
-BOOST_SPIRIT_DEFINE(dataPath)
 BOOST_SPIRIT_DEFINE(dataPathListEnd)
 BOOST_SPIRIT_DEFINE(initializePath)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
