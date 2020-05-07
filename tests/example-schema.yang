@@ -214,4 +214,29 @@ module example-schema {
         type int32;
         config false;
     }
+
+    identity Animal {
+    }
+
+    identity Mammal {
+        base "Animal";
+    }
+
+    identity Dog {
+        base "Mammal";
+    }
+
+    identity Whale {
+        base "Mammal";
+    }
+
+    identity Velociraptor {
+        base "Animal";
+    }
+
+    leaf beast {
+        type identityref {
+            base "Animal";
+        }
+    }
 }

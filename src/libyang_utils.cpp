@@ -27,6 +27,8 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
         return std::string(value->string());
     case LY_TYPE_ENUM:
         return enum_{std::string(value->enm()->name())};
+    case LY_TYPE_IDENT:
+        return identityRef_{value->ident()->module()->name(), value->ident()->name()};
     case LY_TYPE_BINARY:
         return std::string{value->binary()};
     case LY_TYPE_DEC64:

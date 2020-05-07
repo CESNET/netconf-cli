@@ -40,6 +40,11 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
         return std::string(value->data()->get_string());
     case SR_ENUM_T:
         return enum_{std::string(value->data()->get_enum())};
+    case SR_IDENTITYREF_T:
+    {
+        auto pair = splitModuleNode(value->data()->get_identityref());
+        return pair.first ? identityRef_{*pair.first, pair.second} : identityRef_{pair.second};
+    }
     case SR_DECIMAL64_T:
         return value->data()->get_decimal64();
     case SR_CONTAINER_T:
@@ -66,7 +71,7 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
 
     sysrepo::S_Val operator()(const identityRef_& value) const
     {
-        auto res = value.m_prefix.value().m_name + ":" + value.m_value;
+        auto res = value.m_prefix ? (value.m_prefix.value().m_name + ":" + value.m_value) : value.m_value;
         return std::make_shared<sysrepo::Val>(res.c_str(), SR_IDENTITYREF_T);
     }
 
