@@ -117,44 +117,29 @@ struct impl_LeafData {
     bool operator()(const yang::Enum& type) const
     {
         createSetSuggestions(type);
-        // leaf_data_enum will advance the iterator if it succeeds, so I have
-        // to save the iterator here, to roll it back in case the enum is
-        // invalid.
-        auto saveIter = first;
-        auto pass = leaf_data_enum.parse(first, last, ctx, rctx, attr);
-        if (!pass) {
-            return false;
-        }
-        auto isValidEnum = type.m_allowedValues.count(boost::get<enum_>(attr)) != 0;
-        if (!isValidEnum) {
-            first = saveIter;
-            parserContext.m_errorMsg = "leaf data type mismatch: Expected an enum here. Allowed values:";
-            for (const auto& it : type.m_allowedValues) {
-                parserContext.m_errorMsg += " " + it.m_value;
+        auto checkValidEnum = [this, type] (auto& ctx) {
+            if (type.m_allowedValues.count(boost::get<enum_>(attr)) == 0) {
+                _pass(ctx) = false;
+                parserContext.m_errorMsg = "leaf data type mismatch: Expected an enum here. Allowed values:";
+                for (const auto& it : type.m_allowedValues) {
+                    parserContext.m_errorMsg += " " + it.m_value;
+                }
             }
-        }
-        return isValidEnum;
+        };
+        return leaf_data_enum[checkValidEnum].parse(first, last, ctx, rctx, attr);
     }
     bool operator()(const yang::IdentityRef& type) const
     {
         createSetSuggestions(type);
-        // leaf_data_identityRef will advance the iterator if it succeeds, so I have
-        // to save the iterator here, to roll it back in case the enum is
-        // invalid.
-        auto saveIter = first;
-        auto pass = leaf_data_identityRef.parse(first, last, ctx, rctx, attr);
-        if (!pass) {
-            return false;
-        }
-        identityRef_ pair{boost::get<identityRef_>(attr)};
-        if (!pair.m_prefix) {
-            pair.m_prefix = module_{parserContext.currentSchemaPath().m_nodes.front().m_prefix.get().m_name};
-        }
-        auto isValidIdentity  = type.m_allowedValues.count(pair) != 0;
-        if (!isValidIdentity) {
-            first = saveIter;
-        }
-        return isValidIdentity;
+        auto checkValidIdentity = [this, type] (auto& ctx) {
+            identityRef_ pair{boost::get<identityRef_>(_attr(ctx))};
+            if (!pair.m_prefix) {
+                pair.m_prefix = module_{parserContext.currentSchemaPath().m_nodes.front().m_prefix.get().m_name};
+            }
+            _pass(ctx) = type.m_allowedValues.count(pair) != 0;
+        };
+
+        return leaf_data_identityRef[checkValidIdentity].parse(first, last, ctx, rctx, attr);
     }
     bool operator()(const yang::LeafRef& leafRef) const
     {
