@@ -16,6 +16,24 @@
       "revId": "2ead150bfe353c02e64fbdb113277d65031b7a20",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "85c35bd7_0e658e50",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-07T00:46:06Z",
+      "side": 1,
+      "message": "Actually no, the change in utils.cpp maybe fixes that",
+      "parentUuid": "6ed5ad7b_038c91f5",
+      "revId": "2ead150bfe353c02e64fbdb113277d65031b7a20",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
