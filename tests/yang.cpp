@@ -369,7 +369,12 @@ module example-schema {
             type leafref {
                 path "../activeMappedPort";
             }
+            type empty;
         }
+    }
+
+    leaf dummyLeaf {
+        type empty;
     }
 
     leaf clockSpeed {
@@ -800,6 +805,7 @@ TEST_CASE("yangschema")
                                 std::make_unique<yang::TypeInfo>(enums)
                         })
                     }},
+                    yang::TypeInfo{yang::Empty{}},
                 }};
             }
 
