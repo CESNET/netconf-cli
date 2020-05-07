@@ -123,6 +123,10 @@ struct impl_leafDataTypeToString {
     {
         return "a leafref";
     }
+    std::string operator()(const yang::Empty&)
+    {
+        return "an empty leaf";
+    }
     std::string operator()(const yang::Union& type)
     {
         std::ostringstream ss;
@@ -161,6 +165,11 @@ struct leafDataToStringVisitor : boost::static_visitor<std::string> {
     std::string operator()(const binary_& data) const
     {
         return data.m_value;
+    }
+
+    std::string operator()(const empty_) const
+    {
+        return "[empty]";
     }
 
     std::string operator()(const identityRef_& data) const

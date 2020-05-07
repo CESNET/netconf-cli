@@ -83,6 +83,11 @@ struct leafDataToSysrepoVal {
         v->set(xpath.c_str(), (what.m_prefix->m_name + what.m_value).c_str(), SR_IDENTITYREF_T);
     }
 
+    void operator()(const empty_)
+    {
+        v->set(xpath.c_str(), nullptr, SR_LEAF_EMPTY_T);
+    }
+
     void operator()(const std::string& what)
     {
         v->set(xpath.c_str(), what.c_str());

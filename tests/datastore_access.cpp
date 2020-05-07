@@ -359,6 +359,17 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:blob") == expected);
     }
 
+    SECTION("empty")
+    {
+        datastore.setLeaf("/example-schema:dummy", empty_{});
+        REQUIRE_CALL(mock, write("/example-schema:dummy", std::nullopt, ""s));
+        datastore.commitChanges();
+        DatastoreAccess::Tree expected {
+            {"/example-schema:dummy", empty_{}},
+        };
+        REQUIRE(datastore.getItems("/example-schema:dummy") == expected);
+    }
+
     SECTION("operational data")
     {
         MockDataSupplier mockOpsData;
