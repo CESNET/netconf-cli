@@ -330,6 +330,24 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:unionIntString") == expected);
     }
 
+    SECTION("identityref") {
+        datastore.setLeaf("/example-schema:beast", identityRef_{"example-schema", "Mammal"});
+        REQUIRE_CALL(mock, write("/example-schema:beast", std::nullopt, "example-schema:Mammal"s));
+        datastore.commitChanges();
+        DatastoreAccess::Tree expected {
+            {"/example-schema:beast", identityRef_{"example-schema", "Mammal"}},
+        };
+        REQUIRE(datastore.getItems("/example-schema:beast") == expected);
+
+        datastore.setLeaf("/example-schema:beast", identityRef_{"Whale"});
+        REQUIRE_CALL(mock, write("/example-schema:beast", "example-schema:Mammal", "example-schema:Whale"s));
+        datastore.commitChanges();
+        expected = {
+            {"/example-schema:beast", identityRef_{"example-schema", "Whale"}},
+        };
+        REQUIRE(datastore.getItems("/example-schema:beast") == expected);
+    }
+
     SECTION("operational data")
     {
         MockDataSupplier mockOpsData;

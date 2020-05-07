@@ -165,7 +165,7 @@ struct leafDataToStringVisitor : boost::static_visitor<std::string> {
 
     std::string operator()(const identityRef_& data) const
     {
-        return data.m_prefix.value().m_name + ":" + data.m_value;
+        return data.m_prefix ? (data.m_prefix.value().m_name + ":" + data.m_value) : data.m_value;
     }
 
     std::string operator()(const special_& data) const
