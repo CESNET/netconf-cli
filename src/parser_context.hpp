@@ -10,6 +10,12 @@
 #include "completion.hpp"
 #include "data_query.hpp"
 #include "schema.hpp"
+
+enum Backtracking {
+    Enabled,
+    Disabled
+};
+
 struct ParserContext {
     ParserContext(const Schema& schema, const std::shared_ptr<const DataQuery> dataQuery, const dataPath_& curDir);
     schemaPath_ currentSchemaPath();
@@ -39,6 +45,8 @@ struct ParserContext {
     std::set<Completion> m_suggestions;
     // Iterator pointing to where suggestions were created
     boost::optional<std::string::const_iterator> m_completionIterator;
+
+    Backtracking m_pathBacktracking = Backtracking::Enabled;
 
 private:
     boost::variant<dataPath_, schemaPath_> m_curPath;
