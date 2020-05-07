@@ -16,7 +16,6 @@ namespace x3 = boost::spirit::x3;
 
 x3::rule<dataNodeList_class, decltype(dataPath_::m_nodes)::value_type> const dataNodeList = "dataNodeList";
 x3::rule<dataNodesListEnd_class, decltype(dataPath_::m_nodes)> const dataNodesListEnd = "dataNodesListEnd";
-x3::rule<dataPathListEnd_class, dataPath_> const dataPathListEnd = "dataPathListEnd";
 x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
@@ -126,14 +125,22 @@ struct NodeParser : x3::parser<NodeParser<NodeType>> {
 NodeParser<schemaNode_> schemaNode;
 NodeParser<dataNode_> dataNode;
 
-struct PathParser : x3::parser<PathParser> {
+enum class AllowListEnd {
+    Allow,
+    Disallow
+};
+
+template <AllowListEnd ALLOW_LIST_END>
+struct PathParser : x3::parser<PathParser<ALLOW_LIST_END>> {
     template <typename It, typename Ctx, typename RCtx, typename Attr>
     bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
     {
         initializePath.parse(begin, end, ctx, rctx, attr);
 
+        auto dataNodes = x3::rule<class DataNodes, std::vector<dataNode_>>{} = dataNode % '/' >> -('/' >> dataNode) | x3::attr(std::vector<dataNode_>()) >> dataNode;
+
         auto schemaPathGrammar = -absoluteStart >> schemaNode % '/' >> -trailingSlash;
-        auto dataPathGrammar = -absoluteStart >> dataNode % '/' >> -trailingSlash;
+        auto dataPathGrammar = -absoluteStart >> dataNodes >> -trailingSlash;
 
         bool res;
         if constexpr (std::is_same<Attr, schemaPath_>()) {
@@ -144,7 +151,7 @@ struct PathParser : x3::parser<PathParser> {
 
         return res;
     }
-} pathParser;
+};
 
 // Need to use these wrappers so that my PathParser class gets the proper
 // attribute. Otherwise, Spirit injects the attribute of the outer parser that
@@ -152,11 +159,10 @@ struct PathParser : x3::parser<PathParser> {
 // Example grammar: schemaPath | dataPath.
 // The PathParser class would get a boost::variant as the attribute, but I
 // don't want to deal with that, so I use these wrappers to ensure the
-// attribute I want (and let Spirit deal with boost::variant). Also, the
-// attribute gets passed to PathParser::parse via a template argument, so the
-// class doesn't even to need to be a template. Convenient!
-auto const schemaPath = x3::rule<class schemaPath_class, schemaPath_>{"schemaPath"} = pathParser;
-auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = pathParser;
+// attribute I want (and let Spirit deal with boost::variant).
+auto const schemaPath = x3::rule<class schemaPath_class, schemaPath_>{"schemaPath"} = PathParser<AllowListEnd::Disallow>{};
+auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<AllowListEnd::Disallow>{};
+auto const dataPathListEnd = x3::rule<class dataPath_class, dataPath_>{"dataPathListEnd"} = PathParser<AllowListEnd::Allow>{};
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -213,8 +219,6 @@ auto const dataNodesListEnd_def =
     dataNode % '/' >> '/' >> dataNodeList >> -(&char_('/') >> createPathSuggestions) |
     x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
 
-auto const dataPathListEnd_def = initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi | initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNodesListEnd >> (-(trailingSlash >> createPathSuggestions) >> -(completing >> rest) >> (&space_separator | x3::eoi));
-
 auto const leafPath_def =
     dataPath;
 
@@ -243,7 +247,6 @@ BOOST_SPIRIT_DEFINE(dataNodesListEnd)
 BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
-BOOST_SPIRIT_DEFINE(dataPathListEnd)
 BOOST_SPIRIT_DEFINE(initializePath)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
