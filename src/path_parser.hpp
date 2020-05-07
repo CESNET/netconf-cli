@@ -16,7 +16,6 @@ namespace x3 = boost::spirit::x3;
 
 x3::rule<dataNodeList_class, decltype(dataPath_::m_nodes)::value_type> const dataNodeList = "dataNodeList";
 x3::rule<dataNodesListEnd_class, decltype(dataPath_::m_nodes)> const dataNodesListEnd = "dataNodesListEnd";
-x3::rule<dataPathListEnd_class, dataPath_> const dataPathListEnd = "dataPathListEnd";
 x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
@@ -32,8 +31,13 @@ x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions
 x3::rule<createValueSuggestions_class, x3::unused_type> const createValueSuggestions = "createValueSuggestions";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 
-template <typename NodeType>
-struct NodeParser : x3::parser<NodeParser<NodeType>> {
+enum class AllowListDataNode {
+    Allow,
+    Disallow
+};
+
+template <typename NodeType, AllowListDataNode ALLOW_LIST_DATA_NODE>
+struct NodeParser : x3::parser<NodeParser<NodeType, ALLOW_LIST_DATA_NODE>> {
     using attribute_type = NodeType;
     template <typename It, typename Ctx, typename RCtx, typename Attr>
     bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
@@ -90,43 +94,67 @@ struct NodeParser : x3::parser<NodeParser<NodeType>> {
             }
         }
         parserContext.m_completionIterator = begin;
-        auto res = table.parse(begin, end, ctx, rctx, attr);
+        if constexpr (std::is_same<Attr, const x3::unused_type>()) {
+            return true;
+        } else {
+            auto saveIter = begin;
+            auto res = table.parse(begin, end, ctx, rctx, attr);
 
-        if (attr.m_prefix) {
-            parserContext.m_curModule = attr.m_prefix->m_name;
-        }
-
-        if (attr.m_suffix.type() == typeid(leaf_)) {
-            parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
-            ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
-                return boost::optional<std::string>{it.m_name};
-            }), boost::get<leaf_>(attr.m_suffix).m_name};
-            parserContext.m_tmpListKeyLeafPath.m_node = node;
-        }
-
-        if constexpr (std::is_same<NodeType, dataNode_>()) {
-            if (attr.m_suffix.type() == typeid(listElement_)) {
-                parserContext.m_tmpListName = boost::get<listElement_>(attr.m_suffix).m_name;
-                res = listSuffix.parse(begin, end, ctx, rctx, boost::get<listElement_>(attr.m_suffix).m_keys);
+            if (attr.m_prefix) {
+                parserContext.m_curModule = attr.m_prefix->m_name;
             }
-        }
 
-        if (res) {
-            parserContext.pushPathFragment(attr);
-            parserContext.m_topLevelModulePresent = true;
-        }
+            if (attr.m_suffix.type() == typeid(leaf_)) {
+                parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
+                ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
+                        return boost::optional<std::string>{it.m_name};
+                        }), boost::get<leaf_>(attr.m_suffix).m_name};
+                parserContext.m_tmpListKeyLeafPath.m_node = node;
+            }
 
-        if (attr.m_prefix) {
-            parserContext.m_curModule = boost::none;
+            if constexpr (std::is_same<NodeType, dataNode_>()) {
+                if (attr.m_suffix.type() == typeid(listElement_)) {
+                    parserContext.m_tmpListName = boost::get<listElement_>(attr.m_suffix).m_name;
+                    res = listSuffix.parse(begin, end, ctx, rctx, boost::get<listElement_>(attr.m_suffix).m_keys);
+
+                    // If we allow list_ as a datanode, just replace the
+                    // listElement_ value with a new list_. If we don't allow list_
+                    // as a datanode, we have to rollback the begin iterator,
+                    // because the symbol table already parsed the string part of
+                    // the list element.
+                    // FIXME: think of a better way to do this, that is, get rid of manual iterator reverting
+                    if (res) {
+                        // TODO: HAVE TO DISABLE BACKTRACKING HERE! otherwise completion might get overwritten by other path types
+                    } else {
+                        if constexpr (ALLOW_LIST_DATA_NODE == AllowListDataNode::Allow) {
+                            res = true;
+                            attr.m_suffix = list_{boost::get<listElement_>(attr.m_suffix).m_name};
+                        } else {
+                            begin = saveIter;
+                        }
+                    }
+                }
+            }
+
+            if (res) {
+                parserContext.pushPathFragment(attr);
+                parserContext.m_topLevelModulePresent = true;
+            }
+
+            if (attr.m_prefix) {
+                parserContext.m_curModule = boost::none;
+            }
+            return res;
         }
-        return res;
     }
 };
 
-NodeParser<schemaNode_> schemaNode;
-NodeParser<dataNode_> dataNode;
+NodeParser<schemaNode_, AllowListDataNode::Disallow> schemaNode;
+NodeParser<dataNode_, AllowListDataNode::Disallow> dataNode;
+NodeParser<dataNode_, AllowListDataNode::Allow> dataNodeAllowList;
 
-struct PathParser : x3::parser<PathParser> {
+template <AllowListDataNode ALLOW_LIST_END>
+struct PathParser : x3::parser<PathParser<ALLOW_LIST_END>> {
     template <typename It, typename Ctx, typename RCtx, typename Attr>
     bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
     {
@@ -134,15 +162,28 @@ struct PathParser : x3::parser<PathParser> {
 
         auto grammar = [] {
             if constexpr (std::is_same<Attr, schemaPath_>()) {
-                return -absoluteStart >> schemaNode % '/' >> -trailingSlash;
+                return -absoluteStart >> schemaNode % '/' >> -trailingSlash >> x3::omit[dataNode];
             } else {
-                return -absoluteStart >> dataNode % '/' >> -trailingSlash;
+                auto pathEnd = &space_separator | x3::eoi;
+                auto dataNodes = [] {
+                    if constexpr (ALLOW_LIST_END == AllowListDataNode::Allow) {
+                        auto singleListNode = x3::rule<class SingleListNode, std::vector<dataNode_>>{"singleListNode"} =
+                            x3::attr(std::vector<dataNode_>{}) >> dataNodeAllowList;
+                        return x3::rule<class DataNodes, std::vector<dataNode_>>{"dataNodes"} =
+                            dataNode % '/' >> -('/' >> singleListNode) |
+                            singleListNode;
+                    } else {
+                        return dataNode % '/';
+                    }
+                }();
+                return (-absoluteStart >> dataNodes >> -trailingSlash >> x3::omit[dataNode] >> pathEnd) |
+                    (absoluteStart >> x3::omit[dataNode] >> pathEnd >> x3::attr(std::vector<dataNode_>{}) >> x3::attr(TrailingSlash::NonPresent));
             }
         }();
 
         return grammar.parse(begin, end, ctx, rctx, attr);
     }
-} pathParser;
+};
 
 // Need to use these wrappers so that my PathParser class gets the proper
 // attribute. Otherwise, Spirit injects the attribute of the outer parser that
@@ -150,11 +191,10 @@ struct PathParser : x3::parser<PathParser> {
 // Example grammar: schemaPath | dataPath.
 // The PathParser class would get a boost::variant as the attribute, but I
 // don't want to deal with that, so I use these wrappers to ensure the
-// attribute I want (and let Spirit deal with boost::variant). Also, the
-// attribute gets passed to PathParser::parse via a template argument, so the
-// class doesn't even to need to be a template. Convenient!
-auto const schemaPath = x3::rule<class schemaPath_class, schemaPath_>{"schemaPath"} = pathParser;
-auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = pathParser;
+// attribute I want (and let Spirit deal with boost::variant).
+auto const schemaPath = x3::rule<class schemaPath_class, schemaPath_>{"schemaPath"} = PathParser<AllowListDataNode::Disallow>{};
+auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<AllowListDataNode::Disallow>{};
+auto const dataPathListEnd = x3::rule<class dataPath_class, dataPath_>{"dataPathListEnd"} = PathParser<AllowListDataNode::Allow>{};
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -211,8 +251,6 @@ auto const dataNodesListEnd_def =
     dataNode % '/' >> '/' >> dataNodeList >> -(&char_('/') >> createPathSuggestions) |
     x3::attr(decltype(dataPath_::m_nodes)()) >> dataNodeList;
 
-auto const dataPathListEnd_def = initializePath >> absoluteStart >> createPathSuggestions >> x3::attr(decltype(dataPath_::m_nodes)()) >> x3::attr(TrailingSlash::NonPresent) >> x3::eoi | initializePath >> -(absoluteStart >> createPathSuggestions) >> dataNodesListEnd >> (-(trailingSlash >> createPathSuggestions) >> -(completing >> rest) >> (&space_separator | x3::eoi));
-
 auto const leafPath_def =
     dataPath;
 
@@ -241,7 +279,6 @@ BOOST_SPIRIT_DEFINE(dataNodesListEnd)
 BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
-BOOST_SPIRIT_DEFINE(dataPathListEnd)
 BOOST_SPIRIT_DEFINE(initializePath)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
 BOOST_SPIRIT_DEFINE(createPathSuggestions)
