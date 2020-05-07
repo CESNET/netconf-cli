@@ -30,7 +30,7 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
     case LY_TYPE_IDENT:
         return identityRef_{value->ident()->module()->name(), value->ident()->name()};
     case LY_TYPE_BINARY:
-        return std::string{value->binary()};
+        return binary_{value->binary()};
     case LY_TYPE_DEC64:
     {
         auto v = value->dec64();

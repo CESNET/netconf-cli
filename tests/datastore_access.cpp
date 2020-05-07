@@ -348,6 +348,17 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:beast") == expected);
     }
 
+    SECTION("binary")
+    {
+        datastore.setLeaf("/example-schema:blob", binary_{"cHduegByIQ=="s});
+        REQUIRE_CALL(mock, write("/example-schema:blob", std::nullopt, "cHduegByIQ=="s));
+        datastore.commitChanges();
+        DatastoreAccess::Tree expected {
+            {"/example-schema:blob", binary_{"cHduegByIQ=="s}},
+        };
+        REQUIRE(datastore.getItems("/example-schema:blob") == expected);
+    }
+
     SECTION("operational data")
     {
         MockDataSupplier mockOpsData;
