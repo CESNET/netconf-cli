@@ -52,6 +52,9 @@ struct Uint64 {
 struct Binary {
     bool operator==(const Binary&) const;
 };
+struct Empty {
+    bool operator==(const Empty&) const;
+};
 struct Enum {
     Enum(std::set<enum_>&& values);
     bool operator==(const Enum& other) const;
@@ -78,6 +81,7 @@ using LeafDataType = std::variant<
     yang::Uint64,
     yang::Enum,
     yang::Binary,
+    yang::Empty,
     yang::IdentityRef,
     yang::LeafRef,
     yang::Union
