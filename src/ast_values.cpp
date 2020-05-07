@@ -33,6 +33,8 @@ binary_::binary_(const std::string& value)
 {
 }
 
+empty_::empty_() = default;
+
 bool module_::operator<(const module_& b) const
 {
     return this->m_name < b.m_name;
@@ -56,6 +58,16 @@ bool binary_::operator==(const binary_& b) const
 bool binary_::operator<(const binary_& b) const
 {
     return this->m_value < b.m_value;
+}
+
+bool empty_::operator==(const empty_) const
+{
+    return true;
+}
+
+bool empty_::operator<(const empty_) const
+{
+    return false;
 }
 
 bool enum_::operator==(const enum_& b) const

@@ -82,7 +82,8 @@ NetconfAccess::NetconfAccess(const std::string& socketPath)
 
 void NetconfAccess::setLeaf(const std::string& path, leaf_data_ value)
 {
-    auto node = m_schema->dataNodeFromPath(path, leafDataToString(value));
+    auto lyValue = value.type() == typeid(empty_) ? std::nullopt : std::optional(leafDataToString(value));
+    auto node = m_schema->dataNodeFromPath(path, lyValue);
     doEditFromDataNode(node);
 }
 

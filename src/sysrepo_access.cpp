@@ -47,6 +47,8 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
     }
     case SR_BINARY_T:
         return binary_{value->data()->get_binary()};
+    case SR_LEAF_EMPTY_T:
+        return empty_{};
     case SR_DECIMAL64_T:
         return value->data()->get_decimal64();
     case SR_CONTAINER_T:
@@ -69,6 +71,11 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
     sysrepo::S_Val operator()(const binary_& value) const
     {
         return std::make_shared<sysrepo::Val>(value.m_value.c_str(), SR_BINARY_T);
+    }
+
+    sysrepo::S_Val operator()(const empty_) const
+    {
+        return std::make_shared<sysrepo::Val>(nullptr, SR_LEAF_EMPTY_T);
     }
 
     sysrepo::S_Val operator()(const identityRef_& value) const
@@ -111,6 +118,11 @@ struct updateSrValFromValue : boost::static_visitor<void> {
     void operator()(const binary_& value) const
     {
         v->set(xpath.c_str(), value.m_value.c_str(), SR_BINARY_T);
+    }
+
+    void operator()(const empty_) const
+    {
+        v->set(xpath.c_str(), nullptr, SR_LEAF_EMPTY_T);
     }
 
     void operator()(const identityRef_& value) const
