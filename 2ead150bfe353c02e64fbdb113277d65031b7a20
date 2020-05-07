@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ed5ad7b_038c91f5",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-07T00:25:59Z",
+      "side": 1,
+      "message": "This also fixes https://tree.taiga.io/project/jktjkt-netconf-cli/issue/165 I think",
+      "revId": "2ead150bfe353c02e64fbdb113277d65031b7a20",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
