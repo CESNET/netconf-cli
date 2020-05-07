@@ -45,6 +45,8 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
         auto pair = splitModuleNode(value->data()->get_identityref());
         return identityRef_{*pair.first, pair.second};
     }
+    case SR_BINARY_T:
+        return binary_{value->data()->get_binary()};
     case SR_DECIMAL64_T:
         return value->data()->get_decimal64();
     case SR_CONTAINER_T:
