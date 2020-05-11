@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef99cd2f_0b94cbc1",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-11T21:40:54Z",
+      "side": 1,
+      "message": "thanks for describing this.",
+      "revId": "0a7c851c6b9a7333d724f80145beb73b1c85bced",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
