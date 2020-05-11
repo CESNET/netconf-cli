@@ -37,11 +37,27 @@ module second-schema {
 }
 )";
 
+const char* includedSubmodule = R"(
+submodule subModule {
+    yang-version 1.1;
+
+    belongs-to example-schema {
+        prefix sub;
+    }
+
+    leaf subLeaf {
+        type string;
+    }
+}
+)";
+
 const char* example_schema = R"(
 module example-schema {
     yang-version 1.1;
     namespace "http://example.com/example-sports";
     prefix coze;
+
+    include subModule;
 
     identity drink {
     }
@@ -414,9 +430,18 @@ TEST_CASE("yangschema")
 {
     using namespace std::string_view_literals;
     YangSchema ys;
-    ys.registerModuleCallback([]([[maybe_unused]] auto modName, auto, auto, auto) {
-        assert("example-schema"sv == modName);
-        return example_schema;
+    ys.registerModuleCallback([]([[maybe_unused]] auto modName, auto, auto subModule, auto) {
+        if (subModule) {
+            assert("subModule"sv == subModule);
+            return includedSubmodule;
+        }
+
+        if (modName) {
+            assert("example-schema"sv == modName);
+            return example_schema;
+        }
+
+        throw std::logic_error("libyang requested an unknown module.");
     });
     ys.addSchemaString(second_schema);
 
@@ -817,7 +842,8 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "obsoleteLeafWithDeprecatedType"},
                         {"example-schema"s, "obsoleteLeafWithObsoleteType"},
                         {"example-schema"s, "myRpc"},
-                        {"example-schema"s, "systemStats"}};
+                        {"example-schema"s, "systemStats"},
+                        {"example-schema"s, "subLeaf"}};
                 }
 
                 SECTION("example-schema:a")
@@ -900,7 +926,8 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "systemStats"},
                         {"example-schema"s, "twoKeyList"},
                         {"example-schema"s, "wavelength"},
-                        {"example-schema"s, "zero"}
+                        {"example-schema"s, "zero"},
+                        {"example-schema"s, "subLeaf"}
                     };
                     expectedRecursive = {
                         {boost::none, "/example-schema:_list"},
@@ -961,6 +988,7 @@ TEST_CASE("yangschema")
                         {boost::none, "/example-schema:portSettings/port"},
                         {boost::none, "/example-schema:systemStats"},
                         {boost::none, "/example-schema:systemStats/upTime"},
+                        {boost::none, "/example-schema:subLeaf"},
                         {boost::none, "/example-schema:twoKeyList"},
                         {boost::none, "/example-schema:twoKeyList/name"},
                         {boost::none, "/example-schema:twoKeyList/number"},
@@ -1011,6 +1039,12 @@ TEST_CASE("yangschema")
             {
                 path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, list_("_list")));
                 expected = yang::NodeTypes::List;
+            }
+
+            SECTION("subLeaf")
+            {
+                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("subLeaf")));
+                expected = yang::NodeTypes::Leaf;
             }
 
             REQUIRE(ys.nodeType(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
