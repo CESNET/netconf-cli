@@ -352,7 +352,7 @@ std::set<ModuleNodePair> YangSchema::availableNodes(const boost::variant<dataPat
         } else {
             ModuleNodePair toInsert;
             if (topLevelModule.empty() || topLevelModule != node->module()->name()) {
-                toInsert.first = node->module()->name();
+                toInsert.first = node->module()->type() == 0 ? node->module()->name() : libyang::Submodule(node->module()).belongsto()->name();
             }
             toInsert.second = node->name();
             res.insert(toInsert);
