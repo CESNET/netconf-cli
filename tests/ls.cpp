@@ -18,6 +18,7 @@ TEST_CASE("ls")
     schema->addModule("second");
     schema->addContainer("/", "example:a");
     schema->addList("/example:a", "example:listInCont", {"number"});
+    schema->addContainer("/example:a/example:listInCont", "example:contInList");
     schema->addContainer("/", "second:a");
     schema->addContainer("/", "example:b");
     schema->addContainer("/example:a", "example:a2");
@@ -151,6 +152,14 @@ TEST_CASE("ls")
                 input = "ls example:a/example:listInCont";
                 expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"}),
                                                                 dataNode_(module_{"example"}, list_{"listInCont"})}};
+            }
+
+            SECTION("ls example:a/example:listInCont/example:contInList")
+            {
+                input = "ls example:a/example:listInCont/example:contInList";
+                expected.m_path = schemaPath_{Scope::Relative, {schemaNode_(module_{"example"}, container_{"a"}),
+                                                                schemaNode_(module_{"example"}, list_{"listInCont"}),
+                                                                schemaNode_(module_{"example"}, container_{"contInList"})}};
             }
 
             SECTION("ls example:list[number=342]/contInList")
