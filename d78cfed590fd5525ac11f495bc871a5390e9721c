@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "843c2f30_eac5ebd4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-13T11:16:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ec85675_dac4427a",
+      "revId": "d78cfed590fd5525ac11f495bc871a5390e9721c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ccbc2f73_4512a8a0",
         "filename": "tests/yang.cpp",
         "patchSetId": 1
