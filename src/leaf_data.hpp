@@ -22,7 +22,6 @@ x3::rule<struct leaf_data_class<yang::IdentityRef>, identityRef_> const leaf_dat
 x3::rule<struct leaf_data_class<yang::Binary>, binary_> const leaf_data_binary = "leaf_data_binary";
 x3::rule<struct leaf_data_class<yang::Decimal>, double> const leaf_data_decimal = "leaf_data_decimal";
 x3::rule<struct leaf_data_class<yang::String>, std::string> const leaf_data_string = "leaf_data_string";
-x3::rule<struct leaf_data_class_binary, std::string> const leaf_data_binary_data = "leaf_data_binary_data";
 x3::rule<struct leaf_data_identityRef_data_class, identityRef_> const leaf_data_identityRef_data = "leaf_data_identityRef_data";
 
 using x3::char_;
@@ -43,15 +42,8 @@ auto const leaf_data_string_def =
     '\'' >> *(char_-'\'') >> '\'' |
     '\"' >> *(char_-'\"') >> '\"';
 
-// This intermediate rule is neccessary for coercing to std::string.
-// TODO: check if I can do the coercing right in the grammar with `as{}` from
-// https://github.com/boostorg/spirit/issues/530#issuecomment-584836532
-// This would shave off some more lines.
-auto const leaf_data_binary_data_def =
-    +(x3::alnum | char_('+') | char_('/')) >> -char_('=') >> -char_('=');
-
 auto const leaf_data_binary_def =
-    leaf_data_binary_data;
+    as<std::string>[+(x3::alnum | char_('+') | char_('/')) >> -char_('=') >> -char_('=')];
 
 auto const leaf_data_identityRef_data_def =
     -module >> node_identifier;
@@ -207,7 +199,6 @@ auto const leaf_data = x3::no_skip[std::move(LeafData())];
 
 BOOST_SPIRIT_DEFINE(leaf_data_enum)
 BOOST_SPIRIT_DEFINE(leaf_data_string)
-BOOST_SPIRIT_DEFINE(leaf_data_binary_data)
 BOOST_SPIRIT_DEFINE(leaf_data_binary)
 BOOST_SPIRIT_DEFINE(leaf_data_identityRef_data)
 BOOST_SPIRIT_DEFINE(leaf_data_identityRef)

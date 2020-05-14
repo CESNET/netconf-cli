@@ -34,6 +34,22 @@ auto const module_identifier_def =
 auto const space_separator_def =
     x3::omit[x3::no_skip[x3::space]];
 
+template <typename CoerceTo>
+struct as_type {
+    template <typename...> struct Tag{};
+
+    template <typename ParserType>
+    auto operator[](ParserType p) const {
+        return x3::rule<Tag<CoerceTo, ParserType>, CoerceTo> {"as"} = x3::as_parser(p);
+    }
+};
+
+// The `as` parser creates an ad-hoc x3::rule with the attribute specified with `CoerceTo`.
+// Example usage: as<std::string>[someParser]
+// someParser will have its attribute coerced to std::string
+// https://github.com/boostorg/spirit/issues/530#issuecomment-584836532
+template <typename CoerceTo> const as_type<CoerceTo> as{};
+
 BOOST_SPIRIT_DEFINE(node_identifier)
 BOOST_SPIRIT_DEFINE(module)
 BOOST_SPIRIT_DEFINE(module_identifier)
