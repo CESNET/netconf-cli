@@ -15,8 +15,6 @@
 #include "ast_path.hpp"
 #include "leaf_data_type.hpp"
 
-using ModuleValuePair = std::pair<boost::optional<std::string>, std::string>;
-
 namespace yang {
 enum class NodeTypes {
     Container,

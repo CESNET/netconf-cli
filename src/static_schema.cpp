@@ -73,15 +73,10 @@ void StaticSchema::addList(const std::string& location, const std::string& name,
 
 std::set<identityRef_> StaticSchema::validIdentities(std::string_view module, std::string_view value)
 {
-    std::set<ModuleValuePair> identities;
-    getIdentSet(ModuleNodePair{boost::optional<std::string>{module}, value}, identities);
-    std::set<identityRef_> res;
+    std::set<identityRef_> identities;
+    getIdentSet(identityRef_{std::string{module}, std::string{value}}, identities);
 
-    std::transform(identities.begin(), identities.end(), std::inserter(res, res.end()), [](const auto& identity) {
-        return identityRef_{*identity.first, identity.second};
-    });
-
-    return res;
+    return identities;
 }
 
 void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type)
@@ -96,15 +91,15 @@ void StaticSchema::addModule(const std::string& name)
     m_modules.emplace(name);
 }
 
-void StaticSchema::addIdentity(const std::optional<ModuleValuePair>& base, const ModuleValuePair& name)
+void StaticSchema::addIdentity(const std::optional<identityRef_>& base, const identityRef_& name)
 {
     if (base)
         m_identities.at(base.value()).emplace(name);
 
-    m_identities.emplace(name, std::set<ModuleValuePair>());
+    m_identities.emplace(name, std::set<identityRef_>());
 }
 
-void StaticSchema::getIdentSet(const ModuleValuePair& ident, std::set<ModuleValuePair>& res) const
+void StaticSchema::getIdentSet(const identityRef_& ident, std::set<identityRef_>& res) const
 {
     res.insert(ident);
     auto derivedIdentities = m_identities.at(ident);

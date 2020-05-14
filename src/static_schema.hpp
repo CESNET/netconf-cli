@@ -69,16 +69,15 @@ public:
     void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type);
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void addModule(const std::string& name);
-    void addIdentity(const std::optional<ModuleValuePair>& base, const ModuleValuePair& name);
+    void addIdentity(const std::optional<identityRef_>& base, const identityRef_& name);
 
 private:
     const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
-    void getIdentSet(const ModuleValuePair& ident, std::set<ModuleValuePair>& res) const;
+    void getIdentSet(const identityRef_& ident, std::set<identityRef_>& res) const;
     bool nodeExists(const std::string& location, const std::string& node) const;
 
     std::unordered_map<std::string, std::unordered_map<std::string, NodeType>> m_nodes;
     std::set<std::string> m_modules;
 
-    // FIXME: Change the template arguments to identityRef_
-    std::map<ModuleValuePair, std::set<ModuleValuePair>> m_identities;
+    std::map<identityRef_, std::set<identityRef_>> m_identities;
 };

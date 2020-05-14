@@ -37,11 +37,11 @@ TEST_CASE("leaf editing")
     schema->addLeaf("/", "mod:leafUint32", yang::Uint32{});
     schema->addLeaf("/", "mod:leafUint64", yang::Uint64{});
     schema->addLeaf("/", "mod:leafBinary", yang::Binary{});
-    schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "food"});
-    schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "vehicle"});
-    schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "pizza"});
-    schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "spaghetti"});
-    schema->addIdentity(ModuleValuePair{"mod", "pizza"}, ModuleValuePair{"pizza-module", "hawaii"});
+    schema->addIdentity(std::nullopt, identityRef_{"mod", "food"});
+    schema->addIdentity(std::nullopt, identityRef_{"mod", "vehicle"});
+    schema->addIdentity(identityRef_{"mod", "food"}, identityRef_{"mod", "pizza"});
+    schema->addIdentity(identityRef_{"mod", "food"}, identityRef_{"mod", "spaghetti"});
+    schema->addIdentity(identityRef_{"mod", "pizza"}, identityRef_{"pizza-module", "hawaii"});
     schema->addLeaf("/", "mod:foodIdentRef", yang::IdentityRef{schema->validIdentities("mod", "food")});
     schema->addLeaf("/", "mod:pizzaIdentRef", yang::IdentityRef{schema->validIdentities("mod", "pizza")});
     schema->addLeaf("/mod:contA", "mod:identInCont", yang::IdentityRef{schema->validIdentities("mod", "pizza")});
