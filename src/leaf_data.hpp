@@ -22,7 +22,6 @@ x3::rule<struct leaf_data_class<yang::IdentityRef>, identityRef_> const leaf_dat
 x3::rule<struct leaf_data_class<yang::Binary>, binary_> const leaf_data_binary = "leaf_data_binary";
 x3::rule<struct leaf_data_class<yang::Decimal>, double> const leaf_data_decimal = "leaf_data_decimal";
 x3::rule<struct leaf_data_class<yang::String>, std::string> const leaf_data_string = "leaf_data_string";
-x3::rule<struct leaf_data_identityRef_data_class, identityRef_> const leaf_data_identityRef_data = "leaf_data_identityRef_data";
 
 using x3::char_;
 
@@ -45,12 +44,8 @@ auto const leaf_data_string_def =
 auto const leaf_data_binary_def =
     as<std::string>[+(x3::alnum | char_('+') | char_('/')) >> -char_('=') >> -char_('=')];
 
-auto const leaf_data_identityRef_data_def =
-    -module >> node_identifier;
-
-// TODO: get rid of this and use leaf_data_identityRef_data directly
 auto const leaf_data_identityRef_def =
-    leaf_data_identityRef_data;
+    -module >> node_identifier;
 
 template <typename It, typename Ctx, typename RCtx, typename Attr>
 struct impl_LeafData {
@@ -200,5 +195,4 @@ auto const leaf_data = x3::no_skip[std::move(LeafData())];
 BOOST_SPIRIT_DEFINE(leaf_data_enum)
 BOOST_SPIRIT_DEFINE(leaf_data_string)
 BOOST_SPIRIT_DEFINE(leaf_data_binary)
-BOOST_SPIRIT_DEFINE(leaf_data_identityRef_data)
 BOOST_SPIRIT_DEFINE(leaf_data_identityRef)
