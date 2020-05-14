@@ -120,18 +120,6 @@ struct listSuffix_class {
         return x3::error_handler_result::rethrow;
     }
 };
-struct list_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        const Schema& schema = parserContext.m_schema;
-
-        if (!schema.isList(parserContext.currentSchemaPath(), {parserContext.m_curModule, ast.m_name})) {
-            _pass(context) = false;
-        }
-    }
-};
 
 struct module_class {
     template <typename T, typename Iterator, typename Context>
@@ -150,15 +138,6 @@ struct module_class {
     }
 };
 
-struct dataNodeList_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.pushPathFragment(ast);
-    }
-};
-
 struct absoluteStart_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const& context)
@@ -167,10 +146,6 @@ struct absoluteStart_class {
         parserContext.clearPath();
     }
 };
-
-struct dataNodesListEnd_class;
-
-struct dataPathListEnd_class;
 
 struct discard_class;
 
@@ -340,36 +315,6 @@ struct initializePath_class {
 };
 
 struct trailingSlash_class;
-
-struct createPathSuggestions_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        const auto& schema = parserContext.m_schema;
-
-        parserContext.m_completionIterator = begin;
-        auto suggestions = schema.availableNodes(parserContext.currentSchemaPath(), Recursion::NonRecursive);
-        std::set<Completion> suffixesAdded;
-        std::transform(suggestions.begin(), suggestions.end(),
-                std::inserter(suffixesAdded, suffixesAdded.end()),
-                [&parserContext, &schema](const ModuleNodePair& node) {
-            std::string completion = (node.first ? *node.first + ":" : "") + node.second;
-
-            if (schema.isLeaf(parserContext.currentSchemaPath(), node)) {
-                return Completion{completion + " "};
-            }
-            if (schema.isContainer(parserContext.currentSchemaPath(), node)) {
-                return Completion{completion + "/"};
-            }
-            if (schema.isList(parserContext.currentSchemaPath(), node)) {
-                return Completion{completion, "[", Completion::WhenToAdd::IfFullMatch};
-            }
-            return Completion{completion};
-        });
-        parserContext.m_suggestions = suffixesAdded;
-    }
-};
 
 std::set<Completion> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::map<std::string, leaf_data_> currentSet);
 
