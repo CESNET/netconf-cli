@@ -14,7 +14,7 @@
 #include "pretty_printers.hpp"
 #include "static_schema.hpp"
 
-TEST_CASE("enum completion")
+TEST_CASE("set value completion")
 {
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("mod");
@@ -24,6 +24,12 @@ TEST_CASE("enum completion")
     schema->addList("/", "mod:list", {"number"});
     schema->addLeaf("/mod:list", "mod:number", yang::Int32{});
     schema->addLeaf("/mod:list", "mod:leafInList", createEnum({"ano", "anoda", "ne", "katoda"}));
+    schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "food"});
+    schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "vehicle"});
+    schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "pizza"});
+    schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "spaghetti"});
+    schema->addIdentity(ModuleValuePair{"mod", "pizza"}, ModuleValuePair{"pizza-module", "hawaii"});
+    schema->addLeaf("/", "mod:foodIdentRef", yang::IdentityRef{schema->validIdentities("mod", "food")});
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
     // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
     ALLOW_CALL(*mockDatastore, listInstances("/mod:list"))
@@ -73,6 +79,13 @@ TEST_CASE("enum completion")
     {
         input = "set mod:list[number=42]/leafInList ";
         expectedCompletions = {"ano", "anoda", "ne", "katoda"};
+        expectedContextLength = 0;
+    }
+
+    SECTION("set mod:foodIdentRef ")
+    {
+        input = "set mod:foodIdentRef ";
+        expectedCompletions = {"mod:food", "mod:pizza", "mod:spaghetti", "pizza-module:hawaii"};
         expectedContextLength = 0;
     }
 
