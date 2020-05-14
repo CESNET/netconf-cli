@@ -111,7 +111,14 @@ struct impl_LeafData {
         std::transform(type.m_allowedValues.begin(),
                 type.m_allowedValues.end(),
                 std::inserter(parserContext.m_suggestions, parserContext.m_suggestions.end()),
-                [](auto it) { return Completion{it.m_value}; });
+                [](auto it) {
+            std::string res;
+            if constexpr (std::is_same<Type, yang::IdentityRef>()) {
+                res = it.m_prefix ? it.m_prefix->m_name + ":" : "";
+            }
+            res += it.m_value;
+            return Completion{res};
+        });
         parserContext.m_completionIterator = first;
     }
     bool operator()(const yang::Enum& type) const
