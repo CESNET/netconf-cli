@@ -110,3 +110,21 @@ std::ostream& operator<<(std::ostream& s, const boost::variant<dataPath_, schema
     }
     return s;
 }
+
+std::ostream& operator<<(std::ostream& s, const boost::optional<boost::variant<dataPath_, schemaPath_, module_>>& path)
+{
+    if (path) {
+        s << *path;
+    } else {
+        s << "boost::none";
+    }
+
+    return s;
+}
+
+
+std::ostream& operator<<(std::ostream& s, const ls_& ls)
+{
+    s << "\nls_ {\n    " << ls.m_path << "}\n";
+    return s;
+}
