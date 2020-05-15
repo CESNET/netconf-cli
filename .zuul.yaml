@@ -9,8 +9,6 @@
             requires: CzechLight-deps-f31-clang-asan
         - f31-clang-tsan:
             requires: CzechLight-deps-f31-clang-tsan
-        - f29-gcc:
-            requires: CzechLight-deps-f29-gcc
         - f31-cpp-coverage-diff:
             voting: false
         - clang-format:
