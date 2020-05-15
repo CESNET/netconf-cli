@@ -75,18 +75,16 @@ DEP_SUBMODULE_COMMIT=$(git ls-tree -l master submodules/dependencies | cut -d ' 
 
 if [[ -z "${ARTIFACT_URL}" ]]; then
     # fallback to a promoted artifact
-    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME%%-cover?(-previous|-diff)}/${DEP_SUBMODULE_COMMIT}.tar.xz"
+    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME%%-cover?(-previous|-diff)}/${DEP_SUBMODULE_COMMIT}.tar.zst"
 fi
 
 ARTIFACT_FILE=$(basename ${ARTIFACT_URL})
-DEP_HASH_FROM_ARTIFACT=$(echo "${ARTIFACT_FILE}" | sed -e 's/^czechlight-dependencies-//' -e 's/\.tar\.xz$//')
+DEP_HASH_FROM_ARTIFACT=$(echo "${ARTIFACT_FILE}" | sed -e 's/^czechlight-dependencies-//' -e 's/\.tar\.zst$//')
 if [[ "${DEP_HASH_FROM_ARTIFACT}" != "${DEP_SUBMODULE_COMMIT}" ]]; then
     echo "Mismatched artifact: HEAD of ./submodules/dependencies does not match artifact commit ref"
     exit 1
 fi
-curl ${ARTIFACT_URL} --output ${ARTIFACT_FILE}
-tar -C ${PREFIX} -xf ${ARTIFACT_FILE}
-rm ${ARTIFACT_FILE}
+curl ${ARTIFACT_URL} | unzstd --stdout | tar -C ${PREFIX} -xf -
 
 cd ${BUILD_DIR}
 cmake -GNinja -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Debug} -DCMAKE_INSTALL_PREFIX=${PREFIX} ${CMAKE_OPTIONS} ${ZUUL_PROJECT_SRC_DIR}
