@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2018 CESNET, https://photonics.cesnet.cz/
  * Copyright (C) 2018 FIT CVUT, https://fit.cvut.cz/
@@ -24,11 +23,11 @@ TEST_CASE("set value completion")
     schema->addList("/", "mod:list", {"number"});
     schema->addLeaf("/mod:list", "mod:number", yang::Int32{});
     schema->addLeaf("/mod:list", "mod:leafInList", createEnum({"ano", "anoda", "ne", "katoda"}));
-    schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "food"});
-    schema->addIdentity(std::nullopt, ModuleValuePair{"mod", "vehicle"});
-    schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "pizza"});
-    schema->addIdentity(ModuleValuePair{"mod", "food"}, ModuleValuePair{"mod", "spaghetti"});
-    schema->addIdentity(ModuleValuePair{"mod", "pizza"}, ModuleValuePair{"pizza-module", "hawaii"});
+    schema->addIdentity(std::nullopt, identityRef_{"mod", "food"});
+    schema->addIdentity(std::nullopt, identityRef_{"mod", "vehicle"});
+    schema->addIdentity(identityRef_{"mod", "food"}, identityRef_{"mod", "pizza"});
+    schema->addIdentity(identityRef_{"mod", "food"}, identityRef_{"mod", "spaghetti"});
+    schema->addIdentity(identityRef_{"mod", "pizza"}, identityRef_{"pizza-module", "hawaii"});
     schema->addLeaf("/", "mod:foodIdentRef", yang::IdentityRef{schema->validIdentities("mod", "food")});
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
     // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
