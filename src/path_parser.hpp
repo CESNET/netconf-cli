@@ -128,7 +128,9 @@ NodeParser<dataNode_> dataNode;
 
 using AnyPath = boost::variant<schemaPath_, dataPath_>;
 
-struct PathParser : x3::parser<PathParser> {
+template <typename PathType>
+struct PathParser : x3::parser<PathParser<PathType>> {
+    using attribute_type = PathType;
     template <typename It, typename Ctx, typename RCtx, typename Attr>
     bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
     {
@@ -159,7 +161,7 @@ struct PathParser : x3::parser<PathParser> {
         }
         return res;
     }
-} const pathParser;
+};
 
 // Need to use these wrappers so that my PathParser class gets the proper
 // attribute. Otherwise, Spirit injects the attribute of the outer parser that
@@ -167,11 +169,9 @@ struct PathParser : x3::parser<PathParser> {
 // Example grammar: anyPath | module.
 // The PathParser class would get a boost::variant as the attribute, but I
 // don't want to deal with that, so I use these wrappers to ensure the
-// attribute I want (and let Spirit deal with boost::variant). Also, the
-// attribute gets passed to PathParser::parse via a template argument, so the
-// class doesn't even to need to be a template. Convenient!
-auto const anyPath = x3::rule<class anyPath_class, AnyPath>{"anyPath"} = pathParser;
-auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = pathParser;
+// attribute I want (and let Spirit deal with boost::variant).
+auto const anyPath = x3::rule<class anyPath_class, AnyPath>{"anyPath"} = PathParser<AnyPath>{};
+auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<dataPath_>{};
 
 #if __clang__
 #pragma GCC diagnostic push
