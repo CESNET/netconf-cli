@@ -3,10 +3,8 @@
       jobs:
         - f31-gcc-cover:
             requires: CzechLight-deps-f31-gcc
-        - f31-gcc-asan-ubsan:
-            requires: CzechLight-deps-f31-gcc-asan-ubsan
-        - f31-clang-asan:
-            requires: CzechLight-deps-f31-clang-asan
+        - f31-clang-asan-ubsan:
+            requires: CzechLight-deps-f31-clang-asan-ubsan
         - f31-clang-tsan:
             requires: CzechLight-deps-f31-clang-tsan
         - f31-cpp-coverage-diff:
