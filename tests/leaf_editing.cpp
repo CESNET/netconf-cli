@@ -70,7 +70,9 @@ TEST_CASE("leaf editing")
         yang::TypeInfo{createEnum({"wlan0", "wlan1"})},
         yang::TypeInfo{yang::LeafRef{"/mod:portSettings/mod:port", std::make_unique<yang::TypeInfo>(schema->leafType("/mod:portSettings/mod:port"))}},
         yang::TypeInfo{yang::LeafRef{"/mod:activeMappedPort", std::make_unique<yang::TypeInfo>(schema->leafType("/mod:activeMappedPort"))}},
+        yang::TypeInfo{yang::Empty{}},
     }});
+    schema->addLeaf("/", "mod:dummy", yang::Empty{});
 
     Parser parser(schema);
     std::string input;
@@ -325,6 +327,10 @@ TEST_CASE("leaf editing")
                             expected.m_data = enum_("utf3");
                         }
                     }
+                    SECTION("4. empty")
+                    {
+                        expected.m_data = empty_{};
+                    }
                 }
             }
 
@@ -447,6 +453,12 @@ TEST_CASE("leaf editing")
                     expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("refToLeafInCont")});
                     expected.m_data = identityRef_{"pizza"};
                 }
+            }
+            SECTION("empty")
+            {
+                input = "set mod:dummy ";
+                expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("dummy")});
+                expected.m_data = empty_{};
             }
         }
 
@@ -582,6 +594,11 @@ TEST_CASE("leaf editing")
         SECTION("set a union path to a wrong type")
         {
             input = "set mod:intOrString true";
+        }
+
+        SECTION("no space for empty data")
+        {
+            input = "set mod:dummy";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);

@@ -369,7 +369,12 @@ module example-schema {
             type leafref {
                 path "../activeMappedPort";
             }
+            type empty;
         }
+    }
+
+    leaf dummyLeaf {
+        type empty;
     }
 
     leaf clockSpeed {
@@ -800,6 +805,7 @@ TEST_CASE("yangschema")
                                 std::make_unique<yang::TypeInfo>(enums)
                         })
                     }},
+                    yang::TypeInfo{yang::Empty{}},
                 }};
             }
 
@@ -844,6 +850,7 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "obsoleteLeafWithObsoleteType"},
                         {"example-schema"s, "myRpc"},
                         {"example-schema"s, "systemStats"},
+                        {"example-schema"s, "dummyLeaf"},
                         {"example-schema"s, "subLeaf"}};
                 }
 
@@ -893,6 +900,7 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "clockSpeed"},
                         {"example-schema"s, "deprecatedLeaf"},
                         {"example-schema"s, "direction"},
+                        {"example-schema"s, "dummyLeaf"},
                         {"example-schema"s, "duration"},
                         {"example-schema"s, "ethernet"},
                         {"example-schema"s, "foodDrinkIdentLeaf"},
@@ -951,6 +959,7 @@ TEST_CASE("yangschema")
                         {boost::none, "/example-schema:deprecatedLeaf"},
                         {boost::none, "/example-schema:direction"},
                         {boost::none, "/example-schema:duration"},
+                        {boost::none, "/example-schema:dummyLeaf"},
                         {boost::none, "/example-schema:foodDrinkIdentLeaf"},
                         {boost::none, "/example-schema:foodIdentLeaf"},
                         {boost::none, "/example-schema:interface/caseEthernet/ethernet"},

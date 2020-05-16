@@ -243,4 +243,8 @@ module example-schema {
     leaf blob {
         type binary;
     }
+
+    leaf dummy {
+        type empty;
+    }
 }
