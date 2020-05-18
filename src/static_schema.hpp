@@ -32,9 +32,19 @@ struct leaf {
 
 struct module {
 };
+
+enum class AccessType {
+    Writable,
+    ReadOnly
+};
 }
 
 using NodeType = boost::variant<yang::container, yang::list, yang::leaf, yang::module>;
+
+struct NodeInfo {
+    NodeType m_nodeType;
+    yang::AccessType m_configType;
+};
 
 
 /*! \class StaticSchema
@@ -66,17 +76,17 @@ public:
      * used in addLeaf for the `type` argument */
     std::set<identityRef_> validIdentities(std::string_view module, std::string_view value);
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
-    void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type);
+    void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type, const yang::AccessType accessType = yang::AccessType::Writable);
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void addModule(const std::string& name);
     void addIdentity(const std::optional<identityRef_>& base, const identityRef_& name);
 
 private:
-    const std::unordered_map<std::string, NodeType>& children(const std::string& name) const;
+    const std::unordered_map<std::string, NodeInfo>& children(const std::string& name) const;
     void getIdentSet(const identityRef_& ident, std::set<identityRef_>& res) const;
     bool nodeExists(const std::string& location, const std::string& node) const;
 
-    std::unordered_map<std::string, std::unordered_map<std::string, NodeType>> m_nodes;
+    std::unordered_map<std::string, std::unordered_map<std::string, NodeInfo>> m_nodes;
     std::set<std::string> m_modules;
 
     std::map<identityRef_, std::set<identityRef_>> m_identities;

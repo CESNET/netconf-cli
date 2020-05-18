@@ -142,6 +142,14 @@ std::string leafDataTypeToString(const yang::LeafDataType& type)
     return std::visit(impl_leafDataTypeToString{}, type);
 }
 
+std::string fullNodeName(const std::string& location, const std::string& node)
+{
+    if (node.find_first_of(':') != std::string::npos) {
+        return node;
+    }
+    return location.substr(location.find_first_not_of('/'), location.find_first_of(':') - 1) + ":" + node;
+}
+
 std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair)
 {
     if (!pair.first) {

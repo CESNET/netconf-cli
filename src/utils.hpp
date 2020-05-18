@@ -21,6 +21,7 @@ schemaPath_ pathWithoutLastNode(const schemaPath_& path);
 dataPath_ pathWithoutLastNode(const dataPath_& path);
 ModuleNodePair splitModuleNode(const std::string& input);
 std::string leafDataTypeToString(const yang::LeafDataType& type);
+std::string fullNodeName(const std::string& location, const std::string& node);
 std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair);
 std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair);
 std::string leafDataToString(const leaf_data_ value);
