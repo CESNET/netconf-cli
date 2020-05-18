@@ -304,7 +304,7 @@ yang::TypeInfo YangSchema::leafType(const std::string& path) const
 std::optional<std::string> YangSchema::leafTypeName(const std::string& path) const
 {
     libyang::Schema_Node_Leaf leaf(getSchemaNode(path));
-    return leaf.type()->der().get() ? std::optional{leaf.type()->der()->name()} : std::nullopt;
+    return leaf.type()->der().get() && leaf.type()->der()->type()->der().get() ? std::optional{leaf.type()->der()->name()} : std::nullopt;
 }
 
 std::string YangSchema::leafrefPath(const std::string& leafrefPath) const
