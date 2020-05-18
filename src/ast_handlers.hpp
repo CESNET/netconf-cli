@@ -230,7 +230,7 @@ struct delete_class {
     }
 };
 
-struct leaf_path_class {
+struct writable_leaf_path_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const& context)
     {

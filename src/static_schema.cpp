@@ -12,10 +12,10 @@
 
 StaticSchema::StaticSchema()
 {
-    m_nodes.emplace("/", std::unordered_map<std::string, NodeType>());
+    m_nodes.emplace("/", std::unordered_map<std::string, NodeInfo>());
 }
 
-const std::unordered_map<std::string, NodeType>& StaticSchema::children(const std::string& name) const
+const std::unordered_map<std::string, NodeInfo>& StaticSchema::children(const std::string& name) const
 {
     return m_nodes.at(name);
 }
@@ -36,11 +36,11 @@ bool StaticSchema::isModule(const std::string& name) const
 
 void StaticSchema::addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence)
 {
-    m_nodes.at(location).emplace(name, yang::container{isPresence});
+    m_nodes.at(location).emplace(name, NodeInfo{yang::container{isPresence}, yang::AccessType::Writable});
 
     //create a new set of children for the new node
     std::string key = joinPaths(location, name);
-    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
 }
 
 bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
@@ -49,7 +49,7 @@ bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair&
     assert(isList(location, node));
 
     const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& list = boost::get<yang::list>(child);
+    const auto& list = boost::get<yang::list>(child.m_nodeType);
     return list.m_keys.find(key) != list.m_keys.end();
 }
 
@@ -59,16 +59,16 @@ const std::set<std::string> StaticSchema::listKeys(const schemaPath_& location, 
     assert(isList(location, node));
 
     const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& list = boost::get<yang::list>(child);
+    const auto& list = boost::get<yang::list>(child.m_nodeType);
     return list.m_keys;
 }
 
 void StaticSchema::addList(const std::string& location, const std::string& name, const std::set<std::string>& keys)
 {
-    m_nodes.at(location).emplace(name, yang::list{keys});
+    m_nodes.at(location).emplace(name, NodeInfo{yang::list{keys}, yang::AccessType::Writable});
 
     std::string key = joinPaths(location, name);
-    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
 }
 
 std::set<identityRef_> StaticSchema::validIdentities(std::string_view module, std::string_view value)
@@ -79,11 +79,11 @@ std::set<identityRef_> StaticSchema::validIdentities(std::string_view module, st
     return identities;
 }
 
-void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type)
+void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type, const yang::AccessType accessType)
 {
-    m_nodes.at(location).emplace(name, yang::leaf{yang::TypeInfo{type, std::nullopt}});
+    m_nodes.at(location).emplace(name, NodeInfo{yang::leaf{yang::TypeInfo{type, std::nullopt}}, accessType});
     std::string key = joinPaths(location, name);
-    m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
 }
 
 void StaticSchema::addModule(const std::string& name)
@@ -120,14 +120,14 @@ std::string lastNodeOfSchemaPath(const std::string& path)
 yang::TypeInfo StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node))).m_type;
+    return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node)).m_nodeType).m_type;
 }
 
 yang::TypeInfo StaticSchema::leafType(const std::string& path) const
 {
     auto locationString = stripLastNodeFromPath(path);
     auto node = lastNodeOfSchemaPath(path);
-    return boost::get<yang::leaf>(children(locationString).at(node)).m_type;
+    return boost::get<yang::leaf>(children(locationString).at(node).m_nodeType).m_type;
 }
 
 std::set<ModuleNodePair> StaticSchema::availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const
@@ -185,18 +185,18 @@ yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const Module
     try {
         auto targetNode = children(locationString).at(fullName);
 
-        if (targetNode.type() == typeid(yang::container)) {
-            if (boost::get<yang::container>(targetNode).m_presence == yang::ContainerTraits::Presence) {
+        if (targetNode.m_nodeType.type() == typeid(yang::container)) {
+            if (boost::get<yang::container>(targetNode.m_nodeType).m_presence == yang::ContainerTraits::Presence) {
                 return yang::NodeTypes::PresenceContainer;
             }
             return yang::NodeTypes::Container;
         }
 
-        if (targetNode.type() == typeid(yang::list)) {
+        if (targetNode.m_nodeType.type() == typeid(yang::list)) {
             return yang::NodeTypes::List;
         }
 
-        if (targetNode.type() == typeid(yang::leaf)) {
+        if (targetNode.m_nodeType.type() == typeid(yang::leaf)) {
             return yang::NodeTypes::Leaf;
         }
 
@@ -205,6 +205,25 @@ yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const Module
     } catch (std::out_of_range&) {
         throw InvalidNodeException();
     }
+}
+
+std::string fullNodeName(const std::string& location, const std::string& node)
+{
+    // If the node already contains a module name, just return it.
+    if (node.find_first_of(':') != std::string::npos) {
+        return node;
+    }
+
+    // Otherwise take the module name from the first node of location.
+    return location.substr(location.find_first_not_of('/'), location.find_first_of(':') - 1) + ":" + node;
+}
+
+bool StaticSchema::isConfig(const std::string& leafPath) const
+{
+    auto locationString = stripLastNodeFromPath(leafPath);
+
+    auto node = fullNodeName(locationString, lastNodeOfSchemaPath(leafPath));
+    return children(locationString).at(node).m_configType == yang::AccessType::Writable;
 }
 
 std::optional<std::string> StaticSchema::description([[maybe_unused]] const std::string& path) const
@@ -235,11 +254,6 @@ bool StaticSchema::leafIsKey([[maybe_unused]] const std::string& leafPath) const
 std::optional<std::string> StaticSchema::leafTypeName([[maybe_unused]] const std::string& path) const
 {
     throw std::runtime_error{"Internal error: StaticSchema::leafTypeName(std::string) not implemented. The tests should not have called this overload."};
-}
-
-bool StaticSchema::isConfig([[maybe_unused]] const std::string& leafPath) const
-{
-    throw std::runtime_error{"Internal error: StaticSchema::isConfigLeaf(std::string) not implemented. The tests should not have called this overload."};
 }
 
 std::optional<std::string> StaticSchema::defaultValue([[maybe_unused]] const std::string& leafPath) const

@@ -62,7 +62,7 @@ auto const get_def =
     get_::name >> -(space_separator >> ((dataPathListEnd | dataPath) | (module >> "*")));
 
 auto const set_def =
-    set_::name >> space_separator > leafPath > space_separator > leaf_data;
+    set_::name >> space_separator > writableLeafPath > space_separator > leaf_data;
 
 auto const commit_def =
     commit_::name >> x3::attr(commit_());

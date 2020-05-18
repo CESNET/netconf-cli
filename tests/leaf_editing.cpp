@@ -73,6 +73,7 @@ TEST_CASE("leaf editing")
         yang::TypeInfo{yang::Empty{}},
     }});
     schema->addLeaf("/", "mod:dummy", yang::Empty{});
+    schema->addLeaf("/", "mod:readonly", yang::Int32{}, yang::AccessType::ReadOnly);
 
     Parser parser(schema);
     std::string input;
@@ -599,6 +600,11 @@ TEST_CASE("leaf editing")
         SECTION("no space for empty data")
         {
             input = "set mod:dummy";
+        }
+
+        SECTION("setting readonly data")
+        {
+            input = "set mod:readonly 123";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
