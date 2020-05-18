@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1ffcbdfa_6d4e8fde",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-18T12:10:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b352f54_463ba555",
+      "revId": "24bd5ebc4ad10b3b65328e41dc74da7381554314",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6aca4d4_f90cf42c",
         "filename": "src/path_parser.hpp",
         "patchSetId": 16
@@ -30,6 +48,30 @@
       "writtenOn": "2020-05-17T09:42:49Z",
       "side": 1,
       "message": "Would it be possible to reuse the NodeParserMode to replace that tuple (PathType, ALLOW_LIST_END) here? It looks to me that this will need:\n\n- a static_assert\u003c\u003e to guard against instantiation with CompletionsOnly,\n- an extension of NodeToAttribute\u003cT\u003e to provide not only the current `type` member, but `node_type` (same as the current `type`) and a new `path_type` for use in PathParser\n\nIMHO, the code would be a tad more readable that way.",
+      "range": {
+        "startLine": 256,
+        "startChar": 0,
+        "endLine": 258,
+        "endChar": 135
+      },
+      "revId": "24bd5ebc4ad10b3b65328e41dc74da7381554314",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c590214f_30f53d27",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-18T12:10:47Z",
+      "side": 1,
+      "message": "It could work, but then anyPath would have to have the \"schemaNode\" mode... seems kind of weird. But I could make a new enum for that.",
+      "parentUuid": "c6aca4d4_f90cf42c",
       "range": {
         "startLine": 256,
         "startChar": 0,
