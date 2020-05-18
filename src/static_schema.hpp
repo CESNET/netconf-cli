@@ -32,6 +32,11 @@ struct leaf {
 
 struct module {
 };
+
+enum class ConfigType {
+    Config,
+    Operational
+};
 }
 
 using NodeType = boost::variant<yang::container, yang::list, yang::leaf, yang::module>;
@@ -66,7 +71,7 @@ public:
      * used in addLeaf for the `type` argument */
     std::set<identityRef_> validIdentities(std::string_view module, std::string_view value);
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
-    void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type);
+    void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type, const yang::ConfigType = yang::ConfigType::Config);
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void addModule(const std::string& name);
     void addIdentity(const std::optional<identityRef_>& base, const identityRef_& name);

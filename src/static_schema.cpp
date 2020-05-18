@@ -79,8 +79,9 @@ std::set<identityRef_> StaticSchema::validIdentities(std::string_view module, st
     return identities;
 }
 
-void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type)
+void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type, const yang::ConfigType)
 {
+    // TODO: somehow save the config type
     m_nodes.at(location).emplace(name, yang::leaf{yang::TypeInfo{type, std::nullopt}});
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeType>());
@@ -207,6 +208,11 @@ yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const Module
     }
 }
 
+bool StaticSchema::isConfig([[maybe_unused]] const std::string& leafPath) const
+{
+    return true;
+}
+
 std::optional<std::string> StaticSchema::description([[maybe_unused]] const std::string& path) const
 {
     throw std::runtime_error{"StaticSchema::description not implemented"};
@@ -235,11 +241,6 @@ bool StaticSchema::leafIsKey([[maybe_unused]] const std::string& leafPath) const
 std::optional<std::string> StaticSchema::leafTypeName([[maybe_unused]] const std::string& path) const
 {
     throw std::runtime_error{"Internal error: StaticSchema::leafTypeName(std::string) not implemented. The tests should not have called this overload."};
-}
-
-bool StaticSchema::isConfig([[maybe_unused]] const std::string& leafPath) const
-{
-    throw std::runtime_error{"Internal error: StaticSchema::isConfigLeaf(std::string) not implemented. The tests should not have called this overload."};
 }
 
 std::optional<std::string> StaticSchema::defaultValue([[maybe_unused]] const std::string& leafPath) const

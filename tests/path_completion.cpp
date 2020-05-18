@@ -37,6 +37,7 @@ TEST_CASE("path_completion")
     schema->addLeaf("/example:twoKeyList", "example:name", yang::String{});
     schema->addLeaf("/example:twoKeyList", "example:number", yang::Int32{});
     schema->addLeaf("/", "example:leafInt", yang::Int32{});
+    schema->addLeaf("/", "mod:operational", yang::Int32{}, yang::ConfigType::Operational);
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
 
     // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
@@ -310,6 +311,12 @@ TEST_CASE("path_completion")
             expectedCompletions = {"example:ovocezelenina["};
             expectedContextLength = 21;
         }
+    }
+
+    SECTION("no operational data leafs in set")
+    {
+        input = "set mod:oper";
+        expectedContextLength = 8;
     }
 
     SECTION("clear completions when no longer inputting path")
