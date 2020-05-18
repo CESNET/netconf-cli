@@ -153,6 +153,30 @@
       "revId": "24bd5ebc4ad10b3b65328e41dc74da7381554314",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "333f42fa_468fe405",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-18T20:31:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71ae265e_25fabe87",
+      "range": {
+        "startLine": 256,
+        "startChar": 0,
+        "endLine": 258,
+        "endChar": 135
+      },
+      "revId": "24bd5ebc4ad10b3b65328e41dc74da7381554314",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
