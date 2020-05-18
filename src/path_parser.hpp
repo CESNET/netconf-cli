@@ -14,7 +14,7 @@
 
 namespace x3 = boost::spirit::x3;
 
-x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
+x3::rule<writable_leaf_path_class, dataPath_> const writableLeafPath = "writableLeafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
@@ -59,6 +59,14 @@ struct ModeToAttribute<NodeParserMode::CompletionsOnly> {
 template <NodeParserMode PARSER_MODE>
 struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
     using attribute_type = typename ModeToAttribute<PARSER_MODE>::type;
+
+    std::function<bool(const Schema&, const std::string& path)> m_filterFunction;
+
+    NodeParser(const std::function<bool(const Schema&, const std::string& path)>& filterFunction)
+        : m_filterFunction(filterFunction)
+    {
+    }
+
     // GCC complains that `end` isn't used when doing completions only
     // FIXME: GCC 10.1 doesn't emit a warning here. Remove [[maybe_unused]] when GCC 10 is available
     template <typename It, typename Ctx, typename RCtx, typename Attr>
@@ -82,6 +90,11 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
                 parseString = *child.first + ":";
             }
             parseString += child.second;
+
+            if (!m_filterFunction(parserContext.m_schema, joinPaths(pathToSchemaString(parserContext.currentSchemaPath(), Prefixes::Always), parseString))) {
+                continue;
+            }
+
             switch (parserContext.m_schema.nodeType(parserContext.currentSchemaPath(), child)) {
                 case yang::NodeTypes::Container:
                 case yang::NodeTypes::PresenceContainer:
@@ -174,10 +187,10 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
     }
 };
 
-NodeParser<NodeParserMode::SchemaNode> schemaNode;
-NodeParser<NodeParserMode::CompleteDataNode> dataNode;
-NodeParser<NodeParserMode::IncompleteDataNode> dataNodeAllowList;
-NodeParser<NodeParserMode::CompletionsOnly> pathCompletions;
+using schemaNode = NodeParser<NodeParserMode::SchemaNode>;
+using dataNode = NodeParser<NodeParserMode::CompleteDataNode>;
+using dataNodeAllowList = NodeParser<NodeParserMode::IncompleteDataNode>;
+using pathCompletions = NodeParser<NodeParserMode::CompletionsOnly>;
 
 using AnyPath = boost::variant<schemaPath_, dataPath_>;
 
@@ -205,6 +218,13 @@ struct ModeToAttribute<PathParserMode::DataPathListEnd> {
 template <PathParserMode PARSER_MODE>
 struct PathParser : x3::parser<PathParser<PARSER_MODE>> {
     using attribute_type = ModeToAttribute<PARSER_MODE>;
+    std::function<bool(const Schema&, const std::string& path)> m_filterFunction;
+
+    PathParser(const std::function<bool(const Schema&, const std::string& path)>& filterFunction = [] (const auto&, const auto&) {return true;})
+        : m_filterFunction(filterFunction)
+    {
+    }
+
     template <typename It, typename Ctx, typename RCtx, typename Attr>
     bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
     {
@@ -217,7 +237,7 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE>> {
         // gets reverted to before the starting slash.
         auto res = (-absoluteStart).parse(begin, end, ctx, rctx, attrData.m_scope);
         auto dataPath = x3::attr(attrData.m_scope)
-            >> (dataNode % '/' | pathEnd >> x3::attr(std::vector<dataNode_>{}))
+            >> (dataNode{m_filterFunction} % '/' | pathEnd >> x3::attr(std::vector<dataNode_>{}))
             >> -trailingSlash;
         res = dataPath.parse(begin, end, ctx, rctx, attrData);
 
@@ -225,13 +245,13 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE>> {
         if constexpr (PARSER_MODE == PathParserMode::DataPathListEnd || PARSER_MODE == PathParserMode::AnyPath) {
             if (!res || !pathEnd.parse(begin, end, ctx, rctx, x3::unused)) {
                 dataNode_ attrNodeList;
-                res = dataNodeAllowList.parse(begin, end, ctx, rctx, attrNodeList);
+                res = dataNodeAllowList{m_filterFunction}.parse(begin, end, ctx, rctx, attrNodeList);
                 if (res) {
                     attrData.m_nodes.push_back(attrNodeList);
                     // If the trailing slash matches, no more nodes are parsed.
                     // That means no more completion. So, I generate them
                     // manually.
-                    res = (-(trailingSlash >> x3::omit[pathCompletions])).parse(begin, end, ctx, rctx, attrData.m_trailingSlash);
+                    res = (-(trailingSlash >> x3::omit[pathCompletions{m_filterFunction}])).parse(begin, end, ctx, rctx, attrData.m_trailingSlash);
                 }
             }
         }
@@ -246,7 +266,7 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE>> {
                 if (!res || !pathEnd.parse(begin, end, ctx, rctx, x3::unused)) {
                     // If dataPath parsed some nodes, they will be saved in `attrData`. We have to keep these.
                     schemaPath_ attrSchema = dataPathToSchemaPath(attrData);
-                    auto schemaPath = schemaNode % '/';
+                    auto schemaPath = schemaNode{m_filterFunction} % '/';
                     // The schemaPath parser continues where the dataPath parser ended.
                     res = schemaPath.parse(begin, end, ctx, rctx, attrSchema.m_nodes);
                     auto trailing = -trailingSlash >> pathEnd;
@@ -311,8 +331,12 @@ auto const absoluteStart_def =
 auto const trailingSlash_def =
     x3::omit['/'] >> x3::attr(TrailingSlash::Present);
 
-auto const leafPath_def =
-    dataPath;
+auto const filterConfigFalse = [] (const Schema& schema, const std::string& path) {
+    return schema.isConfig(path);
+};
+
+auto const writableLeafPath_def =
+    PathParser<PathParserMode::DataPath>{filterConfigFalse};
 
 auto const presenceContainerPath_def =
     dataPath;
@@ -333,7 +357,7 @@ auto const initializePath_def =
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(key_identifier)
 BOOST_SPIRIT_DEFINE(listSuffix)
-BOOST_SPIRIT_DEFINE(leafPath)
+BOOST_SPIRIT_DEFINE(writableLeafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
 BOOST_SPIRIT_DEFINE(initializePath)

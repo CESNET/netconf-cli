@@ -37,6 +37,7 @@ TEST_CASE("path_completion")
     schema->addLeaf("/example:twoKeyList", "example:name", yang::String{});
     schema->addLeaf("/example:twoKeyList", "example:number", yang::Int32{});
     schema->addLeaf("/", "example:leafInt", yang::Int32{});
+    schema->addLeaf("/", "example:readonly", yang::Int32{}, yang::AccessType::ReadOnly);
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
 
     // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
@@ -66,14 +67,14 @@ TEST_CASE("path_completion")
         SECTION("ls ")
         {
             input = "ls ";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie/"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:readonly ", "example:ovocezelenina", "example:twoKeyList", "second:amelie/"};
             expectedContextLength = 0;
         }
 
         SECTION("ls e")
         {
             input = "ls e";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:readonly ", "example:ovocezelenina", "example:twoKeyList"};
             expectedContextLength = 1;
         }
 
@@ -101,14 +102,14 @@ TEST_CASE("path_completion")
         SECTION("ls /")
         {
             input = "ls /";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie/"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:readonly ", "example:ovocezelenina", "example:twoKeyList", "second:amelie/"};
             expectedContextLength = 0;
         }
 
         SECTION("ls /e")
         {
             input = "ls /e";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:readonly ", "example:ovocezelenina", "example:twoKeyList"};
             expectedContextLength = 1;
         }
 
@@ -310,6 +311,12 @@ TEST_CASE("path_completion")
             expectedCompletions = {"example:ovocezelenina["};
             expectedContextLength = 21;
         }
+    }
+
+    SECTION("no readonly data leafs in set")
+    {
+        input = "set example:read";
+        expectedContextLength = 12;
     }
 
     SECTION("clear completions when no longer inputting path")
