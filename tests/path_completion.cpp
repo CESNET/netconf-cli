@@ -67,14 +67,14 @@ TEST_CASE("path_completion")
         SECTION("ls ")
         {
             input = "ls ";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:readonly ", "example:ovocezelenina", "example:twoKeyList", "second:amelie/"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "second:amelie/"};
             expectedContextLength = 0;
         }
 
         SECTION("ls e")
         {
             input = "ls e";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:readonly ", "example:ovocezelenina", "example:twoKeyList"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/"};
             expectedContextLength = 1;
         }
 
@@ -102,14 +102,14 @@ TEST_CASE("path_completion")
         SECTION("ls /")
         {
             input = "ls /";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:readonly ", "example:ovocezelenina", "example:twoKeyList", "second:amelie/"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "second:amelie/"};
             expectedContextLength = 0;
         }
 
         SECTION("ls /e")
         {
             input = "ls /e";
-            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:readonly ", "example:ovocezelenina", "example:twoKeyList"};
+            expectedCompletions = {"example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/"};
             expectedContextLength = 1;
         }
 
@@ -132,6 +132,13 @@ TEST_CASE("path_completion")
             input = "ls /s";
             expectedCompletions = {"second:amelie/"};
             expectedContextLength = 1;
+        }
+
+        SECTION("ls /example:list")
+        {
+            input = "ls /example:list";
+            expectedCompletions = {"example:list/"};
+            expectedContextLength = 12;
         }
 
         SECTION("ls /example:list/")
