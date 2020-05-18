@@ -111,7 +111,11 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
                     } else {
                         out.m_suffix = listElement_{child.second, {}};
                     }
-                    parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
+                    if constexpr (PARSER_MODE == NodeParserMode::SchemaNode) {
+                        parserContext.m_suggestions.emplace(Completion{parseString + "/"});
+                    } else {
+                        parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
+                    }
                     break;
                 case yang::NodeTypes::Action:
                 case yang::NodeTypes::AnyXml:
