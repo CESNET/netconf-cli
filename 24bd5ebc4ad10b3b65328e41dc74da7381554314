@@ -105,6 +105,30 @@
       "revId": "24bd5ebc4ad10b3b65328e41dc74da7381554314",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1208fba3_94025ec5",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-18T16:44:45Z",
+      "side": 1,
+      "message": "I can create a new enum for specifying a PathParser mode, but it makes no sense to reuse the existing enum. I can understand a PathParser that has a PathParserMode::DataPath but not PathParser, that has a NodeParserMode::DataNode. Also, the conditions on line 215 and 230 will get more complex (and will get even more complex if new path types get added)...",
+      "parentUuid": "2469fec0_6498cbe6",
+      "range": {
+        "startLine": 256,
+        "startChar": 0,
+        "endLine": 258,
+        "endChar": 135
+      },
+      "revId": "24bd5ebc4ad10b3b65328e41dc74da7381554314",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
