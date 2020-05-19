@@ -191,11 +191,17 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path)
     using namespace std::string_literals;
     Tree res;
 
-    auto fillMap = [&res](auto items) {
+    auto fillMap = [this, &res](auto items) {
         if (!items)
             return;
         for (unsigned int i = 0; i < items->val_cnt(); i++) {
-            res.emplace(items->val(i)->xpath(), leafValueFromVal(items->val(i)));
+            auto value = leafValueFromVal(items->val(i));
+            if (m_schema->isLeafList(items->val(i)->xpath())) {
+                res.emplace(items->val(i)->xpath(), special_{SpecialValue::LeafList});
+                res.emplace(items->val(i)->xpath() + "[.="s + escapeListKeyString(leafDataToString(value)) + "]", value);
+            } else {
+                res.emplace(items->val(i)->xpath(), value);
+            }
         }
     };
 
@@ -234,6 +240,24 @@ void SysrepoAccess::createPresenceContainer(const std::string& path)
 }
 
 void SysrepoAccess::deletePresenceContainer(const std::string& path)
+{
+    try {
+        m_session->delete_item(path.c_str());
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
+}
+
+void SysrepoAccess::createLeafListInstance(const std::string& path)
+{
+    try {
+        m_session->set_item(path.c_str());
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
+}
+
+void SysrepoAccess::deleteLeafListInstance(const std::string& path)
 {
     try {
         m_session->delete_item(path.c_str());
