@@ -210,6 +210,18 @@ struct listInstancePath_class {
     }
 };
 
+struct leafListElementPath_class {
+    template <typename T, typename Iterator, typename Context>
+    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    {
+        auto& parserContext = x3::get<parser_context_tag>(context);
+        if (ast.m_nodes.empty() || ast.m_nodes.back().m_suffix.type() != typeid(leafListElement_)) {
+            parserContext.m_errorMsg = "This is not a leaf list element.";
+            _pass(context) = false;
+        }
+    }
+};
+
 struct space_separator_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T&, Context const& context)

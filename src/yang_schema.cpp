@@ -201,10 +201,11 @@ std::string leafrefPath(const libyang::S_Type& type)
 }
 }
 
+template <typename NodeType>
 yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) const
 {
     using namespace std::string_literals;
-    auto leaf = std::make_shared<libyang::Schema_Node_Leaf>(node);
+    auto leaf = std::make_shared<NodeType>(node);
     auto leafUnits = leaf->units();
     std::function<yang::TypeInfo(std::shared_ptr<libyang::Type>)> resolveType;
     resolveType = [this, &resolveType, leaf, leafUnits] (std::shared_ptr<libyang::Type> type) -> yang::TypeInfo {
@@ -293,12 +294,28 @@ yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) con
 
 yang::TypeInfo YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
-    return impl_leafType(getSchemaNode(location, node));
+    auto lyNode = getSchemaNode(location, node);
+    switch (lyNode->nodetype()) {
+    case LYS_LEAF:
+        return impl_leafType<libyang::Schema_Node_Leaf>(lyNode);
+    case LYS_LEAFLIST:
+        return impl_leafType<libyang::Schema_Node_Leaflist>(lyNode);
+    default:
+        throw std::logic_error("YangSchema::leafType: type must be leaf or leaflist");
+    }
 }
 
 yang::TypeInfo YangSchema::leafType(const std::string& path) const
 {
-    return impl_leafType(getSchemaNode(path));
+    auto lyNode = getSchemaNode(path);
+    switch (lyNode->nodetype()) {
+    case LYS_LEAF:
+        return impl_leafType<libyang::Schema_Node_Leaf>(lyNode);
+    case LYS_LEAFLIST:
+        return impl_leafType<libyang::Schema_Node_Leaflist>(lyNode);
+    default:
+        throw std::logic_error("YangSchema::leafType: type must be leaf or leaflist");
+    }
 }
 
 std::optional<std::string> YangSchema::leafTypeName(const std::string& path) const
