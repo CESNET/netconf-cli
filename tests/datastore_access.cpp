@@ -386,6 +386,10 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems(xpath) == expected);
     }
 
+    SECTION("leaf list")
+    {
+        datastore.createLeafListInstance("/example-schema:addresses[0.0.0.0]");
+    }
 
     SECTION("copying data from startup refreshes the data")
     {

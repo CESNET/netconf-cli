@@ -86,6 +86,13 @@ void StaticSchema::addLeaf(const std::string& location, const std::string& name,
     m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
 }
 
+void StaticSchema::addLeafList(const std::string& location, const std::string& name, const yang::LeafDataType& type)
+{
+    m_nodes.at(location).emplace(name, NodeInfo{yang::leaflist{yang::TypeInfo{type, std::nullopt}}, yang::AccessType::Writable});
+    std::string key = joinPaths(location, name);
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
+}
+
 void StaticSchema::addModule(const std::string& name)
 {
     m_modules.emplace(name);
@@ -120,7 +127,16 @@ std::string lastNodeOfSchemaPath(const std::string& path)
 yang::TypeInfo StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    return boost::get<yang::leaf>(children(locationString).at(fullNodeName(location, node)).m_nodeType).m_type;
+    auto nodeType = children(locationString).at(fullNodeName(location, node)).m_nodeType;
+    if (nodeType.type() == typeid(yang::leaf)) {
+        return boost::get<yang::leaf>(nodeType).m_type;
+    }
+
+    if (nodeType.type() == typeid(yang::leaflist)) {
+        return boost::get<yang::leaflist>(nodeType).m_type;
+    }
+
+    throw std::logic_error("StaticSchema::leafType: Path is not a leaf or a leaflist");
 }
 
 yang::TypeInfo StaticSchema::leafType(const std::string& path) const
@@ -200,7 +216,11 @@ yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const Module
             return yang::NodeTypes::Leaf;
         }
 
-        throw std::runtime_error{"YangSchema::nodeType: unsupported type"};
+        if (targetNode.m_nodeType.type() == typeid(yang::leaflist)) {
+            return yang::NodeTypes::LeafList;
+        }
+
+        throw std::runtime_error{"StaticSchema::nodeType: unsupported type"};
 
     } catch (std::out_of_range&) {
         throw InvalidNodeException();

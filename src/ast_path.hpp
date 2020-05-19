@@ -46,6 +46,22 @@ struct leaf_ {
     std::string m_name;
 };
 
+struct leafList_ {
+    leafList_();
+    leafList_(const std::string& name);
+
+    bool operator==(const leafList_& b) const;
+
+    std::string m_name;
+};
+
+struct leafListElement_ {
+    bool operator==(const leafListElement_& b) const;
+
+    std::string m_name;
+    leaf_data_ m_value;
+};
+
 struct listElement_ {
     listElement_() {}
     listElement_(const std::string& listName, const std::map<std::string, leaf_data_>& keys);
@@ -67,7 +83,7 @@ struct list_ {
 
 struct schemaNode_ {
     boost::optional<module_> m_prefix;
-    boost::variant<container_, list_, nodeup_, leaf_> m_suffix;
+    boost::variant<container_, list_, nodeup_, leaf_, leafList_> m_suffix;
 
     schemaNode_();
     schemaNode_(decltype(m_suffix) node);
@@ -77,7 +93,7 @@ struct schemaNode_ {
 
 struct dataNode_ {
     boost::optional<module_> m_prefix;
-    boost::variant<container_, listElement_, nodeup_, leaf_, list_> m_suffix;
+    boost::variant<container_, listElement_, nodeup_, leaf_, leafListElement_, list_> m_suffix;
 
     dataNode_();
     dataNode_(decltype(m_suffix) node);
@@ -120,6 +136,7 @@ std::string escapeListKeyString(const std::string& what);
 
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
+BOOST_FUSION_ADAPT_STRUCT(leafListElement_, m_name, m_value)
 BOOST_FUSION_ADAPT_STRUCT(module_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(dataNode_, m_prefix, m_suffix)
 BOOST_FUSION_ADAPT_STRUCT(schemaNode_, m_prefix, m_suffix)

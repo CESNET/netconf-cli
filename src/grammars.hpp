@@ -53,10 +53,10 @@ auto const cd_def =
     cd_::name >> space_separator > dataPath;
 
 auto const create_def =
-    create_::name >> space_separator > (presenceContainerPath | listInstancePath);
+    create_::name >> space_separator > (presenceContainerPath | listInstancePath | leafListElementPath);
 
 auto const delete_rule_def =
-    delete_::name >> space_separator > (presenceContainerPath | listInstancePath);
+    delete_::name >> space_separator > (presenceContainerPath | listInstancePath | leafListElementPath);
 
 auto const get_def =
     get_::name >> -(space_separator >> ((dataPathListEnd | dataPath) | (module >> "*")));

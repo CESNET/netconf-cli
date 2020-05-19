@@ -17,6 +17,7 @@ namespace x3 = boost::spirit::x3;
 x3::rule<leaf_path_class, dataPath_> const leafPath = "leafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
+x3::rule<leafListElementPath_class, dataPath_> const leafListElementPath = "leafListElementPath";
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
 x3::rule<trailingSlash_class, TrailingSlash> const trailingSlash = "trailingSlash";
 x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
@@ -26,6 +27,7 @@ x3::rule<listSuffix_class, std::vector<keyValue_>> const listSuffix = "listSuffi
 x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
 x3::rule<createValueSuggestions_class, x3::unused_type> const createValueSuggestions = "createValueSuggestions";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
+x3::rule<class leafListValue_class, leaf_data_> const leafListValue = "leafListValue";
 
 enum class NodeParserMode {
     CompleteDataNode,
@@ -55,6 +57,7 @@ template <>
 struct ModeToAttribute<NodeParserMode::CompletionsOnly> {
     using type = dataNode_;
 };
+
 
 template <NodeParserMode PARSER_MODE>
 struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
@@ -113,9 +116,16 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
                     }
                     parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
                     break;
+                case yang::NodeTypes::LeafList:
+                    if constexpr (std::is_same<attribute_type, schemaNode_>()) {
+                        out.m_suffix = leafList_{child.second};
+                    } else {
+                        out.m_suffix = leafListElement_{child.second, {}};
+                    }
+                    parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
+                    break;
                 case yang::NodeTypes::Action:
                 case yang::NodeTypes::AnyXml:
-                case yang::NodeTypes::LeafList:
                 case yang::NodeTypes::Notification:
                 case yang::NodeTypes::Rpc:
                     continue;
@@ -170,6 +180,20 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
                         } else {
                             begin = saveIter;
                         }
+                    }
+                }
+
+                if (attr.m_suffix.type() == typeid(leafListElement_)) {
+                    parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
+                    ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
+                            return boost::optional<std::string>{it.m_name};
+                            }),
+                                   boost::get<leafListElement_>(attr.m_suffix).m_name};
+                    parserContext.m_tmpListKeyLeafPath.m_node = node;
+                    res = leafListValue.parse(begin, end, ctx, rctx, boost::get<leafListElement_>(attr.m_suffix).m_value);
+
+                    if (!res) {
+                        begin = saveIter;
                     }
                 }
             }
@@ -295,6 +319,9 @@ auto const dataPathListEnd = x3::rule<class dataPath_class, dataPath_>{"dataPath
 #pragma GCC diagnostic ignored "-Woverloaded-shift-op-parentheses"
 #endif
 
+auto const leafListValue_def =
+    '[' >> leaf_data >> ']';
+
 auto const rest =
     x3::omit[x3::no_skip[+(x3::char_ - '/' - space_separator)]];
 
@@ -344,6 +371,9 @@ auto const presenceContainerPath_def =
 auto const listInstancePath_def =
     dataPath;
 
+auto const leafListElementPath_def =
+    dataPath;
+
 // A "nothing" parser, which is used to indicate we tried to parse a path
 auto const initializePath_def =
     x3::eps;
@@ -360,9 +390,11 @@ BOOST_SPIRIT_DEFINE(listSuffix)
 BOOST_SPIRIT_DEFINE(leafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
+BOOST_SPIRIT_DEFINE(leafListElementPath)
 BOOST_SPIRIT_DEFINE(initializePath)
 BOOST_SPIRIT_DEFINE(createKeySuggestions)
 BOOST_SPIRIT_DEFINE(createValueSuggestions)
 BOOST_SPIRIT_DEFINE(suggestKeysEnd)
+BOOST_SPIRIT_DEFINE(leafListValue)
 BOOST_SPIRIT_DEFINE(absoluteStart)
 BOOST_SPIRIT_DEFINE(trailingSlash)

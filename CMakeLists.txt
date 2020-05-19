@@ -281,6 +281,7 @@ if(BUILD_TESTING)
     cli_test(path_utils)
     target_link_libraries(test_path_utils path)
     cli_test(keyvalue_completion)
+    cli_test(leaflist)
 
     setup_datastore_tests()
     datastore_test(datastore_access example-schema)
