@@ -12,6 +12,11 @@ bool set_::operator==(const set_& b) const
     return this->m_path == b.m_path && this->m_data == b.m_data;
 }
 
+bool get_::operator==(const get_& b) const
+{
+    return this->m_path == b.m_path;
+}
+
 bool cd_::operator==(const cd_& b) const
 {
     return this->m_path == b.m_path;

@@ -38,7 +38,7 @@ void fillMap(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libya
         if (it->schema()->nodetype() == LYS_LIST) {
             res.emplace(stripXPathPrefix(it->path()), special_{SpecialValue::List});
         }
-        if (it->schema()->nodetype() == LYS_LEAF) {
+        if (it->schema()->nodetype() == LYS_LEAF || it->schema()->nodetype() == LYS_LEAFLIST) {
             libyang::Data_Node_Leaf_List leaf(it);
             res.emplace(stripXPathPrefix(it->path()), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
         }
@@ -108,6 +108,19 @@ void NetconfAccess::createListInstance(const std::string& path)
 }
 
 void NetconfAccess::deleteListInstance(const std::string& path)
+{
+    auto node = m_schema->dataNodeFromPath(path);
+    auto list = *(node->find_path(path.c_str())->data().begin());
+    list->insert_attr(m_schema->getYangModule("ietf-netconf"), "operation", "delete");
+    doEditFromDataNode(node);
+}
+
+void NetconfAccess::createLeafListInstance(const std::string& path)
+{
+    auto node = m_schema->dataNodeFromPath(path);
+    doEditFromDataNode(node);
+}
+void NetconfAccess::deleteLeafListInstance(const std::string& path)
 {
     auto node = m_schema->dataNodeFromPath(path);
     auto list = *(node->find_path(path.c_str())->data().begin());
