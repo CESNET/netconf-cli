@@ -55,6 +55,8 @@ void Interpreter::operator()(const create_& create) const
 {
     if (create.m_path.m_nodes.back().m_suffix.type() == typeid(listElement_))
         m_datastore.createListInstance(absolutePathFromCommand(create));
+    else if (create.m_path.m_nodes.back().m_suffix.type() == typeid(leafListElement_))
+        m_datastore.createLeafListInstance(absolutePathFromCommand(create));
     else
         m_datastore.createPresenceContainer(absolutePathFromCommand(create));
 }
@@ -63,6 +65,8 @@ void Interpreter::operator()(const delete_& delet) const
 {
     if (delet.m_path.m_nodes.back().m_suffix.type() == typeid(container_))
         m_datastore.deletePresenceContainer(absolutePathFromCommand(delet));
+    else if (delet.m_path.m_nodes.back().m_suffix.type() == typeid(leafListElement_))
+        m_datastore.deleteLeafListInstance(absolutePathFromCommand(delet));
     else
         m_datastore.deleteListInstance(absolutePathFromCommand(delet));
 }

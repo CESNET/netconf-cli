@@ -28,6 +28,21 @@ TEST_CASE("path utils")
             path.m_nodes.push_back(dataNode_{module_{"example-schema"}, listElement_{"twoKeyList", {{"first", std::string{"a"}}, {"second", std::string{"b"}}}}});
             expected += "example-schema:twoKeyList[first='a'][second='b']";
         }
+
+        SECTION("example-schema:addresses[.='0.0.0.0']")
+        {
+            SECTION("absolute")
+            {
+                path.m_scope = Scope::Absolute;
+                expected += "/";
+            }
+            SECTION("relative")
+            {
+                path.m_scope = Scope::Relative;
+            }
+            path.m_nodes.push_back(dataNode_{module_{"example-schema"}, leafListElement_{"addresses", std::string{"0.0.0.0"}}});
+            expected += "example-schema:addresses[.='0.0.0.0']";
+        }
         REQUIRE(pathToDataString(path, Prefixes::WhenNeeded) == expected);
     }
 }

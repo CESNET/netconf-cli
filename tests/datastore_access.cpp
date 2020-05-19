@@ -386,6 +386,36 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems(xpath) == expected);
     }
 
+    SECTION("leaf list")
+    {
+        DatastoreAccess::Tree expected;
+        REQUIRE_CALL(mock, write("/example-schema:addresses", std::nullopt, "0.0.0.0"s));
+        REQUIRE_CALL(mock, write("/example-schema:addresses", std::nullopt, "127.0.0.1"s));
+        datastore.createLeafListInstance("/example-schema:addresses[.='0.0.0.0']");
+        datastore.createLeafListInstance("/example-schema:addresses[.='127.0.0.1']");
+        datastore.commitChanges();
+        expected = {
+            {"/example-schema:addresses", special_{SpecialValue::LeafList}},
+            {"/example-schema:addresses[.='0.0.0.0']", "0.0.0.0"s},
+            {"/example-schema:addresses[.='127.0.0.1']", "127.0.0.1"s},
+        };
+        REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
+
+        REQUIRE_CALL(mock, write("/example-schema:addresses", "0.0.0.0"s, std::nullopt));
+        datastore.deleteLeafListInstance("/example-schema:addresses[.='0.0.0.0']");
+        datastore.commitChanges();
+        expected = {
+            {"/example-schema:addresses", special_{SpecialValue::LeafList}},
+            {"/example-schema:addresses[.='127.0.0.1']", "127.0.0.1"s},
+        };
+        REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
+
+        REQUIRE_CALL(mock, write("/example-schema:addresses", "127.0.0.1"s, std::nullopt));
+        datastore.deleteLeafListInstance("/example-schema:addresses[.='127.0.0.1']");
+        datastore.commitChanges();
+        expected = {};
+        REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
+    }
 
     SECTION("copying data from startup refreshes the data")
     {
