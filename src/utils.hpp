@@ -25,3 +25,4 @@ std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair
 std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair);
 std::string leafDataToString(const leaf_data_ value);
 schemaPath_ anyPathToSchemaPath(const boost::variant<dataPath_, schemaPath_, module_>& path);
+std::string stripLeafListValueFromPath(const std::string& path);

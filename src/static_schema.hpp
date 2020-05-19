@@ -30,6 +30,10 @@ struct leaf {
     yang::TypeInfo m_type;
 };
 
+struct leaflist {
+    yang::TypeInfo m_type;
+};
+
 struct module {
 };
 
@@ -39,7 +43,7 @@ enum class AccessType {
 };
 }
 
-using NodeType = boost::variant<yang::container, yang::list, yang::leaf, yang::module>;
+using NodeType = boost::variant<yang::container, yang::list, yang::leaf, yang::leaflist, yang::module>;
 
 struct NodeInfo {
     NodeType m_nodeType;
@@ -77,6 +81,7 @@ public:
     std::set<identityRef_> validIdentities(std::string_view module, std::string_view value);
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
     void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type, const yang::AccessType accessType = yang::AccessType::Writable);
+    void addLeafList(const std::string& location, const std::string& name, const yang::LeafDataType& type);
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void addModule(const std::string& name);
     void addIdentity(const std::optional<identityRef_>& base, const identityRef_& name);

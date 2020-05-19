@@ -419,6 +419,9 @@ module example-schema {
         status obsolete;
     }
 
+    leaf-list addresses {
+        type string;
+    }
 })";
 
 namespace std {
@@ -809,6 +812,14 @@ TEST_CASE("yangschema")
                 }};
             }
 
+            SECTION("addresses")
+            {
+                node.first = "example-schema";
+                node.second = "addresses";
+                type.emplace<yang::String>();
+            }
+
+
             REQUIRE(ys.leafType(path, node) == type);
         }
         SECTION("availableNodes")
@@ -851,6 +862,7 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "myRpc"},
                         {"example-schema"s, "systemStats"},
                         {"example-schema"s, "dummyLeaf"},
+                        {"example-schema"s, "addresses"},
                         {"example-schema"s, "subLeaf"}};
                 }
 
@@ -894,6 +906,7 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "activeMappedPort"},
                         {"example-schema"s, "activeNumber"},
                         {"example-schema"s, "activePort"},
+                        {"example-schema"s, "addresses"},
                         {"example-schema"s, "another-duration"},
                         {"example-schema"s, "b"},
                         {"example-schema"s, "carry"},
@@ -943,6 +956,7 @@ TEST_CASE("yangschema")
                         {boost::none, "/example-schema:_list/contInList"},
                         {boost::none, "/example-schema:_list/number"},
                         {boost::none, "/example-schema:a"},
+                        {boost::none, "/example-schema:addresses"},
                         {boost::none, "/example-schema:a/a2"},
                         {boost::none, "/example-schema:a/a2/a3"},
                         {boost::none, "/example-schema:a/leafa"},
@@ -1129,6 +1143,8 @@ TEST_CASE("yangschema")
                 expectedType.emplace<yang::Int32>();
                 expectedUnits = "vt";
             }
+            auto nodeType = ys.nodeType(pathToSchemaString(path, Prefixes::WhenNeeded));
+            REQUIRE((nodeType == yang::NodeTypes::Leaf || nodeType == yang::NodeTypes::LeafList));
             REQUIRE(ys.leafType(pathToSchemaString(path, Prefixes::WhenNeeded)) == yang::TypeInfo{expectedType, expectedUnits});
         }
 

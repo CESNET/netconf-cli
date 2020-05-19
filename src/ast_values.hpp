@@ -50,6 +50,7 @@ struct identityRef_ {
 
 enum class SpecialValue {
     List,
+    LeafList,
     Container,
     PresenceContainer
 };

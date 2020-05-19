@@ -6,6 +6,7 @@
  *
 */
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/mpl/for_each.hpp>
 #include <iostream>
 #include <sstream>
@@ -41,8 +42,19 @@ void Interpreter::operator()(const set_& set) const
 void Interpreter::operator()(const get_& get) const
 {
     auto items = m_datastore.getItems(absolutePathFromCommand(get));
-    for (auto it : items) {
-        std::cout << it.first << " = " << leafDataToString(it.second) << std::endl;
+    for (auto it = items.begin(); it != items.end(); it++) {
+        auto [path, value] = *it;
+        if (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
+            auto leafListPrefix = path;
+            std::cout << path << " = " << leafDataToString(value) << std::endl;
+            ++it;
+            while (boost::starts_with(it->first, leafListPrefix)) {
+                std::cout << stripLeafListValueFromPath(it->first) << " = " << leafDataToString(it->second) << std::endl;
+                ++it;
+            }
+        } else {
+            std::cout << path << " = " << leafDataToString(value) << std::endl;
+        }
     }
 }
 
@@ -55,6 +67,8 @@ void Interpreter::operator()(const create_& create) const
 {
     if (create.m_path.m_nodes.back().m_suffix.type() == typeid(listElement_))
         m_datastore.createListInstance(absolutePathFromCommand(create));
+    else if (create.m_path.m_nodes.back().m_suffix.type() == typeid(leafListElement_))
+        m_datastore.createLeafListInstance(absolutePathFromCommand(create));
     else
         m_datastore.createPresenceContainer(absolutePathFromCommand(create));
 }
@@ -63,6 +77,8 @@ void Interpreter::operator()(const delete_& delet) const
 {
     if (delet.m_path.m_nodes.back().m_suffix.type() == typeid(container_))
         m_datastore.deletePresenceContainer(absolutePathFromCommand(delet));
+    else if (delet.m_path.m_nodes.back().m_suffix.type() == typeid(leafListElement_))
+        m_datastore.deleteLeafListInstance(absolutePathFromCommand(delet));
     else
         m_datastore.deleteListInstance(absolutePathFromCommand(delet));
 }

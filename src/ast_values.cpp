@@ -99,6 +99,8 @@ std::string specialValueToString(const special_& value)
         return "(presence container)";
     case SpecialValue::List:
         return "(list)";
+    case SpecialValue::LeafList:
+        return "(leaflist)";
     }
 
     __builtin_unreachable();

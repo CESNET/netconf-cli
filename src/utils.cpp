@@ -228,3 +228,10 @@ schemaPath_ anyPathToSchemaPath(const boost::variant<dataPath_, schemaPath_, mod
 {
     return boost::apply_visitor(getSchemaPathVisitor(), path);
 }
+
+std::string stripLeafListValueFromPath(const std::string& path)
+{
+    auto res = path;
+    res.erase(res.find_last_of('['));
+    return res;
+}

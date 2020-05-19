@@ -247,4 +247,8 @@ module example-schema {
     leaf dummy {
         type empty;
     }
+
+    leaf-list addresses {
+        type string;
+    }
 }
