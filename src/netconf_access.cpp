@@ -115,6 +115,15 @@ void NetconfAccess::deleteListInstance(const std::string& path)
     doEditFromDataNode(node);
 }
 
+void NetconfAccess::createLeafListInstance(const std::string&)
+{
+
+}
+void NetconfAccess::deleteLeafListInstance(const std::string&)
+{
+
+}
+
 void NetconfAccess::doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode)
 {
     auto data = dataNode->print_mem(LYD_XML, 0);

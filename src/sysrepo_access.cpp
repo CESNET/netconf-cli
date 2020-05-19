@@ -242,6 +242,24 @@ void SysrepoAccess::deletePresenceContainer(const std::string& path)
     }
 }
 
+void SysrepoAccess::createLeafListInstance(const std::string& path)
+{
+    try {
+        m_session->set_item(path.c_str());
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
+}
+
+void SysrepoAccess::deleteLeafListInstance(const std::string& path)
+{
+    try {
+        m_session->delete_item(path.c_str());
+    } catch (sysrepo::sysrepo_exception& ex) {
+        reportErrors();
+    }
+}
+
 void SysrepoAccess::createListInstance(const std::string& path)
 {
     try {
