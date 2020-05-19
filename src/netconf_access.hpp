@@ -39,6 +39,8 @@ public:
     void deletePresenceContainer(const std::string& path) override;
     void createListInstance(const std::string& path) override;
     void deleteListInstance(const std::string& path) override;
+    void createLeafListInstance(const std::string& path) override;
+    void deleteLeafListInstance(const std::string& path) override;
     void commitChanges() override;
     void discardChanges() override;
     Tree executeRpc(const std::string& path, const Tree& input) override;

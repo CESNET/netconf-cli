@@ -23,6 +23,8 @@ class MockDatastoreAccess : public trompeloeil::mock_interface<DatastoreAccess> 
     IMPLEMENT_MOCK2(setLeaf);
     IMPLEMENT_MOCK1(createPresenceContainer);
     IMPLEMENT_MOCK1(deletePresenceContainer);
+    IMPLEMENT_MOCK1(createLeafListInstance);
+    IMPLEMENT_MOCK1(deleteLeafListInstance);
     IMPLEMENT_MOCK1(createListInstance);
     IMPLEMENT_MOCK1(deleteListInstance);
     IMPLEMENT_MOCK2(executeRpc);

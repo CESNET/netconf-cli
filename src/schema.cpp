@@ -46,3 +46,12 @@ bool Schema::isLeaf(const schemaPath_& location, const ModuleNodePair& node) con
         return false;
     }
 }
+
+bool Schema::isLeafList(const std::string& path) const
+{
+    try {
+        return nodeType(path) == yang::NodeTypes::LeafList;
+    } catch (InvalidNodeException&) {
+        return false;
+    }
+}
