@@ -386,6 +386,27 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems(xpath) == expected);
     }
 
+    SECTION("leaf list")
+    {
+        DatastoreAccess::Tree expected;
+        REQUIRE_CALL(mock, write("/example-schema:addresses", std::nullopt, "0.0.0.0"s));
+        REQUIRE_CALL(mock, write("/example-schema:addresses", std::nullopt, "127.0.0.1"s));
+        datastore.createLeafListInstance("/example-schema:addresses[.='0.0.0.0']");
+        datastore.createLeafListInstance("/example-schema:addresses[.='127.0.0.1']");
+        datastore.commitChanges();
+        expected = {
+// libyang encodes the value inside the actual path, while sysrepo does not...
+// this will be fixed with the new sysrepo, which should use libyang too.
+#ifdef sysrepo_BACKEND
+            {"/example-schema:addresses", "0.0.0.0"s},
+            {"/example-schema:addresses", "127.0.0.1"s},
+#else
+            {"/example-schema:addresses[.='0.0.0.0']", "0.0.0.0"s},
+            {"/example-schema:addresses[.='127.0.0.1']", "127.0.0.1"s},
+#endif
+        };
+        REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
+    }
 
     SECTION("copying data from startup refreshes the data")
     {

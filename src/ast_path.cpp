@@ -26,6 +26,23 @@ leaf_::leaf_(const std::string& name)
 {
 }
 
+bool leafListElement_::operator==(const leafListElement_& b) const
+{
+    return this->m_name == b.m_name && this->m_value == b.m_value;
+}
+
+leafList_::leafList_ () = default;
+
+leafList_::leafList_(const std::string& name)
+    : m_name(name)
+{
+}
+
+bool leafList_::operator==(const leafList_& b) const
+{
+    return this->m_name == b.m_name;
+}
+
 bool module_::operator==(const module_& b) const
 {
     return this->m_name == b.m_name;
@@ -142,6 +159,10 @@ struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
         res << "]";
         return res.str();
     }
+    std::string operator()(const leafListElement_& node) const
+    {
+        return node.m_name + "[.=" + escapeListKeyString(leafDataToString(node.m_value)) + "]";
+    }
     std::string operator()(const nodeup_&) const
     {
         return "..";
@@ -200,6 +221,11 @@ struct dataSuffixToSchemaSuffix : boost::static_visitor<decltype(schemaNode_::m_
     auto operator()(const listElement_& listElement) const
     {
         return list_{listElement.m_name};
+    }
+
+    auto operator()(const leafListElement_& leafListElement) const
+    {
+        return leafList_{leafListElement.m_name};
     }
 
     template <typename T>
