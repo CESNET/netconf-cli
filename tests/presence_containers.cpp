@@ -107,6 +107,11 @@ TEST_CASE("presence containers")
             input = "list[quote='lol']";
         }
 
+        SECTION("no path")
+        {
+            input = " ";
+        }
+
         REQUIRE_THROWS_AS(parser.parseCommand("create " + input, errorStream), InvalidCommandException);
         REQUIRE_THROWS_AS(parser.parseCommand("delete " + input, errorStream), InvalidCommandException);
     }

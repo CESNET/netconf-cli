@@ -601,6 +601,11 @@ TEST_CASE("leaf editing")
             input = "set mod:dummy";
         }
 
+        SECTION("empty path")
+        {
+            input = "set ";
+        }
+
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
         REQUIRE(errorStream.str().find(expectedError) != std::string::npos);
     }
