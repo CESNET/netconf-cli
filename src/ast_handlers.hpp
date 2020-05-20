@@ -168,6 +168,12 @@ struct presenceContainerPath_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
+        if (ast.m_nodes.empty()) {
+            parserContext.m_errorMsg = "This container is not a presence container.";
+            _pass(context) = false;
+            return;
+        }
+
         try {
             boost::optional<std::string> module;
             if (ast.m_nodes.back().m_prefix)
@@ -191,6 +197,12 @@ struct listInstancePath_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
+        if (ast.m_nodes.empty()) {
+            parserContext.m_errorMsg = "This is not a list instance.";
+            _pass(context) = false;
+            return;
+        }
+
         if (ast.m_nodes.back().m_suffix.type() != typeid(listElement_)) {
             parserContext.m_errorMsg = "This is not a list instance.";
             _pass(context) = false;
@@ -235,6 +247,12 @@ struct leaf_path_class {
     void on_success(Iterator const&, Iterator const&, T&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
+        if (parserContext.currentSchemaPath().m_nodes.empty()) {
+            parserContext.m_errorMsg = "This is not a path to leaf.";
+            _pass(context) = false;
+            return;
+        }
+
         try {
             auto lastNode = parserContext.currentSchemaPath().m_nodes.back();
             auto leaf = boost::get<leaf_>(lastNode.m_suffix);
