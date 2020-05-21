@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c36b3baf_278bbb94",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-21T08:21:19Z",
+      "side": 1,
+      "message": "Now that it only applies to writable leafs, perhaps the name should be change to reflect that new purpose. `writableLeafPath`?",
+      "range": {
+        "startLine": 338,
+        "startChar": 0,
+        "endLine": 339,
+        "endChar": 60
+      },
+      "revId": "9f95a6e41468dd0e4362529ec11f1ec2fe474879",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae58cbf3_0b9494b0",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-21T08:21:19Z",
+      "side": 1,
+      "message": "nit: this confused for a bit because the patch looks as if this was a new method (yet there were no relevant changes to the header or to the abstract base class). I see that it\u0027s because the implementation got moved. No need to change, just something to keep in mind.",
+      "revId": "9f95a6e41468dd0e4362529ec11f1ec2fe474879",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "860b58a6_826ddb8b",
+        "filename": "src/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-21T08:21:19Z",
+      "side": 1,
+      "message": "This one deserves a docstring so that readers doesn\u0027t have to re-run that algorithm in their heads. Something simple like \"Ensure that node contains the module prefix. If not present, it\u0027s taken from the first node of the location.\"",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 1
+      },
+      "revId": "9f95a6e41468dd0e4362529ec11f1ec2fe474879",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02c8367a_39f08360",
+        "filename": "src/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-21T08:21:19Z",
+      "side": 1,
+      "message": "It is only used from the static schema, perhaps it should be moved to that file (so as to hint that future programmer that it\u0027s \"better\" to use that overload which works on schemaPath_/data_path_ and ModuleNodePair...)",
+      "revId": "9f95a6e41468dd0e4362529ec11f1ec2fe474879",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a153d98_a1cf8a22",
+        "filename": "tests/path_completion.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-21T08:21:19Z",
+      "side": 1,
+      "message": "nit: if these were one-per-line prior to this commit, this change would be easier to read. Nothing to change here now of course.",
+      "revId": "9f95a6e41468dd0e4362529ec11f1ec2fe474879",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
