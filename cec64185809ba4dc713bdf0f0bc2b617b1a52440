@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9112e06f_a0d076ba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-21T08:23:07Z",
+      "side": 1,
+      "message": "it would be nice to say a bit more about when it crashes -- completing paths/execution, nonsensical argument?",
+      "revId": "cec64185809ba4dc713bdf0f0bc2b617b1a52440",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8aaa234b_ac356a76",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-21T08:23:07Z",
+      "side": 1,
+      "message": "link to the bugreport here, please",
+      "revId": "cec64185809ba4dc713bdf0f0bc2b617b1a52440",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
