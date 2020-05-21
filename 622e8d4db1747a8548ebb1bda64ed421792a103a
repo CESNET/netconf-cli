@@ -46,6 +46,30 @@
       "revId": "622e8d4db1747a8548ebb1bda64ed421792a103a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dbd05088_d52b58b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-21T10:03:43Z",
+      "side": 1,
+      "message": "Actually, you had a point - I could probably reject empty paths right in PathParser. But right now, this was the easiest way to fix it",
+      "parentUuid": "cd5fb0cc_63cb14cc",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 64
+      },
+      "revId": "622e8d4db1747a8548ebb1bda64ed421792a103a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
