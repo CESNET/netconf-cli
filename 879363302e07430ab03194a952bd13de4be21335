@@ -322,6 +322,24 @@
       "revId": "879363302e07430ab03194a952bd13de4be21335",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f6608c8_885f0a44",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-21T08:28:53Z",
+      "side": 1,
+      "message": "You can remove that. Other functions tried to do this so that they have exclusivity of authentication callbacks for the duration of authenticating. I think that (my) code in connectPubkey() is actually totally broken, while connectKbdInteractive looks like something which could work.\n\nAnyway, in this context the function is supposed to set a per-library CB, so there\u0027s really nothing to guard against.",
+      "parentUuid": "57c8c96b_f8508809",
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
