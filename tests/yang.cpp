@@ -1189,10 +1189,6 @@ TEST_CASE("yangschema")
             REQUIRE(ys.leafTypeName("/example-schema:leafEnumTypedefRestricted") == "enumTypedef");
             REQUIRE(ys.leafTypeName("/example-schema:leafInt32") == std::nullopt);
         }
-
-        SECTION("moduleNodes")
-        {
-        }
     }
 
     SECTION("negative")
