@@ -68,11 +68,11 @@ PYBIND11_MODULE(netconf_cli_py, m) {
                     "server"_a, "port"_a=830, "username"_a, "interactive_auth"_a)
             .def("getItems", &NetconfAccess::getItems, "xpath"_a)
             .def("setLeaf", &NetconfAccess::setLeaf, "xpath"_a, "value"_a)
-            .def("commitChanges", &NetconfAccess::commitChanges)
-            .def("executeRpc", &NetconfAccess::executeRpc, "rpc"_a, "input"_a=DatastoreAccess::Tree{})
-            .def("createListInstance", &NetconfAccess::createListInstance, "xpath"_a)
-            .def("deleteListInstance", &NetconfAccess::deleteListInstance, "xpath"_a)
             .def("createPresenceContainer", &NetconfAccess::createPresenceContainer, "xpath"_a)
             .def("deletePresenceContainer", &NetconfAccess::deletePresenceContainer, "xpath"_a)
+            .def("createListInstance", &NetconfAccess::createListInstance, "xpath"_a)
+            .def("deleteListInstance", &NetconfAccess::deleteListInstance, "xpath"_a)
+            .def("executeRpc", &NetconfAccess::executeRpc, "rpc"_a, "input"_a=DatastoreAccess::Tree{})
+            .def("commitChanges", &NetconfAccess::commitChanges)
             ;
 }
