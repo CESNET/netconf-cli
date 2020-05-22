@@ -301,6 +301,7 @@ if(WITH_PYTHON_BINDINGS)
         add_test(NAME test_netconf_cli_py COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py)
         set_tests_properties(test_netconf_cli_py PROPERTIES RESOURCE_LOCK sysrepo)
         set_property(TEST test_netconf_cli_py APPEND PROPERTY FIXTURES_REQUIRED netopeer_running)
+        set_property(TEST test_netconf_cli_py APPEND PROPERTY FIXTURES_REQUIRED example-schema_setup)
 
         set(sanitizer_active OFF)
         # FIXME: this just sucks. The detection is very unreliable (one could use something like
