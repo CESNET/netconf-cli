@@ -45,7 +45,7 @@ if [[ $ZUUL_JOB_NAME =~ .*-tsan ]]; then
     export LDFLAGS="-fsanitize=thread ${LDFLAGS}"
 fi
 
-if [[ $ZUUL_JOB_NAME =~ -gcc$ ]]; then
+if [[ ${ZUUL_JOB_NAME%%-cover?(-previous|-diff)} =~ -gcc$ ]]; then
     # Python and ASAN (and, presumably, all other sanitizers) are tricky to use from a Python DSO,
     # I was, e.g., getting unrelated failures from libyang's thread-local global access (ly_errno)
     # even when correctly injecting the ASAN runtime via LD_PRELOAD. Let's just give up and only
