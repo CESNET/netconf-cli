@@ -41,6 +41,7 @@ public:
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::TypeInfo leafType(const std::string& path) const override;
+    /** @brief If the leaf type is a typedef, returns the typedef name. */
     std::optional<std::string> leafTypeName(const std::string& path) const override;
     std::string leafrefPath(const std::string& leafrefPath) const override;
     std::set<ModuleNodePair> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const override;
