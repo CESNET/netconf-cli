@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "11c7b174_10636fb7",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-26T08:12:59Z",
+      "side": 1,
+      "message": "Are you going to \"clean\" the XPaths in the output of `get` so that the [] are gone?",
+      "revId": "762da34d3dea6888ccf95b1da07039da144a3441",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84fb3eb4_876f42d7",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-26T08:12:59Z",
+      "side": 1,
+      "message": "nit: consider turning this into a switch() in a follow-up patch",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 9
+      },
+      "revId": "762da34d3dea6888ccf95b1da07039da144a3441",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da223c9a_ad594f5f",
+        "filename": "tests/leaflist.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-26T08:12:59Z",
+      "side": 1,
+      "message": "nit: I think this can go to tests/list_manipulation.cpp",
+      "revId": "762da34d3dea6888ccf95b1da07039da144a3441",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4728da4b_058f2137",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-26T08:12:59Z",
+      "side": 1,
+      "message": "How come it\u0027s a string and not a LeafList?",
+      "revId": "762da34d3dea6888ccf95b1da07039da144a3441",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
