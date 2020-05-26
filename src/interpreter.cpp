@@ -65,9 +65,9 @@ void Interpreter::operator()(const cd_& cd) const
 
 void Interpreter::operator()(const create_& create) const
 {
-    if (create.m_path.m_nodes.back().m_suffix.type() == typeid(listElement_))
+    if (std::holds_alternative<listElement_>(create.m_path.m_nodes.back().m_suffix))
         m_datastore.createListInstance(absolutePathFromCommand(create));
-    else if (create.m_path.m_nodes.back().m_suffix.type() == typeid(leafListElement_))
+    if (std::holds_alternative<leafListElement_>(create.m_path.m_nodes.back().m_suffix))
         m_datastore.createLeafListInstance(absolutePathFromCommand(create));
     else
         m_datastore.createPresenceContainer(absolutePathFromCommand(create));
@@ -75,9 +75,9 @@ void Interpreter::operator()(const create_& create) const
 
 void Interpreter::operator()(const delete_& delet) const
 {
-    if (delet.m_path.m_nodes.back().m_suffix.type() == typeid(container_))
+    if (std::holds_alternative<container_>(delet.m_path.m_nodes.back().m_suffix))
         m_datastore.deletePresenceContainer(absolutePathFromCommand(delet));
-    else if (delet.m_path.m_nodes.back().m_suffix.type() == typeid(leafListElement_))
+    if (std::holds_alternative<leafListElement_>(delet.m_path.m_nodes.back().m_suffix))
         m_datastore.deleteLeafListInstance(absolutePathFromCommand(delet));
     else
         m_datastore.deleteListInstance(absolutePathFromCommand(delet));
