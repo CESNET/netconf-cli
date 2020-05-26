@@ -231,6 +231,11 @@ std::string Interpreter::absolutePathFromCommand(const T& command) const
 }
 
 struct pathToStringVisitor : boost::static_visitor<std::string> {
+    std::string operator()(const module_& path) const
+    {
+        using namespace std::string_literals;
+        return "/"s + boost::get<module_>(path).m_name + ":*";
+    }
     std::string operator()(const schemaPath_& path) const
     {
         return pathToSchemaString(path, Prefixes::WhenNeeded);
@@ -242,6 +247,11 @@ struct pathToStringVisitor : boost::static_visitor<std::string> {
 };
 
 struct getPathScopeVisitor : boost::static_visitor<Scope> {
+    Scope operator()(const module_&) const
+    {
+        throw std::logic_error("Interpreter: a top-level module has no scope.");
+    }
+
     template <typename T>
     Scope operator()(const T& path) const
     {
@@ -258,11 +268,10 @@ std::string Interpreter::absolutePathFromCommand(const get_& get) const
 
     const auto path = *get.m_path;
     if (path.type() == typeid(module_)) {
-        return "/"s + boost::get<module_>(path).m_name + ":*";
+        return boost::apply_visitor(pathToStringVisitor(), path);
     } else {
-        auto actualPath = boost::get<boost::variant<dataPath_, schemaPath_>>(path);
-        std::string pathString = boost::apply_visitor(pathToStringVisitor(), actualPath);
-        auto pathScope{boost::apply_visitor(getPathScopeVisitor(), actualPath)};
+        std::string pathString = boost::apply_visitor(pathToStringVisitor(), path);
+        auto pathScope{boost::apply_visitor(getPathScopeVisitor(), path)};
 
         if (pathScope == Scope::Absolute) {
             return pathString;
