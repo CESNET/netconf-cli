@@ -197,13 +197,7 @@ struct listInstancePath_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (ast.m_nodes.empty()) {
-            parserContext.m_errorMsg = "This is not a list instance.";
-            _pass(context) = false;
-            return;
-        }
-
-        if (!std::holds_alternative<listElement_>(ast.m_nodes.back().m_suffix)) {
+        if (ast.m_nodes.empty() || !std::holds_alternative<listElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a list instance.";
             _pass(context) = false;
         }
