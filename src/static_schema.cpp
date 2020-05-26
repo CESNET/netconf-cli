@@ -194,6 +194,30 @@ std::set<ModuleNodePair> StaticSchema::availableNodes(const boost::variant<dataP
     return res;
 }
 
+struct impl_nodeType {
+
+    yang::NodeTypes operator()(const yang::container& cont)
+    {
+        if (cont.m_presence == yang::ContainerTraits::Presence) {
+            return yang::NodeTypes::PresenceContainer;
+        }
+        return yang::NodeTypes::Container;
+    }
+    yang::NodeTypes operator()(const yang::list&)
+    {
+        return yang::NodeTypes::List;
+    }
+    yang::NodeTypes operator()(const yang::leaf&)
+    {
+        return yang::NodeTypes::Leaf;
+
+    }
+    yang::NodeTypes operator()(const yang::leaflist&)
+    {
+        return yang::NodeTypes::LeafList;
+    }
+};
+
 yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
@@ -201,27 +225,7 @@ yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const Module
     try {
         auto targetNode = children(locationString).at(fullName);
 
-        if (std::holds_alternative<yang::container>(targetNode.m_nodeType)) {
-            if (std::get<yang::container>(targetNode.m_nodeType).m_presence == yang::ContainerTraits::Presence) {
-                return yang::NodeTypes::PresenceContainer;
-            }
-            return yang::NodeTypes::Container;
-        }
-
-        if (std::holds_alternative<yang::list>(targetNode.m_nodeType)) {
-            return yang::NodeTypes::List;
-        }
-
-        if (std::holds_alternative<yang::leaf>(targetNode.m_nodeType)) {
-            return yang::NodeTypes::Leaf;
-        }
-
-        if (std::holds_alternative<yang::leaflist>(targetNode.m_nodeType)) {
-            return yang::NodeTypes::LeafList;
-        }
-
-        throw std::runtime_error{"StaticSchema::nodeType: unsupported type"};
-
+        return std::visit(impl_nodeType{}, targetNode.m_nodeType);
     } catch (std::out_of_range&) {
         throw InvalidNodeException();
     }
