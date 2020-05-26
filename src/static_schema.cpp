@@ -49,7 +49,7 @@ bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair&
     assert(isList(location, node));
 
     const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& list = boost::get<yang::list>(child.m_nodeType);
+    const auto& list = std::get<yang::list>(child.m_nodeType);
     return list.m_keys.find(key) != list.m_keys.end();
 }
 
@@ -59,7 +59,7 @@ const std::set<std::string> StaticSchema::listKeys(const schemaPath_& location, 
     assert(isList(location, node));
 
     const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& list = boost::get<yang::list>(child.m_nodeType);
+    const auto& list = std::get<yang::list>(child.m_nodeType);
     return list.m_keys;
 }
 
@@ -128,12 +128,12 @@ yang::TypeInfo StaticSchema::leafType(const schemaPath_& location, const ModuleN
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     auto nodeType = children(locationString).at(fullNodeName(location, node)).m_nodeType;
-    if (nodeType.type() == typeid(yang::leaf)) {
-        return boost::get<yang::leaf>(nodeType).m_type;
+    if (std::holds_alternative<yang::leaf>(nodeType)) {
+        return std::get<yang::leaf>(nodeType).m_type;
     }
 
-    if (nodeType.type() == typeid(yang::leaflist)) {
-        return boost::get<yang::leaflist>(nodeType).m_type;
+    if (std::holds_alternative<yang::leaflist>(nodeType)) {
+        return std::get<yang::leaflist>(nodeType).m_type;
     }
 
     throw std::logic_error("StaticSchema::leafType: Path is not a leaf or a leaflist");
@@ -143,7 +143,7 @@ yang::TypeInfo StaticSchema::leafType(const std::string& path) const
 {
     auto locationString = stripLastNodeFromPath(path);
     auto node = lastNodeOfSchemaPath(path);
-    return boost::get<yang::leaf>(children(locationString).at(node).m_nodeType).m_type;
+    return std::get<yang::leaf>(children(locationString).at(node).m_nodeType).m_type;
 }
 
 std::set<ModuleNodePair> StaticSchema::availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const
@@ -201,22 +201,22 @@ yang::NodeTypes StaticSchema::nodeType(const schemaPath_& location, const Module
     try {
         auto targetNode = children(locationString).at(fullName);
 
-        if (targetNode.m_nodeType.type() == typeid(yang::container)) {
-            if (boost::get<yang::container>(targetNode.m_nodeType).m_presence == yang::ContainerTraits::Presence) {
+        if (std::holds_alternative<yang::container>(targetNode.m_nodeType)) {
+            if (std::get<yang::container>(targetNode.m_nodeType).m_presence == yang::ContainerTraits::Presence) {
                 return yang::NodeTypes::PresenceContainer;
             }
             return yang::NodeTypes::Container;
         }
 
-        if (targetNode.m_nodeType.type() == typeid(yang::list)) {
+        if (std::holds_alternative<yang::list>(targetNode.m_nodeType)) {
             return yang::NodeTypes::List;
         }
 
-        if (targetNode.m_nodeType.type() == typeid(yang::leaf)) {
+        if (std::holds_alternative<yang::leaf>(targetNode.m_nodeType)) {
             return yang::NodeTypes::Leaf;
         }
 
-        if (targetNode.m_nodeType.type() == typeid(yang::leaflist)) {
+        if (std::holds_alternative<yang::leaflist>(targetNode.m_nodeType)) {
             return yang::NodeTypes::LeafList;
         }
 

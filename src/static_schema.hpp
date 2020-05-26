@@ -43,7 +43,7 @@ enum class AccessType {
 };
 }
 
-using NodeType = boost::variant<yang::container, yang::list, yang::leaf, yang::leaflist, yang::module>;
+using NodeType = std::variant<yang::container, yang::list, yang::leaf, yang::leaflist, yang::module>;
 
 struct NodeInfo {
     NodeType m_nodeType;
