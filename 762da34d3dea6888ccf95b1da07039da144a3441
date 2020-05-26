@@ -127,6 +127,24 @@
       "revId": "762da34d3dea6888ccf95b1da07039da144a3441",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0ad4be3d_b2e57b30",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-26T22:48:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4728da4b_058f2137",
+      "revId": "762da34d3dea6888ccf95b1da07039da144a3441",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
