@@ -124,8 +124,7 @@ bool dataPath_::operator==(const dataPath_& b) const
     return this->m_nodes == b.m_nodes;
 }
 
-
-struct nodeToSchemaStringVisitor : public boost::static_visitor<std::string> {
+struct nodeToSchemaStringVisitor {
     std::string operator()(const nodeup_&) const
     {
         return "..";
@@ -148,7 +147,7 @@ std::string escapeListKeyString(const std::string& what)
     }
 }
 
-struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
+struct nodeToDataStringVisitor {
     std::string operator()(const listElement_& node) const
     {
         std::ostringstream res;
@@ -176,7 +175,7 @@ struct nodeToDataStringVisitor : public boost::static_visitor<std::string> {
 
 std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node)
 {
-    return boost::apply_visitor(nodeToSchemaStringVisitor(), node.m_suffix);
+    return std::visit(nodeToSchemaStringVisitor(), node.m_suffix);
 }
 
 std::string pathToDataString(const dataPath_& path, Prefixes prefixes)
@@ -188,9 +187,9 @@ std::string pathToDataString(const dataPath_& path, Prefixes prefixes)
 
     for (const auto& it : path.m_nodes) {
         if (it.m_prefix)
-            res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToDataStringVisitor(), it.m_suffix));
+            res = joinPaths(res, it.m_prefix.value().m_name + ":" + std::visit(nodeToDataStringVisitor(), it.m_suffix));
         else
-            res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + boost::apply_visitor(nodeToDataStringVisitor(), it.m_suffix));
+            res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + std::visit(nodeToDataStringVisitor(), it.m_suffix));
     }
 
     return res;
@@ -205,9 +204,9 @@ std::string pathToSchemaString(const schemaPath_& path, Prefixes prefixes)
 
     for (const auto& it : path.m_nodes) {
         if (it.m_prefix)
-            res = joinPaths(res, it.m_prefix.value().m_name + ":" + boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
+            res = joinPaths(res, it.m_prefix.value().m_name + ":" + std::visit(nodeToSchemaStringVisitor(), it.m_suffix));
         else
-            res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + boost::apply_visitor(nodeToSchemaStringVisitor(), it.m_suffix));
+            res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + std::visit(nodeToSchemaStringVisitor(), it.m_suffix));
     }
     return res;
 }
@@ -217,19 +216,20 @@ std::string pathToSchemaString(const dataPath_& path, Prefixes prefixes)
     return pathToSchemaString(dataPathToSchemaPath(path), prefixes);
 }
 
-struct dataSuffixToSchemaSuffix : boost::static_visitor<decltype(schemaNode_::m_suffix)> {
-    auto operator()(const listElement_& listElement) const
+struct dataSuffixToSchemaSuffix {
+    using ReturnType = decltype(schemaNode_::m_suffix);
+    ReturnType operator()(const listElement_& listElement) const
     {
         return list_{listElement.m_name};
     }
 
-    auto operator()(const leafListElement_& leafListElement) const
+    ReturnType operator()(const leafListElement_& leafListElement) const
     {
         return leafList_{leafListElement.m_name};
     }
 
     template <typename T>
-    auto operator()(const T& suffix) const
+    ReturnType operator()(const T& suffix) const
     {
         return suffix;
     }
@@ -239,7 +239,7 @@ schemaNode_ dataNodeToSchemaNode(const dataNode_& node)
 {
     schemaNode_ res;
     res.m_prefix = node.m_prefix;
-    res.m_suffix = boost::apply_visitor(dataSuffixToSchemaSuffix(), node.m_suffix);
+    res.m_suffix = std::visit(dataSuffixToSchemaSuffix(), node.m_suffix);
     return res;
 }
 

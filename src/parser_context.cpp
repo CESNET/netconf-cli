@@ -43,7 +43,7 @@ dataPath_ ParserContext::currentDataPath()
 void ParserContext::pushPathFragment(const dataNode_& node)
 {
     auto pushNode = [this] (auto& where, const auto& what) {
-        if (what.m_suffix.type() == typeid(nodeup_)) {
+        if (std::holds_alternative<nodeup_>(what.m_suffix)) {
             where.m_nodes.pop_back();
             if (where.m_nodes.empty()) {
                 m_topLevelModulePresent = false;

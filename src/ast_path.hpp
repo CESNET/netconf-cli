@@ -10,7 +10,6 @@
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/std_pair.hpp>
-#include <boost/variant/variant.hpp>
 #include <map>
 #include <vector>
 
@@ -83,7 +82,7 @@ struct list_ {
 
 struct schemaNode_ {
     boost::optional<module_> m_prefix;
-    boost::variant<container_, list_, nodeup_, leaf_, leafList_> m_suffix;
+    std::variant<container_, list_, nodeup_, leaf_, leafList_> m_suffix;
 
     schemaNode_();
     schemaNode_(decltype(m_suffix) node);
@@ -93,7 +92,7 @@ struct schemaNode_ {
 
 struct dataNode_ {
     boost::optional<module_> m_prefix;
-    boost::variant<container_, listElement_, nodeup_, leaf_, leafListElement_, leafList_, list_> m_suffix;
+    std::variant<container_, listElement_, nodeup_, leaf_, leafListElement_, leafList_, list_> m_suffix;
 
     dataNode_();
     dataNode_(decltype(m_suffix) node);
