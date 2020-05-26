@@ -170,19 +170,19 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                 parserContext.m_curModule = attr.m_prefix->m_name;
             }
 
-            if (attr.m_suffix.type() == typeid(leaf_)) {
+            if (std::holds_alternative<leaf_>(attr.m_suffix)) {
                 parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
                 ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
                                         return boost::optional<std::string>{it.m_name};
                                     }),
-                                    boost::get<leaf_>(attr.m_suffix).m_name};
+                                    std::get<leaf_>(attr.m_suffix).m_name};
                 parserContext.m_tmpListKeyLeafPath.m_node = node;
             }
 
             if constexpr (std::is_same<attribute_type, dataNode_>()) {
-                if (attr.m_suffix.type() == typeid(listElement_)) {
-                    parserContext.m_tmpListName = boost::get<listElement_>(attr.m_suffix).m_name;
-                    res = listSuffix.parse(begin, end, ctx, rctx, boost::get<listElement_>(attr.m_suffix).m_keys);
+                if (std::holds_alternative<listElement_>(attr.m_suffix)) {
+                    parserContext.m_tmpListName = std::get<listElement_>(attr.m_suffix).m_name;
+                    res = listSuffix.parse(begin, end, ctx, rctx, std::get<listElement_>(attr.m_suffix).m_keys);
 
                     // FIXME: think of a better way to do this, that is, get rid of manual iterator reverting
                     if (!res) {
@@ -190,26 +190,26 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                         // If we don't, we fail the whole symbol table.
                         if constexpr (PARSER_MODE == NodeParserMode::IncompleteDataNode) {
                             res = true;
-                            attr.m_suffix = list_{boost::get<listElement_>(attr.m_suffix).m_name};
+                            attr.m_suffix = list_{std::get<listElement_>(attr.m_suffix).m_name};
                         } else {
                             begin = saveIter;
                         }
                     }
                 }
 
-                if (attr.m_suffix.type() == typeid(leafListElement_)) {
+                if (std::holds_alternative<leafListElement_>(attr.m_suffix)) {
                     parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
                     ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
                                             return boost::optional<std::string>{it.m_name};
                                         }),
-                                        boost::get<leafListElement_>(attr.m_suffix).m_name};
+                                        std::get<leafListElement_>(attr.m_suffix).m_name};
                     parserContext.m_tmpListKeyLeafPath.m_node = node;
-                    res = leafListValue.parse(begin, end, ctx, rctx, boost::get<leafListElement_>(attr.m_suffix).m_value);
+                    res = leafListValue.parse(begin, end, ctx, rctx, std::get<leafListElement_>(attr.m_suffix).m_value);
 
                     if (!res) {
                         if constexpr (PARSER_MODE == NodeParserMode::IncompleteDataNode) {
                             res = true;
-                            attr.m_suffix = leafList_{boost::get<leafListElement_>(attr.m_suffix).m_name};
+                            attr.m_suffix = leafList_{std::get<leafListElement_>(attr.m_suffix).m_name};
                         } else {
                             begin = saveIter;
                         }
@@ -303,7 +303,7 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
         if constexpr (PARSER_MODE == PathParserMode::AnyPath) {
             // If our data path already has some listElement_ fragments, we can't parse rest of the path as a schema path
             auto hasLists = std::any_of(attrData.m_nodes.begin(), attrData.m_nodes.end(),
-                [] (const auto& node) { return node.m_suffix.type() == typeid(listElement_); });
+                [] (const auto& node) { return std::holds_alternative<listElement_>(node.m_suffix); });
             // If parsing failed, or if there's more input we try parsing schema nodes.
             if (!hasLists) {
                 if (!res || !pathEnd.parse(begin, end, ctx, rctx, x3::unused)) {
