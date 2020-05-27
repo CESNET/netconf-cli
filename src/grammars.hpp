@@ -74,7 +74,7 @@ struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
     command_names_table()
     {
         boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([this](auto cmd) {
-            add(commandNamesVisitor()(cmd), decltype(help_::m_cmd)(cmd));
+            add(commandNamesVisitor(cmd), decltype(help_::m_cmd)(cmd));
         });
     }
 } const command_names;
