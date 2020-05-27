@@ -20,15 +20,6 @@ const std::unordered_map<std::string, NodeInfo>& StaticSchema::children(const st
     return m_nodes.at(name);
 }
 
-bool StaticSchema::nodeExists(const std::string& location, const std::string& node) const
-{
-    if (node.empty())
-        return true;
-    const auto& childrenRef = children(location);
-
-    return childrenRef.find(node) != childrenRef.end();
-}
-
 bool StaticSchema::isModule(const std::string& name) const
 {
     return m_modules.find(name) != m_modules.end();
