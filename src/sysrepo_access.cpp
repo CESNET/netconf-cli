@@ -62,7 +62,7 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
     }
 }
 
-struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
+struct valFromValue {
     sysrepo::S_Val operator()(const enum_& value) const
     {
         return std::make_shared<sysrepo::Val>(value.m_value.c_str(), SR_ENUM_T);
@@ -101,7 +101,7 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
     }
 };
 
-struct updateSrValFromValue : boost::static_visitor<void> {
+struct updateSrValFromValue {
     std::string xpath;
     sysrepo::S_Val v;
     updateSrValFromValue(const std::string& xpath, sysrepo::S_Val v)
@@ -224,7 +224,7 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path)
 void SysrepoAccess::setLeaf(const std::string& path, leaf_data_ value)
 {
     try {
-        m_session->set_item(path.c_str(), boost::apply_visitor(valFromValue(), value));
+        m_session->set_item(path.c_str(), std::visit(valFromValue(), value));
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
@@ -308,7 +308,7 @@ DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string &path, const T
     {
         size_t i = 0;
         for (const auto& [k, v] : input) {
-            boost::apply_visitor(updateSrValFromValue(joinPaths(path, k), srInput->val(i)), v);
+            std::visit(updateSrValFromValue(joinPaths(path, k), srInput->val(i)), v);
             ++i;
         }
     }
@@ -392,7 +392,7 @@ std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
     auto wantedTree = *(m_schema->dataNodeFromPath(path)->find_path(path.c_str())->data().begin());
     std::copy_if(lists.begin(), lists.end(), std::inserter(instances, instances.end()), [this, pathToCheck=wantedTree->schema()->path()](const auto& item) {
         // This filters out non-instances.
-        if (item.second.type() != typeid(special_) || boost::get<special_>(item.second).m_value != SpecialValue::List) {
+        if (!std::holds_alternative<special_>(item.second) || std::get<special_>(item.second).m_value != SpecialValue::List) {
             return false;
         }
 

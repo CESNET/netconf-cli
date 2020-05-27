@@ -8,7 +8,7 @@
 #pragma once
 
 #include <boost/optional.hpp>
-#include <boost/variant.hpp>
+#include <variant>
 
 struct enum_ {
     enum_();
@@ -68,7 +68,7 @@ enum class Datastore {
 
 std::string specialValueToString(const special_& value);
 
-using leaf_data_ = boost::variant<enum_,
+using leaf_data_ = std::variant<enum_,
                                   binary_,
                                   empty_,
                                   identityRef_,
