@@ -121,7 +121,7 @@ public:
         size_t i = 0;
         for (auto it = data.cbegin(); it != data.cend(); ++it, ++i) {
             std::string valuePath = it->first;
-            boost::apply_visitor(leafDataToSysrepoVal(out->val(i), valuePath), it->second);
+            std::visit(leafDataToSysrepoVal(out->val(i), valuePath), it->second);
         }
         return SR_ERR_OK;
     }

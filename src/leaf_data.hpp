@@ -129,7 +129,7 @@ struct impl_LeafData {
     {
         createSetSuggestions(type);
         auto checkValidEnum = [this, type] (auto& ctx) {
-            if (type.m_allowedValues.count(boost::get<enum_>(attr)) == 0) {
+            if (type.m_allowedValues.count(std::get<enum_>(attr)) == 0) {
                 _pass(ctx) = false;
                 parserContext.m_errorMsg = "leaf data type mismatch: Expected an enum here. Allowed values:";
                 for (const auto& it : type.m_allowedValues) {
@@ -143,7 +143,7 @@ struct impl_LeafData {
     {
         createSetSuggestions(type);
         auto checkValidIdentity = [this, type] (auto& ctx) {
-            identityRef_ pair{boost::get<identityRef_>(_attr(ctx))};
+            identityRef_ pair{std::get<identityRef_>(_attr(ctx))};
             if (!pair.m_prefix) {
                 pair.m_prefix = module_{parserContext.currentSchemaPath().m_nodes.front().m_prefix.get().m_name};
             }

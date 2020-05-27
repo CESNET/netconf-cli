@@ -16,7 +16,10 @@
 
 std::ostream& operator<<(std::ostream& s, const set_ cmd)
 {
-    return s << "Command SET {path: " << pathToSchemaString(cmd.m_path, Prefixes::Always) << ", type " << boost::core::demangle(cmd.m_data.type().name()) << ", data: " << leafDataToString(cmd.m_data) << "}";
+    auto variantTypeToString = [] (const auto& var) {
+        return boost::core::demangle(typeid(var).name());
+    };
+    return s << "Command SET {path: " << pathToSchemaString(cmd.m_path, Prefixes::Always) << ", type " << std::visit(variantTypeToString, cmd.m_data) << ", data: " << leafDataToString(cmd.m_data) << "}";
 }
 
 TEST_CASE("leaf editing")

@@ -28,7 +28,10 @@ std::ostream& operator<<(std::ostream& s, const std::vector<std::map<std::string
         std::ostringstream ss;
         ss << "    {" << std::endl << "        ";
         std::transform(map.begin(), map.end(), std::experimental::make_ostream_joiner(ss, ", \n        "), [](const auto& keyValue){
-            return "{" + keyValue.first + "{" + boost::core::demangle(keyValue.second.type().name()) + "}" + ", " + leafDataToString(keyValue.second) + "}";
+            auto variantTypeToString = [] (const auto& var) {
+                return boost::core::demangle(typeid(var).name());
+            };
+            return "{" + keyValue.first + "{" + std::visit(variantTypeToString, keyValue.second) + "}" + ", " + leafDataToString(keyValue.second) + "}";
         });
         ss << std::endl << "    }";
         return ss.str();

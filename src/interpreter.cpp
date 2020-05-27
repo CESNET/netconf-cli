@@ -29,8 +29,8 @@ void Interpreter::operator()(const set_& set) const
     auto data = set.m_data;
 
     // If the user didn't supply a module prefix for identityref, we need to add it ourselves
-    if (data.type() == typeid(identityRef_)) {
-        auto identityRef = boost::get<identityRef_>(data);
+    if (std::holds_alternative<identityRef_>(data)) {
+        auto identityRef = std::get<identityRef_>(data);
         if (!identityRef.m_prefix) {
             identityRef.m_prefix = set.m_path.m_nodes.front().m_prefix.value();
             data = identityRef;
@@ -44,7 +44,7 @@ void Interpreter::operator()(const get_& get) const
     auto items = m_datastore.getItems(absolutePathFromCommand(get));
     for (auto it = items.begin(); it != items.end(); it++) {
         auto [path, value] = *it;
-        if (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
+        if (std::holds_alternative<special_>(value) && std::get<special_>(value).m_value == SpecialValue::LeafList) {
             auto leafListPrefix = path;
             std::cout << path << " = " << leafDataToString(value) << std::endl;
             ++it;

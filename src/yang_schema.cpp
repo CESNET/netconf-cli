@@ -6,6 +6,7 @@
  *
 */
 
+#include <boost/variant.hpp>
 #include <libyang/Libyang.hpp>
 #include <libyang/Tree_Data.hpp>
 #include <libyang/Tree_Schema.hpp>
