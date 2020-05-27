@@ -18,7 +18,7 @@ std::set<Completion> generateMissingKeyCompletionSet(std::set<std::string> keysN
 std::string leafDataToCompletion(const leaf_data_& value)
 {
     // Only string-like values need to be quoted
-    if (value.type() == typeid(std::string)) {
+    if (std::holds_alternative<std::string>(value)) {
         return escapeListKeyString(leafDataToString(value));
     }
     return leafDataToString(value);

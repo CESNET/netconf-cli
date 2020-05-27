@@ -7,6 +7,7 @@
 */
 #pragma once
 
+#include <boost/variant.hpp>
 #include "completion.hpp"
 #include "data_query.hpp"
 #include "schema.hpp"

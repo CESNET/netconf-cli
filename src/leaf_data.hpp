@@ -12,6 +12,61 @@
 #include "common_parsers.hpp"
 #include "leaf_data_type.hpp"
 #include "schema.hpp"
+#include <variant>
+
+// From https://github.com/boostorg/spirit/issues/270#issuecomment-450593508
+#include <boost/mpl/vector.hpp>
+#include <boost/spirit/home/x3/support/traits/is_variant.hpp>
+#include <boost/spirit/home/x3/support/traits/tuple_traits.hpp>
+#include <boost/spirit/home/x3/support/traits/variant_find_substitute.hpp>
+#include <boost/spirit/home/x3/support/traits/variant_has_substitute.hpp>
+
+// Based on: boost/spirit/home/x3/support/traits/variant_find_substitute.hpp
+namespace boost::spirit::x3::traits
+{
+  template<typename... Ts> struct is_variant<std::variant<Ts...>> : mpl::true_ {};
+
+  template<typename... Ts, typename Attribute>
+  struct variant_find_substitute<std::variant<Ts...>, Attribute>
+  {
+    using variant_type = std::variant<Ts...>;
+    using types = mpl::vector<Ts...>;
+    using end = typename mpl::end<types>::type;
+
+    using iter_1 = typename mpl::find_if<types, is_same<mpl::_1, Attribute>>::type;
+
+    using iter = typename mpl::eval_if<is_same<iter_1, end>,
+                                       mpl::find_if<types, traits::is_substitute<mpl::_1, Attribute>>,
+                                       mpl::identity<iter_1>>::type;
+
+    using type = typename mpl::eval_if<is_same<iter, end>,
+                                       mpl::identity<Attribute>,
+                                       mpl::deref<iter>>::type;
+  };
+
+  template<typename... Ts>
+  struct variant_find_substitute<std::variant<Ts...>, std::variant<Ts...>>
+      : mpl::identity<std::variant<Ts...>> {};
+
+  template<typename... Ts, typename Attribute>
+  struct variant_has_substitute_impl<std::variant<Ts...>, Attribute>
+  {
+    // Find a type from the variant that can be a substitute for Attribute.
+    // return true_ if one is found, else false_
+
+    using types = mpl::vector<Ts...>;
+
+    using end = typename mpl::end<types>::type;
+
+    using iter_1 = typename mpl::find_if<types, is_same<mpl::_1, Attribute>>::type;
+
+    using iter = typename mpl::eval_if<is_same<iter_1, end>,
+                                       mpl::find_if<types, traits::is_substitute<mpl::_1, Attribute>>,
+                                       mpl::identity<iter_1>>::type;
+
+    using type = mpl::not_<is_same<iter, end>>;
+  };
+}
 namespace x3 = boost::spirit::x3;
 
 template <typename TYPE>
@@ -129,7 +184,7 @@ struct impl_LeafData {
     {
         createSetSuggestions(type);
         auto checkValidEnum = [this, type] (auto& ctx) {
-            if (type.m_allowedValues.count(boost::get<enum_>(attr)) == 0) {
+            if (type.m_allowedValues.count(std::get<enum_>(attr)) == 0) {
                 _pass(ctx) = false;
                 parserContext.m_errorMsg = "leaf data type mismatch: Expected an enum here. Allowed values:";
                 for (const auto& it : type.m_allowedValues) {
@@ -143,7 +198,7 @@ struct impl_LeafData {
     {
         createSetSuggestions(type);
         auto checkValidIdentity = [this, type] (auto& ctx) {
-            identityRef_ pair{boost::get<identityRef_>(_attr(ctx))};
+            identityRef_ pair{std::get<identityRef_>(_attr(ctx))};
             if (!pair.m_prefix) {
                 pair.m_prefix = module_{parserContext.currentSchemaPath().m_nodes.front().m_prefix.get().m_name};
             }

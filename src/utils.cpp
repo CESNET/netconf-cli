@@ -156,7 +156,7 @@ std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair)
     return fullNodeName(dataPathToSchemaPath(location), pair);
 }
 
-struct leafDataToStringVisitor : boost::static_visitor<std::string> {
+struct leafDataToStringVisitor {
     std::string operator()(const enum_& data) const
     {
         return data.m_value;
@@ -204,7 +204,7 @@ struct leafDataToStringVisitor : boost::static_visitor<std::string> {
 
 std::string leafDataToString(const leaf_data_ value)
 {
-    return boost::apply_visitor(leafDataToStringVisitor(), value);
+    return std::visit(leafDataToStringVisitor(), value);
 }
 
 struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {

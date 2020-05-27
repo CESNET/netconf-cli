@@ -7,6 +7,7 @@
 */
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/variant.hpp>
 #include "static_schema.hpp"
 #include "utils.hpp"
 
