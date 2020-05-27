@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "09eb90f6_f73a10eb",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-27T21:21:45Z",
+      "side": 1,
+      "message": "This line is now executed even for `listElement_` (previously, there was an if/else-if/else, now it\u0027s `if` followed by just if/else).",
+      "revId": "87d54b9c813ec212a1bfc2ac071ebf1f5e272867",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd46e1e3_507c26ac",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-27T21:21:45Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "87d54b9c813ec212a1bfc2ac071ebf1f5e272867",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
