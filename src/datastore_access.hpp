@@ -12,6 +12,7 @@
 #include <optional>
 #include <string>
 #include "ast_values.hpp"
+#include "list_instance.hpp"
 
 /*! \class DatastoreAccess
  *     \brief Abstract class for accessing a datastore
@@ -35,8 +36,6 @@ private:
 };
 
 class Schema;
-
-using ListInstance = std::map<std::string, leaf_data_>;
 
 class DatastoreAccess {
 public:

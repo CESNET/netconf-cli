@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "ast_values.hpp"
+#include "list_instance.hpp"
 
 enum class Prefixes {
     Always,
@@ -69,7 +70,7 @@ struct listElement_ {
     bool operator==(const listElement_& b) const;
 
     std::string m_name;
-    std::map<std::string, leaf_data_> m_keys;
+    ListInstance m_keys;
 };
 
 struct list_ {
