@@ -27,6 +27,7 @@ x3::rule<commit_class, commit_> const commit = "commit";
 x3::rule<describe_class, describe_> const describe = "describe";
 x3::rule<help_class, help_> const help = "help";
 x3::rule<copy_class, copy_> const copy = "copy";
+x3::rule<move_class, move_> const move = "move";
 x3::rule<command_class, command_> const command = "command";
 
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
@@ -134,11 +135,105 @@ auto const copy_def =
 auto const describe_def =
     describe_::name >> space_separator > (dataPathListEnd | anyPath);
 
+struct mode_table : x3::symbols<MoveMode> {
+    mode_table()
+    {
+        add
+            ("after", MoveMode::After)
+            ("before", MoveMode::Before)
+            ("begin", MoveMode::Begin)
+            ("end", MoveMode::End);
+    }
+} const mode_table;
+
+struct move_absolute_table : x3::symbols<yang::move::Absolute> {
+    move_absolute_table()
+    {
+        add
+            ("begin", yang::move::Absolute::Begin)
+            ("end", yang::move::Absolute::End);
+    }
+} const move_absolute_table;
+
+struct move_relative_table : x3::symbols<yang::move::Relative::Position> {
+    move_relative_table()
+    {
+        add
+            ("before", yang::move::Relative::Position::Before)
+            ("after", yang::move::Relative::Position::After);
+    }
+} const move_relative_table;
+
+struct move_args : x3::parser<move_args> {
+    using attribute_type = move_;
+    template <typename It, typename Ctx, typename RCtx>
+    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, move_& attr) const
+    {
+        ParserContext& parserContext = x3::get<parser_context_tag>(ctx);
+        dataPath_ movePath;
+        auto movePathGrammar = listInstancePath | leafListElementPath;
+        auto res = movePathGrammar.parse(begin, end, ctx, rctx, attr.m_source);
+        if (!res) {
+            parserContext.m_errorMsg = "Expected source path here:";
+            return false;
+        }
+
+        // Try absolute move first.
+        res = (space_separator >> move_absolute_table).parse(begin, end, ctx, rctx, attr.m_destination);
+        if (res) {
+            // Absolute move parsing succeeded, we don't need to parse anything else.
+            return true;
+        }
+
+        // If absolute move didn't succeed, try relative.
+        attr.m_destination = yang::move::Relative{};
+        res = (space_separator >> move_relative_table).parse(begin, end, ctx, rctx, std::get<yang::move::Relative>(attr.m_destination).m_position);
+
+        if (!res) {
+            parserContext.m_errorMsg = "Expected a move position (begin, end, before, after) here:";
+            return false;
+        }
+
+        if (std::holds_alternative<leafListElement_>(attr.m_source.m_nodes.back().m_suffix)) {
+            leaf_data_ value;
+            res = (space_separator >> leaf_data).parse(begin, end, ctx, rctx, value);
+            if (res) {
+                std::get<yang::move::Relative>(attr.m_destination).m_path = {{".", value}};
+            }
+        } else {
+            ListInstance listInstance;
+            // The source list instance will be stored inside the parser context path.
+            // The source list instance will be full data path (with keys included).
+            // However, m_tmpListPath is supposed to store a path with a list without the keys.
+            // So, I pop the last listElement_ (which has the keys) and put in a list_ (which doesn't have the keys).
+            // Example: /mod:cont/protocols[name='ftp'] gets turned into /mod:cont/protocols
+            parserContext.m_tmpListPath = parserContext.currentDataPath();
+            parserContext.m_tmpListPath.m_nodes.pop_back();
+            auto list = list_{std::get<listElement_>(attr.m_source.m_nodes.back().m_suffix).m_name};
+            parserContext.m_tmpListPath.m_nodes.push_back(dataNode_{attr.m_source.m_nodes.back().m_prefix, list});
+
+            res = (space_separator >> listSuffix).parse(begin, end, ctx, rctx, listInstance);
+            if (res) {
+                std::get<yang::move::Relative>(attr.m_destination).m_path = listInstance;
+            }
+        }
+
+        if (!res) {
+            parserContext.m_errorMsg = "Expected a destination here:";
+        }
+
+        return res;
+    }
+} const move_args;
+
+auto const move_def =
+    move_::name >> space_separator >> move_args;
+
 auto const createCommandSuggestions_def =
     x3::eps;
 
 auto const command_def =
-    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help];
+    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -155,5 +250,6 @@ BOOST_SPIRIT_DEFINE(delete_rule)
 BOOST_SPIRIT_DEFINE(describe)
 BOOST_SPIRIT_DEFINE(help)
 BOOST_SPIRIT_DEFINE(copy)
+BOOST_SPIRIT_DEFINE(move)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)
