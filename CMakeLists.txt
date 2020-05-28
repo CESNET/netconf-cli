@@ -222,6 +222,7 @@ if(BUILD_TESTING)
         set_tests_properties(setup_netopeer PROPERTIES FIXTURES_SETUP netopeer_configured)
         set_tests_properties(start_daemons PROPERTIES FIXTURES_REQUIRED netopeer_configured FIXTURES_SETUP netopeer_running)
         set_property(TEST kill_daemons APPEND PROPERTY DEPENDS example-schema_cleanup)
+        set_property(TEST kill_daemons APPEND PROPERTY FIXTURES_CLEANUP netopeer_running)
     endfunction()
 
     function(cli_test name)
@@ -298,8 +299,9 @@ if(WITH_PYTHON_BINDINGS)
         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/python_netconfaccess.py
             ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py @ONLY)
         add_test(NAME test_netconf_cli_py COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py)
-        set_tests_properties(test_netconf_cli_py PROPERTIES FIXTURES_REQUIRED netopeer_running RESOURCE_LOCK sysrepo DEPENDS example-schema_cleanup)
-        set_property(TEST kill_daemons APPEND PROPERTY DEPENDS test_netconf_cli_py)
+        set_tests_properties(test_netconf_cli_py PROPERTIES RESOURCE_LOCK sysrepo)
+        set_property(TEST test_netconf_cli_py APPEND PROPERTY FIXTURES_REQUIRED netopeer_running)
+        set_property(TEST test_netconf_cli_py APPEND PROPERTY FIXTURES_REQUIRED example-schema_setup)
 
         set(sanitizer_active OFF)
         # FIXME: this just sucks. The detection is very unreliable (one could use something like
