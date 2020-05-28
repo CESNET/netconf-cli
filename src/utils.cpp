@@ -235,3 +235,20 @@ std::string stripLeafListValueFromPath(const std::string& path)
     res.erase(res.find_last_of('['));
     return res;
 }
+
+std::string stripLastListInstanceFromPath(const std::string& path)
+{
+    auto res = path;
+    res.erase(res.find_first_of('[', res.find_last_of('/')));
+    return res;
+}
+
+std::string instanceToString(const std::string& modName, const ListInstance& instance)
+{
+    std::string instanceStr;
+    for (const auto& [key, value] : instance) {
+        using namespace std::string_literals;
+        instanceStr += "[" + modName + ":" + key + "=" + escapeListKeyString(leafDataToString(value)) + "]";
+    }
+    return instanceStr;
+}
