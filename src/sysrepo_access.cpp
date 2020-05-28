@@ -289,6 +289,47 @@ void SysrepoAccess::deleteListInstance(const std::string& path)
     }
 }
 
+sr_move_position_t toSrMoveOp(std::variant<Absolute, Relative> move)
+{
+    if (std::holds_alternative<Absolute>(move)) {
+        if (std::get<Absolute>(move) == Absolute::Begin) {
+            return SR_MOVE_FIRST;
+        } else {
+            return SR_MOVE_LAST;
+        }
+    } else {
+        if (std::get<Relative>(move).m_position == Relative::Position::After) {
+            return SR_MOVE_AFTER;
+        } else {
+            return SR_MOVE_BEFORE;
+        }
+    }
+}
+
+void SysrepoAccess::moveItem(const dataPath_& path, std::variant<Absolute, Relative> move)
+{
+    std::string destPathStr;
+    if (std::holds_alternative<Relative>(move)) {
+        auto relative = std::get<Relative>(move);
+        auto insertToPath = [path, relative] {
+            if (std::holds_alternative<leafListElement_>(path.m_nodes.back().m_suffix)) {
+                auto leafListElement = std::get<leafListElement_>(path.m_nodes.back().m_suffix);
+                leafListElement.m_value = relative.m_path.at(".");
+                return dataNode_{path.m_nodes.end()->m_prefix, leafListElement};
+            } else {
+                auto listElement = std::get<listElement_>(path.m_nodes.back().m_suffix);
+                listElement.m_keys = relative.m_path;
+                return dataNode_{path.m_nodes.end()->m_prefix, listElement};
+            }
+        }();
+        auto destPath = path;
+        destPath.m_nodes.pop_back();
+        destPath.m_nodes.push_back(insertToPath);
+        destPathStr = pathToDataString(destPath, Prefixes::WhenNeeded);
+    }
+    m_session->move_item(pathToDataString(path, Prefixes::WhenNeeded).c_str(), toSrMoveOp(move), destPathStr.c_str());
+}
+
 void SysrepoAccess::commitChanges()
 {
     try {

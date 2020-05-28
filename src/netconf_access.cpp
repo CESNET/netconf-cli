@@ -140,6 +140,31 @@ void NetconfAccess::deleteLeafListInstance(const std::string& path)
     doEditFromDataNode(node);
 }
 
+void NetconfAccess::moveItem(const dataPath_& source, std::variant<Absolute, Relative> move)
+{
+    auto pathStr = pathToDataString(source, Prefixes::WhenNeeded);
+    auto node = m_schema->dataNodeFromPath(pathStr);
+    auto sourceNode = *(node->find_path(pathStr.c_str())->data().begin());
+    if (std::holds_alternative<Absolute>(move)) {
+        if (std::get<Absolute>(move) == Absolute::Begin) {
+            sourceNode->insert_attr(m_schema->getYangModule("yang"), "insert", "first");
+        } else {
+            sourceNode->insert_attr(m_schema->getYangModule("yang"), "insert", "last");
+        }
+    } else {
+        auto relative = std::get<Relative>(move);
+        if (relative.m_position == Relative::Position::After) {
+            sourceNode->insert_attr(m_schema->getYangModule("yang"), "insert", "after");
+        } else {
+            sourceNode->insert_attr(m_schema->getYangModule("yang"), "insert", "before");
+        }
+
+        m_schema->attachMoveOpListInstance(sourceNode, relative.m_path);
+    }
+
+    doEditFromDataNode(sourceNode);
+}
+
 void NetconfAccess::doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode)
 {
     auto data = dataNode->print_mem(LYD_XML, 0);

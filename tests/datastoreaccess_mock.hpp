@@ -27,6 +27,7 @@ class MockDatastoreAccess : public trompeloeil::mock_interface<DatastoreAccess> 
     IMPLEMENT_MOCK1(deleteLeafListInstance);
     IMPLEMENT_MOCK1(createListInstance);
     IMPLEMENT_MOCK1(deleteListInstance);
+    IMPLEMENT_MOCK2(moveItem);
     IMPLEMENT_MOCK2(executeRpc);
 
     // Can't use IMPLEMENT_MOCK for private methods - IMPLEMENT_MOCK needs full visibility of the method
