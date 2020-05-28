@@ -83,4 +83,67 @@ TEST_CASE("list manipulation")
         REQUIRE(commandGet.type() == typeid(get_));
         REQUIRE(boost::get<get_>(commandGet) == expectedGet);
     }
+
+    SECTION("moving (leaf)list instances")
+    {
+        move_ expected;
+        SECTION("begin")
+        {
+            input = "move mod:addresses['1.2.3.4'] begin";
+            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expected.m_destination = Absolute::Begin;
+        }
+
+        SECTION("end")
+        {
+            input = "move mod:addresses['1.2.3.4'] end";
+            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expected.m_destination = Absolute::End;
+        }
+
+        SECTION("after")
+        {
+            input = "move mod:addresses['1.2.3.4'] after '0.0.0.0'";
+            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expected.m_destination = Relative {
+                Relative::Position::After,
+                {{".", "0.0.0.0"s}}
+            };
+        }
+
+        SECTION("before")
+        {
+            input = "move mod:addresses['1.2.3.4'] before '0.0.0.0'";
+            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expected.m_destination = Relative {
+                Relative::Position::Before,
+                {{".", "0.0.0.0"s}}
+            };
+        }
+
+        SECTION("list instance with destination")
+        {
+            input = "move mod:list[number=12] before [number=15]";
+            auto keys = std::map<std::string, leaf_data_>{
+                {"number", int32_t{12}}};
+            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
+            expected.m_destination = Relative {
+                Relative::Position::Before,
+                ListInstance{{"number", int32_t{15}}}
+            };
+        }
+
+        SECTION("list instance without destination")
+        {
+            input = "move mod:list[number=3] begin";
+            auto keys = std::map<std::string, leaf_data_>{
+                {"number", int32_t{3}}};
+            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
+            expected.m_destination = Absolute::Begin;
+        }
+
+        command_ commandMove = parser.parseCommand(input, errorStream);
+        REQUIRE(commandMove.type() == typeid(move_));
+        REQUIRE(boost::get<move_>(commandMove) == expected);
+    }
 }
