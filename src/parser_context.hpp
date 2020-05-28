@@ -26,7 +26,6 @@ struct ParserContext {
     boost::optional<std::string> m_curModule;
     std::string m_errorMsg;
     std::string m_tmpListName;
-    bool m_topLevelModulePresent = false;
 
     struct {
         schemaPath_ m_location;

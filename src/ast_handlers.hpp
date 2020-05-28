@@ -44,19 +44,7 @@ struct keyValue_class {
     }
 };
 
-struct node_identifier_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-
-        if (!parserContext.m_topLevelModulePresent) {
-            if (parserContext.m_errorMsg.empty())
-                parserContext.m_errorMsg = "You have to specify a top level module.";
-            _pass(context) = false;
-        }
-    }
-};
+struct node_identifier_class;
 
 struct key_identifier_class {
     template <typename T, typename Iterator, typename Context>
@@ -130,7 +118,6 @@ struct module_class {
 
         if (schema.isModule(ast.m_name)) {
             parserContext.m_curModule = ast.m_name;
-            parserContext.m_topLevelModulePresent = true;
         } else {
             parserContext.m_errorMsg = "Invalid module name.";
             _pass(context) = false;

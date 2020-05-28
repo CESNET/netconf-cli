@@ -13,14 +13,11 @@ ParserContext::ParserContext(const Schema& schema, const std::shared_ptr<const D
     , m_dataquery(dataQuery)
     , m_curPath(curDir)
 {
-    if (!currentDataPath().m_nodes.empty() && currentDataPath().m_nodes.at(0).m_prefix)
-        m_topLevelModulePresent = true;
 }
 
 void ParserContext::clearPath()
 {
     m_curPath = dataPath_{Scope::Absolute, {}};
-    m_topLevelModulePresent = false;
 }
 
 schemaPath_ ParserContext::currentSchemaPath()
@@ -42,12 +39,9 @@ dataPath_ ParserContext::currentDataPath()
 
 void ParserContext::pushPathFragment(const dataNode_& node)
 {
-    auto pushNode = [this] (auto& where, const auto& what) {
+    auto pushNode = [] (auto& where, const auto& what) {
         if (std::holds_alternative<nodeup_>(what.m_suffix)) {
             where.m_nodes.pop_back();
-            if (where.m_nodes.empty()) {
-                m_topLevelModulePresent = false;
-            }
         } else {
             where.m_nodes.push_back(what);
         }
@@ -67,13 +61,9 @@ void ParserContext::pushPathFragment(const schemaNode_& node)
     }
 
     boost::get<schemaPath_>(m_curPath).m_nodes.push_back(node);
-    if (currentSchemaPath().m_nodes.empty()) {
-        m_topLevelModulePresent = false;
-    }
 }
 
 void ParserContext::resetPath()
 {
     m_curPath = m_curPathOrig;
-    m_topLevelModulePresent = !currentDataPath().m_nodes.empty() && currentDataPath().m_nodes.at(0).m_prefix;
 }

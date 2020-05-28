@@ -219,7 +219,6 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
 
             if (res) {
                 parserContext.pushPathFragment(attr);
-                parserContext.m_topLevelModulePresent = true;
             }
 
             if (attr.m_prefix) {
