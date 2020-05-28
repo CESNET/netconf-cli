@@ -432,6 +432,90 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{});
     }
 
+    SECTION("moving leaflist instances")
+    {
+        DatastoreAccess::Tree expected;
+        {
+            REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "http"s)).TIMES(2);
+            REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "ftp"s));
+            REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "pop3"s));
+            REQUIRE_CALL(mock, write("/example-schema:protocols", "http"s, "ftp"s));
+            REQUIRE_CALL(mock, write("/example-schema:protocols", "ftp"s, "pop3"s));
+            datastore.createLeafListInstance("/example-schema:protocols[.='http']");
+            datastore.createLeafListInstance("/example-schema:protocols[.='ftp']");
+            datastore.createLeafListInstance("/example-schema:protocols[.='pop3']");
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:protocols", special_{SpecialValue::LeafList}},
+                {"/example-schema:protocols[.='http']", "http"s},
+                {"/example-schema:protocols[.='ftp']", "ftp"s},
+                {"/example-schema:protocols[.='pop3']", "pop3"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
+        }
+
+        dataPath_ sourcePath{Scope::Absolute, {}};
+        SECTION("begin")
+        {
+            REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "pop3"s));
+            sourcePath.m_nodes.push_back(dataNode_{module_{"example-schema"}, leafListElement_{"protocols", "pop3"s}});
+            datastore.moveItem(sourcePath, Absolute::Begin);
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:protocols", special_{SpecialValue::LeafList}},
+                {"/example-schema:protocols[.='pop3']", "pop3"s},
+                {"/example-schema:protocols[.='http']", "http"s},
+                {"/example-schema:protocols[.='ftp']", "ftp"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
+        }
+
+        SECTION("end")
+        {
+            sourcePath.m_nodes.push_back(dataNode_{module_{"example-schema"}, leafListElement_{"protocols", "http"s}});
+            REQUIRE_CALL(mock, write("/example-schema:protocols", "pop3"s, "http"s));
+            datastore.moveItem(sourcePath, Absolute::End);
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:protocols", special_{SpecialValue::LeafList}},
+                {"/example-schema:protocols[.='ftp']", "ftp"s},
+                {"/example-schema:protocols[.='pop3']", "pop3"s},
+                {"/example-schema:protocols[.='http']", "http"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
+        }
+
+        SECTION("after")
+        {
+            sourcePath.m_nodes.push_back(dataNode_{module_{"example-schema"}, leafListElement_{"protocols", "http"s}});
+            REQUIRE_CALL(mock, write("/example-schema:protocols", "ftp"s, "http"s));
+            datastore.moveItem(sourcePath, Relative{Relative::Position::After, {{".", "ftp"s}}});
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:protocols", special_{SpecialValue::LeafList}},
+                {"/example-schema:protocols[.='ftp']", "ftp"s},
+                {"/example-schema:protocols[.='http']", "http"s},
+                {"/example-schema:protocols[.='pop3']", "pop3"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
+        }
+
+        SECTION("before")
+        {
+            sourcePath.m_nodes.push_back(dataNode_{module_{"example-schema"}, leafListElement_{"protocols", "http"s}});
+            REQUIRE_CALL(mock, write("/example-schema:protocols", "ftp"s, "http"s));
+            datastore.moveItem(sourcePath, Relative{Relative::Position::Before, {{".", "pop3"s}}});
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:protocols", special_{SpecialValue::LeafList}},
+                {"/example-schema:protocols[.='ftp']", "ftp"s},
+                {"/example-schema:protocols[.='http']", "http"s},
+                {"/example-schema:protocols[.='pop3']", "pop3"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
+        }
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
 
