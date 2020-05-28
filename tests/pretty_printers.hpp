@@ -133,3 +133,39 @@ std::ostream& operator<<(std::ostream& s, const ls_& ls)
     s << "\nls_ {\n    " << ls.m_path << "}\n";
     return s;
 }
+
+auto moveModeToString(const MoveMode mode)
+{
+    switch (mode) {
+    case MoveMode::Begin:
+        return "begin";
+    case MoveMode::End:
+        return "end";
+    case MoveMode::Before:
+        return "before";
+    case MoveMode::After:
+        return "after";
+    }
+}
+
+std::ostream& operator<<(std::ostream& s, const boost::variant<ListInstance, leaf_data_>& destination)
+{
+    if (destination.type() == typeid(leaf_data_)) {
+        s << boost::get<leaf_data_>(destination);
+    } else {
+        s << boost::get<ListInstance>(destination);
+    }
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const move_& move)
+{
+    s << "\nmove_ {\n";
+    s << "    path: " << move.m_path;
+    s << "    move: Move {\n";
+    s << "      mode: " << moveModeToString(move.m_move.m_mode) << "\n";
+    s << "      destination: " << move.m_move.m_destination << "\n";
+    s << "    }\n";
+    s << "}\n";
+    return s;
+}

@@ -83,4 +83,66 @@ TEST_CASE("list manipulation")
         REQUIRE(commandGet.type() == typeid(get_));
         REQUIRE(boost::get<get_>(commandGet) == expectedGet);
     }
+
+    SECTION("moving (leaf)list instances")
+    {
+        dataPath_ expectedPath;
+        Move expectedMove;
+        SECTION("begin")
+        {
+            input = "move mod:addresses['1.2.3.4'] begin";
+            expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expectedMove.m_mode = MoveMode::Begin;
+        }
+
+        SECTION("end")
+        {
+            input = "move mod:addresses['1.2.3.4'] end";
+            expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expectedMove.m_mode = MoveMode::End;
+        }
+
+        SECTION("after")
+        {
+            input = "move mod:addresses['1.2.3.4'] after '0.0.0.0'";
+            expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expectedMove.m_mode = MoveMode::After;
+            expectedMove.m_destination = leaf_data_{"0.0.0.0"s};
+        }
+
+        SECTION("before")
+        {
+            input = "move mod:addresses['1.2.3.4'] before '0.0.0.0'";
+            expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expectedMove.m_mode = MoveMode::Before;
+            expectedMove.m_destination = leaf_data_{"0.0.0.0"s};
+        }
+
+        SECTION("list instance with destination")
+        {
+            input = "move mod:list[number=12] before [number=15]";
+            auto keys = std::map<std::string, leaf_data_>{
+                {"number", int32_t{12}}};
+            expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
+            expectedMove.m_mode = MoveMode::Before;
+            expectedMove.m_destination = ListInstance{{"number", int32_t{15}}};
+        }
+
+        SECTION("list instance without destination")
+        {
+            input = "move mod:list[number=3] begin";
+            auto keys = std::map<std::string, leaf_data_>{
+                {"number", int32_t{3}}};
+            expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
+            expectedMove.m_mode = MoveMode::Begin;
+        }
+
+        move_ expected;
+        expected.m_path = expectedPath;
+        expected.m_move = expectedMove;
+
+        command_ commandMove = parser.parseCommand(input, errorStream);
+        REQUIRE(commandMove.type() == typeid(move_));
+        REQUIRE(boost::get<move_>(commandMove) == expected);
+    }
 }
