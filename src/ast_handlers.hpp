@@ -94,7 +94,11 @@ struct listSuffix_class {
             parserContext.m_errorMsg += ".";
 
             _pass(context) = false;
+            return;
         }
+
+        // Clean up after listSuffix, in case someone wants to parse more listSuffixes
+        parserContext.m_tmpListKeys.clear();
     }
 
     template <typename Iterator, typename Exception, typename Context>
@@ -268,6 +272,8 @@ struct get_class;
 
 struct copy_class;
 
+struct move_class;
+
 struct command_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
@@ -288,6 +294,7 @@ struct initializePath_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.resetPath();
+        parserContext.m_tmpListPath = dataPath_{};
         parserContext.m_tmpListKeys.clear();
         parserContext.m_suggestions.clear();
     }

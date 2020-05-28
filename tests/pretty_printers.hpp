@@ -26,7 +26,7 @@ std::ostream& operator<<(std::ostream& s, const std::optional<std::string>& opt)
     return s;
 }
 
-std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& map)
+std::ostream& operator<<(std::ostream& s, const ListInstance& map)
 {
     s << std::endl
       << "{";
@@ -34,6 +34,16 @@ std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& map)
         s << "{\"" << it.first << "\", " << leafDataToString(it.second) << "}" << std::endl;
     }
     s << "}" << std::endl;
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& tree)
+{
+    s << "DatastoreAccess::Tree {\n";
+    for (const auto& [xpath, value] : tree) {
+        s << "    {" << xpath << ", " << leafDataToString(value) << "}\n";
+    }
+    s << "}\n";
     return s;
 }
 
@@ -131,5 +141,32 @@ std::ostream& operator<<(std::ostream& s, const create_& create)
 std::ostream& operator<<(std::ostream& s, const ls_& ls)
 {
     s << "\nls_ {\n    " << ls.m_path << "}\n";
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const move_& move)
+{
+    s << "\nmove_ {\n";
+    s << "    path: " << move.m_source;
+    s << "    mode: ";
+    if (std::holds_alternative<yang::move::Absolute>(move.m_destination)) {
+        if (std::get<yang::move::Absolute>(move.m_destination) == yang::move::Absolute::Begin) {
+            s << "Absolute::Begin";
+        } else {
+            s << "Absolute::End";
+        }
+    } else {
+        const yang::move::Relative& relative = std::get<yang::move::Relative>(move.m_destination);
+        s << "Relative {\n";
+        s << "        position: ";
+        if (relative.m_position == yang::move::Relative::Position::After) {
+            s << "Position::After\n";
+        } else {
+            s << "Position::Before\n";
+        }
+        s << "        path: ";
+        s << relative.m_path;
+    }
+    s << "\n}\n";
     return s;
 }
