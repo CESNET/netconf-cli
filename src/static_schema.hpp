@@ -89,7 +89,6 @@ public:
 private:
     const std::unordered_map<std::string, NodeInfo>& children(const std::string& name) const;
     void getIdentSet(const identityRef_& ident, std::set<identityRef_>& res) const;
-    bool nodeExists(const std::string& location, const std::string& node) const;
 
     std::unordered_map<std::string, std::unordered_map<std::string, NodeInfo>> m_nodes;
     std::set<std::string> m_modules;

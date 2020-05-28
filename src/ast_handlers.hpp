@@ -178,14 +178,14 @@ struct presenceContainerPath_class {
             boost::optional<std::string> module;
             if (ast.m_nodes.back().m_prefix)
                 module = ast.m_nodes.back().m_prefix.value().m_name;
-            container_ cont = boost::get<container_>(ast.m_nodes.back().m_suffix);
+            container_ cont = std::get<container_>(ast.m_nodes.back().m_suffix);
             auto location = pathWithoutLastNode(parserContext.currentSchemaPath());
 
             if (!schema.isPresenceContainer(location, {module, cont.m_name})) {
                 parserContext.m_errorMsg = "This container is not a presence container.";
                 _pass(context) = false;
             }
-        } catch (boost::bad_get&) {
+        } catch (std::bad_variant_access&) {
             parserContext.m_errorMsg = "This is not a container.";
             _pass(context) = false;
         }
@@ -197,13 +197,7 @@ struct listInstancePath_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (ast.m_nodes.empty()) {
-            parserContext.m_errorMsg = "This is not a list instance.";
-            _pass(context) = false;
-            return;
-        }
-
-        if (ast.m_nodes.back().m_suffix.type() != typeid(listElement_)) {
+        if (ast.m_nodes.empty() || !std::holds_alternative<listElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a list instance.";
             _pass(context) = false;
         }
@@ -215,7 +209,7 @@ struct leafListElementPath_class {
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (ast.m_nodes.empty() || ast.m_nodes.back().m_suffix.type() != typeid(leafListElement_)) {
+        if (ast.m_nodes.empty() || !std::holds_alternative<leafListElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a leaf list element.";
             _pass(context) = false;
         }
@@ -267,14 +261,14 @@ struct writable_leaf_path_class {
 
         try {
             auto lastNode = parserContext.currentSchemaPath().m_nodes.back();
-            auto leaf = boost::get<leaf_>(lastNode.m_suffix);
+            auto leaf = std::get<leaf_>(lastNode.m_suffix);
             auto location = pathWithoutLastNode(parserContext.currentSchemaPath());
             ModuleNodePair node{lastNode.m_prefix.flat_map([](const auto& it) { return boost::optional<std::string>{it.m_name}; }), leaf.m_name};
 
             parserContext.m_tmpListKeyLeafPath.m_location = location;
             parserContext.m_tmpListKeyLeafPath.m_node = node;
 
-        } catch (boost::bad_get&) {
+        } catch (std::bad_variant_access&) {
             parserContext.m_errorMsg = "This is not a path to leaf.";
             _pass(context) = false;
         }
@@ -415,13 +409,11 @@ struct suggestKeysEnd_class {
     }
 };
 
-struct commandNamesVisitor {
-    template <typename T>
-    std::string operator()(boost::type<T>)
-    {
-        return T::name;
-    }
-};
+template <typename T>
+std::string commandNamesVisitor (boost::type<T>)
+{
+    return T::name;
+}
 
 struct createCommandSuggestions_class {
     template <typename T, typename Iterator, typename Context>
@@ -432,7 +424,7 @@ struct createCommandSuggestions_class {
 
         parserContext.m_suggestions.clear();
         boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([&parserContext](auto cmd) {
-            parserContext.m_suggestions.insert({commandNamesVisitor()(cmd), " "});
+            parserContext.m_suggestions.insert({commandNamesVisitor(cmd), " "});
         });
     }
 };

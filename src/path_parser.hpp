@@ -58,9 +58,13 @@ struct ModeToAttribute<NodeParserMode::CompletionsOnly> {
     using type = dataNode_;
 };
 
+enum class CompletionMode {
+    Schema,
+    Data
+};
 
-template <NodeParserMode PARSER_MODE>
-struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
+template <NodeParserMode PARSER_MODE, CompletionMode COMPLETION_MODE>
+struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
     using attribute_type = typename ModeToAttribute<PARSER_MODE>::type;
 
     std::function<bool(const Schema&, const std::string& path)> m_filterFunction;
@@ -114,7 +118,12 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
                     } else {
                         out.m_suffix = listElement_{child.second, {}};
                     }
-                    parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
+
+                    if constexpr (COMPLETION_MODE == CompletionMode::Schema) {
+                        parserContext.m_suggestions.emplace(Completion{parseString + "/"});
+                    } else {
+                        parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
+                    }
                     break;
                 case yang::NodeTypes::LeafList:
                     if constexpr (std::is_same<attribute_type, schemaNode_>()) {
@@ -122,7 +131,12 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
                     } else {
                         out.m_suffix = leafListElement_{child.second, {}};
                     }
-                    parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
+
+                    if constexpr (COMPLETION_MODE == CompletionMode::Schema) {
+                        parserContext.m_suggestions.emplace(Completion{parseString + "/"});
+                    } else {
+                        parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
+                    }
                     break;
                 case yang::NodeTypes::Action:
                 case yang::NodeTypes::AnyXml:
@@ -156,19 +170,19 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
                 parserContext.m_curModule = attr.m_prefix->m_name;
             }
 
-            if (attr.m_suffix.type() == typeid(leaf_)) {
+            if (std::holds_alternative<leaf_>(attr.m_suffix)) {
                 parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
                 ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
                                         return boost::optional<std::string>{it.m_name};
                                     }),
-                                    boost::get<leaf_>(attr.m_suffix).m_name};
+                                    std::get<leaf_>(attr.m_suffix).m_name};
                 parserContext.m_tmpListKeyLeafPath.m_node = node;
             }
 
             if constexpr (std::is_same<attribute_type, dataNode_>()) {
-                if (attr.m_suffix.type() == typeid(listElement_)) {
-                    parserContext.m_tmpListName = boost::get<listElement_>(attr.m_suffix).m_name;
-                    res = listSuffix.parse(begin, end, ctx, rctx, boost::get<listElement_>(attr.m_suffix).m_keys);
+                if (std::holds_alternative<listElement_>(attr.m_suffix)) {
+                    parserContext.m_tmpListName = std::get<listElement_>(attr.m_suffix).m_name;
+                    res = listSuffix.parse(begin, end, ctx, rctx, std::get<listElement_>(attr.m_suffix).m_keys);
 
                     // FIXME: think of a better way to do this, that is, get rid of manual iterator reverting
                     if (!res) {
@@ -176,26 +190,26 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
                         // If we don't, we fail the whole symbol table.
                         if constexpr (PARSER_MODE == NodeParserMode::IncompleteDataNode) {
                             res = true;
-                            attr.m_suffix = list_{boost::get<listElement_>(attr.m_suffix).m_name};
+                            attr.m_suffix = list_{std::get<listElement_>(attr.m_suffix).m_name};
                         } else {
                             begin = saveIter;
                         }
                     }
                 }
 
-                if (attr.m_suffix.type() == typeid(leafListElement_)) {
+                if (std::holds_alternative<leafListElement_>(attr.m_suffix)) {
                     parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
                     ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
                                             return boost::optional<std::string>{it.m_name};
                                         }),
-                                        boost::get<leafListElement_>(attr.m_suffix).m_name};
+                                        std::get<leafListElement_>(attr.m_suffix).m_name};
                     parserContext.m_tmpListKeyLeafPath.m_node = node;
-                    res = leafListValue.parse(begin, end, ctx, rctx, boost::get<leafListElement_>(attr.m_suffix).m_value);
+                    res = leafListValue.parse(begin, end, ctx, rctx, std::get<leafListElement_>(attr.m_suffix).m_value);
 
                     if (!res) {
                         if constexpr (PARSER_MODE == NodeParserMode::IncompleteDataNode) {
                             res = true;
-                            attr.m_suffix = leafList_{boost::get<leafListElement_>(attr.m_suffix).m_name};
+                            attr.m_suffix = leafList_{std::get<leafListElement_>(attr.m_suffix).m_name};
                         } else {
                             begin = saveIter;
                         }
@@ -216,10 +230,10 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE>> {
     }
 };
 
-using schemaNode = NodeParser<NodeParserMode::SchemaNode>;
-using dataNode = NodeParser<NodeParserMode::CompleteDataNode>;
-using incompleteDataNode = NodeParser<NodeParserMode::IncompleteDataNode>;
-using pathCompletions = NodeParser<NodeParserMode::CompletionsOnly>;
+template <CompletionMode COMPLETION_MODE> using schemaNode = NodeParser<NodeParserMode::SchemaNode, COMPLETION_MODE>;
+template <CompletionMode COMPLETION_MODE> using dataNode = NodeParser<NodeParserMode::CompleteDataNode, COMPLETION_MODE>;
+template <CompletionMode COMPLETION_MODE> using incompleteDataNode = NodeParser<NodeParserMode::IncompleteDataNode, COMPLETION_MODE>;
+template <CompletionMode COMPLETION_MODE> using pathCompletions = NodeParser<NodeParserMode::CompletionsOnly, COMPLETION_MODE>;
 
 using AnyPath = boost::variant<schemaPath_, dataPath_>;
 
@@ -244,8 +258,8 @@ struct ModeToAttribute<PathParserMode::DataPathListEnd> {
     using type = dataPath_;
 };
 
-template <PathParserMode PARSER_MODE>
-struct PathParser : x3::parser<PathParser<PARSER_MODE>> {
+template <PathParserMode PARSER_MODE, CompletionMode COMPLETION_MODE>
+struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
     using attribute_type = ModeToAttribute<PARSER_MODE>;
     std::function<bool(const Schema&, const std::string& path)> m_filterFunction;
 
@@ -266,7 +280,7 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE>> {
         // gets reverted to before the starting slash.
         auto res = (-absoluteStart).parse(begin, end, ctx, rctx, attrData.m_scope);
         auto dataPath = x3::attr(attrData.m_scope)
-            >> (dataNode{m_filterFunction} % '/' | pathEnd >> x3::attr(std::vector<dataNode_>{}))
+            >> (dataNode<COMPLETION_MODE>{m_filterFunction} % '/' | pathEnd >> x3::attr(std::vector<dataNode_>{}))
             >> -trailingSlash;
         res = dataPath.parse(begin, end, ctx, rctx, attrData);
 
@@ -274,13 +288,13 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE>> {
         if constexpr (PARSER_MODE == PathParserMode::DataPathListEnd || PARSER_MODE == PathParserMode::AnyPath) {
             if (!res || !pathEnd.parse(begin, end, ctx, rctx, x3::unused)) {
                 dataNode_ attrNodeList;
-                res = incompleteDataNode{m_filterFunction}.parse(begin, end, ctx, rctx, attrNodeList);
+                res = incompleteDataNode<COMPLETION_MODE>{m_filterFunction}.parse(begin, end, ctx, rctx, attrNodeList);
                 if (res) {
                     attrData.m_nodes.push_back(attrNodeList);
                     // If the trailing slash matches, no more nodes are parsed.
                     // That means no more completion. So, I generate them
                     // manually.
-                    res = (-(trailingSlash >> x3::omit[pathCompletions{m_filterFunction}])).parse(begin, end, ctx, rctx, attrData.m_trailingSlash);
+                    res = (-(trailingSlash >> x3::omit[pathCompletions<COMPLETION_MODE>{m_filterFunction}])).parse(begin, end, ctx, rctx, attrData.m_trailingSlash);
                 }
             }
         }
@@ -289,13 +303,13 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE>> {
         if constexpr (PARSER_MODE == PathParserMode::AnyPath) {
             // If our data path already has some listElement_ fragments, we can't parse rest of the path as a schema path
             auto hasLists = std::any_of(attrData.m_nodes.begin(), attrData.m_nodes.end(),
-                [] (const auto& node) { return node.m_suffix.type() == typeid(listElement_); });
+                [] (const auto& node) { return std::holds_alternative<listElement_>(node.m_suffix); });
             // If parsing failed, or if there's more input we try parsing schema nodes.
             if (!hasLists) {
                 if (!res || !pathEnd.parse(begin, end, ctx, rctx, x3::unused)) {
                     // If dataPath parsed some nodes, they will be saved in `attrData`. We have to keep these.
                     schemaPath_ attrSchema = dataPathToSchemaPath(attrData);
-                    auto schemaPath = schemaNode{m_filterFunction} % '/';
+                    auto schemaPath = schemaNode<COMPLETION_MODE>{m_filterFunction} % '/';
                     // The schemaPath parser continues where the dataPath parser ended.
                     res = schemaPath.parse(begin, end, ctx, rctx, attrSchema.m_nodes);
                     auto trailing = -trailingSlash >> pathEnd;
@@ -315,9 +329,9 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE>> {
 // The PathParser class would get a boost::variant as the attribute, but I
 // don't want to deal with that, so I use these wrappers to ensure the
 // attribute I want (and let Spirit deal with boost::variant).
-auto const anyPath = x3::rule<class anyPath_class, AnyPath>{"anyPath"} = PathParser<PathParserMode::AnyPath>{};
-auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPath>{};
-auto const dataPathListEnd = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPathListEnd>{};
+auto const anyPath = x3::rule<class anyPath_class, AnyPath>{"anyPath"} = PathParser<PathParserMode::AnyPath, CompletionMode::Schema>{};
+auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPath, CompletionMode::Data>{};
+auto const dataPathListEnd = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{};
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -381,7 +395,7 @@ auto const filterConfigFalse = [] (const Schema& schema, const std::string& path
 };
 
 auto const writableLeafPath_def =
-    PathParser<PathParserMode::DataPath>{filterConfigFalse};
+    PathParser<PathParserMode::DataPath, CompletionMode::Data>{filterConfigFalse};
 
 auto const presenceContainerPath_def =
     dataPath;
