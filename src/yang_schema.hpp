@@ -70,6 +70,7 @@ public:
     /** @short Creates a new data node from a path (to be used with NETCONF edit-config) */
     std::shared_ptr<libyang::Data_Node> dataNodeFromPath(const std::string& path, const std::optional<const std::string> value = std::nullopt) const;
     std::shared_ptr<libyang::Module> getYangModule(const std::string& name);
+    void attachMoveOpListInstance(const std::shared_ptr<libyang::Data_Node>& node, const ListInstance& instance);
 
 private:
     template <typename NodeType>
