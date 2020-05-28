@@ -251,4 +251,17 @@ module example-schema {
     leaf-list addresses {
         type string;
     }
+
+    leaf-list protocols {
+        type string;
+        ordered-by user;
+    }
+
+    list players {
+        key "name";
+        ordered-by user;
+        leaf name {
+            type string;
+        }
+    }
 }
