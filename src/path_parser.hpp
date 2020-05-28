@@ -361,7 +361,8 @@ auto const keyValue_def =
     key_identifier > '=' > createValueSuggestions > leaf_data;
 
 auto const keyValueWrapper =
-    x3::lexeme['[' > createKeySuggestions > keyValue > suggestKeysEnd > ']'];
+// TODO: put this in another patch? but I not sure I can trigger this somewhere else...
+    x3::no_skip['[' > createKeySuggestions > keyValue > suggestKeysEnd > ']'];
 
 // even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
 auto const listSuffix_def =
