@@ -275,22 +275,6 @@ struct writable_leaf_path_class {
     }
 };
 
-// This handler only checks if the module exists
-// It doesn't set any ParserContext flags (except the error message)
-struct data_module_prefix_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        const auto& schema = parserContext.m_schema;
-
-        if (!schema.isModule(parserContext.currentSchemaPath(), ast.m_name)) {
-            parserContext.m_errorMsg = "Invalid module name.";
-            _pass(context) = false;
-        }
-    }
-};
-
 struct set_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
