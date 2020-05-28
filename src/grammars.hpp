@@ -27,6 +27,7 @@ x3::rule<commit_class, commit_> const commit = "commit";
 x3::rule<describe_class, describe_> const describe = "describe";
 x3::rule<help_class, help_> const help = "help";
 x3::rule<copy_class, copy_> const copy = "copy";
+x3::rule<move_class, move_> const move = "move";
 x3::rule<command_class, command_> const command = "command";
 
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
@@ -134,11 +135,78 @@ auto const copy_def =
 auto const describe_def =
     describe_::name >> space_separator > (dataPathListEnd | anyPath);
 
+using attribute_type = move_;
+struct mode_table : x3::symbols<MoveMode> {
+    mode_table()
+    {
+        add
+            ("after", MoveMode::After)
+            ("before", MoveMode::Before)
+            ("begin", MoveMode::Begin)
+            ("end", MoveMode::End);
+    }
+} const mode_table;
+
+struct move_args : x3::parser<move_args> {
+    using attribute_type = move_;
+    template <typename It, typename Ctx, typename RCtx>
+    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, move_& attr) const
+    {
+        ParserContext& parserContext = x3::get<parser_context_tag>(ctx);
+        dataPath_ movePath;
+        auto movePathGrammar = listInstancePath | leafListElementPath;
+        auto res = movePathGrammar.parse(begin, end, ctx, rctx, attr.m_path);
+        if (!res) {
+            // TODO: add an error message? through ParserContext
+            return false;
+        }
+        res = (space_separator >> mode_table).parse(begin, end, ctx, rctx, attr.m_move.m_mode);
+        if (!res) {
+            // TODO: add an error message? through ParserContext
+            return false;
+        }
+
+        if (attr.m_move.m_mode == MoveMode::After || attr.m_move.m_mode == MoveMode::Before) {
+            res = space_separator.parse(begin, end, ctx, rctx, x3::unused);
+            if (!res) {
+                // TODO: add an error message? through ParserContext
+                return false;
+            }
+
+            if (std::holds_alternative<leafListElement_>(attr.m_path.m_nodes.back().m_suffix)) {
+                leaf_data_ leaflistValue;
+                res = leaf_data.parse(begin, end, ctx, rctx, leaflistValue);
+                if (res) {
+                    attr.m_move.m_destination = leaflistValue;
+                }
+            } else {
+                ListInstance listInstance;
+                // The source list instance will be stored inside the parser
+                // context. However, m_tmpListPath expects a path ending with a
+                // list_. I have to swap the listElement_ to a list_.
+                parserContext.m_tmpListPath = parserContext.currentDataPath();
+                parserContext.m_tmpListPath.m_nodes.pop_back();
+                auto list = list_{std::get<listElement_>(attr.m_path.m_nodes.back().m_suffix).m_name};
+                parserContext.m_tmpListPath.m_nodes.push_back(dataNode_{attr.m_path.m_nodes.back().m_prefix, list});
+
+                res = listSuffix.parse(begin, end, ctx, rctx, listInstance);
+                if (res) {
+                    attr.m_move.m_destination = listInstance;
+                }
+            }
+        }
+        return res;
+    }
+} const move_args;
+
+auto const move_def =
+    move_::name >> space_separator >> move_args;
+
 auto const createCommandSuggestions_def =
     x3::eps;
 
 auto const command_def =
-    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help];
+    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -155,5 +223,6 @@ BOOST_SPIRIT_DEFINE(delete_rule)
 BOOST_SPIRIT_DEFINE(describe)
 BOOST_SPIRIT_DEFINE(help)
 BOOST_SPIRIT_DEFINE(copy)
+BOOST_SPIRIT_DEFINE(move)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)
