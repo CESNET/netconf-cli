@@ -7,6 +7,7 @@
 
 #include "trompeloeil_doctest.hpp"
 #include "parser.hpp"
+#include "pretty_printers.hpp"
 #include "static_schema.hpp"
 
 TEST_CASE("list manipulation")
@@ -14,10 +15,17 @@ TEST_CASE("list manipulation")
     using namespace std::string_literals;
     auto schema = std::make_shared<StaticSchema>();
     schema->addModule("mod");
+    schema->addModule("other");
     schema->addList("/", "mod:list", {"number"});
     schema->addLeaf("/mod:list", "mod:number", yang::Int32{});
     schema->addLeaf("/mod:list", "mod:leafInList", yang::String{});
     schema->addLeafList("/", "mod:addresses", yang::String{});
+    schema->addIdentity(std::nullopt, identityRef_{"other", "deptypes"});
+    schema->addIdentity(identityRef_{"other", "deptypes"}, identityRef_{"other", "engineering"});
+    schema->addList("/", "mod:company", {"department"});
+    schema->addLeaf("/mod:company", "mod:department", schema->validIdentities("other", "deptypes"));
+    schema->addList("/mod:company", "mod:inventory", {"id"});
+    schema->addLeaf("/mod:company/mod:inventory", "mod:id", yang::Int32{});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -31,6 +39,17 @@ TEST_CASE("list manipulation")
             auto keys = std::map<std::string, leaf_data_>{
                 {"number", int32_t{3}}};
             expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
+        }
+
+        SECTION("mod:company[department=other:engineering]/inventory[id=1337]")
+        {
+            input = "mod:company[department=other:engineering]/inventory[id=1337]";
+            auto keys = std::map<std::string, leaf_data_>{
+                {"department", identityRef_{"other", "engineering"}}};
+            expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("company", keys)});
+            keys = std::map<std::string, leaf_data_>{
+                {"id", int32_t{1337}}};
+            expectedPath.m_nodes.push_back(dataNode_{listElement_("inventory", keys)});
         }
 
         SECTION("create mod:addresses['0.0.0.0']")

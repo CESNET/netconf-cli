@@ -122,6 +122,11 @@ std::ostream& operator<<(std::ostream& s, const boost::optional<boost::variant<d
     return s;
 }
 
+std::ostream& operator<<(std::ostream& s, const create_& create)
+{
+    s << "\nls_ {\n    " << create.m_path << "}\n";
+    return s;
+}
 
 std::ostream& operator<<(std::ostream& s, const ls_& ls)
 {
