@@ -133,3 +133,34 @@ std::ostream& operator<<(std::ostream& s, const ls_& ls)
     s << "\nls_ {\n    " << ls.m_path << "}\n";
     return s;
 }
+
+std::ostream& operator<<(std::ostream& s, const move_& move)
+{
+    s << "\nmove_ {\n";
+    s << "    path: " << move.m_source;
+    s << "    mode: ";
+    if (std::holds_alternative<move_::Absolute>(move.m_destination)) {
+        if (std::get<move_::Absolute>(move.m_destination) == move_::Absolute::Begin) {
+            s << "Absolute::Begin";
+        } else {
+            s << "Absolute::End";
+        }
+    } else {
+        const move_::Relative& relative = std::get<move_::Relative>(move.m_destination);
+        s << "Relative {\n";
+        s << "        position: ";
+        if (relative.m_position == move_::Relative::Position::After) {
+            s << "Position::After\n";
+        } else {
+            s << "Position::Before\n";
+        }
+        s << "        path: ";
+        if (std::holds_alternative<leaf_data_>(relative.m_path)) {
+            s << leafDataToString(std::get<leaf_data_>(relative.m_path));
+        } else {
+            s << std::get<ListInstance>(relative.m_path);
+        }
+    }
+    s << "\n}\n";
+    return s;
+}

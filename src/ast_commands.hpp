@@ -178,8 +178,47 @@ struct copy_ : x3::position_tagged {
     Datastore m_destination;
 };
 
+enum class MoveMode {
+    Begin,
+    End,
+    Before,
+    After
+};
+
+struct move_ : x3::position_tagged {
+    static constexpr auto name = "move";
+    static constexpr auto shortHelp = "move - move (leaf)list instances around";
+    static constexpr auto longHelp = R"(
+    move <list-instance-path> begin
+    move <list-instance-path> end
+    move <list-instance-path> before <key>
+    move <list-instance-path> after <key>
+
+    Usage:
+        /> move mod:leaflist['abc'] begin
+        /> move mod:leaflist['def'] after 'abc'
+        /> move mod:interfaces['eth0'] after ['eth1'])";
+    bool operator==(const move_& b) const;
+
+    dataPath_ m_source;
+    enum class Absolute {
+        Begin,
+        End
+    };
+    struct Relative {
+        bool operator==(const Relative&) const;
+        enum class Position {
+            Before,
+            After
+        } m_position;
+        std::variant<ListInstance, leaf_data_> m_path;
+    };
+
+    std::variant<Absolute, Relative> m_destination;
+};
+
 struct help_;
-using CommandTypes = boost::mpl::vector<cd_, commit_, copy_, create_, delete_, describe_, discard_, get_, help_, ls_, set_>;
+using CommandTypes = boost::mpl::vector<cd_, commit_, copy_, create_, delete_, describe_, discard_, get_, help_, ls_, move_, set_>;
 struct help_ : x3::position_tagged {
     static constexpr auto name = "help";
     static constexpr auto shortHelp = "help - Print help for commands.";
@@ -225,3 +264,4 @@ BOOST_FUSION_ADAPT_STRUCT(help_, m_cmd)
 BOOST_FUSION_ADAPT_STRUCT(discard_)
 BOOST_FUSION_ADAPT_STRUCT(get_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(copy_, m_source, m_destination)
+BOOST_FUSION_ADAPT_STRUCT(move_, m_source, m_destination)
