@@ -432,6 +432,187 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{});
     }
 
+    SECTION("moving leaflist instances")
+    {
+        DatastoreAccess::Tree expected;
+        {
+            REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "http"s)).TIMES(2);
+            REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "ftp"s));
+            REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "pop3"s));
+            REQUIRE_CALL(mock, write("/example-schema:protocols", "http"s, "ftp"s));
+            REQUIRE_CALL(mock, write("/example-schema:protocols", "ftp"s, "pop3"s));
+            datastore.createLeafListInstance("/example-schema:protocols[.='http']");
+            datastore.createLeafListInstance("/example-schema:protocols[.='ftp']");
+            datastore.createLeafListInstance("/example-schema:protocols[.='pop3']");
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:protocols", special_{SpecialValue::LeafList}},
+                {"/example-schema:protocols[.='http']", "http"s},
+                {"/example-schema:protocols[.='ftp']", "ftp"s},
+                {"/example-schema:protocols[.='pop3']", "pop3"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
+        }
+
+        std::string sourcePath;
+        SECTION("begin")
+        {
+            REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "pop3"s));
+            sourcePath = "/example-schema:protocols[.='pop3']";
+            datastore.moveItem(sourcePath, yang::move::Absolute::Begin);
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:protocols", special_{SpecialValue::LeafList}},
+                {"/example-schema:protocols[.='pop3']", "pop3"s},
+                {"/example-schema:protocols[.='http']", "http"s},
+                {"/example-schema:protocols[.='ftp']", "ftp"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
+        }
+
+        SECTION("end")
+        {
+            sourcePath = "/example-schema:protocols[.='http']";
+            REQUIRE_CALL(mock, write("/example-schema:protocols", "pop3"s, "http"s));
+            datastore.moveItem(sourcePath, yang::move::Absolute::End);
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:protocols", special_{SpecialValue::LeafList}},
+                {"/example-schema:protocols[.='ftp']", "ftp"s},
+                {"/example-schema:protocols[.='pop3']", "pop3"s},
+                {"/example-schema:protocols[.='http']", "http"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
+        }
+
+        SECTION("after")
+        {
+            sourcePath = "/example-schema:protocols[.='http']";
+            REQUIRE_CALL(mock, write("/example-schema:protocols", "ftp"s, "http"s));
+            datastore.moveItem(sourcePath, yang::move::Relative{yang::move::Relative::Position::After, {{".", "ftp"s}}});
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:protocols", special_{SpecialValue::LeafList}},
+                {"/example-schema:protocols[.='ftp']", "ftp"s},
+                {"/example-schema:protocols[.='http']", "http"s},
+                {"/example-schema:protocols[.='pop3']", "pop3"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
+        }
+
+        SECTION("before")
+        {
+            sourcePath = "/example-schema:protocols[.='http']";
+            REQUIRE_CALL(mock, write("/example-schema:protocols", "ftp"s, "http"s));
+            datastore.moveItem(sourcePath, yang::move::Relative{yang::move::Relative::Position::Before, {{".", "pop3"s}}});
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:protocols", special_{SpecialValue::LeafList}},
+                {"/example-schema:protocols[.='ftp']", "ftp"s},
+                {"/example-schema:protocols[.='http']", "http"s},
+                {"/example-schema:protocols[.='pop3']", "pop3"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
+        }
+    }
+
+    SECTION("moving list instances")
+    {
+        DatastoreAccess::Tree expected;
+        {
+            REQUIRE_CALL(mock, write("/example-schema:players[name='John']", std::nullopt, ""s)).TIMES(2);
+            REQUIRE_CALL(mock, write("/example-schema:players[name='John']/name", std::nullopt, "John"s));
+            REQUIRE_CALL(mock, write("/example-schema:players[name='Eve']", std::nullopt, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:players[name='Eve']", ""s, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:players[name='Eve']/name", std::nullopt, "Eve"s));
+            REQUIRE_CALL(mock, write("/example-schema:players[name='Adam']", std::nullopt, ""s));
+            REQUIRE_CALL(mock, write("/example-schema:players[name='Adam']/name", std::nullopt, "Adam"s));
+            REQUIRE_CALL(mock, write("/example-schema:players[name='Adam']", ""s, ""s));
+            datastore.createListInstance("/example-schema:players[name='John']");
+            datastore.createListInstance("/example-schema:players[name='Eve']");
+            datastore.createListInstance("/example-schema:players[name='Adam']");
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:players[name='John']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='John']/name", "John"s},
+                {"/example-schema:players[name='Eve']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='Eve']/name", "Eve"s},
+                {"/example-schema:players[name='Adam']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='Adam']/name", "Adam"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:players") == expected);
+        }
+
+        std::string sourcePath;
+        SECTION("begin")
+        {
+            sourcePath = "/example-schema:players[name='Adam']";
+            REQUIRE_CALL(mock, write("/example-schema:players[name='Adam']", std::nullopt, ""s));
+            datastore.moveItem(sourcePath, yang::move::Absolute::Begin);
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:players[name='Adam']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='Adam']/name", "Adam"s},
+                {"/example-schema:players[name='John']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='John']/name", "John"s},
+                {"/example-schema:players[name='Eve']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='Eve']/name", "Eve"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:players") == expected);
+        }
+
+        SECTION("end")
+        {
+            sourcePath = "/example-schema:players[name='John']";
+            REQUIRE_CALL(mock, write("/example-schema:players[name='John']", ""s, ""s));
+            datastore.moveItem(sourcePath, yang::move::Absolute::End);
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:players[name='Eve']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='Eve']/name", "Eve"s},
+                {"/example-schema:players[name='Adam']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='Adam']/name", "Adam"s},
+                {"/example-schema:players[name='John']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='John']/name", "John"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:players") == expected);
+        }
+
+        SECTION("after")
+        {
+            sourcePath = "/example-schema:players[name='John']";
+            REQUIRE_CALL(mock, write("/example-schema:players[name='John']", ""s, ""s));
+            datastore.moveItem(sourcePath, yang::move::Relative{yang::move::Relative::Position::After, {{"name", "Eve"s}}});
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:players[name='Eve']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='Eve']/name", "Eve"s},
+                {"/example-schema:players[name='John']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='John']/name", "John"s},
+                {"/example-schema:players[name='Adam']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='Adam']/name", "Adam"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:players") == expected);
+        }
+
+        SECTION("before")
+        {
+            sourcePath = "/example-schema:players[name='John']";
+            REQUIRE_CALL(mock, write("/example-schema:players[name='John']", ""s, ""s));
+            datastore.moveItem(sourcePath, yang::move::Relative{yang::move::Relative::Position::Before, {{"name", "Adam"s}}});
+            datastore.commitChanges();
+            expected = {
+                {"/example-schema:players[name='Eve']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='Eve']/name", "Eve"s},
+                {"/example-schema:players[name='John']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='John']/name", "John"s},
+                {"/example-schema:players[name='Adam']", special_{SpecialValue::List}},
+                {"/example-schema:players[name='Adam']/name", "Adam"s},
+            };
+            REQUIRE(datastore.getItems("/example-schema:players") == expected);
+        }
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
 
