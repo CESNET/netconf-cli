@@ -140,6 +140,40 @@ void NetconfAccess::deleteLeafListInstance(const std::string& path)
     doEditFromDataNode(node);
 }
 
+struct impl_toYangInsert {
+    std::string operator()(yang::move::Absolute& absolute)
+    {
+        return absolute == yang::move::Absolute::Begin ? "first" : "end";
+    }
+    std::string operator()(yang::move::Relative& relative)
+    {
+        return relative.m_position == yang::move::Relative::Position::After ? "after" : "before";
+    }
+};
+
+std::string toYangInsert(std::variant<yang::move::Absolute, yang::move::Relative> move)
+{
+    return std::visit(impl_toYangInsert{}, move);
+}
+
+void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move)
+{
+    auto node = m_schema->dataNodeFromPath(source);
+    auto sourceNode = *(node->find_path(source.c_str())->data().begin());
+    auto yangModule = m_schema->getYangModule("yang");
+    sourceNode->insert_attr(yangModule, "insert", toYangInsert(move).c_str());
+
+    if (std::holds_alternative<yang::move::Relative>(move)) {
+        auto relative = std::get<yang::move::Relative>(move);
+        if (m_schema->isLeafList(source)) {
+            sourceNode->insert_attr(yangModule, "value", leafDataToString(relative.m_path.at(".")).c_str());
+        } else {
+            sourceNode->insert_attr(yangModule, "key", instanceToString(node->node_module()->name(), relative.m_path).c_str());
+        }
+    }
+    doEditFromDataNode(sourceNode);
+}
+
 void NetconfAccess::doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode)
 {
     auto data = dataNode->print_mem(LYD_XML, 0);

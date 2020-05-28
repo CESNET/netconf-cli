@@ -289,6 +289,36 @@ void SysrepoAccess::deleteListInstance(const std::string& path)
     }
 }
 
+struct impl_toSrMoveOp {
+    sr_move_position_t operator()(yang::move::Absolute& absolute)
+    {
+        return absolute == yang::move::Absolute::Begin ? SR_MOVE_FIRST : SR_MOVE_LAST;
+    }
+    sr_move_position_t operator()(yang::move::Relative& relative)
+    {
+        return relative.m_position == yang::move::Relative::Position::After ? SR_MOVE_AFTER : SR_MOVE_BEFORE;
+    }
+};
+
+sr_move_position_t toSrMoveOp(std::variant<yang::move::Absolute, yang::move::Relative> move)
+{
+    return std::visit(impl_toSrMoveOp{}, move);
+}
+
+void SysrepoAccess::moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move)
+{
+    std::string destPathStr;
+    if (std::holds_alternative<yang::move::Relative>(move)) {
+        auto relative = std::get<yang::move::Relative>(move);
+        if (m_schema->isLeafList(source)) {
+            destPathStr = stripLeafListValueFromPath(source) + "[.='" + leafDataToString(relative.m_path.at(".")) + "']";
+        } else {
+            destPathStr = stripLastListInstanceFromPath(source) + instanceToString(m_schema->dataNodeFromPath(source)->node_module()->name(), relative.m_path);
+        }
+    }
+    m_session->move_item(source.c_str(), toSrMoveOp(move), destPathStr.c_str());
+}
+
 void SysrepoAccess::commitChanges()
 {
     try {
