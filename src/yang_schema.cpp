@@ -526,3 +526,17 @@ std::optional<std::string> YangSchema::defaultValue(const std::string& leafPath)
 
     return std::nullopt;
 }
+
+void YangSchema::attachMoveOpListInstance(const std::shared_ptr<libyang::Data_Node>& node, const ListInstance& instance)
+{
+    if (node->schema()->nodetype() == LYS_LEAFLIST) {
+        node->insert_attr(getYangModule("yang"), "value", leafDataToString(instance.at(".")).c_str());
+    } else {
+        std::string instanceStr;
+        for (const auto& [key, value] : instance) {
+            using namespace std::string_literals;
+            instanceStr += "["s + node->node_module()->prefix() + ":" + key + "=" + leafDataToString(value) + "]";
+        }
+        node->insert_attr(getYangModule("yang"), "key", instanceStr.c_str());
+    }
+}
