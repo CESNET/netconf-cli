@@ -26,9 +26,11 @@ public:
     IMPLEMENT_CONST_MOCK1(leafTypeName);
     IMPLEMENT_CONST_MOCK1(isModule);
     IMPLEMENT_CONST_MOCK1(leafrefPath);
-    IMPLEMENT_CONST_MOCK3(listHasKey);
+    MAKE_CONST_MOCK3(listHasKey, bool(const schemaPath_& location, const ModuleNodePair& node, const std::string& key), override);
+    MAKE_CONST_MOCK2(listHasKey, bool(const schemaPath_& listPath, const std::string& key), override);
     IMPLEMENT_CONST_MOCK1(leafIsKey);
-    IMPLEMENT_CONST_MOCK2(listKeys);
+    MAKE_CONST_MOCK2(listKeys, const std::set<std::string>(const schemaPath_& location, const ModuleNodePair& node), override);
+    MAKE_CONST_MOCK1(listKeys, const std::set<std::string>(const schemaPath_& listPath), override);
     MAKE_CONST_MOCK1(nodeType, yang::NodeTypes(const std::string&), override);
     MAKE_CONST_MOCK2(nodeType, yang::NodeTypes(const schemaPath_&, const ModuleNodePair&), override);
     IMPLEMENT_CONST_MOCK1(status);

@@ -35,10 +35,12 @@ public:
     yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool isModule(const std::string& name) const override;
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
+    bool listHasKey(const schemaPath_& listPath, const std::string& key) const override;
     bool leafIsKey(const std::string& leafPath) const override;
     bool isConfig(const std::string& path) const override;
     std::optional<std::string> defaultValue(const std::string& leafPath) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
+    const std::set<std::string> listKeys(const schemaPath_& listPath) const override;
     yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::TypeInfo leafType(const std::string& path) const override;
     /** @brief If the leaf type is a typedef, returns the typedef name. */
@@ -74,10 +76,11 @@ private:
     yang::TypeInfo impl_leafType(const std::shared_ptr<libyang::Schema_Node>& node) const;
     std::set<std::string> modules() const;
 
-    /** @short Returns a set of nodes, that match the location and name criteria. */
 
     /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
     std::shared_ptr<libyang::Schema_Node> getSchemaNode(const std::string& node) const;
+    /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
+    std::shared_ptr<libyang::Schema_Node> getSchemaNode(const schemaPath_& listPath) const;
 
     /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
     std::shared_ptr<libyang::Schema_Node> getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const;

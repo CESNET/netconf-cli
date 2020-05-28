@@ -97,6 +97,7 @@ struct dataNode_ {
 
     dataNode_();
     dataNode_(decltype(m_suffix) node);
+    dataNode_(boost::optional<module_> module, decltype(m_suffix) node);
     dataNode_(module_ module, decltype(m_suffix) node);
     bool operator==(const dataNode_& b) const;
 };

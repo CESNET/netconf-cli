@@ -166,10 +166,6 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
 
             auto res = table.parse(begin, end, ctx, rctx, attr);
 
-            if (attr.m_prefix) {
-                parserContext.m_curModule = attr.m_prefix->m_name;
-            }
-
             if (std::holds_alternative<leaf_>(attr.m_suffix)) {
                 parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
                 ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
@@ -181,7 +177,10 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
 
             if constexpr (std::is_same<attribute_type, dataNode_>()) {
                 if (std::holds_alternative<listElement_>(attr.m_suffix)) {
-                    parserContext.m_tmpListName = std::get<listElement_>(attr.m_suffix).m_name;
+                    parserContext.m_tmpListPath = parserContext.currentDataPath();
+                    auto tmpList = list_{std::get<listElement_>(attr.m_suffix).m_name};
+                    parserContext.m_tmpListPath.m_nodes.push_back(dataNode_{attr.m_prefix, tmpList});
+
                     res = listSuffix.parse(begin, end, ctx, rctx, std::get<listElement_>(attr.m_suffix).m_keys);
 
                     // FIXME: think of a better way to do this, that is, get rid of manual iterator reverting
@@ -221,9 +220,6 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                 parserContext.pushPathFragment(attr);
             }
 
-            if (attr.m_prefix) {
-                parserContext.m_curModule = boost::none;
-            }
             return res;
         }
     }

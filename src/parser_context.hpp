@@ -23,16 +23,17 @@ struct ParserContext {
     const Schema& m_schema;
     const dataPath_ m_curPathOrig;
     const std::shared_ptr<const DataQuery> m_dataquery;
-    boost::optional<std::string> m_curModule;
     std::string m_errorMsg;
-    std::string m_tmpListName;
 
     struct {
         schemaPath_ m_location;
         ModuleNodePair m_node;
     } m_tmpListKeyLeafPath;
 
+    // When parsing list suffixes, this path is used to store the path of the list whose keys are being parsed.
+    dataPath_ m_tmpListPath;
     std::map<std::string, leaf_data_> m_tmpListKeys;
+
     bool m_errorHandled = false;
     bool m_completing = false;
 

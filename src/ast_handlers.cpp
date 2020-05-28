@@ -23,3 +23,8 @@ std::string leafDataToCompletion(const leaf_data_& value)
     }
     return leafDataToString(value);
 }
+
+boost::optional<std::string> optModuleToOptString(const boost::optional<module_> module)
+{
+    return module.flat_map([] (const auto& module) { return boost::optional<std::string>(module.m_name); });
+}

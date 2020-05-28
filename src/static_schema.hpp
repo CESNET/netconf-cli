@@ -63,10 +63,12 @@ public:
     yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const override;
     bool isModule(const std::string& name) const override;
     bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const override;
+    bool listHasKey(const schemaPath_& listPath, const std::string& key) const override;
     bool leafIsKey(const std::string& leafPath) const override;
     bool isConfig(const std::string& leafPath) const override;
     std::optional<std::string> defaultValue(const std::string& leafPath) const override;
     const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const override;
+    const std::set<std::string> listKeys(const schemaPath_& listPath) const override;
     yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
     yang::TypeInfo leafType(const std::string& path) const override;
     std::optional<std::string> leafTypeName(const std::string& path) const override;

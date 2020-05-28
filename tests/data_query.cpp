@@ -56,9 +56,8 @@ TEST_CASE("data query")
 
     SECTION("listKeys")
     {
-        dataPath_ location;
-        location.m_scope = Scope::Absolute;
-        ModuleNodePair node;
+        dataPath_ listPath;
+        listPath.m_scope = Scope::Absolute;
         std::vector<std::map<std::string, leaf_data_>> expected;
 
         SECTION("example-schema:person")
@@ -66,8 +65,7 @@ TEST_CASE("data query")
             datastore.createListInstance("/example-schema:person[name='Vaclav']");
             datastore.createListInstance("/example-schema:person[name='Tomas']");
             datastore.createListInstance("/example-schema:person[name='Jan Novak']");
-            node.first = "example-schema";
-            node.second = "person";
+            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"person"}});
             expected = {
                 {{"name", std::string{"Jan Novak"}}},
                 {{"name", std::string{"Tomas"}}},
@@ -77,8 +75,7 @@ TEST_CASE("data query")
 
         SECTION("example-schema:person - no instances")
         {
-            node.first = "example-schema";
-            node.second = "person";
+            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"person"}});
             expected = {
             };
         }
@@ -88,8 +85,7 @@ TEST_CASE("data query")
             datastore.createListInstance("/example-schema:selectedNumbers[value='45']");
             datastore.createListInstance("/example-schema:selectedNumbers[value='99']");
             datastore.createListInstance("/example-schema:selectedNumbers[value='127']");
-            node.first = "example-schema";
-            node.second = "selectedNumbers";
+            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"selectedNumbers"}});
             expected = {
                 {{"value", int8_t{127}}},
                 {{"value", int8_t{45}}},
@@ -102,8 +98,7 @@ TEST_CASE("data query")
             datastore.createListInstance("/example-schema:animalWithColor[name='Dog'][color='brown']");
             datastore.createListInstance("/example-schema:animalWithColor[name='Dog'][color='white']");
             datastore.createListInstance("/example-schema:animalWithColor[name='Cat'][color='grey']");
-            node.first = "example-schema";
-            node.second = "animalWithColor";
+            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"animalWithColor"}});
             expected = {
                 {{"name", std::string{"Cat"}}, {"color", std::string{"grey"}}},
                 {{"name", std::string{"Dog"}}, {"color", std::string{"brown"}}},
@@ -114,8 +109,7 @@ TEST_CASE("data query")
         SECTION("example-schema:animalWithColor - quotes in values")
         {
             datastore.createListInstance("/example-schema:animalWithColor[name='D\"o\"g'][color=\"b'r'own\"]");
-            node.first = "example-schema";
-            node.second = "animalWithColor";
+            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"animalWithColor"}});
             expected = {
                 {{"name", std::string{"D\"o\"g"}}, {"color", std::string{"b'r'own"}}}
             };
@@ -126,8 +120,7 @@ TEST_CASE("data query")
             datastore.createListInstance("/example-schema:ports[name='A']");
             datastore.createListInstance("/example-schema:ports[name='B']");
             datastore.createListInstance("/example-schema:ports[name='E']");
-            node.first = "example-schema";
-            node.second = "ports";
+            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"ports"}});
             expected = {
                 {{"name", enum_{"A"}}},
                 {{"name", enum_{"B"}}},
@@ -151,8 +144,7 @@ TEST_CASE("data query")
 
             SECTION("outer list")
             {
-                node.first = "example-schema";
-                node.second = "org";
+                listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"org"}});
                 expected = {
                     {{"department", std::string{"accounting"}}},
                     {{"department", std::string{"sales"}}},
@@ -164,7 +156,6 @@ TEST_CASE("data query")
             {
                 listElement_ list;
                 list.m_name = "org";
-                node.second = "people";
                 SECTION("accounting department")
                 {
                     list.m_keys = {
@@ -193,7 +184,8 @@ TEST_CASE("data query")
                     expected = {
                     };
                 }
-                location.m_nodes.push_back(dataNode_{{"example-schema"}, list});
+                listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list});
+                listPath.m_nodes.push_back(dataNode_{list_{"people"}});
             }
 
             SECTION("THREE MF NESTED LISTS")
@@ -205,7 +197,6 @@ TEST_CASE("data query")
                 };
 
                 listElement_ listPeople;
-                node.second = "computers";
 
                 SECTION("alice computers")
                 {
@@ -232,9 +223,9 @@ TEST_CASE("data query")
                     };
                 }
 
-                location.m_nodes.push_back(dataNode_{{"example-schema"}, listOrg});
-                location.m_nodes.push_back(dataNode_{listPeople});
-
+                listPath.m_nodes.push_back(dataNode_{{"example-schema"}, listOrg});
+                listPath.m_nodes.push_back(dataNode_{listPeople});
+                listPath.m_nodes.push_back(dataNode_{list_{"computers"}});
             }
         }
 
@@ -243,9 +234,8 @@ TEST_CASE("data query")
             datastore.createListInstance("/other-module:parking-lot/example-schema:cars[id='1']");
             datastore.createListInstance("/other-module:parking-lot/example-schema:cars[id='2']");
 
-            location.m_nodes.push_back(dataNode_{{"other-module"}, container_{"parking-lot"}});
-            node.first = "example-schema";
-            node.second = "cars";
+            listPath.m_nodes.push_back(dataNode_{{"other-module"}, container_{"parking-lot"}});
+            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"cars"}});
             expected = {
                 {{"id", int32_t{1}}},
                 {{"id", int32_t{2}}},
@@ -255,7 +245,7 @@ TEST_CASE("data query")
 
         datastore.commitChanges();
         std::sort(expected.begin(), expected.end());
-        auto keys = dataquery.listKeys(location, node);
+        auto keys = dataquery.listKeys(listPath);
         std::sort(keys.begin(), keys.end());
         REQUIRE(keys == expected);
     }

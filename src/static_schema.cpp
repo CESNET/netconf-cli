@@ -44,12 +44,34 @@ bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair&
     return list.m_keys.find(key) != list.m_keys.end();
 }
 
+bool StaticSchema::listHasKey(const schemaPath_& listPath, const std::string& key) const
+{
+    return listKeys(listPath).count(key);
+}
+
 const std::set<std::string> StaticSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
 {
     std::string locationString = pathToSchemaString(location, Prefixes::Always);
     assert(isList(location, node));
 
     const auto& child = children(locationString).at(fullNodeName(location, node));
+    const auto& list = std::get<yang::list>(child.m_nodeType);
+    return list.m_keys;
+}
+
+std::string lastNodeOfSchemaPath(const std::string& path)
+{
+    std::string res = path;
+    if (auto pos = res.find_last_of('/'); pos != res.npos) {
+        res.erase(0, pos + 1);
+    }
+    return res;
+}
+
+const std::set<std::string> StaticSchema::listKeys(const schemaPath_& listPath) const
+{
+    auto listPathString = pathToSchemaString(listPath, Prefixes::Always);
+    const auto& child = children(stripLastNodeFromPath(listPathString)).at(lastNodeOfSchemaPath(listPathString));
     const auto& list = std::get<yang::list>(child.m_nodeType);
     return list.m_keys;
 }
@@ -104,15 +126,6 @@ void StaticSchema::getIdentSet(const identityRef_& ident, std::set<identityRef_>
     for (auto it : derivedIdentities) {
         getIdentSet(it, res);
     }
-}
-
-std::string lastNodeOfSchemaPath(const std::string& path)
-{
-    std::string res = path;
-    if (auto pos = res.find_last_of('/'); pos != res.npos) {
-        res.erase(0, pos + 1);
-    }
-    return res;
 }
 
 yang::TypeInfo StaticSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const

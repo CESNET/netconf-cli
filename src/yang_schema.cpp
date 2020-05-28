@@ -101,6 +101,12 @@ bool YangSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& n
     return keys.find(key) != keys.end();
 }
 
+bool YangSchema::listHasKey(const schemaPath_& listPath, const std::string& key) const
+{
+    const auto keys = listKeys(listPath);
+    return keys.find(key) != keys.end();
+}
+
 bool YangSchema::leafIsKey(const std::string& leafPath) const
 {
     auto node = getSchemaNode(leafPath);
@@ -141,16 +147,35 @@ libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, co
     return impl_getSchemaNode(absPath);
 }
 
-const std::set<std::string> YangSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
+libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& listPath) const
+{
+    std::string absPath = pathToSchemaString(listPath, Prefixes::Always);
+    return impl_getSchemaNode(absPath);
+}
+
+namespace {
+const std::set<std::string> impl_listKeys(const libyang::S_Schema_Node_List& list)
 {
     std::set<std::string> keys;
-    if (!isList(location, node))
-        return keys;
-    libyang::Schema_Node_List list(getSchemaNode(location, node));
-    const auto& keysVec = list.keys();
+    const auto& keysVec = list->keys();
 
     std::transform(keysVec.begin(), keysVec.end(), std::inserter(keys, keys.begin()), [](const auto& it) { return it->name(); });
     return keys;
+}
+}
+
+const std::set<std::string> YangSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
+{
+    if (!isList(location, node))
+        return {};
+    auto list = std::make_shared<libyang::Schema_Node_List>(getSchemaNode(location, node));
+    return impl_listKeys(list);
+}
+
+const std::set<std::string> YangSchema::listKeys(const schemaPath_& listPath) const
+{
+    auto list = std::make_shared<libyang::Schema_Node_List>(getSchemaNode(listPath));
+    return impl_listKeys(list);
 }
 
 namespace {

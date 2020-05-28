@@ -24,11 +24,10 @@ class DataQuery {
 public:
     DataQuery(DatastoreAccess& datastore);
     /*! \brief Lists all possible instances of key/value pairs for a list specified by the arguments.
-     *  \param location Location of the list.
-     *  \param node Name (and optional module name) of the list.
+     *  \param listPath Path to the list (ending with a list_)
      *  \return A vector of maps, which represent the instances. The map is keyed by the name of the list key. The values in the map, are values of the list keys.
      */
-    std::vector<ListInstance> listKeys(const dataPath_& location, const ModuleNodePair& node) const;
+    std::vector<ListInstance> listKeys(const dataPath_& listPath) const;
 
 private:
     DatastoreAccess& m_datastore;

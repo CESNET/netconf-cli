@@ -46,24 +46,21 @@ struct keyValue_class {
 
 struct node_identifier_class;
 
+boost::optional<std::string> optModuleToOptString(const boost::optional<module_> module);
+
 struct key_identifier_class {
     template <typename T, typename Iterator, typename Context>
     void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
     {
-        auto& parserContext = x3::get<parser_context_tag>(context);
+        ParserContext& parserContext = x3::get<parser_context_tag>(context);
         const Schema& schema = parserContext.m_schema;
-        schemaPath_ location = parserContext.currentSchemaPath();
-        ModuleNodePair list{parserContext.m_curModule, parserContext.m_tmpListName};
 
-        if (schema.listHasKey(location, list, ast)) {
-            schemaNode_ listNode;
-            listNode.m_prefix = parserContext.m_curModule.flat_map([] (auto mod) { return boost::optional<module_>{{mod}}; });;
-            listNode.m_suffix = list_{parserContext.m_tmpListName};
-            location.m_nodes.push_back(listNode);
-            parserContext.m_tmpListKeyLeafPath.m_location = location;
-            parserContext.m_tmpListKeyLeafPath.m_node = { parserContext.m_curModule, ast };
+        if (schema.listHasKey(dataPathToSchemaPath(parserContext.m_tmpListPath), ast)) {
+            parserContext.m_tmpListKeyLeafPath.m_location = dataPathToSchemaPath(parserContext.m_tmpListPath);
+            parserContext.m_tmpListKeyLeafPath.m_node = { optModuleToOptString(parserContext.m_tmpListPath.m_nodes.back().m_prefix), ast };
         } else {
-            parserContext.m_errorMsg = parserContext.m_tmpListName + " is not indexed by \"" + ast + "\".";
+            auto listName = std::get<list_>(parserContext.m_tmpListPath.m_nodes.back().m_suffix).m_name;
+            parserContext.m_errorMsg = listName + " is not indexed by \"" + ast + "\".";
             _pass(context) = false;
         }
     }
@@ -78,13 +75,14 @@ struct listSuffix_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const Schema& schema = parserContext.m_schema;
 
-        const auto& keysNeeded = schema.listKeys(parserContext.currentSchemaPath(), {parserContext.m_curModule, parserContext.m_tmpListName});
+        const auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
         std::set<std::string> keysSupplied;
         for (const auto& it : ast)
             keysSupplied.insert(it.first);
 
         if (keysNeeded != keysSupplied) {
-            parserContext.m_errorMsg = "Not enough keys for " + parserContext.m_tmpListName + ". " +
+            auto listName = std::get<list_>(parserContext.m_tmpListPath.m_nodes.back().m_suffix).m_name;
+            parserContext.m_errorMsg = "Not enough keys for " + listName + ". " +
                                        "These keys were not supplied:";
             std::set<std::string> missingKeys;
             std::set_difference(keysNeeded.begin(), keysNeeded.end(),
@@ -302,7 +300,6 @@ struct initializePath_class {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.resetPath();
         parserContext.m_tmpListKeys.clear();
-        parserContext.m_tmpListName.clear();
         parserContext.m_suggestions.clear();
     }
 };
@@ -320,7 +317,7 @@ struct createKeySuggestions_class {
 
         parserContext.m_completionIterator = begin;
 
-        const auto& keysNeeded = schema.listKeys(parserContext.currentSchemaPath(), {parserContext.m_curModule, parserContext.m_tmpListName});
+        const auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
         parserContext.m_suggestions = generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys);
     }
 };
@@ -338,7 +335,7 @@ struct createValueSuggestions_class {
         const auto& dataQuery = parserContext.m_dataquery;
 
         parserContext.m_completionIterator = begin;
-        auto listInstances = dataQuery->listKeys(parserContext.currentDataPath(), {parserContext.m_curModule, parserContext.m_tmpListName});
+        auto listInstances = dataQuery->listKeys(parserContext.m_tmpListPath);
 
         decltype(listInstances) filteredInstances;
         //This filters out instances, which don't correspond to the partial instance we have.
@@ -369,7 +366,7 @@ struct suggestKeysEnd_class {
         const auto& schema = parserContext.m_schema;
 
         parserContext.m_completionIterator = begin;
-        const auto& keysNeeded = schema.listKeys(parserContext.currentSchemaPath(), {parserContext.m_curModule, parserContext.m_tmpListName});
+        const auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
         if (generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys).empty()) {
             parserContext.m_suggestions = {Completion{"]/"}};
         } else {

@@ -10,9 +10,9 @@ DataQuery::DataQuery(DatastoreAccess& datastore)
     m_schema = m_datastore.schema();
 }
 
-std::vector<ListInstance> DataQuery::listKeys(const dataPath_& location, const ModuleNodePair& node) const
+std::vector<ListInstance> DataQuery::listKeys(const dataPath_& listPath) const
 {
-    auto listPath = joinPaths(pathToDataString(location, Prefixes::Always), fullNodeName(location, node));
+    auto listPathString = pathToDataString(listPath, Prefixes::Always);
 
-    return m_datastore.listInstances(listPath);
+    return m_datastore.listInstances(listPathString);
 }
