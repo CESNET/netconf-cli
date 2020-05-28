@@ -251,4 +251,9 @@ module example-schema {
     leaf-list addresses {
         type string;
     }
+
+    leaf-list protocols {
+        type string;
+        ordered-by user;
+    }
 }

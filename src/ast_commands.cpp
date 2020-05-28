@@ -36,3 +36,13 @@ bool delete_::operator==(const delete_& b) const
 {
     return this->m_path == b.m_path;
 }
+
+bool Relative::operator==(const Relative& other) const
+{
+    return this->m_position == other.m_position && this->m_path == other.m_path;
+}
+
+bool move_::operator==(const move_& other) const
+{
+    return this->m_source == other.m_source && this->m_destination == other.m_destination;
+}

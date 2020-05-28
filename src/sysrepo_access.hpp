@@ -36,6 +36,7 @@ public:
     void deleteListInstance(const std::string& path) override;
     void createLeafListInstance(const std::string& path) override;
     void deleteLeafListInstance(const std::string& path) override;
+    void moveItem(const dataPath_& path, std::variant<Absolute, Relative> move) override;
     Tree executeRpc(const std::string& path, const Tree& input) override;
 
     std::shared_ptr<Schema> schema() override;
