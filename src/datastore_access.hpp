@@ -11,6 +11,7 @@
 #include <map>
 #include <optional>
 #include <string>
+#include "absolute_relative.hpp"
 #include "ast_values.hpp"
 #include "list_instance.hpp"
 
@@ -37,6 +38,8 @@ private:
 
 class Schema;
 
+struct dataPath_;
+
 class DatastoreAccess {
 public:
     using Tree = std::vector<std::pair<std::string, leaf_data_>>;
@@ -49,6 +52,7 @@ public:
     virtual void deleteListInstance(const std::string& path) = 0;
     virtual void createLeafListInstance(const std::string& path) = 0;
     virtual void deleteLeafListInstance(const std::string& path) = 0;
+    virtual void moveItem(const dataPath_& path, std::variant<Absolute, Relative> move) = 0;
     virtual Tree executeRpc(const std::string& path, const Tree& input) = 0;
 
     virtual std::shared_ptr<Schema> schema() = 0;

@@ -195,6 +195,11 @@ void Interpreter::operator()(const describe_& describe) const
     }
 }
 
+void Interpreter::operator()(const move_& move) const
+{
+    m_datastore.moveItem(move.m_source, move.m_destination);
+}
+
 struct commandLongHelpVisitor : boost::static_visitor<const char*> {
     template <typename T>
     auto constexpr operator()(boost::type<T>) const

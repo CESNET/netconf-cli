@@ -26,7 +26,7 @@ std::ostream& operator<<(std::ostream& s, const std::optional<std::string>& opt)
     return s;
 }
 
-std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& map)
+std::ostream& operator<<(std::ostream& s, const ListInstance& map)
 {
     s << std::endl
       << "{";
@@ -34,6 +34,16 @@ std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& map)
         s << "{\"" << it.first << "\", " << leafDataToString(it.second) << "}" << std::endl;
     }
     s << "}" << std::endl;
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& tree)
+{
+    s << "DatastoreAccess::Tree {\n";
+    for (const auto& [xpath, value] : tree) {
+        s << "    {" << xpath << ", " << value << "}\n";
+    }
+    s << "}\n";
     return s;
 }
 
@@ -131,5 +141,62 @@ std::ostream& operator<<(std::ostream& s, const create_& create)
 std::ostream& operator<<(std::ostream& s, const ls_& ls)
 {
     s << "\nls_ {\n    " << ls.m_path << "}\n";
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const move_& move)
+{
+    s << "\nmove_ {\n";
+    s << "    path: " << move.m_source;
+    s << "    mode: ";
+    if (std::holds_alternative<Absolute>(move.m_destination)) {
+        if (std::get<Absolute>(move.m_destination) == Absolute::Begin) {
+            s << "Absolute::Begin";
+        } else {
+            s << "Absolute::End";
+        }
+    } else {
+        const Relative& relative = std::get<Relative>(move.m_destination);
+        s << "Relative {\n";
+        s << "        position: ";
+        if (relative.m_position == Relative::Position::After) {
+            s << "Position::After\n";
+        } else {
+            s << "Position::Before\n";
+        }
+        s << "        path: ";
+        s << relative.m_path;
+    }
+    s << "\n}\n";
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const enum_& value)
+{
+    s << "enum_{" << value.m_value << "}\n";
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const binary_& value)
+{
+    s << "binary_{" << value.m_value << "}\n";
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const empty_)
+{
+    s << "empty_{}\n";
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const identityRef_& value)
+{
+    s << "identityRef_{" << leafDataToString(value) << "}\n";
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const special_& value)
+{
+    s << "special_{" << leafDataToString(value) << "}\n";
     return s;
 }
