@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "31dbb911_6d1b4324",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-29T12:05:25Z",
+      "side": 1,
+      "message": "Do you need a struct for this in the first place? In other words, will this be ever used without having an instance of move_ (the command)?\n\nI can imagine using this *if* it was complete (i.e., describing a full operation, and that means holding the \"subject\" of the move as well) and if it was used by the DatastoreAccess, but that\u0027s not the case (and even that would be a stretch, IMHO).",
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2b8057e_fd70ce6a",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-29T12:05:25Z",
+      "side": 1,
+      "message": "I don\u0027t understand why a variant is needed (which means that this needs docs). I think that the \"desired location\" of the move is either \"beginning\", \"end\", \"before X\" or \"after X\", so if it was something like:\n\n enum class Absolute { Begin, End };\n struct Relative {\n     enum Position { Before, After } position;\n     ListInstance of;\n }\n std::variant\u003cAbsolute, Relative\u003e location;",
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e6d171a_8f41c018",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-29T12:05:25Z",
+      "side": 1,
+      "message": "Use the ListInstance typedef for this, please",
+      "range": {
+        "startLine": 192,
+        "startChar": 19,
+        "endLine": 192,
+        "endChar": 52
+      },
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa3cca09_06a9e676",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-29T12:05:25Z",
+      "side": 1,
+      "message": "looks like this should be implemented before it gets merged (also twice below)",
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab19f07b_ef9b94f9",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-29T12:05:25Z",
+      "side": 1,
+      "message": "implement this? :)",
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b7916b6_c2f1f8d7",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-29T12:05:25Z",
+      "side": 1,
+      "message": "If this change doesn\u0027t make much sense outside of this patch, I think it\u0027s OK to leave it as-is (or did I misunderstand this comment?)",
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22ae94aa_10a00846",
+        "filename": "tests/command_completion.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-29T12:05:25Z",
+      "side": 1,
+      "message": "nit: I tried to deduplicate this via https://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/2630",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 5
+      },
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
