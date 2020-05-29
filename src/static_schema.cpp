@@ -244,9 +244,12 @@ yang::Status StaticSchema::status([[maybe_unused]] const std::string& location) 
     throw std::runtime_error{"Internal error: StaticSchema::status(std::string) not implemented. The tests should not have called this overload."};
 }
 
-yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path) const
+yang::NodeTypes StaticSchema::nodeType(const std::string& path) const
 {
-    throw std::runtime_error{"Internal error: StaticSchema::nodeType(std::string) not implemented. The tests should not have called this overload."};
+    auto locationString = stripLastNodeFromPath(path);
+
+    auto node = fullNodeName(locationString, lastNodeOfSchemaPath(path));
+    return std::visit(impl_nodeType{}, children(locationString).at(node).m_nodeType);
 }
 
 std::string StaticSchema::leafrefPath([[maybe_unused]] const std::string& leafrefPath) const
