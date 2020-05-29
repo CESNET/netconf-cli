@@ -58,8 +58,10 @@ public:
     bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const;
     bool isList(const schemaPath_& location, const ModuleNodePair& node) const;
     bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const;
+    bool isPresenceContainer(const schemaPath_& path) const;
     bool isLeafList(const std::string& path) const;
     virtual yang::NodeTypes nodeType(const std::string& path) const = 0;
+    virtual yang::NodeTypes nodeType(const schemaPath_& path) const = 0;
     virtual yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool isModule(const std::string& name) const = 0;
     virtual bool listHasKey(const schemaPath_& listPath, const std::string& key) const = 0;

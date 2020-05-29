@@ -31,6 +31,7 @@ public:
     IMPLEMENT_CONST_MOCK1(listKeys);
     MAKE_CONST_MOCK1(nodeType, yang::NodeTypes(const std::string&), override);
     MAKE_CONST_MOCK2(nodeType, yang::NodeTypes(const schemaPath_&, const ModuleNodePair&), override);
+    MAKE_CONST_MOCK1(nodeType, yang::NodeTypes(const schemaPath_&), override);
     IMPLEMENT_CONST_MOCK1(status);
 };
 

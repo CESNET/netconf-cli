@@ -28,6 +28,15 @@ bool Schema::isPresenceContainer(const schemaPath_& location, const ModuleNodePa
     }
 }
 
+bool Schema::isPresenceContainer(const schemaPath_& path) const
+{
+    try {
+        return nodeType(path) == yang::NodeTypes::PresenceContainer;
+    } catch (InvalidNodeException&) {
+        return false;
+    }
+}
+
 bool Schema::isContainer(const schemaPath_& location, const ModuleNodePair& node) const
 {
     try {
