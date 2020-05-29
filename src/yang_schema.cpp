@@ -469,6 +469,11 @@ yang::NodeTypes YangSchema::nodeType(const std::string& path) const
     return impl_nodeType(getSchemaNode(path));
 }
 
+yang::NodeTypes YangSchema::nodeType(const schemaPath_& path) const
+{
+    return impl_nodeType(getSchemaNode(path));
+}
+
 std::optional<std::string> YangSchema::description(const std::string& path) const
 {
     auto node = getSchemaNode(path.c_str());
