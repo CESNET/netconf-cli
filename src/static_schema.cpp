@@ -34,29 +34,9 @@ void StaticSchema::addContainer(const std::string& location, const std::string& 
     m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
 }
 
-bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
-{
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    assert(isList(location, node));
-
-    const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& list = std::get<yang::list>(child.m_nodeType);
-    return list.m_keys.find(key) != list.m_keys.end();
-}
-
 bool StaticSchema::listHasKey(const schemaPath_& listPath, const std::string& key) const
 {
     return listKeys(listPath).count(key);
-}
-
-const std::set<std::string> StaticSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    assert(isList(location, node));
-
-    const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& list = std::get<yang::list>(child.m_nodeType);
-    return list.m_keys;
 }
 
 std::string lastNodeOfSchemaPath(const std::string& path)

@@ -566,23 +566,27 @@ TEST_CASE("yangschema")
 
             SECTION("_list")
             {
-                node.first = "example-schema";
-                node.second = "_list";
+                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"_list"}});
                 SECTION("number")
-                key = "number";
+                {
+                    key = "number";
+                }
             }
 
             SECTION("twoKeyList")
             {
-                node.first = "example-schema";
-                node.second = "twoKeyList";
+                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"twoKeyList"}});
                 SECTION("number")
-                key = "number";
+                {
+                    key = "number";
+                }
                 SECTION("name")
-                key = "name";
+                {
+                    key = "name";
+                }
             }
 
-            REQUIRE(ys.listHasKey(path, node, key));
+            REQUIRE(ys.listHasKey(path, key));
         }
         SECTION("listKeys")
         {
@@ -590,19 +594,17 @@ TEST_CASE("yangschema")
 
             SECTION("_list")
             {
+                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"_list"}});
                 set = {"number"};
-                node.first = "example-schema";
-                node.second = "_list";
             }
 
             SECTION("twoKeyList")
             {
+                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"twoKeyList"}});
                 set = {"number", "name"};
-                node.first = "example-schema";
-                node.second = "twoKeyList";
             }
 
-            REQUIRE(ys.listKeys(path, node) == set);
+            REQUIRE(ys.listKeys(path) == set);
         }
         SECTION("leafType")
         {
@@ -1257,9 +1259,9 @@ TEST_CASE("yangschema")
         SECTION("nodetype-specific methods called with different nodetypes")
         {
             path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-            node.second = "a2";
+            path.m_nodes.push_back(schemaNode_(container_("a2")));
 
-            REQUIRE(!ys.listHasKey(path, node, "chacha"));
+            REQUIRE(!ys.listHasKey(path, "chacha"));
         }
 
         SECTION("nonexistent module")
