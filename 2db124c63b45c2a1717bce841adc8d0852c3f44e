@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "83a2ff4e_ecd55744",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-29T11:47:54Z",
+      "side": 1,
+      "message": "nit: looks like something that could be made more readable by:\n\n SomePath operator+(SomePath, SomePath::Node)",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 101
+      },
+      "revId": "2db124c63b45c2a1717bce841adc8d0852c3f44e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
