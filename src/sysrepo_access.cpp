@@ -196,7 +196,7 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path)
             return;
         for (unsigned int i = 0; i < items->val_cnt(); i++) {
             auto value = leafValueFromVal(items->val(i));
-            if (m_schema->isLeafList(items->val(i)->xpath())) {
+            if (m_schema->nodeType(items->val(i)->xpath()) == yang::NodeTypes::LeafList) {
                 res.emplace(items->val(i)->xpath(), special_{SpecialValue::LeafList});
                 res.emplace(items->val(i)->xpath() + "[.="s + escapeListKeyString(leafDataToString(value)) + "]", value);
             } else {

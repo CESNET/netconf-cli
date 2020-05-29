@@ -158,7 +158,7 @@ struct presenceContainerPath_class {
         }
 
         try {
-            if (!schema.isPresenceContainer(parserContext.currentSchemaPath())) {
+            if (schema.nodeType(parserContext.currentSchemaPath()) != yang::NodeTypes::PresenceContainer) {
                 parserContext.m_errorMsg = "This container is not a presence container.";
                 _pass(context) = false;
             }
