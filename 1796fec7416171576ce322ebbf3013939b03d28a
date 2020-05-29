@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8fa6128e_f015c7d1",
+        "filename": "src/static_schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-29T10:47:30Z",
+      "side": 1,
+      "message": "I don\u0027t understand this -- schemaPath_ is a vector of schemaNode_, which is an std::variant\u003ccontainer_, list_, nodeup_, leaf_, leafList_\u003e. Once you have a schemaPath_, you don\u0027t need to call out to the Schema class to query for the type of the node -- it\u0027s already encoded in that variant.\n\nWhat am I missing?",
+      "revId": "1796fec7416171576ce322ebbf3013939b03d28a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
