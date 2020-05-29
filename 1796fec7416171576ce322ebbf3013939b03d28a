@@ -52,6 +52,24 @@
       "revId": "1796fec7416171576ce322ebbf3013939b03d28a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdbfae3e_3fcce637",
+        "filename": "src/static_schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-05-29T14:42:31Z",
+      "side": 1,
+      "message": "I think that would work, yup.\n\nWhat I also suggest is taking a step back and figuring out how the API of a Schema should look like. Should it work with string paths, or on parsed data? I don\u0027t know (now), but it will help shape the API.\n\n/me calls it a day.",
+      "parentUuid": "e7db974e_be4a4a6c",
+      "revId": "1796fec7416171576ce322ebbf3013939b03d28a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
