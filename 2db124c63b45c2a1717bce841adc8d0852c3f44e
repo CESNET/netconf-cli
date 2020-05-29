@@ -22,6 +22,30 @@
       "revId": "2db124c63b45c2a1717bce841adc8d0852c3f44e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4565b1d_d1480eca",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-29T14:31:00Z",
+      "side": 1,
+      "message": "Yeah, kind of. I think more method could be added to dataPath_/schemaPath_/dataNode_/schemaNode_ to ease work with them... maybe in another patch",
+      "parentUuid": "83a2ff4e_ecd55744",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 101
+      },
+      "revId": "2db124c63b45c2a1717bce841adc8d0852c3f44e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
