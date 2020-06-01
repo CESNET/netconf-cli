@@ -294,6 +294,12 @@ TEST_CASE("cd")
                 input = "cd example:twoKeyList[number=4][name=abcd]";
             }
         }
+
+        SECTION("no space between list prefix and suffix")
+        {
+            input = "cd example:list  [number=10]";
+        }
+
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
     }
 }
