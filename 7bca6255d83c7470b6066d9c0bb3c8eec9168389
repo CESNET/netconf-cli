@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1cb0dcdd_2ade9636",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-01T07:25:34Z",
+      "side": 1,
+      "message": "I have a feeling that at least part of this should go into DatastoreAccess (once it gets implemented :) ).",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 6
+      },
+      "revId": "7bca6255d83c7470b6066d9c0bb3c8eec9168389",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
