@@ -188,6 +188,24 @@
     },
     {
       "key": {
+        "uuid": "8a8044ec_21429c0b",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-01T01:58:44Z",
+      "side": 1,
+      "message": "It does make sense outside of this patch, this change is needed for this patch, but it also fixes a bug, so I put this change to separate change (with a test)",
+      "parentUuid": "3b7916b6_c2f1f8d7",
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "22ae94aa_10a00846",
         "filename": "tests/command_completion.cpp",
         "patchSetId": 4
