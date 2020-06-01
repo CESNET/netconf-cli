@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fcc4369f_1259d2fd",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-01T00:44:39Z",
+      "side": 1,
+      "message": "struct is removed",
+      "parentUuid": "31dbb911_6d1b4324",
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c2b8057e_fd70ce6a",
         "filename": "src/ast_commands.hpp",
         "patchSetId": 4
@@ -56,6 +74,48 @@
       "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "015bb6e3_328a58c9",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-01T00:44:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e6d171a_8f41c018",
+      "range": {
+        "startLine": 192,
+        "startChar": 19,
+        "endLine": 192,
+        "endChar": 52
+      },
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3d0c50ef_02d7558b",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-01T00:44:39Z",
+      "side": 1,
+      "message": "I did what you suggested",
+      "parentUuid": "c2b8057e_fd70ce6a",
+      "revId": "3a10cf8312304a388d2866e489bb1def60b3f169",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
