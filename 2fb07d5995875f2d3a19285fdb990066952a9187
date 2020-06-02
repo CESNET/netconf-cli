@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "207be893_f2ff87fb",
+        "filename": "tests/python_netconfaccess.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-02T12:09:59Z",
+      "side": 1,
+      "message": "nit: perhaps this one could be removed",
+      "revId": "2fb07d5995875f2d3a19285fdb990066952a9187",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
