@@ -197,10 +197,15 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path)
         for (unsigned int i = 0; i < items->val_cnt(); i++) {
             auto value = leafValueFromVal(items->val(i));
             if (m_schema->isLeafList(items->val(i)->xpath())) {
-                res.emplace(items->val(i)->xpath(), special_{SpecialValue::LeafList});
-                res.emplace(items->val(i)->xpath() + "[.="s + escapeListKeyString(leafDataToString(value)) + "]", value);
+                res.push_back({items->val(i)->xpath(), special_{SpecialValue::LeafList}});
+                std::string leafListPath = items->val(i)->xpath();
+                while (i < items->val_cnt() && leafListPath == items->val(i)->xpath()) {
+                    auto leafListValue = leafDataToString(leafValueFromVal(items->val(i)));
+                    res.push_back({items->val(i)->xpath() + "[.="s + escapeListKeyString(leafListValue) + "]", leafListValue});
+                    i++;
+                }
             } else {
-                res.emplace(items->val(i)->xpath(), value);
+                res.push_back({items->val(i)->xpath(), value});
             }
         }
     };
@@ -316,7 +321,7 @@ DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string &path, const T
     Tree res;
     for (size_t i = 0; i < output->val_cnt(); ++i) {
         const auto& v = output->val(i);
-        res.emplace(std::string(v->xpath()).substr(joinPaths(path, "/").size()), leafValueFromVal(v));
+        res.push_back({std::string(v->xpath()).substr(joinPaths(path, "/").size()), leafValueFromVal(v)});
     }
     return res;
 }

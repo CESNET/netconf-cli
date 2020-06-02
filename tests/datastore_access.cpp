@@ -202,7 +202,7 @@ TEST_CASE("setting/getting values")
             datastore.commitChanges();
         }
 
-        DatastoreAccess::Tree expected{{"/example-schema:down", bool{false}},
+        DatastoreAccess::Tree expected{
         // Sysrepo always returns containers when getting values, but
         // libnetconf does not. This is fine by the YANG standard:
         // https://tools.ietf.org/html/rfc7950#section-7.5.7 Furthermore,
@@ -212,10 +212,11 @@ TEST_CASE("setting/getting values")
         // because it'll use the same data structure as libnetconf, so the
         // results will be consistent.
 #ifdef sysrepo_BACKEND
-                                                   {"/example-schema:lol", special_{SpecialValue::Container}},
                                                    {"/example-schema:inventory", special_{SpecialValue::Container}},
+                                                   {"/example-schema:lol", special_{SpecialValue::Container}},
 #endif
-                                                   {"/example-schema:up", bool{true}}};
+                                                   {"/example-schema:up", bool{true}},
+                                                   {"/example-schema:down", bool{false}}};
         REQUIRE(datastore.getItems("/example-schema:*") == expected);
     }
 
