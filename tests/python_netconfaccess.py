@@ -2,7 +2,7 @@ import netconf_cli_py as nc
 
 c = nc.NetconfAccess(socketPath = "@NETOPEER_SOCKET_PATH@")
 data = c.getItems("/ietf-netconf-server:netconf-server")
-for (k, v) in data.items():
+for (k, v) in data:
     print(f"{k}: {type(v)} {v}", flush=True)
 
 if len(data) == 0:
@@ -14,9 +14,10 @@ for EXPECTED in (599, 59, "61"):
     c.setLeaf(hello_timeout_xp, EXPECTED)
     c.commitChanges()
     data = c.getItems(hello_timeout_xp)
-    if (data[hello_timeout_xp] != EXPECTED):
+    (_, value) = next(filter(lambda keyValue: keyValue[0] == hello_timeout_xp, data))
+    if value != EXPECTED:
         if isinstance(EXPECTED, str):
-            if str(data[hello_timeout_xp]) != EXPECTED:
+            if str(value) != EXPECTED:
                 print(f"ERROR: hello-timeout not updated (via string) to {EXPECTED}")
                 exit(1)
         else:

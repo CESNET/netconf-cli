@@ -5,6 +5,7 @@
  *
 */
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <libyang/Libyang.hpp>
 #include <libyang/Tree_Data.hpp>
 #include "libyang_utils.hpp"
@@ -32,21 +33,16 @@ void fillMap(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libya
                 // The fact that the container is included in the data tree
                 // means that it is present and I don't need to check any
                 // value.
-                res.emplace(stripXPathPrefix(it->path()), special_{SpecialValue::PresenceContainer});
+                res.emplace_back(stripXPathPrefix(it->path()), special_{SpecialValue::PresenceContainer});
             }
         }
         if (it->schema()->nodetype() == LYS_LIST) {
-            res.emplace(stripXPathPrefix(it->path()), special_{SpecialValue::List});
+            res.push_back({stripXPathPrefix(it->path()), special_{SpecialValue::List}});
         }
         if (it->schema()->nodetype() == LYS_LEAF || it->schema()->nodetype() == LYS_LEAFLIST) {
-            using namespace std::string_literals;
             libyang::Data_Node_Leaf_List leaf(it);
             auto value = leafValueFromValue(leaf.value(), leaf.leaf_type()->base());
-            if (it->schema()->nodetype() == LYS_LEAFLIST) {
-                std::string strippedLeafListValue = stripLeafListValueFromPath(it->path());
-                res.emplace(stripXPathPrefix(strippedLeafListValue), special_{SpecialValue::LeafList});
-            }
-            res.emplace(stripXPathPrefix(it->path()), value);
+            res.emplace_back(stripXPathPrefix(it->path()), value);
         }
     }
 }
@@ -61,8 +57,18 @@ DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path)
     auto config = m_session->get((path != "/") ? std::optional{path} : std::nullopt);
 
     if (config) {
-        for (auto it : config->tree_for()) {
-            fillMap(res, it->tree_dfs());
+        auto siblings = config->tree_for();
+        for (auto it = siblings.begin(); it < siblings.end(); it++) {
+            if ((*it)->schema()->nodetype() == LYS_LEAFLIST) {
+                auto leafListPath = stripLeafListValueFromPath((*it)->path());
+                res.emplace_back(leafListPath, special_{SpecialValue::LeafList});
+                while (it != siblings.end() && boost::starts_with((*it)->path(), leafListPath)) {
+                    fillMap(res, (*it)->tree_dfs());
+                    it++;
+                }
+            } else {
+                fillMap(res, (*it)->tree_dfs());
+            }
         }
     }
     return res;
