@@ -88,6 +88,24 @@
       "revId": "1796fec7416171576ce322ebbf3013939b03d28a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1b47c6d_de6e6a7b",
+        "filename": "src/static_schema.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-02T15:17:51Z",
+      "side": 1,
+      "message": "Anyway, the thing is that isPresenceContainer is implemented inside Schema, and that\u0027s why I need the additional overload (because nodeType is virtual). But maybe I can turn isPresenceContainer into a virtual method again?",
+      "parentUuid": "578699ee_935e05fc",
+      "revId": "1796fec7416171576ce322ebbf3013939b03d28a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
