@@ -16,6 +16,24 @@
       "revId": "60d6078b5033873c8c35329457c6bdacbbe57ced",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aff546a3_e735d2d6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-02T14:10:37Z",
+      "side": 1,
+      "message": "It\u0027s a good idea overall, because it fixes a bug. But I added an explanation, why I need it for move too.",
+      "parentUuid": "8eafbc93_797c5a90",
+      "revId": "60d6078b5033873c8c35329457c6bdacbbe57ced",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
