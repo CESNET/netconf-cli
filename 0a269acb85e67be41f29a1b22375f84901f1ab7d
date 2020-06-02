@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "210cee95_79a9c4ac",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-02T22:06:43Z",
+      "side": 1,
+      "message": "use `back()` instead of `end()` (and also below)",
+      "range": {
+        "startLine": 318,
+        "startChar": 46,
+        "endLine": 318,
+        "endChar": 49
+      },
+      "revId": "0a269acb85e67be41f29a1b22375f84901f1ab7d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
