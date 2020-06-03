@@ -1,0 +1,4 @@
+const auto exampleSchemaFile = "@CMAKE_CURRENT_SOURCE_DIR@/tests/example-schema.yang";
+const auto schemaDir = "@CMAKE_CURRENT_SOURCE_DIR@/tests";
+const auto sysrepocfgExecutable = "@SYSREPOCFG_EXECUTABLE@";
+const auto testConfigFile = "@CMAKE_CURRENT_BINARY_DIR@/test_yang_access_config";
