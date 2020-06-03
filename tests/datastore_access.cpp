@@ -22,6 +22,14 @@ using OnInvalidSchemaPathMove = std::runtime_error;
 using OnKeyNotFound = std::runtime_error;
 #include "netconf_access.hpp"
 #include "netopeer_vars.hpp"
+#elif defined(yang_BACKEND)
+using OnInvalidSchemaPathCreate = void;
+using OnInvalidSchemaPathDelete = void;
+using OnInvalidSchemaPathMove = void;
+using OnKeyNotFound = void;
+#include <fstream>
+#include "yang_access.hpp"
+#include "yang_access_test_vars.hpp"
 #else
 #error "Unknown backend"
 #endif
@@ -61,6 +69,34 @@ template <class Exception, typename Callable> void catching(const Callable& what
 }
 }
 
+#if defined(yang_BACKEND)
+class TestYangAccess : public YangAccess {
+public:
+    void commitChanges() override
+    {
+        YangAccess::commitChanges();
+        dumpToSysrepo();
+    }
+
+    void copyConfig(const Datastore source, const Datastore destination) override
+    {
+        YangAccess::copyConfig(source, destination);
+        dumpToSysrepo();
+    }
+
+private:
+    void dumpToSysrepo()
+    {
+        {
+            std::ofstream of(testConfigFile);
+            of << dumpXML();
+        }
+        auto command = std::string(sysrepocfgExecutable) + " --import=" + testConfigFile + " --format=xml --datastore=running example-schema";
+        REQUIRE(std::system(command.c_str()) == 0);
+    }
+};
+#endif
+
 TEST_CASE("setting/getting values")
 {
     trompeloeil::sequence seq1;
@@ -71,6 +107,10 @@ TEST_CASE("setting/getting values")
     SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
 #elif defined(netconf_BACKEND)
     NetconfAccess datastore(NETOPEER_SOCKET_PATH);
+#elif defined(yang_BACKEND)
+    TestYangAccess datastore;
+    datastore.addSchemaDir(schemaDir);
+    datastore.addSchemaFile(exampleSchemaFile);
 #else
 #error "Unknown backend"
 #endif
@@ -457,6 +497,7 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:dummy") == expected);
     }
 
+#if not defined(yang_BACKEND)
     SECTION("operational data")
     {
         MockDataSupplier mockOpsData;
@@ -472,6 +513,7 @@ TEST_CASE("setting/getting values")
         REQUIRE_CALL(mockOpsData, get_data(xpath)).RETURN(expected);
         REQUIRE(datastore.getItems(xpath) == expected);
     }
+#endif
 
     SECTION("leaf list")
     {
@@ -760,6 +802,7 @@ TEST_CASE("setting/getting values")
     waitForCompletionAndBitMore(seq1);
 }
 
+#if not defined(yang_BACKEND)
 class RpcCb: public sysrepo::Callback {
     int rpc(const char *xpath, const ::sysrepo::S_Vals input, ::sysrepo::S_Vals_Holder output, void *) override
     {
@@ -816,6 +859,8 @@ TEST_CASE("rpc") {
     SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
 #elif defined(netconf_BACKEND)
     NetconfAccess datastore(NETOPEER_SOCKET_PATH);
+#elif defined(yang_BACKEND)
+    YangAccess datastore;
 #else
 #error "Unknown backend"
 #endif
@@ -877,3 +922,4 @@ TEST_CASE("rpc") {
 
     waitForCompletionAndBitMore(seq1);
 }
+#endif
