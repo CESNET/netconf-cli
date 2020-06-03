@@ -111,6 +111,12 @@ add_library(netconfaccess STATIC
 
 target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PRIVATE PkgConfig::LIBNETCONF2)
 
+add_library(yangaccess STATIC
+    src/yang_access.cpp
+    )
+
+target_link_libraries(yangaccess PUBLIC datastoreaccess yangschema)
+
 add_library(yangschema STATIC
     src/yang_schema.cpp
     src/libyang_utils.cpp
@@ -127,15 +133,28 @@ add_library(parser STATIC
     )
 target_link_libraries(parser schemas utils ast_values)
 
+# Links library, that aren't specific to a datastore type
+function(cli_link_required cli_target)
+    target_include_directories(${cli_target} PRIVATE ${REPLXX_PATH})
+    target_link_libraries(${cli_target} yangschema docopt parser ${REPLXX_LIBRARY})
+    add_dependencies(${cli_target} target-NETCONF_CLI_VERSION)
+    target_include_directories(${cli_target} PRIVATE ${PROJECT_BINARY_DIR})
+endfunction()
+
 add_executable(sysrepo-cli
     src/cli.cpp
     )
 target_compile_definitions(sysrepo-cli PRIVATE SYSREPO_CLI)
-target_include_directories(sysrepo-cli PRIVATE ${REPLXX_PATH})
-target_link_libraries(sysrepo-cli sysrepoaccess yangschema docopt parser ${REPLXX_LIBRARY})
+target_link_libraries(sysrepo-cli sysrepoaccess)
+cli_link_required(sysrepo-cli)
 
-add_dependencies(sysrepo-cli target-NETCONF_CLI_VERSION)
-target_include_directories(sysrepo-cli PRIVATE ${PROJECT_BINARY_DIR})
+add_executable(yang-cli
+    src/cli.cpp
+    )
+target_compile_definitions(yang-cli PRIVATE YANG_CLI)
+cli_link_required(yang-cli)
+target_link_libraries(yang-cli yangaccess)
+
 
 include(CTest)
 if(BUILD_TESTING)
