@@ -13,6 +13,9 @@
 #elif defined(netconf_BACKEND)
 #include "netconf_access.hpp"
 #include "netopeer_vars.hpp"
+#elif defined(yang_BACKEND)
+#include "yang_access.hpp"
+#include "yang_access_test_vars.hpp"
 #else
 #error "Unknown backend"
 #endif
@@ -32,6 +35,10 @@ TEST_CASE("data query")
     SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
 #elif defined(netconf_BACKEND)
     NetconfAccess datastore(NETOPEER_SOCKET_PATH);
+#elif defined(yang_BACKEND)
+    YangAccess datastore;
+    datastore.addSchemaDir(schemaDir);
+    datastore.addSchemaFile(exampleSchemaFile);
 #else
 #error "Unknown backend"
 #endif
