@@ -24,6 +24,20 @@ Usage:
 
 Options:
   -d <datastore>   can be "running" or "startup" [default: running])";
+#elif defined(YANG_CLI)
+#include <boost/spirit/home/x3.hpp>
+#include "yang_access.hpp"
+#define PROGRAM_NAME "yang-cli"
+static const auto usage = R"(CLI interface for creating local YANG data instances
+
+Usage:
+  yang-cli [-s <search_dir>] [-e enable_features]... <schema_file>...
+  yang-cli (-h | --help)
+  yang-cli --version
+
+Options:
+  -s <search_dir>       Set search for schema lookup
+  -e <enable_features>  Feature to enable after modules are loaded. This option can be supplied more than once. Format: <module_name>:<feature>)";
 #else
 #error "Unknown CLI backend"
 #endif
@@ -52,6 +66,34 @@ int main(int argc, char* argv[])
     }
     SysrepoAccess datastore(PROGRAM_NAME, datastoreType);
     std::cout << "Connected to sysrepo [datastore: " << (datastoreType == Datastore::Startup ? "startup" : "running") << "]" << std::endl;
+#elif defined(YANG_CLI)
+    YangAccess datastore;
+    if (const auto& search_dir = args["-s"]) {
+        datastore.addSchemaDir(search_dir.asString());
+    }
+    for (const auto& schemaFile : args["<schema_file>"].asStringList()) {
+        datastore.addSchemaFile(schemaFile);
+    }
+    if (const auto& enableFeatures = args["-e"]) {
+        namespace x3 = boost::spirit::x3;
+        auto grammar = +(x3::char_-":") >> ":" >> +(x3::char_-":");
+        for (const auto& enableFeature : enableFeatures.asStringList()) {
+            std::pair<std::string, std::string> parsed;
+            auto it = enableFeature.begin();
+            auto res = x3::parse(it, enableFeature.cend(), grammar, parsed);
+            if (!res || it != enableFeature.cend()) {
+                std::cerr << "Error parsing feature enable flags: " << enableFeature << "\n";
+                return 1;
+            }
+            try {
+                datastore.enableFeature(parsed.first, parsed.second);
+            } catch (std::runtime_error& ex) {
+                std::cerr << ex.what() << "\n";
+                return 1;
+            }
+
+        }
+    }
 #else
 #error "Unknown CLI backend"
 #endif
