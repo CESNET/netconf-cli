@@ -14,14 +14,28 @@
 using OnInvalidSchemaPathCreate = DatastoreException;
 using OnInvalidSchemaPathDelete = void;
 using OnInvalidSchemaPathMove = sysrepo::sysrepo_exception;
+using OnInvalidRpcPath = sysrepo::sysrepo_exception;
 using OnKeyNotFound = void;
+using OnRPC = void;
 #elif defined(netconf_BACKEND)
 using OnInvalidSchemaPathCreate = std::runtime_error;
 using OnInvalidSchemaPathDelete = std::runtime_error;
 using OnInvalidSchemaPathMove = std::runtime_error;
+using OnInvalidRpcPath = std::runtime_error;
 using OnKeyNotFound = std::runtime_error;
+using OnRPC = void;
 #include "netconf_access.hpp"
 #include "netopeer_vars.hpp"
+#elif defined(yang_BACKEND)
+#include <fstream>
+#include "yang_access.hpp"
+#include "yang_access_test_vars.hpp"
+using OnInvalidSchemaPathCreate = DatastoreException;
+using OnInvalidSchemaPathDelete = DatastoreException;
+using OnInvalidSchemaPathMove = DatastoreException;
+using OnInvalidRpcPath = DatastoreException;
+using OnKeyNotFound = void;
+using OnRPC = std::logic_error;
 #else
 #error "Unknown backend"
 #endif
@@ -51,6 +65,8 @@ template <class Exception, typename Callable> void catching(const Callable& what
         // cannot use REQUIRE_THROWS_AS(..., Exception) directly because that one
         // needs an extra `typename` deep in the bowels of doctest
         REQUIRE_THROWS_AS(what(), std::runtime_error);
+    } else if constexpr (std::is_same<Exception, std::logic_error>()) {
+        REQUIRE_THROWS_AS(what(), std::logic_error);
     } else if constexpr (std::is_same<Exception, DatastoreException>()) {
         REQUIRE_THROWS_AS(what(), DatastoreException);
     } else if constexpr (std::is_same<Exception, sysrepo::sysrepo_exception>()) {
@@ -60,6 +76,34 @@ template <class Exception, typename Callable> void catching(const Callable& what
     }
 }
 }
+
+#if defined(yang_BACKEND)
+class TestYangAccess : public YangAccess {
+public:
+    void commitChanges() override
+    {
+        YangAccess::commitChanges();
+        dumpToSysrepo();
+    }
+
+    void copyConfig(const Datastore source, const Datastore destination) override
+    {
+        YangAccess::copyConfig(source, destination);
+        dumpToSysrepo();
+    }
+
+private:
+    void dumpToSysrepo()
+    {
+        {
+            std::ofstream of(testConfigFile);
+            of << dumpXML();
+        }
+        auto command = std::string(sysrepocfgExecutable) + " --import=" + testConfigFile + " --format=xml --datastore=running example-schema";
+        REQUIRE(std::system(command.c_str()) == 0);
+    }
+};
+#endif
 
 TEST_CASE("setting/getting values")
 {
@@ -71,6 +115,10 @@ TEST_CASE("setting/getting values")
     SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
 #elif defined(netconf_BACKEND)
     NetconfAccess datastore(NETOPEER_SOCKET_PATH);
+#elif defined(yang_BACKEND)
+    TestYangAccess datastore;
+    datastore.addSchemaDir(schemaDir);
+    datastore.addSchemaFile(exampleSchemaFile);
 #else
 #error "Unknown backend"
 #endif
@@ -457,6 +505,7 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:dummy") == expected);
     }
 
+#if not defined(yang_BACKEND)
     SECTION("operational data")
     {
         MockDataSupplier mockOpsData;
@@ -472,6 +521,7 @@ TEST_CASE("setting/getting values")
         REQUIRE_CALL(mockOpsData, get_data(xpath)).RETURN(expected);
         REQUIRE(datastore.getItems(xpath) == expected);
     }
+#endif
 
     SECTION("leaf list")
     {
@@ -816,6 +866,10 @@ TEST_CASE("rpc") {
     SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
 #elif defined(netconf_BACKEND)
     NetconfAccess datastore(NETOPEER_SOCKET_PATH);
+#elif defined(yang_BACKEND)
+    YangAccess datastore;
+    datastore.addSchemaDir(schemaDir);
+    datastore.addSchemaFile(exampleSchemaFile);
 #else
 #error "Unknown backend"
 #endif
@@ -867,12 +921,12 @@ TEST_CASE("rpc") {
             };
         }
 
-        REQUIRE(datastore.executeRpc(rpc, input) == output);
+        catching<OnRPC>([&] {REQUIRE(datastore.executeRpc(rpc, input) == output);});
     }
 
     SECTION("non-existing RPC")
     {
-        REQUIRE_THROWS_AS(datastore.executeRpc("/example-schema:non-existing", DatastoreAccess::Tree{}), std::runtime_error);
+        catching<OnInvalidRpcPath>([&] {datastore.executeRpc("/example-schema:non-existing", DatastoreAccess::Tree{});});
     }
 
     waitForCompletionAndBitMore(seq1);
