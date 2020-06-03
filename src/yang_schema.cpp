@@ -40,7 +40,6 @@ YangSchema::YangSchema()
 YangSchema::YangSchema(std::shared_ptr<libyang::Context> lyCtx)
     : m_context(lyCtx)
 {
-
 }
 
 YangSchema::~YangSchema() = default;
