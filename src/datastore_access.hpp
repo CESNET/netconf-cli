@@ -23,7 +23,7 @@ struct DatastoreError {
     std::string message;
     std::optional<std::string> xpath;
 
-    DatastoreError(const std::string& message, const std::optional<std::string>& xpath);
+    DatastoreError(const std::string& message, const std::optional<std::string>& xpath = std::nullopt);
 };
 
 class DatastoreException : std::exception {
