@@ -13,45 +13,6 @@
 #include "utils.hpp"
 #include "yang_schema.hpp"
 
-namespace {
-
-// This is very similar to the fillMap lambda in SysrepoAccess, however,
-// Sysrepo returns a weird array-like structure, while libnetconf
-// returns libyang::Data_Node
-void fillMap(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix = std::nullopt)
-{
-    auto stripXPathPrefix = [&ignoredXPathPrefix] (auto path) {
-        return ignoredXPathPrefix ? path.substr(ignoredXPathPrefix->size()) : path;
-    };
-
-    for (const auto& it : items) {
-        if (!it)
-            continue;
-        if (it->schema()->nodetype() == LYS_CONTAINER) {
-            if (libyang::Schema_Node_Container{it->schema()}.presence()) {
-                // The fact that the container is included in the data tree
-                // means that it is present and I don't need to check any
-                // value.
-                res.emplace(stripXPathPrefix(it->path()), special_{SpecialValue::PresenceContainer});
-            }
-        }
-        if (it->schema()->nodetype() == LYS_LIST) {
-            res.emplace(stripXPathPrefix(it->path()), special_{SpecialValue::List});
-        }
-        if (it->schema()->nodetype() == LYS_LEAF || it->schema()->nodetype() == LYS_LEAFLIST) {
-            using namespace std::string_literals;
-            libyang::Data_Node_Leaf_List leaf(it);
-            auto value = leafValueFromValue(leaf.value(), leaf.leaf_type()->base());
-            if (it->schema()->nodetype() == LYS_LEAFLIST) {
-                std::string strippedLeafListValue = stripLeafListValueFromPath(it->path());
-                res.emplace(stripXPathPrefix(strippedLeafListValue), special_{SpecialValue::LeafList});
-            }
-            res.emplace(stripXPathPrefix(it->path()), value);
-        }
-    }
-}
-}
-
 
 NetconfAccess::~NetconfAccess() = default;
 
@@ -62,7 +23,7 @@ DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path)
 
     if (config) {
         for (auto it : config->tree_for()) {
-            fillMap(res, it->tree_dfs());
+            lyNodesToTree(res, it->tree_dfs());
         }
     }
     return res;
@@ -163,7 +124,7 @@ DatastoreAccess::Tree NetconfAccess::executeRpc(const std::string& path, const T
     auto output = m_session->rpc(data);
     if (output) {
         for (auto it : output->tree_for()) {
-            fillMap(res, it->tree_dfs(), joinPaths(path, "/"));
+            lyNodesToTree(res, it->tree_dfs(), joinPaths(path, "/"));
         }
     }
     return res;
