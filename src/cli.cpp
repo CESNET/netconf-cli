@@ -24,6 +24,15 @@ Usage:
 
 Options:
   -d <datastore>   can be "running" or "startup" [default: running])";
+#elif defined(YANG_CLI)
+#include "yang_access.hpp"
+#define PROGRAM_NAME "yang-cli"
+static const auto usage = R"(CLI interface for creating local YANG data instances
+
+Usage:
+  yang-cli
+  yang-cli (-h | --help)
+  yang-cli --version)";
 #else
 #error "Unknown CLI backend"
 #endif
@@ -52,6 +61,8 @@ int main(int argc, char* argv[])
     }
     SysrepoAccess datastore(PROGRAM_NAME, datastoreType);
     std::cout << "Connected to sysrepo [datastore: " << (datastoreType == Datastore::Startup ? "startup" : "running") << "]" << std::endl;
+#elif defined(YANG_CLI)
+    YangAccess datastore;
 #else
 #error "Unknown CLI backend"
 #endif
