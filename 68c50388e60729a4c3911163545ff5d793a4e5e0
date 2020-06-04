@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24fea91c_1bf8617b",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T08:04:37Z",
+      "side": 1,
+      "message": "I think we\u0027re no longer using std::filesystem since Ibd2dcb89344cf1454ba0b3970cac0c8e88ffa20d. Perhaps this can be killed in a spearate commit?",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 11
+      },
+      "revId": "68c50388e60729a4c3911163545ff5d793a4e5e0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
