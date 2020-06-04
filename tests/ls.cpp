@@ -166,7 +166,7 @@ TEST_CASE("ls")
             SECTION("ls example:list[number=342]/contInList")
             {
                 input = "ls example:list[number=342]/contInList";
-                auto keys = std::map<std::string, leaf_data_>{
+                auto keys = ListInstance {
                     {"number", int32_t{342}}};
                 expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, listElement_{"list", keys}),
                                                                 dataNode_(container_{"contInList"})}};
@@ -189,7 +189,7 @@ TEST_CASE("ls")
             SECTION("ls example:list[number=343]/..")
             {
                 input = "ls example:list[number=343]/..";
-                auto keys = std::map<std::string, leaf_data_>{
+                auto keys = ListInstance {
                     {"number", int32_t{343}}};
                 expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, listElement_{"list", keys}), dataNode_{nodeup_{}}}};
             }

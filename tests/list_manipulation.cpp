@@ -36,7 +36,7 @@ TEST_CASE("list manipulation")
         SECTION("mod:list[number=3]")
         {
             input = "mod:list[number=3]";
-            auto keys = std::map<std::string, leaf_data_>{
+            auto keys = ListInstance {
                 {"number", int32_t{3}}};
             expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
         }
@@ -44,10 +44,10 @@ TEST_CASE("list manipulation")
         SECTION("mod:company[department=other:engineering]/inventory[id=1337]")
         {
             input = "mod:company[department=other:engineering]/inventory[id=1337]";
-            auto keys = std::map<std::string, leaf_data_>{
+            auto keys = ListInstance {
                 {"department", identityRef_{"other", "engineering"}}};
             expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("company", keys)});
-            keys = std::map<std::string, leaf_data_>{
+            keys = ListInstance {
                 {"id", int32_t{1337}}};
             expectedPath.m_nodes.push_back(dataNode_{listElement_("inventory", keys)});
         }

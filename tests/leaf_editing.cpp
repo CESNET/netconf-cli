@@ -125,7 +125,7 @@ TEST_CASE("leaf editing")
         SECTION("set mod:list[number=1]/leafInList \"another_data\"")
         {
             input = "set mod:list[number=1]/leafInList \"another_data\"";
-            auto keys = std::map<std::string, leaf_data_>{
+            auto keys = ListInstance {
                 {"number", int32_t{1}}};
             expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
             expected.m_path.m_nodes.push_back(dataNode_{leaf_("leafInList")});

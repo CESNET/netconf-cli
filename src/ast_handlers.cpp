@@ -1,5 +1,5 @@
 #include "ast_handlers.hpp"
-std::set<Completion> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::map<std::string, leaf_data_> currentKeys)
+std::set<Completion> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, ListInstance currentKeys)
 {
     std::set<std::string> missingKeys;
 

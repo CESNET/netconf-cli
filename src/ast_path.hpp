@@ -65,7 +65,7 @@ struct leafListElement_ {
 
 struct listElement_ {
     listElement_() {}
-    listElement_(const std::string& listName, const std::map<std::string, leaf_data_>& keys);
+    listElement_(const std::string& listName, const ListInstance& keys);
 
     bool operator==(const listElement_& b) const;
 

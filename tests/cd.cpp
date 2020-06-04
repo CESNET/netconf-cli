@@ -101,7 +101,7 @@ TEST_CASE("cd")
             SECTION("example:list[number=1]")
             {
                 input = "cd example:list[number=1]";
-                auto keys = std::map<std::string, leaf_data_>{
+                auto keys = ListInstance {
                     {"number", int32_t{1}}};
                 expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("list", keys)));
             }
@@ -109,7 +109,7 @@ TEST_CASE("cd")
             SECTION("example:list[number=1]/contInList")
             {
                 input = "cd example:list[number=1]/contInList";
-                auto keys = std::map<std::string, leaf_data_>{
+                auto keys = ListInstance {
                     {"number", int32_t{1}}};
                 expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("list", keys)));
                 expected.m_path.m_nodes.push_back(dataNode_(container_("contInList")));
@@ -118,7 +118,7 @@ TEST_CASE("cd")
             SECTION("example:twoKeyList[number=4][name='abcd']")
             {
                 input = "cd example:twoKeyList[number=4][name='abcd']";
-                auto keys = std::map<std::string, leaf_data_>{
+                auto keys = ListInstance {
                     {"number", int32_t{4}},
                     {"name", std::string{"abcd"}}};
                 expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("twoKeyList", keys)));
