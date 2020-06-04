@@ -1,0 +1,256 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea734f62_21662449",
+        "filename": "src/absolute_relative.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "nit: these are pretty generic terms, so I think the code will be more readable if they are in some enclosing namespace or struct. What about namespace yang::move?\n\nAlso, please reflect this in the file name.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 2
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21e4e219_f7060b16",
+        "filename": "src/ast_commands.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "The .hpp file is separate, so I think we\u0027ll get fewer linker issues to sort out in future if the corresponding implementation is not in a completely different .cpp file.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 1
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d9ea0a5_40da13a4",
+        "filename": "src/datastore_access.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "All other methods in this file work with strings.",
+      "range": {
+        "startLine": 55,
+        "startChar": 32,
+        "endLine": 55,
+        "endChar": 41
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33604a38_918b0c06",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "This sounds wrong -- it looks like it\u0027s valid to write `move /example:foo[key\u003d\u0027val\u0027]`.\n\nIf my comment is correct, this looks like an artifact of some copy-pasting, so please consider refactoring this \"absolute vs. relative path\" into some helper which makes it easier to use.",
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f5ef39c_00b76131",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "Can you rephrase this, please? Right now I don\u0027t know what gets replaces with what else. An example would be useful.",
+      "range": {
+        "startLine": 207,
+        "startChar": 22,
+        "endLine": 207,
+        "endChar": 65
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "32d84431_f97923e7",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "I\u0027m not thrilled by repeating essentially the same line four times. What about:\n\n struct ToYangInsert {\n     auto operator()(const Absolute\u0026 v) {\n         return v \u003d\u003d Absolute::Begin ? \"first\" : \"last\";\n     }\n     auto operator()(const Relative\u0026 v) {\n         return v.m_position \u003d\u003d Relative::Position::After ? \"after\" : \"before\";\n     }\n };\n\n ...\n const auto yangModule \u003d m_schma-\u003egetYangModule(\"yang\"); // because you\u0027re gonna be using it for more stuff\n sourceNode-\u003einsert_attr(yangModule, \"insert\", std::visit(ToYangInsert{}, move));",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 9
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b28e9e7_23ba6297",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "nit: I think this one and the one below can easily be ternaries",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 9
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e59c0d45_d66d5229",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "Any reason for writing this as an immediately invoked lambda?",
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9603d953_fc278130",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "What about making it into a full visitor, perhaps as a local class? That would save you that repetitive dance of if std::holds_alternative, std::get... which gets boring pretty soon.",
+      "range": {
+        "startLine": 314,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 12
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e943903d_fa45452d",
+        "filename": "tests/list_manipulation.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "Please add some tests for parsing moves when the parser\u0027s CWD is \"somewhere else\". Use both absolute paths and relative paths starting with \"../\", please.",
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d25b475_72450033",
+        "filename": "tests/pretty_printers.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "This one belongs to the previous commit, IMHO.",
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91e68849_66dcd558",
+        "filename": "tests/pretty_printers.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-04T07:56:56Z",
+      "side": 1,
+      "message": "nit: this is for debugging, so I was a bit surprised to see that it uses fully qualified names. But whatever, really :).",
+      "range": {
+        "startLine": 154,
+        "startChar": 18,
+        "endLine": 154,
+        "endChar": 28
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
