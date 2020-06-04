@@ -306,7 +306,7 @@ struct initializePath_class {
 
 struct trailingSlash_class;
 
-std::set<Completion> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, std::map<std::string, leaf_data_> currentSet);
+std::set<Completion> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, ListInstance currentSet);
 
 struct createKeySuggestions_class {
     template <typename T, typename Iterator, typename Context>
