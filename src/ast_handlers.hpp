@@ -157,19 +157,8 @@ struct presenceContainerPath_class {
             return;
         }
 
-        try {
-            boost::optional<std::string> module;
-            if (ast.m_nodes.back().m_prefix)
-                module = ast.m_nodes.back().m_prefix.value().m_name;
-            container_ cont = std::get<container_>(ast.m_nodes.back().m_suffix);
-            auto location = pathWithoutLastNode(parserContext.currentSchemaPath());
-
-            if (!schema.isPresenceContainer(location, {module, cont.m_name})) {
-                parserContext.m_errorMsg = "This container is not a presence container.";
-                _pass(context) = false;
-            }
-        } catch (std::bad_variant_access&) {
-            parserContext.m_errorMsg = "This is not a container.";
+        if (schema.nodeType(pathToSchemaString(parserContext.currentSchemaPath(), Prefixes::Always)) != yang::NodeTypes::PresenceContainer) {
+            parserContext.m_errorMsg = "This container is not a presence container.";
             _pass(context) = false;
         }
     }

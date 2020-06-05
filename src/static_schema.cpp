@@ -34,29 +34,9 @@ void StaticSchema::addContainer(const std::string& location, const std::string& 
     m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
 }
 
-bool StaticSchema::listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const
-{
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    assert(isList(location, node));
-
-    const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& list = std::get<yang::list>(child.m_nodeType);
-    return list.m_keys.find(key) != list.m_keys.end();
-}
-
 bool StaticSchema::listHasKey(const schemaPath_& listPath, const std::string& key) const
 {
     return listKeys(listPath).count(key);
-}
-
-const std::set<std::string> StaticSchema::listKeys(const schemaPath_& location, const ModuleNodePair& node) const
-{
-    std::string locationString = pathToSchemaString(location, Prefixes::Always);
-    assert(isList(location, node));
-
-    const auto& child = children(locationString).at(fullNodeName(location, node));
-    const auto& list = std::get<yang::list>(child.m_nodeType);
-    return list.m_keys;
 }
 
 std::string lastNodeOfSchemaPath(const std::string& path)
@@ -264,9 +244,12 @@ yang::Status StaticSchema::status([[maybe_unused]] const std::string& location) 
     throw std::runtime_error{"Internal error: StaticSchema::status(std::string) not implemented. The tests should not have called this overload."};
 }
 
-yang::NodeTypes StaticSchema::nodeType([[maybe_unused]] const std::string& path) const
+yang::NodeTypes StaticSchema::nodeType(const std::string& path) const
 {
-    throw std::runtime_error{"Internal error: StaticSchema::nodeType(std::string) not implemented. The tests should not have called this overload."};
+    auto locationString = stripLastNodeFromPath(path);
+
+    auto node = fullNodeName(locationString, lastNodeOfSchemaPath(path));
+    return std::visit(impl_nodeType{}, children(locationString).at(node).m_nodeType);
 }
 
 std::string StaticSchema::leafrefPath([[maybe_unused]] const std::string& leafrefPath) const

@@ -459,105 +459,9 @@ TEST_CASE("yangschema")
 
     SECTION("positive")
     {
-        SECTION("isContainer")
-        {
-            SECTION("example-schema:a")
-            {
-                node.first = "example-schema";
-                node.second = "a";
-            }
-
-            SECTION("example-schema:a/a2")
-            {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                node.second = "a2";
-            }
-
-            SECTION("example-schema:ethernet")
-            {
-                node.first = "example-schema";
-                node.second = "ethernet";
-            }
-
-            SECTION("example-schema:loopback")
-            {
-                node.first = "example-schema";
-                node.second = "loopback";
-            }
-
-            REQUIRE(ys.isContainer(path, node));
-        }
-        SECTION("isLeaf")
-        {
-            SECTION("example-schema:leafString")
-            {
-                node.first = "example-schema";
-                node.second = "leafString";
-            }
-
-            SECTION("example-schema:a/leafa")
-            {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                node.first = "example-schema";
-                node.second = "leafa";
-            }
-
-            SECTION("example-schema:carry")
-            {
-                node.first = "example-schema";
-                node.second = "carry";
-            }
-
-            SECTION("example-schema:zero")
-            {
-                node.first = "example-schema";
-                node.second = "zero";
-            }
-
-            SECTION("example-schema:direction")
-            {
-                node.first = "example-schema";
-                node.second = "direction";
-            }
-
-            SECTION("example-schema:interrupt")
-            {
-                node.first = "example-schema";
-                node.second = "interrupt";
-            }
-
-            REQUIRE(ys.isLeaf(path, node));
-        }
         SECTION("isModule")
         {
             REQUIRE(ys.isModule("example-schema"));
-        }
-        SECTION("isList")
-        {
-            SECTION("example-schema:_list")
-            {
-                node.first = "example-schema";
-                node.second = "_list";
-            }
-
-            SECTION("example-schema:twoKeyList")
-            {
-                node.first = "example-schema";
-                node.second = "twoKeyList";
-            }
-
-            REQUIRE(ys.isList(path, node));
-        }
-        SECTION("isPresenceContainer")
-        {
-            SECTION("example-schema:a/a2/a3")
-            {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a2")));
-                node.second = "a3";
-            }
-
-            REQUIRE(ys.isPresenceContainer(path, node));
         }
 
         SECTION("listHasKey")
@@ -566,23 +470,27 @@ TEST_CASE("yangschema")
 
             SECTION("_list")
             {
-                node.first = "example-schema";
-                node.second = "_list";
+                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"_list"}});
                 SECTION("number")
-                key = "number";
+                {
+                    key = "number";
+                }
             }
 
             SECTION("twoKeyList")
             {
-                node.first = "example-schema";
-                node.second = "twoKeyList";
+                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"twoKeyList"}});
                 SECTION("number")
-                key = "number";
+                {
+                    key = "number";
+                }
                 SECTION("name")
-                key = "name";
+                {
+                    key = "name";
+                }
             }
 
-            REQUIRE(ys.listHasKey(path, node, key));
+            REQUIRE(ys.listHasKey(path, key));
         }
         SECTION("listKeys")
         {
@@ -590,19 +498,17 @@ TEST_CASE("yangschema")
 
             SECTION("_list")
             {
+                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"_list"}});
                 set = {"number"};
-                node.first = "example-schema";
-                node.second = "_list";
             }
 
             SECTION("twoKeyList")
             {
+                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"twoKeyList"}});
                 set = {"number", "name"};
-                node.first = "example-schema";
-                node.second = "twoKeyList";
             }
 
-            REQUIRE(ys.listKeys(path, node) == set);
+            REQUIRE(ys.listKeys(path) == set);
         }
         SECTION("leafType")
         {
@@ -1229,37 +1135,15 @@ TEST_CASE("yangschema")
                 node.second = "nevim";
             }
 
-            REQUIRE(!ys.isPresenceContainer(path, node));
-            REQUIRE(!ys.isList(path, node));
-            REQUIRE(!ys.isLeaf(path, node));
-            REQUIRE(!ys.isContainer(path, node));
-        }
-
-        SECTION("\"is\" methods return false for existing nodes for different nodetypes")
-        {
-            SECTION("example-schema:a")
-            {
-                node.first = "example-schema";
-                node.second = "a";
-            }
-
-            SECTION("example-schema:a/a2")
-            {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                node.second = "a2";
-            }
-
-            REQUIRE(!ys.isPresenceContainer(path, node));
-            REQUIRE(!ys.isList(path, node));
-            REQUIRE(!ys.isLeaf(path, node));
+            REQUIRE_THROWS(ys.nodeType(path, node));
         }
 
         SECTION("nodetype-specific methods called with different nodetypes")
         {
             path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-            node.second = "a2";
+            path.m_nodes.push_back(schemaNode_(container_("a2")));
 
-            REQUIRE(!ys.listHasKey(path, node, "chacha"));
+            REQUIRE(!ys.listHasKey(path, "chacha"));
         }
 
         SECTION("nonexistent module")
@@ -1281,10 +1165,7 @@ TEST_CASE("yangschema")
                 node.second = "startAndStop";
             }
 
-            REQUIRE(!ys.isPresenceContainer(path, node));
-            REQUIRE(!ys.isList(path, node));
-            REQUIRE(!ys.isLeaf(path, node));
-            REQUIRE(!ys.isContainer(path, node));
+            REQUIRE_THROWS(ys.nodeType(path, node));
         }
 
         SECTION("choice is not a node")
@@ -1295,10 +1176,7 @@ TEST_CASE("yangschema")
                 node.second = "interface";
             }
 
-            REQUIRE(!ys.isPresenceContainer(path, node));
-            REQUIRE(!ys.isList(path, node));
-            REQUIRE(!ys.isLeaf(path, node));
-            REQUIRE(!ys.isContainer(path, node));
+            REQUIRE_THROWS(ys.nodeType(path, node));
         }
 
         SECTION("case is not a node")
@@ -1315,10 +1193,7 @@ TEST_CASE("yangschema")
                 node.second = "caseEthernet";
             }
 
-            REQUIRE(!ys.isPresenceContainer(path, node));
-            REQUIRE(!ys.isList(path, node));
-            REQUIRE(!ys.isLeaf(path, node));
-            REQUIRE(!ys.isContainer(path, node));
+            REQUIRE_THROWS(ys.nodeType(path, node));
         }
     }
 }

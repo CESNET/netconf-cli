@@ -54,20 +54,14 @@ class Schema {
 public:
     virtual ~Schema();
 
-    bool isContainer(const schemaPath_& location, const ModuleNodePair& node) const;
-    bool isLeaf(const schemaPath_& location, const ModuleNodePair& node) const;
-    bool isList(const schemaPath_& location, const ModuleNodePair& node) const;
-    bool isPresenceContainer(const schemaPath_& location, const ModuleNodePair& node) const;
     bool isLeafList(const std::string& path) const;
     virtual yang::NodeTypes nodeType(const std::string& path) const = 0;
     virtual yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool isModule(const std::string& name) const = 0;
-    virtual bool listHasKey(const schemaPath_& location, const ModuleNodePair& node, const std::string& key) const = 0;
     virtual bool listHasKey(const schemaPath_& listPath, const std::string& key) const = 0;
     virtual bool leafIsKey(const std::string& leafPath) const = 0;
     virtual bool isConfig(const std::string& path) const = 0;
     virtual std::optional<std::string> defaultValue(const std::string& leafPath) const = 0;
-    virtual const std::set<std::string> listKeys(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual const std::set<std::string> listKeys(const schemaPath_& listPath) const = 0;
     virtual yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual yang::TypeInfo leafType(const std::string& path) const = 0;
