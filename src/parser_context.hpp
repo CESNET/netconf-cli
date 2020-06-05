@@ -32,7 +32,7 @@ struct ParserContext {
 
     // When parsing list suffixes, this path is used to store the path of the list whose keys are being parsed.
     dataPath_ m_tmpListPath;
-    std::map<std::string, leaf_data_> m_tmpListKeys;
+    ListInstance m_tmpListKeys;
 
     bool m_errorHandled = false;
     bool m_completing = false;

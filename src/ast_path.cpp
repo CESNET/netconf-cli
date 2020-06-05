@@ -96,7 +96,7 @@ bool leaf_::operator==(const leaf_& b) const
     return this->m_name == b.m_name;
 }
 
-listElement_::listElement_(const std::string& listName, const std::map<std::string, leaf_data_>& keys)
+listElement_::listElement_(const std::string& listName, const ListInstance& keys)
     : m_name(listName)
     , m_keys(keys)
 {

@@ -21,7 +21,7 @@
 #include "utils.hpp"
 
 namespace std {
-std::ostream& operator<<(std::ostream& s, const std::vector<std::map<std::string, leaf_data_>> set)
+std::ostream& operator<<(std::ostream& s, const std::vector<ListInstance> set)
 {
     s << std::endl << "{" << std::endl;
     std::transform(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", \n"), [](const auto& map) {
@@ -58,7 +58,7 @@ TEST_CASE("data query")
     {
         dataPath_ listPath;
         listPath.m_scope = Scope::Absolute;
-        std::vector<std::map<std::string, leaf_data_>> expected;
+        std::vector<ListInstance> expected;
 
         SECTION("example-schema:person")
         {
