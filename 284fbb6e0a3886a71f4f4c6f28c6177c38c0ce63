@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c040bde4_d6b2bfea",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-05T09:16:33Z",
+      "side": 1,
+      "message": "(found via the coverage report)\n\nI think that the try/catch can be removed.",
+      "revId": "284fbb6e0a3886a71f4f4c6f28c6177c38c0ce63",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
