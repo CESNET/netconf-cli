@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "89809bf4_7332b742",
+        "filename": "src/absolute_relative.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea734f62_21662449",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 2
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "21e4e219_f7060b16",
         "filename": "src/ast_commands.cpp",
         "patchSetId": 17
@@ -45,6 +69,30 @@
       "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23ba4225_5c3a1cdc",
+        "filename": "src/ast_commands.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21e4e219_f7060b16",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 1
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "183c58c3_a579a19a",
+        "filename": "src/datastore_access.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d9ea0a5_40da13a4",
+      "range": {
+        "startLine": 55,
+        "startChar": 32,
+        "endLine": 55,
+        "endChar": 41
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "33604a38_918b0c06",
         "filename": "src/grammars.hpp",
         "patchSetId": 17
@@ -88,6 +160,24 @@
     },
     {
       "key": {
+        "uuid": "3eb25510_2328bb4d",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "This just checks whether we successfully parsed \"begin\" or \"end\", it\u0027s not valid to write `move /example:foo[key\u003d\u0027val\u0027]`. But if we didn\u0027t parse \"begin\" or \"end\", we try more (on line 190). I changed the comments a little.",
+      "parentUuid": "33604a38_918b0c06",
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8f5ef39c_00b76131",
         "filename": "src/grammars.hpp",
         "patchSetId": 17
@@ -99,6 +189,30 @@
       "writtenOn": "2020-06-04T07:56:56Z",
       "side": 1,
       "message": "Can you rephrase this, please? Right now I don\u0027t know what gets replaces with what else. An example would be useful.",
+      "range": {
+        "startLine": 207,
+        "startChar": 22,
+        "endLine": 207,
+        "endChar": 65
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8c3b051_fdae4fa1",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "I changed the comment a little bit.",
+      "parentUuid": "8f5ef39c_00b76131",
       "range": {
         "startLine": 207,
         "startChar": 22,
@@ -134,6 +248,30 @@
     },
     {
       "key": {
+        "uuid": "e51afe4f_0ed35a89",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32d84431_f97923e7",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 9
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b28e9e7_23ba6297",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 17
@@ -157,6 +295,30 @@
     },
     {
       "key": {
+        "uuid": "fd7428a3_ef358751",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "I changed this to a visitor",
+      "parentUuid": "6b28e9e7_23ba6297",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 9
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e59c0d45_d66d5229",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 17
@@ -171,6 +333,24 @@
       "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5144c372_a3e6d7ba",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "dataPath_ is gone, no lambdas anymore. But I said an IIFE because of `auto`.",
+      "parentUuid": "e59c0d45_d66d5229",
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -197,6 +377,30 @@
     },
     {
       "key": {
+        "uuid": "7d4e91e0_256afc59",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "dataPath_ is gone",
+      "parentUuid": "9603d953_fc278130",
+      "range": {
+        "startLine": 314,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 12
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e943903d_fa45452d",
         "filename": "tests/list_manipulation.cpp",
         "patchSetId": 17
@@ -208,6 +412,24 @@
       "writtenOn": "2020-06-04T07:56:56Z",
       "side": 1,
       "message": "Please add some tests for parsing moves when the parser\u0027s CWD is \"somewhere else\". Use both absolute paths and relative paths starting with \"../\", please.",
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "534e3e9f_1da94612",
+        "filename": "tests/list_manipulation.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "Okay, the test did catch some sort of a bug, I will fix it tomorrow.",
+      "parentUuid": "e943903d_fa45452d",
       "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -231,6 +453,24 @@
     },
     {
       "key": {
+        "uuid": "b8faa93e_7cd95d0e",
+        "filename": "tests/pretty_printers.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "You\u0027re right, I think, but it\u0027s actually kind of weird, because without this I wasn\u0027t able to compile this patch. But I could before it. Weird. Last patch is already merged, so I\u0027ll leave it here.",
+      "parentUuid": "3d25b475_72450033",
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "91e68849_66dcd558",
         "filename": "tests/pretty_printers.hpp",
         "patchSetId": 17
@@ -242,6 +482,30 @@
       "writtenOn": "2020-06-04T07:56:56Z",
       "side": 1,
       "message": "nit: this is for debugging, so I was a bit surprised to see that it uses fully qualified names. But whatever, really :).",
+      "range": {
+        "startLine": 154,
+        "startChar": 18,
+        "endLine": 154,
+        "endChar": 28
+      },
+      "revId": "48531673179b50ebaa1db8f49ba8aab7449eb964",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24f73f60_a0a8d20a",
+        "filename": "tests/pretty_printers.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-05T02:36:20Z",
+      "side": 1,
+      "message": "Not so fully qualified anymore! 😄 Anyway, there\u0027s no real reason, I just saw the name of the enum, and put that into the string",
+      "parentUuid": "91e68849_66dcd558",
       "range": {
         "startLine": 154,
         "startChar": 18,
