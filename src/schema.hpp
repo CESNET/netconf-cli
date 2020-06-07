@@ -54,7 +54,6 @@ class Schema {
 public:
     virtual ~Schema();
 
-    bool isLeafList(const std::string& path) const;
     virtual yang::NodeTypes nodeType(const std::string& path) const = 0;
     virtual yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
     virtual bool isModule(const std::string& name) const = 0;
