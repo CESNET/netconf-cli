@@ -145,13 +145,13 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                     continue;
             }
             table.add(parseString, out);
-            table.add("..", attribute_type{nodeup_{}});
             if (!child.first) {
                 auto topLevelModule = parserContext.currentSchemaPath().m_nodes.begin()->m_prefix;
                 out.m_prefix = topLevelModule;
                 table.add(topLevelModule->m_name + ":" + parseString, out);
             }
         }
+        table.add("..", attribute_type{nodeup_{}});
         parserContext.m_completionIterator = begin;
 
         if constexpr (PARSER_MODE == NodeParserMode::CompletionsOnly) {

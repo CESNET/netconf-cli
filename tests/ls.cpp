@@ -77,6 +77,17 @@ TEST_CASE("ls")
                 expected.m_path = dataPath_{Scope::Absolute, {}};
             }
 
+            SECTION("ls ../example:a")
+            {
+                parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"second"}, container_{"a"})}});
+                input = "ls ../example:a";
+                expected.m_path = dataPath_{Scope::Relative, {
+                    dataNode_{nodeup_{}},
+                    dataNode_{module_{"example"}, container_{"a"}}
+                }};
+
+            }
+
             SECTION("ls example:a/a2")
             {
                 input = "ls example:a/a2";
