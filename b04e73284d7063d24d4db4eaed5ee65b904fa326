@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1c9b0f3f_6f430010",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-08T13:40:08Z",
+      "side": 1,
+      "message": "I have no idea tbh, it\u0027s just what sysrepo does... I guess it\u0027s a sysrepo bug?",
+      "parentUuid": "09f6ecff_3f6bda7e",
+      "revId": "b04e73284d7063d24d4db4eaed5ee65b904fa326",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e5f03346_70e4a6d9",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 23
@@ -39,6 +57,30 @@
       "revId": "b04e73284d7063d24d4db4eaed5ee65b904fa326",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1625e938_ee6b605b",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-08T13:40:08Z",
+      "side": 1,
+      "message": "Just a mistake.",
+      "parentUuid": "e5f03346_70e4a6d9",
+      "range": {
+        "startLine": 525,
+        "startChar": 95,
+        "endLine": 525,
+        "endChar": 104
+      },
+      "revId": "b04e73284d7063d24d4db4eaed5ee65b904fa326",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
