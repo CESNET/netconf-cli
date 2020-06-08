@@ -32,27 +32,6 @@ public:
     ~InvalidSchemaQueryException() override = default;
 };
 
-template <typename T>
-std::string pathToYangAbsSchemPath(const T& path)
-{
-    std::string res = "/";
-    std::string currentModule;
-
-    for (const auto& it : path.m_nodes) {
-        const auto name = nodeToSchemaString(it);
-
-        if (it.m_suffix.type() == typeid(module_)) {
-            currentModule = name;
-            continue;
-        } else {
-            res += currentModule + ":";
-            res += name + "/";
-        }
-    }
-
-    return res;
-}
-
 YangSchema::YangSchema()
     : m_context(std::make_shared<libyang::Context>(nullptr, LY_CTX_DISABLE_SEARCHDIRS | LY_CTX_DISABLE_SEARCHDIR_CWD))
 {
