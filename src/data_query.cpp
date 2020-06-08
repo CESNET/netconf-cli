@@ -6,8 +6,8 @@
 
 DataQuery::DataQuery(DatastoreAccess& datastore)
     : m_datastore(datastore)
+    , m_schema(m_datastore.schema())
 {
-    m_schema = m_datastore.schema();
 }
 
 std::vector<ListInstance> DataQuery::listKeys(const dataPath_& listPath) const
