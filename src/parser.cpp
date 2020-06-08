@@ -19,8 +19,8 @@ InvalidCommandException::~InvalidCommandException() = default;
 Parser::Parser(const std::shared_ptr<const Schema> schema, const std::shared_ptr<const DataQuery> dataQuery)
     : m_schema(schema)
     , m_dataquery(dataQuery)
+    , m_curDir({Scope::Absolute, {}})
 {
-    m_curDir.m_scope = Scope::Absolute;
 }
 
 bool Completions::operator==(const Completions& b) const
