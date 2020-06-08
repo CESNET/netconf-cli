@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "19fa6f71_04f20fab",
+        "filename": "tests/ls.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-08T09:21:21Z",
+      "side": 1,
+      "message": "saying \"going up from a node with no children\" would better explain what this test is about",
+      "range": {
+        "startLine": 80,
+        "startChar": 21,
+        "endLine": 80,
+        "endChar": 36
+      },
+      "revId": "00ad24d9a6d6384088e6b0c9e18f0b98e5a5786c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a0f6efc_030e7c25",
+        "filename": "tests/ls.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-08T09:21:21Z",
+      "side": 1,
+      "message": "This works now because there are no children below /second:a. Can you please add a test or assert with a comment saying that this is needed because of this test?",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 13
+      },
+      "revId": "00ad24d9a6d6384088e6b0c9e18f0b98e5a5786c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
