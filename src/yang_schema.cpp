@@ -33,7 +33,7 @@ public:
 };
 
 YangSchema::YangSchema()
-    : m_context(std::make_shared<libyang::Context>(nullptr, LY_CTX_DISABLE_SEARCHDIRS | LY_CTX_DISABLE_SEARCHDIR_CWD))
+    : m_context(std::make_shared<libyang::Context>(nullptr, LY_CTX_DISABLE_SEARCHDIR_CWD))
 {
 }
 
