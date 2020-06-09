@@ -47,10 +47,10 @@ void Interpreter::operator()(const get_& get) const
         if (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
             auto leafListPrefix = path;
             std::cout << path << " = " << leafDataToString(value) << std::endl;
-            ++it;
-            while (boost::starts_with(it->first, leafListPrefix)) {
-                std::cout << stripLeafListValueFromPath(it->first) << " = " << leafDataToString(it->second) << std::endl;
+
+            while (it + 1 != items.end() && boost::starts_with((it + 1) ->first, leafListPrefix)) {
                 ++it;
+                std::cout << stripLeafListValueFromPath(it->first) << " = " << leafDataToString(it->second) << std::endl;
             }
         } else {
             std::cout << path << " = " << leafDataToString(value) << std::endl;
