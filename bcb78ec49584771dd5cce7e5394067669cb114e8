@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "abc8da47_9e680b22",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-09T17:30:03Z",
+      "side": 1,
+      "message": "Impressive, I think I\u0027ll have a beer for that one.",
+      "revId": "bcb78ec49584771dd5cce7e5394067669cb114e8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
