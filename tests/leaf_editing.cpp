@@ -568,6 +568,12 @@ TEST_CASE("leaf editing")
             input = "set mod:foodIdentRef identityBLABLA";
         }
 
+        SECTION("identity with non-existing module")
+        {
+            expectedError = "Invalid module name";
+            input = "set mod:foodIdentRef xd:haha";
+        }
+
         SECTION("setting identities with wrong bases")
         {
             SECTION("set mod:foodIdentRef mod:vehicle")
