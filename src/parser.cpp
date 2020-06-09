@@ -11,10 +11,8 @@
 #include "parser_context.hpp"
 #include "utils.hpp"
 
-TooManyArgumentsException::~TooManyArgumentsException() = default;
 
 InvalidCommandException::~InvalidCommandException() = default;
-
 
 Parser::Parser(const std::shared_ptr<const Schema> schema, const std::shared_ptr<const DataQuery> dataQuery)
     : m_schema(schema)
