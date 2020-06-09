@@ -688,18 +688,16 @@ TEST_CASE("yangschema")
                 node.first = "example-schema";
                 node.second = "activePort";
 
-                yang::Enum enums = [&ys]() {
-                    SECTION("weird ports disabled")
-                    {
-                        return createEnum({"utf2", "utf3"});
-                    }
-                    SECTION("weird ports enabled")
-                    {
-                        ys.enableFeature("example-schema", "weirdPortNames");
-                        return createEnum({"WEIRD", "utf2", "utf3"});
-                    }
-                    __builtin_unreachable();
-                }();
+                yang::Enum enums({});
+                SECTION("weird ports disabled")
+                {
+                    enums = createEnum({"utf2", "utf3"});
+                }
+                SECTION("weird ports enabled")
+                {
+                    ys.enableFeature("example-schema", "weirdPortNames");
+                    enums = createEnum({"WEIRD", "utf2", "utf3"});
+                }
 
                 type = yang::Union{{
                     yang::TypeInfo{createEnum({"wlan0", "wlan1"})},
