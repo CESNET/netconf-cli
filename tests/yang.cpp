@@ -424,16 +424,6 @@ module example-schema {
     }
 })";
 
-namespace std {
-std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
-{
-    s << std::endl << "{";
-    std::copy(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", "));
-    s << "}" << std::endl;
-    return s;
-}
-}
-
 TEST_CASE("yangschema")
 {
     using namespace std::string_literals;

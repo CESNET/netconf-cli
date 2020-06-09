@@ -11,17 +11,9 @@
 #include "ast_commands.hpp"
 #include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
+#include "pretty_printers.hpp"
 #include "static_schema.hpp"
 
-namespace std {
-std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
-{
-    s << std::endl << "{";
-    std::copy(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", "));
-    s << "}" << std::endl;
-    return s;
-}
-}
 
 TEST_CASE("keyvalue_completion")
 {
