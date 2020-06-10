@@ -342,3 +342,20 @@ TEST_CASE("create/delete")
     Interpreter(parser, datastore)(createCmd);
     Interpreter(parser, datastore)(deleteCmd);
 }
+
+TEST_CASE("commit/discard")
+{
+    using namespace std::string_literals;
+    MockDatastoreAccess datastore;
+
+    auto schema = std::make_shared<MockSchema>();
+    Parser parser(schema);
+    {
+        REQUIRE_CALL(datastore, commitChanges());
+        Interpreter(parser, datastore)(commit_{});
+    }
+    {
+        REQUIRE_CALL(datastore, discardChanges());
+        Interpreter(parser, datastore)(discard_{});
+    }
+}
