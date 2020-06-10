@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f99e5528_8acbc2c5",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-10T14:26:59Z",
+      "side": 1,
+      "message": "I think that it\u0027s a bit too boiler-plate-ish with all that expectation indirections. Why not just this, to make it more compact:\n\n MockDatastoreAccess ds;\n Parser parser(std::make_shared\u003cMockSchema\u003e());\n Interpreter intr(parser, datastore);\n\n SECTION(\"runnning -\u003e startup\") {\n     REQUIRE_CALL(ds, copyConfig(Datastore::Running, Datastore::Startup));\n     intr(copy_{Datastore::Running, Dadastore::Startup});\n }\n\nPerhaps also for other tests in this patch series.\n\nIn addition, MockDatastore + Parser + Interpreter preparation can be done in a single TEST_CASE with all different commends being handled by nested SECTION()s.",
+      "revId": "5e22c6cedb5314f4e77087bc37df65bacf10fc1a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "664c9f3b_0f6ca513",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-10T14:26:59Z",
+      "side": 1,
+      "message": "(as shown above, these can be very easily merged)",
+      "range": {
+        "startLine": 323,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 26
+      },
+      "revId": "5e22c6cedb5314f4e77087bc37df65bacf10fc1a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
