@@ -142,7 +142,7 @@ struct get_ : x3::position_tagged {
         /> get
         /> get /module:path)";
     bool operator==(const get_& b) const;
-    boost::optional<boost::variant<dataPath_, schemaPath_, module_>> m_path;
+    boost::optional<boost::variant<dataPath_, module_>> m_path;
 };
 
 struct describe_ : x3::position_tagged {
