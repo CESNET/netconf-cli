@@ -304,3 +304,41 @@ TEST_CASE("get")
     REQUIRE_CALL(datastore, getItems(expectedPathArg)).RETURN(treeReturned);
     Interpreter(parser, datastore)(getCmd);
 }
+
+TEST_CASE("create/delete")
+{
+    using namespace std::string_literals;
+    dataPath_ inputPath;
+    MockDatastoreAccess datastore;
+    std::vector<std::shared_ptr<trompeloeil::expectation>> expectations;
+
+    SECTION("list instance")
+    {
+        inputPath.m_nodes = {dataNode_{{"mod"}, listElement_{"department", {{"name", "engineering"s}}}}};
+        expectations.push_back(NAMED_REQUIRE_CALL(datastore, createListInstance("/mod:department[name='engineering']")));
+        expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteListInstance("/mod:department[name='engineering']")));
+    }
+
+    SECTION("leaflist instance")
+    {
+        inputPath.m_nodes = {dataNode_{{"mod"}, leafListElement_{"addresses", "127.0.0.1"s}}};
+        expectations.push_back(NAMED_REQUIRE_CALL(datastore, createLeafListInstance("/mod:addresses[.='127.0.0.1']")));
+        expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteLeafListInstance("/mod:addresses[.='127.0.0.1']")));
+    }
+
+    SECTION("presence container")
+    {
+        inputPath.m_nodes = {dataNode_{{"mod"}, container_{"pContainer"}}};
+        expectations.push_back(NAMED_REQUIRE_CALL(datastore, createPresenceContainer("/mod:pContainer")));
+        expectations.push_back(NAMED_REQUIRE_CALL(datastore, deletePresenceContainer("/mod:pContainer")));
+    }
+
+    auto schema = std::make_shared<MockSchema>();
+    Parser parser(schema);
+    create_ createCmd;
+    createCmd.m_path = inputPath;
+    delete_ deleteCmd;
+    deleteCmd.m_path = inputPath;
+    Interpreter(parser, datastore)(createCmd);
+    Interpreter(parser, datastore)(deleteCmd);
+}
