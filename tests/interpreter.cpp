@@ -34,7 +34,7 @@ public:
     IMPLEMENT_CONST_MOCK1(status);
 };
 
-TEST_CASE("ls interpreter")
+TEST_CASE("ls")
 {
     auto schema = std::make_shared<MockSchema>();
     Parser parser(schema);
@@ -151,4 +151,60 @@ TEST_CASE("ls interpreter")
     ls.m_path = lsArg;
     REQUIRE_CALL(*schema, availableNodes(expectedPath, Recursion::NonRecursive)).RETURN(std::set<ModuleNodePair>{});
     Interpreter(parser, datastore)(ls);
+}
+
+TEST_CASE("get")
+{
+    DatastoreAccess::Tree treeReturned;
+
+    SECTION("no leaflists")
+    {
+        treeReturned = {
+            {"/mod:AHOJ", 30},
+            {"/mod:CAU", std::string{"AYYY"}},
+            {"/mod:CUS", bool{true}}
+        };
+    }
+
+    SECTION("leaflist at the beginning of a tree")
+    {
+        treeReturned = {
+            {"/mod:addresses", special_{SpecialValue::LeafList}},
+            {"/mod:addresses[.='0.0.0.0']", std::string{"0.0.0.0"}},
+            {"/mod:addresses[.='127.0.0.1']", std::string{"127.0.0.1"}},
+            {"/mod:addresses[.='192.168.0.1']", std::string{"192.168.0.1"}},
+            {"/mod:AHOJ", 30},
+            {"/mod:CAU", std::string{"AYYY"}},
+        };
+    }
+
+    SECTION("leaflist in the middle of a tree")
+    {
+        treeReturned = {
+            {"/mod:AHOJ", 30},
+            {"/mod:addresses", special_{SpecialValue::LeafList}},
+            {"/mod:addresses[.='0.0.0.0']", std::string{"0.0.0.0"}},
+            {"/mod:addresses[.='127.0.0.1']", std::string{"127.0.0.1"}},
+            {"/mod:addresses[.='192.168.0.1']", std::string{"192.168.0.1"}},
+            {"/mod:CAU", std::string{"AYYY"}},
+        };
+    }
+
+    SECTION("leaflist at the end of a tree")
+    {
+        treeReturned = {
+            {"/mod:AHOJ", 30},
+            {"/mod:CAU", std::string{"AYYY"}},
+            {"/mod:addresses", special_{SpecialValue::LeafList}},
+            {"/mod:addresses[.='0.0.0.0']", std::string{"0.0.0.0"}},
+            {"/mod:addresses[.='127.0.0.1']", std::string{"127.0.0.1"}},
+            {"/mod:addresses[.='192.168.0.1']", std::string{"192.168.0.1"}},
+        };
+    }
+
+    auto schema = std::make_shared<MockSchema>();
+    Parser parser(schema);
+    MockDatastoreAccess datastore;
+    REQUIRE_CALL(datastore, getItems("/")).RETURN(treeReturned);
+    Interpreter(parser, datastore)(get_{});
 }
