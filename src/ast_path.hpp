@@ -48,7 +48,6 @@ struct leaf_ {
 };
 
 struct leafList_ {
-    leafList_();
     leafList_(const std::string& name);
 
     bool operator==(const leafList_& b) const;

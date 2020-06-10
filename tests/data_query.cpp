@@ -17,26 +17,10 @@
 #error "Unknown backend"
 #endif
 #include "data_query.hpp"
+#include "pretty_printers.hpp"
 #include "sysrepo_subscription.hpp"
 #include "utils.hpp"
 
-namespace std {
-std::ostream& operator<<(std::ostream& s, const std::vector<ListInstance> set)
-{
-    s << std::endl << "{" << std::endl;
-    std::transform(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", \n"), [](const auto& map) {
-        std::ostringstream ss;
-        ss << "    {" << std::endl << "        ";
-        std::transform(map.begin(), map.end(), std::experimental::make_ostream_joiner(ss, ", \n        "), [](const auto& keyValue){
-            return "{" + keyValue.first + "{" + boost::core::demangle(keyValue.second.type().name()) + "}" + ", " + leafDataToString(keyValue.second) + "}";
-        });
-        ss << std::endl << "    }";
-        return ss.str();
-    });
-    s << std::endl << "}" << std::endl;
-    return s;
-}
-}
 
 TEST_CASE("data query")
 {

@@ -31,8 +31,6 @@ bool leafListElement_::operator==(const leafListElement_& b) const
     return this->m_name == b.m_name && this->m_value == b.m_value;
 }
 
-leafList_::leafList_() = default;
-
 leafList_::leafList_(const std::string& name)
     : m_name(name)
 {

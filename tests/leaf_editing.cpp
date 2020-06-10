@@ -11,13 +11,9 @@
 #include "ast_commands.hpp"
 #include "leaf_data_helpers.hpp"
 #include "parser.hpp"
+#include "pretty_printers.hpp"
 #include "static_schema.hpp"
 #include "utils.hpp"
-
-std::ostream& operator<<(std::ostream& s, const set_ cmd)
-{
-    return s << "Command SET {path: " << pathToSchemaString(cmd.m_path, Prefixes::Always) << ", type " << boost::core::demangle(cmd.m_data.type().name()) << ", data: " << leafDataToString(cmd.m_data) << "}";
-}
 
 TEST_CASE("leaf editing")
 {
@@ -570,6 +566,12 @@ TEST_CASE("leaf editing")
         SECTION("non-existing identity")
         {
             input = "set mod:foodIdentRef identityBLABLA";
+        }
+
+        SECTION("identity with non-existing module")
+        {
+            expectedError = "Invalid module name";
+            input = "set mod:foodIdentRef xd:haha";
         }
 
         SECTION("setting identities with wrong bases")

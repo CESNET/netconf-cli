@@ -424,16 +424,6 @@ module example-schema {
     }
 })";
 
-namespace std {
-std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
-{
-    s << std::endl << "{";
-    std::copy(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", "));
-    s << "}" << std::endl;
-    return s;
-}
-}
-
 TEST_CASE("yangschema")
 {
     using namespace std::string_literals;
@@ -688,18 +678,16 @@ TEST_CASE("yangschema")
                 node.first = "example-schema";
                 node.second = "activePort";
 
-                yang::Enum enums = [&ys]() {
-                    SECTION("weird ports disabled")
-                    {
-                        return createEnum({"utf2", "utf3"});
-                    }
-                    SECTION("weird ports enabled")
-                    {
-                        ys.enableFeature("example-schema", "weirdPortNames");
-                        return createEnum({"WEIRD", "utf2", "utf3"});
-                    }
-                    __builtin_unreachable();
-                }();
+                yang::Enum enums({});
+                SECTION("weird ports disabled")
+                {
+                    enums = createEnum({"utf2", "utf3"});
+                }
+                SECTION("weird ports enabled")
+                {
+                    ys.enableFeature("example-schema", "weirdPortNames");
+                    enums = createEnum({"WEIRD", "utf2", "utf3"});
+                }
 
                 type = yang::Union{{
                     yang::TypeInfo{createEnum({"wlan0", "wlan1"})},

@@ -55,8 +55,6 @@ void lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr
     };
 
     for (const auto& it : items) {
-        if (!it)
-            continue;
         if (it->schema()->nodetype() == LYS_CONTAINER) {
             if (libyang::Schema_Node_Container{it->schema()}.presence()) {
                 // The fact that the container is included in the data tree

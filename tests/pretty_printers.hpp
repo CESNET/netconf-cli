@@ -6,6 +6,7 @@
 */
 
 #include <experimental/iterator>
+#include <sstream>
 #include "parser.hpp"
 #include "utils.hpp"
 namespace std {
@@ -107,6 +108,29 @@ std::ostream& operator<<(std::ostream& s, const std::set<ModuleNodePair>& set)
     return s;
 }
 
+std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
+{
+    s << std::endl << "{";
+    std::copy(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", "));
+    s << "}" << std::endl;
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const std::vector<ListInstance> set)
+{
+    s << std::endl << "{" << std::endl;
+    std::transform(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", \n"), [](const auto& map) {
+        std::ostringstream ss;
+        ss << "    {" << std::endl << "        ";
+        std::transform(map.begin(), map.end(), std::experimental::make_ostream_joiner(ss, ", \n        "), [](const auto& keyValue){
+            return "{" + keyValue.first + "{" + boost::core::demangle(keyValue.second.type().name()) + "}" + ", " + leafDataToString(keyValue.second) + "}";
+        });
+        ss << std::endl << "    }";
+        return ss.str();
+    });
+    s << std::endl << "}" << std::endl;
+    return s;
+}
 }
 
 std::ostream& operator<<(std::ostream& s, const boost::variant<dataPath_, schemaPath_, module_>& path)
@@ -169,4 +193,9 @@ std::ostream& operator<<(std::ostream& s, const move_& move)
     }
     s << "\n}\n";
     return s;
+}
+
+std::ostream& operator<<(std::ostream& s, const set_ cmd)
+{
+    return s << "Command SET {path: " << pathToSchemaString(cmd.m_path, Prefixes::Always) << ", type " << boost::core::demangle(cmd.m_data.type().name()) << ", data: " << leafDataToString(cmd.m_data) << "}";
 }
