@@ -397,3 +397,24 @@ TEST_CASE("set")
     Interpreter(parser, datastore)(setCmd);
     expectation.reset();
 }
+
+TEST_CASE("copy")
+{
+    using namespace std::string_literals;
+    MockDatastoreAccess datastore;
+    auto schema = std::make_shared<MockSchema>();
+    Parser parser(schema);
+    Interpreter intr(parser, datastore);
+
+    SECTION("running -> startup")
+    {
+        REQUIRE_CALL(datastore, copyConfig(Datastore::Running, Datastore::Startup));
+        intr(copy_{{}, Datastore::Running, Datastore::Startup});
+    }
+
+    SECTION("startup -> running")
+    {
+        REQUIRE_CALL(datastore, copyConfig(Datastore::Startup, Datastore::Running));
+        intr(copy_{{}, Datastore::Startup, Datastore::Running});
+    }
+}
