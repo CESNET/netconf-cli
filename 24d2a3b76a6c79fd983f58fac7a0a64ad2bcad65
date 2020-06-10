@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "42b2bd30_fc0ed21d",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-10T14:20:22Z",
+      "side": 1,
+      "message": "this is not needed -- it will be destroyed on the next line when it foes out of scope",
+      "revId": "24d2a3b76a6c79fd983f58fac7a0a64ad2bcad65",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
