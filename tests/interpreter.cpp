@@ -34,7 +34,7 @@ public:
     IMPLEMENT_CONST_MOCK1(status);
 };
 
-TEST_CASE("ls interpreter")
+TEST_CASE("ls")
 {
     auto schema = std::make_shared<MockSchema>();
     Parser parser(schema);
@@ -151,4 +151,156 @@ TEST_CASE("ls interpreter")
     ls.m_path = lsArg;
     REQUIRE_CALL(*schema, availableNodes(expectedPath, Recursion::NonRecursive)).RETURN(std::set<ModuleNodePair>{});
     Interpreter(parser, datastore)(ls);
+}
+
+TEST_CASE("get")
+{
+    using namespace std::string_literals;
+    DatastoreAccess::Tree treeReturned;
+    decltype(get_::m_path) inputPath;
+    std::string expectedPathArg;
+    auto schema = std::make_shared<MockSchema>();
+    Parser parser(schema);
+
+    SECTION("paths")
+    {
+        SECTION("/")
+        {
+            expectedPathArg = "/";
+        }
+
+        SECTION("module")
+        {
+            inputPath = module_{"mod"};
+            expectedPathArg = "/mod:*";
+        }
+
+        SECTION("path to a leaf")
+        {
+            expectedPathArg = "/mod:myLeaf";
+            Scope scope;
+            SECTION("cwd: /")
+            {
+                SECTION("absolute")
+                {
+                    scope = Scope::Absolute;
+                }
+
+                SECTION("relative")
+                {
+                    scope = Scope::Relative;
+                }
+
+                inputPath = dataPath_{scope, {dataNode_{{"mod"}, leaf_{"myLeaf"}}}};
+            }
+
+            SECTION("cwd: /mod:whatever")
+            {
+                parser.changeNode(dataPath_{Scope::Relative, {dataNode_{{"mod"}, container_{"whatever"}}}});
+                SECTION("absolute")
+                {
+                    scope = Scope::Absolute;
+                    inputPath = dataPath_{scope, {dataNode_{{"mod"}, leaf_{"myLeaf"}}}};
+                }
+
+                SECTION("relative")
+                {
+                    scope = Scope::Relative;
+                    inputPath = dataPath_{scope, {dataNode_{nodeup_{}}, dataNode_{{"mod"}, leaf_{"myLeaf"}}}};
+                }
+
+            }
+        }
+
+        SECTION("path to a list")
+        {
+            expectedPathArg = "/mod:myList[name='AHOJ']";
+            Scope scope;
+            SECTION("cwd: /")
+            {
+                SECTION("absolute")
+                {
+                    scope = Scope::Absolute;
+                }
+
+                SECTION("relative")
+                {
+                    scope = Scope::Relative;
+                }
+
+                inputPath = dataPath_{scope, {dataNode_{{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}};
+            }
+
+            SECTION("cwd: /mod:whatever")
+            {
+                parser.changeNode(dataPath_{Scope::Relative, {dataNode_{{"mod"}, container_{"whatever"}}}});
+                SECTION("absolute")
+                {
+                    scope = Scope::Absolute;
+                    inputPath = dataPath_{scope, {dataNode_{{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}};
+                }
+
+                SECTION("relative")
+                {
+                    scope = Scope::Relative;
+                    inputPath = dataPath_{scope, {dataNode_{nodeup_{}}, dataNode_{{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}};
+                }
+            }
+        }
+    }
+
+    SECTION("trees")
+    {
+        expectedPathArg = "/";
+        SECTION("no leaflists")
+        {
+            treeReturned = {
+                {"/mod:AHOJ", 30},
+                {"/mod:CAU", std::string{"AYYY"}},
+                {"/mod:CUS", bool{true}}
+            };
+        }
+
+        SECTION("leaflist at the beginning of a tree")
+        {
+            treeReturned = {
+                {"/mod:addresses", special_{SpecialValue::LeafList}},
+                {"/mod:addresses[.='0.0.0.0']", std::string{"0.0.0.0"}},
+                {"/mod:addresses[.='127.0.0.1']", std::string{"127.0.0.1"}},
+                {"/mod:addresses[.='192.168.0.1']", std::string{"192.168.0.1"}},
+                {"/mod:AHOJ", 30},
+                {"/mod:CAU", std::string{"AYYY"}},
+            };
+        }
+
+        SECTION("leaflist in the middle of a tree")
+        {
+            treeReturned = {
+                {"/mod:AHOJ", 30},
+                {"/mod:addresses", special_{SpecialValue::LeafList}},
+                {"/mod:addresses[.='0.0.0.0']", std::string{"0.0.0.0"}},
+                {"/mod:addresses[.='127.0.0.1']", std::string{"127.0.0.1"}},
+                {"/mod:addresses[.='192.168.0.1']", std::string{"192.168.0.1"}},
+                {"/mod:CAU", std::string{"AYYY"}},
+            };
+        }
+
+        SECTION("leaflist at the end of a tree")
+        {
+            treeReturned = {
+                {"/mod:AHOJ", 30},
+                {"/mod:CAU", std::string{"AYYY"}},
+                {"/mod:addresses", special_{SpecialValue::LeafList}},
+                {"/mod:addresses[.='0.0.0.0']", std::string{"0.0.0.0"}},
+                {"/mod:addresses[.='127.0.0.1']", std::string{"127.0.0.1"}},
+                {"/mod:addresses[.='192.168.0.1']", std::string{"192.168.0.1"}},
+            };
+        }
+    }
+
+    get_ getCmd;
+    getCmd.m_path = inputPath;
+    MockDatastoreAccess datastore;
+    REQUIRE_CALL(datastore, getItems(expectedPathArg)).RETURN(treeReturned);
+    Interpreter(parser, datastore)(getCmd);
 }
