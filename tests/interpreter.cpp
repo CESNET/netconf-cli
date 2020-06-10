@@ -359,3 +359,41 @@ TEST_CASE("commit/discard")
         Interpreter(parser, datastore)(discard_{});
     }
 }
+
+TEST_CASE("set")
+{
+    using namespace std::string_literals;
+    dataPath_ inputPath;
+    leaf_data_ inputData;
+    MockDatastoreAccess datastore;
+    std::shared_ptr<trompeloeil::expectation> expectation;
+
+    SECTION("setting int32")
+    {
+        inputPath.m_nodes = {dataNode_{{"mod"}, leaf_{"myInt"}}};
+        inputData = 10;
+        expectation = NAMED_REQUIRE_CALL(datastore, setLeaf("/mod:myInt", 10));
+    }
+
+    SECTION("setting identityRef without module") // The parser has to add fill in the module
+    {
+        inputPath.m_nodes = {dataNode_{{"mod"}, leaf_{"animal"}}};
+        inputData = identityRef_{"Doge"};
+        expectation = NAMED_REQUIRE_CALL(datastore, setLeaf("/mod:animal", identityRef_{"mod", "Doge"}));
+    }
+
+    SECTION("setting identityRef with module")
+    {
+        inputPath.m_nodes = {dataNode_{{"mod"}, leaf_{"animal"}}};
+        inputData = identityRef_{"MoreAnimals", "Fennec"};
+        expectation = NAMED_REQUIRE_CALL(datastore, setLeaf("/mod:animal", identityRef_{"MoreAnimals", "Fennec"}));
+    }
+
+    auto schema = std::make_shared<MockSchema>();
+    Parser parser(schema);
+    set_ setCmd;
+    setCmd.m_path = inputPath;
+    setCmd.m_data = inputData;
+    Interpreter(parser, datastore)(setCmd);
+    expectation.reset();
+}
