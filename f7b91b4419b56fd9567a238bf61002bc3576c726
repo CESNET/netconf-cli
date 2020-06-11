@@ -1,0 +1,209 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8dd7d2e8_4affab79",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "\"libraries\"",
+      "range": {
+        "startLine": 136,
+        "startChar": 8,
+        "endLine": 136,
+        "endChar": 15
+      },
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f08af7d_75cd343f",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s correct to perform YANG-level validation here. This method is called, e.g., when a user removes an item from a leaf-list. Imagine (ok, a contrived example, but a valid one nonetheless) a leaf-list, min-items 1, max-items 1. How do you change the value stored in there?\n\nTL;DR: I think that validation shoudl be deferred until commit.",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "49968aef_6a45fd9c",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "does it handle attempts at removal of non-existing items? It should not segfault, and I think it currently segfaults because find_path returns a nullptr, and then it\u0027s dereferenced in removeFromStorage().",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c338e0c_ab9c313b",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "I think it would be futile to try to implement this (including returning actually valid data), so I\u0027m OK with just throwing an exception in a way which would make this behave exactly the same as if the remote NETCONF server (or a sysrepo subscriber) returns an error during execution.",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b62db80_17e035c6",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "yup, this should probably also return a user-visible error saying that this is not implemented",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b1eb0935_0925d8d5",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "it\u0027s required for tab completion, isn\u0027t it? (otherwise it should be removed from that abstract DatastoreAccess interface)",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a48e2bcf_35a3d4f6",
+        "filename": "src/yang_access.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "it looks that feature enablement is missing",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d484a4b6_943571b6",
+        "filename": "src/yang_access.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "Can you please make two functions, dumpXml() and dumpJson()?",
+      "range": {
+        "startLine": 43,
+        "startChar": 16,
+        "endLine": 43,
+        "endChar": 26
+      },
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f4dceec_3baaa812",
+        "filename": "src/yang_access.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "Please add some docs about these funcitons into the .cpp file -- explain how libyang works, what the problems with the C++ API were, and how you worked around that.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 76
+      },
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95acd65f_326beafb",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "It\u0027s just a test, but still, there\u0027s shellcode injection here (in case the user-passed data contain \"\\nEOF\\n; shellcode\"). I think it can be improved by writing out the config to a file and reading from that.\n\nAlso please check for the exit status.",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb3bd626_4582f896",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-11T18:04:38Z",
+      "side": 1,
+      "message": "instead of changing all these (and hoping that nobody never forgets any other), what about deriving another class from YangAccess, reimplementing its commit() to not just do YangAccess::commit(), but also this dump-n-import into sysrepo?",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
