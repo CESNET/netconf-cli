@@ -38,7 +38,7 @@ TEST_CASE("keyvalue_completion")
     std::ostringstream errorStream;
 
     std::set<std::string> expected;
-    std::vector<std::shared_ptr<trompeloeil::expectation>> queryExpectations;
+    std::vector<std::unique_ptr<trompeloeil::expectation>> queryExpectations;
     std::vector<ListInstance> queryReturn;
 
     SECTION("get example:list[number=")
@@ -158,7 +158,4 @@ TEST_CASE("keyvalue_completion")
     }
 
     REQUIRE(parser.completeCommand(input, errorStream).m_completions == expected);
-    for (auto& it : queryExpectations) {
-        it.reset();
-    }
 }
