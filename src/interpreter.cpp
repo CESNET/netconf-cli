@@ -36,12 +36,12 @@ void Interpreter::operator()(const set_& set) const
             data = identityRef;
         }
     }
-    m_datastore.setLeaf(resolvePath(set.m_path), data);
+    m_datastore.setLeaf(resolvePath<ConvertToString::Yes>(set.m_path), data);
 }
 
 void Interpreter::operator()(const get_& get) const
 {
-    auto items = m_datastore.getItems(resolveOptionalPath(get.m_path));
+    auto items = m_datastore.getItems(resolveOptionalPath<ConvertToString::Yes>(get.m_path));
     for (auto it = items.begin(); it != items.end(); it++) {
         auto [path, value] = *it;
         if (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
@@ -66,21 +66,21 @@ void Interpreter::operator()(const cd_& cd) const
 void Interpreter::operator()(const create_& create) const
 {
     if (std::holds_alternative<listElement_>(create.m_path.m_nodes.back().m_suffix))
-        m_datastore.createListInstance(resolvePath(create.m_path));
+        m_datastore.createListInstance(resolvePath<ConvertToString::Yes>(create.m_path));
     else if (std::holds_alternative<leafListElement_>(create.m_path.m_nodes.back().m_suffix))
-        m_datastore.createLeafListInstance(resolvePath(create.m_path));
+        m_datastore.createLeafListInstance(resolvePath<ConvertToString::Yes>(create.m_path));
     else
-        m_datastore.createPresenceContainer(resolvePath(create.m_path));
+        m_datastore.createPresenceContainer(resolvePath<ConvertToString::Yes>(create.m_path));
 }
 
 void Interpreter::operator()(const delete_& delet) const
 {
     if (std::holds_alternative<container_>(delet.m_path.m_nodes.back().m_suffix))
-        m_datastore.deletePresenceContainer(resolvePath(delet.m_path));
+        m_datastore.deletePresenceContainer(resolvePath<ConvertToString::Yes>(delet.m_path));
     else if (std::holds_alternative<leafListElement_>(delet.m_path.m_nodes.back().m_suffix))
-        m_datastore.deleteLeafListInstance(resolvePath(delet.m_path));
+        m_datastore.deleteLeafListInstance(resolvePath<ConvertToString::Yes>(delet.m_path));
     else
-        m_datastore.deleteListInstance(resolvePath(delet.m_path));
+        m_datastore.deleteListInstance(resolvePath<ConvertToString::Yes>(delet.m_path));
 }
 
 void Interpreter::operator()(const ls_& ls) const
@@ -92,24 +92,7 @@ void Interpreter::operator()(const ls_& ls) const
             recursion = Recursion::Recursive;
     }
 
-    std::set<ModuleNodePair> toPrint;
-
-    auto pathArg = dataPathToSchemaPath(m_parser.currentPath());
-    if (ls.m_path) {
-        if (ls.m_path->type() == typeid(module_)) {
-            toPrint = m_datastore.schema()->availableNodes(*ls.m_path, recursion);
-        } else {
-            auto schemaPath = anyPathToSchemaPath(*ls.m_path);
-            if (schemaPath.m_scope == Scope::Absolute) {
-                pathArg = schemaPath;
-            } else {
-                pathArg.m_nodes.insert(pathArg.m_nodes.end(), schemaPath.m_nodes.begin(), schemaPath.m_nodes.end());
-            }
-            toPrint = m_datastore.schema()->availableNodes(pathArg, recursion);
-        }
-    } else {
-        toPrint = m_datastore.schema()->availableNodes(pathArg, recursion);
-    }
+    auto toPrint = m_datastore.schema()->availableNodes(resolveOptionalPath<ConvertToString::No>(ls.m_path), recursion);
 
     for (const auto& it : toPrint) {
         std::cout << (it.first ? *it.first + ":" : "" ) + it.second << std::endl;
@@ -183,7 +166,7 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
 
 void Interpreter::operator()(const describe_& describe) const
 {
-    auto path = resolvePath(describe.m_path);
+    auto path = resolvePath<ConvertToString::Yes>(describe.m_path);
     auto status = m_datastore.schema()->status(path);
     auto statusStr = status == yang::Status::Deprecated ? " (deprecated)" :
         status == yang::Status::Obsolete ? " (obsolete)" :
@@ -226,22 +209,20 @@ void Interpreter::operator()(const help_& help) const
         });
 }
 
-template <typename PathType>
-std::string Interpreter::resolveOptionalPath(const boost::optional<PathType>& optPath) const
+template <ConvertToString CONVERT_TO_STRING, typename PathType>
+auto Interpreter::resolveOptionalPath(const boost::optional<PathType>& optPath) const -> GetReturnType<CONVERT_TO_STRING>
 {
     if (!optPath) {
-        return m_parser.currentNode();
+        if constexpr (CONVERT_TO_STRING == ConvertToString::Yes) {
+            return m_parser.currentNode();
+        } else {
+            return m_parser.currentPath();
+        }
     }
-    return resolvePath(*optPath);
+    return resolvePath<CONVERT_TO_STRING>(*optPath);
 }
 
-struct impl_resolvePath {
-    const dataPath_& m_parserPath;
-
-    impl_resolvePath(const dataPath_& parserPath)
-        : m_parserPath(parserPath)
-    {
-    }
+struct pathToStringVisitor : boost::static_visitor<std::string> {
     std::string operator()(const module_& path) const
     {
         using namespace std::string_literals;
@@ -249,16 +230,43 @@ struct impl_resolvePath {
     }
     std::string operator()(const schemaPath_& path) const
     {
-        return pathToSchemaString(impl(path), Prefixes::WhenNeeded);
+        return pathToSchemaString(path, Prefixes::WhenNeeded);
     }
     std::string operator()(const dataPath_& path) const
     {
-        return pathToDataString(impl(path), Prefixes::WhenNeeded);
+        return pathToDataString(path, Prefixes::WhenNeeded);
+    }
+};
+
+template <typename ReturnType>
+struct impl_resolvePath {
+    const dataPath_& m_parserPath;
+
+    impl_resolvePath(const dataPath_& parserPath)
+        : m_parserPath(parserPath)
+    {
+    }
+    ReturnType operator()(const module_& path) const
+    {
+        using namespace std::string_literals;
+        if constexpr (std::is_same<ReturnType, std::string>()) {
+            return "/"s + boost::get<module_>(path).m_name + ":*";
+        } else {
+            return path;
+        }
+    }
+    ReturnType operator()(const schemaPath_& path) const
+    {
+        return impl(path);
+    }
+    ReturnType operator()(const dataPath_& path) const
+    {
+        return impl(path);
     }
 
 private:
     template <typename PathType>
-    PathType impl(const PathType& suffix) const
+    ReturnType impl(const PathType& suffix) const
     {
         PathType res = [this] {
             if constexpr (std::is_same<PathType, schemaPath_>()) {
@@ -268,8 +276,16 @@ private:
             }
         }();
 
+        auto returnFunction = [] (const auto& res) {
+            if constexpr (std::is_same<ReturnType, std::string>()) {
+                return pathToStringVisitor()(res);
+            } else {
+                return res;
+            }
+        };
+
         if (suffix.m_scope == Scope::Absolute) {
-            return suffix;
+            return returnFunction(suffix);
         }
 
         for (const auto& fragment : suffix.m_nodes) {
@@ -279,17 +295,19 @@ private:
                 res.m_nodes.push_back(fragment);
             }
         }
-        return res;
+
+        return returnFunction(res);
     }
 };
 
-template <typename PathType>
-std::string Interpreter::resolvePath(const PathType& path) const
+template <ConvertToString CONVERT_TO_STRING, typename PathType>
+auto Interpreter::resolvePath(const PathType& path) const -> GetReturnType<CONVERT_TO_STRING>
 {
+    using ReturnType = GetReturnType<CONVERT_TO_STRING>;
     if constexpr (std::is_same<PathType, dataPath_>()) {
-        return impl_resolvePath(m_parser.currentPath())(path);
+        return impl_resolvePath<ReturnType>(m_parser.currentPath())(path);
     } else {
-        return boost::apply_visitor(impl_resolvePath(m_parser.currentPath()), path);
+        return boost::apply_visitor(impl_resolvePath<ReturnType>(m_parser.currentPath()), path);
     }
 }
 

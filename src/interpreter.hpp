@@ -12,6 +12,17 @@
 #include "datastore_access.hpp"
 #include "parser.hpp"
 
+enum class ConvertToString {
+    Yes,
+    No
+};
+
+template <ConvertToString value> struct impl_GetReturnType;
+template <> struct impl_GetReturnType<ConvertToString::Yes> {using type = std::string;};
+template <> struct impl_GetReturnType<ConvertToString::No> {using type = boost::variant<dataPath_, schemaPath_, module_>;};
+
+template <ConvertToString value> using GetReturnType = typename impl_GetReturnType<value>::type;
+
 struct Interpreter : boost::static_visitor<void> {
     Interpreter(Parser& parser, DatastoreAccess& datastore);
 
@@ -31,11 +42,11 @@ struct Interpreter : boost::static_visitor<void> {
 private:
     std::string buildTypeInfo(const std::string& path) const;
 
-    template <typename PathType>
-    std::string resolveOptionalPath(const boost::optional<PathType>&) const;
+    template <ConvertToString CONVERT_TO_STRING, typename PathType>
+    auto resolveOptionalPath(const boost::optional<PathType>& optPath) const -> GetReturnType<CONVERT_TO_STRING>;
 
-    template <typename PathType>
-    std::string resolvePath(const PathType&) const;
+    template <ConvertToString CONVERT_TO_STRING, typename PathType>
+    auto resolvePath(const PathType& path) const -> GetReturnType<CONVERT_TO_STRING>;
 
     Parser& m_parser;
     DatastoreAccess& m_datastore;
