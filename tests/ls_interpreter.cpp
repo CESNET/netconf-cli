@@ -45,31 +45,31 @@ TEST_CASE("ls interpreter")
     {
         SECTION("arg: <none>")
         {
-            expectedPath = schemaPath_{};
+            expectedPath = dataPath_{};
         }
 
         SECTION("arg: example:a")
         {
             lsArg = dataPath_{Scope::Relative, {{module_{"example"}, container_{"a"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
         }
 
         SECTION("arg: example:list")
         {
             lsArg = dataPath_{Scope::Relative, {{module_{"example"}, list_{"list"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
         }
 
         SECTION("arg: /example:a")
         {
             lsArg = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
         }
 
         SECTION("arg: /example:list")
         {
             lsArg = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
         }
 
         SECTION("arg example:*")
@@ -85,31 +85,31 @@ TEST_CASE("ls interpreter")
 
         SECTION("arg: <none>")
         {
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
         }
 
         SECTION("arg: example:a2")
         {
             lsArg = dataPath_{Scope::Relative, {{container_{"a2"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}, {container_{"a2"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}, {container_{"a2"}}}};
         }
 
         SECTION("arg: example:listInCont")
         {
             lsArg = dataPath_{Scope::Relative, {{list_{"listInCont"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}, {list_{"listInCont"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}, {list_{"listInCont"}}}};
         }
 
         SECTION("arg: /example:a")
         {
             lsArg = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
         }
 
         SECTION("arg: /example:list")
         {
             lsArg = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
         }
     }
     SECTION("cwd: /example:list")
@@ -118,25 +118,25 @@ TEST_CASE("ls interpreter")
 
         SECTION("arg: <none>")
         {
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
         }
 
         SECTION("arg: example:contInList")
         {
             lsArg = dataPath_{Scope::Relative, {{container_{"contInList"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}, {container_{"contInList"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}, {container_{"contInList"}}}};
         }
 
         SECTION("arg: /example:a")
         {
             lsArg = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
         }
 
         SECTION("arg: /example:list")
         {
             lsArg = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
-            expectedPath = schemaPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
+            expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, list_{"list"}}}};
         }
 
         SECTION("arg example:*")
