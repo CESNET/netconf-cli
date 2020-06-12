@@ -14,6 +14,28 @@
 #include "interpreter.hpp"
 #include "utils.hpp"
 
+struct pathToStringVisitor : boost::static_visitor<std::string> {
+    std::string operator()(const module_& path) const
+    {
+        using namespace std::string_literals;
+        return "/"s + boost::get<module_>(path).m_name + ":*";
+    }
+    std::string operator()(const schemaPath_& path) const
+    {
+        return pathToSchemaString(path, Prefixes::WhenNeeded);
+    }
+    std::string operator()(const dataPath_& path) const
+    {
+        return pathToDataString(path, Prefixes::WhenNeeded);
+    }
+};
+
+template <typename PathType>
+std::string pathToString(const PathType& path)
+{
+    return boost::apply_visitor(pathToStringVisitor(), path);
+}
+
 void Interpreter::operator()(const commit_&) const
 {
     m_datastore.commitChanges();
@@ -36,12 +58,12 @@ void Interpreter::operator()(const set_& set) const
             data = identityRef;
         }
     }
-    m_datastore.setLeaf(toCanonicalPath(set.m_path), data);
+    m_datastore.setLeaf(pathToString(toCanonicalPath(set.m_path)), data);
 }
 
 void Interpreter::operator()(const get_& get) const
 {
-    auto items = m_datastore.getItems(toCanonicalPath(get.m_path));
+    auto items = m_datastore.getItems(pathToString(toCanonicalPath(get.m_path)));
     for (auto it = items.begin(); it != items.end(); it++) {
         auto [path, value] = *it;
         if (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
@@ -66,21 +88,21 @@ void Interpreter::operator()(const cd_& cd) const
 void Interpreter::operator()(const create_& create) const
 {
     if (std::holds_alternative<listElement_>(create.m_path.m_nodes.back().m_suffix))
-        m_datastore.createListInstance(toCanonicalPath(create.m_path));
+        m_datastore.createListInstance(pathToString(toCanonicalPath(create.m_path)));
     else if (std::holds_alternative<leafListElement_>(create.m_path.m_nodes.back().m_suffix))
-        m_datastore.createLeafListInstance(toCanonicalPath(create.m_path));
+        m_datastore.createLeafListInstance(pathToString(toCanonicalPath(create.m_path)));
     else
-        m_datastore.createPresenceContainer(toCanonicalPath(create.m_path));
+        m_datastore.createPresenceContainer(pathToString(toCanonicalPath(create.m_path)));
 }
 
 void Interpreter::operator()(const delete_& delet) const
 {
     if (std::holds_alternative<container_>(delet.m_path.m_nodes.back().m_suffix))
-        m_datastore.deletePresenceContainer(toCanonicalPath(delet.m_path));
+        m_datastore.deletePresenceContainer(pathToString(toCanonicalPath(delet.m_path)));
     else if (std::holds_alternative<leafListElement_>(delet.m_path.m_nodes.back().m_suffix))
-        m_datastore.deleteLeafListInstance(toCanonicalPath(delet.m_path));
+        m_datastore.deleteLeafListInstance(pathToString(toCanonicalPath(delet.m_path)));
     else
-        m_datastore.deleteListInstance(toCanonicalPath(delet.m_path));
+        m_datastore.deleteListInstance(pathToString(toCanonicalPath(delet.m_path)));
 }
 
 void Interpreter::operator()(const ls_& ls) const
@@ -92,24 +114,7 @@ void Interpreter::operator()(const ls_& ls) const
             recursion = Recursion::Recursive;
     }
 
-    std::set<ModuleNodePair> toPrint;
-
-    auto pathArg = dataPathToSchemaPath(m_parser.currentPath());
-    if (ls.m_path) {
-        if (ls.m_path->type() == typeid(module_)) {
-            toPrint = m_datastore.schema()->availableNodes(*ls.m_path, recursion);
-        } else {
-            auto schemaPath = anyPathToSchemaPath(*ls.m_path);
-            if (schemaPath.m_scope == Scope::Absolute) {
-                pathArg = schemaPath;
-            } else {
-                pathArg.m_nodes.insert(pathArg.m_nodes.end(), schemaPath.m_nodes.begin(), schemaPath.m_nodes.end());
-            }
-            toPrint = m_datastore.schema()->availableNodes(pathArg, recursion);
-        }
-    } else {
-        toPrint = m_datastore.schema()->availableNodes(pathArg, recursion);
-    }
+    auto toPrint = m_datastore.schema()->availableNodes(toCanonicalPath(ls.m_path), recursion);
 
     for (const auto& it : toPrint) {
         std::cout << (it.first ? *it.first + ":" : "" ) + it.second << std::endl;
@@ -183,7 +188,7 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
 
 void Interpreter::operator()(const describe_& describe) const
 {
-    auto path = toCanonicalPath(describe.m_path);
+    auto path = pathToString(toCanonicalPath(describe.m_path));
     auto status = m_datastore.schema()->status(path);
     auto statusStr = status == yang::Status::Deprecated ? " (deprecated)" :
         status == yang::Status::Obsolete ? " (obsolete)" :
@@ -227,10 +232,10 @@ void Interpreter::operator()(const help_& help) const
 }
 
 template <typename PathType>
-std::string Interpreter::toCanonicalPath(const boost::optional<PathType>& optPath) const
+boost::variant<dataPath_, schemaPath_, module_> Interpreter::toCanonicalPath(const boost::optional<PathType>& optPath) const
 {
     if (!optPath) {
-        return m_parser.currentNode();
+        return m_parser.currentPath();
     }
     return toCanonicalPath(*optPath);
 }
@@ -238,27 +243,28 @@ std::string Interpreter::toCanonicalPath(const boost::optional<PathType>& optPat
 struct impl_toCanonicalPath {
     const dataPath_& m_parserPath;
 
+    using ReturnType = boost::variant<dataPath_, schemaPath_, module_>;
+
     impl_toCanonicalPath(const dataPath_& parserPath)
         : m_parserPath(parserPath)
     {
     }
-    std::string operator()(const module_& path) const
+    ReturnType operator()(const module_& path) const
     {
-        using namespace std::string_literals;
-        return "/"s + boost::get<module_>(path).m_name + ":*";
+        return path;
     }
-    std::string operator()(const schemaPath_& path) const
+    ReturnType operator()(const schemaPath_& path) const
     {
-        return pathToSchemaString(impl(path), Prefixes::WhenNeeded);
+        return impl(path);
     }
-    std::string operator()(const dataPath_& path) const
+    ReturnType operator()(const dataPath_& path) const
     {
-        return pathToDataString(impl(path), Prefixes::WhenNeeded);
+        return impl(path);
     }
 
 private:
     template <typename PathType>
-    PathType impl(const PathType& suffix) const
+    ReturnType impl(const PathType& suffix) const
     {
         PathType res = [this] {
             if constexpr (std::is_same<PathType, schemaPath_>()) {
@@ -279,12 +285,13 @@ private:
                 res.m_nodes.push_back(fragment);
             }
         }
+
         return res;
     }
 };
 
 template <typename PathType>
-std::string Interpreter::toCanonicalPath(const PathType& path) const
+boost::variant<dataPath_, schemaPath_, module_> Interpreter::toCanonicalPath(const PathType& path) const
 {
     if constexpr (std::is_same<PathType, dataPath_>()) {
         return impl_toCanonicalPath(m_parser.currentPath())(path);
