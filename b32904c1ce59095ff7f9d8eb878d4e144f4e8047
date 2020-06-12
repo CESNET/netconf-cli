@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f9d32fd_db3012bb",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-12T15:28:02Z",
+      "side": 1,
+      "message": "ReturnType will never be a std::string because of that using statement on line 246, so this looks like a complex no-op.",
+      "revId": "b32904c1ce59095ff7f9d8eb878d4e144f4e8047",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27681383_c2050c87",
+        "filename": "tests/ls_interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-12T15:28:02Z",
+      "side": 1,
+      "message": "How come that this is a dataPath_? It\u0027s a list with no keys, isn\u0027t it, so it\u0027s by definition something that cannot be created and/or removed.",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 9
+      },
+      "revId": "b32904c1ce59095ff7f9d8eb878d4e144f4e8047",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
