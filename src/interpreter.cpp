@@ -36,12 +36,12 @@ void Interpreter::operator()(const set_& set) const
             data = identityRef;
         }
     }
-    m_datastore.setLeaf(absolutePathFromCommand(set), data);
+    m_datastore.setLeaf(toCanonicalPath(set.m_path), data);
 }
 
 void Interpreter::operator()(const get_& get) const
 {
-    auto items = m_datastore.getItems(absolutePathFromCommand(get));
+    auto items = m_datastore.getItems(toCanonicalPath(get.m_path));
     for (auto it = items.begin(); it != items.end(); it++) {
         auto [path, value] = *it;
         if (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
@@ -66,21 +66,21 @@ void Interpreter::operator()(const cd_& cd) const
 void Interpreter::operator()(const create_& create) const
 {
     if (std::holds_alternative<listElement_>(create.m_path.m_nodes.back().m_suffix))
-        m_datastore.createListInstance(absolutePathFromCommand(create));
+        m_datastore.createListInstance(toCanonicalPath(create.m_path));
     else if (std::holds_alternative<leafListElement_>(create.m_path.m_nodes.back().m_suffix))
-        m_datastore.createLeafListInstance(absolutePathFromCommand(create));
+        m_datastore.createLeafListInstance(toCanonicalPath(create.m_path));
     else
-        m_datastore.createPresenceContainer(absolutePathFromCommand(create));
+        m_datastore.createPresenceContainer(toCanonicalPath(create.m_path));
 }
 
 void Interpreter::operator()(const delete_& delet) const
 {
     if (std::holds_alternative<container_>(delet.m_path.m_nodes.back().m_suffix))
-        m_datastore.deletePresenceContainer(absolutePathFromCommand(delet));
+        m_datastore.deletePresenceContainer(toCanonicalPath(delet.m_path));
     else if (std::holds_alternative<leafListElement_>(delet.m_path.m_nodes.back().m_suffix))
-        m_datastore.deleteLeafListInstance(absolutePathFromCommand(delet));
+        m_datastore.deleteLeafListInstance(toCanonicalPath(delet.m_path));
     else
-        m_datastore.deleteListInstance(absolutePathFromCommand(delet));
+        m_datastore.deleteListInstance(toCanonicalPath(delet.m_path));
 }
 
 void Interpreter::operator()(const ls_& ls) const
@@ -183,7 +183,7 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
 
 void Interpreter::operator()(const describe_& describe) const
 {
-    auto path = absolutePathFromCommand(describe);
+    auto path = toCanonicalPath(describe.m_path);
     auto status = m_datastore.schema()->status(path);
     auto statusStr = status == yang::Status::Deprecated ? " (deprecated)" :
         status == yang::Status::Obsolete ? " (obsolete)" :
@@ -226,16 +226,22 @@ void Interpreter::operator()(const help_& help) const
         });
 }
 
-template <typename T>
-std::string Interpreter::absolutePathFromCommand(const T& command) const
+template <typename PathType>
+std::string Interpreter::toCanonicalPath(const boost::optional<PathType>& optPath) const
 {
-    if (command.m_path.m_scope == Scope::Absolute)
-        return pathToDataString(command.m_path, Prefixes::WhenNeeded);
-    else
-        return joinPaths(m_parser.currentNode(), pathToDataString(command.m_path, Prefixes::WhenNeeded));
+    if (!optPath) {
+        return m_parser.currentNode();
+    }
+    return toCanonicalPath(*optPath);
 }
 
-struct pathToStringVisitor : boost::static_visitor<std::string> {
+struct impl_toCanonicalPath {
+    const dataPath_& m_parserPath;
+
+    impl_toCanonicalPath(const dataPath_& parserPath)
+        : m_parserPath(parserPath)
+    {
+    }
     std::string operator()(const module_& path) const
     {
         using namespace std::string_literals;
@@ -243,56 +249,48 @@ struct pathToStringVisitor : boost::static_visitor<std::string> {
     }
     std::string operator()(const schemaPath_& path) const
     {
-        return pathToSchemaString(path, Prefixes::WhenNeeded);
+        return pathToSchemaString(impl(path), Prefixes::WhenNeeded);
     }
     std::string operator()(const dataPath_& path) const
     {
-        return pathToDataString(path, Prefixes::WhenNeeded);
+        return pathToDataString(impl(path), Prefixes::WhenNeeded);
     }
-};
 
-struct getPathScopeVisitor : boost::static_visitor<Scope> {
-    Scope operator()(const module_&) const
+private:
+    template <typename PathType>
+    PathType impl(const PathType& suffix) const
     {
-        throw std::logic_error("Interpreter: a top-level module has no scope.");
-    }
+        PathType res = [this] {
+            if constexpr (std::is_same<PathType, schemaPath_>()) {
+                return dataPathToSchemaPath(m_parserPath);
+            } else {
+                return m_parserPath;
+            }
+        }();
 
-    template <typename T>
-    Scope operator()(const T& path) const
-    {
-        return path.m_scope;
-    }
-};
-
-std::string Interpreter::absolutePathFromCommand(const get_& get) const
-{
-    using namespace std::string_literals;
-    if (!get.m_path) {
-        return m_parser.currentNode();
-    }
-
-    const auto path = *get.m_path;
-    if (path.type() == typeid(module_)) {
-        return boost::apply_visitor(pathToStringVisitor(), path);
-    } else {
-        std::string pathString = boost::apply_visitor(pathToStringVisitor(), path);
-        auto pathScope{boost::apply_visitor(getPathScopeVisitor(), path)};
-
-        if (pathScope == Scope::Absolute) {
-            return pathString;
-        } else {
-            return joinPaths(m_parser.currentNode(), pathString);
+        if (suffix.m_scope == Scope::Absolute) {
+            return suffix;
         }
-    }
-}
 
-std::string Interpreter::absolutePathFromCommand(const describe_& describe) const
+        for (const auto& fragment : suffix.m_nodes) {
+            if (std::holds_alternative<nodeup_>(fragment.m_suffix)) {
+                res.m_nodes.pop_back();
+            } else {
+                res.m_nodes.push_back(fragment);
+            }
+        }
+        return res;
+    }
+};
+
+template <typename PathType>
+std::string Interpreter::toCanonicalPath(const PathType& path) const
 {
-    auto pathStr = boost::apply_visitor(pathToStringVisitor(), describe.m_path);
-    if (boost::apply_visitor(getPathScopeVisitor(), describe.m_path) == Scope::Absolute)
-        return pathStr;
-    else
-        return joinPaths(m_parser.currentNode(), pathStr);
+    if constexpr (std::is_same<PathType, dataPath_>()) {
+        return impl_toCanonicalPath(m_parser.currentPath())(path);
+    } else {
+        return boost::apply_visitor(impl_toCanonicalPath(m_parser.currentPath()), path);
+    }
 }
 
 Interpreter::Interpreter(Parser& parser, DatastoreAccess& datastore)
