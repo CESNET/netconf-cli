@@ -35,6 +35,12 @@ private:
     std::string absolutePathFromCommand(const describe_& describe) const;
     std::string buildTypeInfo(const std::string& path) const;
 
+    template <typename PathType>
+    std::string resolveOptionalPath(const boost::optional<PathType>&) const;
+
+    template <typename PathType>
+    std::string resolvePath(const PathType&) const;
+
     Parser& m_parser;
     DatastoreAccess& m_datastore;
 };
