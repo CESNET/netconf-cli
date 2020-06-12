@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f7f0f5ff_42677b4f",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-12T08:26:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dd7d2e8_4affab79",
+      "range": {
+        "startLine": 136,
+        "startChar": 8,
+        "endLine": 136,
+        "endChar": 15
+      },
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6f08af7d_75cd343f",
         "filename": "src/yang_access.cpp",
         "patchSetId": 7
@@ -39,6 +63,24 @@
       "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4194046f_009a24f4",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-12T08:26:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f08af7d_75cd343f",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -147,6 +189,30 @@
       "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65d5a1be_a5c46fa9",
+        "filename": "src/yang_access.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-12T08:26:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d484a4b6_943571b6",
+      "range": {
+        "startLine": 43,
+        "startChar": 16,
+        "endLine": 43,
+        "endChar": 26
+      },
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
