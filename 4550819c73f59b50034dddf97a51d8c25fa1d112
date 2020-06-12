@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7e41645f_4a54ff5f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-12T14:34:57Z",
+      "side": 1,
+      "message": "\"normalize\", perhaps?",
+      "revId": "4550819c73f59b50034dddf97a51d8c25fa1d112",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
