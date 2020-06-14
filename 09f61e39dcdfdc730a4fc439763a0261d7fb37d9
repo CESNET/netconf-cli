@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c022e515_0dfec2c6",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-14T09:50:32Z",
+      "side": 1,
+      "message": "sorry for another nitpick, but this one is now redundant as well",
+      "range": {
+        "startLine": 254,
+        "startChar": 8,
+        "endLine": 254,
+        "endChar": 45
+      },
+      "revId": "09f61e39dcdfdc730a4fc439763a0261d7fb37d9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
