@@ -105,6 +105,30 @@
       "revId": "b32904c1ce59095ff7f9d8eb878d4e144f4e8047",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc5b3dcc_dcedbe46",
+        "filename": "tests/ls_interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-14T12:43:58Z",
+      "side": 1,
+      "message": "Yes, it will, because we treat a path ending with a list as a data path (useful in get)",
+      "parentUuid": "cc822aca_a94b3cfa",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 9
+      },
+      "revId": "b32904c1ce59095ff7f9d8eb878d4e144f4e8047",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
