@@ -136,6 +136,19 @@ TEST_CASE("cd")
 
         SECTION("moving up")
         {
+            SECTION("moving up when already in root")
+            {
+                input = "cd ..";
+                expected.m_path.m_nodes.push_back(dataNode_(nodeup_()));
+            }
+
+            SECTION("moving up TWICE when already in root")
+            {
+                input = "cd ../..";
+                expected.m_path.m_nodes.push_back(dataNode_(nodeup_()));
+                expected.m_path.m_nodes.push_back(dataNode_(nodeup_()));
+            }
+
             SECTION("example:a/..")
             {
                 input = "cd example:a/..";
