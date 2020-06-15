@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a51c783a_8710692b",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-15T13:20:26Z",
+      "side": 1,
+      "message": "I think upstream uses unique_ptr, right?",
+      "range": {
+        "startLine": 369,
+        "startChar": 9,
+        "endLine": 369,
+        "endChar": 19
+      },
+      "revId": "97132478dc4a9a57c13ecf61630b23fb88591fb2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6f7022d_165f8280",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-15T13:20:26Z",
+      "side": 1,
+      "message": "I think this word can be removed",
+      "range": {
+        "startLine": 378,
+        "startChar": 71,
+        "endLine": 378,
+        "endChar": 75
+      },
+      "revId": "97132478dc4a9a57c13ecf61630b23fb88591fb2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
