@@ -86,10 +86,13 @@ void Parser::changeNode(const dataPath_& name)
         m_curDir = name;
     } else {
         for (const auto& it : name.m_nodes) {
-            if (std::holds_alternative<nodeup_>(it.m_suffix))
-                m_curDir.m_nodes.pop_back();
-            else
+            if (std::holds_alternative<nodeup_>(it.m_suffix)) {
+                if (!m_curDir.m_nodes.empty()) { // Allow going up, when already at root
+                    m_curDir.m_nodes.pop_back();
+                }
+            } else {
                 m_curDir.m_nodes.push_back(it);
+            }
         }
     }
 }
