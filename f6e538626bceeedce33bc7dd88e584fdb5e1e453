@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d1e99473_29a10f7f",
+        "filename": "src/parser_context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-15T13:24:59Z",
+      "side": 1,
+      "message": "that lambda looks redundant now",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 6
+      },
+      "revId": "f6e538626bceeedce33bc7dd88e584fdb5e1e453",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ef86f33_f5ac304d",
+        "filename": "src/parser_context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-15T13:24:59Z",
+      "side": 1,
+      "message": "...while this one I think will need to be preserved, OK, makes sense.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 5
+      },
+      "revId": "f6e538626bceeedce33bc7dd88e584fdb5e1e453",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
