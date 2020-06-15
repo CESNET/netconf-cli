@@ -54,6 +54,26 @@ TEST_CASE("interpreter tests")
                 expectedPath = dataPath_{};
             }
 
+            SECTION("arg: ..")
+            {
+                lsArg = dataPath_{Scope::Relative, {dataNode_{nodeup_{}}}};
+                expectedPath = dataPath_{};
+            }
+
+            SECTION("arg: /..")
+            {
+                lsArg = dataPath_{Scope::Absolute, {dataNode_{nodeup_{}}}};
+                expectedPath = dataPath_{Scope::Absolute, {}};
+            }
+
+            SECTION("arg: /example:a/../example:a")
+            {
+                lsArg = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}},
+                                                    {nodeup_{}},
+                                                    {module_{"example"}, container_{"a"}}}};
+                expectedPath = dataPath_{Scope::Absolute, {{module_{"example"}, container_{"a"}}}};
+            }
+
             SECTION("arg: example:a")
             {
                 lsArg = dataPath_{Scope::Relative, {{module_{"example"}, container_{"a"}}}};
