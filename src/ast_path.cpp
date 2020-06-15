@@ -258,3 +258,27 @@ schemaPath_ dataPathToSchemaPath(const dataPath_& path)
 
     return res;
 }
+
+namespace {
+template <typename NodeType>
+void impl_pushFragment(std::vector<NodeType>& where, const NodeType& what)
+{
+    if (std::holds_alternative<nodeup_>(what.m_suffix)) {
+        if (!where.empty()) { // Allow going up, when already at root
+            where.pop_back();
+        }
+    } else {
+        where.push_back(what);
+    }
+}
+}
+
+void schemaPath_::pushFragment(const schemaNode_& fragment)
+{
+    impl_pushFragment(m_nodes, fragment);
+}
+
+void dataPath_::pushFragment(const dataNode_& fragment)
+{
+    impl_pushFragment(m_nodes, fragment);
+}

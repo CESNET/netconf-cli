@@ -117,6 +117,8 @@ struct schemaPath_ {
     Scope m_scope = Scope::Relative;
     std::vector<schemaNode_> m_nodes;
     TrailingSlash m_trailingSlash = TrailingSlash::NonPresent;
+    // @brief Pushes a new fragment. Pops a fragment if it's nodeup_
+    void pushFragment(const schemaNode_& fragment);
 };
 
 struct dataPath_ {
@@ -124,6 +126,9 @@ struct dataPath_ {
     Scope m_scope = Scope::Relative;
     std::vector<dataNode_> m_nodes;
     TrailingSlash m_trailingSlash = TrailingSlash::NonPresent;
+
+    // @brief Pushes a new fragment. Pops a fragment if it's nodeup_
+    void pushFragment(const dataNode_& fragment);
 };
 
 std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node);

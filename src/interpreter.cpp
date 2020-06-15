@@ -279,13 +279,7 @@ private:
         }
 
         for (const auto& fragment : suffix.m_nodes) {
-            if (std::holds_alternative<nodeup_>(fragment.m_suffix)) {
-                if (!res.m_nodes.empty()) { // Allow going up, when already at root
-                    res.m_nodes.pop_back();
-                }
-            } else {
-                res.m_nodes.push_back(fragment);
-            }
+            res.pushFragment(fragment);
         }
 
         return res;
