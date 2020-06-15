@@ -275,12 +275,17 @@ private:
         }();
 
         if (suffix.m_scope == Scope::Absolute) {
-            return suffix;
+            auto firstNonNodeupNode = std::find_if(suffix.m_nodes.begin(), suffix.m_nodes.end(), [] (const auto& node) {
+                return !std::holds_alternative<nodeup_>(node.m_suffix);
+            });
+            return PathType{Scope::Absolute, std::vector(firstNonNodeupNode, suffix.m_nodes.end())};
         }
 
         for (const auto& fragment : suffix.m_nodes) {
             if (std::holds_alternative<nodeup_>(fragment.m_suffix)) {
-                res.m_nodes.pop_back();
+                if (!res.m_nodes.empty()) { // Allow going up, when already at root
+                    res.m_nodes.pop_back();
+                }
             } else {
                 res.m_nodes.push_back(fragment);
             }
