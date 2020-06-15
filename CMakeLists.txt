@@ -139,7 +139,6 @@ target_include_directories(sysrepo-cli PRIVATE ${PROJECT_BINARY_DIR})
 
 include(CTest)
 if(BUILD_TESTING)
-    enable_testing()
     find_package(trompeloeil 33 REQUIRED)
     find_package(doctest 2.3.1 REQUIRED)
 
