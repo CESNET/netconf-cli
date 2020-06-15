@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0cf69322_493f1566",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-15T13:17:35Z",
+      "side": 1,
+      "message": "I think it might be a tad more intuitive to do it like this:\n\n Interpreter mgr(parser, datastore);\n mgr(createCmd);\n mgr(deleteCmd);\n\nbut not a big deal, feel free to leave it as-is.",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 46
+      },
+      "revId": "45bb95912ff78338a54f6966219f0db8bafec1a6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
