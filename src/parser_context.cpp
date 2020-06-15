@@ -39,20 +39,10 @@ dataPath_ ParserContext::currentDataPath()
 
 void ParserContext::pushPathFragment(const dataNode_& node)
 {
-    auto pushNode = [] (auto& where, const auto& what) {
-        if (std::holds_alternative<nodeup_>(what.m_suffix)) {
-            if (!where.m_nodes.empty()) { // Allow going up, when already at root
-                where.m_nodes.pop_back();
-            }
-        } else {
-            where.m_nodes.push_back(what);
-        }
-    };
-
     if (m_curPath.type() == typeid(dataPath_)) {
-        pushNode(boost::get<dataPath_>(m_curPath), node);
+        boost::get<dataPath_>(m_curPath).pushFragment(node);
     } else {
-        pushNode(boost::get<schemaPath_>(m_curPath), dataNodeToSchemaNode(node));
+        boost::get<schemaPath_>(m_curPath).pushFragment(dataNodeToSchemaNode(node));
     }
 }
 
