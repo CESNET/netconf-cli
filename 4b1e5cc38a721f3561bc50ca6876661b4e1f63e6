@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e9600910_0ab7427d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-15T12:58:18Z",
+      "side": 1,
+      "message": "I take it that tests are added in follow-up commits, OK.",
+      "revId": "4b1e5cc38a721f3561bc50ca6876661b4e1f63e6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
