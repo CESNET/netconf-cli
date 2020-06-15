@@ -113,6 +113,8 @@ enum class Scope {
 };
 
 struct schemaPath_ {
+    schemaPath_();
+    schemaPath_(const Scope scope, const std::vector<schemaNode_>& nodes, const TrailingSlash trailingSlash = TrailingSlash::NonPresent);
     bool operator==(const schemaPath_& b) const;
     Scope m_scope = Scope::Relative;
     std::vector<schemaNode_> m_nodes;
@@ -122,6 +124,8 @@ struct schemaPath_ {
 };
 
 struct dataPath_ {
+    dataPath_();
+    dataPath_(const Scope scope, const std::vector<dataNode_>& nodes, const TrailingSlash trailingSlash = TrailingSlash::NonPresent);
     bool operator==(const dataPath_& b) const;
     Scope m_scope = Scope::Relative;
     std::vector<dataNode_> m_nodes;

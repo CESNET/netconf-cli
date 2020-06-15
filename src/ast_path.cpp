@@ -115,11 +115,79 @@ list_::list_(const std::string& listName)
 {
 }
 
+namespace {
+template <typename T, typename U>
+auto findFirstOf(const std::vector<U>& nodes)
+{
+    return std::find_if(nodes.begin(), nodes.end(), [](const auto& e) {
+        return std::holds_alternative<T>(e.m_suffix);
+    });
+}
+
+template <typename T>
+void validatePathNodes(const std::vector<T>& nodes)
+{
+    static_assert(std::is_same_v<T, dataNode_> || std::is_same_v<T, schemaNode_>);
+
+    if (nodes.empty()) {
+        // there are default ctors, so it makes sense to specify the same thing via explicit args and not fail
+        return;
+    }
+
+    if (auto firstLeaf = findFirstOf<leaf_>(nodes);
+            firstLeaf != nodes.end() && firstLeaf != nodes.end() - 1) {
+        throw std::runtime_error{"Cannot put any extra nodes after a leaf"};
+    }
+
+    if (auto firstLeafList = findFirstOf<leafList_>(nodes);
+            firstLeafList != nodes.end() && firstLeafList != nodes.end() - 1) {
+        throw std::runtime_error{"Cannot put any extra nodes after a leaf-list"};
+    }
+
+    if constexpr (std::is_same_v<T, dataNode_>) {
+        if (auto firstLeafListElements = findFirstOf<leafListElement_>(nodes);
+                firstLeafListElements != nodes.end() && firstLeafListElements != nodes.end() - 1) {
+            throw std::runtime_error{"Cannot put any extra nodes after a leaf-list with element specification"};
+        }
+        if (auto firstList = findFirstOf<list_>(nodes);
+                firstList != nodes.end() && firstList != nodes.end() - 1) {
+            throw std::runtime_error{
+                "A list with no key specification can be present only as a last item in a dataPath. Did you mean to use a schemaPath?"
+            };
+        }
+    }
+}
+}
+
+schemaPath_::schemaPath_()
+{
+}
+
+schemaPath_::schemaPath_(const Scope scope, const std::vector<schemaNode_>& nodes, const TrailingSlash trailingSlash)
+    : m_scope(scope)
+    , m_nodes(nodes)
+    , m_trailingSlash(trailingSlash)
+{
+    validatePathNodes(m_nodes);
+}
+
 bool schemaPath_::operator==(const schemaPath_& b) const
 {
     if (this->m_nodes.size() != b.m_nodes.size())
         return false;
     return this->m_nodes == b.m_nodes;
+}
+
+dataPath_::dataPath_()
+{
+}
+
+dataPath_::dataPath_(const Scope scope, const std::vector<dataNode_>& nodes, const TrailingSlash trailingSlash)
+    : m_scope(scope)
+    , m_nodes(nodes)
+    , m_trailingSlash(trailingSlash)
+{
+    validatePathNodes(m_nodes);
 }
 
 bool dataPath_::operator==(const dataPath_& b) const
@@ -276,9 +344,11 @@ void impl_pushFragment(std::vector<NodeType>& where, const NodeType& what)
 void schemaPath_::pushFragment(const schemaNode_& fragment)
 {
     impl_pushFragment(m_nodes, fragment);
+    validatePathNodes(m_nodes);
 }
 
 void dataPath_::pushFragment(const dataNode_& fragment)
 {
     impl_pushFragment(m_nodes, fragment);
+    validatePathNodes(m_nodes);
 }
