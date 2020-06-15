@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "81d56725_bf0a0eb2",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-15T17:25:53Z",
+      "side": 1,
+      "message": "this early-return doesn\u0027t normalize path if the absolute path contains nodeUp_ in the middle, right?",
+      "revId": "57dc5cd948d427441169cbfc0f49af2e4a5facf9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
