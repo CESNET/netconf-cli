@@ -133,7 +133,7 @@ TEST_CASE("setting/getting values")
     SECTION("create presence container")
     {
         REQUIRE_CALL(mock, write("/example-schema:pContainer", std::nullopt, ""s));
-        datastore.createPresenceContainer("/example-schema:pContainer");
+        datastore.createItem("/example-schema:pContainer");
         datastore.commitChanges();
     }
 
@@ -142,23 +142,23 @@ TEST_CASE("setting/getting values")
         {
             REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']", std::nullopt, ""s));
             REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", std::nullopt, "Nguyen"s));
-            datastore.createListInstance("/example-schema:person[name='Nguyen']");
+            datastore.createItem("/example-schema:person[name='Nguyen']");
             datastore.commitChanges();
         }
         {
             REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']", ""s, std::nullopt));
             REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", "Nguyen"s, std::nullopt));
-            datastore.deleteListInstance("/example-schema:person[name='Nguyen']");
+            datastore.deleteItem("/example-schema:person[name='Nguyen']");
             datastore.commitChanges();
         }
 
         tryThis<THROWS_ON_NONEXISTING_KEYS>([&]{
-            datastore.deleteListInstance("/example-schema:person[name='non existing']");
+            datastore.deleteItem("/example-schema:person[name='non existing']");
             datastore.commitChanges();
         });
 
         tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
-            datastore.deleteListInstance("/example-schema:non-existing-list[xxx='non existing']");
+            datastore.deleteItem("/example-schema:non-existing-list[xxx='non existing']");
             datastore.commitChanges();
         });
     }
@@ -172,9 +172,9 @@ TEST_CASE("setting/getting values")
             REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']/name", std::nullopt, "Elfi"s));
             REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']", std::nullopt, ""s));
             REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']/name", std::nullopt, "Kolafa"s));
-            datastore.createListInstance("/example-schema:person[name='Dan']");
-            datastore.createListInstance("/example-schema:person[name='Elfi']");
-            datastore.createListInstance("/example-schema:person[name='Kolafa']");
+            datastore.createItem("/example-schema:person[name='Dan']");
+            datastore.createItem("/example-schema:person[name='Elfi']");
+            datastore.createItem("/example-schema:person[name='Kolafa']");
             datastore.commitChanges();
         }
 
@@ -263,9 +263,9 @@ TEST_CASE("setting/getting values")
             REQUIRE_CALL(mock, write("/example-schema:person[name='Michal']/name", std::nullopt, "Michal"s));
             REQUIRE_CALL(mock, write("/example-schema:person[name='Petr']", std::nullopt, ""s));
             REQUIRE_CALL(mock, write("/example-schema:person[name='Petr']/name", std::nullopt, "Petr"s));
-            datastore.createListInstance("/example-schema:person[name='Jan']");
-            datastore.createListInstance("/example-schema:person[name='Michal']");
-            datastore.createListInstance("/example-schema:person[name='Petr']");
+            datastore.createItem("/example-schema:person[name='Jan']");
+            datastore.createItem("/example-schema:person[name='Michal']");
+            datastore.createItem("/example-schema:person[name='Petr']");
             datastore.commitChanges();
         }
         DatastoreAccess::Tree expected{
@@ -288,7 +288,7 @@ TEST_CASE("setting/getting values")
 
         {
             REQUIRE_CALL(mock, write("/example-schema:pContainer", std::nullopt, ""s));
-            datastore.createPresenceContainer("/example-schema:pContainer");
+            datastore.createItem("/example-schema:pContainer");
             datastore.commitChanges();
         }
         expected = {
@@ -299,14 +299,14 @@ TEST_CASE("setting/getting values")
         // Make sure it's not there after we delete it
         {
             REQUIRE_CALL(mock, write("/example-schema:pContainer", ""s, std::nullopt));
-            datastore.deletePresenceContainer("/example-schema:pContainer");
+            datastore.deleteItem("/example-schema:pContainer");
             datastore.commitChanges();
         }
         expected = {};
         REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
 
         tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
-            datastore.deletePresenceContainer("/example-schema:non-existing-presence-container");
+            datastore.deleteItem("/example-schema:non-existing-presence-container");
             datastore.commitChanges();
         });
     }
@@ -319,7 +319,7 @@ TEST_CASE("setting/getting values")
         {
             REQUIRE_CALL(mock, write("/example-schema:inventory", std::nullopt, ""s));
             REQUIRE_CALL(mock, write("/example-schema:inventory/stuff", std::nullopt, ""s));
-            datastore.createPresenceContainer("/example-schema:inventory/stuff");
+            datastore.createItem("/example-schema:inventory/stuff");
             datastore.commitChanges();
         }
         expected = {
@@ -329,7 +329,7 @@ TEST_CASE("setting/getting values")
         {
             REQUIRE_CALL(mock, write("/example-schema:inventory", ""s, std::nullopt));
             REQUIRE_CALL(mock, write("/example-schema:inventory/stuff", ""s, std::nullopt));
-            datastore.deletePresenceContainer("/example-schema:inventory/stuff");
+            datastore.deleteItem("/example-schema:inventory/stuff");
             datastore.commitChanges();
         }
         expected = {};
@@ -419,8 +419,8 @@ TEST_CASE("setting/getting values")
         DatastoreAccess::Tree expected;
         REQUIRE_CALL(mock, write("/example-schema:addresses", std::nullopt, "0.0.0.0"s));
         REQUIRE_CALL(mock, write("/example-schema:addresses", std::nullopt, "127.0.0.1"s));
-        datastore.createLeafListInstance("/example-schema:addresses[.='0.0.0.0']");
-        datastore.createLeafListInstance("/example-schema:addresses[.='127.0.0.1']");
+        datastore.createItem("/example-schema:addresses[.='0.0.0.0']");
+        datastore.createItem("/example-schema:addresses[.='127.0.0.1']");
         datastore.commitChanges();
         expected = {
             {"/example-schema:addresses", special_{SpecialValue::LeafList}},
@@ -430,7 +430,7 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
 
         REQUIRE_CALL(mock, write("/example-schema:addresses", "0.0.0.0"s, std::nullopt));
-        datastore.deleteLeafListInstance("/example-schema:addresses[.='0.0.0.0']");
+        datastore.deleteItem("/example-schema:addresses[.='0.0.0.0']");
         datastore.commitChanges();
         expected = {
             {"/example-schema:addresses", special_{SpecialValue::LeafList}},
@@ -439,19 +439,19 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
 
         REQUIRE_CALL(mock, write("/example-schema:addresses", "127.0.0.1"s, std::nullopt));
-        datastore.deleteLeafListInstance("/example-schema:addresses[.='127.0.0.1']");
+        datastore.deleteItem("/example-schema:addresses[.='127.0.0.1']");
         datastore.commitChanges();
         expected = {};
         REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
 
 
         tryThis<THROWS_ON_NONEXISTING_KEYS>([&]{
-            datastore.deleteLeafListInstance("/example-schema:addresses[.='non-existing']");
+            datastore.deleteItem("/example-schema:addresses[.='non-existing']");
             datastore.commitChanges();
         });
 
         tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
-            datastore.deleteLeafListInstance("/example-schema:non-existing[.='non-existing']");
+            datastore.deleteItem("/example-schema:non-existing[.='non-existing']");
             datastore.commitChanges();
         });
     }
@@ -480,9 +480,9 @@ TEST_CASE("setting/getting values")
             REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "pop3"s));
             REQUIRE_CALL(mock, write("/example-schema:protocols", "http"s, "ftp"s));
             REQUIRE_CALL(mock, write("/example-schema:protocols", "ftp"s, "pop3"s));
-            datastore.createLeafListInstance("/example-schema:protocols[.='http']");
-            datastore.createLeafListInstance("/example-schema:protocols[.='ftp']");
-            datastore.createLeafListInstance("/example-schema:protocols[.='pop3']");
+            datastore.createItem("/example-schema:protocols[.='http']");
+            datastore.createItem("/example-schema:protocols[.='ftp']");
+            datastore.createItem("/example-schema:protocols[.='pop3']");
             datastore.commitChanges();
             expected = {
                 {"/example-schema:protocols", special_{SpecialValue::LeafList}},
@@ -568,9 +568,9 @@ TEST_CASE("setting/getting values")
             REQUIRE_CALL(mock, write("/example-schema:players[name='Adam']", std::nullopt, ""s));
             REQUIRE_CALL(mock, write("/example-schema:players[name='Adam']/name", std::nullopt, "Adam"s));
             REQUIRE_CALL(mock, write("/example-schema:players[name='Adam']", ""s, ""s));
-            datastore.createListInstance("/example-schema:players[name='John']");
-            datastore.createListInstance("/example-schema:players[name='Eve']");
-            datastore.createListInstance("/example-schema:players[name='Adam']");
+            datastore.createItem("/example-schema:players[name='John']");
+            datastore.createItem("/example-schema:players[name='Eve']");
+            datastore.createItem("/example-schema:players[name='Adam']");
             datastore.commitChanges();
             expected = {
                 {"/example-schema:players[name='John']", special_{SpecialValue::List}},

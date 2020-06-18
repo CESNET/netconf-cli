@@ -235,7 +235,7 @@ void SysrepoAccess::setLeaf(const std::string& path, leaf_data_ value)
     }
 }
 
-void SysrepoAccess::createPresenceContainer(const std::string& path)
+void SysrepoAccess::createItem(const std::string& path)
 {
     try {
         m_session->set_item(path.c_str());
@@ -244,43 +244,7 @@ void SysrepoAccess::createPresenceContainer(const std::string& path)
     }
 }
 
-void SysrepoAccess::deletePresenceContainer(const std::string& path)
-{
-    try {
-        m_session->delete_item(path.c_str());
-    } catch (sysrepo::sysrepo_exception& ex) {
-        reportErrors();
-    }
-}
-
-void SysrepoAccess::createLeafListInstance(const std::string& path)
-{
-    try {
-        m_session->set_item(path.c_str());
-    } catch (sysrepo::sysrepo_exception& ex) {
-        reportErrors();
-    }
-}
-
-void SysrepoAccess::deleteLeafListInstance(const std::string& path)
-{
-    try {
-        m_session->delete_item(path.c_str());
-    } catch (sysrepo::sysrepo_exception& ex) {
-        reportErrors();
-    }
-}
-
-void SysrepoAccess::createListInstance(const std::string& path)
-{
-    try {
-        m_session->set_item(path.c_str());
-    } catch (sysrepo::sysrepo_exception& ex) {
-        reportErrors();
-    }
-}
-
-void SysrepoAccess::deleteListInstance(const std::string& path)
+void SysrepoAccess::deleteItem(const std::string& path)
 {
     try {
         m_session->delete_item(path.c_str());

@@ -46,9 +46,9 @@ TEST_CASE("data query")
 
         SECTION("example-schema:person")
         {
-            datastore.createListInstance("/example-schema:person[name='Vaclav']");
-            datastore.createListInstance("/example-schema:person[name='Tomas']");
-            datastore.createListInstance("/example-schema:person[name='Jan Novak']");
+            datastore.createItem("/example-schema:person[name='Vaclav']");
+            datastore.createItem("/example-schema:person[name='Tomas']");
+            datastore.createItem("/example-schema:person[name='Jan Novak']");
             listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"person"}});
             expected = {
                 {{"name", std::string{"Jan Novak"}}},
@@ -66,9 +66,9 @@ TEST_CASE("data query")
 
         SECTION("example-schema:selectedNumbers")
         {
-            datastore.createListInstance("/example-schema:selectedNumbers[value='45']");
-            datastore.createListInstance("/example-schema:selectedNumbers[value='99']");
-            datastore.createListInstance("/example-schema:selectedNumbers[value='127']");
+            datastore.createItem("/example-schema:selectedNumbers[value='45']");
+            datastore.createItem("/example-schema:selectedNumbers[value='99']");
+            datastore.createItem("/example-schema:selectedNumbers[value='127']");
             listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"selectedNumbers"}});
             expected = {
                 {{"value", int8_t{127}}},
@@ -79,9 +79,9 @@ TEST_CASE("data query")
 
         SECTION("example-schema:animalWithColor")
         {
-            datastore.createListInstance("/example-schema:animalWithColor[name='Dog'][color='brown']");
-            datastore.createListInstance("/example-schema:animalWithColor[name='Dog'][color='white']");
-            datastore.createListInstance("/example-schema:animalWithColor[name='Cat'][color='grey']");
+            datastore.createItem("/example-schema:animalWithColor[name='Dog'][color='brown']");
+            datastore.createItem("/example-schema:animalWithColor[name='Dog'][color='white']");
+            datastore.createItem("/example-schema:animalWithColor[name='Cat'][color='grey']");
             listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"animalWithColor"}});
             expected = {
                 {{"name", std::string{"Cat"}}, {"color", std::string{"grey"}}},
@@ -92,7 +92,7 @@ TEST_CASE("data query")
 
         SECTION("example-schema:animalWithColor - quotes in values")
         {
-            datastore.createListInstance("/example-schema:animalWithColor[name='D\"o\"g'][color=\"b'r'own\"]");
+            datastore.createItem("/example-schema:animalWithColor[name='D\"o\"g'][color=\"b'r'own\"]");
             listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"animalWithColor"}});
             expected = {
                 {{"name", std::string{"D\"o\"g"}}, {"color", std::string{"b'r'own"}}}
@@ -101,9 +101,9 @@ TEST_CASE("data query")
 
         SECTION("example-schema:ports")
         {
-            datastore.createListInstance("/example-schema:ports[name='A']");
-            datastore.createListInstance("/example-schema:ports[name='B']");
-            datastore.createListInstance("/example-schema:ports[name='E']");
+            datastore.createItem("/example-schema:ports[name='A']");
+            datastore.createItem("/example-schema:ports[name='B']");
+            datastore.createItem("/example-schema:ports[name='E']");
             listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"ports"}});
             expected = {
                 {{"name", enum_{"A"}}},
@@ -114,17 +114,17 @@ TEST_CASE("data query")
 
         SECTION("example-schema:org/example:people - nested list")
         {
-            datastore.createListInstance("/example-schema:org[department='accounting']");
-            datastore.createListInstance("/example-schema:org[department='sales']");
-            datastore.createListInstance("/example-schema:org[department='programmers']");
-            datastore.createListInstance("/example-schema:org[department='accounting']/people[name='Alice']");
-            datastore.createListInstance("/example-schema:org[department='accounting']/people[name='Bob']");
-            datastore.createListInstance("/example-schema:org[department='sales']/people[name='Alice']");
-            datastore.createListInstance("/example-schema:org[department='sales']/people[name='Cyril']");
-            datastore.createListInstance("/example-schema:org[department='sales']/people[name='Alice']/computers[type='laptop']");
-            datastore.createListInstance("/example-schema:org[department='sales']/people[name='Alice']/computers[type='server']");
-            datastore.createListInstance("/example-schema:org[department='sales']/people[name='Cyril']/computers[type='PC']");
-            datastore.createListInstance("/example-schema:org[department='sales']/people[name='Cyril']/computers[type='server']");
+            datastore.createItem("/example-schema:org[department='accounting']");
+            datastore.createItem("/example-schema:org[department='sales']");
+            datastore.createItem("/example-schema:org[department='programmers']");
+            datastore.createItem("/example-schema:org[department='accounting']/people[name='Alice']");
+            datastore.createItem("/example-schema:org[department='accounting']/people[name='Bob']");
+            datastore.createItem("/example-schema:org[department='sales']/people[name='Alice']");
+            datastore.createItem("/example-schema:org[department='sales']/people[name='Cyril']");
+            datastore.createItem("/example-schema:org[department='sales']/people[name='Alice']/computers[type='laptop']");
+            datastore.createItem("/example-schema:org[department='sales']/people[name='Alice']/computers[type='server']");
+            datastore.createItem("/example-schema:org[department='sales']/people[name='Cyril']/computers[type='PC']");
+            datastore.createItem("/example-schema:org[department='sales']/people[name='Cyril']/computers[type='server']");
 
             SECTION("outer list")
             {
@@ -215,8 +215,8 @@ TEST_CASE("data query")
 
         SECTION("/other-module:parking-lot/example-schema:cars - list coming from an augment")
         {
-            datastore.createListInstance("/other-module:parking-lot/example-schema:cars[id='1']");
-            datastore.createListInstance("/other-module:parking-lot/example-schema:cars[id='2']");
+            datastore.createItem("/other-module:parking-lot/example-schema:cars[id='1']");
+            datastore.createItem("/other-module:parking-lot/example-schema:cars[id='2']");
 
             listPath.m_nodes.push_back(dataNode_{{"other-module"}, container_{"parking-lot"}});
             listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"cars"}});
