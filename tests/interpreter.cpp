@@ -335,22 +335,22 @@ TEST_CASE("interpreter tests")
         SECTION("list instance")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, listElement_{"department", {{"name", "engineering"s}}}}};
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, createListInstance("/mod:department[name='engineering']")));
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteListInstance("/mod:department[name='engineering']")));
+            expectations.push_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:department[name='engineering']")));
+            expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:department[name='engineering']")));
         }
 
         SECTION("leaflist instance")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, leafListElement_{"addresses", "127.0.0.1"s}}};
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, createLeafListInstance("/mod:addresses[.='127.0.0.1']")));
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteLeafListInstance("/mod:addresses[.='127.0.0.1']")));
+            expectations.push_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:addresses[.='127.0.0.1']")));
+            expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:addresses[.='127.0.0.1']")));
         }
 
         SECTION("presence container")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, container_{"pContainer"}}};
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, createPresenceContainer("/mod:pContainer")));
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, deletePresenceContainer("/mod:pContainer")));
+            expectations.push_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:pContainer")));
+            expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:pContainer")));
         }
 
         create_ createCmd;

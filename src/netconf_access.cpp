@@ -65,44 +65,17 @@ void NetconfAccess::setLeaf(const std::string& path, leaf_data_ value)
     doEditFromDataNode(node);
 }
 
-void NetconfAccess::createPresenceContainer(const std::string& path)
+void NetconfAccess::createItem(const std::string& path)
 {
     auto node = m_schema->dataNodeFromPath(path);
     doEditFromDataNode(node);
 }
 
-void NetconfAccess::deletePresenceContainer(const std::string& path)
+void NetconfAccess::deleteItem(const std::string& path)
 {
     auto node = m_schema->dataNodeFromPath(path);
     auto container = *(node->find_path(path.c_str())->data().begin());
     container->insert_attr(m_schema->getYangModule("ietf-netconf"), "operation", "delete");
-    doEditFromDataNode(node);
-}
-
-void NetconfAccess::createListInstance(const std::string& path)
-{
-    auto node = m_schema->dataNodeFromPath(path);
-    doEditFromDataNode(node);
-}
-
-void NetconfAccess::deleteListInstance(const std::string& path)
-{
-    auto node = m_schema->dataNodeFromPath(path);
-    auto list = *(node->find_path(path.c_str())->data().begin());
-    list->insert_attr(m_schema->getYangModule("ietf-netconf"), "operation", "delete");
-    doEditFromDataNode(node);
-}
-
-void NetconfAccess::createLeafListInstance(const std::string& path)
-{
-    auto node = m_schema->dataNodeFromPath(path);
-    doEditFromDataNode(node);
-}
-void NetconfAccess::deleteLeafListInstance(const std::string& path)
-{
-    auto node = m_schema->dataNodeFromPath(path);
-    auto list = *(node->find_path(path.c_str())->data().begin());
-    list->insert_attr(m_schema->getYangModule("ietf-netconf"), "operation", "delete");
     doEditFromDataNode(node);
 }
 
