@@ -361,6 +361,14 @@ TEST_CASE("interpreter tests")
         toInterpret.push_back(deleteCmd);
     }
 
+    SECTION("delete a leaf")
+    {
+        expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:someLeaf")));
+        delete_ deleteCmd;
+        deleteCmd.m_path = {Scope::Absolute, {dataNode_{{"mod"}, leaf_{"someLeaf"}}, }};
+        toInterpret.push_back(deleteCmd);
+    }
+
     SECTION("commit")
     {
         expectations.push_back(NAMED_REQUIRE_CALL(datastore, commitChanges()));

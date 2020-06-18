@@ -617,4 +617,15 @@ TEST_CASE("leaf editing")
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
         REQUIRE(errorStream.str().find(expectedError) != std::string::npos);
     }
+
+    SECTION("deleting a leaf")
+    {
+        delete_ expected;
+        input = "delete mod:leafString";
+        expected.m_path.m_nodes.push_back(dataNode_{module_{"mod"}, leaf_("leafString")});
+
+        command_ command = parser.parseCommand(input, errorStream);
+        REQUIRE(command.type() == typeid(delete_));
+        REQUIRE(boost::get<delete_>(command) == expected);
+    }
 }
