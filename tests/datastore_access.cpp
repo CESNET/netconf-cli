@@ -615,6 +615,33 @@ TEST_CASE("setting/getting values")
         }
     }
 
+    SECTION("getting /")
+    {
+        {
+            REQUIRE_CALL(mock, write("/example-schema:leafInt32", std::nullopt, "64"s));
+            datastore.setLeaf("/example-schema:leafInt32", 64);
+            datastore.commitChanges();
+        }
+
+        DatastoreAccess::Tree expected{
+        // Sysrepo always returns containers when getting values, but
+        // libnetconf does not. This is fine by the YANG standard:
+        // https://tools.ietf.org/html/rfc7950#section-7.5.7 Furthermore,
+        // NetconfAccess implementation actually only iterates over leafs,
+        // so even if libnetconf did include containers, they wouldn't get
+        // shown here anyway. With sysrepo2, this won't be necessary,
+        // because it'll use the same data structure as libnetconf, so the
+        // results will be consistent.
+#ifdef sysrepo_BACKEND
+                                                   {"/example-schema:inventory", special_{SpecialValue::Container}},
+                                                   {"/example-schema:lol", special_{SpecialValue::Container}},
+#endif
+                                                   {"/example-schema:leafInt32", 64}};
+        auto items = datastore.getItems("/");
+        // This tests if we at least get the data WE added.
+        REQUIRE(std::all_of(expected.begin(), expected.end(), [items] (const auto& item) { return std::find(items.begin(), items.end(), item) != items.end(); }));
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
 
