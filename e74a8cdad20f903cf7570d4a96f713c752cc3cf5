@@ -16,6 +16,24 @@
       "revId": "e74a8cdad20f903cf7570d4a96f713c752cc3cf5",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9da95ed3_6465f431",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-18T16:37:46Z",
+      "side": 1,
+      "message": "I changed the message a little bit",
+      "parentUuid": "f788d779_0069260c",
+      "revId": "e74a8cdad20f903cf7570d4a96f713c752cc3cf5",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
