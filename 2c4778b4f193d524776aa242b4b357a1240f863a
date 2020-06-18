@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "89231e44_4be3c146",
+        "filename": "src/utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-18T13:34:21Z",
+      "side": 1,
+      "message": "Personally, I would not swap these two just for the default option. The order of (prefix, instances) makes about as much sense, and the diff would be smaller.\n\nNo big deal and no need to change, though.",
+      "revId": "2c4778b4f193d524776aa242b4b357a1240f863a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
