@@ -10,8 +10,12 @@
 #include <sysrepo-cpp/Session.hpp>
 
 #ifdef sysrepo_BACKEND
+#define THROWS_ON_INVALID_SCHEMA_PATHS 0
+#define THROWS_ON_NONEXISTING_KEYS 0
 #include "sysrepo_access.hpp"
 #elif defined(netconf_BACKEND)
+#define THROWS_ON_INVALID_SCHEMA_PATHS 1
+#define THROWS_ON_NONEXISTING_KEYS 1
 #include "netconf_access.hpp"
 #include "netopeer_vars.hpp"
 #else
@@ -138,6 +142,30 @@ TEST_CASE("setting/getting values")
             REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", "Nguyen"s, std::nullopt));
             datastore.deleteListInstance("/example-schema:person[name='Nguyen']");
             datastore.commitChanges();
+        }
+
+#if THROWS_ON_NONEXISTING_KEYS
+        try
+#endif
+        {
+            datastore.deleteListInstance("/example-schema:person[name='non existing']");
+            datastore.commitChanges();
+#if THROWS_ON_NONEXISTING_KEYS
+            REQUIRE(!"accessing a non-existing list item should have thrown");
+        } catch (std::runtime_error& e) {
+#endif
+        }
+
+#if THROWS_ON_INVALID_SCHEMA_PATHS
+        try
+#endif
+        {
+            datastore.deleteListInstance("/example-schema:non-existing-list[xxx='non existing']");
+            datastore.commitChanges();
+#if THROWS_ON_INVALID_SCHEMA_PATHS
+            REQUIRE(!"accessing a non-existing schema node should have thrown");
+        } catch (std::runtime_error& e) {
+#endif
         }
     }
 
@@ -282,6 +310,18 @@ TEST_CASE("setting/getting values")
         }
         expected = {};
         REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
+
+#if THROWS_ON_INVALID_SCHEMA_PATHS
+        try
+#endif
+        {
+            datastore.deletePresenceContainer("/example-schema:non-existing-presence-container");
+            datastore.commitChanges();
+#if THROWS_ON_INVALID_SCHEMA_PATHS
+            REQUIRE(!"accessing a non-existing schema node should have thrown");
+        } catch (std::runtime_error& e) {
+#endif
+        }
     }
 
     SECTION("nested presence container")
@@ -416,6 +456,31 @@ TEST_CASE("setting/getting values")
         datastore.commitChanges();
         expected = {};
         REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
+
+
+#if THROWS_ON_NONEXISTING_KEYS
+        try
+#endif
+        {
+            datastore.deleteLeafListInstance("/example-schema:addresses[.='non-existing']");
+            datastore.commitChanges();
+#if THROWS_ON_NONEXISTING_KEYS
+            REQUIRE(!"accessing a non-existing leaf-list item should have thrown");
+        } catch (std::runtime_error& e) {
+#endif
+        }
+
+#if THROWS_ON_INVALID_SCHEMA_PATHS
+        try
+#endif
+        {
+            datastore.deleteLeafListInstance("/example-schema:non-existing[.='non-existing']");
+            datastore.commitChanges();
+#if THROWS_ON_INVALID_SCHEMA_PATHS
+            REQUIRE(!"accessing a non-existing schema node should have thrown");
+        } catch (std::runtime_error& e) {
+#endif
+        }
     }
 
     SECTION("copying data from startup refreshes the data")
