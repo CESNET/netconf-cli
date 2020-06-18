@@ -27,5 +27,5 @@ std::string leafDataToString(const leaf_data_ value);
 schemaPath_ anyPathToSchemaPath(const boost::variant<dataPath_, schemaPath_, module_>& path);
 std::string stripLeafListValueFromPath(const std::string& path);
 std::string stripLastListInstanceFromPath(const std::string& path);
-// The string includes module name prefixes.
-std::string instanceToString(const std::string& modName, const ListInstance& instance);
+// The second argument controls whether module prefixes should be added to the keys.
+std::string instanceToString(const ListInstance& instance, const std::optional<std::string>& modName = std::nullopt);

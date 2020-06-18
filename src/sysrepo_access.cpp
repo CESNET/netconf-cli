@@ -313,7 +313,7 @@ void SysrepoAccess::moveItem(const std::string& source, std::variant<yang::move:
         if (m_schema->nodeType(source) == yang::NodeTypes::LeafList) {
             destPathStr = stripLeafListValueFromPath(source) + "[.='" + leafDataToString(relative.m_path.at(".")) + "']";
         } else {
-            destPathStr = stripLastListInstanceFromPath(source) + instanceToString(m_schema->dataNodeFromPath(source)->node_module()->name(), relative.m_path);
+            destPathStr = stripLastListInstanceFromPath(source) + instanceToString(relative.m_path, m_schema->dataNodeFromPath(source)->node_module()->name());
         }
     }
     m_session->move_item(source.c_str(), toSrMoveOp(move), destPathStr.c_str());

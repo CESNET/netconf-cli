@@ -134,7 +134,7 @@ void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move:
         if (m_schema->nodeType(source) == yang::NodeTypes::LeafList) {
             sourceNode->insert_attr(yangModule, "value", leafDataToString(relative.m_path.at(".")).c_str());
         } else {
-            sourceNode->insert_attr(yangModule, "key", instanceToString(node->node_module()->name(), relative.m_path).c_str());
+            sourceNode->insert_attr(yangModule, "key", instanceToString(relative.m_path, node->node_module()->name()).c_str());
         }
     }
     doEditFromDataNode(sourceNode);

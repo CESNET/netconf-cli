@@ -243,12 +243,13 @@ std::string stripLastListInstanceFromPath(const std::string& path)
     return res;
 }
 
-std::string instanceToString(const std::string& modName, const ListInstance& instance)
+std::string instanceToString(const ListInstance& instance, const std::optional<std::string>& modName)
 {
     std::string instanceStr;
+    auto modulePrefix = modName ? *modName + ":" : "";
     for (const auto& [key, value] : instance) {
         using namespace std::string_literals;
-        instanceStr += "[" + modName + ":" + key + "=" + escapeListKeyString(leafDataToString(value)) + "]";
+        instanceStr += "[" + modulePrefix + key + "=" + escapeListKeyString(leafDataToString(value)) + "]";
     }
     return instanceStr;
 }
