@@ -30,12 +30,8 @@ public:
     SysrepoAccess(const std::string& appname, const Datastore datastore);
     Tree getItems(const std::string& path) override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
-    void createPresenceContainer(const std::string& path) override;
-    void deletePresenceContainer(const std::string& path) override;
-    void createListInstance(const std::string& path) override;
-    void deleteListInstance(const std::string& path) override;
-    void createLeafListInstance(const std::string& path) override;
-    void deleteLeafListInstance(const std::string& path) override;
+    void createItem(const std::string& path) override;
+    void deleteItem(const std::string& path) override;
     void moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move) override;
     Tree executeRpc(const std::string& path, const Tree& input) override;
 
