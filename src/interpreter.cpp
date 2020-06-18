@@ -87,22 +87,12 @@ void Interpreter::operator()(const cd_& cd) const
 
 void Interpreter::operator()(const create_& create) const
 {
-    if (std::holds_alternative<listElement_>(create.m_path.m_nodes.back().m_suffix))
-        m_datastore.createListInstance(pathToString(toCanonicalPath(create.m_path)));
-    else if (std::holds_alternative<leafListElement_>(create.m_path.m_nodes.back().m_suffix))
-        m_datastore.createLeafListInstance(pathToString(toCanonicalPath(create.m_path)));
-    else
-        m_datastore.createPresenceContainer(pathToString(toCanonicalPath(create.m_path)));
+    m_datastore.createItem(pathToString(toCanonicalPath(create.m_path)));
 }
 
 void Interpreter::operator()(const delete_& delet) const
 {
-    if (std::holds_alternative<container_>(delet.m_path.m_nodes.back().m_suffix))
-        m_datastore.deletePresenceContainer(pathToString(toCanonicalPath(delet.m_path)));
-    else if (std::holds_alternative<leafListElement_>(delet.m_path.m_nodes.back().m_suffix))
-        m_datastore.deleteLeafListInstance(pathToString(toCanonicalPath(delet.m_path)));
-    else
-        m_datastore.deleteListInstance(pathToString(toCanonicalPath(delet.m_path)));
+    m_datastore.deleteItem(pathToString(toCanonicalPath(delet.m_path)));
 }
 
 void Interpreter::operator()(const ls_& ls) const
