@@ -10,8 +10,12 @@
 #include <sysrepo-cpp/Session.hpp>
 
 #ifdef sysrepo_BACKEND
+#define THROWS_ON_INVALID_SCHEMA_PATHS 0
+#define THROWS_ON_NONEXISTING_KEYS 0
 #include "sysrepo_access.hpp"
 #elif defined(netconf_BACKEND)
+#define THROWS_ON_INVALID_SCHEMA_PATHS 1
+#define THROWS_ON_NONEXISTING_KEYS 1
 #include "netconf_access.hpp"
 #include "netopeer_vars.hpp"
 #else
@@ -32,6 +36,14 @@ class MockDataSupplier : public trompeloeil::mock_interface<DataSupplier> {
 public:
     IMPLEMENT_CONST_MOCK1(get_data);
 };
+
+template <int Flag, typename Callable> void tryThis(const Callable& what) {
+    if constexpr (Flag) {
+        REQUIRE_THROWS_AS(what(), std::runtime_error);
+    } else {
+        what();
+    }
+}
 
 TEST_CASE("setting/getting values")
 {
@@ -139,6 +151,22 @@ TEST_CASE("setting/getting values")
             datastore.deleteListInstance("/example-schema:person[name='Nguyen']");
             datastore.commitChanges();
         }
+    }
+
+    SECTION("deleting non-existing list keys")
+    {
+        tryThis<THROWS_ON_NONEXISTING_KEYS>([&]{
+            datastore.deleteListInstance("/example-schema:person[name='non existing']");
+            datastore.commitChanges();
+        });
+    }
+
+    SECTION("accessing non-existing schema nodes")
+    {
+        tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
+            datastore.deleteListInstance("/example-schema:non-existing-list[xxx='non existing']");
+            datastore.commitChanges();
+        });
     }
 
     SECTION("leafref pointing to a key of a list")
@@ -284,6 +312,14 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
     }
 
+    SECTION("non-existing persistent container schema node")
+    {
+        tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
+            datastore.deletePresenceContainer("/example-schema:non-existing-presence-container");
+            datastore.commitChanges();
+        });
+    }
+
     SECTION("nested presence container")
     {
         DatastoreAccess::Tree expected;
@@ -416,6 +452,22 @@ TEST_CASE("setting/getting values")
         datastore.commitChanges();
         expected = {};
         REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
+    }
+
+    SECTION("non-existing leaf-list")
+    {
+        tryThis<THROWS_ON_NONEXISTING_KEYS>([&]{
+            datastore.deleteLeafListInstance("/example-schema:addresses[.='non-existing']");
+            datastore.commitChanges();
+        });
+    }
+
+    SECTION("non-existing leaf-list schema node")
+    {
+        tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
+            datastore.deleteLeafListInstance("/example-schema:non-existing[.='non-existing']");
+            datastore.commitChanges();
+        });
     }
 
     SECTION("copying data from startup refreshes the data")
