@@ -130,6 +130,11 @@ TEST_CASE("setting/getting values")
         datastore.commitChanges();
     }
 
+    SECTION("set a non-existing leaf")
+    {
+        REQUIRE_THROWS_AS(datastore.setLeaf("/example-schema:non-existing", "what"s), std::runtime_error);
+    }
+
     SECTION("create presence container")
     {
         REQUIRE_CALL(mock, write("/example-schema:pContainer", std::nullopt, ""s));
@@ -161,8 +166,12 @@ TEST_CASE("setting/getting values")
         });
     }
 
-    SECTION("deleting non-existing schema nodes as a list")
+    SECTION("accessing non-existing schema nodes as a list")
     {
+        tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
+            datastore.createItem("/example-schema:non-existing-list[xxx='blah']");
+            datastore.commitChanges();
+        });
         tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
             datastore.deleteItem("/example-schema:non-existing-list[xxx='non existing']");
             datastore.commitChanges();
@@ -310,6 +319,14 @@ TEST_CASE("setting/getting values")
         }
         expected = {};
         REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
+    }
+
+    SECTION("creating a non-existing schema node as a container")
+    {
+        tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
+            datastore.createItem("/example-schema:non-existing-presence-container");
+            datastore.commitChanges();
+        });
     }
 
     SECTION("deleting a non-existing schema node as a container or leaf")
@@ -462,8 +479,13 @@ TEST_CASE("setting/getting values")
         });
     }
 
-    SECTION("deleting a non-existing schema node as a leaf-list")
+    SECTION("accessing a non-existing schema node as a leaf-list")
     {
+        tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
+            datastore.createItem("/example-schema:non-existing[.='non-existing']");
+            datastore.commitChanges();
+        });
+
         tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
             datastore.deleteItem("/example-schema:non-existing[.='non-existing']");
             datastore.commitChanges();
@@ -567,6 +589,14 @@ TEST_CASE("setting/getting values")
             };
             REQUIRE(datastore.getItems("/example-schema:protocols") == expected);
         }
+    }
+
+    SECTION("moving non-existing schema nodes")
+    {
+        tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
+            datastore.moveItem("/example-schema:non-existing", yang::move::Absolute::Begin);
+            datastore.commitChanges();
+        });
     }
 
     SECTION("moving list instances")
@@ -757,52 +787,60 @@ TEST_CASE("rpc") {
 #error "Unknown backend"
 #endif
 
-    std::string rpc;
-    DatastoreAccess::Tree input, output;
+    SECTION("valid")
+    {
+        std::string rpc;
+        DatastoreAccess::Tree input, output;
 
-    SECTION("noop") {
-        rpc = "/example-schema:noop";
+        SECTION("noop") {
+            rpc = "/example-schema:noop";
+        }
+
+        SECTION("small nuke") {
+            rpc = "/example-schema:launch-nukes";
+            input = {
+                {"description", "dummy"s},
+                {"payload/kilotons", uint64_t{333'666}},
+            };
+            // no data are returned
+        }
+
+        SECTION("small nuke") {
+            rpc = "/example-schema:launch-nukes";
+            input = {
+                {"description", "dummy"s},
+                {"payload/kilotons", uint64_t{4}},
+            };
+            output = {
+                {"blast-radius", uint32_t{33'666}},
+                {"actual-yield", uint64_t{5}},
+            };
+        }
+
+        SECTION("with lists") {
+            rpc = "/example-schema:launch-nukes";
+            input = {
+                {"payload/kilotons", uint64_t{6}},
+                {"cities/targets[city='Prague']/city", "Prague"s},
+            };
+            output = {
+                {"blast-radius", uint32_t{33'666}},
+                {"actual-yield", uint64_t{7}},
+                {"damaged-places", special_{SpecialValue::PresenceContainer}},
+                {"damaged-places/targets[city='London']", special_{SpecialValue::List}},
+                {"damaged-places/targets[city='London']/city", "London"s},
+                {"damaged-places/targets[city='Berlin']", special_{SpecialValue::List}},
+                {"damaged-places/targets[city='Berlin']/city", "Berlin"s},
+            };
+        }
+
+        REQUIRE(datastore.executeRpc(rpc, input) == output);
     }
 
-    SECTION("small nuke") {
-        rpc = "/example-schema:launch-nukes";
-        input = {
-            {"description", "dummy"s},
-            {"payload/kilotons", uint64_t{333'666}},
-        };
-        // no data are returned
+    SECTION("non-existing RPC")
+    {
+        REQUIRE_THROWS_AS(datastore.executeRpc("/example-schema:non-existing", DatastoreAccess::Tree{}), std::runtime_error);
     }
-
-    SECTION("small nuke") {
-        rpc = "/example-schema:launch-nukes";
-        input = {
-            {"description", "dummy"s},
-            {"payload/kilotons", uint64_t{4}},
-        };
-        output = {
-            {"blast-radius", uint32_t{33'666}},
-            {"actual-yield", uint64_t{5}},
-        };
-    }
-
-    SECTION("with lists") {
-        rpc = "/example-schema:launch-nukes";
-        input = {
-            {"payload/kilotons", uint64_t{6}},
-            {"cities/targets[city='Prague']/city", "Prague"s},
-        };
-        output = {
-            {"blast-radius", uint32_t{33'666}},
-            {"actual-yield", uint64_t{7}},
-            {"damaged-places", special_{SpecialValue::PresenceContainer}},
-            {"damaged-places/targets[city='London']", special_{SpecialValue::List}},
-            {"damaged-places/targets[city='London']/city", "London"s},
-            {"damaged-places/targets[city='Berlin']", special_{SpecialValue::List}},
-            {"damaged-places/targets[city='Berlin']/city", "Berlin"s},
-        };
-    }
-
-    REQUIRE(datastore.executeRpc(rpc, input) == output);
 
     waitForCompletionAndBitMore(seq1);
 }
