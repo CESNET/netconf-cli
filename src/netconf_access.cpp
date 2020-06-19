@@ -5,7 +5,6 @@
  *
 */
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <libyang/Libyang.hpp>
 #include <libyang/Tree_Data.hpp>
 #include "libyang_utils.hpp"
@@ -23,19 +22,7 @@ DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path)
     auto config = m_session->get((path != "/") ? std::optional{path} : std::nullopt);
 
     if (config) {
-        auto siblings = config->tree_for();
-        for (auto it = siblings.begin(); it < siblings.end(); it++) {
-            if ((*it)->schema()->nodetype() == LYS_LEAFLIST) {
-                auto leafListPath = stripLeafListValueFromPath((*it)->path());
-                res.emplace_back(leafListPath, special_{SpecialValue::LeafList});
-                while (it != siblings.end() && boost::starts_with((*it)->path(), leafListPath)) {
-                    lyNodesToTree(res, (*it)->tree_dfs());
-                    it++;
-                }
-            } else {
-                lyNodesToTree(res, (*it)->tree_dfs());
-            }
-        }
+        lyNodesToTree(res, config->tree_for());
     }
     return res;
 }
@@ -141,9 +128,7 @@ DatastoreAccess::Tree NetconfAccess::executeRpc(const std::string& path, const T
     Tree res;
     auto output = m_session->rpc(data);
     if (output) {
-        for (auto it : output->tree_for()) {
-            lyNodesToTree(res, it->tree_dfs(), joinPaths(path, "/"));
-        }
+        lyNodesToTree(res, output->tree_for(), joinPaths(path, "/"));
     }
     return res;
 }
