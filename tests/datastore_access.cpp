@@ -161,8 +161,12 @@ TEST_CASE("setting/getting values")
         });
     }
 
-    SECTION("deleting non-existing schema nodes as a list")
+    SECTION("accessing non-existing schema nodes as a list")
     {
+        tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
+            datastore.createItem("/example-schema:non-existing-list[xxx='blah']");
+            datastore.commitChanges();
+        });
         tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
             datastore.deleteItem("/example-schema:non-existing-list[xxx='non existing']");
             datastore.commitChanges();
@@ -310,6 +314,14 @@ TEST_CASE("setting/getting values")
         }
         expected = {};
         REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
+    }
+
+    SECTION("creating a non-existing schema node as a container")
+    {
+        tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
+            datastore.createItem("/example-schema:non-existing-presence-container");
+            datastore.commitChanges();
+        });
     }
 
     SECTION("deleting a non-existing schema node as a container or leaf")
@@ -462,8 +474,13 @@ TEST_CASE("setting/getting values")
         });
     }
 
-    SECTION("deleting a non-existing schema node as a leaf-list")
+    SECTION("accessing a non-existing schema node as a leaf-list")
     {
+        tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
+            datastore.createItem("/example-schema:non-existing[.='non-existing']");
+            datastore.commitChanges();
+        });
+
         tryThis<THROWS_ON_INVALID_SCHEMA_PATHS>([&]{
             datastore.deleteItem("/example-schema:non-existing[.='non-existing']");
             datastore.commitChanges();
