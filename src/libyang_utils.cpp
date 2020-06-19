@@ -1,3 +1,4 @@
+#include <boost/algorithm/string/predicate.hpp>
 #include <cmath>
 #include "datastore_access.hpp"
 #include "libyang_utils.hpp"
@@ -45,10 +46,8 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
     }
 }
 
-// This is very similar to the fillMap lambda in SysrepoAccess, however,
-// Sysrepo returns a weird array-like structure, while libnetconf
-// returns libyang::Data_Node
-void lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix)
+namespace {
+void impl_lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix)
 {
     auto stripXPathPrefix = [&ignoredXPathPrefix] (auto path) {
         return ignoredXPathPrefix ? path.substr(ignoredXPathPrefix->size()) : path;
@@ -70,6 +69,26 @@ void lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr
             libyang::Data_Node_Leaf_List leaf(it);
             auto value = leafValueFromValue(leaf.value(), leaf.leaf_type()->base());
             res.emplace_back(stripXPathPrefix(it->path()), value);
+        }
+    }
+}
+}
+
+// This is very similar to the fillMap lambda in SysrepoAccess, however,
+// Sysrepo returns a weird array-like structure, while libnetconf
+// returns libyang::Data_Node
+void lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix)
+{
+    for (auto it = items.begin(); it < items.end(); it++) {
+        if ((*it)->schema()->nodetype() == LYS_LEAFLIST) {
+            auto leafListPath = stripLeafListValueFromPath((*it)->path());
+            res.emplace_back(leafListPath, special_{SpecialValue::LeafList});
+            while (it != items.end() && boost::starts_with((*it)->path(), leafListPath)) {
+                impl_lyNodesToTree(res, (*it)->tree_dfs(), ignoredXPathPrefix);
+                it++;
+            }
+        } else {
+            impl_lyNodesToTree(res, (*it)->tree_dfs(), ignoredXPathPrefix);
         }
     }
 }
