@@ -26,7 +26,7 @@ struct DatastoreError {
     DatastoreError(const std::string& message, const std::optional<std::string>& xpath);
 };
 
-class DatastoreException : std::exception {
+class DatastoreException : std::runtime_error {
 public:
     DatastoreException(const std::vector<DatastoreError>& errors);
     ~DatastoreException() override = default;

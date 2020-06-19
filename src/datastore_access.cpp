@@ -17,6 +17,7 @@ DatastoreError::DatastoreError(const std::string& message, const std::optional<s
 DatastoreAccess::~DatastoreAccess() = default;
 
 DatastoreException::DatastoreException(const std::vector<DatastoreError>& errors)
+    : std::runtime_error(std::string{} /* not used, we're overriding what() */)
 {
     m_what = "The following errors occured:\n";
     for (const auto& it : errors) {
