@@ -67,42 +67,21 @@ char *ssh_auth_interactive_cb(const char *auth_name, const char *instruction, co
     return ::strdup(res.c_str());
 }
 
-template <auto fn>
-using deleter_from_fn = std::integral_constant<decltype(fn), fn>;
+template <typename Type> using deleter_type_for = void (*)(Type*);
+template <typename Type> deleter_type_for<Type> deleter_for;
+
+template <> const auto deleter_for<nc_rpc> = nc_rpc_free;
+template <> const auto deleter_for<nc_reply> = nc_reply_free;
+template <> const auto deleter_for<nc_reply_data> = custom_free_nc_reply_data;
+template <> const auto deleter_for<nc_reply_error> = custom_free_nc_reply_error;
 
 template <typename T>
-struct deleter_type_for {
-    using func_type = void (*)(T*);
-};
-
-template <typename T>
-struct deleter_for {
-};
-
-template <>
-struct deleter_for<struct nc_rpc> {
-    static constexpr void (*free)(struct nc_rpc*) = deleter_from_fn<nc_rpc_free>();
-};
-template <>
-struct deleter_for<struct nc_reply> {
-    static constexpr void (*free)(struct nc_reply*) = deleter_from_fn<nc_reply_free>();
-};
-template <>
-struct deleter_for<struct nc_reply_data> {
-    static constexpr void (*free)(struct nc_reply_data*) = deleter_from_fn<custom_free_nc_reply_data>();
-};
-template <>
-struct deleter_for<struct nc_reply_error> {
-    static constexpr void (*free)(struct nc_reply_error*) = deleter_from_fn<custom_free_nc_reply_error>();
-};
-
-template <typename T>
-using unique_ptr_for = std::unique_ptr<T, decltype(deleter_for<T>::free)>;
+using unique_ptr_for = std::unique_ptr<T, decltype(deleter_for<T>)>;
 
 template <typename T>
 auto guarded(T* ptr)
 {
-    return unique_ptr_for<T>(ptr, deleter_for<T>::free);
+    return unique_ptr_for<T>(ptr, deleter_for<T>);
 }
 
 unique_ptr_for<struct nc_reply> do_rpc(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
