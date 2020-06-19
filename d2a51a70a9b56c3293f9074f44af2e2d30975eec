@@ -262,6 +262,24 @@
       "revId": "d2a51a70a9b56c3293f9074f44af2e2d30975eec",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd4a71cb_477359f8",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-19T12:59:43Z",
+      "side": 1,
+      "message": "Okay, done, now I will look at the patches",
+      "parentUuid": "98cec451_a8c1457b",
+      "revId": "d2a51a70a9b56c3293f9074f44af2e2d30975eec",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
