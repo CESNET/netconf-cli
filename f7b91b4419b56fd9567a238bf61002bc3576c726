@@ -118,6 +118,24 @@
     },
     {
       "key": {
+        "uuid": "9033e55a_16520308",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-19T09:21:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c338e0c_ab9c313b",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b62db80_17e035c6",
         "filename": "src/yang_access.cpp",
         "patchSetId": 7
@@ -272,6 +290,30 @@
       "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c244b9bf_787377b5",
+        "filename": "src/yang_access.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-19T09:21:03Z",
+      "side": 1,
+      "message": "(closing, I\u0027ll be adding more specific comments)",
+      "parentUuid": "8f4dceec_3baaa812",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 76
+      },
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {

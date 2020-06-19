@@ -1,0 +1,141 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "57e1c88f_909538cb",
+        "filename": "src/cli.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-19T09:21:03Z",
+      "side": 1,
+      "message": "I would prefer something like `-e mod-A:feature1 -e mod-A:feature2 -e mod-B:something-else`, that looks more user friendly to me",
+      "range": {
+        "startLine": 40,
+        "startChar": 77,
+        "endLine": 40,
+        "endChar": 125
+      },
+      "revId": "d2a51a70a9b56c3293f9074f44af2e2d30975eec",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df4162d5_249396e7",
+        "filename": "src/cli.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-19T09:21:03Z",
+      "side": 1,
+      "message": "I like this implementation :), sorry for asking you to rework this :(",
+      "revId": "d2a51a70a9b56c3293f9074f44af2e2d30975eec",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "454673b2_4a2ee501",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-19T09:21:03Z",
+      "side": 1,
+      "message": "Is it possible to add appropriate specializations to your lyPtrDeleter and just use a unique_ptr for these?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 35
+      },
+      "revId": "d2a51a70a9b56c3293f9074f44af2e2d30975eec",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25a22ae0_23e70b1a",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-19T09:21:03Z",
+      "side": 1,
+      "message": "Casting from a `const char*` to `void*` is a two step process in C++ I think, so something like this should do the trick:\n\n static_cast\u003cvoid*\u003e(const_cast\u003cchar *\u003e(value-\u003ec_str()))\n\nBut I think that would be rather pointless here, and it\u0027s some code which deals with random C poo, so I\u0027m OK with a C-style cast here. Just nuke the FIXME from the comment, please.",
+      "revId": "d2a51a70a9b56c3293f9074f44af2e2d30975eec",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a62262a_3edc644b",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-19T09:21:03Z",
+      "side": 1,
+      "message": "add a docstring, please, which explains what exactly is this function doing, and what the rest of the code is expected to do (do they free something? what? when?)",
+      "revId": "d2a51a70a9b56c3293f9074f44af2e2d30975eec",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2afe7e1_ad3a13e9",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-19T09:21:03Z",
+      "side": 1,
+      "message": "let\u0027s start putting these internal helpers into an anonymous namespace so that they have local linkage",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 1
+      },
+      "revId": "d2a51a70a9b56c3293f9074f44af2e2d30975eec",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "220f82ed_e6b4a067",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-19T09:21:03Z",
+      "side": 1,
+      "message": "This crashes when called with a non-existing path, see the test I added in https://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/2811 .",
+      "revId": "d2a51a70a9b56c3293f9074f44af2e2d30975eec",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
