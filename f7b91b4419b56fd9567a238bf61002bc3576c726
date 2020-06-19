@@ -101,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "b67f0c05_2c3e5e57",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-19T13:00:56Z",
+      "side": 1,
+      "message": "the code changed, this is no longer relevant",
+      "parentUuid": "49968aef_6a45fd9c",
+      "revId": "f7b91b4419b56fd9567a238bf61002bc3576c726",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6c338e0c_ab9c313b",
         "filename": "src/yang_access.cpp",
         "patchSetId": 7
