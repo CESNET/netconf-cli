@@ -375,7 +375,12 @@ void YangSchema::loadModule(const std::string& moduleName)
 
 void YangSchema::enableFeature(const std::string& moduleName, const std::string& featureName)
 {
-    m_context->get_module(moduleName.c_str())->feature_enable(featureName.c_str());
+    auto module = getYangModule(moduleName);
+    if (!module) {
+        using namespace std::string_literals;
+        throw std::runtime_error("Module \""s + moduleName + "\" doesn't exist.");
+    }
+    module->feature_enable(featureName.c_str());
 }
 
 void YangSchema::registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb)
@@ -406,7 +411,7 @@ std::shared_ptr<libyang::Data_Node> YangSchema::dataNodeFromPath(const std::stri
 
 std::shared_ptr<libyang::Module> YangSchema::getYangModule(const std::string& name)
 {
-    return m_context->get_module(name.c_str(), nullptr, 0);
+    return m_context->get_module(name.c_str());
 }
 
 namespace {
