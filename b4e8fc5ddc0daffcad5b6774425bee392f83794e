@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2898e54b_bbef1ea7",
+        "filename": "src/cli.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-22T14:38:14Z",
+      "side": 1,
+      "message": "This is no longer valid, right?",
+      "range": {
+        "startLine": 40,
+        "startChar": 77,
+        "endLine": 40,
+        "endChar": 126
+      },
+      "revId": "b4e8fc5ddc0daffcad5b6774425bee392f83794e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
