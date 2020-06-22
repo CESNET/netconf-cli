@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "b923f5e5_260000ff",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-22T14:06:19Z",
+      "side": 1,
+      "message": "OK, so https://netopeer.liberouter.org/doc/libyang/master/group__parseroptions.html#ga0c2b214b33d784ed0bde8c9714e5780a doesn\u0027t apply here, good.",
+      "parentUuid": "cfa70ff4_04aa1105",
+      "revId": "64c71f6cf723b4965d7513de6aa375caf4fb1e2e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f40212f_54a7799e",
         "filename": "src/yang_access.hpp",
         "patchSetId": 28
