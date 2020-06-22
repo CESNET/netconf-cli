@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2d36e9c3_a57e78e1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T15:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd2ab359_e8413624",
+      "revId": "d8e7d53ce0c22958f863d2aa5c3feed3ed9e6f8b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3b4b607e_457ab902",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "d8e7d53ce0c22958f863d2aa5c3feed3ed9e6f8b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78ab53b0_7121f773",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T15:12:03Z",
+      "side": 1,
+      "message": "I just removed those arguments, because they are the default",
+      "parentUuid": "3b4b607e_457ab902",
+      "revId": "d8e7d53ce0c22958f863d2aa5c3feed3ed9e6f8b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
