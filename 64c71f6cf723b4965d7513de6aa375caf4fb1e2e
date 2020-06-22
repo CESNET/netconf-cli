@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "cfa70ff4_04aa1105",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T13:30:43Z",
+      "side": 1,
+      "message": "No, nothing like that exists, doc says that input nodes are by default searched and created normally",
+      "parentUuid": "f0fd86f8_e00947ca",
+      "revId": "64c71f6cf723b4965d7513de6aa375caf4fb1e2e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f40212f_54a7799e",
         "filename": "src/yang_access.hpp",
         "patchSetId": 28

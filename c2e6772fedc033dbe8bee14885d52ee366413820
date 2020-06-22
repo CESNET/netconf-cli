@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7b1b055a_db19ecf4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T13:30:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cf0fc08_6a08a920",
+      "revId": "c2e6772fedc033dbe8bee14885d52ee366413820",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6a3f5598_46f55579",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 26
@@ -30,6 +48,30 @@
       "writtenOn": "2020-06-19T17:17:23Z",
       "side": 1,
       "message": "This reflects current behavior, but I don\u0027t think these are good values. I *think* that the correct behavior is DatastoreException, but I haven\u0027t given that much thought -- so please take a look at it.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 27
+      },
+      "revId": "c2e6772fedc033dbe8bee14885d52ee366413820",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3405bcee_04339cbf",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T13:30:43Z",
+      "side": 1,
+      "message": "CHanged",
+      "parentUuid": "6a3f5598_46f55579",
       "range": {
         "startLine": 26,
         "startChar": 0,
@@ -56,6 +98,24 @@
       "revId": "c2e6772fedc033dbe8bee14885d52ee366413820",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3b501f7_bd18b77f",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 805,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T13:30:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03b5f12c_6e7e6a54",
+      "revId": "c2e6772fedc033dbe8bee14885d52ee366413820",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
