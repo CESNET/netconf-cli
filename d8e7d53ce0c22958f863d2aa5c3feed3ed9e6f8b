@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dd2ab359_e8413624",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-22T14:35:02Z",
+      "side": 1,
+      "message": "Does it fix a segfault on enabling features on non-existing modules? If so, please adjust the commit message, otherwise please adjust the test so that it checks for what happens upon requesting a non-existing module.",
+      "revId": "d8e7d53ce0c22958f863d2aa5c3feed3ed9e6f8b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b4b607e_457ab902",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-22T14:35:02Z",
+      "side": 1,
+      "message": "This used to inform libyang that we are not loading any submodule (right?), now it uses another API. Please explain that in the commit message why this was changed.",
+      "revId": "d8e7d53ce0c22958f863d2aa5c3feed3ed9e6f8b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
