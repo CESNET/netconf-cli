@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "451df17f_249418e7",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T14:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c3f7e10_c2f9b30b",
+      "revId": "64c71f6cf723b4965d7513de6aa375caf4fb1e2e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f0fd86f8_e00947ca",
         "filename": "src/yang_access.cpp",
         "patchSetId": 28
@@ -86,6 +104,24 @@
       "revId": "64c71f6cf723b4965d7513de6aa375caf4fb1e2e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a5ec917_b20b0dbd",
+        "filename": "src/yang_access.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T14:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f40212f_54a7799e",
+      "revId": "64c71f6cf723b4965d7513de6aa375caf4fb1e2e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }

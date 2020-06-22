@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "bbe44be1_7f37955a",
+        "filename": "src/cli.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T14:29:53Z",
+      "side": 1,
+      "message": "It is possible, thank god.",
+      "parentUuid": "31787dd6_75587b71",
+      "range": {
+        "startLine": 40,
+        "startChar": 77,
+        "endLine": 40,
+        "endChar": 125
+      },
+      "revId": "d2a51a70a9b56c3293f9074f44af2e2d30975eec",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "df4162d5_249396e7",
         "filename": "src/cli.cpp",
         "patchSetId": 17

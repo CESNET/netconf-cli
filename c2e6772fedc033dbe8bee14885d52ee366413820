@@ -108,6 +108,30 @@
     },
     {
       "key": {
+        "uuid": "78336b86_da7b8034",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T14:29:53Z",
+      "side": 1,
+      "message": "I changed a little bit more.",
+      "parentUuid": "0d67fdb5_39aa794e",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 27
+      },
+      "revId": "c2e6772fedc033dbe8bee14885d52ee366413820",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "03b5f12c_6e7e6a54",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 26
