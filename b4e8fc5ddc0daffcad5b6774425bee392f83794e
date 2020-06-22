@@ -22,6 +22,30 @@
       "revId": "b4e8fc5ddc0daffcad5b6774425bee392f83794e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc997a6b_4c0e3795",
+        "filename": "src/cli.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T15:01:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2898e54b_bbef1ea7",
+      "range": {
+        "startLine": 40,
+        "startChar": 77,
+        "endLine": 40,
+        "endChar": 126
+      },
+      "revId": "b4e8fc5ddc0daffcad5b6774425bee392f83794e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }

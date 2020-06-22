@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "002f98c0_841889f0",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T15:01:43Z",
+      "side": 1,
+      "message": "The function\u0027s name is confusing anyway, cause what it does is wrap ly_ctx with libyang::Context.",
+      "parentUuid": "0de5dcdb_341e5225",
+      "revId": "64c71f6cf723b4965d7513de6aa375caf4fb1e2e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f0fd86f8_e00947ca",
         "filename": "src/yang_access.cpp",
         "patchSetId": 28
