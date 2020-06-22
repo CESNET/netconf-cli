@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c3f7e10_c2f9b30b",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-22T13:20:37Z",
+      "side": 1,
+      "message": "Please add a comment explaining why it\u0027s necessary to initialize (\"duplicate\", I guess) a new context here.",
+      "revId": "64c71f6cf723b4965d7513de6aa375caf4fb1e2e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0fd86f8_e00947ca",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-22T13:20:37Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure that either this one or the next lyd_new_path requires passing LYD_OPT_RPC. But I have not seen the CI result yet, so perhaps I\u0027m wrong.",
+      "revId": "64c71f6cf723b4965d7513de6aa375caf4fb1e2e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3f40212f_54a7799e",
+        "filename": "src/yang_access.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-22T13:20:37Z",
+      "side": 1,
+      "message": "nit: this can be tagged with [[noreturn]] given that it always throws",
+      "revId": "64c71f6cf723b4965d7513de6aa375caf4fb1e2e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
