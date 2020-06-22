@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c5fd7a5c_ab4310fb",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-22T09:28:25Z",
+      "side": 1,
+      "message": "Yeah, this is unfortunate. Hopefully SysrepoAccess can be made more consistent...",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "revId": "7ec214d23ab12df9862782ee003fcebfaab80c5a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
