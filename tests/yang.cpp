@@ -1183,5 +1183,10 @@ TEST_CASE("yangschema")
 
             REQUIRE_THROWS(ys.nodeType(path, node));
         }
+
+        SECTION("enableFeature - non existing module")
+        {
+            REQUIRE_THROWS_AS(ys.enableFeature("non-existing", "just-no"), std::runtime_error);
+        }
     }
 }
