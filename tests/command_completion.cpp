@@ -21,7 +21,7 @@ TEST_CASE("command completion")
     int expectedContextLength;
     SECTION("no prefix")
     {
-        expectedCompletions = {"cd", "copy", "create", "delete", "set", "commit", "get", "ls", "discard", "help", "describe", "move"};
+        expectedCompletions = {"cd", "copy", "create", "delete", "set", "commit", "get", "ls", "discard", "help", "describe", "move", "dump"};
         expectedContextLength = 0;
         SECTION("no space") {
             input = "";
@@ -41,7 +41,7 @@ TEST_CASE("command completion")
     SECTION("d")
     {
         input = "d";
-        expectedCompletions = {"delete", "discard", "describe"};
+        expectedCompletions = {"delete", "discard", "describe", "dump"};
         expectedContextLength = 1;
     }
 
