@@ -91,6 +91,24 @@
     },
     {
       "key": {
+        "uuid": "015f0f44_7cbeb6bf",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-23T14:55:58Z",
+      "side": 1,
+      "message": "A new standalone test looks doable. Let\u0027s make it super stupid and add a new top-level test, don\u0027t check for correctness via sysrepo, etc. Just start with a fresh, empty state, and dump to JSON when it\u0027s time to see if the datastore content matches expectations.\n\nI think this can be done in an extra commit.",
+      "parentUuid": "ae5d31bb_164f42a7",
+      "revId": "4609378bd752027ff19101143f7f19f36bfe37e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "617cb32c_e4f1141f",
         "filename": "src/yang_access.cpp",
         "patchSetId": 30

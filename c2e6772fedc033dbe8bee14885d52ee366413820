@@ -132,6 +132,30 @@
     },
     {
       "key": {
+        "uuid": "4998041b_b6409825",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-23T14:55:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78336b86_da7b8034",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 27
+      },
+      "revId": "c2e6772fedc033dbe8bee14885d52ee366413820",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "03b5f12c_6e7e6a54",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 26
