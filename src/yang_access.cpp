@@ -108,7 +108,7 @@ void YangAccess::validate()
     m_datastore = lyWrap(datastore);
 }
 
-DatastoreAccess::Tree YangAccess::getItems(const std::string& path)
+DatastoreAccess::Tree YangAccess::getItems(const std::string& path) const
 {
     DatastoreAccess::Tree res;
     if (!m_datastore) {
