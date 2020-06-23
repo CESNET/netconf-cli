@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ae6f7740_23084ab2",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-23T11:21:04Z",
+      "side": 1,
+      "message": "Damn, it\u0027s so hard to trigger this, because this case almost never happens if there are non-presence containers in my schema - libyang creates them on validation and puts them to the left of the siblings...",
+      "parentUuid": "98f6d581_c38442f3",
+      "revId": "4609378bd752027ff19101143f7f19f36bfe37e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "617cb32c_e4f1141f",
         "filename": "src/yang_access.cpp",
         "patchSetId": 30
@@ -62,6 +80,30 @@
       "revId": "4609378bd752027ff19101143f7f19f36bfe37e2",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d5df98e_85ef5ceb",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-23T11:21:04Z",
+      "side": 1,
+      "message": "I was mimicking sysrepo, but I guess it can be an error. Changed.",
+      "parentUuid": "d4f5abb5_40ff1996",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 5
+      },
+      "revId": "4609378bd752027ff19101143f7f19f36bfe37e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
