@@ -264,10 +264,10 @@ std::vector<ListInstance> YangAccess::listInstances(const std::string& path)
     return res;
 }
 
-std::string impl_dumpConfig(const lyd_node* datastore, LYD_FORMAT format)
+std::string YangAccess::dump(const DataFormat format) const
 {
     char* output;
-    lyd_print_mem(&output, datastore, format, LYP_WITHSIBLINGS);
+    lyd_print_mem(&output, m_datastore.get(), format == DataFormat::Xml ? LYD_XML : LYD_JSON, LYP_WITHSIBLINGS | LYP_FORMAT);
 
     if (output) {
         std::string res = output;
@@ -276,16 +276,6 @@ std::string impl_dumpConfig(const lyd_node* datastore, LYD_FORMAT format)
     }
 
     return "";
-}
-
-std::string YangAccess::dumpXML() const
-{
-    return impl_dumpConfig(m_datastore.get(), LYD_XML);
-}
-
-std::string YangAccess::dumpJSON() const
-{
-    return impl_dumpConfig(m_datastore.get(), LYD_JSON);
 }
 
 void YangAccess::addSchemaFile(const std::string& path)

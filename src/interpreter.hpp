@@ -28,6 +28,7 @@ struct Interpreter : boost::static_visitor<void> {
     void operator()(const help_&) const;
     void operator()(const copy_& copy) const;
     void operator()(const move_& move) const;
+    void operator()(const dump_& dump) const;
 
 private:
     std::string buildTypeInfo(const std::string& path) const;

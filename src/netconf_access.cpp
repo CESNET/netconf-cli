@@ -215,3 +215,12 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
 
     return res;
 }
+
+std::string NetconfAccess::dump(const DataFormat format) const
+{
+    auto config = m_session->get("/");
+    if (!config) {
+        return "";
+    }
+    return config->print_mem(format == DataFormat::Xml ? LYD_XML : LYD_JSON, LYP_WITHSIBLINGS | LYP_FORMAT);
+}
