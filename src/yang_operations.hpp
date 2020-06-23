@@ -30,3 +30,8 @@ enum class Datastore {
     Running,
     Startup
 };
+
+enum class DataFormat {
+    Xml,
+    Json
+};

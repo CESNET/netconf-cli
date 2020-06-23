@@ -41,6 +41,7 @@ public:
     void discardChanges() override;
     void copyConfig(const Datastore source, const Datastore destination) override;
 
+    std::string dump(const DataFormat format) const override;
 private:
     std::vector<ListInstance> listInstances(const std::string& path) override;
     [[noreturn]] void reportErrors() const;

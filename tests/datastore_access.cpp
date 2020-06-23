@@ -97,7 +97,7 @@ private:
     {
         {
             std::ofstream of(testConfigFile);
-            of << dumpXML();
+            of << dump(DataFormat::Xml);
         }
         auto command = std::string(sysrepocfgExecutable) + " --import=" + testConfigFile + " --format=xml --datastore=running example-schema";
         REQUIRE(std::system(command.c_str()) == 0);
