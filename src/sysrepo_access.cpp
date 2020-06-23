@@ -432,3 +432,23 @@ std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
 
     return res;
 }
+
+std::string SysrepoAccess::dump(const DataFormat format) const
+{
+    std::shared_ptr<libyang::Data_Node> root;
+    auto input = getItems("/");
+    if (input.empty()) {
+        return "";
+    }
+    for (const auto& [k, v] : input) {
+        if (v.type() == typeid(special_) && boost::get<special_>(v).m_value != SpecialValue::PresenceContainer) {
+            continue;
+        }
+        if (!root) {
+            root = m_schema->dataNodeFromPath(k, leafDataToString(v));
+        } else {
+            root->new_path(nullptr, k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, 0);
+        }
+    }
+    return root->print_mem(format == DataFormat::Xml ? LYD_XML : LYD_JSON, LYP_WITHSIBLINGS | LYP_FORMAT);
+}
