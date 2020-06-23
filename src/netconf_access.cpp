@@ -16,7 +16,7 @@
 
 NetconfAccess::~NetconfAccess() = default;
 
-DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path)
+DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
 {
     Tree res;
     auto config = m_session->get((path != "/") ? std::optional{path} : std::nullopt);
