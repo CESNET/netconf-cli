@@ -19,7 +19,7 @@ namespace trompeloeil {
 }
 
 class MockDatastoreAccess : public trompeloeil::mock_interface<DatastoreAccess> {
-    IMPLEMENT_MOCK1(getItems);
+    IMPLEMENT_CONST_MOCK1(getItems);
     IMPLEMENT_MOCK2(setLeaf);
     IMPLEMENT_MOCK1(createItem);
     IMPLEMENT_MOCK1(deleteItem);
