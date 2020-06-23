@@ -22,7 +22,7 @@ class YangAccess : public DatastoreAccess {
 public:
     YangAccess();
     ~YangAccess() override;
-    Tree getItems(const std::string& path) override;
+    Tree getItems(const std::string& path) const override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createItem(const std::string& path) override;
     void deleteItem(const std::string& path) override;

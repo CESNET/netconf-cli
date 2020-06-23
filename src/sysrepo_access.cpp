@@ -186,7 +186,7 @@ SysrepoAccess::SysrepoAccess(const std::string& appname, const Datastore datasto
     }
 }
 
-DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path)
+DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
 {
     using namespace std::string_literals;
     Tree res;
@@ -364,7 +364,7 @@ std::shared_ptr<Schema> SysrepoAccess::schema()
     return m_schema;
 }
 
-[[noreturn]] void SysrepoAccess::reportErrors()
+[[noreturn]] void SysrepoAccess::reportErrors() const
 {
     // I only use get_last_errors to get error info, since the error code from
     // sysrepo_exception doesn't really give any meaningful information. For
