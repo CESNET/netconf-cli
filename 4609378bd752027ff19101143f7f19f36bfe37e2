@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "ae5d31bb_164f42a7",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-23T12:07:24Z",
+      "side": 1,
+      "message": "I have no idea how to solve this I guess I would have to create an entirely new schema? Idk",
+      "parentUuid": "b212e39a_581aa5fe",
+      "revId": "4609378bd752027ff19101143f7f19f36bfe37e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "617cb32c_e4f1141f",
         "filename": "src/yang_access.cpp",
         "patchSetId": 30
