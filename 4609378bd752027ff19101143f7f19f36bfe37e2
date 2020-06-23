@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "98f6d581_c38442f3",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-23T08:09:11Z",
+      "side": 1,
+      "message": "The coverage report says that this is not tested. Considering how much effort it was to arrive at a working solution, can you please make it covered by a test?",
+      "revId": "4609378bd752027ff19101143f7f19f36bfe37e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "617cb32c_e4f1141f",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-23T08:09:11Z",
+      "side": 1,
+      "message": "This is also not covered, but I think that enabling it would require writing a test where a node removal violates a constraint. I think it\u0027s OK not to test this (at least for now) -- we should not be in the business of testing the implementation for correctness of the YANG implementation.",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 9
+      },
+      "revId": "4609378bd752027ff19101143f7f19f36bfe37e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d4f5abb5_40ff1996",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-23T08:09:11Z",
+      "side": 1,
+      "message": "How come this is not an error? Just create a DatastoreException saying that the specified XPath does not exist.",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 5
+      },
+      "revId": "4609378bd752027ff19101143f7f19f36bfe37e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f433731a_e6178e7a",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-23T08:09:11Z",
+      "side": 1,
+      "message": "This is also not covered, but only because there\u0027s no test which attempts to call an RPC with an invalid input. Probably OK.",
+      "revId": "4609378bd752027ff19101143f7f19f36bfe37e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
