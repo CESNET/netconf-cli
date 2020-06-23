@@ -28,6 +28,7 @@ x3::rule<describe_class, describe_> const describe = "describe";
 x3::rule<help_class, help_> const help = "help";
 x3::rule<copy_class, copy_> const copy = "copy";
 x3::rule<move_class, move_> const move = "move";
+x3::rule<dump_class, dump_> const dump = "dump";
 x3::rule<command_class, command_> const command = "command";
 
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
@@ -229,11 +230,24 @@ struct move_args : x3::parser<move_args> {
 auto const move_def =
     move_::name >> space_separator >> move_args;
 
+struct format_table : x3::symbols<DumpFormat> {
+    format_table()
+    {
+        add
+            ("xml", DumpFormat::Xml)
+            ("json", DumpFormat::Json);
+    }
+} const format_table;
+
+
+auto const dump_def =
+    dump_::name >> space_separator >> format_table;
+
 auto const createCommandSuggestions_def =
     x3::eps;
 
 auto const command_def =
-    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move];
+    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -251,5 +265,6 @@ BOOST_SPIRIT_DEFINE(describe)
 BOOST_SPIRIT_DEFINE(help)
 BOOST_SPIRIT_DEFINE(copy)
 BOOST_SPIRIT_DEFINE(move)
+BOOST_SPIRIT_DEFINE(dump)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)

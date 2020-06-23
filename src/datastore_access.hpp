@@ -56,6 +56,8 @@ public:
     virtual void commitChanges() = 0;
     virtual void discardChanges() = 0;
     virtual void copyConfig(const Datastore source, const Datastore destination) = 0;
+    virtual std::string dumpXML() const = 0;
+    virtual std::string dumpJSON() const = 0;
 
 private:
     friend class DataQuery;

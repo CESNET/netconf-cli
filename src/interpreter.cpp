@@ -195,6 +195,18 @@ void Interpreter::operator()(const move_& move) const
     m_datastore.moveItem(pathToDataString(move.m_source, Prefixes::WhenNeeded), move.m_destination);
 }
 
+void Interpreter::operator()(const dump_& dump) const
+{
+    switch (dump.m_format) {
+    case DumpFormat::Xml:
+        std::cout << m_datastore.dumpXML() << "\n";
+        break;
+    case DumpFormat::Json:
+        std::cout << m_datastore.dumpJSON() << "\n";
+        break;
+    }
+}
+
 struct commandLongHelpVisitor : boost::static_visitor<const char*> {
     template <typename T>
     auto constexpr operator()(boost::type<T>) const
