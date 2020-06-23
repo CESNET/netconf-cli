@@ -25,3 +25,8 @@ struct Relative {
     ListInstance m_path;
 };
 }
+
+enum class Datastore {
+    Running,
+    Startup
+};
