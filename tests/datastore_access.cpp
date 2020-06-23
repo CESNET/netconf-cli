@@ -97,7 +97,7 @@ private:
     {
         {
             std::ofstream of(testConfigFile);
-            of << dumpXML();
+            of << dump(DataFormat::Xml);
         }
         auto command = std::string(sysrepocfgExecutable) + " --import=" + testConfigFile + " --format=xml --datastore=running example-schema";
         REQUIRE(std::system(command.c_str()) == 0);
@@ -218,9 +218,11 @@ TEST_CASE("setting/getting values")
 
     SECTION("create presence container")
     {
+        REQUIRE(datastore.dump(DataFormat::Json).find("example-schema:pContainer") == std::string::npos);
         REQUIRE_CALL(mock, write("/example-schema:pContainer", std::nullopt, ""s));
         datastore.createItem("/example-schema:pContainer");
         datastore.commitChanges();
+        REQUIRE(datastore.dump(DataFormat::Json).find("example-schema:pContainer") != std::string::npos);
     }
 
     SECTION("create/delete a list instance")
@@ -811,6 +813,16 @@ TEST_CASE("setting/getting values")
     {
         datastore.setLeaf("/example-schema:leafInt32", 64);
         datastore.deleteItem("/example-schema:leafInt32");
+    }
+
+    SECTION("two key lists")
+    {
+        REQUIRE_CALL(mock, write("/example-schema:point[x='12'][y='10']", std::nullopt, ""s));
+        REQUIRE_CALL(mock, write("/example-schema:point[x='12'][y='10']/x", std::nullopt, "12"s));
+        REQUIRE_CALL(mock, write("/example-schema:point[x='12'][y='10']/y", std::nullopt, "10"s));
+        datastore.createItem("/example-schema:point[x='12'][y='10']");
+        datastore.commitChanges();
+        REQUIRE(datastore.dump(DataFormat::Json).find("example-schema:point") != std::string::npos);
     }
 
     waitForCompletionAndBitMore(seq1);
