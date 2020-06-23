@@ -264,4 +264,14 @@ module example-schema {
             type string;
         }
     }
+
+    list point {
+        key "x y";
+        leaf x {
+            type int32;
+        }
+        leaf y {
+            type int32;
+        }
+    }
 }
