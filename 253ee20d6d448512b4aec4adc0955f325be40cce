@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6107b83_89e6f3d1",
+        "filename": "src/ast_values.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-23T16:02:04Z",
+      "side": 1,
+      "message": "I would not call this \"DumpFormat\" because I can imagine it will also be used for reading, some day. DataFormat?",
+      "range": {
+        "startLine": 69,
+        "startChar": 11,
+        "endLine": 69,
+        "endChar": 21
+      },
+      "revId": "253ee20d6d448512b4aec4adc0955f325be40cce",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62d03dd2_3dc9a17b",
+        "filename": "src/ast_values.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-23T16:02:04Z",
+      "side": 1,
+      "message": "To me, this enum looks more like those data structures for the Move command than to, say, a SpecialValue. I think that it\u0027s perhaps time to have an yang_operations.hpp file defining:\n\n- enum class Datastore,\n- enum class DataFormat,\n- everything from yang::move",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 2
+      },
+      "revId": "253ee20d6d448512b4aec4adc0955f325be40cce",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9980fcc4_af3190b9",
+        "filename": "src/datastore_access.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-23T16:02:04Z",
+      "side": 1,
+      "message": "nit: perhaps better like this:\n\n std::string dump(const DataFormat format) const \u003d 0;\n\n...because the real implementation is going to differ only in that enum anyway.",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 45
+      },
+      "revId": "253ee20d6d448512b4aec4adc0955f325be40cce",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
