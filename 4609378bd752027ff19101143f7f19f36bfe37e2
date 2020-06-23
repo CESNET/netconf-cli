@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "b212e39a_581aa5fe",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-23T11:35:45Z",
+      "side": 1,
+      "message": "I would need another schema that won\u0027t have a top level container node",
+      "parentUuid": "5370652a_875f4a58",
+      "revId": "4609378bd752027ff19101143f7f19f36bfe37e2",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "617cb32c_e4f1141f",
         "filename": "src/yang_access.cpp",
         "patchSetId": 30
