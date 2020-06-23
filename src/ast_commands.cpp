@@ -41,3 +41,8 @@ bool move_::operator==(const move_& other) const
 {
     return this->m_source == other.m_source && this->m_destination == other.m_destination;
 }
+
+bool dump_::operator==(const dump_& other) const
+{
+    return this->m_format == other.m_format;
+}
