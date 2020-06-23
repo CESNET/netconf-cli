@@ -206,8 +206,22 @@ struct move_ : x3::position_tagged {
     std::variant<yang::move::Absolute, yang::move::Relative> m_destination;
 };
 
+struct dump_ : x3::position_tagged {
+    static constexpr auto name = "dump";
+    static constexpr auto shortHelp = "dump - dump entire content of the datastore";
+    static constexpr auto longHelp = R"(
+    dump xml|json
+
+    Usage:
+        /> dump xml
+        /> dump json)";
+    bool operator==(const dump_& other) const;
+
+    DumpFormat m_format;
+};
+
 struct help_;
-using CommandTypes = boost::mpl::vector<cd_, commit_, copy_, create_, delete_, describe_, discard_, get_, help_, ls_, move_, set_>;
+using CommandTypes = boost::mpl::vector<cd_, commit_, copy_, create_, delete_, describe_, discard_, dump_, get_, help_, ls_, move_, set_>;
 struct help_ : x3::position_tagged {
     static constexpr auto name = "help";
     static constexpr auto shortHelp = "help - Print help for commands.";
@@ -254,3 +268,4 @@ BOOST_FUSION_ADAPT_STRUCT(discard_)
 BOOST_FUSION_ADAPT_STRUCT(get_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(copy_, m_source, m_destination)
 BOOST_FUSION_ADAPT_STRUCT(move_, m_source, m_destination)
+BOOST_FUSION_ADAPT_STRUCT(dump_, m_format)

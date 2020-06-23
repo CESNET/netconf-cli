@@ -45,6 +45,9 @@ public:
 
     std::shared_ptr<Schema> schema() override;
 
+    std::string dumpXML() const override;
+    std::string dumpJSON() const override;
+
 private:
     std::vector<ListInstance> listInstances(const std::string& path) override;
 

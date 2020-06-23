@@ -35,8 +35,8 @@ public:
     std::shared_ptr<Schema> schema() override;
 
     void enableFeature(const std::string& module, const std::string& feature);
-    std::string dumpXML() const;
-    std::string dumpJSON() const;
+    std::string dumpXML() const override;
+    std::string dumpJSON() const override;
 
     void addSchemaFile(const std::string& path);
     void addSchemaDir(const std::string& path);

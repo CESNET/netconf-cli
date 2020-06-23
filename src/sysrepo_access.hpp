@@ -41,9 +41,12 @@ public:
     void discardChanges() override;
     void copyConfig(const Datastore source, const Datastore destination) override;
 
+    std::string dumpXML() const override;
+    std::string dumpJSON() const override;
 private:
     std::vector<ListInstance> listInstances(const std::string& path) override;
     [[noreturn]] void reportErrors() const;
+    std::string impl_dumpConfig(const DumpFormat format) const;
 
     std::string fetchSchema(const char* module, const char* revision, const char* submodule);
     std::vector<std::shared_ptr<sysrepo::Yang_Schema>> listSchemas();

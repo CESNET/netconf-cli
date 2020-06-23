@@ -66,6 +66,11 @@ enum class Datastore {
     Startup
 };
 
+enum class DumpFormat {
+    Xml,
+    Json
+};
+
 std::string specialValueToString(const special_& value);
 
 using leaf_data_ = boost::variant<enum_,
