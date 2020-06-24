@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d90f49db_819be555",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-24T08:09:29Z",
+      "side": 1,
+      "message": "I was taught to more or less always use std::endl in place of \"\\n\"",
+      "range": {
+        "startLine": 200,
+        "startChar": 52,
+        "endLine": 200,
+        "endChar": 56
+      },
+      "revId": "610cc32069b1511218b9045e7c27e213364a02ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "134da4d7_f33b51c1",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-24T08:09:29Z",
+      "side": 1,
+      "message": "Are presence containers visible in the output if (and only if) they are present in the datastore?\n\nThis should be easily testable -- extend the existing test_datastore_access which manipulates persistent containers to obtain a dump, and check for a substring match (or no match). It\u0027s crude and naive, but it should do the trick.",
+      "range": {
+        "startLine": 444,
+        "startChar": 0,
+        "endLine": 446,
+        "endChar": 9
+      },
+      "revId": "610cc32069b1511218b9045e7c27e213364a02ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
