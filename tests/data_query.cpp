@@ -234,5 +234,14 @@ TEST_CASE("data query")
         REQUIRE(keys == expected);
     }
 
+    SECTION("empty datastore")
+    {
+        dataPath_ listPath;
+        listPath.m_scope = Scope::Absolute;
+        listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"person"}});
+        auto keys = dataquery.listKeys(listPath);
+        REQUIRE(keys == std::vector<ListInstance>{});
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
