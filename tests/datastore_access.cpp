@@ -757,6 +757,12 @@ TEST_CASE("setting/getting values")
         REQUIRE(std::all_of(expected.begin(), expected.end(), [items] (const auto& item) { return std::find(items.begin(), items.end(), item) != items.end(); }));
     }
 
+    SECTION("setting and removing without commit")
+    {
+        datastore.setLeaf("/example-schema:leafInt32", 64);
+        datastore.deleteItem("/example-schema:leafInt32");
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
 
