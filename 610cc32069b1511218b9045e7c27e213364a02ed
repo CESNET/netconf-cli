@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "60a0883f_5bd57d0c",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-24T12:25:32Z",
+      "side": 1,
+      "message": "Yeah, well... https://www.youtube.com/watch?v\u003dGMqQOEZYVJQ this tells not to use endl\nThe difference is that endl always flushes. In this case (when outputting to stdout) it might make sense to flush always, cause we want the user to see everything immediately. But most systems buffer based on lines anyway, so it might be better to let the system flush when it thinks it\u0027s a time? I don\u0027t know. I can change to endl if you want, I don\u0027t really care, but I have used \"\\n\" in other places (in netconf-cli)",
+      "parentUuid": "d90f49db_819be555",
+      "range": {
+        "startLine": 200,
+        "startChar": 52,
+        "endLine": 200,
+        "endChar": 56
+      },
+      "revId": "610cc32069b1511218b9045e7c27e213364a02ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "134da4d7_f33b51c1",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 4
@@ -45,6 +69,30 @@
       "revId": "610cc32069b1511218b9045e7c27e213364a02ed",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "399c3f67_92a0312f",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-24T12:25:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "134da4d7_f33b51c1",
+      "range": {
+        "startLine": 444,
+        "startChar": 0,
+        "endLine": 446,
+        "endChar": 9
+      },
+      "revId": "610cc32069b1511218b9045e7c27e213364a02ed",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
