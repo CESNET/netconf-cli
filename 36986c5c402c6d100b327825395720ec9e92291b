@@ -16,6 +16,24 @@
       "revId": "36986c5c402c6d100b327825395720ec9e92291b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6820b55_df3ff800",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-25T14:29:51Z",
+      "side": 1,
+      "message": "Vasek says that this is needed for YangAccess (next commit, my bad) so that we have both root-\u003eprev and root-\u003enext branches covered. Upon a commit, libyang adds the ietf-yang-library bits into the datastore, so we cannot effectively reach that case when we\u0027re deleting an item without any previous node, i.e. -\u003eprev pointing to itself.",
+      "parentUuid": "abc5af94_aaa4b797",
+      "revId": "36986c5c402c6d100b327825395720ec9e92291b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
