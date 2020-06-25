@@ -22,6 +22,30 @@
       "revId": "41e3e6b1d40de6d0edce890d5f3a758e46946cdb",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8d51fb0_539ef203",
+        "filename": "tests/data_query.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-25T08:33:54Z",
+      "side": 1,
+      "message": "I mixed the tests up, should be fixed now.",
+      "parentUuid": "7fbae206_275b8fbb",
+      "range": {
+        "startLine": 244,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 5
+      },
+      "revId": "41e3e6b1d40de6d0edce890d5f3a758e46946cdb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
