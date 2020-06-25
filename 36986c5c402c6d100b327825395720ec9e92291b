@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "abc5af94_aaa4b797",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-25T14:23:34Z",
+      "side": 1,
+      "message": "There\u0027s no diff in the coverage report. Is this commit needed?",
+      "revId": "36986c5c402c6d100b327825395720ec9e92291b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
