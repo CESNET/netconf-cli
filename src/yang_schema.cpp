@@ -101,7 +101,11 @@ libyang::S_Schema_Node YangSchema::impl_getSchemaNode(const std::string& node) c
             [&oldOptions]() {
                 libyang::set_log_options(oldOptions);
             });
-        return m_context->get_node(nullptr, node.c_str());
+        auto res = m_context->get_node(nullptr, node.c_str());
+        if (!res) { // If no node is found, try output rpc nodes too.
+            res = m_context->get_node(nullptr, node.c_str(), 1);
+        }
+        return res;
     }
 }
 
