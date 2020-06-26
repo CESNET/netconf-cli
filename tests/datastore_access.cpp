@@ -8,6 +8,8 @@
 
 #include "trompeloeil_doctest.hpp"
 #include <sysrepo-cpp/Session.hpp>
+#include "yang_schema.hpp"
+#include "proxy_datastore.hpp"
 
 #ifdef sysrepo_BACKEND
 #include "sysrepo_access.hpp"
@@ -883,16 +885,22 @@ TEST_CASE("rpc") {
     srSubscription->rpc_subscribe("/example-schema:launch-nukes", cb, nullptr, SR_SUBSCR_CTX_REUSE);
 
 #ifdef sysrepo_BACKEND
-    SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
+    auto datastore = std::make_shared<SysrepoAccess>("netconf-cli-test", Datastore::Running);
 #elif defined(netconf_BACKEND)
-    NetconfAccess datastore(NETOPEER_SOCKET_PATH);
+    auto datastore = std::make_shared<NetconfAccess>(NETOPEER_SOCKET_PATH);
 #elif defined(yang_BACKEND)
-    YangAccess datastore;
-    datastore.addSchemaDir(schemaDir);
-    datastore.addSchemaFile(exampleSchemaFile);
+    auto datastore = std::make_shared<YangAccess>();
+    datastore->addSchemaDir(schemaDir);
+    datastore->addSchemaFile(exampleSchemaFile);
 #else
 #error "Unknown backend"
 #endif
+
+    auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {
+        return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
+    };
+
+    ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
 
     SECTION("valid")
     {
@@ -901,6 +909,7 @@ TEST_CASE("rpc") {
 
         SECTION("noop") {
             rpc = "/example-schema:noop";
+            proxyDatastore.initiateRpc(rpc);
         }
 
         SECTION("small nuke") {
@@ -909,6 +918,8 @@ TEST_CASE("rpc") {
                 {"description", "dummy"s},
                 {"payload/kilotons", uint64_t{333'666}},
             };
+            proxyDatastore.initiateRpc(rpc);
+            proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", {uint64_t{333'666}});
             // no data are returned
         }
 
@@ -918,6 +929,9 @@ TEST_CASE("rpc") {
                 {"description", "dummy"s},
                 {"payload/kilotons", uint64_t{4}},
             };
+            proxyDatastore.initiateRpc(rpc);
+            proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", {uint64_t{4}});
+
             output = {
                 {"blast-radius", uint32_t{33'666}},
                 {"actual-yield", uint64_t{5}},
@@ -930,6 +944,9 @@ TEST_CASE("rpc") {
                 {"payload/kilotons", uint64_t{6}},
                 {"cities/targets[city='Prague']/city", "Prague"s},
             };
+            proxyDatastore.initiateRpc(rpc);
+            proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", {uint64_t{6}});
+            proxyDatastore.createItem("/example-schema:launch-nukes/example-schema:cities/example-schema:targets[city='Prague']");
             output = {
                 {"blast-radius", uint32_t{33'666}},
                 {"actual-yield", uint64_t{7}},
@@ -941,12 +958,13 @@ TEST_CASE("rpc") {
             };
         }
 
-        catching<OnRPC>([&] {REQUIRE(datastore.executeRpc(rpc, input) == output);});
+        catching<OnRPC>([&] {REQUIRE(datastore->executeRpc(rpc, input) == output);});
+        catching<OnRPC>([&] {REQUIRE(proxyDatastore.executeRpc() == output);});
     }
 
     SECTION("non-existing RPC")
     {
-        catching<OnInvalidRpcPath>([&] {datastore.executeRpc("/example-schema:non-existing", DatastoreAccess::Tree{});});
+        catching<OnInvalidRpcPath>([&] {datastore->executeRpc("/example-schema:non-existing", DatastoreAccess::Tree{});});
     }
 
     waitForCompletionAndBitMore(seq1);
