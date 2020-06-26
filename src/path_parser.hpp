@@ -14,6 +14,7 @@
 
 namespace x3 = boost::spirit::x3;
 
+x3::rule<rpcPath_class, dataPath_> const rpcPath = "rpcPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
 x3::rule<leafListElementPath_class, dataPath_> const leafListElementPath = "leafListElementPath";
@@ -137,10 +138,13 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                         parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
                     }
                     break;
+                case yang::NodeTypes::Rpc:
+                    out.m_suffix = rpcNode_{child.second};
+                    parserContext.m_suggestions.emplace(Completion{parseString + "/"});
+                    break;
                 case yang::NodeTypes::Action:
                 case yang::NodeTypes::AnyXml:
                 case yang::NodeTypes::Notification:
-                case yang::NodeTypes::Rpc:
                     continue;
             }
             table.add(parseString, out);
@@ -421,6 +425,13 @@ struct WritableLeafPath : x3::parser<WritableLeafPath> {
 auto const writableLeafPath_def =
     PathParser<PathParserMode::DataPath, CompletionMode::Data>{filterConfigFalse};
 
+auto const onlyRpc = [] (const Schema& schema, const std::string& path) {
+    return schema.nodeType(path) == yang::NodeTypes::Rpc;
+};
+
+auto const rpcPath_def =
+    PathParser<PathParserMode::DataPath, CompletionMode::Data>{onlyRpc};
+
 auto const presenceContainerPath_def =
     dataPath;
 
@@ -443,6 +454,7 @@ auto const initializePath_def =
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(key_identifier)
 BOOST_SPIRIT_DEFINE(listSuffix)
+BOOST_SPIRIT_DEFINE(rpcPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
 BOOST_SPIRIT_DEFINE(leafListElementPath)
