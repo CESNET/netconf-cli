@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca04a3e2_b4d5681e",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-26T16:48:55Z",
+      "side": 1,
+      "message": "On one hand I like it that you don\u0027t assume XML files always come with .xml suffix and JSON files with .json, but I think that it could be confusing for the user to see an error message when reading JSON files.\n\nI think that a valid XML file always has \"\u003c\" prior to any \"{\", and that it\u0027s the other way round for JSON. Can you perhaps read the file here, perform this crude format detection heuristics, and select XML vs. JSON based on that?\n\nIf that file is empty, it should be OK to parse it as either of these two formats.",
+      "range": {
+        "startLine": 298,
+        "startChar": 0,
+        "endLine": 303,
+        "endChar": 5
+      },
+      "revId": "18795290cc63e7cc766ffb269b0fd09c1f020732",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
