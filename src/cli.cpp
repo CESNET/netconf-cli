@@ -15,6 +15,7 @@
 #include "proxy_datastore.hpp"
 #if defined(SYSREPO_CLI)
 #include "sysrepo_access.hpp"
+#include "yang_schema.hpp"
 #define PROGRAM_NAME "sysrepo-cli"
 static const auto usage = R"(CLI interface to sysrepo
 
@@ -124,7 +125,17 @@ int main(int argc, char* argv[])
 #error "Unknown CLI backend"
 #endif
 
-    ProxyDatastore proxyDatastore(datastore);
+#if defined(SYSREPO_CLI)
+    auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {
+        return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
+    };
+#elif defined(YANG_CLI)
+    auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>&) {
+        return nullptr;
+    };
+#endif
+
+    ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
     auto dataQuery = std::make_shared<DataQuery>(*datastore);
     Parser parser(datastore->schema(), writableOps, dataQuery);
 
@@ -188,6 +199,8 @@ int main(int argc, char* argv[])
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         } catch (DatastoreException& ex) {
+            std::cerr << ex.what() << std::endl;
+        } catch (std::runtime_error& ex) {
             std::cerr << ex.what() << std::endl;
         }
 
