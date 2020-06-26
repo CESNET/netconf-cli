@@ -70,6 +70,7 @@ public:
     std::shared_ptr<libyang::Module> getYangModule(const std::string& name);
 
 private:
+    friend class YangAccess;
     template <typename NodeType>
     [[nodiscard]] yang::TypeInfo impl_leafType(const std::shared_ptr<libyang::Schema_Node>& node) const;
     [[nodiscard]] std::set<std::string> modules() const;
