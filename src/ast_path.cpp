@@ -110,6 +110,11 @@ bool list_::operator==(const list_& b) const
     return (this->m_name == b.m_name);
 }
 
+bool rpcNode_::operator==(const rpcNode_& other) const
+{
+    return this->m_name == other.m_name;
+}
+
 list_::list_(const std::string& listName)
     : m_name(listName)
 {
