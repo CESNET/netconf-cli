@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e121e430_29e32920",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-26T16:41:24Z",
+      "side": 1,
+      "message": "Okay. (stupid C)",
+      "parentUuid": "6e01547d_07af8eed",
+      "revId": "60900c1ffa935951f0286a24607debd18befcde1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "351d3668_2e5c8cf0",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2020-06-26T16:36:35Z",
       "side": 1,
       "message": "That function can return a failure even in other cases, such as when that feature has an if-feature conditional on another feature. Let\u0027s just print out a generic error such as \"Cannot enable feature XYZ for module ABC\" to avoid a potentially misleading error message.",
+      "revId": "60900c1ffa935951f0286a24607debd18befcde1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a27cec12_8ab33c4b",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-26T16:41:24Z",
+      "side": 1,
+      "message": "The docs specifically say, that failure means feature doesn\u0027t exist.",
+      "parentUuid": "351d3668_2e5c8cf0",
       "revId": "60900c1ffa935951f0286a24607debd18befcde1",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
