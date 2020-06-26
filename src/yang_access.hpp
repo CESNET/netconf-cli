@@ -39,6 +39,7 @@ public:
 
     void addSchemaFile(const std::string& path);
     void addSchemaDir(const std::string& path);
+    void addDataFile(const std::string& path);
 
 private:
     std::vector<ListInstance> listInstances(const std::string& path) override;
