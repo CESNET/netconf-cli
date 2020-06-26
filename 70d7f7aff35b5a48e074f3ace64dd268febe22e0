@@ -16,6 +16,24 @@
       "revId": "70d7f7aff35b5a48e074f3ace64dd268febe22e0",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ea6634d_62d7a5c3",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-26T09:14:13Z",
+      "side": 1,
+      "message": "The m_session-\u003eget() api is a little weird, if you want \"/\" (meaning everything), you specify no path (the argument is optional).",
+      "parentUuid": "6eb2ab3d_aa7e5bdf",
+      "revId": "70d7f7aff35b5a48e074f3ace64dd268febe22e0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
