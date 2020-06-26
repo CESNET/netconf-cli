@@ -29,6 +29,7 @@ TEST_CASE("cd")
     schema->addList("/", "example:twoKeyList", {"number", "name"});
     schema->addLeaf("/example:twoKeyList", "example:number", yang::Int32{});
     schema->addLeaf("/example:twoKeyList", "example:name", yang::String{});
+    schema->addRpc("/", "example:launch-nukes");
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -311,6 +312,11 @@ TEST_CASE("cd")
         SECTION("no space between list prefix and suffix")
         {
             input = "cd example:list  [number=10]";
+        }
+
+        SECTION("cd into rpc")
+        {
+            input = "cd example:launch-nukes";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);

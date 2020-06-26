@@ -39,7 +39,11 @@ TEST_CASE("interpreter tests")
     auto schema = std::make_shared<MockSchema>();
     Parser parser(schema);
     auto datastore = std::make_shared<MockDatastoreAccess>();
-    ProxyDatastore proxyDatastore(datastore);
+    auto input_datastore = std::make_shared<MockDatastoreAccess>();
+    auto createTemporaryDatastore = [input_datastore]([[maybe_unused]] const std::shared_ptr<DatastoreAccess>& datastore) {
+        return input_datastore;
+    };
+    ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
     std::vector<std::unique_ptr<trompeloeil::expectation>> expectations;
 
     std::vector<command_> toInterpret;
@@ -420,5 +424,46 @@ TEST_CASE("interpreter tests")
 
     for (const auto& command : toInterpret) {
         boost::apply_visitor(Interpreter(parser, proxyDatastore), command);
+    }
+}
+
+TEST_CASE("rpc")
+{
+    auto schema = std::make_shared<MockSchema>();
+    Parser parser(schema);
+    auto datastore = std::make_shared<MockDatastoreAccess>();
+    auto input_datastore = std::make_shared<MockDatastoreAccess>();
+    auto createTemporaryDatastore = [input_datastore]([[maybe_unused]] const std::shared_ptr<DatastoreAccess>& datastore) {
+        return input_datastore;
+    };
+    ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
+
+    SECTION("entering/leaving rpc context")
+    {
+        dataPath_ rpcPath;
+        rpcPath.pushFragment({{"example"}, rpcNode_{"launch-nukes"}});
+        rpc_ rpcCmd;
+        rpcCmd.m_path = rpcPath;
+
+        {
+            REQUIRE_CALL(*input_datastore, createItem("/example:launch-nukes"));
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{rpcCmd});
+        }
+
+        REQUIRE(parser.currentPath() == rpcPath);
+
+        SECTION("exec")
+        {
+            REQUIRE_CALL(*input_datastore, getItems("/")).RETURN(DatastoreAccess::Tree{});
+            REQUIRE_CALL(*datastore, executeRpc("/example:launch-nukes", DatastoreAccess::Tree{})).RETURN(DatastoreAccess::Tree{});
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{exec_{}});
+        }
+
+        SECTION("cancel")
+        {
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cancel_{}});
+        }
+
+        REQUIRE(parser.currentPath() == dataPath_{});
     }
 }
