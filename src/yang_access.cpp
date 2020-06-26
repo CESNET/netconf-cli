@@ -31,6 +31,15 @@ YangAccess::YangAccess()
     : m_ctx(lyWrap(ly_ctx_new(nullptr, LY_CTX_DISABLE_SEARCHDIR_CWD)))
     , m_datastore(lyWrap<lyd_node>(nullptr))
     , m_schema(std::make_shared<YangSchema>(libyang::create_new_Context(m_ctx.get())))
+    , m_validation_mode(LYD_OPT_DATA)
+{
+}
+
+YangAccess::YangAccess(std::shared_ptr<YangSchema> schema)
+    : m_ctx(schema->m_context->swig_ctx(), [](auto) {})
+    , m_datastore(lyWrap<lyd_node>(nullptr))
+    , m_schema(schema)
+    , m_validation_mode(LYD_OPT_RPC)
 {
 }
 
@@ -103,7 +112,12 @@ void YangAccess::impl_removeNode(const std::string& path)
 void YangAccess::validate()
 {
     auto datastore = m_datastore.release();
-    lyd_validate(&datastore, LYD_OPT_DATA | LYD_OPT_DATA_NO_YANGLIB, m_ctx.get());
+
+    if (m_validation_mode == LYD_OPT_RPC) {
+        lyd_validate(&datastore, m_validation_mode, nullptr);
+    } else {
+        lyd_validate(&datastore, m_validation_mode | LYD_OPT_DATA_NO_YANGLIB, m_ctx.get());
+    }
     m_datastore = lyWrap(datastore);
 }
 
@@ -116,8 +130,12 @@ DatastoreAccess::Tree YangAccess::getItems(const std::string& path) const
 
     auto set = lyWrap(lyd_find_path(m_datastore.get(), path == "/" ? "/*" : path.c_str()));
     auto setWrapper = libyang::Set(set.get(), nullptr);
-
-    lyNodesToTree(res, setWrapper.data());
+    std::optional<std::string> ignoredXPathPrefix;
+    if (m_datastore->schema->nodetype == LYS_RPC) {
+        auto path = std::unique_ptr<char>(lys_path(m_datastore->schema, 0));
+        ignoredXPathPrefix = joinPaths(path.get(), "/");
+    }
+    lyNodesToTree(res, setWrapper.data(), ignoredXPathPrefix);
     return res;
 }
 
@@ -218,6 +236,9 @@ DatastoreAccess::Tree YangAccess::executeRpc(const std::string& path, const Tree
         getErrorsAndThrow();
     }
     for (const auto& [k, v] : input) {
+        if (v.type() == typeid(special_) && boost::get<special_>(v).m_value != SpecialValue::PresenceContainer) {
+            continue;
+        }
         auto node = lyd_new_path(root.get(), m_ctx.get(), joinPaths(path, k).c_str(), (void*)leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, 0);
         if (!node) {
             getErrorsAndThrow();
