@@ -132,7 +132,16 @@ struct updateSrValFromValue : boost::static_visitor<void> {
 
     void operator()(const special_& value) const
     {
-        throw std::runtime_error("Tried constructing S_Val from a " + specialValueToString(value));
+        switch (value.m_value) {
+        case SpecialValue::PresenceContainer:
+            v->set(xpath.c_str(), nullptr, SR_CONTAINER_PRESENCE_T);
+            break;
+        case SpecialValue::List:
+            v->set(xpath.c_str(), nullptr, SR_LIST_T);
+            break;
+        default:
+            throw std::runtime_error("Tried constructing S_Val from a " + specialValueToString(value));
+        }
     }
 
     void operator()(const std::string& value) const
