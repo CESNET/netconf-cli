@@ -69,7 +69,11 @@ public:
     [[nodiscard]] std::shared_ptr<libyang::Data_Node> dataNodeFromPath(const std::string& path, const std::optional<const std::string> value = std::nullopt) const;
     std::shared_ptr<libyang::Module> getYangModule(const std::string& name);
 
+    [[nodiscard]] std::vector<std::string> allModules() const override;
+    [[nodiscard]] std::string yangSource(const char* mod_name, const char* mod_revision, const char* submod_name, const char* submod_revision) const override;
+
 private:
+    friend class YangAccess;
     template <typename NodeType>
     [[nodiscard]] yang::TypeInfo impl_leafType(const std::shared_ptr<libyang::Schema_Node>& node) const;
     [[nodiscard]] std::set<std::string> modules() const;

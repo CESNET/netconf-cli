@@ -201,6 +201,13 @@ void Interpreter::operator()(const dump_& dump) const
     std::cout << m_datastore.dump(dump.m_format) << "\n";
 }
 
+void Interpreter::operator()(const rpc_& rpc) const
+{
+    // TODO: implement this... oof.
+    m_datastore.initiateRpc(pathToString(toCanonicalPath(rpc.m_path)));
+    m_parser.changeNode(rpc.m_path);
+}
+
 struct commandLongHelpVisitor : boost::static_visitor<const char*> {
     template <typename T>
     auto constexpr operator()(boost::type<T>) const

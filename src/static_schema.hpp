@@ -86,6 +86,9 @@ public:
     void addModule(const std::string& name);
     void addIdentity(const std::optional<identityRef_>& base, const identityRef_& name);
 
+    [[nodiscard]] std::vector<std::string> allModules() const override;
+    [[nodiscard]] std::string yangSource(const char* mod_name, const char* mod_revision, const char* submod_name, const char* submod_revision) const override;
+
 private:
     const std::unordered_map<std::string, NodeInfo>& children(const std::string& name) const;
     void getIdentSet(const identityRef_& ident, std::set<identityRef_>& res) const;
