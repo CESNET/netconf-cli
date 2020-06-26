@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e01547d_07af8eed",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-26T16:36:35Z",
+      "side": 1,
+      "message": "I know that the docs say explicitly that it\u0027s gonna return 1 on failure, but it\u0027s a C API where the convention is usually \"0 is success\" and \"non-zero is failure\". Let\u0027s test it like this, please:\n\n if (!module-\u003efeature_enable(...))\n    ...",
+      "revId": "60900c1ffa935951f0286a24607debd18befcde1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "351d3668_2e5c8cf0",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-26T16:36:35Z",
+      "side": 1,
+      "message": "That function can return a failure even in other cases, such as when that feature has an if-feature conditional on another feature. Let\u0027s just print out a generic error such as \"Cannot enable feature XYZ for module ABC\" to avoid a potentially misleading error message.",
+      "revId": "60900c1ffa935951f0286a24607debd18befcde1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
