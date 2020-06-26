@@ -34,6 +34,13 @@ YangAccess::YangAccess()
 {
 }
 
+YangAccess::YangAccess(std::shared_ptr<YangSchema> schema)
+    : m_ctx(schema->m_context->swig_ctx(), [](auto){})
+    , m_datastore(lyWrap<lyd_node>(nullptr))
+    , m_schema(schema)
+{
+}
+
 YangAccess::~YangAccess() = default;
 
 [[noreturn]] void YangAccess::getErrorsAndThrow() const

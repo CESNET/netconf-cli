@@ -272,3 +272,13 @@ std::optional<std::string> StaticSchema::defaultValue([[maybe_unused]] const std
 {
     throw std::runtime_error{"Internal error: StaticSchema::defaultValue(std::string) not implemented. The tests should not have called this overload."};
 }
+
+std::vector<std::string> StaticSchema::allModules() const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::allModules() not implemented. The tests should not have called this overload."};
+}
+
+std::string StaticSchema::yangSource([[maybe_unused]] const char* mod_name, [[maybe_unused]] const char* mod_revision, [[maybe_unused]] const char* submod_name, [[maybe_unused]] const char* submod_revision) const
+{
+    throw std::runtime_error{"Internal error: StaticSchema::allModules(const char*, const char*, const char*, const char*) not implemented. The tests should not have called this overload."};
+}

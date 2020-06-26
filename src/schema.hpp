@@ -70,4 +70,7 @@ public:
     [[nodiscard]] virtual yang::Status status(const std::string& location) const = 0;
 
     [[nodiscard]] virtual std::set<ModuleNodePair> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const = 0;
+    [[nodiscard]] virtual std::vector<std::string> allModules() const = 0;
+    [[nodiscard]] virtual std::string yangSource(const char* mod_name, const char* mod_revision, const char* submod_name, const char* submod_revision) const = 0;
+
 };

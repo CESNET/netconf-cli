@@ -5,6 +5,7 @@
  *
 */
 #include "proxy_datastore.hpp"
+#include "yang_schema.hpp"
 
 ProxyDatastore::ProxyDatastore(DatastoreAccess& datastore)
     : m_datastore(datastore)
@@ -54,6 +55,18 @@ void ProxyDatastore::copyConfig(const Datastore source, const Datastore destinat
 std::string ProxyDatastore::dump(const DataFormat format) const
 {
     return m_datastore.dump(format);
+}
+
+void ProxyDatastore::initiateRpc(const std::string&)
+{
+    auto schema = std::make_shared<YangSchema>();
+    schema->registerModuleCallback([this] (const char* mod_name, const char* mod_revision, const char* submod_name, const char* submod_revision) {
+        return m_datastore.schema()->yangSource(mod_name, mod_revision, submod_name, submod_revision);
+    });
+    for (auto module : m_datastore.schema()->allModules()) {
+        schema->loadModule(module);
+    }
+    m_inputDatastore.emplace(schema);
 }
 
 std::shared_ptr<Schema> ProxyDatastore::schema() const
