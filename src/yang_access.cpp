@@ -1,5 +1,6 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <experimental/iterator>
+#include <fstream>
 #include <iostream>
 #include <libyang/Tree_Data.hpp>
 #include <libyang/libyang.h>
@@ -291,4 +292,24 @@ void YangAccess::addSchemaDir(const std::string& path)
 void YangAccess::enableFeature(const std::string& module, const std::string& feature)
 {
     m_schema->enableFeature(module, feature);
+}
+
+void YangAccess::addDataFile(const std::string& path)
+{
+    std::ifstream fs(path);
+    char firstChar;
+    fs >> firstChar;
+
+    std::cout << "Parsing \"" << path << "\" as " << (firstChar == '{' ? "JSON" : "XML") << "...\n";
+    auto dataNode = lyd_parse_path(m_ctx.get(), path.c_str(), firstChar == '{' ? LYD_JSON : LYD_XML, LYD_OPT_DATA | LYD_OPT_DATA_NO_YANGLIB);
+
+    if (!dataNode) {
+        throw std::runtime_error("Supplied data file " + path + " couldn't be parsed.");
+    }
+
+    if (!m_datastore) {
+        m_datastore = lyWrap(dataNode);
+    } else {
+        lyd_merge(m_datastore.get(), dataNode, LYD_OPT_DESTRUCT);
+    }
 }
