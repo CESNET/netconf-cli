@@ -239,9 +239,24 @@ struct format_table : x3::symbols<DataFormat> {
     }
 } const format_table;
 
+struct dump_args : x3::parser<dump_args> {
+    using attribute_type = dump_;
+    template <typename It, typename Ctx, typename RCtx>
+    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, dump_& attr) const
+    {
+        ParserContext& parserContext = x3::get<parser_context_tag>(ctx);
+        parserContext.m_suggestions = {{"xml"}, {"json"}};
+        parserContext.m_completionIterator = begin;
+        auto res = format_table.parse(begin, end, ctx, rctx, attr);
+        if (!res) {
+            parserContext.m_errorMsg = "Expected a data format (xml, json) here:";
+        }
+        return res;
+    }
+} const dump_args;
 
 auto const dump_def =
-    dump_::name >> space_separator >> format_table;
+    dump_::name > space_separator >> dump_args;
 
 auto const createCommandSuggestions_def =
     x3::eps;
