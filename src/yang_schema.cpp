@@ -374,12 +374,14 @@ void YangSchema::loadModule(const std::string& moduleName)
 
 void YangSchema::enableFeature(const std::string& moduleName, const std::string& featureName)
 {
+    using namespace std::string_literals;
     auto module = getYangModule(moduleName);
     if (!module) {
-        using namespace std::string_literals;
         throw std::runtime_error("Module \""s + moduleName + "\" doesn't exist.");
     }
-    module->feature_enable(featureName.c_str());
+    if (module->feature_enable(featureName.c_str())) {
+        throw std::runtime_error("Can't enable feature \""s + featureName + "\" for module \"" + moduleName + "\".");
+    }
 }
 
 void YangSchema::registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb)
