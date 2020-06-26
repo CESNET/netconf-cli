@@ -1188,5 +1188,10 @@ TEST_CASE("yangschema")
         {
             REQUIRE_THROWS_AS(ys.enableFeature("non-existing", "just-no"), std::runtime_error);
         }
+
+        SECTION("enableFeature - non existing feature")
+        {
+            REQUIRE_THROWS_AS(ys.enableFeature("example-schema", "just-no"), std::runtime_error);
+        }
     }
 }
