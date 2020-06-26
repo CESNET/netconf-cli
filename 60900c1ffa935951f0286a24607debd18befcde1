@@ -87,6 +87,24 @@
       "revId": "60900c1ffa935951f0286a24607debd18befcde1",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b14cc696_80eea50a",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-26T16:50:56Z",
+      "side": 1,
+      "message": "You\u0027re right, although one could argue that if a feature is disabled by an if-feature statement, then the feature doesn\u0027t exist. But I don\u0027t want to argue :D.",
+      "parentUuid": "24b9b459_4ac48bf4",
+      "revId": "60900c1ffa935951f0286a24607debd18befcde1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
