@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6eb2ab3d_aa7e5bdf",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-26T08:04:47Z",
+      "side": 1,
+      "message": "I won\u0027t pretend I understand this, but I\u0027m going to rely on your judgement that this fix makes sense.",
+      "revId": "70d7f7aff35b5a48e074f3ace64dd268febe22e0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
