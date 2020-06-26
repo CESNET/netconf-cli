@@ -39,6 +39,8 @@ TEST_CASE("path_completion")
     schema->addLeaf("/", "example:leafInt", yang::Int32{});
     schema->addLeaf("/", "example:readonly", yang::Int32{}, yang::AccessType::ReadOnly);
     schema->addLeafList("/", "example:addresses", yang::String{});
+    schema->addRpc("/", "second:fire");
+    schema->addLeaf("/second:fire", "second:whom", yang::String{});
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
 
     // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
@@ -68,7 +70,7 @@ TEST_CASE("path_completion")
         SECTION("ls ")
         {
             input = "ls ";
-            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "second:amelie/"};
+            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "second:amelie/", "second:fire/"};
             expectedContextLength = 0;
         }
 
@@ -103,7 +105,7 @@ TEST_CASE("path_completion")
         SECTION("ls /")
         {
             input = "ls /";
-            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "second:amelie/"};
+            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "second:amelie/", "second:fire/"};
             expectedContextLength = 0;
         }
 
@@ -131,7 +133,7 @@ TEST_CASE("path_completion")
         SECTION("ls /s")
         {
             input = "ls /s";
-            expectedCompletions = {"second:amelie/"};
+            expectedCompletions = {"second:amelie/", "second:fire/"};
             expectedContextLength = 1;
         }
 
@@ -331,6 +333,21 @@ TEST_CASE("path_completion")
     {
         input = "set example:leafInt ";
         expectedCompletions = {};
+        expectedContextLength = 0;
+    }
+
+    SECTION("rpc input nodes NOT completed for rpc command")
+    {
+        input = "rpc example:fire/";
+        expectedCompletions = {};
+        expectedContextLength = 13;
+    }
+
+    SECTION("rpc input nodes completed for set command")
+    {
+        parser.changeNode({{}, {{module_{"second"}, rpcNode_{"fire"}}}});
+        input = "set ";
+        expectedCompletions = {"whom "};
         expectedContextLength = 0;
     }
 
