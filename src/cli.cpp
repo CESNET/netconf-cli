@@ -31,13 +31,14 @@ Options:
 static const auto usage = R"(CLI interface for creating local YANG data instances
 
 Usage:
-  yang-cli [-s <search_dir>] [-e enable_features]... <schema_file>...
+  yang-cli [-s <search_dir>] [-e enable_features]... [-i data_file]... <schema_file>...
   yang-cli (-h | --help)
   yang-cli --version
 
 Options:
   -s <search_dir>       Set search for schema lookup
-  -e <enable_features>  Feature to enable after modules are loaded. This option can be supplied more than once. Format: <module_name>:<feature>)";
+  -e <enable_features>  Feature to enable after modules are loaded. This option can be supplied more than once. Format: <module_name>:<feature>
+  -i <data_file>        File to import data from)";
 #else
 #error "Unknown CLI backend"
 #endif
@@ -92,6 +93,11 @@ int main(int argc, char* argv[])
                 return 1;
             }
 
+        }
+    }
+    if (const auto& dataFiles = args["-i"]) {
+        for (const auto& dataFile : dataFiles.asStringList()) {
+            datastore.addDataFile(dataFile);
         }
     }
 #else
