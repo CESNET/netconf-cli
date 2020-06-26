@@ -69,6 +69,24 @@
       "revId": "60900c1ffa935951f0286a24607debd18befcde1",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24b9b459_4ac48bf4",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-26T16:43:37Z",
+      "side": 1,
+      "message": "Then the actual code disagrees with what the docs say. See e.g. https://gerrit.cesnet.cz/plugins/gitiles/github/CESNET/libyang/+/refs/heads/master/src/tree_schema.c#3940",
+      "parentUuid": "a27cec12_8ab33c4b",
+      "revId": "60900c1ffa935951f0286a24607debd18befcde1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
