@@ -292,3 +292,22 @@ void YangAccess::enableFeature(const std::string& module, const std::string& fea
 {
     m_schema->enableFeature(module, feature);
 }
+
+void YangAccess::addDataFile(const std::string& path)
+{
+    std::cout << "Parsing " << path << " as XML...\n";
+    auto dataNode = lyd_parse_path(m_ctx.get(), path.c_str(), LYD_XML, LYD_OPT_DATA | LYD_OPT_DATA_NO_YANGLIB);
+    if (!dataNode) {
+        std::cout << "Parsing " << path << " as JSON...\n";
+        dataNode = lyd_parse_path(m_ctx.get(), path.c_str(), LYD_JSON, LYD_OPT_DATA | LYD_OPT_DATA_NO_YANGLIB);
+    }
+    if (!dataNode) {
+        throw std::runtime_error("Supplied data file " + path + " couldn't be parsed.");
+    }
+
+    if (!m_datastore) {
+        m_datastore = lyWrap(dataNode);
+    } else {
+        lyd_merge(m_datastore.get(), dataNode, LYD_OPT_DESTRUCT);
+    }
+}
