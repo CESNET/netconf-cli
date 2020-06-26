@@ -111,6 +111,16 @@ module example-schema {
         }
     }
 
+    rpc fire {
+        input {
+            leaf whom {
+                type leafref {
+                    path '/aha:person/name';
+                }
+            }
+        }
+    }
+
     rpc launch-nukes {
         input {
             container payload {
