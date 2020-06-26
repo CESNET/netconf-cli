@@ -73,5 +73,12 @@ TEST_CASE("command completion")
         expectedContextLength = 0;
     }
 
+    SECTION("dump")
+    {
+        input = "dump ";
+        expectedCompletions = {"xml", "json"};
+        expectedContextLength = 0;
+    }
+
     REQUIRE(parser.completeCommand(input, errorStream) == (Completions{expectedCompletions, expectedContextLength}));
 }
