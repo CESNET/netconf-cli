@@ -101,7 +101,11 @@ libyang::S_Schema_Node YangSchema::impl_getSchemaNode(const std::string& node) c
             [&oldOptions]() {
                 libyang::set_log_options(oldOptions);
             });
-        return m_context->get_node(nullptr, node.c_str());
+        auto res = m_context->get_node(nullptr, node.c_str());
+        if (!res) { // If no node is found, try output rpc nodes too.
+            res = m_context->get_node(nullptr, node.c_str(), 1);
+        }
+        return res;
     }
 }
 
@@ -476,7 +480,20 @@ yang::Status YangSchema::status(const std::string& location) const
 
 bool YangSchema::isConfig(const std::string& path) const
 {
-    return getSchemaNode(path.c_str())->flags() & LYS_CONFIG_W;
+    auto node = getSchemaNode(path.c_str());
+    if (node->flags() & LYS_CONFIG_W) {
+        return true;
+    }
+
+    // Node can still be an input node.
+    while (node->parent()) {
+        node = node->parent();
+        if (node->nodetype() == LYS_INPUT) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 std::optional<std::string> YangSchema::defaultValue(const std::string& leafPath) const

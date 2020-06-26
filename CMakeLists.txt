@@ -136,7 +136,7 @@ target_link_libraries(parser schemas utils ast_values)
 add_library(proxydatastore STATIC
     src/proxy_datastore.cpp
     )
-target_link_libraries(proxydatastore PUBLIC datastoreaccess)
+target_link_libraries(proxydatastore PUBLIC datastoreaccess yangaccess)
 
 # Links libraries, that aren't specific to a datastore type
 function(cli_link_required cli_target)
@@ -282,7 +282,7 @@ if(BUILD_TESTING)
         else()
             message(FATAL_ERROR "Unknown backend ${backend}")
         endif()
-        target_link_libraries(${TESTNAME} yangschema sysreposubscription)
+        target_link_libraries(${TESTNAME} yangschema sysreposubscription proxydatastore)
 
         target_compile_definitions(${TESTNAME} PRIVATE ${backend}_BACKEND)
     endfunction()
