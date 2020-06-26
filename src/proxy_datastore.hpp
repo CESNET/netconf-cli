@@ -7,13 +7,14 @@
 
 #pragma once
 #include "datastore_access.hpp"
+#include "yang_access.hpp"
 
 /*! \class ProxyDatastore
  *     \brief DatastoreAccess wrapper that handles RPC input
  */
 class ProxyDatastore {
 public:
-    ProxyDatastore(const std::shared_ptr<DatastoreAccess>& datastore);
+    ProxyDatastore(const std::shared_ptr<DatastoreAccess>& datastore, std::function<std::shared_ptr<DatastoreAccess>(const std::shared_ptr<DatastoreAccess>&)> createTemporaryDatastore);
     [[nodiscard]] DatastoreAccess::Tree getItems(const std::string& path) const;
     void setLeaf(const std::string& path, leaf_data_ value);
     void createItem(const std::string& path);
@@ -24,7 +25,20 @@ public:
     void copyConfig(const Datastore source, const Datastore destination);
     [[nodiscard]] std::string dump(const DataFormat format) const;
 
+    void initiateRpc(const std::string& rpcPath);
+    [[nodiscard]] DatastoreAccess::Tree executeRpc();
+
     [[nodiscard]] std::shared_ptr<Schema> schema() const;
 private:
+    /** @brief Picks a datastore based on the requested path.
+     *
+     * If the path starts with a currently processed RPC, m_inputDatastore is picked.
+     * Otherwise m_datastore is picked.
+     */
+    [[nodiscard]] std::shared_ptr<DatastoreAccess> pickDatastore(const std::string& path) const;
+
     std::shared_ptr<DatastoreAccess> m_datastore;
+    std::function<std::shared_ptr<DatastoreAccess>(const std::shared_ptr<DatastoreAccess>&)> m_createTemporaryDatastore;
+    std::shared_ptr<DatastoreAccess> m_inputDatastore;
+    std::string m_rpcPath;
 };
