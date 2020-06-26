@@ -34,6 +34,15 @@ void StaticSchema::addContainer(const std::string& location, const std::string& 
     m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
 }
 
+void StaticSchema::addRpc(const std::string& location, const std::string& name)
+{
+    m_nodes.at(location).emplace(name, NodeInfo{yang::rpc{}, yang::AccessType::Writable});
+
+    //create a new set of children for the new node
+    std::string key = joinPaths(location, name);
+    m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
+}
+
 bool StaticSchema::listHasKey(const schemaPath_& listPath, const std::string& key) const
 {
     return listKeys(listPath).count(key);
@@ -200,6 +209,11 @@ struct impl_nodeType {
     yang::NodeTypes operator()(const yang::leaflist&)
     {
         return yang::NodeTypes::LeafList;
+    }
+
+    yang::NodeTypes operator()(const yang::rpc)
+    {
+        return yang::NodeTypes::Rpc;
     }
 };
 
