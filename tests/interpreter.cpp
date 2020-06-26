@@ -39,7 +39,11 @@ TEST_CASE("interpreter tests")
     auto schema = std::make_shared<MockSchema>();
     Parser parser(schema);
     auto datastore = std::make_shared<MockDatastoreAccess>();
-    ProxyDatastore proxyDatastore(datastore);
+    auto input_datastore = std::make_shared<MockDatastoreAccess>();
+    auto lol = [input_datastore] ([[maybe_unused]] const std::shared_ptr<DatastoreAccess>& rofl) {
+        return input_datastore;
+    };
+    ProxyDatastore proxyDatastore(datastore, lol);
     std::vector<std::unique_ptr<trompeloeil::expectation>> expectations;
 
     std::vector<command_> toInterpret;
