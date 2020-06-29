@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b6198fe_9569d853",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-29T11:08:52Z",
+      "side": 1,
+      "message": "This only works if the first character within that file is \u0027\u003c\u0027 or \u0027{\u0027. I think it wouldn\u0027t be too much to read the whole file into memory and see which of these two come earlier.",
+      "revId": "37401b82c98d0ef635577213428ab4da4c095739",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
