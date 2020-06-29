@@ -33,7 +33,7 @@ struct Completions {
 
 class Parser {
 public:
-    Parser(const std::shared_ptr<const Schema> schema, const std::shared_ptr<const DataQuery> dataQuery = nullptr);
+    Parser(const std::shared_ptr<const Schema> schema, WritableOps writableOps = WritableOps::No, const std::shared_ptr<const DataQuery> dataQuery = nullptr);
     command_ parseCommand(const std::string& line, std::ostream& errorStream);
     void changeNode(const dataPath_& name);
     std::string currentNode() const;
@@ -44,4 +44,5 @@ private:
     const std::shared_ptr<const Schema> m_schema;
     const std::shared_ptr<const DataQuery> m_dataquery;
     dataPath_ m_curDir;
+    const WritableOps m_writableOps;
 };

@@ -14,10 +14,11 @@
 
 InvalidCommandException::~InvalidCommandException() = default;
 
-Parser::Parser(const std::shared_ptr<const Schema> schema, const std::shared_ptr<const DataQuery> dataQuery)
+Parser::Parser(const std::shared_ptr<const Schema> schema, WritableOps writableOps, const std::shared_ptr<const DataQuery> dataQuery)
     : m_schema(schema)
     , m_dataquery(dataQuery)
     , m_curDir({Scope::Absolute, {}})
+    , m_writableOps(writableOps)
 {
 }
 
@@ -36,7 +37,8 @@ command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream
 
     auto grammar =
             x3::with<parser_context_tag>(ctx)[
-            x3::with<x3::error_handler_tag>(std::ref(errorHandler))[command]
+            x3::with<x3::error_handler_tag>(std::ref(errorHandler))[
+            x3::with<writableOps_tag>(m_writableOps)[command]]
     ];
     bool result = x3::phrase_parse(it, line.end(), grammar, x3::space, parsedCommand);
 
@@ -58,7 +60,8 @@ Completions Parser::completeCommand(const std::string& line, std::ostream& error
 
     auto grammar =
             x3::with<parser_context_tag>(ctx)[
-            x3::with<x3::error_handler_tag>(std::ref(errorHandler))[command]
+            x3::with<x3::error_handler_tag>(std::ref(errorHandler))[
+            x3::with<writableOps_tag>(m_writableOps)[command]]
     ];
     x3::phrase_parse(it, line.end(), grammar, x3::space, parsedCommand);
 
