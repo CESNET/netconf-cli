@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4edf21d1_f9fe3bb3",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-06-29T12:39:46Z",
+      "side": 1,
+      "message": "Let\u0027s not try \"load a module\" if that module contains a slash. It\u0027s a crude heuristic, but at least then the user\u0027s going to get better error messages.\n\n     ...\n } else if (schemaFile.pos(\u0027/\u0027) !\u003d std::string::npos) {\n     ...\n } else {\n     std::cerr \u003c\u003c \"Cannot load YANG module \" \u003c\u003c schemaFile \u003c\u003c std::cerr;\n }",
+      "revId": "680d61e1a7c6c6d26f532c5c2e401be78cf0239f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
