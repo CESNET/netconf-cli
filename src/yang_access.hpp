@@ -37,6 +37,7 @@ public:
     void enableFeature(const std::string& module, const std::string& feature);
     std::string dump(const DataFormat format) const override;
 
+    void loadModule(const std::string& name);
     void addSchemaFile(const std::string& path);
     void addSchemaDir(const std::string& path);
     void addDataFile(const std::string& path);

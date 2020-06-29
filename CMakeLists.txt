@@ -154,6 +154,12 @@ add_executable(yang-cli
 target_compile_definitions(yang-cli PRIVATE YANG_CLI)
 cli_link_required(yang-cli)
 target_link_libraries(yang-cli yangaccess)
+if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+" AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+    target_link_libraries(yang-cli c++experimental)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1)
+    target_link_libraries(yang-cli stdc++fs)
+endif()
+
 
 
 include(CTest)
