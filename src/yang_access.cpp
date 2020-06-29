@@ -301,7 +301,7 @@ void YangAccess::addDataFile(const std::string& path)
     fs >> firstChar;
 
     std::cout << "Parsing \"" << path << "\" as " << (firstChar == '{' ? "JSON" : "XML") << "...\n";
-    auto dataNode = lyd_parse_path(m_ctx.get(), path.c_str(), firstChar == '{' ? LYD_JSON : LYD_XML, LYD_OPT_DATA | LYD_OPT_DATA_NO_YANGLIB);
+    auto dataNode = lyd_parse_path(m_ctx.get(), path.c_str(), firstChar == '{' ? LYD_JSON : LYD_XML, LYD_OPT_DATA | LYD_OPT_DATA_NO_YANGLIB | LYD_OPT_TRUSTED);
 
     if (!dataNode) {
         throw std::runtime_error("Supplied data file " + path + " couldn't be parsed.");
@@ -312,4 +312,6 @@ void YangAccess::addDataFile(const std::string& path)
     } else {
         lyd_merge(m_datastore.get(), dataNode, LYD_OPT_DESTRUCT);
     }
+
+    validate();
 }
