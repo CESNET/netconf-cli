@@ -135,6 +135,11 @@ struct dataPath_ {
     void pushFragment(const dataNode_& fragment);
 };
 
+enum class WritableOps {
+    Yes,
+    No
+};
+
 std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node);
 
 std::string pathToDataString(const dataPath_& path, Prefixes prefixes);

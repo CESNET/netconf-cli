@@ -14,7 +14,6 @@
 
 namespace x3 = boost::spirit::x3;
 
-x3::rule<writable_leaf_path_class, dataPath_> const writableLeafPath = "writableLeafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
 x3::rule<leafListElementPath_class, dataPath_> const leafListElementPath = "leafListElementPath";
@@ -389,6 +388,23 @@ auto const filterConfigFalse = [] (const Schema& schema, const std::string& path
     return schema.isConfig(path);
 };
 
+struct writableOps_tag;
+
+struct WritableLeafPath : x3::parser<WritableLeafPath> {
+    using attribute_type = dataPath_;
+    const PathParser<PathParserMode::DataPath, CompletionMode::Data> m_filterConfig{filterConfigFalse};
+    template <typename It, typename Ctx, typename RCtx, typename Attr>
+    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
+    {
+        if (x3::get<writableOps_tag>(ctx) == WritableOps::Yes) {
+            return dataPath.parse(begin, end, ctx, rctx, attr);
+        } else {
+            return m_filterConfig.parse(begin, end, ctx, rctx, attr);
+        }
+    }
+
+} writableLeafPath;
+
 auto const writableLeafPath_def =
     PathParser<PathParserMode::DataPath, CompletionMode::Data>{filterConfigFalse};
 
@@ -414,7 +430,6 @@ auto const initializePath_def =
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(key_identifier)
 BOOST_SPIRIT_DEFINE(listSuffix)
-BOOST_SPIRIT_DEFINE(writableLeafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
 BOOST_SPIRIT_DEFINE(leafListElementPath)

@@ -33,7 +33,7 @@ TEST_CASE("keyvalue_completion")
         .RETURN(schema);
     auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
     expectation.reset();
-    Parser parser(schema, dataQuery);
+    Parser parser(schema, WritableOps::No, dataQuery);
     std::string input;
     std::ostringstream errorStream;
 

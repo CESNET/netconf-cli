@@ -38,7 +38,7 @@ TEST_CASE("set value completion")
     auto expectation = NAMED_REQUIRE_CALL(*mockDatastore, schema())
         .RETURN(schema);
     auto dataQuery = std::make_shared<DataQuery>(*mockDatastore);
-    Parser parser(schema, dataQuery);
+    Parser parser(schema, WritableOps::No, dataQuery);
     std::string input;
     std::ostringstream errorStream;
 
