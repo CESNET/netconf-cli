@@ -16,6 +16,24 @@
       "revId": "37401b82c98d0ef635577213428ab4da4c095739",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52154d9c_c370186a",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-29T11:27:23Z",
+      "side": 1,
+      "message": "A quick google search says that XML always starts with \u0027\u003c\u0027 (or a whitespace) and JSON always starts with \u0027{\u0027 (or whitespace) (or \u0027[\u0027, but I don\u0027t think that\u0027s relevant here)",
+      "parentUuid": "6b6198fe_9569d853",
+      "revId": "37401b82c98d0ef635577213428ab4da4c095739",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
