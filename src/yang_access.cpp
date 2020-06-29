@@ -279,6 +279,11 @@ std::string YangAccess::dump(const DataFormat format) const
     return "";
 }
 
+void YangAccess::loadModule(const std::string& name)
+{
+    m_schema->loadModule(name);
+}
+
 void YangAccess::addSchemaFile(const std::string& path)
 {
     m_schema->addSchemaFile(path.c_str());

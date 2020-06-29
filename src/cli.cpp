@@ -26,12 +26,17 @@ Options:
   -d <datastore>   can be "running" or "startup" [default: running])";
 #elif defined(YANG_CLI)
 #include <boost/spirit/home/x3.hpp>
+#include <filesystem>
 #include "yang_access.hpp"
 #define PROGRAM_NAME "yang-cli"
 static const auto usage = R"(CLI interface for creating local YANG data instances
 
+  The <schema_file_or_module_name> argument is treated as a file name if a file
+  with such a path exists, otherwise it's treated as a module name. Search dirs
+  will be used to find a schema for that module.
+
 Usage:
-  yang-cli [-s <search_dir>] [-e enable_features]... [-i data_file]... <schema_file>...
+  yang-cli [-s <search_dir>] [-e enable_features]... [-i data_file]... <schema_file_or_module_name>...
   yang-cli (-h | --help)
   yang-cli --version
 
@@ -72,8 +77,12 @@ int main(int argc, char* argv[])
     if (const auto& search_dir = args["-s"]) {
         datastore.addSchemaDir(search_dir.asString());
     }
-    for (const auto& schemaFile : args["<schema_file>"].asStringList()) {
-        datastore.addSchemaFile(schemaFile);
+    for (const auto& schemaFile : args["<schema_file_or_module_name>"].asStringList()) {
+        if (std::filesystem::exists(schemaFile)) {
+            datastore.addSchemaFile(schemaFile);
+        } else {
+            datastore.loadModule(schemaFile);
+        }
     }
     if (const auto& enableFeatures = args["-e"]) {
         namespace x3 = boost::spirit::x3;
