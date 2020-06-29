@@ -14,7 +14,6 @@
 
 namespace x3 = boost::spirit::x3;
 
-x3::rule<writable_leaf_path_class, dataPath_> const writableLeafPath = "writableLeafPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
 x3::rule<leafListElementPath_class, dataPath_> const leafListElementPath = "leafListElementPath";
@@ -389,6 +388,35 @@ auto const filterConfigFalse = [] (const Schema& schema, const std::string& path
     return schema.isConfig(path);
 };
 
+struct writableOps_tag;
+
+struct WritableLeafPath : x3::parser<WritableLeafPath> {
+    using attribute_type = dataPath_;
+    const PathParser<PathParserMode::DataPath, CompletionMode::Data> m_filterConfig{filterConfigFalse};
+    template <typename It, typename Ctx, typename RCtx, typename Attr>
+    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
+    {
+        bool res;
+        if (x3::get<writableOps_tag>(ctx) == WritableOps::Yes) {
+            res = dataPath.parse(begin, end, ctx, rctx, attr);
+        } else {
+            res = m_filterConfig.parse(begin, end, ctx, rctx, attr);
+        }
+        if (!res) {
+            return false;
+        }
+
+        if (attr.m_nodes.empty() || !std::holds_alternative<leaf_>(attr.m_nodes.back().m_suffix)) {
+            auto& parserContext = x3::get<parser_context_tag>(ctx);
+            parserContext.m_errorMsg = "This is not a path to leaf.";
+            return false;
+        }
+
+        return true;
+    }
+
+} writableLeafPath;
+
 auto const writableLeafPath_def =
     PathParser<PathParserMode::DataPath, CompletionMode::Data>{filterConfigFalse};
 
@@ -414,7 +442,6 @@ auto const initializePath_def =
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(key_identifier)
 BOOST_SPIRIT_DEFINE(listSuffix)
-BOOST_SPIRIT_DEFINE(writableLeafPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
 BOOST_SPIRIT_DEFINE(leafListElementPath)

@@ -224,33 +224,6 @@ struct delete_class {
     }
 };
 
-struct writable_leaf_path_class {
-    template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
-    {
-        auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.currentSchemaPath().m_nodes.empty()) {
-            parserContext.m_errorMsg = "This is not a path to leaf.";
-            _pass(context) = false;
-            return;
-        }
-
-        try {
-            auto lastNode = parserContext.currentSchemaPath().m_nodes.back();
-            auto leaf = std::get<leaf_>(lastNode.m_suffix);
-            auto location = pathWithoutLastNode(parserContext.currentSchemaPath());
-            ModuleNodePair node{lastNode.m_prefix.flat_map([](const auto& it) { return boost::optional<std::string>{it.m_name}; }), leaf.m_name};
-
-            parserContext.m_tmpListKeyLeafPath.m_location = location;
-            parserContext.m_tmpListKeyLeafPath.m_node = node;
-
-        } catch (std::bad_variant_access&) {
-            parserContext.m_errorMsg = "This is not a path to leaf.";
-            _pass(context) = false;
-        }
-    }
-};
-
 struct set_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
