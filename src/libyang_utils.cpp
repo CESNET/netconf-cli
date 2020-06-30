@@ -67,6 +67,25 @@ void impl_lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::share
         }
         if (it->schema()->nodetype() == LYS_LEAF || it->schema()->nodetype() == LYS_LEAFLIST) {
             libyang::Data_Node_Leaf_List leaf(it);
+
+            auto typeIsLeafref = [] (libyang::Data_Node_Leaf_List& leaf) {
+                if (leaf.schema()->nodetype() == LYS_LEAF) {
+                    return libyang::Schema_Node_Leaf(leaf.schema()).type()->base() == LY_TYPE_LEAFREF;
+                } else {
+                    return libyang::Schema_Node_Leaflist(leaf.schema()).type()->base() == LY_TYPE_LEAFREF;
+                }
+            };
+
+            while (typeIsLeafref(leaf)) {
+                auto refsTo = leaf.value()->leafref();
+                if (!refsTo) {
+                    // The value our `leaf` points to isn't present in the tree. That means that out wanted leaf value is directly stored inside this `leaf`.
+                    break;
+                }
+
+                // Otherwise, the node that is being pointed to is present in the tree, so we cascade through leafrefs, until we find it.
+                leaf = refsTo;
+            }
             auto value = leafValueFromValue(leaf.value(), leaf.leaf_type()->base());
             res.emplace_back(stripXPathPrefix(it->path()), value);
         }
