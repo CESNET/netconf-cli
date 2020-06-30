@@ -276,29 +276,28 @@ TEST_CASE("setting/getting values")
             datastore.commitChanges();
         }
 
-        // The commitChanges method has to be called in each of the
-        // SECTIONs, because the REQUIRE_CALL only works inside the given
-        // SECTION.
+        std::string value;
         SECTION("Dan")
         {
-            REQUIRE_CALL(mock, write("/example-schema:bossPerson", std::nullopt, "Dan"s));
-            datastore.setLeaf("/example-schema:bossPerson", std::string{"Dan"});
-            datastore.commitChanges();
+            value = "Dan";
         }
 
         SECTION("Elfi")
         {
-            REQUIRE_CALL(mock, write("/example-schema:bossPerson", std::nullopt, "Elfi"s));
-            datastore.setLeaf("/example-schema:bossPerson", std::string{"Elfi"});
-            datastore.commitChanges();
+            value = "Elfi";
         }
 
         SECTION("Kolafa")
         {
-            REQUIRE_CALL(mock, write("/example-schema:bossPerson", std::nullopt, "Kolafa"s));
-            datastore.setLeaf("/example-schema:bossPerson", std::string{"Kolafa"});
+            value = "Kolafa";
+        }
+
+        datastore.setLeaf("/example-schema:bossPerson", value);
+        {
+            REQUIRE_CALL(mock, write("/example-schema:bossPerson", std::nullopt, value));
             datastore.commitChanges();
         }
+        REQUIRE(datastore.getItems("/example-schema:bossPerson") == DatastoreAccess::Tree{{"/example-schema:bossPerson", value}});
     }
     SECTION("bool values get correctly represented as bools")
     {
