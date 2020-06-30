@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1239d0a1_94fff772",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-06-30T08:35:45Z",
+      "side": 1,
+      "message": "The method can be static it seems. I\u0027ll look into the other parsers if I can make their `parse` method static",
+      "range": {
+        "startLine": 398,
+        "startChar": 4,
+        "endLine": 398,
+        "endChar": 10
+      },
+      "revId": "28cf33644cc722e8cb271c962123de4e3b0a5a92",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
