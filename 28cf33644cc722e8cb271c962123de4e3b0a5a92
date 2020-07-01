@@ -2,6 +2,46 @@
   "comments": [
     {
       "key": {
+        "uuid": "9f103557_5f73f521",
+        "filename": "src/cli.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-01T13:29:27Z",
+      "side": 1,
+      "message": "I was thinkig about a --mode, i.e., something like `yang-cli --mode action-in --xpath /ex:people[name\u003dfoo]/say`. But I think that would be premature right now, and besides, we can always let the CLI \"handle\" these RPC/action inputs by just letting the user execute them. Just adding this here for future reference, the code is fine as-is.",
+      "revId": "28cf33644cc722e8cb271c962123de4e3b0a5a92",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b6fa5dae_ad9e62c9",
+        "filename": "src/parser.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-01T13:29:27Z",
+      "side": 1,
+      "message": "At this point I\u0027m not sure if having these defaults still makes sense, but \"whatever\".",
+      "range": {
+        "startLine": 36,
+        "startChar": 79,
+        "endLine": 36,
+        "endChar": 96
+      },
+      "revId": "28cf33644cc722e8cb271c962123de4e3b0a5a92",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1239d0a1_94fff772",
         "filename": "src/path_parser.hpp",
         "patchSetId": 3
