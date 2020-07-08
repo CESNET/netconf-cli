@@ -93,8 +93,9 @@ void StaticSchema::addModule(const std::string& name)
 
 void StaticSchema::addIdentity(const std::optional<identityRef_>& base, const identityRef_& name)
 {
-    if (base)
+    if (base) {
         m_identities.at(base.value()).emplace(name);
+    }
 
     m_identities.emplace(name, std::set<identityRef_>());
 }

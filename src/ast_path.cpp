@@ -171,8 +171,9 @@ schemaPath_::schemaPath_(const Scope scope, const std::vector<schemaNode_>& node
 
 bool schemaPath_::operator==(const schemaPath_& b) const
 {
-    if (this->m_nodes.size() != b.m_nodes.size())
+    if (this->m_nodes.size() != b.m_nodes.size()) {
         return false;
+    }
     return this->m_nodes == b.m_nodes;
 }
 
@@ -188,8 +189,9 @@ dataPath_::dataPath_(const Scope scope, const std::vector<dataNode_>& nodes, con
 
 bool dataPath_::operator==(const dataPath_& b) const
 {
-    if (this->m_nodes.size() != b.m_nodes.size())
+    if (this->m_nodes.size() != b.m_nodes.size()) {
         return false;
+    }
     return this->m_nodes == b.m_nodes;
 }
 
@@ -255,10 +257,11 @@ std::string pathToDataString(const dataPath_& path, Prefixes prefixes)
     }
 
     for (const auto& it : path.m_nodes) {
-        if (it.m_prefix)
+        if (it.m_prefix) {
             res = joinPaths(res, it.m_prefix.value().m_name + ":" + std::visit(nodeToDataStringVisitor(), it.m_suffix));
-        else
+        } else {
             res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + std::visit(nodeToDataStringVisitor(), it.m_suffix));
+        }
     }
 
     return res;
@@ -272,10 +275,11 @@ std::string pathToSchemaString(const schemaPath_& path, Prefixes prefixes)
     }
 
     for (const auto& it : path.m_nodes) {
-        if (it.m_prefix)
+        if (it.m_prefix) {
             res = joinPaths(res, it.m_prefix.value().m_name + ":" + std::visit(nodeToSchemaStringVisitor(), it.m_suffix));
-        else
+        } else {
             res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + std::visit(nodeToSchemaStringVisitor(), it.m_suffix));
+        }
     }
     return res;
 }

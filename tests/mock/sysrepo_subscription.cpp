@@ -24,8 +24,9 @@ public:
         auto xpath = "/"s + module_name + ":*";
         auto it = sess->get_changes_iter(xpath.c_str());
 
-        if (event == SR_EV_APPLY)
+        if (event == SR_EV_APPLY) {
             return SR_ERR_OK;
+        }
 
         while (auto change = sess->get_change_next(it)) {
             auto xpath = (change->new_val() ? change->new_val() : change->old_val())->xpath();

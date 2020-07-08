@@ -77,8 +77,9 @@ struct listSuffix_class {
 
         const auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
         std::set<std::string> keysSupplied;
-        for (const auto& it : ast)
+        for (const auto& it : ast) {
             keysSupplied.insert(it.first);
+        }
 
         if (keysNeeded != keysSupplied) {
             auto listName = std::get<list_>(parserContext.m_tmpListPath.m_nodes.back().m_suffix).m_name;
@@ -89,8 +90,9 @@ struct listSuffix_class {
                                 keysSupplied.begin(), keysSupplied.end(),
                                 std::inserter(missingKeys, missingKeys.end()));
 
-            for (const auto& it : missingKeys)
+            for (const auto& it : missingKeys) {
                 parserContext.m_errorMsg += " " + it;
+            }
             parserContext.m_errorMsg += ".";
 
             _pass(context) = false;
@@ -105,8 +107,9 @@ struct listSuffix_class {
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty())
+        if (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Expecting ']' here:";
+        }
         return x3::error_handler_result::rethrow;
     }
 };
@@ -143,8 +146,9 @@ struct cd_class {
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty())
+        if (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Expected " + x.which() + " here:";
+        }
         return x3::error_handler_result::rethrow;
     }
 };
@@ -207,8 +211,9 @@ struct create_class {
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty())
+        if (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Couldn't parse create/delete command.";
+        }
         return x3::error_handler_result::rethrow;
     }
 };
@@ -218,8 +223,9 @@ struct delete_class {
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty())
+        if (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Couldn't parse create/delete command.";
+        }
         return x3::error_handler_result::rethrow;
     }
 };
@@ -229,8 +235,9 @@ struct set_class {
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty())
+        if (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Expected " + x.which() + " here:";
+        }
         return x3::error_handler_result::rethrow;
     }
 };
@@ -372,7 +379,8 @@ struct completing_class {
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
 
-        if (!parserContext.m_completing)
+        if (!parserContext.m_completing) {
             _pass(context) = false;
+        }
     }
 };
