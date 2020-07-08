@@ -293,7 +293,7 @@ boost::variant<dataPath_, schemaPath_, module_> Interpreter::toCanonicalPath(con
     }
 }
 
-Interpreter::Interpreter(Parser& parser, DatastoreAccess& datastore)
+Interpreter::Interpreter(Parser& parser, ProxyDatastore& datastore)
     : m_parser(parser)
     , m_datastore(datastore)
 {

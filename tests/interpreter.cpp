@@ -39,6 +39,7 @@ TEST_CASE("interpreter tests")
     auto schema = std::make_shared<MockSchema>();
     Parser parser(schema);
     MockDatastoreAccess datastore;
+    ProxyDatastore proxyDatastore(datastore);
     std::vector<std::unique_ptr<trompeloeil::expectation>> expectations;
 
     std::vector<command_> toInterpret;
@@ -418,6 +419,6 @@ TEST_CASE("interpreter tests")
     }
 
     for (const auto& command : toInterpret) {
-        boost::apply_visitor(Interpreter(parser, datastore), command);
+        boost::apply_visitor(Interpreter(parser, proxyDatastore), command);
     }
 }

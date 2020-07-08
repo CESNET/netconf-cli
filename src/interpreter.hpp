@@ -9,12 +9,12 @@
 #pragma once
 
 #include <boost/variant/static_visitor.hpp>
-#include "datastore_access.hpp"
+#include "proxy_datastore.hpp"
 #include "parser.hpp"
 
 
 struct Interpreter : boost::static_visitor<void> {
-    Interpreter(Parser& parser, DatastoreAccess& datastore);
+    Interpreter(Parser& parser, ProxyDatastore& datastore);
 
     void operator()(const commit_&) const;
     void operator()(const set_&) const;
@@ -40,5 +40,5 @@ private:
     [[nodiscard]] boost::variant<dataPath_, schemaPath_, module_> toCanonicalPath(const PathType& path) const;
 
     Parser& m_parser;
-    DatastoreAccess& m_datastore;
+    ProxyDatastore& m_datastore;
 };
