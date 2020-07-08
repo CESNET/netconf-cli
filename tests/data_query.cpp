@@ -99,7 +99,7 @@ TEST_CASE("data query")
 
         SECTION("example-schema:animalWithColor - quotes in values")
         {
-            datastore.createItem("/example-schema:animalWithColor[name='D\"o\"g'][color=\"b'r'own\"]");
+            datastore.createItem(R"(/example-schema:animalWithColor[name='D"o"g'][color="b'r'own"])");
             listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"animalWithColor"});
             expected = {
                 {{"name", std::string{"D\"o\"g"}}, {"color", std::string{"b'r'own"}}}
