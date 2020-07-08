@@ -12,6 +12,7 @@
 #include <sstream>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
+#include "proxy_datastore.hpp"
 #if defined(SYSREPO_CLI)
 #include "sysrepo_access.hpp"
 #define PROGRAM_NAME "sysrepo-cli"
@@ -123,6 +124,7 @@ int main(int argc, char* argv[])
 #error "Unknown CLI backend"
 #endif
 
+    ProxyDatastore proxyDatastore(datastore);
     auto dataQuery = std::make_shared<DataQuery>(datastore);
     Parser parser(datastore.schema(), writableOps, dataQuery);
 
