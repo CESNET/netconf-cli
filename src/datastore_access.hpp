@@ -29,7 +29,6 @@ struct DatastoreError {
 class DatastoreException : std::exception {
 public:
     DatastoreException(const std::vector<DatastoreError>& errors);
-    ~DatastoreException() override = default;
     [[nodiscard]] const char* what() const noexcept override;
 
 private:
@@ -43,6 +42,11 @@ struct dataPath_;
 class DatastoreAccess {
 public:
     using Tree = std::vector<std::pair<std::string, leaf_data_>>;
+    DatastoreAccess();
+    DatastoreAccess(const DatastoreAccess& src);
+    DatastoreAccess(DatastoreAccess&& src) noexcept;
+    DatastoreAccess& operator=(const DatastoreAccess& src);
+    DatastoreAccess& operator=(DatastoreAccess&& src) noexcept;
     virtual ~DatastoreAccess() = 0;
     [[nodiscard]] virtual Tree getItems(const std::string& path) const = 0;
     virtual void setLeaf(const std::string& path, leaf_data_ value) = 0;

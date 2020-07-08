@@ -14,6 +14,7 @@ public:
     using Func = std::function<void()>;
     UniqueResource(const UniqueResource& other) = delete;
     UniqueResource& operator=(const UniqueResource& other) = delete;
+    UniqueResource& operator=(UniqueResource&& other) = default;
     UniqueResource(UniqueResource&& other) = default;
     ~UniqueResource()
     {
