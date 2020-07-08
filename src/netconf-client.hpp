@@ -21,7 +21,6 @@ namespace client {
 class ReportedError : public std::runtime_error {
 public:
     ReportedError(const std::string& what);
-    ~ReportedError() override;
 };
 
 using KbdInteractiveCb = std::function<std::string(const std::string&, const std::string&, const std::string&, bool)>;
@@ -29,6 +28,10 @@ using KbdInteractiveCb = std::function<std::string(const std::string&, const std
 class Session {
 public:
     Session(struct nc_session* session);
+    Session(const Session& src) = delete;
+    Session(Session&& src);
+    Session& operator=(const Session& src) = default;
+    Session& operator=(Session&& src);
     ~Session();
     static std::unique_ptr<Session> connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath);
     static std::unique_ptr<Session> connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback);

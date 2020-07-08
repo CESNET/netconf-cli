@@ -88,7 +88,11 @@ using LeafDataType = std::variant<
 >;
 struct TypeInfo;
 struct LeafRef {
+    ~LeafRef();
     LeafRef(const LeafRef& src);
+    LeafRef(LeafRef&& src);
+    LeafRef& operator=(const LeafRef& src);
+    LeafRef& operator=(LeafRef&& src);
     LeafRef(const std::string& xpath, std::unique_ptr<TypeInfo>&& type);
     bool operator==(const LeafRef& other) const;
     std::string m_targetXPath;

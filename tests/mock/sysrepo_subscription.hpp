@@ -22,12 +22,22 @@ class YangSchema;
 
 class Recorder {
 public:
+    Recorder() = default;
+    Recorder(const Recorder& src) = delete;
+    Recorder(Recorder&& src) = default;
+    Recorder& operator=(const Recorder& src) = delete;
+    Recorder& operator=(Recorder&& src) = default;
     virtual ~Recorder();
     virtual void write(const std::string& xpath, const std::optional<std::string>& oldValue, const std::optional<std::string>& newValue) = 0;
 };
 
 class DataSupplier {
 public:
+    DataSupplier() = default;
+    DataSupplier(const DataSupplier& src) = delete;
+    DataSupplier(DataSupplier&& src);
+    DataSupplier& operator=(const DataSupplier& src) = delete;
+    DataSupplier& operator=(DataSupplier&& src);
     virtual ~DataSupplier();
     [[nodiscard]] virtual DatastoreAccess::Tree get_data(const std::string& xpath) const = 0;
 };
