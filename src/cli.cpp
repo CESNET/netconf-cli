@@ -12,6 +12,7 @@
 #include <sstream>
 #include "NETCONF_CLI_VERSION.h"
 #include "interpreter.hpp"
+#include "proxy_datastore.hpp"
 #if defined(SYSREPO_CLI)
 #include "sysrepo_access.hpp"
 #define PROGRAM_NAME "sysrepo-cli"
@@ -72,10 +73,10 @@ int main(int argc, char* argv[])
             return 1;
         }
     }
-    SysrepoAccess datastore(PROGRAM_NAME, datastoreType);
+    auto datastore = std::make_shared<SysrepoAccess>(PROGRAM_NAME, datastoreType);
     std::cout << "Connected to sysrepo [datastore: " << (datastoreType == Datastore::Startup ? "startup" : "running") << "]" << std::endl;
 #elif defined(YANG_CLI)
-    YangAccess datastore;
+    auto datastore = std::make_shared<YangAccess>();
     if (args["--configonly"].asBool()) {
         writableOps = WritableOps::No;
     } else {
@@ -83,13 +84,13 @@ int main(int argc, char* argv[])
         std::cout << "ops is writable" << std::endl;
     }
     if (const auto& search_dir = args["-s"]) {
-        datastore.addSchemaDir(search_dir.asString());
+        datastore->addSchemaDir(search_dir.asString());
     }
     for (const auto& schemaFile : args["<schema_file_or_module_name>"].asStringList()) {
         if (std::filesystem::exists(schemaFile)) {
-            datastore.addSchemaFile(schemaFile);
+            datastore->addSchemaFile(schemaFile);
         } else if (schemaFile.find('/') == std::string::npos) { // Module names cannot have a slash
-            datastore.loadModule(schemaFile);
+            datastore->loadModule(schemaFile);
         } else {
             std::cerr << "Cannot load YANG module " << schemaFile << "\n";
         }
@@ -106,7 +107,7 @@ int main(int argc, char* argv[])
                 return 1;
             }
             try {
-                datastore.enableFeature(parsed.first, parsed.second);
+                datastore->enableFeature(parsed.first, parsed.second);
             } catch (std::runtime_error& ex) {
                 std::cerr << ex.what() << "\n";
                 return 1;
@@ -116,15 +117,16 @@ int main(int argc, char* argv[])
     }
     if (const auto& dataFiles = args["-i"]) {
         for (const auto& dataFile : dataFiles.asStringList()) {
-            datastore.addDataFile(dataFile);
+            datastore->addDataFile(dataFile);
         }
     }
 #else
 #error "Unknown CLI backend"
 #endif
 
-    auto dataQuery = std::make_shared<DataQuery>(datastore);
-    Parser parser(datastore.schema(), writableOps, dataQuery);
+    ProxyDatastore proxyDatastore(datastore);
+    auto dataQuery = std::make_shared<DataQuery>(*datastore);
+    Parser parser(datastore->schema(), writableOps, dataQuery);
 
     using replxx::Replxx;
 
@@ -182,7 +184,7 @@ int main(int argc, char* argv[])
 
         try {
             command_ cmd = parser.parseCommand(line, std::cout);
-            boost::apply_visitor(Interpreter(parser, datastore), cmd);
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), cmd);
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         } catch (DatastoreException& ex) {
