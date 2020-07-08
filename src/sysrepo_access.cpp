@@ -192,8 +192,9 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
     Tree res;
 
     auto fillMap = [this, &res](auto items) {
-        if (!items)
+        if (!items) {
             return;
+        }
         for (unsigned int i = 0; i < items->val_cnt(); i++) {
             auto value = leafValueFromVal(items->val(i));
             if (m_schema->nodeType(items->val(i)->xpath()) == yang::NodeTypes::LeafList) {
@@ -337,8 +338,9 @@ std::string SysrepoAccess::fetchSchema(const char* module, const char* revision,
         reportErrors();
     }
 
-    if (schema.empty())
+    if (schema.empty()) {
         throw std::runtime_error(std::string("Module ") + module + " not available");
+    }
 
     return schema;
 }

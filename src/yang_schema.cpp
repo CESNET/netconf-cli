@@ -80,8 +80,9 @@ bool YangSchema::listHasKey(const schemaPath_& listPath, const std::string& key)
 bool YangSchema::leafIsKey(const std::string& leafPath) const
 {
     auto node = getSchemaNode(leafPath);
-    if (!node || node->nodetype() != LYS_LEAF)
+    if (!node || node->nodetype() != LYS_LEAF) {
         return false;
+    }
 
     return libyang::Schema_Node_Leaf{node}.is_key().get();
 }
@@ -347,8 +348,9 @@ std::set<ModuleNodePair> YangSchema::availableNodes(const boost::variant<dataPat
     }
 
     for (const auto& node : nodes) {
-        if (node->module()->name() == "ietf-yang-library"sv)
+        if (node->module()->name() == "ietf-yang-library"sv) {
             continue;
+        }
 
         if (recursion == Recursion::Recursive) {
             for (auto it : node->tree_dfs()) {

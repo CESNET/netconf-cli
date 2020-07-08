@@ -156,8 +156,9 @@ int main(int argc, char* argv[])
         historyFile = std::string(home) + "/.local/share/" + HISTORY_FILE_NAME;
     }
 
-    if (historyFile)
+    if (historyFile) {
         lineEditor.history_load(historyFile.value());
+    }
 
     while (true) {
         auto line = lineEditor.input(parser.currentNode() + "> ");
@@ -191,8 +192,9 @@ int main(int argc, char* argv[])
         lineEditor.history_add(line);
     }
 
-    if (historyFile)
+    if (historyFile) {
         lineEditor.history_save(historyFile.value());
+    }
 
     return 0;
 }

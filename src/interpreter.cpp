@@ -100,8 +100,9 @@ void Interpreter::operator()(const ls_& ls) const
     std::cout << "Possible nodes:" << std::endl;
     auto recursion{Recursion::NonRecursive};
     for (auto it : ls.m_options) {
-        if (it == LsOption::Recursive)
+        if (it == LsOption::Recursive) {
             recursion = Recursion::Recursive;
+        }
     }
 
     auto toPrint = m_datastore.schema()->availableNodes(toCanonicalPath(ls.m_path), recursion);
@@ -218,12 +219,13 @@ struct commandShortHelpVisitor : boost::static_visitor<const char*> {
 
 void Interpreter::operator()(const help_& help) const
 {
-    if (help.m_cmd)
+    if (help.m_cmd) {
         std::cout << boost::apply_visitor(commandLongHelpVisitor(), help.m_cmd.get()) << std::endl;
-    else
+    } else {
         boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([](auto cmd) {
             std::cout << commandShortHelpVisitor()(cmd) << std::endl;
         });
+    }
 }
 
 template <typename PathType>
