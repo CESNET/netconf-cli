@@ -130,8 +130,12 @@ int main(int argc, char* argv[])
 
     Replxx lineEditor;
 
-    lineEditor.bind_key(Replxx::KEY::meta(Replxx::KEY::BACKSPACE), std::bind(&Replxx::invoke, &lineEditor, Replxx::ACTION::KILL_TO_BEGINING_OF_WORD, std::placeholders::_1));
-    lineEditor.bind_key(Replxx::KEY::control('W'), std::bind(&Replxx::invoke, &lineEditor, Replxx::ACTION::KILL_TO_WHITESPACE_ON_LEFT, std::placeholders::_1));
+    lineEditor.bind_key(Replxx::KEY::meta(Replxx::KEY::BACKSPACE), [&lineEditor] (const auto& code) {
+        return lineEditor.invoke(Replxx::ACTION::KILL_TO_BEGINING_OF_WORD, code);
+    });
+    lineEditor.bind_key(Replxx::KEY::control('W'), [&lineEditor] (const auto& code) {
+        return lineEditor.invoke(Replxx::ACTION::KILL_TO_WHITESPACE_ON_LEFT, code);
+    });
 
     lineEditor.set_word_break_characters("\t _[]/:'\"=-%");
 
