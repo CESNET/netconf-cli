@@ -180,7 +180,7 @@ std::ostream& operator<<(std::ostream& s, const move_& move)
             s << "Absolute::End";
         }
     } else {
-        const yang::move::Relative& relative = std::get<yang::move::Relative>(move.m_destination);
+        const auto& relative = std::get<yang::move::Relative>(move.m_destination);
         s << "Relative {\n";
         s << "        position: ";
         if (relative.m_position == yang::move::Relative::Position::After) {
