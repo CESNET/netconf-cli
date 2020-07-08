@@ -133,10 +133,15 @@ add_library(parser STATIC
     )
 target_link_libraries(parser schemas utils ast_values)
 
+add_library(proxydatastore STATIC
+    src/proxy_datastore.cpp
+    )
+target_link_libraries(proxydatastore PRIVATE datastoreaccess)
+
 # Links libraries, that aren't specific to a datastore type
 function(cli_link_required cli_target)
     target_include_directories(${cli_target} PRIVATE ${REPLXX_PATH})
-    target_link_libraries(${cli_target} yangschema docopt parser ${REPLXX_LIBRARY})
+    target_link_libraries(${cli_target} proxydatastore yangschema docopt parser ${REPLXX_LIBRARY})
     add_dependencies(${cli_target} target-NETCONF_CLI_VERSION)
     target_include_directories(${cli_target} PRIVATE ${PROJECT_BINARY_DIR})
 endfunction()
