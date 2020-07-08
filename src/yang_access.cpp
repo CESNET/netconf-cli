@@ -260,7 +260,7 @@ std::vector<ListInstance> YangAccess::listInstances(const std::string& path)
                 }
             }
         }
-        res.push_back(instance);
+        res.emplace_back(instance);
     }
     return res;
 }

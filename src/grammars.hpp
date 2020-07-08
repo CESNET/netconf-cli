@@ -211,7 +211,7 @@ struct move_args : x3::parser<move_args> {
             parserContext.m_tmpListPath = parserContext.currentDataPath();
             parserContext.m_tmpListPath.m_nodes.pop_back();
             auto list = list_{std::get<listElement_>(attr.m_source.m_nodes.back().m_suffix).m_name};
-            parserContext.m_tmpListPath.m_nodes.push_back(dataNode_{attr.m_source.m_nodes.back().m_prefix, list});
+            parserContext.m_tmpListPath.m_nodes.emplace_back(attr.m_source.m_nodes.back().m_prefix, list);
 
             res = (space_separator >> listSuffix).parse(begin, end, ctx, rctx, listInstance);
             if (res) {

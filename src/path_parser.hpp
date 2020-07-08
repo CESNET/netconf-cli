@@ -178,7 +178,7 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                 if (std::holds_alternative<listElement_>(attr.m_suffix)) {
                     parserContext.m_tmpListPath = parserContext.currentDataPath();
                     auto tmpList = list_{std::get<listElement_>(attr.m_suffix).m_name};
-                    parserContext.m_tmpListPath.m_nodes.push_back(dataNode_{attr.m_prefix, tmpList});
+                    parserContext.m_tmpListPath.m_nodes.emplace_back(attr.m_prefix, tmpList);
 
                     res = listSuffix.parse(begin, end, ctx, rctx, std::get<listElement_>(attr.m_suffix).m_keys);
 
@@ -284,7 +284,7 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
                 dataNode_ attrNodeList;
                 res = incompleteDataNode<COMPLETION_MODE>{m_filterFunction}.parse(begin, end, ctx, rctx, attrNodeList);
                 if (res) {
-                    attrData.m_nodes.push_back(attrNodeList);
+                    attrData.m_nodes.emplace_back(attrNodeList);
                     // If the trailing slash matches, no more nodes are parsed.
                     // That means no more completion. So, I generate them
                     // manually.

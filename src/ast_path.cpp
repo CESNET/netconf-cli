@@ -336,7 +336,7 @@ void impl_pushFragment(std::vector<NodeType>& where, const NodeType& what)
             where.pop_back();
         }
     } else {
-        where.push_back(what);
+        where.emplace_back(what);
     }
 }
 }

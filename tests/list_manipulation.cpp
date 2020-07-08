@@ -39,7 +39,7 @@ TEST_CASE("list manipulation")
             input = "mod:list[number=3]";
             auto keys = ListInstance {
                 {"number", int32_t{3}}};
-            expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
+            expectedPath.m_nodes.emplace_back(module_{"mod"}, listElement_("list", keys));
         }
 
         SECTION("mod:company[department=other:engineering]/inventory[id=1337]")
@@ -47,16 +47,16 @@ TEST_CASE("list manipulation")
             input = "mod:company[department=other:engineering]/inventory[id=1337]";
             auto keys = ListInstance {
                 {"department", identityRef_{"other", "engineering"}}};
-            expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("company", keys)});
+            expectedPath.m_nodes.emplace_back(module_{"mod"}, listElement_("company", keys));
             keys = ListInstance {
                 {"id", int32_t{1337}}};
-            expectedPath.m_nodes.push_back(dataNode_{listElement_("inventory", keys)});
+            expectedPath.m_nodes.emplace_back(listElement_("inventory", keys));
         }
 
         SECTION("create mod:addresses['0.0.0.0']")
         {
             input = "mod:addresses['0.0.0.0']";
-            expectedPath.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "0.0.0.0"s}});
+            expectedPath.m_nodes.emplace_back(module_{"mod"}, leafListElement_{"addresses", "0.0.0.0"s});
         }
 
 
@@ -76,7 +76,7 @@ TEST_CASE("list manipulation")
     {
         dataPath_ expected;
         input = "get mod:addresses";
-        expected.m_nodes.push_back(dataNode_{module_{"mod"}, leafList_{"addresses"}});
+        expected.m_nodes.emplace_back(module_{"mod"}, leafList_{"addresses"});
 
         get_ expectedGet;
         expectedGet.m_path = expected;
@@ -93,7 +93,7 @@ TEST_CASE("list manipulation")
             SECTION("cwd: /")
             {
                 input = "move mod:addresses['1.2.3.4'] begin";
-                expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+                expected.m_source.m_nodes.emplace_back(module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s});
             }
 
             SECTION("cwd: /mod:cont")
@@ -102,15 +102,15 @@ TEST_CASE("list manipulation")
                 SECTION("relative")
                 {
                     input = "move ../mod:addresses['1.2.3.4'] begin";
-                    expected.m_source.m_nodes.push_back(dataNode_{nodeup_{}});
-                    expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+                    expected.m_source.m_nodes.emplace_back(nodeup_{});
+                    expected.m_source.m_nodes.emplace_back(module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s});
                 }
 
                 SECTION("absolute")
                 {
                     input = "move /mod:addresses['1.2.3.4'] begin";
                     expected.m_source.m_scope = Scope::Absolute;
-                    expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+                    expected.m_source.m_nodes.emplace_back(module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s});
                 }
             }
 
@@ -120,14 +120,14 @@ TEST_CASE("list manipulation")
         SECTION("end")
         {
             input = "move mod:addresses['1.2.3.4'] end";
-            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expected.m_source.m_nodes.emplace_back(module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s});
             expected.m_destination = yang::move::Absolute::End;
         }
 
         SECTION("after")
         {
             input = "move mod:addresses['1.2.3.4'] after '0.0.0.0'";
-            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expected.m_source.m_nodes.emplace_back(module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s});
             expected.m_destination = yang::move::Relative {
                 yang::move::Relative::Position::After,
                 {{".", "0.0.0.0"s}}
@@ -137,7 +137,7 @@ TEST_CASE("list manipulation")
         SECTION("before")
         {
             input = "move mod:addresses['1.2.3.4'] before '0.0.0.0'";
-            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s}});
+            expected.m_source.m_nodes.emplace_back(module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s});
             expected.m_destination = yang::move::Relative {
                 yang::move::Relative::Position::Before,
                 {{".", "0.0.0.0"s}}
@@ -149,7 +149,7 @@ TEST_CASE("list manipulation")
             input = "move mod:list[number=12] before [number=15]";
             auto keys = std::map<std::string, leaf_data_>{
                 {"number", int32_t{12}}};
-            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
+            expected.m_source.m_nodes.emplace_back(module_{"mod"}, listElement_("list", keys));
             expected.m_destination = yang::move::Relative {
                 yang::move::Relative::Position::Before,
                 ListInstance{{"number", int32_t{15}}}
@@ -161,7 +161,7 @@ TEST_CASE("list manipulation")
             input = "move mod:list[number=3] begin";
             auto keys = std::map<std::string, leaf_data_>{
                 {"number", int32_t{3}}};
-            expected.m_source.m_nodes.push_back(dataNode_{module_{"mod"}, listElement_("list", keys)});
+            expected.m_source.m_nodes.emplace_back(module_{"mod"}, listElement_("list", keys));
             expected.m_destination = yang::move::Absolute::Begin;
         }
 

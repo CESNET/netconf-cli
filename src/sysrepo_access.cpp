@@ -197,15 +197,15 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
         for (unsigned int i = 0; i < items->val_cnt(); i++) {
             auto value = leafValueFromVal(items->val(i));
             if (m_schema->nodeType(items->val(i)->xpath()) == yang::NodeTypes::LeafList) {
-                res.push_back({items->val(i)->xpath(), special_{SpecialValue::LeafList}});
+                res.emplace_back(items->val(i)->xpath(), special_{SpecialValue::LeafList});
                 std::string leafListPath = items->val(i)->xpath();
                 while (i < items->val_cnt() && leafListPath == items->val(i)->xpath()) {
                     auto leafListValue = leafDataToString(leafValueFromVal(items->val(i)));
-                    res.push_back({items->val(i)->xpath() + "[.="s + escapeListKeyString(leafListValue) + "]", leafListValue});
+                    res.emplace_back(items->val(i)->xpath() + "[.="s + escapeListKeyString(leafListValue) + "]", leafListValue);
                     i++;
                 }
             } else {
-                res.push_back({items->val(i)->xpath(), value});
+                res.emplace_back(items->val(i)->xpath(), value);
             }
         }
     };
@@ -315,7 +315,7 @@ DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string &path, const T
     Tree res;
     for (size_t i = 0; i < output->val_cnt(); ++i) {
         const auto& v = output->val(i);
-        res.push_back({std::string(v->xpath()).substr(joinPaths(path, "/").size()), leafValueFromVal(v)});
+        res.emplace_back(std::string(v->xpath()).substr(joinPaths(path, "/").size()), leafValueFromVal(v));
     }
     return res;
 }
@@ -354,7 +354,7 @@ std::vector<std::shared_ptr<sysrepo::Yang_Schema>> SysrepoAccess::listSchemas()
     }
     for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
         auto schema = schemas->schema(i);
-        res.push_back(schema);
+        res.emplace_back(schema);
     }
     return res;
 }
@@ -427,7 +427,7 @@ std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
             auto leaf = libyang::Data_Node_Leaf_List{*(vec.begin())};
             instanceRes.emplace(key->name(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
         }
-        res.push_back(instanceRes);
+        res.emplace_back(instanceRes);
     }
 
     return res;
