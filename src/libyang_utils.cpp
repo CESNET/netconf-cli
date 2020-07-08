@@ -63,7 +63,7 @@ void impl_lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::share
             }
         }
         if (it->schema()->nodetype() == LYS_LIST) {
-            res.push_back({stripXPathPrefix(it->path()), special_{SpecialValue::List}});
+            res.emplace_back(stripXPathPrefix(it->path()), special_{SpecialValue::List});
         }
         if (it->schema()->nodetype() == LYS_LEAF || it->schema()->nodetype() == LYS_LEAFLIST) {
             libyang::Data_Node_Leaf_List leaf(it);

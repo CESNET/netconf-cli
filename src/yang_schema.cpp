@@ -248,7 +248,7 @@ yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) con
             {
                 auto resUnion = yang::Union{};
                 for (auto unionType : type->info()->uni()->types()) {
-                    resUnion.m_unionTypes.push_back(resolveType(unionType));
+                    resUnion.m_unionTypes.emplace_back(resolveType(unionType));
                 }
                 resType.emplace<yang::Union>(std::move(resUnion));
                 break;

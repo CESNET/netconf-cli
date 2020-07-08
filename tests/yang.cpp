@@ -460,7 +460,7 @@ TEST_CASE("yangschema")
 
             SECTION("_list")
             {
-                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"_list"}});
+                path.m_nodes.emplace_back(module_{"example-schema"}, list_{"_list"});
                 SECTION("number")
                 {
                     key = "number";
@@ -469,7 +469,7 @@ TEST_CASE("yangschema")
 
             SECTION("twoKeyList")
             {
-                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"twoKeyList"}});
+                path.m_nodes.emplace_back(module_{"example-schema"}, list_{"twoKeyList"});
                 SECTION("number")
                 {
                     key = "number";
@@ -488,13 +488,13 @@ TEST_CASE("yangschema")
 
             SECTION("_list")
             {
-                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"_list"}});
+                path.m_nodes.emplace_back(module_{"example-schema"}, list_{"_list"});
                 set = {"number"};
             }
 
             SECTION("twoKeyList")
             {
-                path.m_nodes.push_back(schemaNode_{module_{"example-schema"}, list_{"twoKeyList"}});
+                path.m_nodes.emplace_back(module_{"example-schema"}, list_{"twoKeyList"});
                 set = {"number", "name"};
             }
 
@@ -762,7 +762,7 @@ TEST_CASE("yangschema")
 
                 SECTION("example-schema:a")
                 {
-                    path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
+                    path.m_nodes.emplace_back(module_{"example-schema"}, container_("a"));
                     set = {
                         {boost::none, "a2"},
                         {boost::none, "leafa"},
@@ -772,13 +772,13 @@ TEST_CASE("yangschema")
 
                 SECTION("example-schema:ethernet")
                 {
-                    path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("ethernet")));
+                    path.m_nodes.emplace_back(module_{"example-schema"}, container_("ethernet"));
                     set = {{boost::none, "ip"}};
                 }
 
                 SECTION("second-schema:bla")
                 {
-                    path.m_nodes.push_back(schemaNode_(module_{"second-schema"}, container_("bla")));
+                    path.m_nodes.emplace_back(module_{"second-schema"}, container_("bla"));
                     set = {{boost::none, "bla2"}};
                 }
 
@@ -935,33 +935,33 @@ TEST_CASE("yangschema")
             yang::NodeTypes expected;
             SECTION("leafInt32")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafInt32")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("leafInt32"));
                 expected = yang::NodeTypes::Leaf;
             }
 
             SECTION("a")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, container_("a"));
                 expected = yang::NodeTypes::Container;
             }
 
             SECTION("a/a2/a3")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                path.m_nodes.push_back(schemaNode_(container_("a2")));
-                path.m_nodes.push_back(schemaNode_(container_("a3")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, container_("a"));
+                path.m_nodes.emplace_back(container_("a2"));
+                path.m_nodes.emplace_back(container_("a3"));
                 expected = yang::NodeTypes::PresenceContainer;
             }
 
             SECTION("_list")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, list_("_list")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, list_("_list"));
                 expected = yang::NodeTypes::List;
             }
 
             SECTION("subLeaf")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("subLeaf")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("subLeaf"));
                 expected = yang::NodeTypes::Leaf;
             }
 
@@ -973,18 +973,18 @@ TEST_CASE("yangschema")
             std::optional<std::string> expected;
             SECTION("leafInt32")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafInt32")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("leafInt32"));
                 expected = "A 32-bit integer leaf.";
             }
 
             SECTION("leafString")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafString")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("leafString"));
             }
 
             SECTION("numberOrString")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("numberOrString")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("numberOrString"));
                 expected = "Can be an int32 or a string.";
             }
 
@@ -1006,34 +1006,34 @@ TEST_CASE("yangschema")
             std::optional<std::string> expectedUnits;
             SECTION("length")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("length")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("length"));
                 expectedType.emplace<yang::Int32>();
                 expectedUnits = "m";
             }
 
             SECTION("wavelength")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("wavelength")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("wavelength"));
                 expectedType.emplace<yang::Decimal>();
                 expectedUnits = "nm";
             }
 
             SECTION("leafInt32")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafInt32")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("leafInt32"));
                 expectedType.emplace<yang::Int32>();
             }
 
             SECTION("duration")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("duration")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("duration"));
                 expectedType.emplace<yang::Int32>();
                 expectedUnits = "s";
             }
 
             SECTION("another-duration")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("another-duration")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("another-duration"));
                 expectedType.emplace<yang::Int32>();
                 expectedUnits = "vt";
             }
@@ -1047,27 +1047,27 @@ TEST_CASE("yangschema")
             yang::NodeTypes expected;
             SECTION("leafInt32")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, leaf_("leafInt32")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("leafInt32"));
                 expected = yang::NodeTypes::Leaf;
             }
 
             SECTION("a")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, container_("a"));
                 expected = yang::NodeTypes::Container;
             }
 
             SECTION("a/a2/a3")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-                path.m_nodes.push_back(schemaNode_(container_("a2")));
-                path.m_nodes.push_back(schemaNode_(container_("a3")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, container_("a"));
+                path.m_nodes.emplace_back(container_("a2"));
+                path.m_nodes.emplace_back(container_("a3"));
                 expected = yang::NodeTypes::PresenceContainer;
             }
 
             SECTION("_list")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, list_("_list")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, list_("_list"));
                 expected = yang::NodeTypes::List;
             }
 
@@ -1113,13 +1113,13 @@ TEST_CASE("yangschema")
 
             SECTION("example-schema:a/nevim")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
+                path.m_nodes.emplace_back(module_{"example-schema"}, container_("a"));
                 node.second = "nevim";
             }
 
             SECTION("modul:a/nevim")
             {
-                path.m_nodes.push_back(schemaNode_(module_{"modul"}, container_("a")));
+                path.m_nodes.emplace_back(module_{"modul"}, container_("a"));
                 node.second = "nevim";
             }
 
@@ -1128,8 +1128,8 @@ TEST_CASE("yangschema")
 
         SECTION("nodetype-specific methods called with different nodetypes")
         {
-            path.m_nodes.push_back(schemaNode_(module_{"example-schema"}, container_("a")));
-            path.m_nodes.push_back(schemaNode_(container_("a2")));
+            path.m_nodes.emplace_back(module_{"example-schema"}, container_("a"));
+            path.m_nodes.emplace_back(container_("a2"));
 
             REQUIRE(!ys.listHasKey(path, "chacha"));
         }

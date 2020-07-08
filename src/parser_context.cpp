@@ -52,7 +52,7 @@ void ParserContext::pushPathFragment(const schemaNode_& node)
         m_curPath = dataPathToSchemaPath(boost::get<dataPath_>(m_curPath));
     }
 
-    boost::get<schemaPath_>(m_curPath).m_nodes.push_back(node);
+    boost::get<schemaPath_>(m_curPath).m_nodes.emplace_back(node);
 }
 
 void ParserContext::resetPath()

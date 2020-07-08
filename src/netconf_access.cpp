@@ -169,7 +169,7 @@ std::vector<std::string> NetconfAccess::listImplementedSchemas()
     for (auto it : set->data()) {
         if (it->schema()->nodetype() == LYS_LEAF) {
             libyang::Data_Node_Leaf_List leaf(it);
-            res.push_back(leaf.value_str());
+            res.emplace_back(leaf.value_str());
         }
     }
     return res;
@@ -210,7 +210,7 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
             auto leafSchema = libyang::Schema_Node_Leaf{leafData.schema()};
             instanceRes.insert({ leafSchema.name(), leafValueFromValue(leafData.value(), leafSchema.type()->base())});
         }
-        res.push_back(instanceRes);
+        res.emplace_back(instanceRes);
     }
 
     return res;

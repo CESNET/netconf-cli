@@ -51,7 +51,7 @@ TEST_CASE("cd")
                 {
                     input = "cd example:a";
                 }
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a")));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("a"));
             }
 
             SECTION("second:a")
@@ -65,34 +65,34 @@ TEST_CASE("cd")
                 {
                     input = "cd second:a";
                 }
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"second"}, container_("a")));
+                expected.m_path.m_nodes.emplace_back(module_{"second"}, container_("a"));
             }
 
             SECTION("example:b")
             {
                 input = "cd example:b";
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("b")));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("b"));
             }
 
             SECTION("example:a/a2")
             {
                 input = "cd example:a/a2";
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a")));
-                expected.m_path.m_nodes.push_back(dataNode_(container_("a2")));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("a"));
+                expected.m_path.m_nodes.emplace_back(container_("a2"));
             }
 
             SECTION("example:a/example:a2")
             {
                 input = "cd example:a/example:a2";
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a")));
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a2")));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("a"));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("a2"));
             }
 
             SECTION("example:b/b2")
             {
                 input = "cd example:b/b2";
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("b")));
-                expected.m_path.m_nodes.push_back(dataNode_(container_("b2")));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("b"));
+                expected.m_path.m_nodes.emplace_back(container_("b2"));
             }
         }
 
@@ -103,7 +103,7 @@ TEST_CASE("cd")
                 input = "cd example:list[number=1]";
                 auto keys = ListInstance {
                     {"number", int32_t{1}}};
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("list", keys)));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("list", keys));
             }
 
             SECTION("example:list[number=1]/contInList")
@@ -111,8 +111,8 @@ TEST_CASE("cd")
                 input = "cd example:list[number=1]/contInList";
                 auto keys = ListInstance {
                     {"number", int32_t{1}}};
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("list", keys)));
-                expected.m_path.m_nodes.push_back(dataNode_(container_("contInList")));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("list", keys));
+                expected.m_path.m_nodes.emplace_back(container_("contInList"));
             }
 
             SECTION("example:twoKeyList[number=4][name='abcd']")
@@ -121,7 +121,7 @@ TEST_CASE("cd")
                 auto keys = ListInstance {
                     {"number", int32_t{4}},
                     {"name", std::string{"abcd"}}};
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, listElement_("twoKeyList", keys)));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("twoKeyList", keys));
             }
         }
 
@@ -130,7 +130,7 @@ TEST_CASE("cd")
             SECTION("  cd   example:a     ")
             {
                 input = "  cd   example:a     ";
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a")));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("a"));
             }
         }
 
@@ -139,38 +139,38 @@ TEST_CASE("cd")
             SECTION("moving up when already in root")
             {
                 input = "cd ..";
-                expected.m_path.m_nodes.push_back(dataNode_(nodeup_()));
+                expected.m_path.m_nodes.emplace_back(nodeup_());
             }
 
             SECTION("moving up TWICE when already in root")
             {
                 input = "cd ../..";
-                expected.m_path.m_nodes.push_back(dataNode_(nodeup_()));
-                expected.m_path.m_nodes.push_back(dataNode_(nodeup_()));
+                expected.m_path.m_nodes.emplace_back(nodeup_());
+                expected.m_path.m_nodes.emplace_back(nodeup_());
             }
 
             SECTION("example:a/..")
             {
                 input = "cd example:a/..";
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a")));
-                expected.m_path.m_nodes.push_back(dataNode_(nodeup_()));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("a"));
+                expected.m_path.m_nodes.emplace_back(nodeup_());
             }
 
             SECTION("example:a/../example:a")
             {
                 input = "cd example:a/../example:a";
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a")));
-                expected.m_path.m_nodes.push_back(dataNode_(nodeup_()));
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a")));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("a"));
+                expected.m_path.m_nodes.emplace_back(nodeup_());
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("a"));
             }
 
             SECTION("example:a/../example:a/a2")
             {
                 input = "cd example:a/../example:a/a2";
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a")));
-                expected.m_path.m_nodes.push_back(dataNode_(nodeup_()));
-                expected.m_path.m_nodes.push_back(dataNode_(module_{"example"}, container_("a")));
-                expected.m_path.m_nodes.push_back(dataNode_(container_("a2")));
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("a"));
+                expected.m_path.m_nodes.emplace_back(nodeup_());
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, container_("a"));
+                expected.m_path.m_nodes.emplace_back(container_("a2"));
             }
         }
 

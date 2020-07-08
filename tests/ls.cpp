@@ -48,7 +48,7 @@ TEST_CASE("ls")
             SECTION("ls --recursive")
             {
                 input = "ls --recursive";
-                expected.m_options.push_back(LsOption::Recursive);
+                expected.m_options.emplace_back(LsOption::Recursive);
             }
         }
 
@@ -142,7 +142,7 @@ TEST_CASE("ls")
                 SECTION("cwd: /example:a") { parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}}); }
 
                 input = "ls --recursive /example:a";
-                expected.m_options.push_back(LsOption::Recursive);
+                expected.m_options.emplace_back(LsOption::Recursive);
                 expected.m_path = dataPath_{Scope::Absolute, {dataNode_(module_{"example"}, container_{"a"})}};
             }
 

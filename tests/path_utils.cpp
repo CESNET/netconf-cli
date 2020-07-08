@@ -25,7 +25,7 @@ TEST_CASE("path utils")
             {
                 path.m_scope = Scope::Relative;
             }
-            path.m_nodes.push_back(dataNode_{module_{"example-schema"}, listElement_{"twoKeyList", {{"first", std::string{"a"}}, {"second", std::string{"b"}}}}});
+            path.m_nodes.emplace_back(module_{"example-schema"}, listElement_{"twoKeyList", {{"first", std::string{"a"}}, {"second", std::string{"b"}}}});
             expected += "example-schema:twoKeyList[first='a'][second='b']";
         }
 
@@ -40,7 +40,7 @@ TEST_CASE("path utils")
             {
                 path.m_scope = Scope::Relative;
             }
-            path.m_nodes.push_back(dataNode_{module_{"example-schema"}, leafListElement_{"addresses", std::string{"0.0.0.0"}}});
+            path.m_nodes.emplace_back(module_{"example-schema"}, leafListElement_{"addresses", std::string{"0.0.0.0"}});
             expected += "example-schema:addresses[.='0.0.0.0']";
         }
         REQUIRE(pathToDataString(path, Prefixes::WhenNeeded) == expected);

@@ -56,7 +56,7 @@ TEST_CASE("data query")
             datastore.createItem("/example-schema:person[name='Vaclav']");
             datastore.createItem("/example-schema:person[name='Tomas']");
             datastore.createItem("/example-schema:person[name='Jan Novak']");
-            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"person"}});
+            listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"person"});
             expected = {
                 {{"name", std::string{"Jan Novak"}}},
                 {{"name", std::string{"Tomas"}}},
@@ -66,7 +66,7 @@ TEST_CASE("data query")
 
         SECTION("example-schema:person - no instances")
         {
-            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"person"}});
+            listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"person"});
             expected = {
             };
         }
@@ -76,7 +76,7 @@ TEST_CASE("data query")
             datastore.createItem("/example-schema:selectedNumbers[value='45']");
             datastore.createItem("/example-schema:selectedNumbers[value='99']");
             datastore.createItem("/example-schema:selectedNumbers[value='127']");
-            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"selectedNumbers"}});
+            listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"selectedNumbers"});
             expected = {
                 {{"value", int8_t{127}}},
                 {{"value", int8_t{45}}},
@@ -89,7 +89,7 @@ TEST_CASE("data query")
             datastore.createItem("/example-schema:animalWithColor[name='Dog'][color='brown']");
             datastore.createItem("/example-schema:animalWithColor[name='Dog'][color='white']");
             datastore.createItem("/example-schema:animalWithColor[name='Cat'][color='grey']");
-            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"animalWithColor"}});
+            listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"animalWithColor"});
             expected = {
                 {{"name", std::string{"Cat"}}, {"color", std::string{"grey"}}},
                 {{"name", std::string{"Dog"}}, {"color", std::string{"brown"}}},
@@ -100,7 +100,7 @@ TEST_CASE("data query")
         SECTION("example-schema:animalWithColor - quotes in values")
         {
             datastore.createItem("/example-schema:animalWithColor[name='D\"o\"g'][color=\"b'r'own\"]");
-            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"animalWithColor"}});
+            listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"animalWithColor"});
             expected = {
                 {{"name", std::string{"D\"o\"g"}}, {"color", std::string{"b'r'own"}}}
             };
@@ -111,7 +111,7 @@ TEST_CASE("data query")
             datastore.createItem("/example-schema:ports[name='A']");
             datastore.createItem("/example-schema:ports[name='B']");
             datastore.createItem("/example-schema:ports[name='E']");
-            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"ports"}});
+            listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"ports"});
             expected = {
                 {{"name", enum_{"A"}}},
                 {{"name", enum_{"B"}}},
@@ -135,7 +135,7 @@ TEST_CASE("data query")
 
             SECTION("outer list")
             {
-                listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"org"}});
+                listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"org"});
                 expected = {
                     {{"department", std::string{"accounting"}}},
                     {{"department", std::string{"sales"}}},
@@ -175,8 +175,8 @@ TEST_CASE("data query")
                     expected = {
                     };
                 }
-                listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list});
-                listPath.m_nodes.push_back(dataNode_{list_{"people"}});
+                listPath.m_nodes.emplace_back(module_{"example-schema"}, list);
+                listPath.m_nodes.emplace_back(list_{"people"});
             }
 
             SECTION("THREE MF NESTED LISTS")
@@ -214,9 +214,9 @@ TEST_CASE("data query")
                     };
                 }
 
-                listPath.m_nodes.push_back(dataNode_{{"example-schema"}, listOrg});
-                listPath.m_nodes.push_back(dataNode_{listPeople});
-                listPath.m_nodes.push_back(dataNode_{list_{"computers"}});
+                listPath.m_nodes.emplace_back(module_{"example-schema"}, listOrg);
+                listPath.m_nodes.emplace_back(listPeople);
+                listPath.m_nodes.emplace_back(list_{"computers"});
             }
         }
 
@@ -225,8 +225,8 @@ TEST_CASE("data query")
             datastore.createItem("/other-module:parking-lot/example-schema:cars[id='1']");
             datastore.createItem("/other-module:parking-lot/example-schema:cars[id='2']");
 
-            listPath.m_nodes.push_back(dataNode_{{"other-module"}, container_{"parking-lot"}});
-            listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"cars"}});
+            listPath.m_nodes.emplace_back(module_{"other-module"}, container_{"parking-lot"});
+            listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"cars"});
             expected = {
                 {{"id", int32_t{1}}},
                 {{"id", int32_t{2}}},
@@ -245,7 +245,7 @@ TEST_CASE("data query")
     {
         dataPath_ listPath;
         listPath.m_scope = Scope::Absolute;
-        listPath.m_nodes.push_back(dataNode_{{"example-schema"}, list_{"person"}});
+        listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"person"});
         auto keys = dataquery.listKeys(listPath);
         REQUIRE(keys == std::vector<ListInstance>{});
     }

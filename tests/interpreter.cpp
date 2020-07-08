@@ -173,9 +173,9 @@ TEST_CASE("interpreter tests")
         }
         ls_ ls;
         ls.m_path = lsArg;
-        expectations.push_back(NAMED_REQUIRE_CALL(datastore, schema()).RETURN(schema));
-        expectations.push_back(NAMED_REQUIRE_CALL(*schema, availableNodes(expectedPath, Recursion::NonRecursive)).RETURN(std::set<ModuleNodePair>{}));
-        toInterpret.push_back(ls);
+        expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, schema()).RETURN(schema));
+        expectations.emplace_back(NAMED_REQUIRE_CALL(*schema, availableNodes(expectedPath, Recursion::NonRecursive)).RETURN(std::set<ModuleNodePair>{}));
+        toInterpret.emplace_back(ls);
     }
 
     SECTION("get")
@@ -323,8 +323,8 @@ TEST_CASE("interpreter tests")
 
         get_ getCmd;
         getCmd.m_path = inputPath;
-        expectations.push_back(NAMED_REQUIRE_CALL(datastore, getItems(expectedPathArg)).RETURN(treeReturned));
-        toInterpret.push_back(getCmd);
+        expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, getItems(expectedPathArg)).RETURN(treeReturned));
+        toInterpret.emplace_back(getCmd);
     }
 
     SECTION("create/delete")
@@ -335,50 +335,50 @@ TEST_CASE("interpreter tests")
         SECTION("list instance")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, listElement_{"department", {{"name", "engineering"s}}}}};
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:department[name='engineering']")));
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:department[name='engineering']")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:department[name='engineering']")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:department[name='engineering']")));
         }
 
         SECTION("leaflist instance")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, leafListElement_{"addresses", "127.0.0.1"s}}};
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:addresses[.='127.0.0.1']")));
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:addresses[.='127.0.0.1']")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:addresses[.='127.0.0.1']")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:addresses[.='127.0.0.1']")));
         }
 
         SECTION("presence container")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, container_{"pContainer"}}};
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:pContainer")));
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:pContainer")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:pContainer")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:pContainer")));
         }
 
         create_ createCmd;
         createCmd.m_path = inputPath;
         delete_ deleteCmd;
         deleteCmd.m_path = inputPath;
-        toInterpret.push_back(createCmd);
-        toInterpret.push_back(deleteCmd);
+        toInterpret.emplace_back(createCmd);
+        toInterpret.emplace_back(deleteCmd);
     }
 
     SECTION("delete a leaf")
     {
-        expectations.push_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:someLeaf")));
+        expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:someLeaf")));
         delete_ deleteCmd;
         deleteCmd.m_path = {Scope::Absolute, {dataNode_{{"mod"}, leaf_{"someLeaf"}}, }};
-        toInterpret.push_back(deleteCmd);
+        toInterpret.emplace_back(deleteCmd);
     }
 
     SECTION("commit")
     {
-        expectations.push_back(NAMED_REQUIRE_CALL(datastore, commitChanges()));
-        toInterpret.push_back(commit_{});
+        expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, commitChanges()));
+        toInterpret.emplace_back(commit_{});
     }
 
     SECTION("discard")
     {
-        expectations.push_back(NAMED_REQUIRE_CALL(datastore, discardChanges()));
-        toInterpret.push_back(discard_{});
+        expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, discardChanges()));
+        toInterpret.emplace_back(discard_{});
     }
 
 
@@ -391,14 +391,14 @@ TEST_CASE("interpreter tests")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, leaf_{"animal"}}};
             inputData = identityRef_{"Doge"};
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, setLeaf("/mod:animal", identityRef_{"mod", "Doge"})));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, setLeaf("/mod:animal", identityRef_{"mod", "Doge"})));
         }
 
 
         set_ setCmd;
         setCmd.m_path = inputPath;
         setCmd.m_data = inputData;
-        toInterpret.push_back(setCmd);
+        toInterpret.emplace_back(setCmd);
     }
 
 
@@ -406,14 +406,14 @@ TEST_CASE("interpreter tests")
     {
         SECTION("running -> startup")
         {
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, copyConfig(Datastore::Running, Datastore::Startup)));
-            toInterpret.push_back(copy_{{}, Datastore::Running, Datastore::Startup});
+            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, copyConfig(Datastore::Running, Datastore::Startup)));
+            toInterpret.emplace_back(copy_{{}, Datastore::Running, Datastore::Startup});
         }
 
         SECTION("startup -> running")
         {
-            expectations.push_back(NAMED_REQUIRE_CALL(datastore, copyConfig(Datastore::Startup, Datastore::Running)));
-            toInterpret.push_back(copy_{{}, Datastore::Startup, Datastore::Running});
+            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, copyConfig(Datastore::Startup, Datastore::Running)));
+            toInterpret.emplace_back(copy_{{}, Datastore::Startup, Datastore::Running});
         }
     }
 

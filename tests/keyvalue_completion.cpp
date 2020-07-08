@@ -56,8 +56,7 @@ TEST_CASE("keyvalue_completion")
             "9",
             "42"
         };
-        queryExpectations.push_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:list"))
-            .RETURN(queryReturn));
+        queryExpectations.emplace_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:list")).RETURN(queryReturn));
     }
 
     SECTION("get example:twoKeyList[number=")
@@ -82,8 +81,7 @@ TEST_CASE("keyvalue_completion")
                 input += "name=";
                 expected = { "'Petr'", "'Honza'"};
             }
-            queryExpectations.push_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:twoKeyList"))
-                    .RETURN(queryReturn));
+            queryExpectations.emplace_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:twoKeyList")).RETURN(queryReturn));
         }
 
         SECTION("name is set")
@@ -100,7 +98,7 @@ TEST_CASE("keyvalue_completion")
                 expected = { "10", "100" };
             }
             input += "][number=";
-            queryExpectations.push_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:twoKeyList"))
+            queryExpectations.emplace_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:twoKeyList"))
                     .TIMES(2)
                     .RETURN(queryReturn));
         }
@@ -129,7 +127,7 @@ TEST_CASE("keyvalue_completion")
                 expected = { "'Honza'" };
             }
             input += "][name=";
-            queryExpectations.push_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:twoKeyList"))
+            queryExpectations.emplace_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:twoKeyList"))
                     .TIMES(2)
                     .RETURN(queryReturn));
         }
@@ -151,7 +149,7 @@ TEST_CASE("keyvalue_completion")
                 input = "get example:twoKeyList[number=123][name='Petr'][";
             }
             // I use ALLOW_CALL here, all this stuff calls it different number of times
-            queryExpectations.push_back(NAMED_ALLOW_CALL(*mockDatastore, listInstances("/example:twoKeyList"))
+            queryExpectations.emplace_back(NAMED_ALLOW_CALL(*mockDatastore, listInstances("/example:twoKeyList"))
                     .RETURN(queryReturn));
         }
 
