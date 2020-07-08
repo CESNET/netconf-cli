@@ -27,7 +27,7 @@ public:
      *  \param listPath Path to the list (ending with a list_)
      *  \return A vector of maps, which represent the instances. The map is keyed by the name of the list key. The values in the map, are values of the list keys.
      */
-    std::vector<ListInstance> listKeys(const dataPath_& listPath) const;
+    [[nodiscard]] std::vector<ListInstance> listKeys(const dataPath_& listPath) const;
 
 private:
     DatastoreAccess& m_datastore;

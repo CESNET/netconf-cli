@@ -259,7 +259,7 @@ struct impl_toCanonicalPath {
 
 private:
     template <typename PathType>
-    ReturnType impl(const PathType& suffix) const
+    [[nodiscard]] ReturnType impl(const PathType& suffix) const
     {
         PathType res = [this] {
             if constexpr (std::is_same<PathType, schemaPath_>()) {

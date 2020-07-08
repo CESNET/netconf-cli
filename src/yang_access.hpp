@@ -22,7 +22,7 @@ class YangAccess : public DatastoreAccess {
 public:
     YangAccess();
     ~YangAccess() override;
-    Tree getItems(const std::string& path) const override;
+    [[nodiscard]] Tree getItems(const std::string& path) const override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createItem(const std::string& path) override;
     void deleteItem(const std::string& path) override;
@@ -35,7 +35,7 @@ public:
     std::shared_ptr<Schema> schema() override;
 
     void enableFeature(const std::string& module, const std::string& feature);
-    std::string dump(const DataFormat format) const override;
+    [[nodiscard]] std::string dump(const DataFormat format) const override;
 
     void loadModule(const std::string& name);
     void addSchemaFile(const std::string& path);

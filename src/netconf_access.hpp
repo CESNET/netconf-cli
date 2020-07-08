@@ -33,7 +33,7 @@ public:
     NetconfAccess(const std::string& socketPath);
     NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session);
     ~NetconfAccess() override;
-    Tree getItems(const std::string& path) const override;
+    [[nodiscard]] Tree getItems(const std::string& path) const override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createItem(const std::string& path) override;
     void deleteItem(const std::string& path) override;
@@ -45,7 +45,7 @@ public:
 
     std::shared_ptr<Schema> schema() override;
 
-    std::string dump(const DataFormat format) const override;
+    [[nodiscard]] std::string dump(const DataFormat format) const override;
 
 private:
     std::vector<ListInstance> listInstances(const std::string& path) override;

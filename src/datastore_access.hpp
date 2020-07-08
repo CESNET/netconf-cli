@@ -30,7 +30,7 @@ class DatastoreException : std::exception {
 public:
     DatastoreException(const std::vector<DatastoreError>& errors);
     ~DatastoreException() override = default;
-    const char* what() const noexcept override;
+    [[nodiscard]] const char* what() const noexcept override;
 
 private:
     std::string m_what;
@@ -44,7 +44,7 @@ class DatastoreAccess {
 public:
     using Tree = std::vector<std::pair<std::string, leaf_data_>>;
     virtual ~DatastoreAccess() = 0;
-    virtual Tree getItems(const std::string& path) const = 0;
+    [[nodiscard]] virtual Tree getItems(const std::string& path) const = 0;
     virtual void setLeaf(const std::string& path, leaf_data_ value) = 0;
     virtual void createItem(const std::string& path) = 0;
     virtual void deleteItem(const std::string& path) = 0;
@@ -56,7 +56,7 @@ public:
     virtual void commitChanges() = 0;
     virtual void discardChanges() = 0;
     virtual void copyConfig(const Datastore source, const Datastore destination) = 0;
-    virtual std::string dump(const DataFormat format) const = 0;
+    [[nodiscard]] virtual std::string dump(const DataFormat format) const = 0;
 
 private:
     friend class DataQuery;

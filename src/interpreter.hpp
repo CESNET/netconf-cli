@@ -31,13 +31,13 @@ struct Interpreter : boost::static_visitor<void> {
     void operator()(const dump_& dump) const;
 
 private:
-    std::string buildTypeInfo(const std::string& path) const;
+    [[nodiscard]] std::string buildTypeInfo(const std::string& path) const;
 
     template <typename PathType>
     boost::variant<dataPath_, schemaPath_, module_> toCanonicalPath(const boost::optional<PathType>& path) const;
 
     template <typename PathType>
-    boost::variant<dataPath_, schemaPath_, module_> toCanonicalPath(const PathType& path) const;
+    [[nodiscard]] boost::variant<dataPath_, schemaPath_, module_> toCanonicalPath(const PathType& path) const;
 
     Parser& m_parser;
     DatastoreAccess& m_datastore;
