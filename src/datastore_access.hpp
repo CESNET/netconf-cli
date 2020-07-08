@@ -42,6 +42,11 @@ struct dataPath_;
 class DatastoreAccess {
 public:
     using Tree = std::vector<std::pair<std::string, leaf_data_>>;
+    DatastoreAccess();
+    DatastoreAccess(const DatastoreAccess& src) = delete;
+    DatastoreAccess(DatastoreAccess&& src) noexcept = delete;
+    DatastoreAccess& operator=(const DatastoreAccess& src) = delete;
+    DatastoreAccess& operator=(DatastoreAccess&& src) noexcept = delete;
     virtual ~DatastoreAccess() = 0;
     [[nodiscard]] virtual Tree getItems(const std::string& path) const = 0;
     virtual void setLeaf(const std::string& path, leaf_data_ value) = 0;

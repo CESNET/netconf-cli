@@ -14,6 +14,8 @@ DatastoreError::DatastoreError(const std::string& message, const std::optional<s
 {
 }
 
+DatastoreAccess::DatastoreAccess() = default;
+
 DatastoreAccess::~DatastoreAccess() = default;
 
 DatastoreException::DatastoreException(const std::vector<DatastoreError>& errors)
