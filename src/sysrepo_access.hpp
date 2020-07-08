@@ -28,7 +28,7 @@ class SysrepoAccess : public DatastoreAccess {
 public:
     ~SysrepoAccess() override;
     SysrepoAccess(const std::string& appname, const Datastore datastore);
-    Tree getItems(const std::string& path) const override;
+    [[nodiscard]] Tree getItems(const std::string& path) const override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createItem(const std::string& path) override;
     void deleteItem(const std::string& path) override;
@@ -41,7 +41,7 @@ public:
     void discardChanges() override;
     void copyConfig(const Datastore source, const Datastore destination) override;
 
-    std::string dump(const DataFormat format) const override;
+    [[nodiscard]] std::string dump(const DataFormat format) const override;
 private:
     std::vector<ListInstance> listInstances(const std::string& path) override;
     [[noreturn]] void reportErrors() const;

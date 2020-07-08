@@ -31,22 +31,22 @@ public:
     YangSchema(std::shared_ptr<libyang::Context> lyCtx);
     ~YangSchema() override;
 
-    yang::NodeTypes nodeType(const std::string& path) const override;
-    yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const override;
-    bool isModule(const std::string& name) const override;
-    bool listHasKey(const schemaPath_& listPath, const std::string& key) const override;
-    bool leafIsKey(const std::string& leafPath) const override;
-    bool isConfig(const std::string& path) const override;
-    std::optional<std::string> defaultValue(const std::string& leafPath) const override;
-    const std::set<std::string> listKeys(const schemaPath_& listPath) const override;
-    yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
-    yang::TypeInfo leafType(const std::string& path) const override;
+    [[nodiscard]] yang::NodeTypes nodeType(const std::string& path) const override;
+    [[nodiscard]] yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const override;
+    [[nodiscard]] bool isModule(const std::string& name) const override;
+    [[nodiscard]] bool listHasKey(const schemaPath_& listPath, const std::string& key) const override;
+    [[nodiscard]] bool leafIsKey(const std::string& leafPath) const override;
+    [[nodiscard]] bool isConfig(const std::string& path) const override;
+    [[nodiscard]] std::optional<std::string> defaultValue(const std::string& leafPath) const override;
+    [[nodiscard]] const std::set<std::string> listKeys(const schemaPath_& listPath) const override;
+    [[nodiscard]] yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
+    [[nodiscard]] yang::TypeInfo leafType(const std::string& path) const override;
     /** @brief If the leaf type is a typedef, returns the typedef name. */
-    std::optional<std::string> leafTypeName(const std::string& path) const override;
-    std::string leafrefPath(const std::string& leafrefPath) const override;
-    std::set<ModuleNodePair> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const override;
-    std::optional<std::string> description(const std::string& path) const override;
-    yang::Status status(const std::string& location) const override;
+    [[nodiscard]] std::optional<std::string> leafTypeName(const std::string& path) const override;
+    [[nodiscard]] std::string leafrefPath(const std::string& leafrefPath) const override;
+    [[nodiscard]] std::set<ModuleNodePair> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const override;
+    [[nodiscard]] std::optional<std::string> description(const std::string& path) const override;
+    [[nodiscard]] yang::Status status(const std::string& location) const override;
 
     void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb);
 
@@ -66,23 +66,23 @@ public:
     void addSchemaDirectory(const char* directoryName);
 
     /** @short Creates a new data node from a path (to be used with NETCONF edit-config) */
-    std::shared_ptr<libyang::Data_Node> dataNodeFromPath(const std::string& path, const std::optional<const std::string> value = std::nullopt) const;
+    [[nodiscard]] std::shared_ptr<libyang::Data_Node> dataNodeFromPath(const std::string& path, const std::optional<const std::string> value = std::nullopt) const;
     std::shared_ptr<libyang::Module> getYangModule(const std::string& name);
 
 private:
     template <typename NodeType>
-    yang::TypeInfo impl_leafType(const std::shared_ptr<libyang::Schema_Node>& node) const;
-    std::set<std::string> modules() const;
+    [[nodiscard]] yang::TypeInfo impl_leafType(const std::shared_ptr<libyang::Schema_Node>& node) const;
+    [[nodiscard]] std::set<std::string> modules() const;
 
 
     /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
-    std::shared_ptr<libyang::Schema_Node> getSchemaNode(const std::string& node) const;
+    [[nodiscard]] std::shared_ptr<libyang::Schema_Node> getSchemaNode(const std::string& node) const;
     /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
-    std::shared_ptr<libyang::Schema_Node> getSchemaNode(const schemaPath_& listPath) const;
+    [[nodiscard]] std::shared_ptr<libyang::Schema_Node> getSchemaNode(const schemaPath_& listPath) const;
 
     /** @short Returns a single Schema_Node if the criteria matches only one, otherwise nullptr. */
-    std::shared_ptr<libyang::Schema_Node> getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const;
+    [[nodiscard]] std::shared_ptr<libyang::Schema_Node> getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const;
     std::shared_ptr<libyang::Context> m_context;
 
-    std::shared_ptr<libyang::Schema_Node> impl_getSchemaNode(const std::string& node) const;
+    [[nodiscard]] std::shared_ptr<libyang::Schema_Node> impl_getSchemaNode(const std::string& node) const;
 };

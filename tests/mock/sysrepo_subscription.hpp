@@ -29,7 +29,7 @@ public:
 class DataSupplier {
 public:
     virtual ~DataSupplier();
-    virtual DatastoreAccess::Tree get_data(const std::string& xpath) const = 0;
+    [[nodiscard]] virtual DatastoreAccess::Tree get_data(const std::string& xpath) const = 0;
 };
 
 
