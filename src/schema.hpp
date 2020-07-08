@@ -52,6 +52,11 @@ using ModuleNodePair = std::pair<boost::optional<std::string>, std::string>;
 
 class Schema {
 public:
+    Schema();
+    Schema(const Schema& src);
+    Schema(Schema&& src) noexcept;
+    Schema& operator=(const Schema& src);
+    Schema& operator=(Schema&& src) noexcept;
     virtual ~Schema();
 
     [[nodiscard]] virtual yang::NodeTypes nodeType(const std::string& path) const = 0;

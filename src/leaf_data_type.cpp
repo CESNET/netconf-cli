@@ -33,6 +33,9 @@ bool IdentityRef::operator==(const IdentityRef& other) const
 {
     return this->m_allowedValues == other.m_allowedValues;
 }
+
+LeafRef::~LeafRef() = default;
+
 // Copy constructor needed, because unique_ptr is not copy-constructible
 LeafRef::LeafRef(const LeafRef& src)
     : m_targetXPath(src.m_targetXPath)
@@ -44,6 +47,8 @@ LeafRef::LeafRef(const std::string& xpath, std::unique_ptr<TypeInfo>&& type)
     , m_targetType(std::move(type))
 {
 }
+LeafRef::LeafRef(LeafRef&& src) noexcept = default;
+
 bool LeafRef::operator==(const LeafRef& other) const
 {
     return this->m_targetXPath == other.m_targetXPath && *this->m_targetType == *other.m_targetType;

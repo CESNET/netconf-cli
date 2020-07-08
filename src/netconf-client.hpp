@@ -28,6 +28,10 @@ using KbdInteractiveCb = std::function<std::string(const std::string&, const std
 class Session {
 public:
     Session(struct nc_session* session);
+    Session(const Session& src) = delete;
+    Session(Session&& src) noexcept;
+    Session& operator=(const Session& src);
+    Session& operator=(Session&& src) noexcept;
     ~Session();
     static std::unique_ptr<Session> connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath);
     static std::unique_ptr<Session> connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback);

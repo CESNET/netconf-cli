@@ -29,6 +29,10 @@ class YangSchema : public Schema {
 public:
     YangSchema();
     YangSchema(std::shared_ptr<libyang::Context> lyCtx);
+    YangSchema(const YangSchema& src) = delete;
+    YangSchema(YangSchema&& src) noexcept;
+    YangSchema& operator=(const YangSchema& src) = delete;
+    YangSchema& operator=(YangSchema&& src) noexcept;
     ~YangSchema() override;
 
     [[nodiscard]] yang::NodeTypes nodeType(const std::string& path) const override;

@@ -194,6 +194,8 @@ Session::Session(struct nc_session* session)
     impl::ClientInit::instance();
 }
 
+Session& Session::operator=(const Session& src) = default;
+
 Session::~Session()
 {
     ::nc_session_free(m_session, nullptr);

@@ -21,6 +21,10 @@ struct lyd_node;
 class YangAccess : public DatastoreAccess {
 public:
     YangAccess();
+    YangAccess(const YangAccess& src) = delete;
+    YangAccess(YangAccess&& src) noexcept;
+    YangAccess& operator=(const YangAccess& src) = delete;
+    YangAccess& operator=(YangAccess&& src) noexcept;
     ~YangAccess() override;
     [[nodiscard]] Tree getItems(const std::string& path) const override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
