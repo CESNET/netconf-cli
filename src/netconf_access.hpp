@@ -29,10 +29,14 @@ class YangSchema;
 
 class NetconfAccess : public DatastoreAccess {
 public:
+    NetconfAccess(const NetconfAccess& src) = delete;
+    NetconfAccess(NetconfAccess&& src) noexcept;
+    NetconfAccess& operator=(const NetconfAccess& src);
+    NetconfAccess& operator=(NetconfAccess&& src) noexcept;
+    ~NetconfAccess() override;
     NetconfAccess(const std::string& hostname, uint16_t port, const std::string& user, const std::string& pubKey, const std::string& privKey);
     NetconfAccess(const std::string& socketPath);
     NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session);
-    ~NetconfAccess() override;
     [[nodiscard]] Tree getItems(const std::string& path) const override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createItem(const std::string& path) override;
