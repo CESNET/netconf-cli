@@ -34,9 +34,7 @@ YangAccess::YangAccess()
 {
 }
 
-YangAccess::~YangAccess()
-{
-}
+YangAccess::~YangAccess() = default;
 
 [[noreturn]] void YangAccess::getErrorsAndThrow() const
 {

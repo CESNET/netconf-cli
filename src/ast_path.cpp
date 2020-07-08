@@ -159,9 +159,7 @@ void validatePathNodes(const std::vector<T>& nodes)
 }
 }
 
-schemaPath_::schemaPath_()
-{
-}
+schemaPath_::schemaPath_() = default;
 
 schemaPath_::schemaPath_(const Scope scope, const std::vector<schemaNode_>& nodes, const TrailingSlash trailingSlash)
     : m_scope(scope)
@@ -178,9 +176,7 @@ bool schemaPath_::operator==(const schemaPath_& b) const
     return this->m_nodes == b.m_nodes;
 }
 
-dataPath_::dataPath_()
-{
-}
+dataPath_::dataPath_() = default;
 
 dataPath_::dataPath_(const Scope scope, const std::vector<dataNode_>& nodes, const TrailingSlash trailingSlash)
     : m_scope(scope)
