@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c0013d8a_569e97f1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-09T08:36:43Z",
+      "side": 1,
+      "message": "nit: it would be nice to refer to the tool and also say why you believe this is a better approach, but let\u0027s save these rebuilds and don\u0027t change this at this point.",
+      "revId": "04909678f5ccb7701fe62d17ae3a5b4ac0ef8c95",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
