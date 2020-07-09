@@ -33,6 +33,24 @@
       "revId": "8176516ce05ab946979d48e01108fb23c2f6985c",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3db91132_fad46b77",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-09T09:36:39Z",
+      "side": 1,
+      "message": "I agree. Changed.",
+      "parentUuid": "c2bcbcb9_1580be3b",
+      "revId": "8176516ce05ab946979d48e01108fb23c2f6985c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
