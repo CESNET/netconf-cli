@@ -41,6 +41,11 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
         auto v = value->dec64();
         return v.value * std::pow(10, -v.digits);
     }
+    case LY_TYPE_LEAFREF:
+    {
+        libyang::Data_Node_Leaf_List toPrint{value->leafref()};
+        return leafValueFromValue(toPrint.value(), toPrint.value_type());
+    }
     default: // TODO: implement all types
         return "(can't print)"s;
     }
@@ -67,7 +72,7 @@ void impl_lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::share
         }
         if (it->schema()->nodetype() == LYS_LEAF || it->schema()->nodetype() == LYS_LEAFLIST) {
             libyang::Data_Node_Leaf_List leaf(it);
-            auto value = leafValueFromValue(leaf.value(), leaf.leaf_type()->base());
+            auto value = leafValueFromValue(leaf.value(), leaf.value_type());
             res.emplace_back(stripXPathPrefix(it->path()), value);
         }
     }
