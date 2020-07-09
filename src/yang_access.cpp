@@ -267,10 +267,10 @@ std::string YangAccess::dump(const DataFormat format) const
 {
     char* output;
     lyd_print_mem(&output, m_datastore.get(), format == DataFormat::Xml ? LYD_XML : LYD_JSON, LYP_WITHSIBLINGS | LYP_FORMAT);
+    std::unique_ptr<char, decltype(&free)> deleter{output, free};
 
     if (output) {
         std::string res = output;
-        free(output);
         return res;
     }
 
