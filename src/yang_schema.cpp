@@ -395,7 +395,7 @@ void YangSchema::registerModuleCallback(const std::function<std::string(const ch
     };
 
     auto deleter = [](void* data) {
-        free(data);
+        std::unique_ptr<void, decltype(&free)>{data, free};
     };
     m_context->add_missing_module_callback(lambda, deleter);
 }
