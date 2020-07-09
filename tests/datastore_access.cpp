@@ -838,12 +838,15 @@ class RpcCb: public sysrepo::Callback {
             bool hasCities = false;
             for (size_t i = 0; i < input->val_cnt(); ++i) {
                 const auto& val = input->val(i);
+                if (val->xpath() == nukes + "/payload") {
+                    continue; // ignore, container
+                }
+                if (val->xpath() == nukes + "/description") {
+                    continue; // unused
+                }
+
                 if (val->xpath() == nukes + "/payload/kilotons") {
                     kilotons = val->data()->get_uint64();
-                } else if (val->xpath() == nukes + "/payload") {
-                    // ignore, container
-                } else if (val->xpath() == nukes + "/description") {
-                    // unused
                 } else if (std::string_view{val->xpath()}.find(nukes + "/cities") == 0) {
                     hasCities = true;
                 } else {
