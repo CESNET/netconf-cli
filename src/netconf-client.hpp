@@ -21,7 +21,6 @@ namespace client {
 class ReportedError : public std::runtime_error {
 public:
     ReportedError(const std::string& what);
-    ~ReportedError() override;
 };
 
 using KbdInteractiveCb = std::function<std::string(const std::string&, const std::string&, const std::string&, bool)>;

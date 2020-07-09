@@ -373,7 +373,5 @@ ReportedError::ReportedError(const std::string& what)
     : std::runtime_error(what)
 {
 }
-
-ReportedError::~ReportedError() = default;
 }
 }
