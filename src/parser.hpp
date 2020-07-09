@@ -16,13 +16,11 @@
 class InvalidCommandException : public std::invalid_argument {
 public:
     using std::invalid_argument::invalid_argument;
-    ~InvalidCommandException() override;
 };
 
 class TooManyArgumentsException : public std::invalid_argument {
 public:
     using std::invalid_argument::invalid_argument;
-    ~TooManyArgumentsException() override;
 };
 
 struct Completions {

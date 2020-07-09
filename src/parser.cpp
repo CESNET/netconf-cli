@@ -12,8 +12,6 @@
 #include "utils.hpp"
 
 
-InvalidCommandException::~InvalidCommandException() = default;
-
 Parser::Parser(const std::shared_ptr<const Schema> schema, WritableOps writableOps, const std::shared_ptr<const DataQuery> dataQuery)
     : m_schema(schema)
     , m_dataquery(dataQuery)

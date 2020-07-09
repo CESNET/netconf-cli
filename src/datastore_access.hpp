@@ -29,7 +29,6 @@ struct DatastoreError {
 class DatastoreException : std::exception {
 public:
     DatastoreException(const std::vector<DatastoreError>& errors);
-    ~DatastoreException() override = default;
     [[nodiscard]] const char* what() const noexcept override;
 
 private:

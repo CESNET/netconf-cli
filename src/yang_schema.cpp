@@ -17,19 +17,16 @@
 class YangLoadError : public std::runtime_error {
 public:
     using std::runtime_error::runtime_error;
-    ~YangLoadError() override = default;
 };
 
 class UnsupportedYangTypeException : public std::runtime_error {
 public:
     using std::runtime_error::runtime_error;
-    ~UnsupportedYangTypeException() override = default;
 };
 
 class InvalidSchemaQueryException : public std::runtime_error {
 public:
     using std::runtime_error::runtime_error;
-    ~InvalidSchemaQueryException() override = default;
 };
 
 YangSchema::YangSchema()
