@@ -41,7 +41,7 @@ enum class Recursion {
 };
 
 
-class InvalidNodeException {
+class InvalidNodeException : std::exception {
 };
 
 /*! \class Schema
