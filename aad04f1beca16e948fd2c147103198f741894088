@@ -22,6 +22,30 @@
       "revId": "aad04f1beca16e948fd2c147103198f741894088",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "520160a6_6469ceed",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-09T09:55:29Z",
+      "side": 1,
+      "message": "The check is documented here https://clang.llvm.org/docs/analyzer/checkers.html#core-callandmessage\n\nIt does more stuff at the same time, but I agree that maybe it\u0027s useless since we check stuff at runtime with asan/ubsan. I think I will remove it after all",
+      "parentUuid": "f06e6da5_6e1269d5",
+      "range": {
+        "startLine": 217,
+        "startChar": 119,
+        "endLine": 217,
+        "endChar": 133
+      },
+      "revId": "aad04f1beca16e948fd2c147103198f741894088",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
