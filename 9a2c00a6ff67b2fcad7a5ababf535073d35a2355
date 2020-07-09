@@ -22,6 +22,30 @@
       "revId": "9a2c00a6ff67b2fcad7a5ababf535073d35a2355",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3c65c25a_536c1db6",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-09T08:56:41Z",
+      "side": 1,
+      "message": "I\u0027ve recently stopped using short if statements completely, because I think they can bring problems and give only a small advantage. \n\nclang-format unfortunately doesn\u0027t have a rule for this (only whether short statements should be on one line or two lines).",
+      "parentUuid": "2bd8f3db_4fc24345",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 9
+      },
+      "revId": "9a2c00a6ff67b2fcad7a5ababf535073d35a2355",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
