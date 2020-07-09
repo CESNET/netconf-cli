@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2bd8f3db_4fc24345",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-09T08:42:41Z",
+      "side": 1,
+      "message": "This early return is, IMHO, a place where I think that the way with no curly braces looks better. But this is \"your project\", so do as you wish. (Same for early-continue or early-throw.)\n\nMy suggestion would be to accompany this patch with a followup one configuring the clang-format config to start yelling about this as well.",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 9
+      },
+      "revId": "9a2c00a6ff67b2fcad7a5ababf535073d35a2355",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
