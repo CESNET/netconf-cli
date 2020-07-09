@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f6187cf7_d54fd4c4",
+        "filename": "src/netconf-client.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-09T11:15:57Z",
+      "side": 0,
+      "message": "So this has been something that I\u0027ve been doing for years, and the reason for doing that is that I wanted to make sure I can throw/catch exceptions over DSO boundaries. It might have been while the dinosaurs were still ruling the Earth and GCC 3.4 was the new king of the block, and people were playing with -fvisibility\u003dhidden. This means that nothing of that might apply today, but it also means that I do not understand whether it is still an issue or not.\n\nThe way I remember stuff was that the \"first virtual\"\u0027s definition drove vtable generating, and that determined the type_info. A TL;DR version is that a class like this one, with no explicit definition of a virtual (or a first virtual?), caused at least two TUs in two different DSOs to contain \"a definition\" of the exception\u0027s type_info/RTTI/whatever-it-is-called. As a result, if a library code that eventually ended up in libfoo.so did this:\n\n void bar() {\n  // ... something useful here\n  if (die)\n    throw my_exception;\n }\n\nand the main app (or perhaps a different DSO?) did this:\n\n void another() {\n   // ...\n   try {\n     bar();\n   } catch (my_exception\u0026) {\n     // THIS WAS NOT BEING CALLED because the two sides had two separate copies of the type_info for my_exception\n   }\n\nNow, https://stackoverflow.com/questions/10787492/exceptions-across-binary-boundary looks relevant, and indeed, apparently it\u0027s been fixed/changed since GCC 4.5: https://gcc.gnu.org/bugzilla/show_bug.cgi?id\u003d47960 . Reading other bits such as https://dholmes215.github.io/c++/2017/06/30/fun-with-typeid.html brings these memories back.\n\nSo, if you\u0027re willing to vouch that removing these \"just so that Honza feels good\" destructors that are \u003ddefault in the .cpp file, that this is a good and safe thing, please do that in a separate commit, and please copy-paste this comment from me there. The risk that I\u0027m worried about is \"what\u0027s gonna happen when we refactor this to use a DSO for sysrepo and another DSO for netconf\".",
+      "revId": "23198992a076d278d63f959802278099dfec8335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

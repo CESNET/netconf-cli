@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4091b1ef_448c1bca",
+        "filename": "src/datastore_access.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-09T11:15:57Z",
+      "side": 1,
+      "message": "Five ctors are declared, only one is defined.",
+      "revId": "9243d8c403c798b58b6a7c225d5374e70bb4872a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "721d4c7c_43cfdec4",
+        "filename": "src/datastore_access.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-09T11:15:57Z",
+      "side": 1,
+      "message": "I think I understand the rules at least a little bit, but I cannot imagine a situation where using a DatastoreAccess in any other way than just constructing a derived class and never ever moving/direct-assigning/copy-constructing makes sense.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 63
+      },
+      "revId": "9243d8c403c798b58b6a7c225d5374e70bb4872a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58c78870_0db98fb3",
+        "filename": "src/leaf_data_type.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-09T11:15:57Z",
+      "side": 1,
+      "message": "Do we need move semantics here? Are they worth the noise?",
+      "revId": "9243d8c403c798b58b6a7c225d5374e70bb4872a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b127276_d0b071cd",
+        "filename": "src/leaf_data_type.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-09T11:15:57Z",
+      "side": 1,
+      "message": "These are apparently not used (they are declared, but not defined, and therefore if they were invoked, linker would have told you). What about \u003ddelete?",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 47
+      },
+      "revId": "9243d8c403c798b58b6a7c225d5374e70bb4872a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
