@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6efb0c7d_55bfdcd1",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-09T09:30:38Z",
+      "side": 1,
+      "message": "Nah, this starts getting ugly, doesn\u0027t it. At least there\u0027s an improvement here, you no longer have to remember to free(). OK, let\u0027s put this one in.",
+      "revId": "8176516ce05ab946979d48e01108fb23c2f6985c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c2bcbcb9_1580be3b",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-09T09:30:38Z",
+      "side": 1,
+      "message": "I think this line crosses the threshold. This is already a custom deleter that is passed to a C++ wrapper over a C library. There\u0027s no need to *replace* a simple call to free() with a constructor that is going to immediately call that free(). This doesn\u0027t add anything, and it increases code complexity. If the only reason is \"I want to use tool ABC\", please configure that tool to skip this line.",
+      "revId": "8176516ce05ab946979d48e01108fb23c2f6985c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
