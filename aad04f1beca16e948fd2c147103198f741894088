@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f06e6da5_6e1269d5",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-09T09:37:20Z",
+      "side": 1,
+      "message": "This does not increase readability of the code I\u0027m afraid, and that\u0027s for two reasons:\n\n- The identifier doesn\u0027t convey any meaning to me. Why don\u0027t they call it \"uninitialized value\"? Please ask them if there\u0027s a better way of doing this.\n- It\u0027s a unit test where using SECTION like this is a common idiom. If you insist, please disable this test for everything below test/ .\n\nAlso, keep in mind that the CI runs everything with ASAN and UBSAN. Are you sure this particular check adds value?",
+      "range": {
+        "startLine": 217,
+        "startChar": 119,
+        "endLine": 217,
+        "endChar": 133
+      },
+      "revId": "aad04f1beca16e948fd2c147103198f741894088",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
