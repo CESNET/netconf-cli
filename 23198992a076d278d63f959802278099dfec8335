@@ -16,6 +16,24 @@
       "revId": "23198992a076d278d63f959802278099dfec8335",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a04f80b_fc369739",
+        "filename": "src/netconf-client.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-09T12:28:23Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "f6187cf7_d54fd4c4",
+      "revId": "23198992a076d278d63f959802278099dfec8335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
