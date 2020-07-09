@@ -214,7 +214,7 @@ TEST_CASE("interpreter tests")
                         scope = Scope::Relative;
                     }
 
-                    inputPath = dataPath_{scope, {dataNode_{{"mod"}, leaf_{"myLeaf"}}}};
+                    inputPath = dataPath_{scope, {dataNode_{{"mod"}, leaf_{"myLeaf"}}}}; // NOLINT(clang-analyzer-core.CallAndMessage)
                 }
 
                 SECTION("cwd: /mod:whatever")
@@ -251,7 +251,7 @@ TEST_CASE("interpreter tests")
                         scope = Scope::Relative;
                     }
 
-                    inputPath = dataPath_{scope, {dataNode_{{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}};
+                    inputPath = dataPath_{scope, {dataNode_{{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}}; // NOLINT(clang-analyzer-core.CallAndMessage)
                 }
 
                 SECTION("cwd: /mod:whatever")
