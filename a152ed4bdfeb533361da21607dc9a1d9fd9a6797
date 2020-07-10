@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d0048653_1a153f41",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-10T13:25:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c9dec50_6db79f41",
+      "range": {
+        "startLine": 139,
+        "startChar": 37,
+        "endLine": 139,
+        "endChar": 44
+      },
+      "revId": "a152ed4bdfeb533361da21607dc9a1d9fd9a6797",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fb36b971_03a898fe",
         "filename": "src/proxy_datastore.hpp",
         "patchSetId": 3
@@ -39,6 +63,24 @@
       "revId": "a152ed4bdfeb533361da21607dc9a1d9fd9a6797",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edc1e276_01e13e38",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-10T13:25:08Z",
+      "side": 1,
+      "message": "ok I won\u0027t inherit, the reason I did that was to ensure the interface stays the same, but that\u0027s already ensured by dropping this in place of DatastoreAccess in Interpreter",
+      "parentUuid": "fb36b971_03a898fe",
+      "revId": "a152ed4bdfeb533361da21607dc9a1d9fd9a6797",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
