@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c9dec50_6db79f41",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-10T12:57:26Z",
+      "side": 1,
+      "message": "This must be public because its public header uses a header from the datastoreaccess target.",
+      "range": {
+        "startLine": 139,
+        "startChar": 37,
+        "endLine": 139,
+        "endChar": 44
+      },
+      "revId": "a152ed4bdfeb533361da21607dc9a1d9fd9a6797",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb36b971_03a898fe",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-10T12:57:26Z",
+      "side": 1,
+      "message": "- This is private inheritance, are you sure about that?\n\n- I vaguely remember that we discussed whether to make it inherit from DatastoreAccess or not. I *think* that the conclusion was to *not* inherit, and instead adapt Interpreter so that it requires passing a ProxyDatastore for always operating on that. Now, the reason for *not* inheriting from DatastoreAccess is that this class cannot really implement executeRpc(path, input), the future executeAction(...), and also there\u0027s no need for listInstances(...) or schema(). Instead of these, it should (IMHO) offer something like:\n\n  void prepareExecution(const std::string\u0026 xpath);\n  void execute();\n  void cancelExecution();",
+      "revId": "a152ed4bdfeb533361da21607dc9a1d9fd9a6797",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
