@@ -125,7 +125,6 @@ struct commit_ : x3::position_tagged {
 
     Usage:
         /> commit)";
-    bool operator==(const set_& b) const;
 };
 
 struct get_ : x3::position_tagged {
