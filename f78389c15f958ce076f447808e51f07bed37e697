@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "69ddefbf_a2405729",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T09:31:57Z",
+      "side": 1,
+      "message": "I don\u0027t really mind calling it \"execute\", but I think \"exec\" is used almost everywhere in IT, I think everyone is used to \"exec\" almost being like an actual word (and it means execute)",
+      "parentUuid": "b8b71f18_b9a33a48",
+      "range": {
+        "startLine": 239,
+        "startChar": 34,
+        "endLine": 239,
+        "endChar": 38
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7a9baab6_e3c11cd1",
         "filename": "src/cli.cpp",
         "patchSetId": 5
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "0a2369e5_af490c39",
+        "filename": "src/cli.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T09:31:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a9baab6_e3c11cd1",
+      "range": {
+        "startLine": 129,
+        "startChar": 9,
+        "endLine": 129,
+        "endChar": 12
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d687fc82_1363bfa0",
         "filename": "src/interpreter.cpp",
         "patchSetId": 5
@@ -62,6 +110,24 @@
       "revId": "f78389c15f958ce076f447808e51f07bed37e697",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88b17458_11fd3317",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T09:31:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d687fc82_1363bfa0",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -82,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "ca36f73c_d64e1537",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T09:31:57Z",
+      "side": 1,
+      "message": "I needed the call to changeNode always run. I reordered the commands.",
+      "parentUuid": "2eec783c_8c94db25",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "02e00e5d_475cc8c1",
         "filename": "src/path_parser.hpp",
         "patchSetId": 5
@@ -93,6 +177,24 @@
       "writtenOn": "2020-07-16T08:05:03Z",
       "side": 1,
       "message": "That trailing slash looks fishy. There are no tests, so that I don\u0027t know how it\u0027s expected to work (is there a use case for showing nodes that are inputs of the RPC? outputs? Who filters out stuff that is current-command dependent? etc)",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96a75c7c_fdd1f778",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T09:31:57Z",
+      "side": 1,
+      "message": "Well... rpc works kind of like a container, so a slash should be fine. I haven\u0027t really thought about it. I guess if command is \"rpc\" then a space should be added, otherwise (ls, describe) a slash should be added? I don\u0027t have a mechanism for this kind of functionality (yet), so I right now, I have to decide which one.",
+      "parentUuid": "02e00e5d_475cc8c1",
       "revId": "f78389c15f958ce076f447808e51f07bed37e697",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -113,6 +215,24 @@
       "revId": "f78389c15f958ce076f447808e51f07bed37e697",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51a99b11_31394883",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T09:31:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "347a33f9_04d36413",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -139,6 +259,30 @@
     },
     {
       "key": {
+        "uuid": "033e0dab_1b17dff3",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T09:31:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66647fc8_ce9105a7",
+      "range": {
+        "startLine": 75,
+        "startChar": 37,
+        "endLine": 75,
+        "endChar": 40
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9b47e295_12311685",
         "filename": "src/proxy_datastore.hpp",
         "patchSetId": 5
@@ -162,6 +306,30 @@
     },
     {
       "key": {
+        "uuid": "ea10a6d9_e854b7c3",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T09:31:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b47e295_12311685",
+      "range": {
+        "startLine": 35,
+        "startChar": 37,
+        "endLine": 35,
+        "endChar": 62
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0f2ebc33_43f44a47",
         "filename": "src/proxy_datastore.hpp",
         "patchSetId": 5
@@ -182,6 +350,30 @@
       "revId": "f78389c15f958ce076f447808e51f07bed37e697",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6bc2d24a_bf51d9ca",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T09:31:57Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s a better name, changed",
+      "parentUuid": "0f2ebc33_43f44a47",
+      "range": {
+        "startLine": 36,
+        "startChar": 95,
+        "endLine": 36,
+        "endChar": 98
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
