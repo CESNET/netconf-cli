@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e4fd85e8_f833dd0d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T14:21:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3594e4a_6876cd6b",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "383b3064_ce499419",
         "filename": "src/proxy_datastore.cpp",
         "patchSetId": 10
@@ -30,6 +48,24 @@
       "writtenOn": "2020-07-16T13:00:54Z",
       "side": 1,
       "message": "This looks incorrect, surely it makes sense to allow running this:\n\n sysrepo\u003e rpc /foo:shootme\n sysrepo\u003e set how \u003d \"hard\"\n sysrepo\u003e get how            \u003c--- this thing in particular\n hard\n sysrepo\u003e\n\nLooks like it\u0027s going to need tests 😊\n\nBTW, it seems that this printing will not cross RC boundaries. If I\u0027ve opened an RPC and if I do a `get /`, then the RPC\u0027s inputs won\u0027t be shown. OK, that\u0027s probably a reasonable thing to do.",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "129f4792_6322fc89",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T14:21:55Z",
+      "side": 1,
+      "message": "I changed it so that `get how` now gives output",
+      "parentUuid": "383b3064_ce499419",
       "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "db5d77ed_f83710d7",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T14:21:55Z",
+      "side": 1,
+      "message": "yangaccess::commitChanges only validates, so commit can be used to validate stuff... but I guess it doesn\u0027t make sense to commit both like this. also, validation prior to executing sounds good, but I\u0027m not sure how to implement that",
+      "parentUuid": "c5ed2d32_b495d479",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "72d1868d_47c8316a",
         "filename": "src/proxy_datastore.hpp",
         "patchSetId": 10
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "50981e16_0e29a70d",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T14:21:55Z",
+      "side": 1,
+      "message": "I don\u0027t know what kind of expectations I have... I guess the functions needs to return a temporary datastore?",
+      "parentUuid": "72d1868d_47c8316a",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3ea95f6b_593d20d1",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 10
@@ -81,6 +153,30 @@
       "writtenOn": "2020-07-16T13:00:54Z",
       "side": 1,
       "message": "These changes look fishy to me -- it\u0027s actively executing a side effect within a SECTION block that was previously only used for preparing some test input. I wanted to propose this:\n\n  auto proxyInput;\n  std::transform(input.begin(), input.end(), std::back_inserter(proxyInput), [rpc](const auto\u0026 x) {\n      return std::make_pair(x.key, rpc + \u0027/\u0027 + x.value);\n  });\n  ...\n  somehow_do_rpc(proxyInput)\n\nbut then I realized that the API of the proxy insists on calls to createItem etc etc, not just setLeaf, oh bummer.\n\nSo please add a comment somewhere which points out why this duplication is required.",
+      "range": {
+        "startLine": 921,
+        "startChar": 0,
+        "endLine": 922,
+        "endChar": 135
+      },
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37e6e4f1_f1d157fd",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T14:21:55Z",
+      "side": 1,
+      "message": "Tbh, I don\u0027t think it\u0027s required, it\u0027s just that the proxydatastore test goes over more layers...",
+      "parentUuid": "3ea95f6b_593d20d1",
       "range": {
         "startLine": 921,
         "startChar": 0,
@@ -113,6 +209,30 @@
       "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bba7481_5f86b3e8",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T14:21:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6944dbe4_198f6c56",
+      "range": {
+        "startLine": 43,
+        "startChar": 9,
+        "endLine": 43,
+        "endChar": 12
+      },
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
