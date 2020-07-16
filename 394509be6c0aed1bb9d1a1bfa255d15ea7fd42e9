@@ -143,6 +143,24 @@
     },
     {
       "key": {
+        "uuid": "5c0db422_62af479c",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T16:09:52Z",
+      "side": 1,
+      "message": "I added the test",
+      "parentUuid": "8ed679b9_52bcd887",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "72d1868d_47c8316a",
         "filename": "src/proxy_datastore.hpp",
         "patchSetId": 10
@@ -190,6 +208,24 @@
       "side": 1,
       "message": "It\u0027s a bit more complex, the schemas of both the original DS and the to-be-created one have to match -- they should both return exactly the same data. One way of how we are doing this in the \"actual use\" is via a YangSchema that shares the libyang context.",
       "parentUuid": "50981e16_0e29a70d",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0f6a9a7_91eea570",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T16:09:52Z",
+      "side": 1,
+      "message": "I added a comment",
+      "parentUuid": "2d2b8ba4_778547a2",
       "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -264,6 +300,30 @@
       "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5d8dd66_95f2cd6a",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-16T16:09:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a07a6d6_988da056",
+      "range": {
+        "startLine": 921,
+        "startChar": 0,
+        "endLine": 922,
+        "endChar": 135
+      },
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
