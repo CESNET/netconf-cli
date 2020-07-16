@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "ba1db1e3_a847aba7",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T15:29:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "129f4792_6322fc89",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5ed2d32_b495d479",
         "filename": "src/proxy_datastore.cpp",
         "patchSetId": 10
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "yangaccess::commitChanges only validates, so commit can be used to validate stuff... but I guess it doesn\u0027t make sense to commit both like this. also, validation prior to executing sounds good, but I\u0027m not sure how to implement that",
       "parentUuid": "c5ed2d32_b495d479",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ed679b9_52bcd887",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T15:29:41Z",
+      "side": 1,
+      "message": "- commit only the temporary DS just prior to calling that exec\n- or ignore that and rely on the actual backend for validation\n\nI think I like the second option more. It would be nice to have a test which checks what happens when you do something like this:\n\n module \"example\" {\n\n   list \"people\" {\n     leaf \"name\" {\n       type string;\n     }\n     key \"name\";\n   }\n   \n   rpc \"select\" {\n     input {\n       leaf \"whom\" {\n         type leafref {\n           path \"/example:people/name\";\n         }\n       }\n     }\n   }\n }",
+      "parentUuid": "db5d77ed_f83710d7",
       "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -142,6 +178,24 @@
     },
     {
       "key": {
+        "uuid": "2d2b8ba4_778547a2",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T15:29:41Z",
+      "side": 1,
+      "message": "It\u0027s a bit more complex, the schemas of both the original DS and the to-be-created one have to match -- they should both return exactly the same data. One way of how we are doing this in the \"actual use\" is via a YangSchema that shares the libyang context.",
+      "parentUuid": "50981e16_0e29a70d",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3ea95f6b_593d20d1",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 10
@@ -177,6 +231,30 @@
       "side": 1,
       "message": "Tbh, I don\u0027t think it\u0027s required, it\u0027s just that the proxydatastore test goes over more layers...",
       "parentUuid": "3ea95f6b_593d20d1",
+      "range": {
+        "startLine": 921,
+        "startChar": 0,
+        "endLine": 922,
+        "endChar": 135
+      },
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a07a6d6_988da056",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T15:29:41Z",
+      "side": 1,
+      "message": "nah, just say \"This cannot be easily done via reading `input` later on at the end of the test because we need more fine grained operations over proxyDatastore. Not just setLeaf(), but also create(), etc.\"",
+      "parentUuid": "37e6e4f1_f1d157fd",
       "range": {
         "startLine": 921,
         "startChar": 0,
