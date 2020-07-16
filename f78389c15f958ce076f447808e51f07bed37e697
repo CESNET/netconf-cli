@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "1f4aa704_6867f0e0",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T13:00:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "69ddefbf_a2405729",
+      "range": {
+        "startLine": 239,
+        "startChar": 34,
+        "endLine": 239,
+        "endChar": 38
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a9baab6_e3c11cd1",
         "filename": "src/cli.cpp",
         "patchSetId": 5
