@@ -1,0 +1,187 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8b71f18_b9a33a48",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T08:05:03Z",
+      "side": 1,
+      "message": "random bikeshedding of the day: all other commands use complete words, and since we have that tab completion, should we call this \"execute\"?\n\n(I\u0027m interested in opinions. Naming is the hardest problem in SW engineering.)",
+      "range": {
+        "startLine": 239,
+        "startChar": 34,
+        "endLine": 239,
+        "endChar": 38
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a9baab6_e3c11cd1",
+        "filename": "src/cli.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T08:05:03Z",
+      "side": 1,
+      "message": "\"lol\" and \"rofl\" are much less descriptive than \"foo\" and \"bar\"",
+      "range": {
+        "startLine": 129,
+        "startChar": 9,
+        "endLine": 129,
+        "endChar": 12
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d687fc82_1363bfa0",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T08:05:03Z",
+      "side": 1,
+      "message": "a leftover comment?",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2eec783c_8c94db25",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T08:05:03Z",
+      "side": 1,
+      "message": "Is this needed? src/cli.cpp already has a try/catch block.",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02e00e5d_475cc8c1",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T08:05:03Z",
+      "side": 1,
+      "message": "That trailing slash looks fishy. There are no tests, so that I don\u0027t know how it\u0027s expected to work (is there a use case for showing nodes that are inputs of the RPC? outputs? Who filters out stuff that is current-command dependent? etc)",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "347a33f9_04d36413",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T08:05:03Z",
+      "side": 1,
+      "message": "This should error out if an RPC has been already initiated. I.e., allow just one \"pending\" RPC at a time, and don\u0027t discrad stuff silently if the user tries to open another one.",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66647fc8_ce9105a7",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T08:05:03Z",
+      "side": 1,
+      "message": "nit: \"RPC\", not \"rpc\" please (and kill the question mark as well)",
+      "range": {
+        "startLine": 75,
+        "startChar": 37,
+        "endLine": 75,
+        "endChar": 40
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b47e295_12311685",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T08:05:03Z",
+      "side": 1,
+      "message": "why is it no touchy touchy and not yes touchy touchy? :)",
+      "range": {
+        "startLine": 35,
+        "startChar": 37,
+        "endLine": 35,
+        "endChar": 62
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f2ebc33_43f44a47",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-16T08:05:03Z",
+      "side": 1,
+      "message": "nit: \"create\", not \"get\", because the code assumes that it\u0027s always a fresh one. Or at least I assume that\u0027s what the code assumes :), so feel free to say nope.",
+      "range": {
+        "startLine": 36,
+        "startChar": 95,
+        "endLine": 36,
+        "endChar": 98
+      },
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
