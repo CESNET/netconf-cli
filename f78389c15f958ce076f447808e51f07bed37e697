@@ -279,6 +279,24 @@
     },
     {
       "key": {
+        "uuid": "a0f8abf5_ccced2b4",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-17T10:24:33Z",
+      "side": 1,
+      "message": "- Can you do a `cd /my:rpc`? This should not be possible (let\u0027s test that).\n- If that\u0027s not possible, it means that I can only be \"in\" an RPC when that RPC has been \"opened\". (What happens when I cancel an RPC? What is my CWD? Test that, please.)\n- If all of the above works well, then tab completion should only offer me nodes within the RPC, *plus* the \"../\", and after the \"../\", that should get me to the full tree. Also, tab completion for paths starting with \"/\" should work even when I\u0027m in the RPC context.",
+      "parentUuid": "6446cd56_0de6e555",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "347a33f9_04d36413",
         "filename": "src/proxy_datastore.cpp",
         "patchSetId": 5
