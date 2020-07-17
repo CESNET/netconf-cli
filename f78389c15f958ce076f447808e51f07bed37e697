@@ -333,6 +333,24 @@
     },
     {
       "key": {
+        "uuid": "0082ca8e_11b97d80",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-17T12:26:01Z",
+      "side": 1,
+      "message": "- yes, please add the \"cancel\" command (with tests)\n\nCan you confirm that \"crossing the RPC boundary\" works well? In particular, I\u0027m interested in tests for tab completion that goes:\n\n- \"from RPC up\"\n- \"from root down to within an RPC when that RPC has been opened before, but not yet executed\"\n\nAnd finally, what happens with current context when an RPC concludes:\n\n- the context should make sense (must be outside of the RPC, OK to be just \"/\"\n- it must not be possible to tab-complete `set` for RPC input anymore\n- it must not be possible to call `set` for RPC input anymore, either\n\nAs far as I can tell none of this is covered now, right?",
+      "parentUuid": "b2b3b6d0_d65bbf48",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "347a33f9_04d36413",
         "filename": "src/proxy_datastore.cpp",
         "patchSetId": 5
