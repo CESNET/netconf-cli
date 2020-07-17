@@ -315,6 +315,24 @@
     },
     {
       "key": {
+        "uuid": "b2b3b6d0_d65bbf48",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-17T12:18:18Z",
+      "side": 1,
+      "message": "The user can\u0027t cd into rpc anymore. Test added\n\nI realized I don\u0027t have a \"cancel\" command. Should I create a new command called \"cancel\"?",
+      "parentUuid": "5176946c_b40b21f1",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "347a33f9_04d36413",
         "filename": "src/proxy_datastore.cpp",
         "patchSetId": 5
