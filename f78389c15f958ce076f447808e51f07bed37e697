@@ -351,6 +351,24 @@
     },
     {
       "key": {
+        "uuid": "b55d95eb_824f6542",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-17T14:52:55Z",
+      "side": 1,
+      "message": "\u003ethe context should make sense (must be outside of the RPC, OK to be just \"/\"\nadded test for that\n\n\u003eit must not be possible to tab-complete `set` for RPC input anymore\n\u003eit must not be possible to call `set` for RPC input anymore, either\n\nthese are covered by the fact, that you can\u0027t enter a rpc node, and set doesn\u0027t work with input nodes if you aren\u0027t inside the rpc\n\n\u003e\"from RPC up\"\n\u003e\"from root down to within an RPC when that RPC has been opened before, but not yet executed\"\n\nadded a test for that too",
+      "parentUuid": "0082ca8e_11b97d80",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "347a33f9_04d36413",
         "filename": "src/proxy_datastore.cpp",
         "patchSetId": 5
