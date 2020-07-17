@@ -225,6 +225,24 @@
     },
     {
       "key": {
+        "uuid": "2f503c5a_483e9f61",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-17T09:23:49Z",
+      "side": 1,
+      "message": "So I\u0027m going to get a tab completion like this, right?\n\n  sysrepo-cli\u003e rpc /foo:shoot/\n\nIs that perhaps worth adding a test? Not just for this, but also for an RPC with input params which should *not* tab-complete these inputs, i.e., not like this:\n\n sysrepo-cli\u003e rpc /foo:/shoot/whom",
+      "parentUuid": "96a75c7c_fdd1f778",
+      "revId": "f78389c15f958ce076f447808e51f07bed37e697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "347a33f9_04d36413",
         "filename": "src/proxy_datastore.cpp",
         "patchSetId": 5

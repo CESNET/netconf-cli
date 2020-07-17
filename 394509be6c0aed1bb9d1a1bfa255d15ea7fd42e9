@@ -161,6 +161,24 @@
     },
     {
       "key": {
+        "uuid": "854191ac_dc3e4ebd",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-17T09:23:49Z",
+      "side": 1,
+      "message": "Thanks",
+      "parentUuid": "5c0db422_62af479c",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "72d1868d_47c8316a",
         "filename": "src/proxy_datastore.hpp",
         "patchSetId": 10
@@ -229,6 +247,24 @@
       "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b0f4354_be434daf",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-17T09:23:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0f6a9a7_91eea570",
+      "revId": "394509be6c0aed1bb9d1a1bfa255d15ea7fd42e9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
