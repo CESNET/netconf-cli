@@ -334,6 +334,13 @@ module example-schema {
                 enum eth2;
             }
         }
+        action shutdown {
+            output {
+                leaf success {
+                    type boolean;
+                }
+            }
+        }
     }
 
     feature weirdPortNames;
@@ -904,6 +911,10 @@ TEST_CASE("yangschema")
                         {boost::none, "/example-schema:portMapping/port"},
                         {boost::none, "/example-schema:portSettings"},
                         {boost::none, "/example-schema:portSettings/port"},
+                        {boost::none, "/example-schema:portSettings/shutdown"},
+                        {boost::none, "/example-schema:portSettings/shutdown/input"},
+                        {boost::none, "/example-schema:portSettings/shutdown/output"},
+                        {boost::none, "/example-schema:portSettings/shutdown/output/success"},
                         {boost::none, "/example-schema:systemStats"},
                         {boost::none, "/example-schema:systemStats/upTime"},
                         {boost::none, "/example-schema:subLeaf"},
@@ -1098,6 +1109,12 @@ TEST_CASE("yangschema")
         {
             REQUIRE(ys.leafTypeName("/example-schema:leafEnumTypedefRestricted") == "enumTypedef");
             REQUIRE(ys.leafTypeName("/example-schema:leafInt32") == std::nullopt);
+        }
+
+        SECTION("dataPathToSchemaPath")
+        {
+            REQUIRE(ys.dataPathToSchemaPath("/example-schema:portSettings[port='eth0']") == "/example-schema:portSettings");
+            REQUIRE(ys.dataPathToSchemaPath("/example-schema:portSettings[port='eth0']/shutdown") == "/example-schema:portSettings/shutdown");
         }
     }
 

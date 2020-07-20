@@ -345,7 +345,7 @@ void Session::discard()
     impl::do_rpc_ok(this, std::move(rpc));
 }
 
-std::shared_ptr<libyang::Data_Node> Session::rpc(const std::string& xmlData)
+std::shared_ptr<libyang::Data_Node> Session::rpc_or_action(const std::string& xmlData)
 {
     auto rpc = impl::guarded(nc_rpc_act_generic_xml(xmlData.c_str(), NC_PARAMTYPE_CONST));
     if (!rpc) {

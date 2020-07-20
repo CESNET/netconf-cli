@@ -512,3 +512,8 @@ std::optional<std::string> YangSchema::defaultValue(const std::string& leafPath)
 
     return std::nullopt;
 }
+
+std::string YangSchema::dataPathToSchemaPath(const std::string& path)
+{
+    return getSchemaNode(path)->path(LYS_PATH_FIRST_PREFIX);
+}
