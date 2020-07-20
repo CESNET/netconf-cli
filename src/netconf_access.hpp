@@ -41,6 +41,7 @@ public:
     void commitChanges() override;
     void discardChanges() override;
     Tree executeRpc(const std::string& path, const Tree& input) override;
+    Tree executeAction(const std::string& path, const Tree& input) override;
     void copyConfig(const Datastore source, const Datastore destination) override;
 
     std::shared_ptr<Schema> schema() override;
@@ -49,6 +50,7 @@ public:
 
 private:
     std::vector<ListInstance> listInstances(const std::string& path) override;
+    DatastoreAccess::Tree impl_execute(const std::string& path, const Tree& input);
 
     std::string fetchSchema(const std::string_view module, const
             std::optional<std::string_view> revision, const

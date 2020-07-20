@@ -55,7 +55,7 @@ namespace {
 void impl_lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix)
 {
     auto stripXPathPrefix = [&ignoredXPathPrefix] (auto path) {
-        return ignoredXPathPrefix ? path.substr(ignoredXPathPrefix->size()) : path;
+        return ignoredXPathPrefix && path.find(*ignoredXPathPrefix) != std::string::npos ? path.substr(ignoredXPathPrefix->size()) : path;
     };
 
     for (const auto& it : items) {
