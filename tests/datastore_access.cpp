@@ -19,6 +19,7 @@ using OnInvalidSchemaPathMove = sysrepo::sysrepo_exception;
 using OnInvalidRpcPath = sysrepo::sysrepo_exception;
 using OnKeyNotFound = void;
 using OnRPC = void;
+using OnAction = void;
 #elif defined(netconf_BACKEND)
 using OnInvalidSchemaPathCreate = std::runtime_error;
 using OnInvalidSchemaPathDelete = std::runtime_error;
@@ -26,6 +27,7 @@ using OnInvalidSchemaPathMove = std::runtime_error;
 using OnInvalidRpcPath = std::runtime_error;
 using OnKeyNotFound = std::runtime_error;
 using OnRPC = void;
+using OnAction = void;
 #include "netconf_access.hpp"
 #include "netopeer_vars.hpp"
 #elif defined(yang_BACKEND)
@@ -38,6 +40,7 @@ using OnInvalidSchemaPathMove = DatastoreException;
 using OnInvalidRpcPath = DatastoreException;
 using OnKeyNotFound = DatastoreException;
 using OnRPC = std::logic_error;
+using OnAction = std::logic_error;
 #else
 #error "Unknown backend"
 #endif
@@ -830,6 +833,17 @@ TEST_CASE("setting/getting values")
 }
 
 class RpcCb: public sysrepo::Callback {
+    int action(const char *xpath, [[maybe_unused]] const ::sysrepo::S_Vals input, ::sysrepo::S_Vals_Holder output, void* priv) override
+    {
+        auto schema = reinterpret_cast<YangSchema*>(priv);
+        if (schema->dataPathToSchemaPath(xpath) == "/example-schema:ports/shutdown") {
+            auto buf = output->allocate(1);
+            buf->val(0)->set(joinPaths(xpath, "success").c_str(), true);
+            return SR_ERR_OK;
+        }
+        throw std::runtime_error("unrecognized RPC");
+    }
+
     int rpc(const char *xpath, const ::sysrepo::S_Vals input, ::sysrepo::S_Vals_Holder output, void *) override
     {
         const auto nukes = "/example-schema:launch-nukes"s;
@@ -876,19 +890,8 @@ class RpcCb: public sysrepo::Callback {
     }
 };
 
-TEST_CASE("rpc") {
+TEST_CASE("rpc/action") {
     trompeloeil::sequence seq1;
-    auto srConn = std::make_shared<sysrepo::Connection>("netconf-cli-test-rpc");
-    auto srSession = std::make_shared<sysrepo::Session>(srConn);
-    auto srSubscription = std::make_shared<sysrepo::Subscribe>(srSession);
-    auto cb = std::make_shared<RpcCb>();
-    sysrepo::Logs{}.set_stderr(SR_LL_INF);
-    auto doNothingCb = std::make_shared<sysrepo::Callback>();
-    srSubscription->module_change_subscribe("example-schema", doNothingCb, nullptr, SR_SUBSCR_CTX_REUSE);
-    // careful here, sysrepo insists on module_change CBs being registered before RPC CBs, otherwise there's a memleak
-    srSubscription->rpc_subscribe("/example-schema:noop", cb, nullptr, SR_SUBSCR_CTX_REUSE);
-    srSubscription->rpc_subscribe("/example-schema:launch-nukes", cb, nullptr, SR_SUBSCR_CTX_REUSE);
-    srSubscription->rpc_subscribe("/example-schema:fire", cb, nullptr, SR_SUBSCR_CTX_REUSE);
 
 #ifdef sysrepo_BACKEND
     auto datastore = std::make_shared<SysrepoAccess>("netconf-cli-test", Datastore::Running);
@@ -902,88 +905,120 @@ TEST_CASE("rpc") {
 #error "Unknown backend"
 #endif
 
-    auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {
-        return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
-    };
+    auto srConn = std::make_shared<sysrepo::Connection>("netconf-cli-test-rpc");
+    auto srSession = std::make_shared<sysrepo::Session>(srConn);
+    auto srSubscription = std::make_shared<sysrepo::Subscribe>(srSession);
+    auto cb = std::make_shared<RpcCb>();
+    sysrepo::Logs{}.set_stderr(SR_LL_INF);
+    auto doNothingCb = std::make_shared<sysrepo::Callback>();
+    srSubscription->module_change_subscribe("example-schema", doNothingCb, nullptr, SR_SUBSCR_CTX_REUSE);
+    // careful here, sysrepo insists on module_change CBs being registered before RPC CBs, otherwise there's a memleak
+    srSubscription->rpc_subscribe("/example-schema:noop", cb, nullptr, SR_SUBSCR_CTX_REUSE);
+    srSubscription->rpc_subscribe("/example-schema:launch-nukes", cb, nullptr, SR_SUBSCR_CTX_REUSE);
+    srSubscription->rpc_subscribe("/example-schema:fire", cb, nullptr, SR_SUBSCR_CTX_REUSE);
+    srSubscription->action_subscribe("/example-schema:ports/shutdown", cb, datastore->schema().get(), SR_SUBSCR_CTX_REUSE);
 
-    ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
-
-    // ProxyDatastore cannot easily read DatastoreAccess::Tree, so we need to set the input via create/setLeaf/etc.
-    SECTION("valid")
+    SECTION("rpc")
     {
-        std::string rpc;
-        DatastoreAccess::Tree input, output;
+        auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {
+            return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
+        };
+        ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
 
-        SECTION("noop") {
-            rpc = "/example-schema:noop";
-            proxyDatastore.initiateRpc(rpc);
+        // ProxyDatastore cannot easily read DatastoreAccess::Tree, so we need to set the input via create/setLeaf/etc.
+        SECTION("valid")
+        {
+            std::string rpc;
+            DatastoreAccess::Tree input, output;
+
+            SECTION("noop") {
+                rpc = "/example-schema:noop";
+                proxyDatastore.initiateRpc(rpc);
+            }
+
+            SECTION("small nuke") {
+                rpc = "/example-schema:launch-nukes";
+                input = {
+                    {"description", "dummy"s},
+                    {"payload/kilotons", uint64_t{333'666}},
+                };
+                proxyDatastore.initiateRpc(rpc);
+                proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{333'666});
+                // no data are returned
+            }
+
+            SECTION("small nuke") {
+                rpc = "/example-schema:launch-nukes";
+                input = {
+                    {"description", "dummy"s},
+                    {"payload/kilotons", uint64_t{4}},
+                };
+                proxyDatastore.initiateRpc(rpc);
+                proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{4});
+
+                output = {
+                    {"blast-radius", uint32_t{33'666}},
+                    {"actual-yield", uint64_t{5}},
+                };
+            }
+
+            SECTION("with lists") {
+                rpc = "/example-schema:launch-nukes";
+                input = {
+                    {"payload/kilotons", uint64_t{6}},
+                    {"cities/targets[city='Prague']/city", "Prague"s},
+                };
+                proxyDatastore.initiateRpc(rpc);
+                proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{6});
+                proxyDatastore.createItem("/example-schema:launch-nukes/example-schema:cities/example-schema:targets[city='Prague']");
+                output = {
+                    {"blast-radius", uint32_t{33'666}},
+                    {"actual-yield", uint64_t{7}},
+                    {"damaged-places", special_{SpecialValue::PresenceContainer}},
+                    {"damaged-places/targets[city='London']", special_{SpecialValue::List}},
+                    {"damaged-places/targets[city='London']/city", "London"s},
+                    {"damaged-places/targets[city='Berlin']", special_{SpecialValue::List}},
+                    {"damaged-places/targets[city='Berlin']/city", "Berlin"s},
+                };
+            }
+
+            SECTION("with leafref") {
+                datastore->createItem("/example-schema:person[name='Colton']");
+                datastore->commitChanges();
+
+                rpc = "/example-schema:fire";
+                input = {
+                    {"whom", "Colton"s}
+                };
+                proxyDatastore.initiateRpc(rpc);
+                proxyDatastore.setLeaf("/example-schema:fire/example-schema:whom", "Colton"s);
+            }
+
+            catching<OnRPC>([&] {REQUIRE(datastore->executeRpc(rpc, input) == output);});
+            catching<OnRPC>([&] {REQUIRE(proxyDatastore.executeRpc() == output);});
         }
 
-        SECTION("small nuke") {
-            rpc = "/example-schema:launch-nukes";
-            input = {
-                {"description", "dummy"s},
-                {"payload/kilotons", uint64_t{333'666}},
-            };
-            proxyDatastore.initiateRpc(rpc);
-            proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{333'666});
-            // no data are returned
+        SECTION("non-existing RPC")
+        {
+            catching<OnInvalidRpcPath>([&] {datastore->executeRpc("/example-schema:non-existing", DatastoreAccess::Tree{});});
         }
-
-        SECTION("small nuke") {
-            rpc = "/example-schema:launch-nukes";
-            input = {
-                {"description", "dummy"s},
-                {"payload/kilotons", uint64_t{4}},
-            };
-            proxyDatastore.initiateRpc(rpc);
-            proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{4});
-
-            output = {
-                {"blast-radius", uint32_t{33'666}},
-                {"actual-yield", uint64_t{5}},
-            };
-        }
-
-        SECTION("with lists") {
-            rpc = "/example-schema:launch-nukes";
-            input = {
-                {"payload/kilotons", uint64_t{6}},
-                {"cities/targets[city='Prague']/city", "Prague"s},
-            };
-            proxyDatastore.initiateRpc(rpc);
-            proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{6});
-            proxyDatastore.createItem("/example-schema:launch-nukes/example-schema:cities/example-schema:targets[city='Prague']");
-            output = {
-                {"blast-radius", uint32_t{33'666}},
-                {"actual-yield", uint64_t{7}},
-                {"damaged-places", special_{SpecialValue::PresenceContainer}},
-                {"damaged-places/targets[city='London']", special_{SpecialValue::List}},
-                {"damaged-places/targets[city='London']/city", "London"s},
-                {"damaged-places/targets[city='Berlin']", special_{SpecialValue::List}},
-                {"damaged-places/targets[city='Berlin']/city", "Berlin"s},
-            };
-        }
-
-        SECTION("with leafref") {
-            datastore->createItem("/example-schema:person[name='Colton']");
-            datastore->commitChanges();
-
-            rpc = "/example-schema:fire";
-            input = {
-                {"whom", "Colton"s}
-            };
-            proxyDatastore.initiateRpc(rpc);
-            proxyDatastore.setLeaf("/example-schema:fire/example-schema:whom", "Colton"s);
-        }
-
-        catching<OnRPC>([&] {REQUIRE(datastore->executeRpc(rpc, input) == output);});
-        catching<OnRPC>([&] {REQUIRE(proxyDatastore.executeRpc() == output);});
     }
 
-    SECTION("non-existing RPC")
+    SECTION("action")
     {
-        catching<OnInvalidRpcPath>([&] {datastore->executeRpc("/example-schema:non-existing", DatastoreAccess::Tree{});});
+        std::string path;
+        DatastoreAccess::Tree input, output;
+
+        output = {
+            {"success", true}
+        };
+        datastore->createItem("/example-schema:ports[name='A']");
+        datastore->commitChanges();
+        SECTION("shutdown") {
+            path = "/example-schema:ports[name='A']/shutdown";
+        }
+
+        catching<OnAction>([&] {REQUIRE(datastore->executeAction(path, input) == output);});
     }
 
     waitForCompletionAndBitMore(seq1);

@@ -44,7 +44,7 @@ public:
                     const NC_RPC_EDIT_ERROPT errorOption,
                     const std::string& data);
     void copyConfigFromString(const NC_DATASTORE target, const std::string& data);
-    std::shared_ptr<libyang::Data_Node> rpc(const std::string& xmlData);
+    std::shared_ptr<libyang::Data_Node> rpc_or_action(const std::string& xmlData);
     void copyConfig(const NC_DATASTORE source, const NC_DATASTORE destination);
     void commit();
     void discard();
