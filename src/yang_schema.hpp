@@ -69,6 +69,7 @@ public:
     [[nodiscard]] std::shared_ptr<libyang::Data_Node> dataNodeFromPath(const std::string& path, const std::optional<const std::string> value = std::nullopt) const;
     std::shared_ptr<libyang::Module> getYangModule(const std::string& name);
 
+    [[nodiscard]] std::string dataPathToSchemaPath(const std::string& path);
 private:
     friend class YangAccess;
     template <typename NodeType>
