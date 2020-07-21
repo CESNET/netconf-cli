@@ -30,6 +30,7 @@ x3::rule<copy_class, copy_> const copy = "copy";
 x3::rule<move_class, move_> const move = "move";
 x3::rule<dump_class, dump_> const dump = "dump";
 x3::rule<rpc_class, rpc_> const rpc = "rpc";
+x3::rule<action_class, action_> const action = "action";
 x3::rule<exec_class, exec_> const exec = "exec";
 x3::rule<cancel_class, cancel_> const cancel = "cancel";
 x3::rule<command_class, command_> const command = "command";
@@ -261,6 +262,9 @@ struct dump_args : x3::parser<dump_args> {
 auto const rpc_def =
     rpc_::name > space_separator > rpcPath;
 
+auto const action_def =
+    action_::name > space_separator > actionPath;
+
 auto const exec_def =
     exec_::name >> x3::attr(exec_{});
 
@@ -274,7 +278,7 @@ auto const createCommandSuggestions_def =
     x3::eps;
 
 auto const command_def =
-    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | rpc | exec];
+    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | rpc | action | exec];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -294,6 +298,7 @@ BOOST_SPIRIT_DEFINE(copy)
 BOOST_SPIRIT_DEFINE(move)
 BOOST_SPIRIT_DEFINE(dump)
 BOOST_SPIRIT_DEFINE(rpc)
+BOOST_SPIRIT_DEFINE(action)
 BOOST_SPIRIT_DEFINE(exec)
 BOOST_SPIRIT_DEFINE(cancel)
 BOOST_SPIRIT_DEFINE(command)

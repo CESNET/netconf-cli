@@ -144,6 +144,9 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                     parserContext.m_suggestions.emplace(Completion{parseString + "/"});
                     break;
                 case yang::NodeTypes::Action:
+                    out.m_suffix = actionNode_{child.second};
+                    parserContext.m_suggestions.emplace(Completion{parseString + "/"});
+                    break;
                 case yang::NodeTypes::AnyXml:
                 case yang::NodeTypes::Notification:
                     continue;
@@ -423,8 +426,27 @@ struct WritableLeafPath : x3::parser<WritableLeafPath> {
 
 } writableLeafPath;
 
-auto const writableLeafPath_def =
-    PathParser<PathParserMode::DataPath, CompletionMode::Data>{filterConfigFalse};
+struct ActionPath : x3::parser<ActionPath> {
+    using attribute_type = dataPath_;
+    template <typename It, typename Ctx, typename RCtx, typename Attr>
+    static bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr)
+    {
+        bool res = dataPath.parse(begin, end, ctx, rctx, attr);
+        if (!res) {
+            return false;
+        }
+
+        if (attr.m_nodes.empty() || !std::holds_alternative<actionNode_>(attr.m_nodes.back().m_suffix)) {
+            auto& parserContext = x3::get<parser_context_tag>(ctx);
+            parserContext.m_errorMsg = "This is not a path to an action.";
+            return false;
+        }
+
+        return true;
+    }
+};
+
+auto const actionPath = as<dataPath_>[ActionPath()];
 
 auto const onlyRpc = [] (const Schema& schema, const std::string& path) {
     return schema.nodeType(path) == yang::NodeTypes::Rpc;
