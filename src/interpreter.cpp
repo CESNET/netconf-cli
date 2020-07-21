@@ -212,22 +212,26 @@ void Interpreter::operator()(const dump_& dump) const
 
 void Interpreter::operator()(const rpc_& rpc) const
 {
-    m_datastore.initiateRpc(pathToString(toCanonicalPath(rpc.m_path)));
+    if (std::holds_alternative<rpcNode_>(rpc.m_path.m_nodes.back().m_suffix)) {
+        m_datastore.initiateRpc(pathToString(toCanonicalPath(rpc.m_path)));
+    } else {
+        m_datastore.initiateAction(pathToString(toCanonicalPath(rpc.m_path)));
+    }
     m_parser.changeNode(rpc.m_path);
 }
 
 void Interpreter::operator()(const exec_&) const
 {
     m_parser.changeNode({Scope::Absolute, {}});
-    auto output = m_datastore.executeRpc();
-    std::cout << "RPC output:\n";
+    auto output = m_datastore.execute();
+    std::cout << "RPC/action output:\n";
     printTree(output);
 }
 
 void Interpreter::operator()(const cancel_&) const
 {
     m_parser.changeNode({Scope::Absolute, {}});
-    m_datastore.cancelRpc();
+    m_datastore.cancel();
 }
 
 struct commandLongHelpVisitor : boost::static_visitor<const char*> {

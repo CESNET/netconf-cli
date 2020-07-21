@@ -59,27 +59,52 @@ std::string ProxyDatastore::dump(const DataFormat format) const
     return m_datastore->dump(format);
 }
 
+namespace {
+struct getInputPath
+{
+    template<typename InputType>
+    auto operator()(const InputType& input)
+    {
+        return input.m_path;
+    }
+};
+}
+
 void ProxyDatastore::initiateRpc(const std::string& rpcPath)
 {
     if (m_inputDatastore) {
-        throw std::runtime_error("RPC input already in progress (" + m_rpcPath + ")");
+        throw std::runtime_error("RPC/action input already in progress (" + std::visit(getInputPath{}, m_inputPath) + ")");
     }
     m_inputDatastore = m_createTemporaryDatastore(m_datastore);
-    m_rpcPath = rpcPath;
+    m_inputPath = RpcInput{rpcPath};
     m_inputDatastore->createItem(rpcPath);
 }
 
-DatastoreAccess::Tree ProxyDatastore::executeRpc()
+void ProxyDatastore::initiateAction(const std::string& actionPath)
+{
+    if (m_inputDatastore) {
+        throw std::runtime_error("RPC/action input already in progress (" + std::visit(getInputPath{}, m_inputPath) + ")");
+    }
+    m_inputDatastore = m_createTemporaryDatastore(m_datastore);
+    m_inputPath = ActionInput{actionPath};
+    m_inputDatastore->createItem(actionPath);
+}
+
+DatastoreAccess::Tree ProxyDatastore::execute()
 {
     if (!m_inputDatastore) {
-        throw std::runtime_error("No RPC input in progress");
+        throw std::runtime_error("No RPC/action input in progress");
     }
     auto inputData = m_inputDatastore->getItems("/");
     m_inputDatastore = nullptr;
-    return m_datastore->executeRpc(m_rpcPath, inputData);
+    if (std::holds_alternative<RpcInput>(m_inputPath)) {
+        return m_datastore->executeRpc(std::visit(getInputPath{}, m_inputPath), inputData);
+    } else {
+        return m_datastore->executeAction(std::visit(getInputPath{}, m_inputPath), inputData);
+    }
 }
 
-void ProxyDatastore::cancelRpc()
+void ProxyDatastore::cancel()
 {
     m_inputDatastore = nullptr;
 }
@@ -91,7 +116,7 @@ std::shared_ptr<Schema> ProxyDatastore::schema() const
 
 std::shared_ptr<DatastoreAccess> ProxyDatastore::pickDatastore(const std::string& path) const
 {
-    if (!m_inputDatastore || !boost::starts_with(path, m_rpcPath)) {
+    if (!m_inputDatastore || !boost::starts_with(path, std::visit(getInputPath{}, m_inputPath))) {
         return m_datastore;
     } else {
         return m_inputDatastore;

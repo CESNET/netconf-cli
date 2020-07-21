@@ -221,14 +221,14 @@ struct dump_ : x3::position_tagged {
 
 struct rpc_ : x3::position_tagged {
     static constexpr auto name = "rpc";
-    static constexpr auto shortHelp = "rpc - initiate RPC";
+    static constexpr auto shortHelp = "rpc - initiate RPC or action";
     static constexpr auto longHelp = R"(
-    rpc <rpc-path>
+    rpc <path-to-rpc-or-action>
 
     This command puts you into a mode where you can set your input parameters.
 
     Usage:
-        /> rpc <path-to-rpc>)";
+        /> rpc <path-to-rpc-or-action>)";
     bool operator==(const rpc_& other) const;
 
     dataPath_ m_path;

@@ -259,7 +259,7 @@ struct dump_args : x3::parser<dump_args> {
 } const dump_args;
 
 auto const rpc_def =
-    rpc_::name > space_separator > rpcPath;
+    rpc_::name > space_separator > rpcActionPath;
 
 auto const exec_def =
     exec_::name >> x3::attr(exec_{});
