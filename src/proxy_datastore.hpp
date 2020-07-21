@@ -30,8 +30,9 @@ public:
     [[nodiscard]] std::string dump(const DataFormat format) const;
 
     void initiateRpc(const std::string& rpcPath);
-    [[nodiscard]] DatastoreAccess::Tree executeRpc();
-    void cancelRpc();
+    void initiateAction(const std::string& actionPath);
+    [[nodiscard]] DatastoreAccess::Tree execute();
+    void cancel();
 
     [[nodiscard]] std::shared_ptr<Schema> schema() const;
 private:
@@ -45,5 +46,13 @@ private:
     std::shared_ptr<DatastoreAccess> m_datastore;
     std::function<std::shared_ptr<DatastoreAccess>(const std::shared_ptr<DatastoreAccess>&)> m_createTemporaryDatastore;
     std::shared_ptr<DatastoreAccess> m_inputDatastore;
-    std::string m_rpcPath;
+
+    struct RpcInput {
+        std::string m_path;
+    };
+
+    struct ActionInput {
+        std::string m_path;
+    };
+    std::variant<ActionInput, RpcInput> m_inputPath;
 };

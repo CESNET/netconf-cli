@@ -992,7 +992,7 @@ TEST_CASE("rpc/action") {
             }
 
             catching<OnExec>([&] {REQUIRE(datastore->executeRpc(rpc, input) == output);});
-            catching<OnExec>([&] {REQUIRE(proxyDatastore.executeRpc() == output);});
+            catching<OnExec>([&] {REQUIRE(proxyDatastore.execute() == output);});
         }
 
         SECTION("non-existing RPC")

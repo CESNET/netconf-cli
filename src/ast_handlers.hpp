@@ -232,6 +232,8 @@ struct delete_class {
 
 struct rpcPath_class;
 
+struct actionPath_class;
+
 struct cdPath_class;
 
 struct set_class {
@@ -260,7 +262,9 @@ struct move_class;
 
 struct dump_class;
 
-struct rpc_class;
+struct prepare_class;
+
+struct action_class;
 
 struct exec_class;
 

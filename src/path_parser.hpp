@@ -144,6 +144,9 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                     parserContext.m_suggestions.emplace(Completion{parseString + "/"});
                     break;
                 case yang::NodeTypes::Action:
+                    out.m_suffix = actionNode_{child.second};
+                    parserContext.m_suggestions.emplace(Completion{parseString + "/"});
+                    break;
                 case yang::NodeTypes::AnyXml:
                 case yang::NodeTypes::Notification:
                     continue;
@@ -423,22 +426,36 @@ struct WritableLeafPath : x3::parser<WritableLeafPath> {
 
 } writableLeafPath;
 
-auto const writableLeafPath_def =
-    PathParser<PathParserMode::DataPath, CompletionMode::Data>{filterConfigFalse};
+struct RpcActionPath : x3::parser<RpcActionPath> {
+    using attribute_type = dataPath_;
+    template <typename It, typename Ctx, typename RCtx, typename Attr>
+    static bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr)
+    {
+        bool res = dataPath.parse(begin, end, ctx, rctx, attr);
+        if (!res) {
+            return false;
+        }
 
-auto const onlyRpc = [] (const Schema& schema, const std::string& path) {
-    return schema.nodeType(path) == yang::NodeTypes::Rpc;
+        if (attr.m_nodes.empty()
+                || (!std::holds_alternative<actionNode_>(attr.m_nodes.back().m_suffix) && !std::holds_alternative<actionNode_>(attr.m_nodes.back().m_suffix))) {
+            auto& parserContext = x3::get<parser_context_tag>(ctx);
+            parserContext.m_errorMsg = "This is not a path to an RPC/action.";
+            return false;
+        }
+
+        return true;
+    }
 };
 
-auto const rpcPath_def =
-    PathParser<PathParserMode::DataPath, CompletionMode::Data>{onlyRpc};
+auto const rpcActionPath = as<dataPath_>[RpcActionPath()];
 
-auto const noRpc = [] (const Schema& schema, const std::string& path) {
-    return schema.nodeType(path) != yang::NodeTypes::Rpc;
+auto const noRpcOrAction = [] (const Schema& schema, const std::string& path) {
+    auto nodeType = schema.nodeType(path);
+    return nodeType != yang::NodeTypes::Rpc && nodeType != yang::NodeTypes::Action;
 };
 
 auto const cdPath_def =
-    PathParser<PathParserMode::DataPath, CompletionMode::Data>{noRpc};
+    PathParser<PathParserMode::DataPath, CompletionMode::Data>{noRpcOrAction};
 
 auto const presenceContainerPath_def =
     dataPath;
@@ -462,7 +479,6 @@ auto const initializePath_def =
 BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(key_identifier)
 BOOST_SPIRIT_DEFINE(listSuffix)
-BOOST_SPIRIT_DEFINE(rpcPath)
 BOOST_SPIRIT_DEFINE(cdPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
