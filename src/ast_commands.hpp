@@ -219,17 +219,17 @@ struct dump_ : x3::position_tagged {
     DataFormat m_format;
 };
 
-struct rpc_ : x3::position_tagged {
-    static constexpr auto name = "rpc";
-    static constexpr auto shortHelp = "rpc - initiate RPC";
+struct prepare_ : x3::position_tagged {
+    static constexpr auto name = "prepare";
+    static constexpr auto shortHelp = "prepare - initiate RPC or action";
     static constexpr auto longHelp = R"(
-    rpc <rpc-path>
+    prepare <path-to-rpc-or-action>
 
     This command puts you into a mode where you can set your input parameters.
 
     Usage:
-        /> rpc <path-to-rpc>)";
-    bool operator==(const rpc_& other) const;
+        /> prepare <path-to-rpc-or-action>)";
+    bool operator==(const prepare_& other) const;
 
     dataPath_ m_path;
 };
@@ -261,7 +261,7 @@ struct cancel_ : x3::position_tagged {
 };
 
 struct help_;
-using CommandTypes = boost::mpl::vector<cancel_, cd_, commit_, copy_, create_, delete_, describe_, discard_, dump_, exec_, get_, help_, ls_, move_, rpc_, set_>;
+using CommandTypes = boost::mpl::vector<cancel_, cd_, commit_, copy_, create_, delete_, describe_, discard_, dump_, exec_, get_, help_, ls_, move_, prepare_, set_>;
 struct help_ : x3::position_tagged {
     static constexpr auto name = "help";
     static constexpr auto shortHelp = "help - Print help for commands.";
@@ -309,4 +309,4 @@ BOOST_FUSION_ADAPT_STRUCT(get_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(copy_, m_source, m_destination)
 BOOST_FUSION_ADAPT_STRUCT(move_, m_source, m_destination)
 BOOST_FUSION_ADAPT_STRUCT(dump_, m_format)
-BOOST_FUSION_ADAPT_STRUCT(rpc_, m_path)
+BOOST_FUSION_ADAPT_STRUCT(prepare_, m_path)

@@ -442,12 +442,12 @@ TEST_CASE("rpc")
     {
         dataPath_ rpcPath;
         rpcPath.pushFragment({{"example"}, rpcNode_{"launch-nukes"}});
-        rpc_ rpcCmd;
-        rpcCmd.m_path = rpcPath;
+        prepare_ prepareCmd;
+        prepareCmd.m_path = rpcPath;
 
         {
             REQUIRE_CALL(*input_datastore, createItem("/example:launch-nukes"));
-            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{rpcCmd});
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{prepareCmd});
         }
 
         REQUIRE(parser.currentPath() == rpcPath);

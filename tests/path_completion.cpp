@@ -336,9 +336,9 @@ TEST_CASE("path_completion")
         expectedContextLength = 0;
     }
 
-    SECTION("rpc input nodes NOT completed for rpc command")
+    SECTION("rpc input nodes NOT completed for prepare command")
     {
-        input = "rpc example:fire/";
+        input = "prepare example:fire/";
         expectedCompletions = {};
         expectedContextLength = 13;
     }

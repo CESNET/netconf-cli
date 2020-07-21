@@ -115,6 +115,11 @@ bool rpcNode_::operator==(const rpcNode_& other) const
     return this->m_name == other.m_name;
 }
 
+bool actionNode_::operator==(const actionNode_& other) const
+{
+    return this->m_name == other.m_name;
+}
+
 list_::list_(const std::string& listName)
     : m_name(listName)
 {

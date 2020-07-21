@@ -30,8 +30,9 @@ public:
     [[nodiscard]] std::string dump(const DataFormat format) const;
 
     void initiateRpc(const std::string& rpcPath);
-    [[nodiscard]] DatastoreAccess::Tree executeRpc();
-    void cancelRpc();
+    void initiateAction(const std::string& actionPath);
+    [[nodiscard]] DatastoreAccess::Tree execute();
+    void cancel();
 
     [[nodiscard]] std::shared_ptr<Schema> schema() const;
 private:
@@ -45,5 +46,15 @@ private:
     std::shared_ptr<DatastoreAccess> m_datastore;
     std::function<std::shared_ptr<DatastoreAccess>(const std::shared_ptr<DatastoreAccess>&)> m_createTemporaryDatastore;
     std::shared_ptr<DatastoreAccess> m_inputDatastore;
-    std::string m_rpcPath;
+
+    struct RpcInput {
+        std::string m_path;
+    };
+
+    struct ActionInput {
+        std::string m_path;
+    };
+    // This variant is needed, so that I know whether to call executeRpc or executeAction
+    // TODO: get rid of this variant with sysrepo2 because the method for RPC/action is the same there
+    std::variant<ActionInput, RpcInput> m_inputPath;
 };
