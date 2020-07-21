@@ -234,6 +234,21 @@ struct rpc_ : x3::position_tagged {
     dataPath_ m_path;
 };
 
+struct action_ : x3::position_tagged {
+    static constexpr auto name = "action";
+    static constexpr auto shortHelp = "action - initiate action";
+    static constexpr auto longHelp = R"(
+    action <action-path>
+
+    This command puts you into a mode where you can set your input parameters.
+
+    Usage:
+        /> action <path-to-action>)";
+    bool operator==(const action_& other) const;
+
+    dataPath_ m_path;
+};
+
 struct exec_ : x3::position_tagged {
     static constexpr auto name = "exec";
     static constexpr auto shortHelp = "exec - execute rpc";
@@ -261,7 +276,7 @@ struct cancel_ : x3::position_tagged {
 };
 
 struct help_;
-using CommandTypes = boost::mpl::vector<cancel_, cd_, commit_, copy_, create_, delete_, describe_, discard_, dump_, exec_, get_, help_, ls_, move_, rpc_, set_>;
+using CommandTypes = boost::mpl::vector<action_, cancel_, cd_, commit_, copy_, create_, delete_, describe_, discard_, dump_, exec_, get_, help_, ls_, move_, rpc_, set_>;
 struct help_ : x3::position_tagged {
     static constexpr auto name = "help";
     static constexpr auto shortHelp = "help - Print help for commands.";

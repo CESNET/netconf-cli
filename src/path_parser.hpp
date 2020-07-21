@@ -423,6 +423,16 @@ struct WritableLeafPath : x3::parser<WritableLeafPath> {
 
 } writableLeafPath;
 
+struct ActionPath : x3::parser<ActionPath> {
+    using attribute_type = dataPath_;
+    template <typename It, typename Ctx, typename RCtx, typename Attr>
+    static bool parse(It& , It , Ctx const& , RCtx& , Attr& )
+    {
+        // TODO
+    }
+
+} actionPath;
+
 auto const writableLeafPath_def =
     PathParser<PathParserMode::DataPath, CompletionMode::Data>{filterConfigFalse};
 

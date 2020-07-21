@@ -214,6 +214,11 @@ void Interpreter::operator()(const rpc_& rpc) const
     m_parser.changeNode(rpc.m_path);
 }
 
+void Interpreter::operator()(const action_& ) const
+{
+    // TODO
+}
+
 void Interpreter::operator()(const exec_&) const
 {
     m_parser.changeNode({Scope::Absolute, {}});
