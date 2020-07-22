@@ -8,6 +8,7 @@
 
 #include "trompeloeil_doctest.hpp"
 #include "ast_commands.hpp"
+#include "leaf_data_helpers.hpp"
 #include "parser.hpp"
 #include "static_schema.hpp"
 
@@ -30,6 +31,8 @@ TEST_CASE("cd")
     schema->addLeaf("/example:twoKeyList", "example:number", yang::Int32{});
     schema->addLeaf("/example:twoKeyList", "example:name", yang::String{});
     schema->addRpc("/", "example:launch-nukes");
+    schema->addList("/", "example:ports", {"name"});
+    schema->addLeaf("/example:ports", "example:name", createEnum({"A", "B", "C"}));
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -123,6 +126,14 @@ TEST_CASE("cd")
                     {"number", int32_t{4}},
                     {"name", std::string{"abcd"}}};
                 expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("twoKeyList", keys));
+            }
+
+            SECTION("enum key type")
+            {
+                input = "cd example:ports[name=A]";
+                auto keys = ListInstance {
+                    {"name", enum_{"A"}}};
+                expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("ports", keys));
             }
         }
 
