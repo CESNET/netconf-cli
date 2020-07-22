@@ -17,16 +17,12 @@ namespace x3 = boost::spirit::x3;
 template <typename TYPE>
 struct leaf_data_class;
 
-x3::rule<struct leaf_data_class<yang::Enum>, enum_> const leaf_data_enum = "leaf_data_enum";
 x3::rule<struct leaf_data_class<yang::IdentityRef>, identityRef_> const leaf_data_identityRef = "leaf_data_identityRef";
 x3::rule<struct leaf_data_class<yang::Binary>, binary_> const leaf_data_binary = "leaf_data_binary";
 x3::rule<struct leaf_data_class<yang::Decimal>, double> const leaf_data_decimal = "leaf_data_decimal";
 x3::rule<struct leaf_data_class<yang::String>, std::string> const leaf_data_string = "leaf_data_string";
 
 using x3::char_;
-
-auto const leaf_data_enum_def =
-    +char_;
 
 struct bool_symbol_table : x3::symbols<bool> {
     bool_symbol_table()
@@ -128,16 +124,18 @@ struct impl_LeafData {
     bool operator()(const yang::Enum& type) const
     {
         createSetSuggestions(type);
-        auto checkValidEnum = [this, type] (auto& ctx) {
-            if (type.m_allowedValues.count(boost::get<enum_>(attr)) == 0) {
-                _pass(ctx) = false;
-                parserContext.m_errorMsg = "leaf data type mismatch: Expected an enum here. Allowed values:";
-                for (const auto& it : type.m_allowedValues) {
-                    parserContext.m_errorMsg += " " + it.m_value;
-                }
+        x3::symbols<enum_> parser;
+        for (const auto& value : type.m_allowedValues) {
+            parser.add(value.m_value, value);
+        }
+        auto res = parser.parse(first, last, ctx, rctx, attr);
+        if (!res) {
+            parserContext.m_errorMsg = "leaf data type mismatch: Expected an enum here. Allowed values:";
+            for (const auto& it : type.m_allowedValues) {
+                parserContext.m_errorMsg += " " + it.m_value;
             }
-        };
-        return leaf_data_enum[checkValidEnum].parse(first, last, ctx, rctx, attr);
+        }
+        return res;
     }
     bool operator()(const yang::IdentityRef& type) const
     {
@@ -188,7 +186,6 @@ struct LeafData : x3::parser<LeafData> {
 
 auto const leaf_data = x3::no_skip[LeafData()];
 
-BOOST_SPIRIT_DEFINE(leaf_data_enum)
 BOOST_SPIRIT_DEFINE(leaf_data_string)
 BOOST_SPIRIT_DEFINE(leaf_data_binary)
 BOOST_SPIRIT_DEFINE(leaf_data_identityRef)
