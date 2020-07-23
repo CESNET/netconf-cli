@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1da752d2_6e7da6cc",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-23T13:28:28Z",
+      "side": 1,
+      "message": "- This is currently offered for tab completion at all times, even if there\u0027s no open RPC. Can you \"hide\" it?\n- similarly, the `rpc` command should be hidden when an RPC (or action, in future) is in progress)",
+      "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d25f9ea_f6cdd268",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-23T13:28:28Z",
+      "side": 1,
+      "message": "\"RPC\" for consistency",
+      "range": {
+        "startLine": 243,
+        "startChar": 30,
+        "endLine": 243,
+        "endChar": 33
+      },
+      "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3fbcf41b_587c9fa1",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-23T13:28:28Z",
+      "side": 1,
+      "message": "This command is not in any grammar I think:\n\n /\u003e cancel \n In line 1:\n Unknown command.\n cancel \n ^_\n cancel  this was left of input",
+      "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62eca431_b3bff9d3",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-23T13:28:28Z",
+      "side": 1,
+      "message": "This is for another commit, but right now it was easy for me to get lost about the RPC status. Can the CLI prompt change when an RPC is in progress? Perhaps the XPath of that RPC (or action in future) can be included as well, and then \"be smart\" about path handling.  E.g., something like this:\n\n /\u003e rpc example:foo/\n (RPC /example:foo)\u003e cd something\n (RPC /example:foo) something/\u003e cd ../..\n (RPC /example:foo) /\u003e cd /something:else\n (RPC /example:foo) /something:else\u003e cancel\n /\u003e",
+      "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63022f15_5b2b81cb",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-23T13:28:28Z",
+      "side": 1,
+      "message": "Now that RPC path nodes are properly handled, the `describe` command fails:\n\n /\u003e describe czechlight-roadm-device:HACK-RESTCONF-JSON-full-spectrum-scan\n terminate called after throwing an instance of \u0027std::logic_error\u0027\n   what():  describe got an rpc or an action: this should never happen, because their paths cannot be parsed\n Aborted\n\n(Also when only typing `describe` when in the RPC context)",
+      "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
