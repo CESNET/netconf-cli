@@ -38,7 +38,12 @@ TEST_CASE("interpreter tests")
 {
     auto schema = std::make_shared<MockSchema>();
     Parser parser(schema);
-    MockDatastoreAccess datastore;
+    auto datastore = std::make_shared<MockDatastoreAccess>();
+    auto input_datastore = std::make_shared<MockDatastoreAccess>();
+    auto createTemporaryDatastore = [input_datastore]([[maybe_unused]] const std::shared_ptr<DatastoreAccess>& datastore) {
+        return input_datastore;
+    };
+    ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
     std::vector<std::unique_ptr<trompeloeil::expectation>> expectations;
 
     std::vector<command_> toInterpret;
@@ -173,7 +178,7 @@ TEST_CASE("interpreter tests")
         }
         ls_ ls;
         ls.m_path = lsArg;
-        expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, schema()).RETURN(schema));
+        expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, schema()).RETURN(schema));
         expectations.emplace_back(NAMED_REQUIRE_CALL(*schema, availableNodes(expectedPath, Recursion::NonRecursive)).RETURN(std::set<ModuleNodePair>{}));
         toInterpret.emplace_back(ls);
     }
@@ -323,7 +328,7 @@ TEST_CASE("interpreter tests")
 
         get_ getCmd;
         getCmd.m_path = inputPath;
-        expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, getItems(expectedPathArg)).RETURN(treeReturned));
+        expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, getItems(expectedPathArg)).RETURN(treeReturned));
         toInterpret.emplace_back(getCmd);
     }
 
@@ -335,22 +340,22 @@ TEST_CASE("interpreter tests")
         SECTION("list instance")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, listElement_{"department", {{"name", "engineering"s}}}}};
-            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:department[name='engineering']")));
-            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:department[name='engineering']")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, createItem("/mod:department[name='engineering']")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, deleteItem("/mod:department[name='engineering']")));
         }
 
         SECTION("leaflist instance")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, leafListElement_{"addresses", "127.0.0.1"s}}};
-            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:addresses[.='127.0.0.1']")));
-            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:addresses[.='127.0.0.1']")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, createItem("/mod:addresses[.='127.0.0.1']")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, deleteItem("/mod:addresses[.='127.0.0.1']")));
         }
 
         SECTION("presence container")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, container_{"pContainer"}}};
-            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, createItem("/mod:pContainer")));
-            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:pContainer")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, createItem("/mod:pContainer")));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, deleteItem("/mod:pContainer")));
         }
 
         create_ createCmd;
@@ -363,7 +368,7 @@ TEST_CASE("interpreter tests")
 
     SECTION("delete a leaf")
     {
-        expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, deleteItem("/mod:someLeaf")));
+        expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, deleteItem("/mod:someLeaf")));
         delete_ deleteCmd;
         deleteCmd.m_path = {Scope::Absolute, {dataNode_{{"mod"}, leaf_{"someLeaf"}}, }};
         toInterpret.emplace_back(deleteCmd);
@@ -371,13 +376,13 @@ TEST_CASE("interpreter tests")
 
     SECTION("commit")
     {
-        expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, commitChanges()));
+        expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, commitChanges()));
         toInterpret.emplace_back(commit_{});
     }
 
     SECTION("discard")
     {
-        expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, discardChanges()));
+        expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, discardChanges()));
         toInterpret.emplace_back(discard_{});
     }
 
@@ -391,7 +396,7 @@ TEST_CASE("interpreter tests")
         {
             inputPath.m_nodes = {dataNode_{{"mod"}, leaf_{"animal"}}};
             inputData = identityRef_{"Doge"};
-            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, setLeaf("/mod:animal", identityRef_{"mod", "Doge"})));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, setLeaf("/mod:animal", identityRef_{"mod", "Doge"})));
         }
 
 
@@ -406,18 +411,59 @@ TEST_CASE("interpreter tests")
     {
         SECTION("running -> startup")
         {
-            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, copyConfig(Datastore::Running, Datastore::Startup)));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, copyConfig(Datastore::Running, Datastore::Startup)));
             toInterpret.emplace_back(copy_{{}, Datastore::Running, Datastore::Startup});
         }
 
         SECTION("startup -> running")
         {
-            expectations.emplace_back(NAMED_REQUIRE_CALL(datastore, copyConfig(Datastore::Startup, Datastore::Running)));
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, copyConfig(Datastore::Startup, Datastore::Running)));
             toInterpret.emplace_back(copy_{{}, Datastore::Startup, Datastore::Running});
         }
     }
 
     for (const auto& command : toInterpret) {
-        boost::apply_visitor(Interpreter(parser, datastore), command);
+        boost::apply_visitor(Interpreter(parser, proxyDatastore), command);
+    }
+}
+
+TEST_CASE("rpc")
+{
+    auto schema = std::make_shared<MockSchema>();
+    Parser parser(schema);
+    auto datastore = std::make_shared<MockDatastoreAccess>();
+    auto input_datastore = std::make_shared<MockDatastoreAccess>();
+    auto createTemporaryDatastore = [input_datastore]([[maybe_unused]] const std::shared_ptr<DatastoreAccess>& datastore) {
+        return input_datastore;
+    };
+    ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
+
+    SECTION("entering/leaving rpc context")
+    {
+        dataPath_ rpcPath;
+        rpcPath.pushFragment({{"example"}, rpcNode_{"launch-nukes"}});
+        rpc_ rpcCmd;
+        rpcCmd.m_path = rpcPath;
+
+        {
+            REQUIRE_CALL(*input_datastore, createItem("/example:launch-nukes"));
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{rpcCmd});
+        }
+
+        REQUIRE(parser.currentPath() == rpcPath);
+
+        SECTION("exec")
+        {
+            REQUIRE_CALL(*input_datastore, getItems("/")).RETURN(DatastoreAccess::Tree{});
+            REQUIRE_CALL(*datastore, executeRpc("/example:launch-nukes", DatastoreAccess::Tree{})).RETURN(DatastoreAccess::Tree{});
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{exec_{}});
+        }
+
+        SECTION("cancel")
+        {
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cancel_{}});
+        }
+
+        REQUIRE(parser.currentPath() == dataPath_{});
     }
 }

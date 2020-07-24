@@ -30,6 +30,26 @@ struct pathToStringVisitor : boost::static_visitor<std::string> {
     }
 };
 
+namespace {
+void printTree(const DatastoreAccess::Tree tree)
+{
+    for (auto it = tree.begin(); it != tree.end(); it++) {
+        auto [path, value] = *it;
+        if (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
+            auto leafListPrefix = path;
+            std::cout << path << " = " << leafDataToString(value) << std::endl;
+
+            while (it + 1 != tree.end() && boost::starts_with((it + 1)->first, leafListPrefix)) {
+                ++it;
+                std::cout << stripLeafListValueFromPath(it->first) << " = " << leafDataToString(it->second) << std::endl;
+            }
+        } else {
+            std::cout << path << " = " << leafDataToString(value) << std::endl;
+        }
+    }
+}
+}
+
 template <typename PathType>
 std::string pathToString(const PathType& path)
 {
@@ -64,20 +84,7 @@ void Interpreter::operator()(const set_& set) const
 void Interpreter::operator()(const get_& get) const
 {
     auto items = m_datastore.getItems(pathToString(toCanonicalPath(get.m_path)));
-    for (auto it = items.begin(); it != items.end(); it++) {
-        auto [path, value] = *it;
-        if (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
-            auto leafListPrefix = path;
-            std::cout << path << " = " << leafDataToString(value) << std::endl;
-
-            while (it + 1 != items.end() && boost::starts_with((it + 1) ->first, leafListPrefix)) {
-                ++it;
-                std::cout << stripLeafListValueFromPath(it->first) << " = " << leafDataToString(it->second) << std::endl;
-            }
-        } else {
-            std::cout << path << " = " << leafDataToString(value) << std::endl;
-        }
-    }
+    printTree(items);
 }
 
 void Interpreter::operator()(const cd_& cd) const
@@ -162,12 +169,14 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
     case yang::NodeTypes::List:
         ss << "list";
         break;
+    case yang::NodeTypes::Rpc:
+        ss << "RPC";
+        break;
     case yang::NodeTypes::Action:
     case yang::NodeTypes::AnyXml:
     case yang::NodeTypes::LeafList:
     case yang::NodeTypes::Notification:
-    case yang::NodeTypes::Rpc:
-        throw std::logic_error("describe got an rpc or an action: this should never happen, because their paths cannot be parsed");
+        throw std::logic_error("describe can't handle the type of " + path);
     }
 
     if (!m_datastore.schema()->isConfig(path)) {
@@ -199,6 +208,26 @@ void Interpreter::operator()(const move_& move) const
 void Interpreter::operator()(const dump_& dump) const
 {
     std::cout << m_datastore.dump(dump.m_format) << "\n";
+}
+
+void Interpreter::operator()(const rpc_& rpc) const
+{
+    m_datastore.initiateRpc(pathToString(toCanonicalPath(rpc.m_path)));
+    m_parser.changeNode(rpc.m_path);
+}
+
+void Interpreter::operator()(const exec_&) const
+{
+    m_parser.changeNode({Scope::Absolute, {}});
+    auto output = m_datastore.executeRpc();
+    std::cout << "RPC output:\n";
+    printTree(output);
+}
+
+void Interpreter::operator()(const cancel_&) const
+{
+    m_parser.changeNode({Scope::Absolute, {}});
+    m_datastore.cancelRpc();
 }
 
 struct commandLongHelpVisitor : boost::static_visitor<const char*> {
@@ -293,7 +322,7 @@ boost::variant<dataPath_, schemaPath_, module_> Interpreter::toCanonicalPath(con
     }
 }
 
-Interpreter::Interpreter(Parser& parser, DatastoreAccess& datastore)
+Interpreter::Interpreter(Parser& parser, ProxyDatastore& datastore)
     : m_parser(parser)
     , m_datastore(datastore)
 {

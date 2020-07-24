@@ -133,10 +133,15 @@ add_library(parser STATIC
     )
 target_link_libraries(parser schemas utils ast_values)
 
+add_library(proxydatastore STATIC
+    src/proxy_datastore.cpp
+    )
+target_link_libraries(proxydatastore PUBLIC datastoreaccess yangaccess)
+
 # Links libraries, that aren't specific to a datastore type
 function(cli_link_required cli_target)
     target_include_directories(${cli_target} PRIVATE ${REPLXX_PATH})
-    target_link_libraries(${cli_target} yangschema docopt parser ${REPLXX_LIBRARY})
+    target_link_libraries(${cli_target} proxydatastore yangschema docopt parser ${REPLXX_LIBRARY})
     add_dependencies(${cli_target} target-NETCONF_CLI_VERSION)
     target_include_directories(${cli_target} PRIVATE ${PROJECT_BINARY_DIR})
 endfunction()
@@ -277,7 +282,7 @@ if(BUILD_TESTING)
         else()
             message(FATAL_ERROR "Unknown backend ${backend}")
         endif()
-        target_link_libraries(${TESTNAME} yangschema sysreposubscription)
+        target_link_libraries(${TESTNAME} yangschema sysreposubscription proxydatastore)
 
         target_compile_definitions(${TESTNAME} PRIVATE ${backend}_BACKEND)
     endfunction()
@@ -302,6 +307,7 @@ if(BUILD_TESTING)
     target_link_libraries(test_set_value_completion leaf_data_type)
     cli_test(list_manipulation)
     cli_test(interpreter)
+    target_link_libraries(test_interpreter proxydatastore)
     cli_test(path_utils)
     target_link_libraries(test_path_utils path)
     cli_test(keyvalue_completion)
