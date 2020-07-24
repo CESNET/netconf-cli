@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "948a23c4_4d20aca6",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-24T14:50:21Z",
+      "side": 1,
+      "message": "there\u0027s currently no way to hide commands from command completion, but I\u0027ll make a task for this",
+      "parentUuid": "1da752d2_6e7da6cc",
+      "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4d25f9ea_f6cdd268",
         "filename": "src/ast_commands.hpp",
         "patchSetId": 23
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "28b0cdf6_fe37623b",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-24T14:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d25f9ea_f6cdd268",
+      "range": {
+        "startLine": 243,
+        "startChar": 30,
+        "endLine": 243,
+        "endChar": 33
+      },
+      "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3fbcf41b_587c9fa1",
         "filename": "src/ast_commands.hpp",
         "patchSetId": 23
@@ -56,6 +98,24 @@
       "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "149d4220_584455cc",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-24T14:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fbcf41b_587c9fa1",
+      "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "23935e24_a931e6f9",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-24T14:50:21Z",
+      "side": 1,
+      "message": "I\u0027ll make a task for this",
+      "parentUuid": "62eca431_b3bff9d3",
+      "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "63022f15_5b2b81cb",
         "filename": "src/path_parser.hpp",
         "patchSetId": 23
@@ -90,6 +168,24 @@
       "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99542738_3d7f13be",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-07-24T14:50:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63022f15_5b2b81cb",
+      "revId": "00cd9130bea6d25394b2cf7ed8781b65abdafca1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
