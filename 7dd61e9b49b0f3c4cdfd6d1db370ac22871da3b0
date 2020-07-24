@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c0ce0a5d_88ef3bb9",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-24T17:16:54Z",
+      "side": 1,
+      "message": "This feels wrong -- executing \"actions\" via the \"rpc\" command. I\u0027m not sure how to do it in the least confusing way, but what about calling this \"exec-prepare\" or \"prepare\"? That way, the \"exec\" command could work by either executing whatever is prepared already, or it would also support a new way of executing stuff which only makes sense for those RPCs/actions with no input parameters:\n\n /\u003e exec /ex:interfaces[name\u003d\u0027eth0\u0027]/shutdown\n Action executed.\n /\u003e exec /ex:clock/set-time\n Error: mandatory parameters for RPC not set.\n Hint: try `prepare /ex:clock/set-time`.\n /\u003e prepare /ex:clock/set-time\n (RPC /ex:clock/set-time)\u003e ls\n time\n (RPC /ex:clock/set-time)\u003e set time \"12:34:56\"\n (RPC /ex:clock/set-time)\u003e exec\n RPC executed.\n /\u003e prepare /ex:launch-nukes\n (RPC /ex:shoot)\u003e set target \u0027Brno\u0027\n (RPC /ex:shoot)\u003e execute\n RPC output:\n yield \u003d 666\n /\u003e\n\nFeel free to open a task for this rework (and implement that later on).",
+      "revId": "7dd61e9b49b0f3c4cdfd6d1db370ac22871da3b0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "256b5979_4f083c7c",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-24T17:16:54Z",
+      "side": 1,
+      "message": "Why do you need a variant of (string, string)? Please explain that in the commit message.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 52
+      },
+      "revId": "7dd61e9b49b0f3c4cdfd6d1db370ac22871da3b0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
