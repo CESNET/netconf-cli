@@ -12,7 +12,7 @@ For building, one needs:
 * [cmake](https://cmake.org/download/) for managing the build
 * [libyang](https://github.com/CESNET/libyang) for working with YANG models
 * [libnetconf2](https://github.com/CESNET/libnetconf2) for connecting to NETCONF servers
-* [sysrepo](https://github.com/sysrepo/sysrepo/) **version 0.7.x** for the local sysrepo backend
+* [sysrepo](https://github.com/sysrepo/sysrepo/) **version 1.4.x** for the local sysrepo backend
 * [replxx](https://github.com/AmokHuginnsson/replxx) which provides interactive line prompts
 * [docopt](https://github.com/docopt/docopt.cpp) for CLI option parsing
 * [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) for building
