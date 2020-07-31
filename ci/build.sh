@@ -43,6 +43,7 @@ if [[ $ZUUL_JOB_NAME =~ .*-tsan ]]; then
     export CFLAGS="-fsanitize=thread ${CFLAGS}"
     export CXXFLAGS="-fsanitize=thread ${CXXFLAGS}"
     export LDFLAGS="-fsanitize=thread ${LDFLAGS}"
+    export TSAN_OPTIONS="suppressions=${ZUUL_PROJECT_SRC_DIR}/ci/tsan.supp"
 fi
 
 if [[ ${ZUUL_JOB_NAME%%-cover?(-previous|-diff)} =~ -gcc$ ]]; then
