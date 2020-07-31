@@ -114,7 +114,7 @@ TEST_CASE("setting/getting values")
     SysrepoSubscription subscription("example-schema", &mock);
 
 #ifdef sysrepo_BACKEND
-    SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
+    SysrepoAccess datastore(Datastore::Running);
 #elif defined(netconf_BACKEND)
     NetconfAccess datastore(NETOPEER_SOCKET_PATH);
 #elif defined(yang_BACKEND)
@@ -512,7 +512,7 @@ TEST_CASE("setting/getting values")
     SECTION("operational data")
     {
         MockDataSupplier mockOpsData;
-        OperationalDataSubscription opsDataSub("/example-schema:temperature", mockOpsData);
+        OperationalDataSubscription opsDataSub("example-schema", "/example-schema:temperature", mockOpsData);
         DatastoreAccess::Tree expected;
         std::string xpath;
         SECTION("temperature")
@@ -830,7 +830,14 @@ TEST_CASE("setting/getting values")
 }
 
 class RpcCb: public sysrepo::Callback {
-    int rpc(const char *xpath, const ::sysrepo::S_Vals input, ::sysrepo::S_Vals_Holder output, void *) override
+    // int rpc(const char *xpath, const ::sysrepo::S_Vals input, ::sysrepo::S_Vals_Holder output, void *) override
+    int rpc([[maybe_unused]] sysrepo::S_Session session,
+            const char* xpath,
+            const sysrepo::S_Vals input,
+            [[maybe_unused]] sr_event_t event,
+            [[maybe_unused]] uint32_t request_id,
+            sysrepo::S_Vals_Holder output,
+            [[maybe_unused]] void* private_data) override
     {
         const auto nukes = "/example-schema:launch-nukes"s;
         if (xpath == "/example-schema:noop"s || xpath == "/example-schema:fire"s) {
@@ -878,20 +885,20 @@ class RpcCb: public sysrepo::Callback {
 
 TEST_CASE("rpc") {
     trompeloeil::sequence seq1;
-    auto srConn = std::make_shared<sysrepo::Connection>("netconf-cli-test-rpc");
+    auto srConn = std::make_shared<sysrepo::Connection>();
     auto srSession = std::make_shared<sysrepo::Session>(srConn);
     auto srSubscription = std::make_shared<sysrepo::Subscribe>(srSession);
     auto cb = std::make_shared<RpcCb>();
     sysrepo::Logs{}.set_stderr(SR_LL_INF);
     auto doNothingCb = std::make_shared<sysrepo::Callback>();
-    srSubscription->module_change_subscribe("example-schema", doNothingCb, nullptr, SR_SUBSCR_CTX_REUSE);
+    srSubscription->module_change_subscribe("example-schema", doNothingCb, nullptr, 0, SR_SUBSCR_CTX_REUSE);
     // careful here, sysrepo insists on module_change CBs being registered before RPC CBs, otherwise there's a memleak
     srSubscription->rpc_subscribe("/example-schema:noop", cb, nullptr, SR_SUBSCR_CTX_REUSE);
     srSubscription->rpc_subscribe("/example-schema:launch-nukes", cb, nullptr, SR_SUBSCR_CTX_REUSE);
     srSubscription->rpc_subscribe("/example-schema:fire", cb, nullptr, SR_SUBSCR_CTX_REUSE);
 
 #ifdef sysrepo_BACKEND
-    auto datastore = std::make_shared<SysrepoAccess>("netconf-cli-test", Datastore::Running);
+    auto datastore = std::make_shared<SysrepoAccess>(Datastore::Running);
 #elif defined(netconf_BACKEND)
     auto datastore = std::make_shared<NetconfAccess>(NETOPEER_SOCKET_PATH);
 #elif defined(yang_BACKEND)

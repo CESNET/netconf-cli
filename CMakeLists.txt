@@ -58,7 +58,7 @@ endif()
 
 find_package(PkgConfig)
 pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=1.0.130 IMPORTED_TARGET libyang)
-pkg_check_modules(SYSREPO REQUIRED libSysrepo-cpp>=0.7.9 IMPORTED_TARGET libsysrepo)
+pkg_check_modules(SYSREPO REQUIRED sysrepo-cpp>=0.7.9 IMPORTED_TARGET sysrepo)
 pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=0.12.64 IMPORTED_TARGET libnetconf2)
 
 # we don't need filename tracking, and we prefer to use header-only Boost
@@ -234,7 +234,7 @@ if(BUILD_TESTING)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/yang_access_test_vars.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/yang_access_test_vars.hpp @ONLY)
 
     function(setup_datastore_tests)
-        add_test(NAME setup_netopeer COMMAND ${SYSREPOCFG_EXECUTABLE} ietf-netconf-server -i ${CMAKE_CURRENT_SOURCE_DIR}/tests/netopeer-test-config.xml --datastore=startup --format=xml)
+        add_test(NAME setup_netopeer COMMAND ${SYSREPOCFG_EXECUTABLE} --import=${CMAKE_CURRENT_SOURCE_DIR}/tests/netopeer-test-config.xml --datastore=startup --format=xml --module=ietf-netconf-server)
         add_test(NAME start_daemons COMMAND ${FAKEROOT_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/start_daemons.sh)
         add_test(NAME example-schema_init
             COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tests/sysrepoctl-manage-module.sh ${SYSREPOCTL_EXECUTABLE} ${SYSREPOCFG_EXECUTABLE} install ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang )
