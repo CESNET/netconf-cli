@@ -32,7 +32,7 @@ TEST_CASE("data query")
     SysrepoSubscription subscriptionOther("other-module");
 
 #ifdef sysrepo_BACKEND
-    SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
+    SysrepoAccess datastore(Datastore::Running);
 #elif defined(netconf_BACKEND)
     NetconfAccess datastore(NETOPEER_SOCKET_PATH);
 #elif defined(yang_BACKEND)
