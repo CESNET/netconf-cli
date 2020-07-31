@@ -1,7 +1,8 @@
+import sysrepo_subscription_py as sr_sub
 import netconf_cli_py as nc
 
 c = nc.NetconfAccess(socketPath = "@NETOPEER_SOCKET_PATH@")
-data = c.getItems("/ietf-netconf-server:netconf-server")
+data = c.getItems("/ietf-netconf-monitoring:netconf-state/datastores")
 for (k, v) in data:
     print(f"{k}: {type(v)} {v}", flush=True)
 
@@ -9,22 +10,23 @@ if len(data) == 0:
     print("ERROR: No data returned from NETCONF")
     exit(1)
 
-hello_timeout_xp = "/ietf-netconf-server:netconf-server/session-options/hello-timeout"
+subscription = sr_sub.SysrepoSubscription("example-schema")
+xpath = "/example-schema:leafInt32"
 for EXPECTED in (599, 59, "61"):
-    c.setLeaf(hello_timeout_xp, EXPECTED)
+    c.setLeaf(xpath, EXPECTED)
     c.commitChanges()
-    data = c.getItems(hello_timeout_xp)
-    (_, value) = next(filter(lambda keyValue: keyValue[0] == hello_timeout_xp, data))
+    data = c.getItems(xpath)
+    (_, value) = next(filter(lambda keyValue: keyValue[0] == xpath, data))
     if value != EXPECTED:
         if isinstance(EXPECTED, str):
             if str(value) != EXPECTED:
-                print(f"ERROR: hello-timeout not updated (via string) to {EXPECTED}")
+                print(f"ERROR: leafInt32 not updated (via string) to {EXPECTED}")
                 exit(1)
         else:
-            print(f"ERROR: hello-timeout not updated to {EXPECTED}")
+            print(f"ERROR: leafInt32 not updated to {EXPECTED}")
             exit(1)
 try:
-    c.setLeaf(hello_timeout_xp, "blesmrt")
+    c.setLeaf(xpath, "blesmrt")
     c.commitChanges()
     print("ERROR: setting integer to a string did not error out")
     exit(1)
