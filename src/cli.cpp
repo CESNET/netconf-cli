@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
             return 1;
         }
     }
-    auto datastore = std::make_shared<SysrepoAccess>(PROGRAM_NAME, datastoreType);
+    auto datastore = std::make_shared<SysrepoAccess>(datastoreType);
     std::cout << "Connected to sysrepo [datastore: " << (datastoreType == Datastore::Startup ? "startup" : "running") << "]" << std::endl;
 #elif defined(YANG_CLI)
     auto datastore = std::make_shared<YangAccess>();
