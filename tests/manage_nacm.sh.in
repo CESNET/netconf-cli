@@ -1,0 +1,7 @@
+if [ $1 != "enable" -a $1 != "disable" ]; then
+    echo 'Argument must be "enable" or "disable."'
+    exit 1
+fi
+for datastore in startup running; do
+    @SYSREPOCFG_EXECUTABLE@ --import=@CMAKE_CURRENT_SOURCE_DIR@/tests/"$1-nacm.xml" --datastore="$datastore" --format=xml --module=ietf-netconf-acm
+done
