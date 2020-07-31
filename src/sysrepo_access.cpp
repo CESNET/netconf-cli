@@ -169,29 +169,15 @@ sr_datastore_t toSrDatastore(Datastore datastore)
     __builtin_unreachable();
 }
 
-SysrepoAccess::SysrepoAccess(const std::string& appname, const Datastore datastore)
-    : m_connection(new sysrepo::Connection(appname.c_str()))
-    , m_schema(new YangSchema())
+SysrepoAccess::SysrepoAccess(const Datastore datastore)
+    : m_connection(std::make_shared<sysrepo::Connection>())
+    , m_session(std::make_shared<sysrepo::Session>(m_connection))
+    , m_schema(std::make_shared<YangSchema>(m_session->get_context()))
 {
     try {
         m_session = std::make_shared<sysrepo::Session>(m_connection, toSrDatastore(datastore));
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
-    }
-
-    // If fetching a submodule, sysrepo::Session::get_schema will determine the revision from the main module.
-    // That's why submoduleRevision is ignored.
-    m_schema->registerModuleCallback([this](const char* moduleName, const char* revision, const char* submodule, [[maybe_unused]] const char* submoduleRevision) {
-        return fetchSchema(moduleName, revision, submodule);
-    });
-
-    for (const auto& it : listSchemas()) {
-        if (it->implemented()) {
-            m_schema->loadModule(it->module_name());
-            for (unsigned int i = 0; i < it->enabled_feature_cnt(); i++) {
-                m_schema->enableFeature(it->module_name(), it->enabled_features(i));
-            }
-        }
     }
 }
 
@@ -200,35 +186,10 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
     using namespace std::string_literals;
     Tree res;
 
-    auto fillMap = [this, &res](auto items) {
-        if (!items) {
-            return;
-        }
-        for (unsigned int i = 0; i < items->val_cnt(); i++) {
-            auto value = leafValueFromVal(items->val(i));
-            if (m_schema->nodeType(items->val(i)->xpath()) == yang::NodeTypes::LeafList) {
-                res.emplace_back(items->val(i)->xpath(), special_{SpecialValue::LeafList});
-                std::string leafListPath = items->val(i)->xpath();
-                while (i < items->val_cnt() && leafListPath == items->val(i)->xpath()) {
-                    auto leafListValue = leafDataToString(leafValueFromVal(items->val(i)));
-                    res.emplace_back(items->val(i)->xpath() + "[.="s + escapeListKeyString(leafListValue) + "]", leafListValue);
-                    i++;
-                }
-            } else {
-                res.emplace_back(items->val(i)->xpath(), value);
-            }
-        }
-    };
-
     try {
-        if (path == "/") {
-            // Sysrepo doesn't have a root node ("/"), so we take all top-level nodes from all schemas
-            auto schemas = m_session->list_schemas();
-            for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
-                fillMap(m_session->get_items(("/"s + schemas->schema(i)->module_name() + ":*//.").c_str()));
-            }
-        } else {
-            fillMap(m_session->get_items((path + "//.").c_str()));
+        auto config = m_session->get_data(((path == "/") ? "/*" : path + "//.").c_str());
+        if (config) {
+            lyNodesToTree(res, config->tree_for());
         }
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
@@ -296,7 +257,7 @@ void SysrepoAccess::moveItem(const std::string& source, std::variant<yang::move:
 void SysrepoAccess::commitChanges()
 {
     try {
-        m_session->commit();
+        m_session->apply_changes(10000, 1);
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
@@ -330,44 +291,9 @@ DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string &path, const T
     return res;
 }
 
-void SysrepoAccess::copyConfig(const Datastore source, const Datastore destination)
+void SysrepoAccess::copyConfig(const Datastore , const Datastore )
 {
-    m_session->copy_config(nullptr, toSrDatastore(source), toSrDatastore(destination));
-    if (destination == Datastore::Running) {
-        m_session->refresh();
-    }
-}
-
-std::string SysrepoAccess::fetchSchema(const char* module, const char* revision, const char* submodule)
-{
-    std::string schema;
-    try {
-        schema = m_session->get_schema(module, revision, submodule, SR_SCHEMA_YANG);
-    } catch (sysrepo::sysrepo_exception& ex) {
-        reportErrors();
-    }
-
-    if (schema.empty()) {
-        throw std::runtime_error(std::string("Module ") + module + " not available");
-    }
-
-    return schema;
-}
-
-std::vector<std::shared_ptr<sysrepo::Yang_Schema>> SysrepoAccess::listSchemas()
-{
-    std::vector<sysrepo::S_Yang_Schema> res;
-    std::shared_ptr<sysrepo::Yang_Schemas> schemas;
-    try {
-        schemas = m_session->list_schemas();
-    } catch (sysrepo::sysrepo_exception& ex) {
-        reportErrors();
-    }
-    for (unsigned int i = 0; i < schemas->schema_cnt(); i++) {
-        auto schema = schemas->schema(i);
-        res.emplace_back(schema);
-    }
-    return res;
+    // TODO: uhhh, the new function doesn't have source and destination...?
 }
 
 std::shared_ptr<Schema> SysrepoAccess::schema()
@@ -382,12 +308,11 @@ std::shared_ptr<Schema> SysrepoAccess::schema()
     // example an "invalid argument" error could mean a node isn't enabled, or
     // it could mean something totally different and there is no documentation
     // for that, so it's better to just use the message sysrepo gives me.
-    auto srErrors = m_session->get_last_errors();
+    auto srErrors = m_session->get_error();
     std::vector<DatastoreError> res;
 
     for (size_t i = 0; i < srErrors->error_cnt(); i++) {
-        auto error = srErrors->error(i);
-        res.emplace_back(error->message(), error->xpath() ? std::optional<std::string>{error->xpath()} : std::nullopt);
+        res.emplace_back(srErrors->message(i), srErrors->xpath(i) ? std::optional<std::string>{srErrors->xpath(i)} : std::nullopt);
     }
 
     throw DatastoreException(res);
@@ -446,22 +371,6 @@ std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
 
 std::string SysrepoAccess::dump(const DataFormat format) const
 {
-    std::shared_ptr<libyang::Data_Node> root;
-    auto input = getItems("/");
-    if (input.empty()) {
-        return "";
-    }
-    for (const auto& [k, v] : input) {
-        if (v.type() == typeid(special_) && boost::get<special_>(v).m_value != SpecialValue::PresenceContainer) {
-            continue;
-        }
-        if (!root) {
-            root = m_schema->dataNodeFromPath(k, leafDataToString(v));
-        } else {
-            // Using UPDATE here, because in multi-key list, all of the keys get created with the first key (because they are encoded in the path)
-            // and libyang complains if the node already exists.
-            root->new_path(nullptr, k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
-        }
-    }
+    auto root = m_session->get_data("/*");
     return root->print_mem(format == DataFormat::Xml ? LYD_XML : LYD_JSON, LYP_WITHSIBLINGS | LYP_FORMAT);
 }
