@@ -29,8 +29,8 @@ MODULE=$(basename --suffix .yang "${1}")
 YANG_DIR=$(dirname "${1}")
 
 if [[ "${MODE}" == "install" ]]; then
-  ${SYSREPOCTL} --uninstall --module "${MODULE}" || true
-  ${SYSREPOCTL} --install --yang "${1}"
+  ${SYSREPOCTL} --uninstall "${MODULE}" || true
+  ${SYSREPOCTL} --search-dirs "${YANG_DIR}" --install "${1}"
   JSON_DATA="${YANG_DIR}/${MODULE}.json"
   XML_DATA="${YANG_DIR}/${MODULE}.startup.xml"
   if [[ -f "${JSON_DATA}" ]] ;then
@@ -39,7 +39,7 @@ if [[ "${MODE}" == "install" ]]; then
     ${SYSREPOCFG} -d startup -f xml "${MODULE}" -i "${XML_DATA}"
   fi
 elif [[ "${MODE}" == "uninstall" ]]; then
-  ${SYSREPOCTL} --uninstall --module "${MODULE}"
+  ${SYSREPOCTL} --uninstall "${MODULE}"
 else
   echo "Mode of operation not specified"
   exit 1
