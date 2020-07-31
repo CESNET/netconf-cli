@@ -6,6 +6,7 @@
 */
 
 #include <experimental/iterator>
+#include <sysrepo-cpp/Session.hpp>
 #include "trompeloeil_doctest.hpp"
 
 #ifdef sysrepo_BACKEND
@@ -28,11 +29,16 @@
 TEST_CASE("data query")
 {
     trompeloeil::sequence seq1;
+    {
+        auto conn = std::make_shared<sysrepo::Connection>();
+        auto sess = std::make_shared<sysrepo::Session>(conn);
+        sess->copy_config(SR_DS_STARTUP, "example-schema", 1000, true);
+    }
     SysrepoSubscription subscriptionExample("example-schema");
     SysrepoSubscription subscriptionOther("other-module");
 
 #ifdef sysrepo_BACKEND
-    SysrepoAccess datastore("netconf-cli-test", Datastore::Running);
+    SysrepoAccess datastore(Datastore::Running);
 #elif defined(netconf_BACKEND)
     NetconfAccess datastore(NETOPEER_SOCKET_PATH);
 #elif defined(yang_BACKEND)
