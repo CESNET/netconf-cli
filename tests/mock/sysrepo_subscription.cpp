@@ -10,9 +10,10 @@
 #include <sstream>
 #include <sysrepo-cpp/Session.hpp>
 #include "sysrepo_subscription.hpp"
+#include "utils.hpp"
 
 
-class MyCallback : public sysrepo::Callback {
+class MyCallback {
 public:
     MyCallback(const std::string& moduleName, Recorder* rec)
         : m_moduleName(moduleName)
@@ -20,15 +21,19 @@ public:
     {
     }
 
-    int module_change(sysrepo::S_Session sess, const char* module_name, sr_notif_event_t event, void*) override
+    int operator()(
+            sysrepo::S_Session sess,
+            const char *module_name,
+            [[maybe_unused]] const char *xpath,
+            [[maybe_unused]] sr_event_t event,
+            [[maybe_unused]] uint32_t request_id)
     {
         using namespace std::string_literals;
-        auto xpath = "/"s + module_name + ":*";
-        auto it = sess->get_changes_iter(xpath.c_str());
-
-        if (event == SR_EV_APPLY) {
+        if (event == SR_EV_CHANGE) {
             return SR_ERR_OK;
         }
+
+        auto it = sess->get_changes_iter(("/"s + module_name + ":*//.").c_str());
 
         while (auto change = sess->get_change_next(it)) {
             auto xpath = (change->new_val() ? change->new_val() : change->old_val())->xpath();
@@ -51,18 +56,20 @@ Recorder::~Recorder() = default;
 DataSupplier::~DataSupplier() = default;
 
 SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder* rec)
-    : m_connection(new sysrepo::Connection("netconf-cli-test-subscription"))
+    : m_connection(std::make_shared<sysrepo::Connection>())
 {
     m_session = std::make_shared<sysrepo::Session>(m_connection);
     m_subscription = std::make_shared<sysrepo::Subscribe>(m_session);
+    sysrepo::ModuleChangeCb cb;
     if (rec) {
-        m_callback = std::make_shared<MyCallback>(moduleName, rec);
+        cb = MyCallback{moduleName, rec};
     } else {
-        m_callback = std::make_shared<sysrepo::Callback>();
+        cb = [] (auto, auto, auto, auto, auto) { return SR_ERR_OK; };
     }
 
-    m_subscription->module_change_subscribe(moduleName.c_str(), m_callback);
+    m_subscription->module_change_subscribe(moduleName.c_str(), cb);
 }
+
 
 struct leafDataToSysrepoVal {
     leafDataToSysrepoVal (sysrepo::S_Val v, const std::string& xpath)
@@ -119,32 +126,50 @@ struct leafDataToSysrepoVal {
     std::string xpath;
 };
 
-class OperationalDataCallback : public sysrepo::Callback {
+class OperationalDataCallback {
 public:
     OperationalDataCallback(const DataSupplier& dataSupplier)
         : m_dataSupplier(dataSupplier)
     {
     }
-    int dp_get_items(const char *xpath, sysrepo::S_Vals_Holder vals, [[maybe_unused]] uint64_t request_id, [[maybe_unused]] const char *original_xpath, [[maybe_unused]] void *private_ctx) override
+    int operator()(
+            [[maybe_unused]] sysrepo::S_Session sess,
+            [[maybe_unused]] const char *module_name,
+            const char* path,
+            [[maybe_unused]] const char* request_xpath,
+            [[maybe_unused]] uint32_t request_id,
+            libyang::S_Data_Node& parent)
     {
-        auto data = m_dataSupplier.get_data(xpath);
-        auto out = vals->allocate(data.size());
-        size_t i = 0;
-        for (auto it = data.cbegin(); it != data.cend(); ++it, ++i) {
-            std::string valuePath = it->first;
-            boost::apply_visitor(leafDataToSysrepoVal(out->val(i), valuePath), it->second);
+        auto data = m_dataSupplier.get_data(path);
+        libyang::S_Data_Node res;
+        for (const auto& [p, v] : data) {
+            if (!res) {
+                res = std::make_shared<libyang::Data_Node>(
+                        sess->get_context(),
+                        p.c_str(),
+                        v.type() == typeid(empty_) ? nullptr : leafDataToString(v).c_str(),
+                        LYD_ANYDATA_CONSTSTRING,
+                        0);
+            } else {
+                res->new_path(
+                        sess->get_context(),
+                        p.c_str(),
+                        v.type() == typeid(empty_) ? nullptr : leafDataToString(v).c_str(),
+                        LYD_ANYDATA_CONSTSTRING,
+                        0);
+            }
         }
+        parent = res;
         return SR_ERR_OK;
     }
 private:
     const DataSupplier& m_dataSupplier;
 };
 
-OperationalDataSubscription::OperationalDataSubscription(const std::string& moduleName, const DataSupplier& dataSupplier)
-    : m_connection(new sysrepo::Connection("netconf-cli-test-subscription"))
+OperationalDataSubscription::OperationalDataSubscription(const std::string& moduleName, const std::string& path, const DataSupplier& dataSupplier)
+    : m_connection(std::make_shared<sysrepo::Connection>())
     , m_session(std::make_shared<sysrepo::Session>(m_connection))
     , m_subscription(std::make_shared<sysrepo::Subscribe>(m_session))
-    , m_callback(std::make_shared<OperationalDataCallback>(dataSupplier))
 {
-    m_subscription->dp_get_items_subscribe(moduleName.c_str(), m_callback);
+    m_subscription->oper_get_items_subscribe(moduleName.c_str(), OperationalDataCallback{dataSupplier}, path.c_str());
 }
