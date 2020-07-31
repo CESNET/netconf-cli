@@ -36,22 +36,21 @@ public:
 class SysrepoSubscription {
 public:
     SysrepoSubscription(const std::string& moduleName, Recorder* rec = nullptr);
+    ~SysrepoSubscription();
 
 private:
     std::shared_ptr<sysrepo::Connection> m_connection;
     std::shared_ptr<sysrepo::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;
-    std::shared_ptr<sysrepo::Callback> m_callback;
     std::shared_ptr<sysrepo::Subscribe> m_subscription;
 };
 
 class OperationalDataSubscription {
 public:
-    OperationalDataSubscription(const std::string& moduleName, const DataSupplier& dataSupplier);
+    OperationalDataSubscription(const std::string& moduleName, const std::string& path, const DataSupplier& dataSupplier);
 private:
     std::shared_ptr<sysrepo::Connection> m_connection;
     std::shared_ptr<sysrepo::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;
     std::shared_ptr<sysrepo::Subscribe> m_subscription;
-    std::shared_ptr<sysrepo::Callback> m_callback;
 };
