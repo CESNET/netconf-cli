@@ -81,6 +81,30 @@
       "revId": "7dd61e9b49b0f3c4cdfd6d1db370ac22871da3b0",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51c76693_9a64aace",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-08-26T06:46:57Z",
+      "side": 1,
+      "message": "The variant is needed so that I know if I need to call executeRpc or executeAction later. NetconfAccess code for executeRpc/Action is the same, but SysrepoAccess isn\u0027t. In sysrepo2, code for action/rpc is the same, so then I could get rid of the variant. I could also get rid of it right now, and somehow check whether the path is an action or an rpc (but it would be in a separate change).\n\nI added a comment explaining this (I thought it would be better than explaining in the commit message)",
+      "parentUuid": "cd1ab718_e12e1852",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 52
+      },
+      "revId": "7dd61e9b49b0f3c4cdfd6d1db370ac22871da3b0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
