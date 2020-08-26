@@ -105,6 +105,30 @@
       "revId": "7dd61e9b49b0f3c4cdfd6d1db370ac22871da3b0",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "004070f9_eec86f30",
+        "filename": "src/proxy_datastore.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-08-26T10:56:29Z",
+      "side": 1,
+      "message": "Thanks for explaining this. Changing this in the DatastoreAccess API so that it\u0027s just execute(string path, Tree data) sounds like a best fix.",
+      "parentUuid": "51c76693_9a64aace",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 52
+      },
+      "revId": "7dd61e9b49b0f3c4cdfd6d1db370ac22871da3b0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
