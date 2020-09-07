@@ -1,0 +1,34 @@
+set -eux
+export ASAN_OPTIONS=verify_asan_link_order=false
+export UBSAN_OPTIONS=halt_on_error=1
+
+rm -rf "$SYSREPO_REPOSITORY_PATH"
+rm -rf "/dev/shm/$SYSREPO_SHM_PREFIX"*
+cp -r "@SYSREPO_SR_REPO_PATH@" "$SYSREPO_REPOSITORY_PATH"
+
+SYSREPOCTL="@SYSREPOCTL_EXECUTABLE@"
+SYSREPOCFG="@SYSREPOCFG_EXECUTABLE@"
+
+MODULE="$1"
+YANG_DIR=$(dirname "$1")
+shift
+
+# Install the module
+"$SYSREPOCTL" --search-dirs "$YANG_DIR" --install "$MODULE" -a
+
+BACKEND="$1"
+shift
+if [[ "$BACKEND" = "netconf" ]]; then
+    NETOPEER2="@NETOPEER2_EXECUTABLE@"
+    # Setup netopeer config
+    "$SYSREPOCFG" --import="@CMAKE_CURRENT_SOURCE_DIR@/tests/netopeer-test-config.xml" --datastore=running --format=xml --module=ietf-netconf-server
+
+    # Disable nacm
+    for datastore in startup running; do
+        "$SYSREPOCFG" --import="@CMAKE_CURRENT_SOURCE_DIR@/tests/disable-nacm.xml" --datastore="$datastore" --format=xml --module=ietf-netconf-acm
+    done
+
+    # Run netopeer. Use exec -a, so that each process has a recognizable name for `pkill`.
+    (exec -a "${SYSREPO_SHM_PREFIX}_netopeer2-server" "$NETOPEER2" -v2 "-U$NETOPEER_SOCKET")
+fi
+sleep 5
