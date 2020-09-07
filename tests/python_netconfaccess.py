@@ -1,7 +1,8 @@
+import os
 import sysrepo_subscription_py as sr_sub
 import netconf_cli_py as nc
 
-c = nc.NetconfAccess(socketPath = "@NETOPEER_SOCKET_PATH@")
+c = nc.NetconfAccess(socketPath = os.environ['NETOPEER_SOCKET'])
 data = c.getItems("/ietf-netconf-monitoring:netconf-state/datastores")
 for (k, v) in data:
     print(f"{k}: {type(v)} {v}", flush=True)
