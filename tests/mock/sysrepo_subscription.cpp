@@ -21,7 +21,7 @@ public:
 
     int module_change(
             sysrepo::S_Session sess,
-            const char *module_name,
+            [[maybe_unused]] const char *module_name,
             [[maybe_unused]] const char *xpath,
             [[maybe_unused]] sr_event_t event,
             [[maybe_unused]] uint32_t request_id,
