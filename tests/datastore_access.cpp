@@ -27,7 +27,6 @@ using OnInvalidRpcPath = std::runtime_error;
 using OnKeyNotFound = std::runtime_error;
 using OnExec = void;
 #include "netconf_access.hpp"
-#include "netopeer_vars.hpp"
 #elif defined(yang_BACKEND)
 #include <fstream>
 #include "yang_access.hpp"
@@ -122,7 +121,8 @@ TEST_CASE("setting/getting values")
 #ifdef sysrepo_BACKEND
     SysrepoAccess datastore(Datastore::Running);
 #elif defined(netconf_BACKEND)
-    NetconfAccess datastore(NETOPEER_SOCKET_PATH);
+    const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
+    NetconfAccess datastore(NETOPEER_SOCKET);
 #elif defined(yang_BACKEND)
     TestYangAccess datastore;
     datastore.addSchemaDir(schemaDir);
@@ -896,7 +896,8 @@ TEST_CASE("rpc/action") {
 #ifdef sysrepo_BACKEND
     auto datastore = std::make_shared<SysrepoAccess>(Datastore::Running);
 #elif defined(netconf_BACKEND)
-    auto datastore = std::make_shared<NetconfAccess>(NETOPEER_SOCKET_PATH);
+    const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
+    auto datastore = std::make_shared<NetconfAccess>(NETOPEER_SOCKET);
 #elif defined(yang_BACKEND)
     auto datastore = std::make_shared<YangAccess>();
     datastore->addSchemaDir(schemaDir);

@@ -13,7 +13,6 @@
 #include "sysrepo_access.hpp"
 #elif defined(netconf_BACKEND)
 #include "netconf_access.hpp"
-#include "netopeer_vars.hpp"
 #elif defined(yang_BACKEND)
 #include "yang_access.hpp"
 #include "yang_access_test_vars.hpp"
@@ -40,7 +39,8 @@ TEST_CASE("data query")
 #ifdef sysrepo_BACKEND
     SysrepoAccess datastore(Datastore::Running);
 #elif defined(netconf_BACKEND)
-    NetconfAccess datastore(NETOPEER_SOCKET_PATH);
+    const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
+    NetconfAccess datastore(NETOPEER_SOCKET);
 #elif defined(yang_BACKEND)
     YangAccess datastore;
     datastore.addSchemaDir(schemaDir);
