@@ -102,7 +102,7 @@ add_library(sysrepoaccess STATIC
     src/sysrepo_access.cpp
     )
 
-target_link_libraries(sysrepoaccess PUBLIC datastoreaccess ast_values PRIVATE PkgConfig::SYSREPO)
+target_link_libraries(sysrepoaccess PUBLIC datastoreaccess ast_values PRIVATE PkgConfig::SYSREPO PkgConfig::LIBYANG)
 
 add_library(netconfaccess STATIC
     src/netconf-client.cpp
@@ -207,41 +207,12 @@ if(BUILD_TESTING)
         message(FATAL_ERROR "Unable to find netopeer2-server, set NETOPEER2_EXECUTABLE manually.")
     endif()
 
-    if (NOT FAKEROOT_EXECUTABLE)
-        find_program(FAKEROOT_EXECUTABLE fakeroot)
-    endif()
-    if (NOT FAKEROOT_EXECUTABLE)
-        message(FATAL_ERROR "Unable to find fakeroot, set FAKEROOT_EXECUTABLE manually.")
-    endif()
+    pkg_get_variable(SYSREPO_SR_REPO_PATH sysrepo SR_REPO_PATH)
 
-    set(NETOPEER_SOCKET_PATH "${CMAKE_CURRENT_BINARY_DIR}/netopeer2-server.sock")
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/start_daemons.sh.in ${CMAKE_CURRENT_BINARY_DIR}/start_daemons.sh @ONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/netopeer_vars.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/netopeer_vars.hpp @ONLY)
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_repositories)
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_sockets)
+
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/yang_access_test_vars.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/yang_access_test_vars.hpp @ONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/manage_nacm.sh.in ${CMAKE_CURRENT_BINARY_DIR}/manage_nacm.sh @ONLY)
-
-    function(setup_datastore_tests)
-        add_test(NAME example-schema_init
-            COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tests/sysrepoctl-manage-module.sh ${SYSREPOCTL_EXECUTABLE} ${SYSREPOCFG_EXECUTABLE} install ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
-        add_test(NAME example-schema_cleanup
-            COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tests/sysrepoctl-manage-module.sh ${SYSREPOCTL_EXECUTABLE} ${SYSREPOCFG_EXECUTABLE} uninstall ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
-        add_test(NAME disable_nacm COMMAND ${CMAKE_CURRENT_BINARY_DIR}/manage_nacm.sh disable)
-        add_test(NAME enable_nacm COMMAND ${CMAKE_CURRENT_BINARY_DIR}/manage_nacm.sh enable)
-        add_test(NAME setup_netopeer COMMAND ${SYSREPOCFG_EXECUTABLE} --import=${CMAKE_CURRENT_SOURCE_DIR}/tests/netopeer-test-config.xml --datastore=startup --format=xml --module=ietf-netconf-server)
-        add_test(NAME start_daemons COMMAND ${CMAKE_CURRENT_BINARY_DIR}/start_daemons.sh)
-        add_test(NAME kill_daemons COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tests/kill_daemons.sh)
-        set_tests_properties(disable_nacm PROPERTIES FIXTURES_SETUP nacm_disabled)
-        set_tests_properties(enable_nacm PROPERTIES FIXTURES_CLEANUP nacm_disabled)
-        set_tests_properties(example-schema_init PROPERTIES FIXTURES_SETUP example-schema_setup)
-        set_tests_properties(setup_netopeer PROPERTIES FIXTURES_SETUP netopeer_configured)
-        set_tests_properties(example-schema_cleanup PROPERTIES FIXTURES_CLEANUP example-schema_setup)
-        set_tests_properties(setup_netopeer start_daemons kill_daemons example-schema_init example-schema_cleanup disable_nacm enable_nacm PROPERTIES RESOURCE_LOCK sysrepo)
-        set_property(TEST setup_netopeer APPEND PROPERTY FIXTURES_REQUIRED nacm_disabled)
-        set_property(TEST setup_netopeer APPEND PROPERTY FIXTURES_REQUIRED example-schema_setup)
-        set_tests_properties(start_daemons PROPERTIES FIXTURES_REQUIRED netopeer_configured FIXTURES_SETUP netopeer_running)
-        set_property(TEST example-schema_cleanup APPEND PROPERTY DEPENDS kill_daemons)
-        set_property(TEST kill_daemons APPEND PROPERTY FIXTURES_CLEANUP netopeer_running)
-    endfunction()
 
     function(cli_test name)
         if (${ARGC} GREATER 1) # this is how CMake does optional arguments
@@ -262,9 +233,8 @@ if(BUILD_TESTING)
 
     function(datastore_test_impl name model backend)
         set(TESTNAME test_${name}_${backend})
+
         cli_test(${name}_${backend} ${name}.cpp)
-        set_tests_properties(${TESTNAME} PROPERTIES FIXTURES_REQUIRED ${model}_setup RESOURCE_LOCK sysrepo)
-        set_property(TEST ${TESTNAME} APPEND PROPERTY FIXTURES_REQUIRED netopeer_running)
         target_include_directories(${TESTNAME} PRIVATE ${PROJECT_SOURCE_DIR}/tests/mock)
         if (${backend} STREQUAL "sysrepo")
             target_link_libraries(${TESTNAME} sysrepoaccess)
@@ -278,6 +248,19 @@ if(BUILD_TESTING)
         target_link_libraries(${TESTNAME} yangschema sysreposubscription proxydatastore PkgConfig::SYSREPO)
 
         target_compile_definitions(${TESTNAME} PRIVATE ${backend}_BACKEND)
+        set_tests_properties(${TESTNAME} PROPERTIES FIXTURES_REQUIRED ${TESTNAME}_setup)
+
+        add_test(NAME ${TESTNAME}_init COMMAND ${CMAKE_CURRENT_BINARY_DIR}/init_datastore.bash "${model}" "${backend}")
+        set_tests_properties(${TESTNAME}_init PROPERTIES FIXTURES_SETUP ${TESTNAME}_setup)
+        add_test(NAME ${TESTNAME}_cleanup COMMAND ${CMAKE_CURRENT_BINARY_DIR}/cleanup_datastore.bash "${backend}")
+        set_tests_properties(${TESTNAME}_cleanup PROPERTIES FIXTURES_CLEANUP ${TESTNAME}_setup)
+
+        set_property(TEST ${TESTNAME} ${TESTNAME}_init ${TESTNAME}_cleanup APPEND PROPERTY ENVIRONMENT
+            "SYSREPO_REPOSITORY_PATH=${CMAKE_CURRENT_BINARY_DIR}/test_repositories/${TESTNAME}"
+            "SYSREPO_SHM_PREFIX=netconf-cli_${TESTNAME}"
+            "NETOPEER_SOCKET=${CMAKE_CURRENT_BINARY_DIR}/test_sockets/${TESTNAME}.sock"
+            )
+
     endfunction()
 
     function(datastore_test name model)
@@ -305,9 +288,14 @@ if(BUILD_TESTING)
     target_link_libraries(test_path_utils path)
     cli_test(keyvalue_completion)
 
-    setup_datastore_tests()
-    datastore_test(datastore_access example-schema)
-    datastore_test(data_query example-schema)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/init_datastore.bash.in
+        ${CMAKE_CURRENT_BINARY_DIR}/init_datastore.bash @ONLY)
+
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/cleanup_datastore.bash.in
+        ${CMAKE_CURRENT_BINARY_DIR}/cleanup_datastore.bash @ONLY)
+
+    datastore_test(datastore_access ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
+    datastore_test(data_query ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
 endif()
 
 option(WITH_PYTHON_BINDINGS "Create and install Python3 bindings for accessing datastores" OFF)
@@ -322,11 +310,21 @@ if(WITH_PYTHON_BINDINGS)
         target_link_libraries(sysrepo_subscription_py PUBLIC sysreposubscription utils)
 
         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/python_netconfaccess.py
-            ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py @ONLY)
+            ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py COPYONLY)
+
         add_test(NAME test_netconf_cli_py COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/tests_python_netconfaccess.py)
-        set_tests_properties(test_netconf_cli_py PROPERTIES RESOURCE_LOCK sysrepo)
-        set_property(TEST test_netconf_cli_py APPEND PROPERTY FIXTURES_REQUIRED netopeer_running)
-        set_property(TEST test_netconf_cli_py APPEND PROPERTY FIXTURES_REQUIRED example-schema_setup)
+        set_tests_properties(test_netconf_cli_py PROPERTIES FIXTURES_REQUIRED test_netconf_cli_py_setup)
+
+        add_test(NAME test_netconf_cli_py_init COMMAND ${CMAKE_CURRENT_BINARY_DIR}/init_datastore.bash ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang "netconf")
+        set_tests_properties(test_netconf_cli_py_init PROPERTIES FIXTURES_SETUP test_netconf_cli_py_setup)
+        add_test(NAME test_netconf_cli_py_cleanup COMMAND ${CMAKE_CURRENT_BINARY_DIR}/cleanup_datastore.bash "netconf")
+        set_tests_properties(test_netconf_cli_py_cleanup PROPERTIES FIXTURES_CLEANUP test_netconf_cli_py_setup)
+
+        set_property(TEST test_netconf_cli_py test_netconf_cli_py_init test_netconf_cli_py_cleanup APPEND PROPERTY ENVIRONMENT
+            "SYSREPO_REPOSITORY_PATH=${CMAKE_CURRENT_BINARY_DIR}/test_repositories/test_netconf_cli_py"
+            "SYSREPO_SHM_PREFIX=netconf-cli_test_netconf_cli_py"
+            "NETOPEER_SOCKET=${CMAKE_CURRENT_BINARY_DIR}/test_sockets/test_netconf_cli_py.sock"
+            )
 
         set(sanitizer_active OFF)
         # FIXME: this just sucks. The detection is very unreliable (one could use something like
