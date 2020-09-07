@@ -21,7 +21,7 @@ public:
 
     int module_change(
             sysrepo::S_Session sess,
-            const char *module_name,
+            [[maybe_unused]] const char *module_name,
             [[maybe_unused]] const char *xpath,
             [[maybe_unused]] sr_event_t event,
             [[maybe_unused]] uint32_t request_id,
@@ -71,7 +71,8 @@ SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder
 SysrepoSubscription::~SysrepoSubscription()
 {
     m_subscription->unsubscribe();
-    m_session->copy_config(SR_DS_STARTUP, "example-schema", 100000, 1);
+    const auto TIMEOUT = 100000;
+    m_session->copy_config(SR_DS_STARTUP, "example-schema", TIMEOUT, 1);
 }
 
 

@@ -14,6 +14,8 @@
 #include "utils.hpp"
 #include "yang_schema.hpp"
 
+const auto OPERATION_TIMEOUT_MS = 1000;
+
 leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
 {
     using namespace std::string_literals;
@@ -262,7 +264,7 @@ void SysrepoAccess::moveItem(const std::string& source, std::variant<yang::move:
 void SysrepoAccess::commitChanges()
 {
     try {
-        m_session->apply_changes(1000, 1);
+        m_session->apply_changes(OPERATION_TIMEOUT_MS, 1);
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
@@ -302,6 +304,7 @@ DatastoreAccess::Tree toTree(const std::string& path, const std::shared_ptr<sysr
 }
 }
 
+// TODO: merge this with executeAction
 DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string &path, const Tree &input)
 {
     auto srInput = toSrVals(path, input);
@@ -320,7 +323,7 @@ void SysrepoAccess::copyConfig(const Datastore source, const Datastore destinati
 {
     auto oldDs = m_session->session_get_ds();
     m_session->session_switch_ds(toSrDatastore(destination));
-    m_session->copy_config(toSrDatastore(source), nullptr, 10000, 1); // FIXME: change this timeout
+    m_session->copy_config(toSrDatastore(source), nullptr, OPERATION_TIMEOUT_MS, 1);
     m_session->session_switch_ds(oldDs);
 }
 
@@ -331,7 +334,7 @@ std::shared_ptr<Schema> SysrepoAccess::schema()
 
 [[noreturn]] void SysrepoAccess::reportErrors() const
 {
-    // I only use get_last_errors to get error info, since the error code from
+    // I only use get_error to get error info, since the error code from
     // sysrepo_exception doesn't really give any meaningful information. For
     // example an "invalid argument" error could mean a node isn't enabled, or
     // it could mean something totally different and there is no documentation
