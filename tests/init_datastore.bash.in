@@ -1,0 +1,43 @@
+set -eux
+export UBSAN_OPTIONS=halt_on_error=1 # UBSan doesn't stop on errors by default.
+
+if [[ $(dirname "$(dirname "$(realpath "$SYSREPO_REPOSITORY_PATH")")") != "@CMAKE_CURRENT_BINARY_DIR@" ]]; then
+    echo "\$SYSREPO_REPOSITORY_PATH is not inside the build dir! Aborting. ($SYSREPO_REPOSITORY_PATH)"
+    exit 1
+fi
+
+if [[ -z "$SYSREPO_SHM_PREFIX" ]]; then
+    echo '$SYSREPO_SHM_PREFIX is empty! Aborting.'
+    exit 1
+fi
+
+rm -rf "$SYSREPO_REPOSITORY_PATH"
+rm -rf "/dev/shm/$SYSREPO_SHM_PREFIX"*
+cp -r "@SYSREPO_SR_REPO_PATH@" "$SYSREPO_REPOSITORY_PATH"
+
+SYSREPOCTL="@SYSREPOCTL_EXECUTABLE@"
+SYSREPOCFG="@SYSREPOCFG_EXECUTABLE@"
+
+MODULE="$1"
+YANG_DIR=$(dirname "$1")
+shift
+
+# Install the module
+"$SYSREPOCTL" --search-dirs "$YANG_DIR" --install "$MODULE" -a
+
+BACKEND="$1"
+shift
+if [[ "$BACKEND" = "netconf" ]]; then
+    NETOPEER2="@NETOPEER2_EXECUTABLE@"
+    # Setup netopeer config
+    "$SYSREPOCFG" --import --datastore=running --format=xml --module=ietf-netconf-server <<< ""
+
+    # Disable nacm
+    for datastore in startup running; do
+        "$SYSREPOCFG" --import="@CMAKE_CURRENT_SOURCE_DIR@/tests/disable-nacm.xml" --datastore="$datastore" --format=xml --module=ietf-netconf-acm
+    done
+
+    # Run netopeer. Use exec -a, so that each process has a recognizable name for `pkill`.
+    (exec -a "${SYSREPO_SHM_PREFIX}_netopeer2-server" "$NETOPEER2" -v2 "-U$NETOPEER_SOCKET")
+    sleep 5
+fi

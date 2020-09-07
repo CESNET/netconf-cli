@@ -1,9 +1,0 @@
-set -eux -o pipefail
-shopt -s failglob
-export ASAN_OPTIONS=verify_asan_link_order=false
-export UBSAN_OPTIONS=halt_on_error=1
-
-@CMAKE_CURRENT_SOURCE_DIR@/tests/kill_daemons.sh || true
-
-@NETOPEER2_EXECUTABLE@ -v2 -U@NETOPEER_SOCKET_PATH@
-sleep 5
