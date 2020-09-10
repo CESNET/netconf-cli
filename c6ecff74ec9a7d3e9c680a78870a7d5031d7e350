@@ -1,0 +1,199 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2fc22ff3_f3ab0c8e",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T10:42:48Z",
+      "side": 1,
+      "message": "No libyang types are used in the public header, so this can be moved to PRIVATE",
+      "range": {
+        "startLine": 105,
+        "startChar": 70,
+        "endLine": 105,
+        "endChar": 88
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7aa40c4d_56f74c91",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T10:42:48Z",
+      "side": 1,
+      "message": "there\u0027s just a forward-declaration of some libyang bits, so once again, PRIVATE",
+      "range": {
+        "startLine": 112,
+        "startChar": 87,
+        "endLine": 112,
+        "endChar": 105
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ef5229f_79303e0e",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T10:42:48Z",
+      "side": 1,
+      "message": "and here it looks like a PRIVATE is enough as well",
+      "range": {
+        "startLine": 118,
+        "startChar": 67,
+        "endLine": 118,
+        "endChar": 85
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "613a1999_ceae94a7",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T10:42:48Z",
+      "side": 1,
+      "message": "fakeroot is not needed anymore, please remove this",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 11
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4cd23a5_561605b2",
+        "filename": "tests/cleanup_datastore.bash",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T10:42:48Z",
+      "side": 1,
+      "message": "Please add an early hard-fail to this script which checks for \"reasonable content\" in this variable. Let\u0027s try to limit the impact of possible screwups on a developer\u0027s system.",
+      "range": {
+        "startLine": 15,
+        "startChar": 13,
+        "endLine": 15,
+        "endChar": 32
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "442563bd_f044a26d",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T10:42:48Z",
+      "side": 1,
+      "message": "I think that the previous version of this file used to support initializing the module\u0027s config data from either an XML file or from JSON file. I don\u0027t know if it was used in netconf-cli, but it\u0027s definitely used in cla-sysrepo -- and that script in cla-sysrepo also supports enabling YANG features.\n\nI would like to have the exact same setup in cla-sysrepo and here; can you implement that, please? Here\u0027s how the interface looks like in cla-sysrepo:\n\n  sysrepo_fixture_env(sdn-roadm-line-blank\n    YANG ${CMAKE_CURRENT_SOURCE_DIR}/yang/czechlight-roadm-device.yang FEATURE hw-line-9\n    YANG ${CMAKE_CURRENT_SOURCE_DIR}/yang/iana-hardware@2018-03-13.yang\n    YANG ${CMAKE_CURRENT_SOURCE_DIR}/yang/ietf-hardware-state@2018-03-13.yang FEATURE hardware-sensor\n  )",
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea8da314_4ab0a5ce",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T10:42:48Z",
+      "side": 1,
+      "message": "Can you add comments to these, please?",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 36
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69b2b331_4aa84b9f",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T10:42:48Z",
+      "side": 1,
+      "message": "Please check these variables -- at least verify if they\u0027re below CMAKE_CURRENT_BINARY_DIR. I don\u0027t want a typo anywhere to cause a rm -rf on my $HOME.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 38
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97f105f7_fbf37d55",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T10:42:48Z",
+      "side": 1,
+      "message": "Is there a bugreport for this? Please add a link.",
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
