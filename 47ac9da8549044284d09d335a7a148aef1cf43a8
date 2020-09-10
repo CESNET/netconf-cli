@@ -1,0 +1,232 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "72d3ec0f_fdfcbd3b",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 29
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "I think that the other libraries have been bumped, too. Also, please update the README file.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 88
+      },
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ffe7e8b_7ef9ab5c",
+        "filename": "ci/build.sh",
+        "patchSetId": 29
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "Please add a comment saying that more details are in the dependencies repo. Or perhaps even better, provide the suppresions file from CzechLight/dependencies, and just use it here.",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ce788c3_5cf84ce4",
+        "filename": "src/datastore_access.hpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "nit: this would have been better done in a separate patch, but don\u0027t bother at this point",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "94d4f7c6_32bcb2e7",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "Magic number? If it\u0027s a timeout, please introduce an enum for that.",
+      "range": {
+        "startLine": 265,
+        "startChar": 33,
+        "endLine": 265,
+        "endChar": 37
+      },
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84fc6566_8d6b1118",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "nah, I\u0027ll send a patch which changes this to a bool upstream...",
+      "range": {
+        "startLine": 265,
+        "startChar": 39,
+        "endLine": 265,
+        "endChar": 40
+      },
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "756ddd9e_f81ac197",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "Looks like you will be able to merge executeRpc and executeAction into a single execute() in a followup patch, right?",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e64f0a3_67d09570",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "magic numbers, please change this",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84e9e631_234c4c6b",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "That comment above needs updating, at least for a changed method name. Is the comment still technically valid? Are these exceptions still mostly non-specific?",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c538d08_d7f964ba",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "I don\u0027t understand this, so let\u0027s get it solved before it gets merged",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e67031ef_c8c19d56",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "Just wondering -- any particular reason for introducing two classes here? No real nade for changing back, but I wonder if it\u0027s solving some problem.",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1146694_7b722e28",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "this can be removed, right?",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b77a2d1a_aa6d4d83",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T09:52:47Z",
+      "side": 1,
+      "message": "magic number",
+      "range": {
+        "startLine": 74,
+        "startChar": 60,
+        "endLine": 74,
+        "endChar": 66
+      },
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
