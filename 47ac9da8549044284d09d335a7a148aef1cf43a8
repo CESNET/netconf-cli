@@ -84,6 +84,24 @@
     },
     {
       "key": {
+        "uuid": "d33bca3e_a852d84c",
+        "filename": "ci/build.sh",
+        "patchSetId": 29
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T22:08:01Z",
+      "side": 1,
+      "message": "In CzechLight/dependencies, copy the tsan.supp into ~/target, and use that file from this repo.",
+      "parentUuid": "5be5cbc3_f0bd51ab",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1ce788c3_5cf84ce4",
         "filename": "src/datastore_access.hpp",
         "patchSetId": 29
@@ -346,6 +364,24 @@
     },
     {
       "key": {
+        "uuid": "44164c6b_1c0bdce0",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T22:08:01Z",
+      "side": 1,
+      "message": "OK to leave as-is",
+      "parentUuid": "b3bd735b_8861c112",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f1146694_7b722e28",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 29
@@ -425,6 +461,30 @@
       "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6eabcdb8_167f7a54",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-10T22:08:01Z",
+      "side": 1,
+      "message": "Do you really need a 100s timeout here?",
+      "parentUuid": "4927a6a9_b746d05b",
+      "range": {
+        "startLine": 74,
+        "startChar": 60,
+        "endLine": 74,
+        "endChar": 66
+      },
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
