@@ -293,6 +293,24 @@
     },
     {
       "key": {
+        "uuid": "79ee8f5e_e404abba",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T13:31:19Z",
+      "side": 1,
+      "message": "For some reason these aren\u0027t getting through to my callback, I\u0027m either using wrong xpath or it\u0027s a bug in sysrepo.\n\nBut, this callback system still uses the old sr_val system, maybe I can just change this to libyang style and maybe the problem gets solved? I changed some other stuff to use libyang instead of sr_val\n\nSo, I\u0027ll either keep using sr_val here, and try to make a reproducer and post an issue on gh, or change it to libyang style (and then MAYBE post an issue, if everything works correctly)\n\nI\u0027m inclined to scratch sr_val completely, from everywhere (possibly in another change?) and use libyang",
+      "parentUuid": "3c538d08_d7f964ba",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e67031ef_c8c19d56",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 29
