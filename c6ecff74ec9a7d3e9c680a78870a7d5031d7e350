@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "eb336b1d_45688175",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T16:22:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fc22ff3_f3ab0c8e",
+      "range": {
+        "startLine": 105,
+        "startChar": 70,
+        "endLine": 105,
+        "endChar": 88
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7aa40c4d_56f74c91",
         "filename": "CMakeLists.txt",
         "patchSetId": 4
@@ -45,6 +69,30 @@
       "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be4faff5_edf1d981",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T16:22:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aa40c4d_56f74c91",
+      "range": {
+        "startLine": 112,
+        "startChar": 87,
+        "endLine": 112,
+        "endChar": 105
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "db6d05a3_8cd4dd06",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T16:22:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ef5229f_79303e0e",
+      "range": {
+        "startLine": 118,
+        "startChar": 67,
+        "endLine": 118,
+        "endChar": 85
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "613a1999_ceae94a7",
         "filename": "CMakeLists.txt",
         "patchSetId": 4
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "40b3b0af_684ed1d1",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T16:22:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "613a1999_ceae94a7",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 11
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d4cd23a5_561605b2",
         "filename": "tests/cleanup_datastore.bash",
         "patchSetId": 4
@@ -105,6 +201,30 @@
       "writtenOn": "2020-09-10T10:42:48Z",
       "side": 1,
       "message": "Please add an early hard-fail to this script which checks for \"reasonable content\" in this variable. Let\u0027s try to limit the impact of possible screwups on a developer\u0027s system.",
+      "range": {
+        "startLine": 15,
+        "startChar": 13,
+        "endLine": 15,
+        "endChar": 32
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8baf28e1_38848640",
+        "filename": "tests/cleanup_datastore.bash",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T16:22:17Z",
+      "side": 1,
+      "message": "What do you suggest to compare against?",
+      "parentUuid": "d4cd23a5_561605b2",
       "range": {
         "startLine": 15,
         "startChar": 13,
@@ -134,6 +254,24 @@
     },
     {
       "key": {
+        "uuid": "6b95b18b_ee6b1f46",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T16:22:17Z",
+      "side": 1,
+      "message": "Sure, I can do that, but I\u0027d rather just leave this as it is (cause I don\u0027t need features and config data (yet) in netconf-cli), then modify it when I get to cla-sysrepo and then maybe backport the changes back here if needed/wanted. The reason is that if I were to add those features right now, I wouldn\u0027t have anything to test against. OR, I could add something to test against in another (netconf-cli) change.",
+      "parentUuid": "442563bd_f044a26d",
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ea8da314_4ab0a5ce",
         "filename": "tests/init_datastore.bash.in",
         "patchSetId": 4
@@ -154,6 +292,30 @@
       "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fbf8ac5_33f5deb9",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T16:22:17Z",
+      "side": 1,
+      "message": "The first variable is not needed because fakeroot is not used anymore. Done",
+      "parentUuid": "ea8da314_4ab0a5ce",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 36
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -180,6 +342,30 @@
     },
     {
       "key": {
+        "uuid": "83f89198_23126a95",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T16:22:17Z",
+      "side": 1,
+      "message": "I added a check",
+      "parentUuid": "69b2b331_4aa84b9f",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 38
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "97f105f7_fbf37d55",
         "filename": "tests/init_datastore.bash.in",
         "patchSetId": 4
@@ -191,6 +377,24 @@
       "writtenOn": "2020-09-10T10:42:48Z",
       "side": 1,
       "message": "Is there a bugreport for this? Please add a link.",
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07f0bb18_21689891",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T16:22:17Z",
+      "side": 1,
+      "message": "I made a PR to sysrepo fixing the bug",
+      "parentUuid": "97f105f7_fbf37d55",
       "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
