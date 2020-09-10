@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7853fa41_461f470a",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 29
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T13:25:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72d3ec0f_fdfcbd3b",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 88
+      },
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ffe7e8b_7ef9ab5c",
         "filename": "ci/build.sh",
         "patchSetId": 29
@@ -36,6 +60,24 @@
       "writtenOn": "2020-09-10T09:52:47Z",
       "side": 1,
       "message": "Please add a comment saying that more details are in the dependencies repo. Or perhaps even better, provide the suppresions file from CzechLight/dependencies, and just use it here.",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5be5cbc3_f0bd51ab",
+        "filename": "ci/build.sh",
+        "patchSetId": 29
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T13:25:59Z",
+      "side": 1,
+      "message": "What do you mean by \"provide the suppresions file from CzechLight/dependencies\"?\nSome info is in the commit message, I guess I could just point that to the dependencies message? But it doesn\u0027t matter tbh",
+      "parentUuid": "1ffe7e8b_7ef9ab5c",
       "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -105,6 +147,30 @@
     },
     {
       "key": {
+        "uuid": "cc6b08e3_6f85aebb",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T13:25:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94d4f7c6_32bcb2e7",
+      "range": {
+        "startLine": 265,
+        "startChar": 33,
+        "endLine": 265,
+        "endChar": 37
+      },
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "756ddd9e_f81ac197",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 29
@@ -119,6 +185,24 @@
       "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e5e6242_c98caaa5",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T13:25:59Z",
+      "side": 1,
+      "message": "Yes. I added a TODO",
+      "parentUuid": "756ddd9e_f81ac197",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -139,6 +223,24 @@
     },
     {
       "key": {
+        "uuid": "1ea98233_6c50b53c",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T13:25:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e64f0a3_67d09570",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "84e9e631_234c4c6b",
         "filename": "src/sysrepo_access.cpp",
         "patchSetId": 29
@@ -150,6 +252,24 @@
       "writtenOn": "2020-09-10T09:52:47Z",
       "side": 1,
       "message": "That comment above needs updating, at least for a changed method name. Is the comment still technically valid? Are these exceptions still mostly non-specific?",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "82428ae1_7f628a19",
+        "filename": "src/sysrepo_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T13:25:59Z",
+      "side": 1,
+      "message": "Tbh honest I have no idea... I\u0027l try running sysrepo-cli and testing. But I\u0027m quite sure not much has changed.",
+      "parentUuid": "84e9e631_234c4c6b",
       "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -190,6 +310,24 @@
     },
     {
       "key": {
+        "uuid": "b3bd735b_8861c112",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T13:25:59Z",
+      "side": 1,
+      "message": "No real reason... This was written in the first day of the migration. I guess maybe just laziness? I didn\u0027t feel like adding merging the two previous methods. Idk. I can change it if you want to.",
+      "parentUuid": "e67031ef_c8c19d56",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f1146694_7b722e28",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 29
@@ -204,6 +342,24 @@
       "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a3dbbed_fe3021bc",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T13:25:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1146694_7b722e28",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -227,6 +383,30 @@
       "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4927a6a9_b746d05b",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-10T13:25:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b77a2d1a_aa6d4d83",
+      "range": {
+        "startLine": 74,
+        "startChar": 60,
+        "endLine": 74,
+        "endChar": 66
+      },
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
