@@ -237,6 +237,30 @@
     },
     {
       "key": {
+        "uuid": "de5d9808_09691e24",
+        "filename": "tests/cleanup_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-11T09:55:57Z",
+      "side": 1,
+      "message": "The SYSREPO_REPOSITORY_PATH checking looks OK now. For the SYSREPO_SHM_PREFIX var, let\u0027s at least check for non-empty content. The checks in the other file looks good to me.",
+      "parentUuid": "8baf28e1_38848640",
+      "range": {
+        "startLine": 15,
+        "startChar": 13,
+        "endLine": 15,
+        "endChar": 32
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "442563bd_f044a26d",
         "filename": "tests/init_datastore.bash.in",
         "patchSetId": 4
@@ -269,6 +293,24 @@
       "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a86ca60a_f191ddae",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-11T09:55:57Z",
+      "side": 1,
+      "message": "OK, let\u0027s defer this until later. Just remember to look at the old code when you get around to that :).",
+      "parentUuid": "6b95b18b_ee6b1f46",
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -307,6 +349,30 @@
       "side": 1,
       "message": "The first variable is not needed because fakeroot is not used anymore. Done",
       "parentUuid": "ea8da314_4ab0a5ce",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 36
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "207a0389_391e5560",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-11T09:55:57Z",
+      "side": 1,
+      "message": "ack, I agree that it\u0027s reasonable to force-halt here upon UB",
+      "parentUuid": "0fbf8ac5_33f5deb9",
       "range": {
         "startLine": 2,
         "startChar": 0,
@@ -363,6 +429,30 @@
       "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1d66bcf_1e171d34",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-09-11T09:55:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83f89198_23126a95",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 38
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
