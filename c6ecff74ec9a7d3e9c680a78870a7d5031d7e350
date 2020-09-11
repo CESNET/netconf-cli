@@ -237,6 +237,30 @@
     },
     {
       "key": {
+        "uuid": "3435a9f8_f7448f47",
+        "filename": "tests/cleanup_datastore.bash",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-11T12:02:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8baf28e1_38848640",
+      "range": {
+        "startLine": 15,
+        "startChar": 13,
+        "endLine": 15,
+        "endChar": 32
+      },
+      "revId": "c6ecff74ec9a7d3e9c680a78870a7d5031d7e350",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "de5d9808_09691e24",
         "filename": "tests/cleanup_datastore.bash.in",
         "patchSetId": 4
