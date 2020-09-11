@@ -102,6 +102,24 @@
     },
     {
       "key": {
+        "uuid": "e6ceecbe_433f6dba",
+        "filename": "ci/build.sh",
+        "patchSetId": 29
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-11T08:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d33bca3e_a852d84c",
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ce788c3_5cf84ce4",
         "filename": "src/datastore_access.hpp",
         "patchSetId": 29
@@ -485,6 +503,30 @@
       "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6ec86c4_8452917d",
+        "filename": "tests/mock/sysrepo_subscription.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-11T08:35:39Z",
+      "side": 1,
+      "message": "No 😁",
+      "parentUuid": "6eabcdb8_167f7a54",
+      "range": {
+        "startLine": 74,
+        "startChar": 60,
+        "endLine": 74,
+        "endChar": 66
+      },
+      "revId": "47ac9da8549044284d09d335a7a148aef1cf43a8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
