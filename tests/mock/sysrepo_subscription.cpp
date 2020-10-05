@@ -6,6 +6,7 @@
  *
 */
 
+#include <experimental/iterator>
 #include <sysrepo-cpp/Session.hpp>
 #include "sysrepo_subscription.hpp"
 
@@ -92,6 +93,14 @@ struct leafDataToSysrepoVal {
     void operator()(const std::string& what)
     {
         v->set(xpath.c_str(), what.c_str());
+    }
+
+    void operator()(const bits_& what)
+    {
+        std::stringstream ss;
+        std::copy(what.m_bits.begin(), what.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
+        v->set(xpath.c_str(), ss.str().c_str());
+
     }
 
     template <typename Type>
