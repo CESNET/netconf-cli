@@ -294,4 +294,13 @@ module example-schema {
             type int32;
         }
     }
+
+    leaf flags {
+        type bits {
+            bit carry;
+            bit zero;
+            bit sign;
+            bit parity;
+        }
+    }
 }

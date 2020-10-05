@@ -6,9 +6,11 @@
  *
 */
 
+#include <experimental/iterator>
 #include <libyang/Tree_Data.hpp>
 #include <libyang/Tree_Schema.hpp>
 #include <sysrepo-cpp/Session.hpp>
+#include <sstream>
 #include "libyang_utils.hpp"
 #include "sysrepo_access.hpp"
 #include "utils.hpp"
@@ -57,6 +59,18 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
         return special_{SpecialValue::PresenceContainer};
     case SR_LIST_T:
         return special_{SpecialValue::List};
+    case SR_BITS_T:
+    {
+        bits_ res;
+        std::istringstream ss(value->data()->get_bits());
+        while (!ss.eof()) {
+            std::string bit;
+            ss >> bit;
+            res.m_bits.insert(bit);
+        }
+        return res;
+
+    }
     default: // TODO: implement all types
         return value->val_to_string();
     }
@@ -92,6 +106,13 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
     sysrepo::S_Val operator()(const std::string& value) const
     {
         return std::make_shared<sysrepo::Val>(value.c_str());
+    }
+
+    sysrepo::S_Val operator()(const bits_& value) const
+    {
+        std::stringstream ss;
+        std::copy(value.m_bits.begin(), value.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
+        return std::make_shared<sysrepo::Val>(ss.str().c_str(), SR_BITS_T);
     }
 
     template <typename T>
@@ -142,6 +163,13 @@ struct updateSrValFromValue : boost::static_visitor<void> {
         default:
             throw std::runtime_error("Tried constructing S_Val from a " + specialValueToString(value));
         }
+    }
+
+    auto operator()(const bits_& value) const
+    {
+        std::stringstream ss;
+        std::copy(value.m_bits.begin(), value.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
+        v->set(xpath.c_str(), ss.str().c_str(), SR_BITS_T);
     }
 
     void operator()(const std::string& value) const

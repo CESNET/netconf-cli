@@ -42,7 +42,7 @@ std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& tree)
 {
     s << "DatastoreAccess::Tree {\n";
     for (const auto& [xpath, value] : tree) {
-        s << "    {" << xpath << ", " << leafDataToString(value) << "},\n";
+        s << "    {" << xpath << ", " << boost::core::demangle(value.type().name()) << "{" << leafDataToString(value) << "}},\n";
     }
     s << "}\n";
     return s;
