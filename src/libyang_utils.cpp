@@ -36,6 +36,15 @@ leaf_data_ leafValueFromValue(const libyang::S_Value& value, LY_DATA_TYPE type)
         return binary_{value->binary()};
     case LY_TYPE_EMPTY:
         return empty_{};
+    case LY_TYPE_BITS:
+    {
+        auto bits = value->bit();
+        std::vector<libyang::S_Type_Bit> filterNull;
+        std::copy_if(bits.begin(), bits.end(), std::back_inserter(filterNull), [] (auto bit) { return bit; });
+        bits_ res;
+        std::transform(filterNull.begin(), filterNull.end(), std::inserter(res.m_bits, res.m_bits.end()), [] (const auto& bit) { return bit->name(); });
+        return bits_{res};
+    }
     case LY_TYPE_DEC64:
     {
         auto v = value->dec64();

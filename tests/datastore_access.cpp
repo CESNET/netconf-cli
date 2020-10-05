@@ -496,6 +496,17 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:dummy") == expected);
     }
 
+    SECTION("bits")
+    {
+        datastore.setLeaf("/example-schema:flags", bits_{{"sign", "carry"}});
+        REQUIRE_CALL(mock, write("/example-schema:flags", std::nullopt, "carry sign"s));
+        datastore.commitChanges();
+        DatastoreAccess::Tree expected {
+            {"/example-schema:flags", bits_{{"carry", "sign"}}},
+        };
+        REQUIRE(datastore.getItems("/example-schema:flags") == expected);
+    }
+
 #if not defined(yang_BACKEND)
     SECTION("operational data")
     {

@@ -196,6 +196,13 @@ struct leafDataToStringVisitor : boost::static_visitor<std::string> {
         }
     }
 
+    std::string operator()(const bits_& data) const
+    {
+        std::stringstream ss;
+        std::copy(data.m_bits.begin(), data.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
+        return ss.str();
+    }
+
     template <typename T>
     std::string operator()(const T& data) const
     {

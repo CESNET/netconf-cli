@@ -6,6 +6,7 @@
  *
 */
 
+#include <experimental/iterator>
 #include <libyang/Tree_Data.hpp>
 #include <libyang/Tree_Schema.hpp>
 #include <sysrepo-cpp/Session.hpp>
@@ -96,6 +97,13 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
         return std::make_shared<sysrepo::Val>(value.c_str());
     }
 
+    sysrepo::S_Val operator()(const bits_& value) const
+    {
+        std::stringstream ss;
+        std::copy(value.m_bits.begin(), value.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
+        return std::make_shared<sysrepo::Val>(ss.str().c_str(), SR_BITS_T);
+    }
+
     template <typename T>
     sysrepo::S_Val operator()(const T& value) const
     {
@@ -144,6 +152,13 @@ struct updateSrValFromValue : boost::static_visitor<void> {
         default:
             throw std::runtime_error("Tried constructing S_Val from a " + specialValueToString(value));
         }
+    }
+
+    auto operator()(const bits_& value) const
+    {
+        std::stringstream ss;
+        std::copy(value.m_bits.begin(), value.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
+        v->set(xpath.c_str(), ss.str().c_str(), SR_BITS_T);
     }
 
     void operator()(const std::string& value) const
