@@ -32,6 +32,12 @@ struct empty_ {
     bool operator<(const empty_) const;
 };
 
+struct bits_ {
+    bool operator==(const bits_&) const;
+    bool operator<(const bits_&) const;
+    std::set<std::string> m_bits;
+};
+
 struct module_ {
     bool operator==(const module_& b) const;
     bool operator<(const module_& b) const;
@@ -66,6 +72,7 @@ std::string specialValueToString(const special_& value);
 using leaf_data_ = boost::variant<enum_,
                                   binary_,
                                   empty_,
+                                  bits_,
                                   identityRef_,
                                   special_,
                                   double,
