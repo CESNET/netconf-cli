@@ -35,6 +35,16 @@ binary_::binary_(const std::string& value)
 
 empty_::empty_() = default;
 
+bool bits_::operator==(const bits_& other) const
+{
+    return this->m_bits == other.m_bits;
+}
+
+bool bits_::operator<(const bits_& other) const
+{
+    return this->m_bits < other.m_bits;
+}
+
 bool module_::operator<(const module_& b) const
 {
     return this->m_name < b.m_name;
