@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1b2c47ec_5be6ba63",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-10-19T16:44:27Z",
+      "side": 1,
+      "message": "This one can remain PRIVATE, right?",
+      "range": {
+        "startLine": 112,
+        "startChar": 87,
+        "endLine": 112,
+        "endChar": 109
+      },
+      "revId": "3ea893ecf1ea9e8df1b555dde1010158a7c29642",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
