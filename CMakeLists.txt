@@ -109,13 +109,13 @@ add_library(netconfaccess STATIC
     src/netconf_access.cpp
     )
 
-target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PRIVATE PkgConfig::LIBNETCONF2)
+target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PkgConfig::LIBNETCONF2 PRIVATE PkgConfig::LIBYANG)
 
 add_library(yangaccess STATIC
     src/yang_access.cpp
     )
 
-target_link_libraries(yangaccess PUBLIC datastoreaccess yangschema)
+target_link_libraries(yangaccess PUBLIC datastoreaccess yangschema PRIVATE PkgConfig::LIBYANG)
 
 add_library(yangschema STATIC
     src/yang_schema.cpp
@@ -282,7 +282,7 @@ if(BUILD_TESTING)
         else()
             message(FATAL_ERROR "Unknown backend ${backend}")
         endif()
-        target_link_libraries(${TESTNAME} yangschema sysreposubscription proxydatastore)
+        target_link_libraries(${TESTNAME} yangschema sysreposubscription proxydatastore PkgConfig::SYSREPO)
 
         target_compile_definitions(${TESTNAME} PRIVATE ${backend}_BACKEND)
     endfunction()
