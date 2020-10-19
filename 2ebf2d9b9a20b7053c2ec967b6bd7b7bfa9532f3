@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d96eb256_67971a4a",
+        "filename": "tests/pretty_printers.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-10-19T16:40:56Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "2ebf2d9b9a20b7053c2ec967b6bd7b7bfa9532f3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
