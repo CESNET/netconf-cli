@@ -104,4 +104,8 @@ bool Empty::operator==(const Empty&) const
 {
     return true;
 }
+bool Bits::operator==(const Bits& other) const
+{
+    return this->m_allowedValues == other.m_allowedValues;
+}
 }
