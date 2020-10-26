@@ -65,6 +65,10 @@ struct IdentityRef {
     bool operator==(const IdentityRef& other) const;
     std::set<identityRef_> m_allowedValues;
 };
+struct Bits {
+    bool operator==(const Bits& other) const;
+    std::set<std::string> m_allowedValues;
+};
 struct LeafRef;
 struct Union;
 using LeafDataType = std::variant<
@@ -83,6 +87,7 @@ using LeafDataType = std::variant<
     yang::Binary,
     yang::Empty,
     yang::IdentityRef,
+    yang::Bits,
     yang::LeafRef,
     yang::Union
 >;

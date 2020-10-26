@@ -249,6 +249,15 @@ yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) con
         case LY_TYPE_LEAFREF:
             resType.emplace<yang::LeafRef>(::leafrefPath(type), std::make_unique<yang::TypeInfo>(leafType(::leafrefPath(type))));
             break;
+        case LY_TYPE_BITS:
+            {
+                auto resBits = yang::Bits{};
+                for (const auto& bit : type->info()->bits()->bit()) {
+                    resBits.m_allowedValues.emplace(bit->name());
+                }
+                resType.emplace<yang::Bits>(std::move(resBits));
+                break;
+            }
         case LY_TYPE_UNION:
             {
                 auto resUnion = yang::Union{};

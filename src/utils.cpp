@@ -135,6 +135,14 @@ struct impl_leafDataTypeToString {
         });
         return ss.str();
     }
+    std::string operator()(const yang::Bits& type)
+    {
+        std::ostringstream ss;
+        ss << "bits {";
+        std::copy(type.m_allowedValues.begin(), type.m_allowedValues.end(), std::experimental::make_ostream_joiner(ss, ", "));
+        ss << "}";
+        return ss.str();
+    }
 };
 
 std::string leafDataTypeToString(const yang::LeafDataType& type)

@@ -154,6 +154,31 @@ struct impl_LeafData {
     {
         return std::visit(*this, leafRef.m_targetType->m_type);
     }
+    bool operator()(const yang::Bits& bits) const
+    {
+        parserContext.m_suggestions.clear();
+        x3::symbols<std::string> parser;
+        for (const auto& bit : bits.m_allowedValues) {
+            parser.add(bit, bit);
+            parserContext.m_suggestions.insert(Completion{bit});
+        }
+
+        std::vector<std::string> bitsRes;
+
+        do {
+            std::string bit;
+            auto pass = parser.parse(first, last, ctx, rctx, bit);
+            if (pass) {
+                bitsRes.push_back(bit);
+                parser.remove(bit);
+                parserContext.m_suggestions.erase(Completion{bit});
+            }
+        } while (space_separator.parse(first, last, ctx, rctx, x3::unused));
+
+        attr = bits_{bitsRes};
+
+        return true;
+    }
     bool operator()(const yang::Union& unionInfo) const
     {
         return std::any_of(unionInfo.m_unionTypes.begin(), unionInfo.m_unionTypes.end(), [this](const auto& type) {

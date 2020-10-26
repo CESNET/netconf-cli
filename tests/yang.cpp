@@ -429,6 +429,14 @@ module example-schema {
     leaf-list addresses {
         type string;
     }
+
+    leaf flagBits {
+        type bits {
+            bit carry;
+            bit sign;
+            bit overflow;
+        }
+    }
 })";
 
 TEST_CASE("yangschema")
@@ -720,6 +728,13 @@ TEST_CASE("yangschema")
                 type.emplace<yang::String>();
             }
 
+            SECTION("flagBits")
+            {
+                node.first = "example-schema";
+                node.second = "flagBits";
+                type = yang::Bits{{"carry", "sign", "overflow"}};
+            }
+
 
             REQUIRE(ys.leafType(path, node) == type);
         }
@@ -764,7 +779,8 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "systemStats"},
                         {"example-schema"s, "dummyLeaf"},
                         {"example-schema"s, "addresses"},
-                        {"example-schema"s, "subLeaf"}};
+                        {"example-schema"s, "subLeaf"},
+                        {"example-schema"s, "flagBits"}};
                 }
 
                 SECTION("example-schema:a")
@@ -819,6 +835,7 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "ethernet"},
                         {"example-schema"s, "foodDrinkIdentLeaf"},
                         {"example-schema"s, "foodIdentLeaf"},
+                        {"example-schema"s, "flagBits"},
                         {"example-schema"s, "interrupt"},
                         {"example-schema"s, "leafBool"},
                         {"example-schema"s, "leafDecimal"},
@@ -875,6 +892,8 @@ TEST_CASE("yangschema")
                         {boost::none, "/example-schema:direction"},
                         {boost::none, "/example-schema:duration"},
                         {boost::none, "/example-schema:dummyLeaf"},
+                        {boost::none, "/example-schema:flagBits"},
+                        {boost::none, "/example-schema:foodDrinkIdentLeaf"},
                         {boost::none, "/example-schema:foodDrinkIdentLeaf"},
                         {boost::none, "/example-schema:foodIdentLeaf"},
                         {boost::none, "/example-schema:interface/caseEthernet/ethernet"},

@@ -71,6 +71,8 @@ TEST_CASE("leaf editing")
     schema->addLeaf("/", "mod:dummy", yang::Empty{});
     schema->addLeaf("/", "mod:readonly", yang::Int32{}, yang::AccessType::ReadOnly);
 
+    schema->addLeaf("/", "mod:flags", yang::Bits{{"carry", "sign"}});
+
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -457,6 +459,33 @@ TEST_CASE("leaf editing")
                 expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("dummy"));
                 expected.m_data = empty_{};
             }
+
+            SECTION("bits")
+            {
+                input = "set mod:flags ";
+                decltype(bits_::m_bits) bits;
+                SECTION("<nothing>") {
+                    bits = {};
+                }
+                SECTION("carry") {
+                    input += "carry";
+                    bits = {"carry"};
+                }
+                SECTION("sign") {
+                    input += "sign";
+                    bits = {"sign"};
+                }
+                SECTION("carry sign") {
+                    input += "carry sign";
+                    bits = {"carry", "sign"};
+                }
+                SECTION("sign carry") {
+                    input += "sign carry";
+                    bits = {"sign", "carry"};
+                }
+                expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("flags"));
+                expected.m_data = bits_{bits};
+            }
         }
 
         command_ command = parser.parseCommand(input, errorStream);
@@ -612,6 +641,16 @@ TEST_CASE("leaf editing")
         SECTION("setting readonly data")
         {
             input = "set mod:readonly 123";
+        }
+
+        SECTION("nonexistent bits")
+        {
+            input = "set mod:flags daw";
+        }
+
+        SECTION("same bit more than once")
+        {
+            input = "set mod:flags carry carry";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
