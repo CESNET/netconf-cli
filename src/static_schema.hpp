@@ -37,6 +37,9 @@ struct leaflist {
 struct rpc {
 };
 
+struct action {
+};
+
 struct module {
 };
 
@@ -46,7 +49,7 @@ enum class AccessType {
 };
 }
 
-using NodeType = std::variant<yang::container, yang::list, yang::leaf, yang::leaflist, yang::rpc>;
+using NodeType = std::variant<yang::container, yang::list, yang::leaf, yang::leaflist, yang::rpc, yang::action>;
 
 struct NodeInfo {
     NodeType m_nodeType;
@@ -87,6 +90,7 @@ public:
     void addLeafList(const std::string& location, const std::string& name, const yang::LeafDataType& type);
     void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
     void addRpc(const std::string& location, const std::string& name);
+    void addAction(const std::string& location, const std::string& name);
     void addModule(const std::string& name);
     void addIdentity(const std::optional<identityRef_>& base, const identityRef_& name);
 
