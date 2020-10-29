@@ -64,7 +64,7 @@ auto const delete_rule_def =
     delete_::name >> space_separator > (presenceContainerPath | listInstancePath | leafListElementPath | writableLeafPath);
 
 auto const get_def =
-    get_::name >> -(space_separator >> ((dataPathListEnd | dataPath) | (module >> "*")));
+    get_::name >> -(space_separator >> GetPath{});
 
 auto const set_def =
     set_::name >> space_separator > writableLeafPath > space_separator > leaf_data;

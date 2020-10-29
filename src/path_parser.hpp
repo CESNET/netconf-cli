@@ -454,6 +454,20 @@ auto const noRpcOrAction = [] (const Schema& schema, const std::string& path) {
     return nodeType != yang::NodeTypes::Rpc && nodeType != yang::NodeTypes::Action;
 };
 
+struct GetPath : x3::parser<GetPath> {
+    using attribute_type = decltype(get_::m_path)::value_type;
+    template <typename It, typename Ctx, typename RCtx, typename Attr>
+    static bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr)
+    {
+        const auto listEndGrammar = PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{noRpcOrAction};
+        const auto dataPathGrammar = PathParser<PathParserMode::DataPath, CompletionMode::Data>{noRpcOrAction};
+        const auto moduleGrammar = module >> "*";
+
+        const auto grammar = listEndGrammar | dataPathGrammar | moduleGrammar;
+        return grammar.parse(begin, end, ctx, rctx, attr);
+    }
+};
+
 auto const cdPath_def =
     PathParser<PathParserMode::DataPath, CompletionMode::Data>{noRpcOrAction};
 
