@@ -236,6 +236,8 @@ struct actionPath_class;
 
 struct cdPath_class;
 
+struct getPath_class;
+
 struct set_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)

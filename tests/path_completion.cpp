@@ -359,5 +359,12 @@ TEST_CASE("path_completion")
         expectedContextLength = 0;
     }
 
+    SECTION("rpc nodes not completed for the get command")
+    {
+        input = "get ";
+        expectedCompletions = {"example:addresses", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:readonly ", "example:twoKeyList", "second:amelie/"};
+        expectedContextLength = 0;
+    }
+
     REQUIRE(parser.completeCommand(input, errorStream) == (Completions{expectedCompletions, expectedContextLength}));
 }

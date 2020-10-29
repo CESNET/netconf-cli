@@ -15,6 +15,7 @@
 namespace x3 = boost::spirit::x3;
 
 x3::rule<cdPath_class, dataPath_> const cdPath = "cdPath";
+x3::rule<getPath_class, decltype(get_::m_path)> const getPath = "getPath";
 x3::rule<rpcPath_class, dataPath_> const rpcPath = "rpcPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
@@ -454,6 +455,11 @@ auto const noRpcOrAction = [] (const Schema& schema, const std::string& path) {
     return nodeType != yang::NodeTypes::Rpc && nodeType != yang::NodeTypes::Action;
 };
 
+auto const getPath_def =
+    PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{noRpcOrAction} |
+    PathParser<PathParserMode::DataPath, CompletionMode::Data>{noRpcOrAction} |
+    (module >> "*");
+
 auto const cdPath_def =
     PathParser<PathParserMode::DataPath, CompletionMode::Data>{noRpcOrAction};
 
@@ -480,6 +486,7 @@ BOOST_SPIRIT_DEFINE(keyValue)
 BOOST_SPIRIT_DEFINE(key_identifier)
 BOOST_SPIRIT_DEFINE(listSuffix)
 BOOST_SPIRIT_DEFINE(cdPath)
+BOOST_SPIRIT_DEFINE(getPath)
 BOOST_SPIRIT_DEFINE(presenceContainerPath)
 BOOST_SPIRIT_DEFINE(listInstancePath)
 BOOST_SPIRIT_DEFINE(leafListElementPath)
