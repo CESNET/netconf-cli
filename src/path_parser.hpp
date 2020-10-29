@@ -440,7 +440,7 @@ struct RpcActionPath : x3::parser<RpcActionPath> {
         }
 
         if (attr.m_nodes.empty()
-                || (!std::holds_alternative<actionNode_>(attr.m_nodes.back().m_suffix) && !std::holds_alternative<actionNode_>(attr.m_nodes.back().m_suffix))) {
+                || (!std::holds_alternative<rpcNode_>(attr.m_nodes.back().m_suffix) && !std::holds_alternative<actionNode_>(attr.m_nodes.back().m_suffix))) {
             auto& parserContext = x3::get<parser_context_tag>(ctx);
             parserContext.m_errorMsg = "This is not a path to an RPC/action.";
             return false;
