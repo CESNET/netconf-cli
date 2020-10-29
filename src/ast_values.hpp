@@ -9,7 +9,6 @@
 
 #include <boost/optional.hpp>
 #include <boost/variant.hpp>
-#include <set>
 
 struct enum_ {
     enum_();
@@ -36,7 +35,7 @@ struct empty_ {
 struct bits_ {
     bool operator==(const bits_&) const;
     bool operator<(const bits_&) const;
-    std::set<std::string> m_bits;
+    std::vector<std::string> m_bits;
 };
 
 struct module_ {

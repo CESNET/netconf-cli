@@ -68,7 +68,7 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
         while (!ss.eof()) {
             std::string bit;
             ss >> bit;
-            res.m_bits.insert(bit);
+            res.m_bits.push_back(bit);
         }
         return res;
 
