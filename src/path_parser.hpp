@@ -397,6 +397,9 @@ auto const filterConfigFalse = [] (const Schema& schema, const std::string& path
     return schema.isConfig(path);
 };
 
+// A WritableOps value is injected through the `x3::with` with this tag (see usage of the tag). It controls whether
+// `config: false` data can be set with the `set` command. This is used by yang-cli because that tool needs modeling of
+// the full datastore, including the "read-only" data.
 struct writableOps_tag;
 
 PathParser<PathParserMode::DataPath, CompletionMode::Data> const dataPathFilterConfigFalse{filterConfigFalse};
