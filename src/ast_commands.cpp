@@ -46,3 +46,8 @@ bool dump_::operator==(const dump_& other) const
 {
     return this->m_format == other.m_format;
 }
+
+bool prepare_::operator==(const prepare_& other) const
+{
+    return this->m_path == other.m_path;
+}
