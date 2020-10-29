@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1cead372_d35fd892",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-10-29T17:39:40Z",
+      "side": 1,
+      "message": "I would prefer something like:\n\n If added into the spirit context via blahblah::add\u003cwritableOps_tag\u003e(), disregard `config: false` statements. This is used by the yang-cli because that tool needs modeling of the full datastore, including the \"read-only\" data.",
+      "range": {
+        "startLine": 399,
+        "startChar": 0,
+        "endLine": 400,
+        "endChar": 43
+      },
+      "revId": "a1ca3451c80e7a4c49271a26cfaf689e36988490",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
