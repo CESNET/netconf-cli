@@ -396,6 +396,8 @@ auto const filterConfigFalse = [] (const Schema& schema, const std::string& path
     return schema.isConfig(path);
 };
 
+// This tag is used to store variable which specifies whether config: false data can be written to. This is useful in
+// yang-cli if you want to edit state data.
 struct writableOps_tag;
 
 PathParser<PathParserMode::DataPath, CompletionMode::Data> const dataPathFilterConfigFalse{filterConfigFalse};
