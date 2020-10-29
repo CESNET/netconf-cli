@@ -397,6 +397,8 @@ auto const filterConfigFalse = [] (const Schema& schema, const std::string& path
     return schema.isConfig(path);
 };
 
+// If added into the spirit context via blahblah::add<writableOps_tag>(), disregard `config: false` statements. This is
+// used by the yang-cli because that tool needs modeling of the full datastore, including the "read-only" data.
 struct writableOps_tag;
 
 PathParser<PathParserMode::DataPath, CompletionMode::Data> const dataPathFilterConfigFalse{filterConfigFalse};
