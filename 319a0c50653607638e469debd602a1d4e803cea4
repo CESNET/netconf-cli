@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4408051f_654f6d61",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-10-30T08:17:22Z",
+      "side": 1,
+      "message": "dude :), of course I have no idea how that thing is supposed to be activated, so please add an actual example here.",
+      "range": {
+        "startLine": 400,
+        "startChar": 40,
+        "endLine": 400,
+        "endChar": 48
+      },
+      "revId": "319a0c50653607638e469debd602a1d4e803cea4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
