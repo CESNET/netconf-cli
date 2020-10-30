@@ -238,6 +238,17 @@ std::unique_ptr<Session> Session::connectKbdInteractive(const std::string& host,
     return session;
 }
 
+std::unique_ptr<Session> Session::connectFd(const int inFd, const int outFd)
+{
+    impl::ClientInit::instance();
+
+    auto session = std::make_unique<Session>(nc_connect_inout(inFd, outFd, nullptr));
+    if (!session->m_session) {
+        throw std::runtime_error{"nc_connect_ssh failed"};
+    }
+    return session;
+}
+
 std::unique_ptr<Session> Session::connectSocket(const std::string& path)
 {
     impl::ClientInit::instance();
