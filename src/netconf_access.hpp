@@ -31,6 +31,7 @@ class NetconfAccess : public DatastoreAccess {
 public:
     NetconfAccess(const std::string& hostname, uint16_t port, const std::string& user, const std::string& pubKey, const std::string& privKey);
     NetconfAccess(const std::string& socketPath);
+    NetconfAccess(const int source, const int sink);
     NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session);
     ~NetconfAccess() override;
     [[nodiscard]] Tree getItems(const std::string& path) const override;

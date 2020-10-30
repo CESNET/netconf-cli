@@ -33,6 +33,12 @@ NetconfAccess::NetconfAccess(const std::string& hostname, uint16_t port, const s
 {
 }
 
+NetconfAccess::NetconfAccess(const int source, const int sink)
+    : m_session(libnetconf::client::Session::connectFd(source, sink))
+    , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
+{
+}
+
 NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session)
     : m_session(std::move(session))
     , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
