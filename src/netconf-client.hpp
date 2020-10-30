@@ -33,6 +33,7 @@ public:
     static std::unique_ptr<Session> connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath);
     static std::unique_ptr<Session> connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback);
     static std::unique_ptr<Session> connectSocket(const std::string& path);
+    static std::unique_ptr<Session> connectFd(const int source, const int sink);
     [[nodiscard]] std::vector<std::string_view> capabilities() const;
     std::shared_ptr<libyang::Data_Node> getConfig(const NC_DATASTORE datastore,
                                                   const std::optional<const std::string> filter = std::nullopt); // TODO: arguments...

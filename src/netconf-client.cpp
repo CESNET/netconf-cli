@@ -238,6 +238,17 @@ std::unique_ptr<Session> Session::connectKbdInteractive(const std::string& host,
     return session;
 }
 
+std::unique_ptr<Session> Session::connectFd(const int source, const int sink)
+{
+    impl::ClientInit::instance();
+
+    auto session = std::make_unique<Session>(nc_connect_inout(source, sink, nullptr));
+    if (!session->m_session) {
+        throw std::runtime_error{"nc_connect_inout failed"};
+    }
+    return session;
+}
+
 std::unique_ptr<Session> Session::connectSocket(const std::string& path)
 {
     impl::ClientInit::instance();
