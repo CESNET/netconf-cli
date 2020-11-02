@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "4ced178d_9c0f9334",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "I mean replxx\u0027s history, but this no longer applies anyway",
+      "parentUuid": "177ff24d_0a64b053",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6bbc84e8_54498402",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
@@ -175,6 +193,30 @@
       "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16a43179_d49b618e",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "handled by openssh now",
+      "parentUuid": "bdc3dd24_9593602d",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 39
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
@@ -483,6 +525,24 @@
     },
     {
       "key": {
+        "uuid": "1576649f_0e51da6e",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "not applicable anymore",
+      "parentUuid": "25866243_0792ee3c",
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "25812b4d_fd212065",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 14
@@ -527,6 +587,30 @@
       "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0c8bfd4_10475b45",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "not applicable anymore",
+      "parentUuid": "824ae801_05a8e2a4",
+      "range": {
+        "startLine": 355,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 5
+      },
+      "revId": "0bc1c6e477a70f45754a0f3dd23ef17d0cde70a7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }

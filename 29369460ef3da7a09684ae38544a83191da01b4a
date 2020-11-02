@@ -1,0 +1,215 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3676bae5_5f615eff",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "nit: this can be moved into the function body",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bfb81034_358fca5e",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "\"sshProcess\"?",
+      "range": {
+        "startLine": 61,
+        "startChar": 15,
+        "endLine": 61,
+        "endChar": 21
+      },
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "923a5eab_1f53d14a",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "It is not a hostname if it contains an optional user and port. \"target\", perhaps?",
+      "range": {
+        "startLine": 61,
+        "startChar": 41,
+        "endLine": 61,
+        "endChar": 49
+      },
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9bcadfb_0b4b17cb",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "that\u0027s a C++20-only feature AFAIK",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c13022c_332d0966",
+        "filename": "src/cli.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "Something to think about for a future patch -- the user might want to set one flag to say \"hey, please give me more debugging information\" no matter what the backend is. It might make sense to use that single `-v` flag to increase sysrpeo debugging, or to show NETCONF chat, etc. No action needed now, though.",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "23bba486_6be6c0ea",
+        "filename": "src/netconf-client.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "this is definitely not needed AFAICT because you\u0027re only using a forward for that",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8bca3227_9b736453",
+        "filename": "src/netconf-client.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "this won\u0027t be needed anymore (along with the forward above) now that you\u0027re using pipes",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ee59a98_bea936c3",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "consider not making this change, or make it in the previous commit",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 69
+      },
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05677894_eb846da2",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "remove this because it is not getting used",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 1
+      },
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fec5f70b_0afbe3d9",
+        "filename": "src/netconf_access.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "301846a1_8a7e4b91",
+        "filename": "src/netconf_access.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

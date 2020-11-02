@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "aa5db28e_759bb644",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "not applicable anymore",
+      "parentUuid": "57e83f76_ae586d16",
+      "range": {
+        "startLine": 75,
+        "startChar": 39,
+        "endLine": 76,
+        "endChar": 72
+      },
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "479c4aca_0c721037",
         "filename": "src/cli.cpp",
         "patchSetId": 4
@@ -340,6 +364,24 @@
       "revId": "879363302e07430ab03194a952bd13de4be21335",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "818965a3_8d4ea79e",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:33:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f6608c8_885f0a44",
+      "revId": "879363302e07430ab03194a952bd13de4be21335",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
