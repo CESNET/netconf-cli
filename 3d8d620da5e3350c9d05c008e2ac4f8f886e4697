@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b566ccf6_863e2ea3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 23
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T14:09:34Z",
+      "side": 1,
+      "message": "please at least mention why you chose to use a forked background process instead of going with libssh directly",
+      "revId": "3d8d620da5e3350c9d05c008e2ac4f8f886e4697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eca5624d_bd4ea237",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 23
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T14:09:34Z",
+      "side": 1,
+      "message": "The code does not appear to use \u003cthread\u003e directly, is that really needed? If yes, please add a comment (\"boost needs threads, see bugreport at XYZ for not making that happen automagically via cmake\")",
+      "range": {
+        "startLine": 173,
+        "startChar": 48,
+        "endLine": 173,
+        "endChar": 64
+      },
+      "revId": "3d8d620da5e3350c9d05c008e2ac4f8f886e4697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c140918b_35f9202d",
+        "filename": "src/cli.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T14:09:34Z",
+      "side": 1,
+      "message": "why not just:\n\n std::shared_ptr\u003cNetconfAccess\u003e;\n try {\n   datastore \u003d std::make_shared(...);\n } catch (...) {\n   std::cerr \u003c\u003c ...;\n   return 1;\n }\n\nThat\u0027s a bit less noise compared to that lambda, and that lambda doesn\u0027t save you from naming that return type twice anyway :]",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 5
+      },
+      "revId": "3d8d620da5e3350c9d05c008e2ac4f8f886e4697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aab24b76_898f3ed6",
+        "filename": "src/netconf-client.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T14:09:34Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 1
+      },
+      "revId": "3d8d620da5e3350c9d05c008e2ac4f8f886e4697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

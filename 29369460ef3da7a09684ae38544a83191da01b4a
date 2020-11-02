@@ -166,6 +166,24 @@
     },
     {
       "key": {
+        "uuid": "89918add_1209cbd5",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T14:09:34Z",
+      "side": 1,
+      "message": "I think it\u0027s commented out everywhere, e.g. https://gerrit.cesnet.cz/plugins/gitiles/CzechLight/cla-sysrepo/+/refs/heads/master/src/io/I2CStream.cpp#44",
+      "parentUuid": "ff89d790_4c95ad14",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5c13022c_332d0966",
         "filename": "src/cli.cpp",
         "patchSetId": 22
@@ -218,6 +236,24 @@
     },
     {
       "key": {
+        "uuid": "8a24aa06_fcf9ef6f",
+        "filename": "src/netconf-client.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T14:09:34Z",
+      "side": 1,
+      "message": "It\u0027s still here.",
+      "parentUuid": "25669438_4ff13845",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8bca3227_9b736453",
         "filename": "src/netconf-client.hpp",
         "patchSetId": 22
@@ -250,6 +286,24 @@
       "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "701187a2_91b39840",
+        "filename": "src/netconf-client.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T14:09:34Z",
+      "side": 1,
+      "message": "not fixed yet",
+      "parentUuid": "361a5e9f_88792fcf",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     },
     {
       "key": {
@@ -347,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "a85d2bb4_9dfec15d",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T14:09:34Z",
+      "side": 1,
+      "message": "still needs fixing",
+      "parentUuid": "1bff3908_527f7c36",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 1
+      },
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fec5f70b_0afbe3d9",
         "filename": "src/netconf_access.hpp",
         "patchSetId": 22
@@ -382,6 +460,24 @@
     },
     {
       "key": {
+        "uuid": "23e62034_0e7d0388",
+        "filename": "src/netconf_access.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T14:09:34Z",
+      "side": 1,
+      "message": "still needs fixing",
+      "parentUuid": "fa987578_2fe94f42",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "301846a1_8a7e4b91",
         "filename": "src/netconf_access.hpp",
         "patchSetId": 22
@@ -414,6 +510,24 @@
       "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c1040161_61e81f0f",
+        "filename": "src/netconf_access.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T14:09:34Z",
+      "side": 1,
+      "message": "still needs fixing",
+      "parentUuid": "53bb7312_8b2bff53",
+      "revId": "29369460ef3da7a09684ae38544a83191da01b4a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
