@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7f3e9a2d_0c08a616",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:32:45Z",
+      "side": 1,
+      "message": "you\u0027re renaming these arguments in a follow-up patch; consider either making that change here, or not making that change later on",
+      "revId": "86fb719d0d4d3cc04537de0cd07585dad650943b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f90db6d0_1db82858",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T11:32:45Z",
+      "side": 1,
+      "message": "It\u0027s `nc_connect_inout`",
+      "range": {
+        "startLine": 247,
+        "startChar": 34,
+        "endLine": 247,
+        "endChar": 48
+      },
+      "revId": "86fb719d0d4d3cc04537de0cd07585dad650943b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
