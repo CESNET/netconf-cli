@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e4063af1_278ad141",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-02T13:54:10Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "7f3e9a2d_0c08a616",
+      "revId": "86fb719d0d4d3cc04537de0cd07585dad650943b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f90db6d0_1db82858",
         "filename": "src/netconf-client.cpp",
         "patchSetId": 4
@@ -39,6 +57,30 @@
       "revId": "86fb719d0d4d3cc04537de0cd07585dad650943b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1b84170_36632a45",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-02T13:54:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f90db6d0_1db82858",
+      "range": {
+        "startLine": 247,
+        "startChar": 34,
+        "endLine": 247,
+        "endChar": 48
+      },
+      "revId": "86fb719d0d4d3cc04537de0cd07585dad650943b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
