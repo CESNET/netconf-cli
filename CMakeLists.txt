@@ -373,4 +373,5 @@ endif()
 
 install(TARGETS
     sysrepo-cli
+    yang-cli
     RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/)
