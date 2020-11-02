@@ -90,6 +90,23 @@
       "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "767cb119_bf648468",
+        "filename": "src/cli.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-02T21:24:05Z",
+      "side": 1,
+      "message": "I don\u0027t think this is providing any useful information when an error happens. With `-v`:\n\n \n$ netconf-cli -v root@10.0.254.235\n...\n/\u003e get\nlibyang[1]: Invalid position of the key \"ifName\" in a list \"if-name\".\nlibyang[0]: Too many instances of \"ifName\" in \"if-name\". (path: /czechlight-lldp:nbr-list/if-name[ifName\u003d\u0027eth0\u0027]/ifName)\n[ERR]: Failed to parse \u003cget\u003e reply.\nFailed to receive an RPC reply\n\nWithout `-v`:\n \n$ netconf-cli root@10.0.254.235\n...\n/\u003e get\nlibyang[1]: Invalid position of the key \"ifName\" in a list \"if-name\".\nlibyang[0]: Too many instances of \"ifName\" in \"if-name\". (path: /czechlight-lldp:nbr-list/if-name[ifName\u003d\u0027eth0\u0027]/ifName)\n[ERR]: Failed to parse \u003cget\u003e reply.\nFailed to receive an RPC reply\n\nAm I doing something wrong? Is the log handler being set?",
+      "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
