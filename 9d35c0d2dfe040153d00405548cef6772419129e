@@ -95,6 +95,24 @@
     },
     {
       "key": {
+        "uuid": "b59643f3_4c747b82",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-03T11:54:07Z",
+      "side": 1,
+      "message": "Either way, please write these tests (and be creative in trying to break the code). \"root@line-nfp\" still doesn\u0027t work.",
+      "parentUuid": "f3c72f8b_65349e0b",
+      "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0cd126c7_25ef6fad",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 27
@@ -130,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "8871020e_3cfcda90",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-03T11:54:07Z",
+      "side": 1,
+      "message": "The first part got fixed, the second one is hard to mask as you said during the call (the process \"started\", and then it probably crashed) -\u003e OK.",
+      "parentUuid": "597e0235_50d70d29",
+      "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c545e832_7ebd0fc8",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 27
@@ -162,6 +198,24 @@
       "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1781584d_b3ef34e0",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-03T11:54:07Z",
+      "side": 1,
+      "message": "FYI, I had to run `set follow-fork-mode child` in GDB. After that, `catch syscall execve` worked as expected.\n\nAnyway, it looks good now.",
+      "parentUuid": "87cd1386_b5a3b3bf",
+      "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
