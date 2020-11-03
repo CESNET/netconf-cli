@@ -42,6 +42,24 @@
     },
     {
       "key": {
+        "uuid": "76645b99_b9356ee3",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 27
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-03T01:02:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b1cc7fb_d50ff2ab",
+      "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "250b13ad_80baae41",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 27
@@ -53,6 +71,24 @@
       "writtenOn": "2020-11-02T20:36:22Z",
       "side": 1,
       "message": "Well, this will need some tests (sorry), because the hostname parsing is broken:\n\n $ ./netconf-cli root@line-nfp\n ssh: Could not resolve hostname line: Name or service not known",
+      "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3c72f8b_65349e0b",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-03T01:02:34Z",
+      "side": 1,
+      "message": "Or I might just get rid of that altogether. Or maybe I could just split by colon and use the left part for hostname and right part for port?",
+      "parentUuid": "250b13ad_80baae41",
       "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -76,6 +112,24 @@
     },
     {
       "key": {
+        "uuid": "597e0235_50d70d29",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-03T01:02:34Z",
+      "side": 1,
+      "message": "I don\u0027t know how to do this, I might go ask somewhere",
+      "parentUuid": "0cd126c7_25ef6fad",
+      "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c545e832_7ebd0fc8",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 27
@@ -87,6 +141,24 @@
       "writtenOn": "2020-11-02T20:36:22Z",
       "side": 1,
       "message": "Don\u0027t do this -- this constructor (eventually) calls system(3), which uses a shell, which means that it\u0027s open to shell injection. I know that this patch uses Spirit to parse usernames, and (I hope) you disallow \"|\" and \"\u003e\" in there (etc), and one could possibly argue that this is a trusted input because it\u0027s provided by the user, but just don\u0027t do that. Use that overload which accepts a list/vector/sequence/whatever of arguments, and use that for starting a process.\n\nYou do *not* need a shell, and you should not subject yourself to a whole can of possible attacks here.",
+      "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87cd1386_b5a3b3bf",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-03T01:02:34Z",
+      "side": 1,
+      "message": "I tried strace and it just does execve to ssh, no shell:\n\n $ strace --follow --trace\u003d%process  ./netconf-cli localhost:9999\n execve(\"./netconf-cli\", [\"./netconf-cli\", \"localhost:9999\"], 0x7fffbfba83d8 /* 79 \n vars */) \u003d 0\n clone(child_stack\u003dNULL, flags\u003dCLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, \n child_tidptr\u003d0x7fce201e2a50) \u003d 86714\n strace: Process 86714 attached\n [pid 86714] execve(\"/home/vk/bin/ssh\", [\"ssh\", \"localhost\", \"-p\", \"9999\", \"-s\", \n \"netconf\"], 0x7ffd00fae120 /* 79 vars */) \u003d 0\n\nI\u0027m not sure how it knows where to find `ssh`, so maybe it does use the shell for that? Idk.\nI\u0027ll use the overload anyway, becaue I like it more (it didn\u0027t work for me before for some reason)",
+      "parentUuid": "c545e832_7ebd0fc8",
       "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
@@ -107,6 +179,24 @@
       "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b1bece9_7833f75d",
+        "filename": "src/cli.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-03T01:02:34Z",
+      "side": 1,
+      "message": "The verbosity was getting reset in netconf-client.cpp",
+      "parentUuid": "767cb119_bf648468",
+      "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
