@@ -113,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "696692a0_1623ffdb",
+        "filename": "src/cli-netconf.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-04T09:25:24Z",
+      "side": 1,
+      "message": "I got rid of the parsing altogether, I just left a check for when the user doesn\u0027t supply a username",
+      "parentUuid": "b59643f3_4c747b82",
+      "revId": "9d35c0d2dfe040153d00405548cef6772419129e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0cd126c7_25ef6fad",
         "filename": "src/cli-netconf.cpp",
         "patchSetId": 27
