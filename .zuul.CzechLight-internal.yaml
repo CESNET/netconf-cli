@@ -1,9 +1,7 @@
 - project:
     check:
       jobs:
-        - noop
-        # FIXME: re-enable after https://gerrit.cesnet.cz/c/CzechLight/br2-external/+/3126
-        # - czechlight-clearfog:
-        #     required-projects:
-        #       - CzechLight/br2-external
-        #     requires: CzechLight-br2-build-clearfog
+        - czechlight-clearfog:
+            required-projects:
+              - CzechLight/br2-external
+            requires: CzechLight-br2-build-clearfog
