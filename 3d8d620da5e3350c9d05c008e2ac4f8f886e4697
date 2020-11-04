@@ -126,6 +126,30 @@
     },
     {
       "key": {
+        "uuid": "dbabf4cf_8a7d9b12",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 23
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-04T10:42:26Z",
+      "side": 1,
+      "message": "I added a link to discussion about the issue",
+      "parentUuid": "1dd4a4e4_f4d130d1",
+      "range": {
+        "startLine": 173,
+        "startChar": 48,
+        "endLine": 173,
+        "endChar": 64
+      },
+      "revId": "3d8d620da5e3350c9d05c008e2ac4f8f886e4697",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c140918b_35f9202d",
         "filename": "src/cli.cpp",
         "patchSetId": 23
