@@ -419,8 +419,8 @@ std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
         ListInstance instanceRes;
         for (const auto& key : keys) {
             auto vec = wantedList->find_path(key->name())->data();
-            auto leaf = libyang::Data_Node_Leaf_List{*(vec.begin())};
-            instanceRes.emplace(key->name(), leafValueFromValue(leaf.value(), leaf.leaf_type()->base()));
+            auto leaf = std::make_shared<libyang::Data_Node_Leaf_List>(*(vec.begin()));
+            instanceRes.emplace(key->name(), leafValueFromNode(leaf));
         }
         res.emplace_back(instanceRes);
     }

@@ -10,6 +10,11 @@
 #include "parser.hpp"
 #include "utils.hpp"
 namespace std {
+std::ostream& operator<<(std::ostream& s, const leaf_data_& value)
+{
+    s << "leaf_data_<"<< boost::core::demangle(value.type().name()) << ">{" << leafDataToString(value) << "}" << std::endl;
+    return s;
+}
 std::ostream& operator<<(std::ostream& s, const Completions& completion)
 {
     s << std::endl << "Completions {" << std::endl << "    m_completions: ";
