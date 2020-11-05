@@ -284,8 +284,8 @@ std::vector<ListInstance> YangAccess::listInstances(const std::string& path)
             if (child->schema()->nodetype() == LYS_LEAF) {
                 libyang::Schema_Node_Leaf leafSchema(child->schema());
                 if (leafSchema.is_key()) {
-                    libyang::Data_Node_Leaf_List leafData(child);
-                    instance.insert({leafSchema.name(), leafValueFromValue(leafData.value(), leafSchema.type()->base())});
+                    auto leafData = std::make_shared<libyang::Data_Node_Leaf_List>(child);
+                    instance.insert({leafSchema.name(), leafValueFromNode(leafData)});
                 }
             }
         }
