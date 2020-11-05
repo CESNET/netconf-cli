@@ -114,15 +114,15 @@ add_library(yangaccess STATIC
 
 target_link_libraries(yangaccess PUBLIC datastoreaccess yangschema PRIVATE PkgConfig::LIBYANG)
 
-add_library(libyangutils
+add_library(yangutils STATIC
     src/libyang_utils.cpp
     )
-target_link_libraries(libyangutils PUBLIC PkgConfig::LIBYANG)
+target_link_libraries(yangutils PUBLIC PkgConfig::LIBYANG)
 
 add_library(yangschema STATIC
     src/yang_schema.cpp
     )
-target_link_libraries(yangschema PUBLIC schemas utils libyangutils PRIVATE PkgConfig::LIBYANG)
+target_link_libraries(yangschema PUBLIC schemas utils yangutils PRIVATE PkgConfig::LIBYANG)
 
 add_library(parser STATIC
     src/parser.cpp
