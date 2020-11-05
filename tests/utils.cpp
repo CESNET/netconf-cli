@@ -9,6 +9,8 @@
 #include "trompeloeil_doctest.hpp"
 #include "completion.hpp"
 #include "leaf_data_helpers.hpp"
+#include "libyang_utils.hpp"
+#include "pretty_printers.hpp"
 #include "utils.hpp"
 
 TEST_CASE("utils")
@@ -101,4 +103,213 @@ TEST_CASE("utils")
 
     }
 
+}
+
+const auto schema = R"(
+module test-schema {
+    namespace "http://example.com/ayyyy";
+    prefix AHOJ;
+
+    leaf int8 {
+        type int8;
+    }
+    leaf int16 {
+        type int16;
+    }
+    leaf int32 {
+        type int32;
+    }
+    leaf int64 {
+        type int64;
+    }
+    leaf uint8 {
+        type uint8;
+    }
+    leaf uint16 {
+        type uint16;
+    }
+    leaf uint32 {
+        type uint32;
+    }
+    leaf uint64 {
+        type uint64;
+    }
+    leaf boolean {
+        type boolean;
+    }
+    leaf string {
+        type string;
+    }
+    leaf enum {
+        type enumeration {
+            enum A;
+            enum B;
+            enum C;
+        }
+    }
+    identity food;
+    identity apple {
+        base "food";
+    }
+    leaf identityRef {
+        type identityref {
+            base "food";
+        }
+    }
+    leaf binary {
+        type binary;
+    }
+    leaf empty {
+        type empty;
+    }
+    leaf bits {
+        type bits {
+            bit a;
+            bit b;
+            bit AHOJ;
+        }
+    }
+    leaf dec64 {
+        type decimal64 {
+            fraction-digits 5;
+        }
+    }
+
+    list stuff {
+        key "name";
+        leaf name {
+            type string;
+        }
+    }
+
+    leaf leafRefPresent {
+        type leafref {
+            path ../stuff/name;
+        }
+    }
+
+    leaf leafRefNonPresent {
+        type leafref {
+            path ../stuff/name;
+        }
+    }
+}
+)";
+
+const auto data = R"(
+{
+    "test-schema:int8": 8,
+    "test-schema:int16": 300,
+    "test-schema:int32": -300,
+    "test-schema:int64": -999999999999999,
+    "test-schema:uint8": 8,
+    "test-schema:uint16": 300,
+    "test-schema:uint32": 300,
+    "test-schema:uint64": 999999999999999,
+    "test-schema:boolean": true,
+    "test-schema:string": "AHOJ",
+    "test-schema:enum": "A",
+    "test-schema:identityRef": "apple",
+    "test-schema:binary": "QUhPSgo=",
+    "test-schema:empty": "",
+    "test-schema:bits": "a AHOJ",
+    "test-schema:dec64": "43242.43260",
+    "test-schema:stuff": [
+        {
+            "name": "Xaver"
+        }
+    ],
+    "test-schema:leafRefPresent": "Xaver",
+    "test-schema:leafRefNonPresent": "Lucas"
+}
+)";
+
+
+TEST_CASE("libyang_utils")
+{
+    auto ctx = std::make_shared<libyang::Context>();
+    ctx->parse_module_mem(schema, LYS_IN_YANG);
+    auto dataNode = ctx->parse_data_mem(data, LYD_JSON, LYD_OPT_DATA_NO_YANGLIB | LYD_OPT_NOEXTDEPS);
+
+    std::string path;
+    leaf_data_ expectedLeafData;
+
+
+    SECTION("test-schema:int8") {
+        path = "test-schema:int8";
+        expectedLeafData = int8_t{8};
+    }
+    SECTION("test-schema:int16") {
+        path = "test-schema:int16";
+        expectedLeafData = int16_t{300};
+    }
+    SECTION("test-schema:int32") {
+        path = "test-schema:int32";
+        expectedLeafData = int32_t{-300};
+    }
+    SECTION("test-schema:int64") {
+        path = "test-schema:int64";
+        expectedLeafData = int64_t{-999999999999999};
+    }
+    SECTION("test-schema:uint8") {
+        path = "test-schema:uint8";
+        expectedLeafData = uint8_t{8};
+    }
+    SECTION("test-schema:uint16") {
+        path = "test-schema:uint16";
+        expectedLeafData = uint16_t{300};
+    }
+    SECTION("test-schema:uint32") {
+        path = "test-schema:uint32";
+        expectedLeafData = uint32_t{300};
+    }
+    SECTION("test-schema:uint64") {
+        path = "test-schema:uint64";
+        expectedLeafData = uint64_t{999999999999999};
+    }
+    SECTION("test-schema:boolean") {
+        path = "test-schema:boolean";
+        expectedLeafData = true;
+    }
+    SECTION("test-schema:string") {
+        path = "test-schema:string";
+        expectedLeafData = std::string{"AHOJ"};
+    }
+    SECTION("test-schema:enum") {
+        path = "test-schema:enum";
+        expectedLeafData = enum_{"A"};
+    }
+    SECTION("test-schema:identityRef") {
+        path = "test-schema:identityRef";
+        expectedLeafData = identityRef_{"test-schema", "apple"};
+    }
+    SECTION("test-schema:binary") {
+        path = "test-schema:binary";
+        expectedLeafData = binary_{"QUhPSgo="};
+    }
+    SECTION("test-schema:empty") {
+        path = "test-schema:empty";
+        expectedLeafData = empty_{};
+    }
+    SECTION("test-schema:bits") {
+        path = "test-schema:bits";
+        expectedLeafData = bits_{{"a", "AHOJ"}};
+    }
+    SECTION("test-schema:dec64") {
+        path = "test-schema:dec64";
+        expectedLeafData = 43242.43260;
+    }
+    SECTION("test-schema:leafRefPresent") {
+        path = "test-schema:leafRefPresent";
+        expectedLeafData = std::string{"Xaver"};
+    }
+    SECTION("test-schema:leafRefNonPresent") {
+        path = "test-schema:leafRefNonPresent";
+        expectedLeafData = std::string{"Lucas"};
+    }
+
+    auto leaf = dataNode->find_path(("/" + path).c_str());
+    REQUIRE(leaf->number() == 1);
+    auto firstLeaf = std::make_shared<libyang::Data_Node_Leaf_List>(leaf->data().front());
+    REQUIRE(leafValueFromNode(firstLeaf) == expectedLeafData);
 }

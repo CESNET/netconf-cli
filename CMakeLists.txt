@@ -114,11 +114,15 @@ add_library(yangaccess STATIC
 
 target_link_libraries(yangaccess PUBLIC datastoreaccess yangschema PRIVATE PkgConfig::LIBYANG)
 
-add_library(yangschema STATIC
-    src/yang_schema.cpp
+add_library(libyangutils
     src/libyang_utils.cpp
     )
-target_link_libraries(yangschema PUBLIC schemas utils PRIVATE PkgConfig::LIBYANG)
+target_link_libraries(libyangutils PUBLIC PkgConfig::LIBYANG)
+
+add_library(yangschema STATIC
+    src/yang_schema.cpp
+    )
+target_link_libraries(yangschema PUBLIC schemas utils libyangutils PRIVATE PkgConfig::LIBYANG)
 
 add_library(parser STATIC
     src/parser.cpp
@@ -287,6 +291,7 @@ if(BUILD_TESTING)
     cli_test(yang)
     target_link_libraries(test_yang yangschema)
     cli_test(utils)
+    target_link_libraries(test_utils libyangutils)
     cli_test(path_completion)
     cli_test(command_completion)
     cli_test(set_value_completion)
