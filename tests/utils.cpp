@@ -193,6 +193,15 @@ module test-schema {
             path ../stuff/name;
         }
     }
+
+    container users {
+        config false;
+        list userList {
+            leaf name {
+                type string;
+            }
+        }
+    }
 }
 )";
 
@@ -220,7 +229,20 @@ const auto data = R"(
         }
     ],
     "test-schema:leafRefPresent": "Xaver",
-    "test-schema:leafRefNonPresent": "Lucas"
+    "test-schema:leafRefNonPresent": "Lucas",
+    "test-schema:users": {
+        "userList": [
+            {
+                "name": "John"
+            },
+            {
+                "name": "Aneta"
+            },
+            {
+                "name": "Aneta"
+            }
+        ]
+    }
 }
 )";
 
@@ -229,87 +251,124 @@ TEST_CASE("libyang_utils")
 {
     auto ctx = std::make_shared<libyang::Context>();
     ctx->parse_module_mem(schema, LYS_IN_YANG);
-    auto dataNode = ctx->parse_data_mem(data, LYD_JSON, LYD_OPT_DATA_NO_YANGLIB | LYD_OPT_NOEXTDEPS);
+    auto dataNode = ctx->parse_data_mem(data, LYD_JSON, LYD_OPT_DATA_NO_YANGLIB | LYD_OPT_NOEXTDEPS | LYD_OPT_STRICT);
 
-    std::string path;
-    leaf_data_ expectedLeafData;
+    SECTION("leafValueFromNode") {
+        std::string path;
+        leaf_data_ expectedLeafData;
 
+        SECTION("test-schema:int8") {
+            path = "test-schema:int8";
+            expectedLeafData = int8_t{8};
+        }
+        SECTION("test-schema:int16") {
+            path = "test-schema:int16";
+            expectedLeafData = int16_t{300};
+        }
+        SECTION("test-schema:int32") {
+            path = "test-schema:int32";
+            expectedLeafData = int32_t{-300};
+        }
+        SECTION("test-schema:int64") {
+            path = "test-schema:int64";
+            expectedLeafData = int64_t{-999999999999999};
+        }
+        SECTION("test-schema:uint8") {
+            path = "test-schema:uint8";
+            expectedLeafData = uint8_t{8};
+        }
+        SECTION("test-schema:uint16") {
+            path = "test-schema:uint16";
+            expectedLeafData = uint16_t{300};
+        }
+        SECTION("test-schema:uint32") {
+            path = "test-schema:uint32";
+            expectedLeafData = uint32_t{300};
+        }
+        SECTION("test-schema:uint64") {
+            path = "test-schema:uint64";
+            expectedLeafData = uint64_t{999999999999999};
+        }
+        SECTION("test-schema:boolean") {
+            path = "test-schema:boolean";
+            expectedLeafData = true;
+        }
+        SECTION("test-schema:string") {
+            path = "test-schema:string";
+            expectedLeafData = std::string{"AHOJ"};
+        }
+        SECTION("test-schema:enum") {
+            path = "test-schema:enum";
+            expectedLeafData = enum_{"A"};
+        }
+        SECTION("test-schema:identityRef") {
+            path = "test-schema:identityRef";
+            expectedLeafData = identityRef_{"test-schema", "apple"};
+        }
+        SECTION("test-schema:binary") {
+            path = "test-schema:binary";
+            expectedLeafData = binary_{"QUhPSgo="};
+        }
+        SECTION("test-schema:empty") {
+            path = "test-schema:empty";
+            expectedLeafData = empty_{};
+        }
+        SECTION("test-schema:bits") {
+            path = "test-schema:bits";
+            expectedLeafData = bits_{{"a", "AHOJ"}};
+        }
+        SECTION("test-schema:dec64") {
+            path = "test-schema:dec64";
+            expectedLeafData = 43242.43260;
+        }
+        SECTION("test-schema:leafRefPresent") {
+            path = "test-schema:leafRefPresent";
+            expectedLeafData = std::string{"Xaver"};
+        }
+        SECTION("test-schema:leafRefNonPresent") {
+            path = "test-schema:leafRefNonPresent";
+            expectedLeafData = std::string{"Lucas"};
+        }
 
-    SECTION("test-schema:int8") {
-        path = "test-schema:int8";
-        expectedLeafData = int8_t{8};
-    }
-    SECTION("test-schema:int16") {
-        path = "test-schema:int16";
-        expectedLeafData = int16_t{300};
-    }
-    SECTION("test-schema:int32") {
-        path = "test-schema:int32";
-        expectedLeafData = int32_t{-300};
-    }
-    SECTION("test-schema:int64") {
-        path = "test-schema:int64";
-        expectedLeafData = int64_t{-999999999999999};
-    }
-    SECTION("test-schema:uint8") {
-        path = "test-schema:uint8";
-        expectedLeafData = uint8_t{8};
-    }
-    SECTION("test-schema:uint16") {
-        path = "test-schema:uint16";
-        expectedLeafData = uint16_t{300};
-    }
-    SECTION("test-schema:uint32") {
-        path = "test-schema:uint32";
-        expectedLeafData = uint32_t{300};
-    }
-    SECTION("test-schema:uint64") {
-        path = "test-schema:uint64";
-        expectedLeafData = uint64_t{999999999999999};
-    }
-    SECTION("test-schema:boolean") {
-        path = "test-schema:boolean";
-        expectedLeafData = true;
-    }
-    SECTION("test-schema:string") {
-        path = "test-schema:string";
-        expectedLeafData = std::string{"AHOJ"};
-    }
-    SECTION("test-schema:enum") {
-        path = "test-schema:enum";
-        expectedLeafData = enum_{"A"};
-    }
-    SECTION("test-schema:identityRef") {
-        path = "test-schema:identityRef";
-        expectedLeafData = identityRef_{"test-schema", "apple"};
-    }
-    SECTION("test-schema:binary") {
-        path = "test-schema:binary";
-        expectedLeafData = binary_{"QUhPSgo="};
-    }
-    SECTION("test-schema:empty") {
-        path = "test-schema:empty";
-        expectedLeafData = empty_{};
-    }
-    SECTION("test-schema:bits") {
-        path = "test-schema:bits";
-        expectedLeafData = bits_{{"a", "AHOJ"}};
-    }
-    SECTION("test-schema:dec64") {
-        path = "test-schema:dec64";
-        expectedLeafData = 43242.43260;
-    }
-    SECTION("test-schema:leafRefPresent") {
-        path = "test-schema:leafRefPresent";
-        expectedLeafData = std::string{"Xaver"};
-    }
-    SECTION("test-schema:leafRefNonPresent") {
-        path = "test-schema:leafRefNonPresent";
-        expectedLeafData = std::string{"Lucas"};
+        auto leaf = dataNode->find_path(("/" + path).c_str());
+        REQUIRE(leaf->number() == 1);
+        auto firstLeaf = std::make_shared<libyang::Data_Node_Leaf_List>(leaf->data().front());
+        REQUIRE(leafValueFromNode(firstLeaf) == expectedLeafData);
+
     }
 
-    auto leaf = dataNode->find_path(("/" + path).c_str());
-    REQUIRE(leaf->number() == 1);
-    auto firstLeaf = std::make_shared<libyang::Data_Node_Leaf_List>(leaf->data().front());
-    REQUIRE(leafValueFromNode(firstLeaf) == expectedLeafData);
+    SECTION("lyNodesToTree") {
+        DatastoreAccess::Tree expected {
+            {"/test-schema:int8", int8_t{8}},
+            {"/test-schema:int16", int16_t{300}},
+            {"/test-schema:int32", int32_t{-300}},
+            {"/test-schema:int64", int64_t{-999999999999999}},
+            {"/test-schema:uint8", uint8_t{8}},
+            {"/test-schema:uint16", uint16_t{300}},
+            {"/test-schema:uint32", uint32_t{300}},
+            {"/test-schema:uint64", uint64_t{999999999999999}},
+            {"/test-schema:boolean", true},
+            {"/test-schema:string", std::string{"AHOJ"}},
+            {"/test-schema:enum", enum_{"A"}},
+            {"/test-schema:identityRef", identityRef_{"test-schema", "apple"}},
+            {"/test-schema:binary", binary_{"QUhPSgo="}},
+            {"/test-schema:empty", empty_{}},
+            {"/test-schema:bits", bits_{{"a", "AHOJ"}}},
+            {"/test-schema:dec64", 43242.432600},
+            {"/test-schema:stuff[name='Xaver']", special_{SpecialValue::List}},
+            {"/test-schema:stuff[name='Xaver']/name", std::string{"Xaver"}},
+            {"/test-schema:leafRefPresent", std::string{"Xaver"}},
+            {"/test-schema:leafRefNonPresent", std::string{"Lucas"}},
+            {"/test-schema:users/userList[1]", special_{SpecialValue::List}},
+            {"/test-schema:users/userList[1]/name", std::string{"John"}},
+            {"/test-schema:users/userList[2]", special_{SpecialValue::List}},
+            {"/test-schema:users/userList[2]/name", std::string{"Aneta"}},
+            {"/test-schema:users/userList[3]", special_{SpecialValue::List}},
+            {"/test-schema:users/userList[3]/name", std::string{"Aneta"}},
+        };
+
+        DatastoreAccess::Tree tree;
+        lyNodesToTree(tree, {dataNode->tree_for()});
+        REQUIRE(tree == expected);
+    }
 }
