@@ -519,14 +519,44 @@ TEST_CASE("setting/getting values")
         OperationalDataSubscription opsDataSub("example-schema", "/example-schema:temperature", mockOpsData);
         DatastoreAccess::Tree expected;
         std::string xpath;
+
+        // FIXME: there is currently no way of adding key-less lists to DatastoreAccess::Tree
+        // Rewrite this POS code
+        auto conn = std::make_shared<sysrepo::Connection>();
+        auto sess = std::make_shared<sysrepo::Session>(conn);
+        auto sub = std::make_shared<sysrepo::Subscribe>(sess);
+	sysrepo::OperGetItemsCb cb = [] (sysrepo::S_Session ctx, auto, auto, auto, auto, auto& out) -> int {
+	    const auto data = R"(
+{ "example-schema:users": { "userList": [ { "name": "John", "otherfield": "LOL" } ] } }
+)";
+
+	    out = ctx->get_context()->parse_data_mem(data, LYD_JSON, LYD_OPT_GET);
+
+	    return SR_ERR_OK;
+	    };
+        sub->oper_get_items_subscribe("example-schema", cb, "/example-schema:users", SR_SUBSCR_DONE_ONLY | SR_SUBSCR_OPER_MERGE);
+        sess->session_switch_ds(SR_DS_OPERATIONAL);
         SECTION("temperature")
         {
             expected = {{"/example-schema:temperature", int32_t{22}}};
             xpath = "/example-schema:temperature";
+
+            REQUIRE_CALL(mockOpsData, get_data(xpath)).RETURN(expected);
+            REQUIRE(datastore.getItems(xpath) == expected);
         }
 
-        REQUIRE_CALL(mockOpsData, get_data(xpath)).RETURN(expected);
-        REQUIRE(datastore.getItems(xpath) == expected);
+        SECTION("key-less lists")
+        {
+            expected = {
+                {"/example-schema:users/userList[1]", special_{SpecialValue::List}},
+                {"/example-schema:users/userList[1]/name", std::string{"John"}},
+                {"/example-schema:users/userList[1]/otherfield", std::string{"LOL"}}
+            };
+
+            xpath = "/example-schema:users";
+            REQUIRE(datastore.getItems(xpath) == expected);
+        }
+
     }
 #endif
 
