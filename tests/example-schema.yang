@@ -303,4 +303,17 @@ module example-schema {
             bit parity;
         }
     }
+
+    container users {
+        config false;
+        list userList {
+            leaf name {
+                type string;
+            }
+            leaf otherfield {
+                type string;
+            }
+        }
+    }
+
 }
