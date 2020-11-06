@@ -517,16 +517,31 @@ TEST_CASE("setting/getting values")
     {
         MockDataSupplier mockOpsData;
         OperationalDataSubscription opsDataSub("example-schema", "/example-schema:temperature", mockOpsData);
+        OperationalDataSubscription opsDataSub2("example-schema", "/example-schema:users", mockOpsData);
         DatastoreAccess::Tree expected;
         std::string xpath;
+
         SECTION("temperature")
         {
             expected = {{"/example-schema:temperature", int32_t{22}}};
             xpath = "/example-schema:temperature";
         }
 
+        SECTION("key-less lists")
+        {
+            expected = {
+                {"/example-schema:users/userList[1]", special_{SpecialValue::List}},
+                {"/example-schema:users/userList[1]/name", std::string{"John"}},
+                {"/example-schema:users/userList[1]/otherfield", std::string{"LOL"}},
+                {"/example-schema:users/userList[2]", special_{SpecialValue::List}},
+                {"/example-schema:users/userList[2]/name", std::string{"Foo"}},
+                {"/example-schema:users/userList[2]/otherfield", std::string{"Bar"}},
+            };
+            xpath = "/example-schema:users";
+        }
         REQUIRE_CALL(mockOpsData, get_data(xpath)).RETURN(expected);
         REQUIRE(datastore.getItems(xpath) == expected);
+
     }
 #endif
 
