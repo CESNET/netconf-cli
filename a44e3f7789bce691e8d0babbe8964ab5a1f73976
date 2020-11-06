@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b2c314e_3dd85450",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-06T20:51:01Z",
+      "side": 1,
+      "message": "I think I might be missing some context here, so please explain better what this test guard against.",
+      "revId": "a44e3f7789bce691e8d0babbe8964ab5a1f73976",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
