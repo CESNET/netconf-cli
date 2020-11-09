@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "28c05391_fd054e01",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-09T10:58:21Z",
+      "side": 1,
+      "message": "I think the error was only happening when the list had more than one item, so I\u0027ll push an update which adds one more item to the list.",
+      "range": {
+        "startLine": 533,
+        "startChar": 1,
+        "endLine": 535,
+        "endChar": 84
+      },
+      "revId": "0d5376543aae969c4c480e4b9f195456bbf288d5",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
