@@ -1,3 +1,4 @@
+#include <iostream>
 /*
  * Copyright (C) 2018 CESNET, https://photonics.cesnet.cz/
  * Copyright (C) 2018 FIT CVUT, https://fit.cvut.cz/
@@ -222,6 +223,7 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
         auto config = m_session->get_data(((path == "/") ? "/*" : path).c_str());
         m_session->session_switch_ds(oldDs);
         if (config) {
+            std::cout << config->print_mem(LYD_JSON, LYP_WITHSIBLINGS | LYP_FORMAT) << "\n";
             lyNodesToTree(res, config->tree_for());
         }
     } catch (sysrepo::sysrepo_exception& ex) {

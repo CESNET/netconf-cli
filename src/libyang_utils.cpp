@@ -52,6 +52,7 @@ leaf_data_ leafValueFromNode(libyang::S_Data_Node_Leaf_List node)
         case LY_TYPE_BITS:
         {
             auto bits = node->value()->bit();
+            std::cout << node->value_str() << "\n";
             std::vector<libyang::S_Type_Bit> filterNull;
             std::copy_if(bits.begin(), bits.end(), std::back_inserter(filterNull), [] (auto bit) { return bit; });
             bits_ res;

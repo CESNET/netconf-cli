@@ -164,9 +164,29 @@ module test-schema {
     }
     leaf bits {
         type bits {
-            bit a;
-            bit b;
-            bit AHOJ;
+            bit a {
+                position 0;
+            }
+            bit b {
+                position 1;
+            }
+            bit AHOJ {
+                position 2;
+            }
+        }
+    }
+    leaf capabilities {
+        config false;
+        type bits {
+            bit a {
+                position 0;
+            }
+            bit b {
+                position 1;
+            }
+            bit AHOJ {
+                position 2;
+            }
         }
     }
     leaf dec64 {
@@ -222,6 +242,7 @@ const auto data = R"(
     "test-schema:binary": "QUhPSgo=",
     "test-schema:empty": "",
     "test-schema:bits": "a AHOJ",
+    "test-schema:capabilities": "a AHOJ",
     "test-schema:dec64": "43242.43260",
     "test-schema:stuff": [
         {
