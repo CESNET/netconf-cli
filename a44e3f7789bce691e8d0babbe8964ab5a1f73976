@@ -52,6 +52,24 @@
       "revId": "a44e3f7789bce691e8d0babbe8964ab5a1f73976",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5b643baa_1ec8b733",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-09T11:13:54Z",
+      "side": 1,
+      "message": "I updated the commit message to explain more of what\u0027s happening",
+      "parentUuid": "4360b796_e5b22bfb",
+      "revId": "a44e3f7789bce691e8d0babbe8964ab5a1f73976",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
