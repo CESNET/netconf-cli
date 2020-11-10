@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68c17400_56076597",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-10T17:57:28Z",
+      "side": 1,
+      "message": "this is flagged by clang-format, so I\u0027ve removed that extra blank line",
+      "revId": "b5f6419a24c06e8e8b01d2441104a97b6f0e7fc5",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
