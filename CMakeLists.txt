@@ -45,6 +45,12 @@ add_custom_target(git-version-cmake-ide
 include(cmake/ProjectGitVersion.cmake)
 prepare_git_version(NETCONF_CLI_VERSION "0.0")
 
+# Boost.Process needs linking with threads, but doesn't have special CMake target which would do that for us. So, we
+# need to link manually. This will hopefully change in the future.
+# https://discourse.cmake.org/t/boost-process-target-doesnt-exist-for-thread-linking/2113
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads)
+
 find_package(Doxygen)
 option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${DOXYGEN_FOUND})
 
@@ -172,11 +178,6 @@ add_executable(netconf-cli
     )
 target_compile_definitions(netconf-cli PRIVATE NETCONF_CLI)
 
-# Boost.Process needs linking with threads, but doesn't have special CMake target which would do that for us. So, we
-# need to link manually. This will hopefully change in the future.
-# https://discourse.cmake.org/t/boost-process-target-doesnt-exist-for-thread-linking/2113
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads)
 target_link_libraries(netconf-cli netconfaccess Threads::Threads Boost::filesystem)
 cli_link_required(netconf-cli)
 
