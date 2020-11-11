@@ -175,19 +175,15 @@ module test-schema {
             }
         }
     }
-    leaf capabilities {
-        config false;
+    typedef capabilitiesType {
         type bits {
-            bit a {
-                position 0;
-            }
-            bit b {
-                position 1;
-            }
-            bit AHOJ {
-                position 2;
-            }
+            bit router;
+            bit switch;
+            bit hub;
         }
+    }
+    leaf capabilities {
+        type capabilitiesType;
     }
     leaf dec64 {
         type decimal64 {
@@ -242,7 +238,7 @@ const auto data = R"(
     "test-schema:binary": "QUhPSgo=",
     "test-schema:empty": "",
     "test-schema:bits": "a AHOJ",
-    "test-schema:capabilities": "a AHOJ",
+    "test-schema:capabilities": "switch hub",
     "test-schema:dec64": "43242.43260",
     "test-schema:stuff": [
         {
@@ -375,6 +371,7 @@ TEST_CASE("libyang_utils")
             {"/test-schema:binary", binary_{"QUhPSgo="}},
             {"/test-schema:empty", empty_{}},
             {"/test-schema:bits", bits_{{"a", "AHOJ"}}},
+            {"/test-schema:capabilities", bits_{{"switch", "hub"}}},
             {"/test-schema:dec64", 43242.432600},
             {"/test-schema:stuff[name='Xaver']", special_{SpecialValue::List}},
             {"/test-schema:stuff[name='Xaver']/name", std::string{"Xaver"}},
