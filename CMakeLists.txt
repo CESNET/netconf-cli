@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
 include(GNUInstallDirs)
+include(CTest)
 
 # Set a default build type if none was specified. This was shamelessly stolen
 # from VTK's cmake setup because these guys produce both CMake and a project that
@@ -62,9 +63,69 @@ if("${REPLXX_PATH}" STREQUAL REPLXX_PATH-NOTFOUND)
 endif()
 
 find_package(PkgConfig)
+
+set(ENABLE_SYSREPO_CLI AUTO CACHE STRING "Enable the `sysrepo-cli`")
+set_property(CACHE ENABLE_SYSREPO_CLI PROPERTY STRINGS AUTO ON OFF)
+set(ENABLE_FULL_TESTS AUTO CACHE STRING "Enable end-to-end tests via sysrepo and netopeer2")
+set_property(CACHE ENABLE_FULL_TESTS PROPERTY STRINGS AUTO ON OFF)
+if(NOT (ENABLE_SYSREPO_CLI STREQUAL ON OR ENABLE_SYSREPO_CLI STREQUAL OFF OR ENABLE_SYSREPO_CLI STREQUAL AUTO))
+    message(FATAL_ERROR "ENABLE_SYSREPO_CLI must be one of ON, OFF, AUTO")
+endif()
+if(NOT (ENABLE_FULL_TESTS STREQUAL ON OR ENABLE_FULL_TESTS STREQUAL OFF OR ENABLE_FULL_TESTS STREQUAL AUTO))
+    message(FATAL_ERROR "ENABLE_FULL_TESTS must be one of ON, OFF, AUTO")
+endif()
+if(NOT BUILD_TESTING AND ENABLE_FULL_TESTS STREQUAL ON)
+    message(FATAL_ERROR "Cannot combine ENABLE_FULL_TESTS=ON with BUILD_TESTING=OFF")
+endif()
+
 pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=1.0.190 IMPORTED_TARGET libyang)
-pkg_check_modules(SYSREPO REQUIRED sysrepo-cpp>=1.4.79 IMPORTED_TARGET sysrepo)
 pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=1.1.32 IMPORTED_TARGET libnetconf2)
+
+if(ENABLE_FULL_TESTS STREQUAL OFF AND ENABLE_SYSREPO_CLI STREQUAL OFF)
+    message(STATUS "Skipping sysrepo per configure options")
+    set(SYSREPO_FOUND 0)
+else()
+    pkg_check_modules(SYSREPO sysrepo-cpp>=1.4.79 IMPORTED_TARGET sysrepo)
+endif()
+
+if(SYSREPO_FOUND)
+    if(ENABLE_SYSREPO_CLI STREQUAL OFF)
+        message(STATUS "Skipping the `sysrepo-cli` per config option")
+        set(DO_ENABLE_SYSREPO_CLI OFF)
+    else()
+        message(STATUS "The `sysrepo-cli` will be available")
+        set(DO_ENABLE_SYSREPO_CLI ON)
+    endif()
+
+    if(BUILD_TESTING)
+        include(cmake/DiscoverNetconfExecutables.cmake)
+        discover_netconf_executables()
+
+        if(ENABLE_FULL_TESTS STREQUAL OFF)
+            message(STATUS "End-to-end NETCONF test suite disabled per config option")
+            set(DO_ENABLE_NETCONF_TESTS OFF)
+        else()
+            message(STATUS "End-to-end NETCONF test suite enabled")
+            set(DO_ENABLE_NETCONF_TESTS ON)
+        endif()
+    endif()
+else()
+    if(ENABLE_SYSREPO_CLI STREQUAL ON)
+        message(FATAL_ERROR "Cannot find sysrepo-cpp which is required for the `sysrepo-cli`")
+    elseif(ENABLE_SYSREPO_CLI STREQUAL AUTO)
+        message(STATUS "Cannot find sysrepo-cpp, skipping the `sysrepo-cli`")
+    endif()
+    set(DO_ENABLE_SYSREPO_CLI OFF)
+
+    if(BUILD_TESTING)
+        if(ENABLE_FULL_TESTS STREQUAL ON)
+            message(FATAL_ERROR "Cannot find sysrepo-cpp which is required for the end-to-end NETCONF test suite")
+        elseif(ENABLE_FULL_TESTS STREQUAL AUTO)
+            message(STATUS "Cannot find sysrepo-cpp, skipping the end-to-end NETCONF test suite")
+        endif()
+        set(DO_ENABLE_NETCONF_TESTS OFF)
+    endif()
+endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
@@ -100,11 +161,13 @@ add_library(datastoreaccess STATIC
     )
 target_link_libraries(datastoreaccess PUBLIC Boost::boost)
 
-add_library(sysrepoaccess STATIC
-    src/sysrepo_access.cpp
-    )
+if(DO_ENABLE_SYSREPO_CLI OR DO_ENABLE_NETCONF_TESTS)
+    add_library(sysrepoaccess STATIC
+        src/sysrepo_access.cpp
+        )
 
-target_link_libraries(sysrepoaccess PUBLIC datastoreaccess ast_values PRIVATE PkgConfig::SYSREPO PkgConfig::LIBYANG)
+    target_link_libraries(sysrepoaccess PUBLIC datastoreaccess ast_values PRIVATE PkgConfig::SYSREPO PkgConfig::LIBYANG)
+endif()
 
 add_library(netconfaccess STATIC
     src/netconf-client.cpp
@@ -152,12 +215,15 @@ function(cli_link_required cli_target)
     target_include_directories(${cli_target} PRIVATE ${PROJECT_BINARY_DIR})
 endfunction()
 
-add_executable(sysrepo-cli
-    src/cli.cpp
-    )
-target_compile_definitions(sysrepo-cli PRIVATE SYSREPO_CLI)
-target_link_libraries(sysrepo-cli sysrepoaccess)
-cli_link_required(sysrepo-cli)
+if(DO_ENABLE_SYSREPO_CLI)
+    add_executable(sysrepo-cli
+        src/cli.cpp
+        )
+    target_compile_definitions(sysrepo-cli PRIVATE SYSREPO_CLI)
+    target_link_libraries(sysrepo-cli sysrepoaccess)
+    cli_link_required(sysrepo-cli)
+    list(APPEND cli_targets sysrepo-cli)
+endif()
 
 add_executable(yang-cli
     src/cli.cpp
@@ -165,6 +231,7 @@ add_executable(yang-cli
 target_compile_definitions(yang-cli PRIVATE YANG_CLI)
 cli_link_required(yang-cli)
 target_link_libraries(yang-cli yangaccess)
+list(APPEND cli_targets yang-cli)
 if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+" AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
     target_link_libraries(yang-cli c++experimental)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1)
@@ -179,9 +246,9 @@ target_compile_definitions(netconf-cli PRIVATE NETCONF_CLI)
 
 target_link_libraries(netconf-cli netconfaccess Threads::Threads Boost::filesystem)
 cli_link_required(netconf-cli)
+list(APPEND cli_targets netconf-cli)
 
 
-include(CTest)
 if(BUILD_TESTING)
     find_package(trompeloeil 33 REQUIRED)
     find_package(doctest 2.3.1 REQUIRED)
@@ -195,16 +262,15 @@ if(BUILD_TESTING)
     target_link_libraries(DoctestIntegration doctest::doctest trompeloeil)
     target_compile_definitions(DoctestIntegration PUBLIC DOCTEST_CONFIG_SUPER_FAST_ASSERTS)
 
-    add_library(sysreposubscription STATIC
-        tests/mock/sysrepo_subscription.cpp
-        )
-    target_link_libraries(sysreposubscription PUBLIC datastoreaccess PRIVATE PkgConfig::SYSREPO)
+    if(DO_ENABLE_NETCONF_TESTS)
+        add_library(sysreposubscription STATIC
+            tests/mock/sysrepo_subscription.cpp
+            )
+        target_link_libraries(sysreposubscription PUBLIC datastoreaccess PRIVATE PkgConfig::SYSREPO)
 
-    include(cmake/DiscoverNetconfExecutables.cmake)
-    discover_netconf_executables()
-
-    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_repositories)
-    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_sockets)
+        file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_repositories)
+        file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_sockets)
+    endif()
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/yang_access_test_vars.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/yang_access_test_vars.hpp @ONLY)
 
@@ -290,8 +356,10 @@ if(BUILD_TESTING)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/cleanup_datastore.bash.in
         ${CMAKE_CURRENT_BINARY_DIR}/cleanup_datastore.bash @ONLY)
 
-    datastore_test(datastore_access ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
-    datastore_test(data_query ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
+    if(DO_ENABLE_NETCONF_TESTS)
+        datastore_test(datastore_access ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
+        datastore_test(data_query ${CMAKE_CURRENT_SOURCE_DIR}/tests/example-schema.yang)
+    endif()
 endif()
 
 option(WITH_PYTHON_BINDINGS "Create and install Python3 bindings for accessing datastores" OFF)
@@ -366,8 +434,5 @@ if(WITH_DOCS)
         )
 endif()
 
-install(TARGETS
-    netconf-cli
-    sysrepo-cli
-    yang-cli
+install(TARGETS ${cli_targets}
     RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/)
