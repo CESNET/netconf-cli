@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d7fccad1_d2a39582",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-11T19:41:53Z",
+      "side": 1,
+      "message": "I understand what\u0027s going on here, but it\u0027s pretty hard to read. Is it possible to refactor some of this code to functions? I don\u0027t think there\u0027s too much code, but for example, the part where it tries to find the executables could be a function called `setup_sysrepo` or something. I think that would make it more readable",
+      "range": {
+        "startLine": 85,
+        "startChar": 1,
+        "endLine": 147,
+        "endChar": 0
+      },
+      "revId": "313037b1dac7298840dfb329b1e90d12569f7ede",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
