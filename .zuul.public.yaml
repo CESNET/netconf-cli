@@ -1,3 +1,9 @@
+- job:
+    name: f32-gcc-netconf-cli-no-sysrepo
+    description: |
+      Build a minimal version without sysrepo or the test suite
+    parent: f32-gcc
+
 - project:
     check:
       jobs:
@@ -7,6 +13,8 @@
             requires: CzechLight-deps-f32-clang-asan-ubsan
         - f32-clang-tsan:
             requires: CzechLight-deps-f32-clang-tsan
+        - f32-gcc-netconf-cli-no-sysrepo:
+            requires: CzechLight-deps-f32-gcc
         - f32-cpp-coverage-diff:
             voting: false
         - clang-format:
