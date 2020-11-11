@@ -84,10 +84,23 @@ if [[ "${DEP_HASH_FROM_ARTIFACT}" != "${DEP_SUBMODULE_COMMIT}" ]]; then
 fi
 curl ${ARTIFACT_URL} | unzstd --stdout | tar -C ${PREFIX} -xf -
 
+if [[ ${ZUUL_JOB_NAME} =~ .*-no-sysrepo ]]; then
+    rm -rf ${PREFIX}/include/sysrepo*
+    rm ${PREFIX}/lib*/libsysrepo*
+    rm ${PREFIX}/lib*/pkgconfig/sysrepo*
+    rm ${PREFIX}/bin/sysrepo*
+fi
+
 cd ${BUILD_DIR}
 cmake -GNinja -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Debug} -DCMAKE_INSTALL_PREFIX=${PREFIX} ${CMAKE_OPTIONS} ${ZUUL_PROJECT_SRC_DIR}
 ninja-build
 ctest -j${CI_PARALLEL_JOBS} --output-on-failure
+
+if [[ ! ${ZUUL_JOB_NAME} =~ .*-no-sysrepo ]]; then
+    # Normal builds should have the sysrepo and NETCONF tests
+    ctest --show-only=json-v1 | jq -r '.["tests"] | map(.name)' | grep -q test_datastore_access_netconf
+    ctest --show-only=json-v1 | jq -r '.["tests"] | map(.name)' | grep -q test_datastore_access_sysrepo
+fi
 
 if [[ $JOB_PERFORM_EXTRA_WORK == 1 ]]; then
     ninja-build doc
