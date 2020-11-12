@@ -39,6 +39,7 @@ endif()
 add_custom_target(git-version-cmake-ide
     cmake/ProjectGitVersion.cmake
     cmake/ProjectGitVersionRunner.cmake
+    cmake/DiscoverNetconfExecutables.cmake
     )
 include(cmake/ProjectGitVersion.cmake)
 prepare_git_version(NETCONF_CLI_VERSION "0.0")
@@ -199,28 +200,8 @@ if(BUILD_TESTING)
         )
     target_link_libraries(sysreposubscription PUBLIC datastoreaccess PRIVATE PkgConfig::SYSREPO)
 
-    if (NOT SYSREPOCTL_EXECUTABLE)
-        find_program(SYSREPOCTL_EXECUTABLE sysrepoctl)
-    endif()
-    if (NOT SYSREPOCTL_EXECUTABLE)
-        message(FATAL_ERROR "Unable to find sysrepoctl, set SYSREPOCTL_EXECUTABLE manually.")
-    endif()
-
-    if (NOT SYSREPOCFG_EXECUTABLE)
-        find_program(SYSREPOCFG_EXECUTABLE sysrepocfg)
-    endif()
-    if (NOT SYSREPOCFG_EXECUTABLE)
-        message(FATAL_ERROR "Unable to find sysrepocfg, set SYSREPOCFG_EXECUTABLE manually.")
-    endif()
-
-    if (NOT NETOPEER2_EXECUTABLE)
-        find_program(NETOPEER2_EXECUTABLE netopeer2-server)
-    endif()
-    if (NOT NETOPEER2_EXECUTABLE)
-        message(FATAL_ERROR "Unable to find netopeer2-server, set NETOPEER2_EXECUTABLE manually.")
-    endif()
-
-    pkg_get_variable(SYSREPO_SR_REPO_PATH sysrepo SR_REPO_PATH)
+    include(cmake/DiscoverNetconfExecutables.cmake)
+    discover_netconf_executables()
 
     file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_repositories)
     file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_sockets)
