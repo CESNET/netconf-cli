@@ -46,6 +46,30 @@
       "revId": "1213e463358f1815856073483d698e7403d0380c",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee5798fe_c51ae31b",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-12T10:24:11Z",
+      "side": 1,
+      "message": "\u003e Oh, it says so in the description. What do you think about renaming ENABLE_SYSREPO to ENABLE_SYSREPOCLI?\n\nIt\u0027s now ENABLE_SYSREPO_CLI.",
+      "parentUuid": "0595173b_18bf05f9",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 66
+      },
+      "revId": "1213e463358f1815856073483d698e7403d0380c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
