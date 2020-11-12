@@ -291,8 +291,8 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
         if constexpr (PARSER_MODE == PathParserMode::DataPathListEnd || PARSER_MODE == PathParserMode::AnyPath) {
             if (!res || !pathEnd.parse(begin, end, ctx, rctx, x3::unused)) {
                 dataNode_ attrNodeList;
-                res = incompleteDataNode<COMPLETION_MODE>{m_filterFunction}.parse(begin, end, ctx, rctx, attrNodeList);
-                if (res) {
+                auto hasListEnd = incompleteDataNode<COMPLETION_MODE>{m_filterFunction}.parse(begin, end, ctx, rctx, attrNodeList);
+                if (hasListEnd) {
                     attrData.m_nodes.emplace_back(attrNodeList);
                     // If the trailing slash matches, no more nodes are parsed.
                     // That means no more completion. So, I generate them
@@ -460,7 +460,6 @@ auto const noRpcOrAction = [] (const Schema& schema, const std::string& path) {
 
 auto const getPath_def =
     PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{noRpcOrAction} |
-    PathParser<PathParserMode::DataPath, CompletionMode::Data>{noRpcOrAction} |
     (module >> "*");
 
 auto const cdPath_def =
