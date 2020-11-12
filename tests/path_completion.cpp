@@ -187,6 +187,16 @@ TEST_CASE("path_completion")
         }
     }
 
+    SECTION("get completion")
+    {
+        SECTION("get /example:ano/l")
+        {
+            input = "get /example:ano/l";
+            expectedCompletions = {"listInCont"};
+            expectedContextLength = 1;
+        }
+    }
+
     SECTION("list keys completion")
     {
         SECTION("cd example:lis")
