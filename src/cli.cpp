@@ -78,6 +78,9 @@ int main(int argc, char* argv[])
                                true);
     WritableOps writableOps = WritableOps::No;
 
+    using replxx::Replxx;
+    Replxx lineEditor;
+
 #if defined(SYSREPO_CLI)
     auto datastoreType = Datastore::Running;
     if (const auto& ds = args["-d"]) {
@@ -144,10 +147,26 @@ int main(int argc, char* argv[])
     }
 
     SshProcess process;
+    struct PoorMansJThread {
+        ~PoorMansJThread()
+        {
+            if (x.joinable()) {
+                x.join();
+            }
+        }
+        std::thread x;
+    } processWatcher;
     std::shared_ptr<NetconfAccess> datastore;
 
+    bool sshEarlyExit = false;
     try {
         process = sshProcess(args.at("<host>").asString(), args.at("-p").asString());
+        processWatcher.x = std::thread([&process, &lineEditor, &sshEarlyExit] () {
+            process.process.wait();
+            lineEditor.emulate_key_press(Replxx::KEY::ENTER);
+            sshEarlyExit = true;
+
+        });
         datastore = std::make_shared<NetconfAccess>(process.std_out.native_source(), process.std_in.native_sink());
     } catch (std::runtime_error& ex) {
         std::cerr << "SSH connection failed: " << ex.what() << "\n";
@@ -170,10 +189,6 @@ int main(int argc, char* argv[])
     ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
     auto dataQuery = std::make_shared<DataQuery>(*datastore);
     Parser parser(datastore->schema(), writableOps, dataQuery);
-
-    using replxx::Replxx;
-
-    Replxx lineEditor;
 
     lineEditor.bind_key(Replxx::KEY::meta(Replxx::KEY::BACKSPACE), [&lineEditor] (const auto& code) {
         return lineEditor.invoke(Replxx::ACTION::KILL_TO_BEGINING_OF_WORD, code);
@@ -207,6 +222,11 @@ int main(int argc, char* argv[])
 
     while (true) {
         auto line = lineEditor.input(parser.currentNode() + "> ");
+#if defined(NETCONF_CLI)
+        if (sshEarlyExit) {
+            break;
+        }
+#endif
         if (!line) {
             // If user pressed CTRL-C to abort the line, errno gets set to EAGAIN.
             // If user pressed CTRL-D (for EOF), errno doesn't get set to EAGAIN, so we exit the program.
@@ -242,6 +262,12 @@ int main(int argc, char* argv[])
     if (historyFile) {
         lineEditor.history_save(historyFile.value());
     }
+
+#if defined(NETCONF_CLI)
+    if (sshEarlyExit) {
+        return 1;
+    }
+#endif
 
     return 0;
 }

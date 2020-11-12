@@ -7,6 +7,7 @@
 
 #include <boost/fusion/adapted.hpp>
 #include <boost/spirit/home/x3.hpp>
+#include <iostream>
 #include <optional>
 #include <stdexcept>
 #include <unistd.h>
@@ -24,6 +25,7 @@ SshProcess sshProcess(const std::string& target, const std::string& port)
     if (target.front() == '@') {
         throw std::runtime_error("Invalid username.");
     }
+
     bp::child ssh(sshPath,
             target,
             "-p",
