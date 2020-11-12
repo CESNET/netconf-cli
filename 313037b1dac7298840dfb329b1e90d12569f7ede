@@ -22,6 +22,30 @@
       "revId": "313037b1dac7298840dfb329b1e90d12569f7ede",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1450fdc4_f2da40bf",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-12T01:05:08Z",
+      "side": 1,
+      "message": "Well, it\u0027s CMake :(. I wanted to move that code here because I do not want to output a STATUS message \"yeah, we\u0027re gonna do tests\" and fail later on, which means that this gets long. I remember first implementing these three-state options back in 2013? for Trojita. Actually, reviewing someone\u0027s Google Summer of Code contribution which implemented something like that. I\u0027m quite disappointed that there\u0027s *still* no generic solution upstream.\n\nhttps://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/3250",
+      "parentUuid": "d7fccad1_d2a39582",
+      "range": {
+        "startLine": 85,
+        "startChar": 1,
+        "endLine": 147,
+        "endChar": 0
+      },
+      "revId": "313037b1dac7298840dfb329b1e90d12569f7ede",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
