@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b99ba23e_8b2cce12",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-12T02:38:44Z",
+      "side": 1,
+      "message": "ENABLE_SYSREPO means \"enable sysrepo-cli\"? So if you do ENABLE_FULL_TESTS\u003dON and ENABLE_SYSREPO\u003dOFF, then SysrepoAccess still gets built for tests, but no sysrepo-cli? I would think ENABLE_SYSREPO\u003dOFF just completely disables sysrepo (and also tests)",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 66
+      },
+      "revId": "1213e463358f1815856073483d698e7403d0380c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}

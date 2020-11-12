@@ -46,6 +46,30 @@
       "revId": "313037b1dac7298840dfb329b1e90d12569f7ede",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e76e280a_751a49bb",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-12T02:38:44Z",
+      "side": 1,
+      "message": "Thanks, I think that makes it more readable.",
+      "parentUuid": "1450fdc4_f2da40bf",
+      "range": {
+        "startLine": 85,
+        "startChar": 1,
+        "endLine": 147,
+        "endChar": 0
+      },
+      "revId": "313037b1dac7298840dfb329b1e90d12569f7ede",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
