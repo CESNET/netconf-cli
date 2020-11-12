@@ -5,6 +5,7 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#include <atomic>
 #include <docopt.h>
 #include <iostream>
 #include <optional>
@@ -63,6 +64,16 @@ Options:
 #include "cli-netconf.hpp"
 #include "netconf_access.hpp"
 #define PROGRAM_NAME "netconf-access"
+// FIXME: this should be replaced by C++20 std::jthread at some point
+struct PoorMansJThread {
+    ~PoorMansJThread()
+    {
+        if (thread.joinable()) {
+            thread.join();
+        }
+    }
+    std::thread thread;
+};
 #else
 #error "Unknown CLI backend"
 #endif
@@ -77,6 +88,10 @@ int main(int argc, char* argv[])
                                PROGRAM_NAME " " NETCONF_CLI_VERSION,
                                true);
     WritableOps writableOps = WritableOps::No;
+
+    using replxx::Replxx;
+    Replxx lineEditor;
+    std::atomic<int> backendReturnCode = 0;
 
 #if defined(SYSREPO_CLI)
     auto datastoreType = Datastore::Running;
@@ -143,10 +158,18 @@ int main(int argc, char* argv[])
     }
 
     SshProcess process;
+    PoorMansJThread processWatcher;
     std::shared_ptr<NetconfAccess> datastore;
 
     try {
         process = sshProcess(args.at("<host>").asString(), args.at("-p").asString());
+        processWatcher.thread = std::thread([&process, &lineEditor, &backendReturnCode] () {
+            process.process.wait();
+            backendReturnCode = process.process.exit_code();
+            lineEditor.emulate_key_press(replxx::Replxx::KEY::control('U'));
+            lineEditor.emulate_key_press(replxx::Replxx::KEY::control('K'));
+            lineEditor.emulate_key_press(replxx::Replxx::KEY::control('D'));
+        });
         datastore = std::make_shared<NetconfAccess>(process.std_out.native_source(), process.std_in.native_sink());
     } catch (std::runtime_error& ex) {
         std::cerr << "SSH connection failed: " << ex.what() << "\n";
@@ -169,10 +192,6 @@ int main(int argc, char* argv[])
     ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
     auto dataQuery = std::make_shared<DataQuery>(*datastore);
     Parser parser(datastore->schema(), writableOps, dataQuery);
-
-    using replxx::Replxx;
-
-    Replxx lineEditor;
 
     lineEditor.bind_key(Replxx::KEY::meta(Replxx::KEY::BACKSPACE), [&lineEditor](const auto& code) {
         return lineEditor.invoke(Replxx::ACTION::KILL_TO_BEGINING_OF_WORD, code);
@@ -204,8 +223,9 @@ int main(int argc, char* argv[])
         lineEditor.history_load(historyFile.value());
     }
 
-    while (true) {
+    while (backendReturnCode == 0) {
         auto line = lineEditor.input(parser.currentNode() + "> ");
+
         if (!line) {
             // If user pressed CTRL-C to abort the line, errno gets set to EAGAIN.
             // If user pressed CTRL-D (for EOF), errno doesn't get set to EAGAIN, so we exit the program.
@@ -242,5 +262,5 @@ int main(int argc, char* argv[])
         lineEditor.history_save(historyFile.value());
     }
 
-    return 0;
+    return backendReturnCode;
 }
