@@ -460,7 +460,6 @@ auto const noRpcOrAction = [] (const Schema& schema, const std::string& path) {
 
 auto const getPath_def =
     PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{noRpcOrAction} |
-    PathParser<PathParserMode::DataPath, CompletionMode::Data>{noRpcOrAction} |
     (module >> "*");
 
 auto const cdPath_def =
