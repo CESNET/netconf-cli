@@ -70,6 +70,30 @@
       "revId": "1213e463358f1815856073483d698e7403d0380c",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5617210e_591f1649",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-12T10:32:39Z",
+      "side": 1,
+      "message": "Thanks",
+      "parentUuid": "ee5798fe_c51ae31b",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 66
+      },
+      "revId": "1213e463358f1815856073483d698e7403d0380c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
