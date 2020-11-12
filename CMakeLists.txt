@@ -36,8 +36,6 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "-Wsuggest-override ${CMAKE_CXX_FLAGS}")
 endif()
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
-
 add_custom_target(git-version-cmake-ide
     cmake/ProjectGitVersion.cmake
     cmake/ProjectGitVersionRunner.cmake
