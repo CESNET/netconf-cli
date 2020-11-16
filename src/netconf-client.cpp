@@ -13,8 +13,8 @@ extern "C" {
 #include <nc_client.h>
 }
 #include <sstream>
-#include "netconf-client.hpp"
 #include "UniqueResource.hpp"
+#include "netconf-client.hpp"
 
 namespace libnetconf {
 
@@ -67,7 +67,7 @@ inline void custom_free_nc_reply_error(nc_reply_error* reply)
     nc_reply_free(reinterpret_cast<nc_reply*>(reply));
 }
 
-char *ssh_auth_interactive_cb(const char *auth_name, const char *instruction, const char *prompt, int echo, void *priv)
+char* ssh_auth_interactive_cb(const char* auth_name, const char* instruction, const char* prompt, int echo, void* priv)
 {
     const auto cb = static_cast<const client::KbdInteractiveCb*>(priv);
     auto res = (*cb)(auth_name, instruction, prompt, echo);
@@ -162,7 +162,6 @@ std::optional<unique_ptr_for<struct nc_reply_data>> do_rpc_data_or_ok(client::Se
     default:
         throw std::runtime_error{"Unhandled reply type"};
     }
-
 }
 
 unique_ptr_for<struct nc_reply_data> do_rpc_data(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)

@@ -53,7 +53,7 @@ TEST_CASE("presence containers")
         SECTION("mod:list[quote='lol']/contInList")
         {
             input = "mod:list[quote='lol']/contInList";
-            auto keys = ListInstance {
+            auto keys = ListInstance{
                 {"quote", std::string{"lol"}}};
             expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
         }
@@ -61,7 +61,7 @@ TEST_CASE("presence containers")
         SECTION("mod:list[quote='double\"quote']/contInList")
         {
             input = "mod:list[quote='double\"quote']/contInList";
-            auto keys = ListInstance {
+            auto keys = ListInstance{
                 {"quote", std::string{"double\"quote"}}};
             expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
         }
@@ -69,7 +69,7 @@ TEST_CASE("presence containers")
         SECTION("mod:list[quote=\"single'quote\"]/contInList")
         {
             input = "mod:list[quote=\"single'quote\"]/contInList";
-            auto keys = ListInstance {
+            auto keys = ListInstance{
                 {"quote", std::string{"single'quote"}}};
             expectedPath.m_nodes = {{{module_{"mod"}}, listElement_("list", keys)}, {container_("contInList")}};
         }

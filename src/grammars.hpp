@@ -112,7 +112,7 @@ struct copy_args : x3::parser<copy_args> {
     {
         auto& parserContext = x3::get<parser_context_tag>(ctx);
         auto iterBeforeDestination = begin;
-        auto save_iter = x3::no_skip[x3::eps[([&iterBeforeDestination](auto& ctx) {iterBeforeDestination = _where(ctx).begin();})]];
+        auto save_iter = x3::no_skip[x3::eps[([&iterBeforeDestination](auto& ctx) { iterBeforeDestination = _where(ctx).begin(); })]];
         auto grammar = datastoreSuggestions > copy_source > space_separator > datastoreSuggestions > save_iter > copy_destination;
 
         try {

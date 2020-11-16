@@ -37,7 +37,7 @@ TEST_CASE("list manipulation")
         SECTION("mod:list[number=3]")
         {
             input = "mod:list[number=3]";
-            auto keys = ListInstance {
+            auto keys = ListInstance{
                 {"number", int32_t{3}}};
             expectedPath.m_nodes.emplace_back(module_{"mod"}, listElement_("list", keys));
         }
@@ -45,10 +45,10 @@ TEST_CASE("list manipulation")
         SECTION("mod:company[department=other:engineering]/inventory[id=1337]")
         {
             input = "mod:company[department=other:engineering]/inventory[id=1337]";
-            auto keys = ListInstance {
+            auto keys = ListInstance{
                 {"department", identityRef_{"other", "engineering"}}};
             expectedPath.m_nodes.emplace_back(module_{"mod"}, listElement_("company", keys));
-            keys = ListInstance {
+            keys = ListInstance{
                 {"id", int32_t{1337}}};
             expectedPath.m_nodes.emplace_back(listElement_("inventory", keys));
         }
@@ -128,7 +128,7 @@ TEST_CASE("list manipulation")
         {
             input = "move mod:addresses['1.2.3.4'] after '0.0.0.0'";
             expected.m_source.m_nodes.emplace_back(module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s});
-            expected.m_destination = yang::move::Relative {
+            expected.m_destination = yang::move::Relative{
                 yang::move::Relative::Position::After,
                 {{".", "0.0.0.0"s}}
             };
@@ -138,7 +138,7 @@ TEST_CASE("list manipulation")
         {
             input = "move mod:addresses['1.2.3.4'] before '0.0.0.0'";
             expected.m_source.m_nodes.emplace_back(module_{"mod"}, leafListElement_{"addresses", "1.2.3.4"s});
-            expected.m_destination = yang::move::Relative {
+            expected.m_destination = yang::move::Relative{
                 yang::move::Relative::Position::Before,
                 {{".", "0.0.0.0"s}}
             };
@@ -150,7 +150,7 @@ TEST_CASE("list manipulation")
             auto keys = std::map<std::string, leaf_data_>{
                 {"number", int32_t{12}}};
             expected.m_source.m_nodes.emplace_back(module_{"mod"}, listElement_("list", keys));
-            expected.m_destination = yang::move::Relative {
+            expected.m_destination = yang::move::Relative{
                 yang::move::Relative::Position::Before,
                 ListInstance{{"number", int32_t{15}}}
             };

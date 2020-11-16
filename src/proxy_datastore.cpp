@@ -60,9 +60,8 @@ std::string ProxyDatastore::dump(const DataFormat format) const
 }
 
 namespace {
-struct getInputPath
-{
-    template<typename InputType>
+struct getInputPath {
+    template <typename InputType>
     auto operator()(const InputType& input)
     {
         return input.m_path;

@@ -5,9 +5,9 @@
  *
 */
 
+#include "trompeloeil_doctest.hpp"
 #include <experimental/iterator>
 #include <sysrepo-cpp/Session.hpp>
-#include "trompeloeil_doctest.hpp"
 
 #ifdef sysrepo_BACKEND
 #include "sysrepo_access.hpp"
@@ -205,7 +205,6 @@ TEST_CASE("data query")
                         {{"type", enum_{"laptop"}}},
                         {{"type", enum_{"server"}}},
                     };
-
                 }
 
                 SECTION("cyril computers")
@@ -237,7 +236,6 @@ TEST_CASE("data query")
                 {{"id", int32_t{1}}},
                 {{"id", int32_t{2}}},
             };
-
         }
 
         datastore.commitChanges();

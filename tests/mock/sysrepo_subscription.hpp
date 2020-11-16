@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <optional>
 #include <memory>
+#include <optional>
 #include "datastore_access.hpp"
 
 namespace sysrepo {
@@ -47,6 +47,7 @@ private:
 class OperationalDataSubscription {
 public:
     OperationalDataSubscription(const std::string& moduleName, const std::string& path, const DataSupplier& dataSupplier);
+
 private:
     std::shared_ptr<sysrepo::Connection> m_connection;
     std::shared_ptr<sysrepo::Session> m_session;

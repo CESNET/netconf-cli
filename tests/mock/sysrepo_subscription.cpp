@@ -22,11 +22,11 @@ public:
     }
 
     int operator()(
-            sysrepo::S_Session sess,
-            [[maybe_unused]] const char *module_name,
-            [[maybe_unused]] const char *xpath,
-            [[maybe_unused]] sr_event_t event,
-            [[maybe_unused]] uint32_t request_id)
+        sysrepo::S_Session sess,
+        [[maybe_unused]] const char* module_name,
+        [[maybe_unused]] const char* xpath,
+        [[maybe_unused]] sr_event_t event,
+        [[maybe_unused]] uint32_t request_id)
     {
         using namespace std::string_literals;
         if (event == SR_EV_CHANGE) {
@@ -64,7 +64,7 @@ SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder
     if (rec) {
         cb = MyCallback{moduleName, rec};
     } else {
-        cb = [] (auto, auto, auto, auto, auto) { return SR_ERR_OK; };
+        cb = [](auto, auto, auto, auto, auto) { return SR_ERR_OK; };
     }
 
     m_subscription->module_change_subscribe(moduleName.c_str(), cb);
@@ -72,7 +72,7 @@ SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder
 
 
 struct leafDataToSysrepoVal {
-    leafDataToSysrepoVal (sysrepo::S_Val v, const std::string& xpath)
+    leafDataToSysrepoVal(sysrepo::S_Val v, const std::string& xpath)
         : v(v)
         , xpath(xpath)
     {
@@ -108,7 +108,6 @@ struct leafDataToSysrepoVal {
         std::stringstream ss;
         std::copy(what.m_bits.begin(), what.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
         v->set(xpath.c_str(), ss.str().c_str());
-
     }
 
     template <typename Type>
@@ -133,35 +132,36 @@ public:
     {
     }
     int operator()(
-            [[maybe_unused]] sysrepo::S_Session sess,
-            [[maybe_unused]] const char *module_name,
-            const char* path,
-            [[maybe_unused]] const char* request_xpath,
-            [[maybe_unused]] uint32_t request_id,
-            libyang::S_Data_Node& parent)
+        [[maybe_unused]] sysrepo::S_Session sess,
+        [[maybe_unused]] const char* module_name,
+        const char* path,
+        [[maybe_unused]] const char* request_xpath,
+        [[maybe_unused]] uint32_t request_id,
+        libyang::S_Data_Node& parent)
     {
         auto data = m_dataSupplier.get_data(path);
         libyang::S_Data_Node res;
         for (const auto& [p, v] : data) {
             if (!res) {
                 res = std::make_shared<libyang::Data_Node>(
-                        sess->get_context(),
-                        p.c_str(),
-                        v.type() == typeid(empty_) ? nullptr : leafDataToString(v).c_str(),
-                        LYD_ANYDATA_CONSTSTRING,
-                        0);
+                    sess->get_context(),
+                    p.c_str(),
+                    v.type() == typeid(empty_) ? nullptr : leafDataToString(v).c_str(),
+                    LYD_ANYDATA_CONSTSTRING,
+                    0);
             } else {
                 res->new_path(
-                        sess->get_context(),
-                        p.c_str(),
-                        v.type() == typeid(empty_) ? nullptr : leafDataToString(v).c_str(),
-                        LYD_ANYDATA_CONSTSTRING,
-                        0);
+                    sess->get_context(),
+                    p.c_str(),
+                    v.type() == typeid(empty_) ? nullptr : leafDataToString(v).c_str(),
+                    LYD_ANYDATA_CONSTSTRING,
+                    0);
             }
         }
         parent = res;
         return SR_ERR_OK;
     }
+
 private:
     const DataSupplier& m_dataSupplier;
 };

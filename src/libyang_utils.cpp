@@ -6,7 +6,7 @@
 
 leaf_data_ leafValueFromNode(libyang::S_Data_Node_Leaf_List node)
 {
-    std::function<leaf_data_(libyang::S_Data_Node_Leaf_List)> impl = [&impl] (libyang::S_Data_Node_Leaf_List node) -> leaf_data_ {
+    std::function<leaf_data_(libyang::S_Data_Node_Leaf_List)> impl = [&impl](libyang::S_Data_Node_Leaf_List node) -> leaf_data_ {
         // value_type() is what's ACTUALLY stored inside `node`
         // Leafrefs sometimes don't hold a reference to another, but they have the actual pointed-to value.
         switch (node->value_type()) {
@@ -28,8 +28,7 @@ leaf_data_ leafValueFromNode(libyang::S_Data_Node_Leaf_List node)
             return node->value()->int32();
         case LY_TYPE_INT64:
             return node->value()->int64();
-        case LY_TYPE_DEC64:
-        {
+        case LY_TYPE_DEC64: {
             auto v = node->value()->dec64();
             return v.value * std::pow(10, -v.digits);
         }
@@ -43,24 +42,22 @@ leaf_data_ leafValueFromNode(libyang::S_Data_Node_Leaf_List node)
             return identityRef_{node->value()->ident()->module()->name(), node->value()->ident()->name()};
         case LY_TYPE_EMPTY:
             return empty_{};
-        case LY_TYPE_LEAFREF:
-        {
+        case LY_TYPE_LEAFREF: {
             auto refsTo = node->value()->leafref();
             assert(refsTo);
             return impl(std::make_shared<libyang::Data_Node_Leaf_List>(node->value()->leafref()));
         }
-        case LY_TYPE_BITS:
-        {
+        case LY_TYPE_BITS: {
             auto bits = node->value()->bit();
             std::vector<libyang::S_Type_Bit> filterNull;
-            std::copy_if(bits.begin(), bits.end(), std::back_inserter(filterNull), [] (auto bit) { return bit; });
+            std::copy_if(bits.begin(), bits.end(), std::back_inserter(filterNull), [](auto bit) { return bit; });
             bits_ res;
-            std::transform(filterNull.begin(), filterNull.end(), std::inserter(res.m_bits, res.m_bits.end()), [] (const auto& bit) { return bit->name(); });
+            std::transform(filterNull.begin(), filterNull.end(), std::inserter(res.m_bits, res.m_bits.end()), [](const auto& bit) { return bit->name(); });
             return bits_{res};
         }
         default:
             return std::string{"(can't print)"};
-    }
+        }
     };
     return impl(node);
 }
@@ -68,7 +65,7 @@ leaf_data_ leafValueFromNode(libyang::S_Data_Node_Leaf_List node)
 namespace {
 void impl_lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix)
 {
-    auto stripXPathPrefix = [&ignoredXPathPrefix] (auto path) {
+    auto stripXPathPrefix = [&ignoredXPathPrefix](auto path) {
         return ignoredXPathPrefix && path.find(*ignoredXPathPrefix) != std::string::npos ? path.substr(ignoredXPathPrefix->size()) : path;
     };
 

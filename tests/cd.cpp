@@ -105,7 +105,7 @@ TEST_CASE("cd")
             SECTION("example:list[number=1]")
             {
                 input = "cd example:list[number=1]";
-                auto keys = ListInstance {
+                auto keys = ListInstance{
                     {"number", int32_t{1}}};
                 expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("list", keys));
             }
@@ -113,7 +113,7 @@ TEST_CASE("cd")
             SECTION("example:list[number=1]/contInList")
             {
                 input = "cd example:list[number=1]/contInList";
-                auto keys = ListInstance {
+                auto keys = ListInstance{
                     {"number", int32_t{1}}};
                 expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("list", keys));
                 expected.m_path.m_nodes.emplace_back(container_("contInList"));
@@ -122,7 +122,7 @@ TEST_CASE("cd")
             SECTION("example:twoKeyList[number=4][name='abcd']")
             {
                 input = "cd example:twoKeyList[number=4][name='abcd']";
-                auto keys = ListInstance {
+                auto keys = ListInstance{
                     {"number", int32_t{4}},
                     {"name", std::string{"abcd"}}};
                 expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("twoKeyList", keys));
@@ -131,7 +131,7 @@ TEST_CASE("cd")
             SECTION("enum key type")
             {
                 input = "cd example:ports[name=A]";
-                auto keys = ListInstance {
+                auto keys = ListInstance{
                     {"name", enum_{"A"}}};
                 expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("ports", keys));
             }

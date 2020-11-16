@@ -123,7 +123,7 @@ TEST_CASE("leaf editing")
         SECTION("set mod:list[number=1]/leafInList \"another_data\"")
         {
             input = "set mod:list[number=1]/leafInList \"another_data\"";
-            auto keys = ListInstance {
+            auto keys = ListInstance{
                 {"number", int32_t{1}}};
             expected.m_path.m_nodes.emplace_back(module_{"mod"}, listElement_("list", keys));
             expected.m_path.m_nodes.emplace_back(leaf_("leafInList"));
@@ -464,22 +464,27 @@ TEST_CASE("leaf editing")
             {
                 input = "set mod:flags ";
                 decltype(bits_::m_bits) bits;
-                SECTION("<nothing>") {
+                SECTION("<nothing>")
+                {
                     bits = {};
                 }
-                SECTION("carry") {
+                SECTION("carry")
+                {
                     input += "carry";
                     bits = {"carry"};
                 }
-                SECTION("sign") {
+                SECTION("sign")
+                {
                     input += "sign";
                     bits = {"sign"};
                 }
-                SECTION("carry sign") {
+                SECTION("carry sign")
+                {
                     input += "carry sign";
                     bits = {"carry", "sign"};
                 }
-                SECTION("sign carry") {
+                SECTION("sign carry")
+                {
                     input += "sign carry";
                     bits = {"sign", "carry"};
                 }
@@ -585,11 +590,17 @@ TEST_CASE("leaf editing")
         SECTION("wrong base64 strings")
         {
             SECTION("invalid character")
+            {
                 input = "set mod:leafBinary dbahj-";
+            }
             SECTION("equal sign in the middle")
+            {
                 input = "set mod:leafBinary db=ahj";
+            }
             SECTION("enclosing in quotes")
+            {
                 input = "set mod:leafBinary 'dbahj'";
+            }
         }
 
         SECTION("non-existing identity")

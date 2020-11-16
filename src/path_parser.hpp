@@ -266,7 +266,7 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
     using attribute_type = ModeToAttribute<PARSER_MODE>;
     std::function<bool(const Schema&, const std::string& path)> m_filterFunction;
 
-    PathParser(const std::function<bool(const Schema&, const std::string& path)>& filterFunction = [] (const auto&, const auto&) {return true;})
+    PathParser(const std::function<bool(const Schema&, const std::string& path)>& filterFunction = [](const auto&, const auto&) { return true; })
         : m_filterFunction(filterFunction)
     {
     }
@@ -393,7 +393,7 @@ auto const absoluteStart_def =
 auto const trailingSlash_def =
     x3::omit['/'] >> x3::attr(TrailingSlash::Present);
 
-auto const filterConfigFalse = [] (const Schema& schema, const std::string& path) {
+auto const filterConfigFalse = [](const Schema& schema, const std::string& path) {
     return schema.isConfig(path);
 };
 
@@ -441,7 +441,7 @@ struct RpcActionPath : x3::parser<RpcActionPath> {
         }
 
         if (attr.m_nodes.empty()
-                || (!std::holds_alternative<rpcNode_>(attr.m_nodes.back().m_suffix) && !std::holds_alternative<actionNode_>(attr.m_nodes.back().m_suffix))) {
+            || (!std::holds_alternative<rpcNode_>(attr.m_nodes.back().m_suffix) && !std::holds_alternative<actionNode_>(attr.m_nodes.back().m_suffix))) {
             auto& parserContext = x3::get<parser_context_tag>(ctx);
             parserContext.m_errorMsg = "This is not a path to an RPC/action.";
             return false;
@@ -453,7 +453,7 @@ struct RpcActionPath : x3::parser<RpcActionPath> {
 
 auto const rpcActionPath = as<dataPath_>[RpcActionPath()];
 
-auto const noRpcOrAction = [] (const Schema& schema, const std::string& path) {
+auto const noRpcOrAction = [](const Schema& schema, const std::string& path) {
     auto nodeType = schema.nodeType(path);
     return nodeType != yang::NodeTypes::Rpc && nodeType != yang::NodeTypes::Action;
 };

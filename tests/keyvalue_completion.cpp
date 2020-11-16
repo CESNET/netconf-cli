@@ -5,9 +5,9 @@
  *
 */
 
+#include "trompeloeil_doctest.hpp"
 #include <experimental/iterator>
 #include <iostream>
-#include "trompeloeil_doctest.hpp"
 #include "ast_commands.hpp"
 #include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
@@ -74,12 +74,12 @@ TEST_CASE("keyvalue_completion")
             SECTION("number")
             {
                 input += "number=";
-                expected = { "1", "7", "10", "100" };
+                expected = {"1", "7", "10", "100"};
             }
             SECTION("name")
             {
                 input += "name=";
-                expected = { "'Petr'", "'Honza'"};
+                expected = {"'Petr'", "'Honza'"};
             }
             queryExpectations.emplace_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:twoKeyList")).RETURN(queryReturn));
         }
@@ -90,12 +90,12 @@ TEST_CASE("keyvalue_completion")
             SECTION("Petr")
             {
                 input += "'Petr'";
-                expected = { "1", "7", "10"};
+                expected = {"1", "7", "10"};
             }
             SECTION("Honza")
             {
                 input += "'Honza'";
-                expected = { "10", "100" };
+                expected = {"10", "100"};
             }
             input += "][number=";
             queryExpectations.emplace_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:twoKeyList"))
@@ -109,22 +109,22 @@ TEST_CASE("keyvalue_completion")
             SECTION("1")
             {
                 input += "1";
-                expected = { "'Petr'" };
+                expected = {"'Petr'"};
             }
             SECTION("7")
             {
                 input += "7";
-                expected = { "'Petr'" };
+                expected = {"'Petr'"};
             }
             SECTION("10")
             {
                 input += "10";
-                expected = { "'Honza'", "'Petr'" };
+                expected = {"'Honza'", "'Petr'"};
             }
             SECTION("100")
             {
                 input += "100";
-                expected = { "'Honza'" };
+                expected = {"'Honza'"};
             }
             input += "][name=";
             queryExpectations.emplace_back(NAMED_REQUIRE_CALL(*mockDatastore, listInstances("/example:twoKeyList"))
@@ -152,7 +152,6 @@ TEST_CASE("keyvalue_completion")
             queryExpectations.emplace_back(NAMED_ALLOW_CALL(*mockDatastore, listInstances("/example:twoKeyList"))
                     .RETURN(queryReturn));
         }
-
     }
 
     REQUIRE(parser.completeCommand(input, errorStream).m_completions == expected);

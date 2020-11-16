@@ -167,9 +167,9 @@ std::set<ModuleNodePair> StaticSchema::availableNodes(const boost::variant<dataP
         return res;
     }
 
-    auto getTopLevelModule = [] (const auto& path) -> boost::optional<std::string> {
+    auto getTopLevelModule = [](const auto& path) -> boost::optional<std::string> {
         if (!path.m_nodes.empty()) {
-            return path.m_nodes.begin()->m_prefix.flat_map([] (const auto& module) {return boost::optional<std::string>(module.m_name);});
+            return path.m_nodes.begin()->m_prefix.flat_map([](const auto& module) { return boost::optional<std::string>(module.m_name); });
         }
 
         return boost::none;
@@ -213,7 +213,6 @@ struct impl_nodeType {
     yang::NodeTypes operator()(const yang::leaf&)
     {
         return yang::NodeTypes::Leaf;
-
     }
     yang::NodeTypes operator()(const yang::leaflist&)
     {

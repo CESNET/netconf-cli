@@ -43,7 +43,9 @@ TEST_CASE("ls")
         SECTION("no arguments")
         {
             SECTION("ls")
+            {
                 input = "ls";
+            }
 
             SECTION("ls --recursive")
             {
@@ -62,7 +64,7 @@ TEST_CASE("ls")
 
             SECTION("ls /example:a")
             {
-                SECTION("cwd: /") {}
+                SECTION("cwd: /") { }
                 SECTION("cwd: /example:a") { parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}}); }
 
                 input = "ls /example:a";
@@ -71,7 +73,7 @@ TEST_CASE("ls")
 
             SECTION("ls /")
             {
-                SECTION("cwd: /") {}
+                SECTION("cwd: /") { }
                 SECTION("cwd: /example:a") { parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}}); }
                 input = "ls /";
                 expected.m_path = dataPath_{Scope::Absolute, {}};
@@ -105,7 +107,7 @@ TEST_CASE("ls")
 
             SECTION("ls /example:a/a2")
             {
-                SECTION("cwd: /") {}
+                SECTION("cwd: /") { }
                 SECTION("cwd: /example:a") { parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}}); }
                 input = "ls /example:a/a2";
                 expected.m_path = dataPath_{Scope::Absolute, {dataNode_(module_{"example"}, container_{"a"}),
@@ -128,7 +130,7 @@ TEST_CASE("ls")
 
             SECTION("ls /example:a/example:a2")
             {
-                SECTION("cwd: /") {}
+                SECTION("cwd: /") { }
                 SECTION("cwd: /example:a") { parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}}); }
 
                 input = "ls /example:a/example:a2";
@@ -138,7 +140,7 @@ TEST_CASE("ls")
 
             SECTION("ls --recursive /example:a")
             {
-                SECTION("cwd: /") {}
+                SECTION("cwd: /") { }
                 SECTION("cwd: /example:a") { parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}}); }
 
                 input = "ls --recursive /example:a";
@@ -154,7 +156,7 @@ TEST_CASE("ls")
 
             SECTION("ls /example:list")
             {
-                SECTION("cwd: /") {}
+                SECTION("cwd: /") { }
                 SECTION("cwd: /example:a") { parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}}); }
                 input = "ls /example:list";
                 expected.m_path = dataPath_{Scope::Absolute, {dataNode_(module_{"example"}, list_{"list"})}};
@@ -178,7 +180,7 @@ TEST_CASE("ls")
             SECTION("ls example:list[number=342]/contInList")
             {
                 input = "ls example:list[number=342]/contInList";
-                auto keys = ListInstance {
+                auto keys = ListInstance{
                     {"number", int32_t{342}}};
                 expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, listElement_{"list", keys}),
                                                                 dataNode_(container_{"contInList"})}};
@@ -201,7 +203,7 @@ TEST_CASE("ls")
             SECTION("ls example:list[number=343]/..")
             {
                 input = "ls example:list[number=343]/..";
-                auto keys = ListInstance {
+                auto keys = ListInstance{
                     {"number", int32_t{343}}};
                 expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, listElement_{"list", keys}), dataNode_{nodeup_{}}}};
             }
@@ -229,44 +231,44 @@ TEST_CASE("ls")
         SECTION("invalid path")
         {
             SECTION("ls example:nonexistent")
-                input = "ls example:nonexistent";
+            input = "ls example:nonexistent";
 
             SECTION("ls /example:nonexistent")
-                input = "ls /example:nonexistent";
+            input = "ls /example:nonexistent";
 
             SECTION("ls /exa")
             {
-                SECTION("cwd: /") {}
+                SECTION("cwd: /") { }
                 SECTION("cwd: /example:a") { parser.changeNode(dataPath_{Scope::Relative, {dataNode_(module_{"example"}, container_{"a"})}}); }
                 input = "ls /exa";
             }
 
             SECTION("ls /bad:nonexistent")
-                input = "ls /bad:nonexistent";
+            input = "ls /bad:nonexistent";
 
             SECTION("ls example:a/nonexistent")
-                input = "ls example:a/nonexistent";
+            input = "ls example:a/nonexistent";
 
             SECTION("ls /example:a/nonexistent")
-                input = "ls /example:a/nonexistent";
+            input = "ls /example:a/nonexistent";
         }
 
         SECTION("whitespace before path")
         {
             SECTION("ls --recursive/")
-                input = "ls --recursive/";
+            input = "ls --recursive/";
 
             SECTION("ls/")
-                input = "ls/";
+            input = "ls/";
 
             SECTION("ls --recursive/example:a")
-                input = "ls --recursive/example:a";
+            input = "ls --recursive/example:a";
 
             SECTION("ls/example:a")
-                input = "ls/example:a";
+            input = "ls/example:a";
 
             SECTION("lssecond:a")
-                input = "lssecond:a";
+            input = "lssecond:a";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);

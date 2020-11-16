@@ -60,8 +60,8 @@ Options:
   -v         enable verbose mode
   -p <port>  port number [default: 830]
 )";
-#include "netconf_access.hpp"
 #include "cli-netconf.hpp"
+#include "netconf_access.hpp"
 #define PROGRAM_NAME "netconf-access"
 #else
 #error "Unknown CLI backend"
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
         } else if (ds.asString() == "running") {
             datastoreType = Datastore::Running;
         } else {
-            std::cerr << PROGRAM_NAME <<  ": unknown datastore: " << ds.asString() << "\n";
+            std::cerr << PROGRAM_NAME << ": unknown datastore: " << ds.asString() << "\n";
             return 1;
         }
     }
@@ -129,7 +129,6 @@ int main(int argc, char* argv[])
                 std::cerr << ex.what() << "\n";
                 return 1;
             }
-
         }
     }
     if (const auto& dataFiles = args["-i"]) {
@@ -175,10 +174,10 @@ int main(int argc, char* argv[])
 
     Replxx lineEditor;
 
-    lineEditor.bind_key(Replxx::KEY::meta(Replxx::KEY::BACKSPACE), [&lineEditor] (const auto& code) {
+    lineEditor.bind_key(Replxx::KEY::meta(Replxx::KEY::BACKSPACE), [&lineEditor](const auto& code) {
         return lineEditor.invoke(Replxx::ACTION::KILL_TO_BEGINING_OF_WORD, code);
     });
-    lineEditor.bind_key(Replxx::KEY::control('W'), [&lineEditor] (const auto& code) {
+    lineEditor.bind_key(Replxx::KEY::control('W'), [&lineEditor](const auto& code) {
         return lineEditor.invoke(Replxx::ACTION::KILL_TO_WHITESPACE_ON_LEFT, code);
     });
 

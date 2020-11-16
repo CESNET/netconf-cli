@@ -63,7 +63,6 @@ dataNode_::dataNode_(boost::optional<module_> module, decltype(m_suffix) node)
     : m_prefix(module)
     , m_suffix(node)
 {
-
 }
 
 schemaNode_::schemaNode_(decltype(m_suffix) node)

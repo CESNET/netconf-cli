@@ -57,7 +57,7 @@ struct key_identifier_class {
 
         if (schema.listHasKey(dataPathToSchemaPath(parserContext.m_tmpListPath), ast)) {
             parserContext.m_tmpListKeyLeafPath.m_location = dataPathToSchemaPath(parserContext.m_tmpListPath);
-            parserContext.m_tmpListKeyLeafPath.m_node = { optModuleToOptString(parserContext.m_tmpListPath.m_nodes.back().m_prefix), ast };
+            parserContext.m_tmpListKeyLeafPath.m_node = {optModuleToOptString(parserContext.m_tmpListPath.m_nodes.back().m_prefix), ast};
         } else {
             auto listName = std::get<list_>(parserContext.m_tmpListPath.m_nodes.back().m_suffix).m_name;
             parserContext.m_errorMsg = listName + " is not indexed by \"" + ast + "\".";
@@ -333,12 +333,12 @@ struct createValueSuggestions_class {
 
         decltype(listInstances) filteredInstances;
         //This filters out instances, which don't correspond to the partial instance we have.
-        const auto partialFitsComplete = [&parserContext] (const auto& complete) {
+        const auto partialFitsComplete = [&parserContext](const auto& complete) {
             const auto& partial = parserContext.m_tmpListKeys;
-            return std::all_of(partial.begin(), partial.end(), [&complete] (const auto& oneKV) {
-                    const auto& [k, v] = oneKV;
-                    return complete.at(k) == v;
-                    });
+            return std::all_of(partial.begin(), partial.end(), [&complete](const auto& oneKV) {
+                const auto& [k, v] = oneKV;
+                return complete.at(k) == v;
+            });
         };
         std::copy_if(listInstances.begin(), listInstances.end(), std::inserter(filteredInstances, filteredInstances.end()), partialFitsComplete);
 
@@ -370,7 +370,7 @@ struct suggestKeysEnd_class {
 };
 
 template <typename T>
-std::string commandNamesVisitor (boost::type<T>)
+std::string commandNamesVisitor(boost::type<T>)
 {
     return T::name;
 }

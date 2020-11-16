@@ -9,8 +9,8 @@
 #include <experimental/iterator>
 #include <libyang/Tree_Data.hpp>
 #include <libyang/Tree_Schema.hpp>
-#include <sysrepo-cpp/Session.hpp>
 #include <sstream>
+#include <sysrepo-cpp/Session.hpp>
 #include "libyang_utils.hpp"
 #include "sysrepo_access.hpp"
 #include "utils.hpp"
@@ -44,8 +44,7 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
         return std::string(value->data()->get_string());
     case SR_ENUM_T:
         return enum_{std::string(value->data()->get_enum())};
-    case SR_IDENTITYREF_T:
-    {
+    case SR_IDENTITYREF_T: {
         auto pair = splitModuleNode(value->data()->get_identityref());
         return identityRef_{*pair.first, pair.second};
     }
@@ -61,8 +60,7 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
         return special_{SpecialValue::PresenceContainer};
     case SR_LIST_T:
         return special_{SpecialValue::List};
-    case SR_BITS_T:
-    {
+    case SR_BITS_T: {
         bits_ res;
         std::istringstream ss(value->data()->get_bits());
         while (!ss.eof()) {
@@ -71,7 +69,6 @@ leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
             res.m_bits.push_back(bit);
         }
         return res;
-
     }
     default: // TODO: implement all types
         return value->val_to_string();
@@ -333,7 +330,7 @@ DatastoreAccess::Tree toTree(const std::string& path, const std::shared_ptr<sysr
 }
 
 // TODO: merge this with executeAction
-DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string &path, const Tree &input)
+DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string& path, const Tree& input)
 {
     auto srInput = toSrVals(path, input);
     auto output = m_session->rpc_send(path.c_str(), srInput);
@@ -384,7 +381,7 @@ std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
 
     decltype(lists) instances;
     auto wantedTree = *(m_schema->dataNodeFromPath(path)->find_path(path.c_str())->data().begin());
-    std::copy_if(lists.begin(), lists.end(), std::inserter(instances, instances.end()), [this, pathToCheck=wantedTree->schema()->path()](const auto& item) {
+    std::copy_if(lists.begin(), lists.end(), std::inserter(instances, instances.end()), [this, pathToCheck = wantedTree->schema()->path()](const auto& item) {
         // This filters out non-instances.
         if (item.second.type() != typeid(special_) || boost::get<special_>(item.second).m_value != SpecialValue::List) {
             return false;

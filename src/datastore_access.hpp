@@ -12,9 +12,9 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include "yang_operations.hpp"
 #include "ast_values.hpp"
 #include "list_instance.hpp"
+#include "yang_operations.hpp"
 
 /*! \class DatastoreAccess
  *     \brief Abstract class for accessing a datastore

@@ -53,8 +53,8 @@ private:
     void impl_removeNode(const std::string& path);
     void validate();
 
-    std::unique_ptr<ly_ctx, void(*)(ly_ctx*)> m_ctx;
-    std::unique_ptr<lyd_node, void(*)(lyd_node*)> m_datastore;
+    std::unique_ptr<ly_ctx, void (*)(ly_ctx*)> m_ctx;
+    std::unique_ptr<lyd_node, void (*)(lyd_node*)> m_datastore;
     std::shared_ptr<YangSchema> m_schema;
     const int m_validation_mode;
 };

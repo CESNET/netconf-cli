@@ -233,7 +233,7 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
         // I take the first child here, because the first element (the parent of the child()) will be the list
         for (const auto& keyLeaf : instance->child()->tree_for()) {
             auto leafData = std::make_shared<libyang::Data_Node_Leaf_List>(keyLeaf);
-            instanceRes.insert({ leafData->schema()->name(), leafValueFromNode(leafData)});
+            instanceRes.insert({leafData->schema()->name(), leafValueFromNode(leafData)});
         }
         res.emplace_back(instanceRes);
     }

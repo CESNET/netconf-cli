@@ -198,7 +198,7 @@ yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) con
     auto leaf = std::make_shared<NodeType>(node);
     auto leafUnits = leaf->units();
     std::function<yang::TypeInfo(std::shared_ptr<libyang::Type>)> resolveType;
-    resolveType = [this, &resolveType, leaf, leafUnits] (std::shared_ptr<libyang::Type> type) -> yang::TypeInfo {
+    resolveType = [this, &resolveType, leaf, leafUnits](std::shared_ptr<libyang::Type> type) -> yang::TypeInfo {
         yang::LeafDataType resType;
         switch (type->base()) {
         case LY_TYPE_STRING:
@@ -249,24 +249,22 @@ yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) con
         case LY_TYPE_LEAFREF:
             resType.emplace<yang::LeafRef>(::leafrefPath(type), std::make_unique<yang::TypeInfo>(leafType(::leafrefPath(type))));
             break;
-        case LY_TYPE_BITS:
-            {
-                auto resBits = yang::Bits{};
-                for (const auto& bit : type->info()->bits()->bit()) {
-                    resBits.m_allowedValues.emplace(bit->name());
-                }
-                resType.emplace<yang::Bits>(std::move(resBits));
-                break;
+        case LY_TYPE_BITS: {
+            auto resBits = yang::Bits{};
+            for (const auto& bit : type->info()->bits()->bit()) {
+                resBits.m_allowedValues.emplace(bit->name());
             }
-        case LY_TYPE_UNION:
-            {
-                auto resUnion = yang::Union{};
-                for (auto unionType : type->info()->uni()->types()) {
-                    resUnion.m_unionTypes.emplace_back(resolveType(unionType));
-                }
-                resType.emplace<yang::Union>(std::move(resUnion));
-                break;
+            resType.emplace<yang::Bits>(std::move(resBits));
+            break;
+        }
+        case LY_TYPE_UNION: {
+            auto resUnion = yang::Union{};
+            for (auto unionType : type->info()->uni()->types()) {
+                resUnion.m_unionTypes.emplace_back(resolveType(unionType));
             }
+            resType.emplace<yang::Union>(std::move(resUnion));
+            break;
+        }
         default:
             using namespace std::string_literals;
             throw UnsupportedYangTypeException("the type of "s + leaf->name() + " is not supported: " + std::to_string(leaf->type()->base()));

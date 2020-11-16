@@ -6,11 +6,11 @@
  *
 */
 
-#include <experimental/iterator>
 #include "trompeloeil_doctest.hpp"
+#include <experimental/iterator>
 #include "ast_commands.hpp"
-#include "interpreter.hpp"
 #include "datastoreaccess_mock.hpp"
+#include "interpreter.hpp"
 #include "parser.hpp"
 #include "pretty_printers.hpp"
 #include "static_schema.hpp"
@@ -236,7 +236,6 @@ TEST_CASE("interpreter tests")
                         scope = Scope::Relative;
                         inputPath = dataPath_{scope, {dataNode_{nodeup_{}}, dataNode_{{"mod"}, leaf_{"myLeaf"}}}};
                     }
-
                 }
             }
 

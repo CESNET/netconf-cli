@@ -12,16 +12,17 @@
 namespace std {
 std::ostream& operator<<(std::ostream& s, const leaf_data_& value)
 {
-    s << "leaf_data_<"<< boost::core::demangle(value.type().name()) << ">{" << leafDataToString(value) << "}" << std::endl;
+    s << "leaf_data_<" << boost::core::demangle(value.type().name()) << ">{" << leafDataToString(value) << "}" << std::endl;
     return s;
 }
 std::ostream& operator<<(std::ostream& s, const Completions& completion)
 {
-    s << std::endl << "Completions {" << std::endl << "    m_completions: ";
-    std::transform(completion.m_completions.begin(), completion.m_completions.end(),
-            std::experimental::make_ostream_joiner(s, ", "),
-            [] (auto it) { return '"' + it + '"'; });
-    s << std::endl << "    m_contextLength: " << completion.m_contextLength << std::endl;
+    s << std::endl
+      << "Completions {" << std::endl
+      << "    m_completions: ";
+    std::transform(completion.m_completions.begin(), completion.m_completions.end(), std::experimental::make_ostream_joiner(s, ", "), [](auto it) { return '"' + it + '"'; });
+    s << std::endl
+      << "    m_contextLength: " << completion.m_contextLength << std::endl;
     s << "}" << std::endl;
     return s;
 }
@@ -80,12 +81,12 @@ std::ostream& operator<<(std::ostream& s, const yang::LeafDataType& type)
         s << "}";
     }
     if (std::holds_alternative<yang::LeafRef>(type)) {
-        s << "{" << std::get<yang::LeafRef>(type).m_targetXPath << "," << std::get<yang::LeafRef>(type).m_targetType->m_type  << "}";
+        s << "{" << std::get<yang::LeafRef>(type).m_targetXPath << "," << std::get<yang::LeafRef>(type).m_targetType->m_type << "}";
     }
     if (std::holds_alternative<yang::Union>(type)) {
         s << "{" << std::endl;
         auto types = std::get<yang::Union>(type).m_unionTypes;
-        std::transform(types.begin(), types.end(), std::experimental::make_ostream_joiner(s, ",\n"), [] (const auto& type) {
+        std::transform(types.begin(), types.end(), std::experimental::make_ostream_joiner(s, ",\n"), [](const auto& type) {
             return type.m_type;
         });
     }
@@ -115,7 +116,8 @@ std::ostream& operator<<(std::ostream& s, const std::set<ModuleNodePair>& set)
 
 std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
 {
-    s << std::endl << "{";
+    s << std::endl
+      << "{";
     std::copy(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", "));
     s << "}" << std::endl;
     return s;
@@ -123,17 +125,21 @@ std::ostream& operator<<(std::ostream& s, const std::set<std::string> set)
 
 std::ostream& operator<<(std::ostream& s, const std::vector<ListInstance> set)
 {
-    s << std::endl << "{" << std::endl;
+    s << std::endl
+      << "{" << std::endl;
     std::transform(set.begin(), set.end(), std::experimental::make_ostream_joiner(s, ", \n"), [](const auto& map) {
         std::ostringstream ss;
-        ss << "    {" << std::endl << "        ";
-        std::transform(map.begin(), map.end(), std::experimental::make_ostream_joiner(ss, ", \n        "), [](const auto& keyValue){
+        ss << "    {" << std::endl
+           << "        ";
+        std::transform(map.begin(), map.end(), std::experimental::make_ostream_joiner(ss, ", \n        "), [](const auto& keyValue) {
             return "{" + keyValue.first + "{" + boost::core::demangle(keyValue.second.type().name()) + "}" + ", " + leafDataToString(keyValue.second) + "}";
         });
-        ss << std::endl << "    }";
+        ss << std::endl
+           << "    }";
         return ss.str();
     });
-    s << std::endl << "}" << std::endl;
+    s << std::endl
+      << "}" << std::endl;
     return s;
 }
 }

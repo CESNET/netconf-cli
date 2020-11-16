@@ -10,9 +10,10 @@
 
 using namespace pybind11::literals;
 
-PYBIND11_MODULE(sysrepo_subscription_py, m) {
+PYBIND11_MODULE(sysrepo_subscription_py, m)
+{
     m.doc() = "SysrepoSubscription Python interface";
 
     pybind11::class_<SysrepoSubscription>(m, "SysrepoSubscription")
-            .def(pybind11::init<const std::string&>(), "moduleName"_a);
+        .def(pybind11::init<const std::string&>(), "moduleName"_a);
 }

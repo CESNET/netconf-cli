@@ -5,9 +5,9 @@
  *
 */
 
+#include "trompeloeil_doctest.hpp"
 #include <map>
 #include "datastore_access.hpp"
-#include "trompeloeil_doctest.hpp"
 #include "utils.hpp"
 
 namespace trompeloeil {
@@ -38,5 +38,3 @@ class MockDatastoreAccess : public trompeloeil::mock_interface<DatastoreAccess> 
     IMPLEMENT_MOCK2(copyConfig);
     IMPLEMENT_CONST_MOCK1(dump);
 };
-
-

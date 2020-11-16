@@ -27,55 +27,65 @@ TEST_CASE("utils")
         REQUIRE((filterByPrefix(set, "co") == std::set<Completion>{{"copak"}, {"coze"}}));
     }
 
-    SECTION("joinPaths") {
+    SECTION("joinPaths")
+    {
         std::string prefix, suffix, result;
 
-        SECTION("regular") {
+        SECTION("regular")
+        {
             prefix = "/example:a";
             suffix = "leaf";
             result = "/example:a/leaf";
         }
 
-        SECTION("no prefix - absolute path") {
+        SECTION("no prefix - absolute path")
+        {
             suffix = "/example:a/leaf";
             result = "/example:a/leaf";
         }
 
-        SECTION("no prefix - relative path") {
+        SECTION("no prefix - relative path")
+        {
             suffix = "example:a/leaf";
             result = "example:a/leaf";
         }
 
-        SECTION("no suffix") {
+        SECTION("no suffix")
+        {
             prefix = "/example:a/leaf";
             result = "/example:a/leaf";
         }
 
-        SECTION("at root") {
+        SECTION("at root")
+        {
             prefix = "/";
             suffix = "example:a";
             result = "/example:a";
         }
 
-        SECTION("trailing slash") {
+        SECTION("trailing slash")
+        {
             prefix = "/example:a";
             suffix = "/";
             result = "/example:a/";
         }
 
-        SECTION("prefix ends with slash") {
+        SECTION("prefix ends with slash")
+        {
             prefix = "/example:a/";
             suffix = "leaf";
             result = "/example:a/leaf";
         }
 
-        SECTION("suffix starts with slash") {
+        SECTION("suffix starts with slash")
+        {
             prefix = "/example:a";
             suffix = "/leaf";
             result = "/example:a/leaf";
         }
 
-        SECTION("slashes all the way to eleven") {
+        SECTION("slashes all the way to eleven")
+        {
             prefix = "/example:a/";
             suffix = "/leaf";
             result = "/example:a/leaf";
@@ -100,9 +110,7 @@ TEST_CASE("utils")
         }
 
         REQUIRE(leafDataTypeToString(type) == expected);
-
     }
-
 }
 
 const auto schema = R"(
@@ -264,79 +272,98 @@ TEST_CASE("libyang_utils")
     ctx->parse_module_mem(schema, LYS_IN_YANG);
     auto dataNode = ctx->parse_data_mem(data, LYD_JSON, LYD_OPT_DATA_NO_YANGLIB | LYD_OPT_NOEXTDEPS | LYD_OPT_STRICT);
 
-    SECTION("leafValueFromNode") {
+    SECTION("leafValueFromNode")
+    {
         std::string path;
         leaf_data_ expectedLeafData;
 
-        SECTION("test-schema:int8") {
+        SECTION("test-schema:int8")
+        {
             path = "test-schema:int8";
             expectedLeafData = int8_t{8};
         }
-        SECTION("test-schema:int16") {
+        SECTION("test-schema:int16")
+        {
             path = "test-schema:int16";
             expectedLeafData = int16_t{300};
         }
-        SECTION("test-schema:int32") {
+        SECTION("test-schema:int32")
+        {
             path = "test-schema:int32";
             expectedLeafData = int32_t{-300};
         }
-        SECTION("test-schema:int64") {
+        SECTION("test-schema:int64")
+        {
             path = "test-schema:int64";
             expectedLeafData = int64_t{-999999999999999};
         }
-        SECTION("test-schema:uint8") {
+        SECTION("test-schema:uint8")
+        {
             path = "test-schema:uint8";
             expectedLeafData = uint8_t{8};
         }
-        SECTION("test-schema:uint16") {
+        SECTION("test-schema:uint16")
+        {
             path = "test-schema:uint16";
             expectedLeafData = uint16_t{300};
         }
-        SECTION("test-schema:uint32") {
+        SECTION("test-schema:uint32")
+        {
             path = "test-schema:uint32";
             expectedLeafData = uint32_t{300};
         }
-        SECTION("test-schema:uint64") {
+        SECTION("test-schema:uint64")
+        {
             path = "test-schema:uint64";
             expectedLeafData = uint64_t{999999999999999};
         }
-        SECTION("test-schema:boolean") {
+        SECTION("test-schema:boolean")
+        {
             path = "test-schema:boolean";
             expectedLeafData = true;
         }
-        SECTION("test-schema:string") {
+        SECTION("test-schema:string")
+        {
             path = "test-schema:string";
             expectedLeafData = std::string{"AHOJ"};
         }
-        SECTION("test-schema:enum") {
+        SECTION("test-schema:enum")
+        {
             path = "test-schema:enum";
             expectedLeafData = enum_{"A"};
         }
-        SECTION("test-schema:identityRef") {
+        SECTION("test-schema:identityRef")
+        {
             path = "test-schema:identityRef";
             expectedLeafData = identityRef_{"test-schema", "apple"};
         }
-        SECTION("test-schema:binary") {
+        SECTION("test-schema:binary")
+        {
             path = "test-schema:binary";
             expectedLeafData = binary_{"QUhPSgo="};
         }
-        SECTION("test-schema:empty") {
+        SECTION("test-schema:empty")
+        {
             path = "test-schema:empty";
             expectedLeafData = empty_{};
         }
-        SECTION("test-schema:bits") {
+        SECTION("test-schema:bits")
+        {
             path = "test-schema:bits";
             expectedLeafData = bits_{{"a", "AHOJ"}};
         }
-        SECTION("test-schema:dec64") {
+        SECTION("test-schema:dec64")
+        {
             path = "test-schema:dec64";
             expectedLeafData = 43242.43260;
         }
-        SECTION("test-schema:leafRefPresent") {
+        SECTION("test-schema:leafRefPresent")
+        {
             path = "test-schema:leafRefPresent";
             expectedLeafData = std::string{"Xaver"};
         }
-        SECTION("test-schema:leafRefNonPresent") {
+        SECTION("test-schema:leafRefNonPresent")
+        {
             path = "test-schema:leafRefNonPresent";
             expectedLeafData = std::string{"Lucas"};
         }
@@ -345,11 +372,11 @@ TEST_CASE("libyang_utils")
         REQUIRE(leaf->number() == 1);
         auto firstLeaf = std::make_shared<libyang::Data_Node_Leaf_List>(leaf->data().front());
         REQUIRE(leafValueFromNode(firstLeaf) == expectedLeafData);
-
     }
 
-    SECTION("lyNodesToTree") {
-        DatastoreAccess::Tree expected {
+    SECTION("lyNodesToTree")
+    {
+        DatastoreAccess::Tree expected{
             {"/test-schema:int8", int8_t{8}},
             {"/test-schema:int16", int16_t{300}},
             {"/test-schema:int32", int32_t{-300}},

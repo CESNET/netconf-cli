@@ -35,6 +35,7 @@ public:
     void cancel();
 
     [[nodiscard]] std::shared_ptr<Schema> schema() const;
+
 private:
     /** @brief Picks a datastore based on the requested path.
      *

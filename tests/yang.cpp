@@ -6,10 +6,10 @@
  *
 */
 
+#include "trompeloeil_doctest.hpp"
 #include <experimental/iterator>
 #include "leaf_data_helpers.hpp"
 #include "pretty_printers.hpp"
-#include "trompeloeil_doctest.hpp"
 #include "yang_schema.hpp"
 
 const char* second_schema = R"(

@@ -8,8 +8,8 @@
 
 #include "trompeloeil_doctest.hpp"
 #include <sysrepo-cpp/Session.hpp>
-#include "yang_schema.hpp"
 #include "proxy_datastore.hpp"
+#include "yang_schema.hpp"
 
 #ifdef sysrepo_BACKEND
 #include "sysrepo_access.hpp"
@@ -219,7 +219,7 @@ TEST_CASE("setting/getting values")
 
     SECTION("set a non-existing leaf")
     {
-        catching<OnInvalidSchemaPathCreate>([&]{
+        catching<OnInvalidSchemaPathCreate>([&] {
             datastore.setLeaf("/example-schema:non-existing", "what"s);
         });
     }
@@ -251,7 +251,7 @@ TEST_CASE("setting/getting values")
 
     SECTION("deleting non-existing list keys")
     {
-        catching<OnKeyNotFound>([&]{
+        catching<OnKeyNotFound>([&] {
             datastore.deleteItem("/example-schema:person[name='non existing']");
             datastore.commitChanges();
         });
@@ -259,11 +259,11 @@ TEST_CASE("setting/getting values")
 
     SECTION("accessing non-existing schema nodes as a list")
     {
-        catching<OnInvalidSchemaPathCreate>([&]{
+        catching<OnInvalidSchemaPathCreate>([&] {
             datastore.createItem("/example-schema:non-existing-list[xxx='blah']");
             datastore.commitChanges();
         });
-        catching<OnInvalidSchemaPathDelete>([&]{
+        catching<OnInvalidSchemaPathDelete>([&] {
             datastore.deleteItem("/example-schema:non-existing-list[xxx='non existing']");
             datastore.commitChanges();
         });
@@ -402,7 +402,7 @@ TEST_CASE("setting/getting values")
 
     SECTION("creating a non-existing schema node as a container")
     {
-        catching<OnInvalidSchemaPathCreate>([&]{
+        catching<OnInvalidSchemaPathCreate>([&] {
             datastore.createItem("/example-schema:non-existing-presence-container");
             datastore.commitChanges();
         });
@@ -410,7 +410,7 @@ TEST_CASE("setting/getting values")
 
     SECTION("deleting a non-existing schema node as a container or leaf")
     {
-        catching<OnInvalidSchemaPathDelete>([&]{
+        catching<OnInvalidSchemaPathDelete>([&] {
             datastore.deleteItem("/example-schema:non-existing-presence-container");
             datastore.commitChanges();
         });
@@ -444,7 +444,7 @@ TEST_CASE("setting/getting values")
         datastore.setLeaf("/example-schema:leafDecimal", 123.4);
         REQUIRE_CALL(mock, write("/example-schema:leafDecimal", std::nullopt, "123.4"s));
         datastore.commitChanges();
-        DatastoreAccess::Tree expected {
+        DatastoreAccess::Tree expected{
             {"/example-schema:leafDecimal", 123.4},
         };
         REQUIRE(datastore.getItems("/example-schema:leafDecimal") == expected);
@@ -455,17 +455,18 @@ TEST_CASE("setting/getting values")
         datastore.setLeaf("/example-schema:unionIntString", int32_t{10});
         REQUIRE_CALL(mock, write("/example-schema:unionIntString", std::nullopt, "10"s));
         datastore.commitChanges();
-        DatastoreAccess::Tree expected {
+        DatastoreAccess::Tree expected{
             {"/example-schema:unionIntString", int32_t{10}},
         };
         REQUIRE(datastore.getItems("/example-schema:unionIntString") == expected);
     }
 
-    SECTION("identityref") {
+    SECTION("identityref")
+    {
         datastore.setLeaf("/example-schema:beast", identityRef_{"example-schema", "Mammal"});
         REQUIRE_CALL(mock, write("/example-schema:beast", std::nullopt, "example-schema:Mammal"s));
         datastore.commitChanges();
-        DatastoreAccess::Tree expected {
+        DatastoreAccess::Tree expected{
             {"/example-schema:beast", identityRef_{"example-schema", "Mammal"}},
         };
         REQUIRE(datastore.getItems("/example-schema:beast") == expected);
@@ -484,7 +485,7 @@ TEST_CASE("setting/getting values")
         datastore.setLeaf("/example-schema:blob", binary_{"cHduegByIQ=="s});
         REQUIRE_CALL(mock, write("/example-schema:blob", std::nullopt, "cHduegByIQ=="s));
         datastore.commitChanges();
-        DatastoreAccess::Tree expected {
+        DatastoreAccess::Tree expected{
             {"/example-schema:blob", binary_{"cHduegByIQ=="s}},
         };
         REQUIRE(datastore.getItems("/example-schema:blob") == expected);
@@ -495,7 +496,7 @@ TEST_CASE("setting/getting values")
         datastore.setLeaf("/example-schema:dummy", empty_{});
         REQUIRE_CALL(mock, write("/example-schema:dummy", std::nullopt, ""s));
         datastore.commitChanges();
-        DatastoreAccess::Tree expected {
+        DatastoreAccess::Tree expected{
             {"/example-schema:dummy", empty_{}},
         };
         REQUIRE(datastore.getItems("/example-schema:dummy") == expected);
@@ -506,7 +507,7 @@ TEST_CASE("setting/getting values")
         datastore.setLeaf("/example-schema:flags", bits_{{"sign", "carry"}});
         REQUIRE_CALL(mock, write("/example-schema:flags", std::nullopt, "carry sign"s));
         datastore.commitChanges();
-        DatastoreAccess::Tree expected {
+        DatastoreAccess::Tree expected{
             {"/example-schema:flags", bits_{{"carry", "sign"}}},
         };
         REQUIRE(datastore.getItems("/example-schema:flags") == expected);
@@ -577,7 +578,7 @@ TEST_CASE("setting/getting values")
 
     SECTION("deleting a non-existing leaf-list")
     {
-        catching<OnKeyNotFound>([&]{
+        catching<OnKeyNotFound>([&] {
             datastore.deleteItem("/example-schema:addresses[.='non-existing']");
             datastore.commitChanges();
         });
@@ -585,12 +586,12 @@ TEST_CASE("setting/getting values")
 
     SECTION("accessing a non-existing schema node as a leaf-list")
     {
-        catching<OnInvalidSchemaPathCreate>([&]{
+        catching<OnInvalidSchemaPathCreate>([&] {
             datastore.createItem("/example-schema:non-existing[.='non-existing']");
             datastore.commitChanges();
         });
 
-        catching<OnInvalidSchemaPathDelete>([&]{
+        catching<OnInvalidSchemaPathDelete>([&] {
             datastore.deleteItem("/example-schema:non-existing[.='non-existing']");
             datastore.commitChanges();
         });
@@ -698,7 +699,7 @@ TEST_CASE("setting/getting values")
 
     SECTION("moving non-existing schema nodes")
     {
-        catching<OnInvalidSchemaPathMove>([&]{
+        catching<OnInvalidSchemaPathMove>([&] {
             datastore.moveItem("/example-schema:non-existing", yang::move::Absolute::Begin);
             datastore.commitChanges();
         });
@@ -904,7 +905,8 @@ struct RpcCb {
     }
 };
 
-TEST_CASE("rpc/action") {
+TEST_CASE("rpc/action")
+{
     trompeloeil::sequence seq1;
 
 #ifdef sysrepo_BACKEND
@@ -946,12 +948,14 @@ TEST_CASE("rpc/action") {
             std::string rpc;
             DatastoreAccess::Tree input, output;
 
-            SECTION("noop") {
+            SECTION("noop")
+            {
                 rpc = "/example-schema:noop";
                 proxyDatastore.initiateRpc(rpc);
             }
 
-            SECTION("small nuke") {
+            SECTION("small nuke")
+            {
                 rpc = "/example-schema:launch-nukes";
                 input = {
                     {"description", "dummy"s},
@@ -962,7 +966,8 @@ TEST_CASE("rpc/action") {
                 // no data are returned
             }
 
-            SECTION("small nuke") {
+            SECTION("small nuke")
+            {
                 rpc = "/example-schema:launch-nukes";
                 input = {
                     {"description", "dummy"s},
@@ -977,7 +982,8 @@ TEST_CASE("rpc/action") {
                 };
             }
 
-            SECTION("with lists") {
+            SECTION("with lists")
+            {
                 rpc = "/example-schema:launch-nukes";
                 input = {
                     {"payload/kilotons", uint64_t{6}},
@@ -997,7 +1003,8 @@ TEST_CASE("rpc/action") {
                 };
             }
 
-            SECTION("with leafref") {
+            SECTION("with leafref")
+            {
                 datastore->createItem("/example-schema:person[name='Colton']");
                 datastore->commitChanges();
 
@@ -1009,13 +1016,13 @@ TEST_CASE("rpc/action") {
                 proxyDatastore.setLeaf("/example-schema:fire/example-schema:whom", "Colton"s);
             }
 
-            catching<OnExec>([&] {REQUIRE(datastore->executeRpc(rpc, input) == output);});
-            catching<OnExec>([&] {REQUIRE(proxyDatastore.execute() == output);});
+            catching<OnExec>([&] { REQUIRE(datastore->executeRpc(rpc, input) == output); });
+            catching<OnExec>([&] { REQUIRE(proxyDatastore.execute() == output); });
         }
 
         SECTION("non-existing RPC")
         {
-            catching<OnInvalidRpcPath>([&] {datastore->executeRpc("/example-schema:non-existing", DatastoreAccess::Tree{});});
+            catching<OnInvalidRpcPath>([&] { datastore->executeRpc("/example-schema:non-existing", DatastoreAccess::Tree{}); });
         }
     }
 
@@ -1033,11 +1040,12 @@ TEST_CASE("rpc/action") {
         };
         datastore->createItem("/example-schema:ports[name='A']");
         datastore->commitChanges();
-        SECTION("shutdown") {
+        SECTION("shutdown")
+        {
             path = "/example-schema:ports[name='A']/shutdown";
         }
 
-        catching<OnExec>([&] {REQUIRE(datastore->executeAction(path, input) == output);});
+        catching<OnExec>([&] { REQUIRE(datastore->executeAction(path, input) == output); });
     }
 
     waitForCompletionAndBitMore(seq1);

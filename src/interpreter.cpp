@@ -115,7 +115,7 @@ void Interpreter::operator()(const ls_& ls) const
     auto toPrint = m_datastore.schema()->availableNodes(toCanonicalPath(ls.m_path), recursion);
 
     for (const auto& it : toPrint) {
-        std::cout << (it.first ? *it.first + ":" : "" ) + it.second << std::endl;
+        std::cout << (it.first ? *it.first + ":" : "") + it.second << std::endl;
     }
 }
 
@@ -134,8 +134,7 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
     case yang::NodeTypes::PresenceContainer:
         ss << "presence container";
         break;
-    case yang::NodeTypes::Leaf:
-    {
+    case yang::NodeTypes::Leaf: {
         auto leafType = m_datastore.schema()->leafType(path);
         auto typedefName = m_datastore.schema()->leafTypeName(path);
         std::string baseTypeStr;

@@ -23,10 +23,12 @@ TEST_CASE("command completion")
     {
         expectedCompletions = {"cd", "copy", "create", "delete", "set", "commit", "get", "ls", "discard", "help", "describe", "move", "dump", "prepare", "exec", "cancel"};
         expectedContextLength = 0;
-        SECTION("no space") {
+        SECTION("no space")
+        {
             input = "";
         }
-        SECTION("space") {
+        SECTION("space")
+        {
             input = " ";
         }
     }

@@ -140,7 +140,7 @@ struct impl_LeafData {
     bool operator()(const yang::IdentityRef& type) const
     {
         createSetSuggestions(type);
-        auto checkValidIdentity = [this, type] (auto& ctx) {
+        auto checkValidIdentity = [this, type](auto& ctx) {
             identityRef_ pair{boost::get<identityRef_>(_attr(ctx))};
             if (!pair.m_prefix) {
                 pair.m_prefix = module_{parserContext.currentSchemaPath().m_nodes.front().m_prefix.get().m_name};

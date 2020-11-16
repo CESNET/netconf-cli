@@ -9,8 +9,8 @@
 #pragma once
 
 #include <boost/variant/static_visitor.hpp>
-#include "proxy_datastore.hpp"
 #include "parser.hpp"
+#include "proxy_datastore.hpp"
 
 
 struct Interpreter : boost::static_visitor<void> {
