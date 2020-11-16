@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2e8a8a39_40f110e1",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-16T15:43:19Z",
+      "side": 1,
+      "message": "- move this out-of-line from here,\n- add a FIXME to replace this with https://en.cppreference.com/w/cpp/thread/jthread from C++20.",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 158,
+        "endChar": 5
+      },
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b6ac05b_e53c8d6b",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-16T15:43:19Z",
+      "side": 1,
+      "message": "What about getting rid of all the #ifdefs by having that return code always available for all backends, not just the NETCONF one:\n\n int backendErrorCode \u003d 0;\n\n // ...\n\n while (backendErrorCode \u003d\u003d 0) {\n   auto line \u003d lineEditor.blahblah\n   if (!line) {\n     ...\n   }\n\n }\n \n return backendErrorCode;\n\nThat way, the existing `if (!line)` will exit the loop for you.",
+      "range": {
+        "startLine": 161,
+        "startChar": 9,
+        "endLine": 161,
+        "endChar": 21
+      },
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0bcba4b_700f3ebb",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-16T15:43:19Z",
+      "side": 1,
+      "message": "I know that it works in the current version of the code, but I think that sending \"Enter\" is a bit strange. Can you inject a ctrl-c or something like that?",
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3087d47d_e63cd1f1",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-16T15:43:19Z",
+      "side": 1,
+      "message": "This code is writing to a variable from thread B while reading the variable from thread A, which mean that you need some synchronization here. My suggestion is to use a std::atomic\u003cint\u003e, store the process\u0027 exit code in there, and return that exit code from main().",
+      "range": {
+        "startLine": 167,
+        "startChar": 12,
+        "endLine": 167,
+        "endChar": 24
+      },
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
