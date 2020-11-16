@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6567ec73_16d068b1",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-16T18:12:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e8a8a39_40f110e1",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 158,
+        "endChar": 5
+      },
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b6ac05b_e53c8d6b",
         "filename": "src/cli.cpp",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2020-11-16T15:43:19Z",
       "side": 1,
       "message": "What about getting rid of all the #ifdefs by having that return code always available for all backends, not just the NETCONF one:\n\n int backendErrorCode \u003d 0;\n\n // ...\n\n while (backendErrorCode \u003d\u003d 0) {\n   auto line \u003d lineEditor.blahblah\n   if (!line) {\n     ...\n   }\n\n }\n \n return backendErrorCode;\n\nThat way, the existing `if (!line)` will exit the loop for you.",
+      "range": {
+        "startLine": 161,
+        "startChar": 9,
+        "endLine": 161,
+        "endChar": 21
+      },
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb1c3ede_46ff347f",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-16T18:12:34Z",
+      "side": 1,
+      "message": "if (!line) won\u0027t exit unfortunately, because !line is only true on EOF. I still need the other if (which is not good because now I have a similar condition on two places, but I don\u0027t know how to fix that...)",
+      "parentUuid": "8b6ac05b_e53c8d6b",
       "range": {
         "startLine": 161,
         "startChar": 9,
@@ -65,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "3d9c43ba_daf2cbd8",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-16T18:12:34Z",
+      "side": 1,
+      "message": "I don\u0027t know, but I asked here: https://github.com/AmokHuginnsson/replxx/issues/95#issuecomment-728232362",
+      "parentUuid": "d0bcba4b_700f3ebb",
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3087d47d_e63cd1f1",
         "filename": "src/cli.cpp",
         "patchSetId": 2
@@ -85,6 +151,30 @@
       "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e40bd984_83700749",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-16T18:12:34Z",
+      "side": 1,
+      "message": "I think ssh\u0027s exit code isn\u0027t too relevant based on what the man page says, but sure, I can copy it",
+      "parentUuid": "3087d47d_e63cd1f1",
+      "range": {
+        "startLine": 167,
+        "startChar": 12,
+        "endLine": 167,
+        "endChar": 24
+      },
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
