@@ -131,6 +131,24 @@
     },
     {
       "key": {
+        "uuid": "fabe95aa_5706aa0d",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-17T11:04:03Z",
+      "side": 1,
+      "message": "I kinda like their Ctrl-U Ctrl-K Ctrl-D dance (I just hope that this \"buffer\" is not related to the X keyboard). Once that\u0027s done, I think that both of the two unresovled comments will be fixed.",
+      "parentUuid": "3d9c43ba_daf2cbd8",
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3087d47d_e63cd1f1",
         "filename": "src/cli.cpp",
         "patchSetId": 2
