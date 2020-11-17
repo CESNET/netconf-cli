@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "2acab01a_3659969f",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-17T11:31:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb1c3ede_46ff347f",
+      "range": {
+        "startLine": 161,
+        "startChar": 9,
+        "endLine": 161,
+        "endChar": 21
+      },
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d0bcba4b_700f3ebb",
         "filename": "src/cli.cpp",
         "patchSetId": 2
@@ -146,6 +170,24 @@
       "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "784e2ab8_4827e3ec",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-17T11:31:43Z",
+      "side": 1,
+      "message": "I also like it, it\u0027s just that it didn\u0027t work before (see the thread I linked).\n\nDone",
+      "parentUuid": "fabe95aa_5706aa0d",
+      "revId": "c7504e49bc10f55b05db434006f2f13add3fd381",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     },
     {
       "key": {
