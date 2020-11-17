@@ -33,6 +33,7 @@ TEST_CASE("cd")
     schema->addRpc("/", "example:launch-nukes");
     schema->addList("/", "example:ports", {"name"});
     schema->addLeaf("/example:ports", "example:name", createEnum({"A", "B", "C"}));
+    schema->addLeaf("/", "example:myLeaf", yang::Int32{});
     Parser parser(schema);
     std::string input;
     std::ostringstream errorStream;
@@ -328,6 +329,11 @@ TEST_CASE("cd")
         SECTION("cd into rpc")
         {
             input = "cd example:launch-nukes";
+        }
+
+        SECTION("cd into a leaf")
+        {
+            input = "cd example:myLeaf";
         }
 
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);

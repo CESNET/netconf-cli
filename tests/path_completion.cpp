@@ -366,5 +366,12 @@ TEST_CASE("path_completion")
         expectedContextLength = 0;
     }
 
+    SECTION("leafs not completed for cd")
+    {
+        input = "cd ";
+        expectedCompletions = {"example:addresses", "example:ano/", "example:anoda/", "example:bota/","example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie/"};
+        expectedContextLength = 0;
+    }
+
     REQUIRE(parser.completeCommand(input, errorStream) == (Completions{expectedCompletions, expectedContextLength}));
 }
