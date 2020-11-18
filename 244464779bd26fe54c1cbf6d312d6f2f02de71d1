@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3fc822bc_ed9a8b85",
+        "filename": "src/cli.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-18T16:20:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a96e04f4_601e5ed9",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 76
+      },
+      "revId": "244464779bd26fe54c1cbf6d312d6f2f02de71d1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7143019d_51ab0b68",
         "filename": "src/cli.cpp",
         "patchSetId": 5
@@ -39,6 +63,24 @@
       "revId": "244464779bd26fe54c1cbf6d312d6f2f02de71d1",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68a75a45_227d86c5",
+        "filename": "src/cli.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-18T16:20:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7143019d_51ab0b68",
+      "revId": "244464779bd26fe54c1cbf6d312d6f2f02de71d1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
