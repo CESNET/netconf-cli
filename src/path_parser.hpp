@@ -294,10 +294,15 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
                 auto hasListEnd = incompleteDataNode<COMPLETION_MODE>{m_filterFunction}.parse(begin, end, ctx, rctx, attrNodeList);
                 if (hasListEnd) {
                     attrData.m_nodes.emplace_back(attrNodeList);
-                    // If the trailing slash matches, no more nodes are parsed.
-                    // That means no more completion. So, I generate them
-                    // manually.
-                    res = (-(trailingSlash >> x3::omit[pathCompletions<COMPLETION_MODE>{m_filterFunction}])).parse(begin, end, ctx, rctx, attrData.m_trailingSlash);
+                    // If the trailing slash matches, no more nodes are parsed. That means no more completion. So, I
+                    // generate them manually, but only if we're in AnyPath mode, so, for example, inside an `ls`
+                    // command. If we're in DataPathListEnd it doesn't make sense to parse put any more nodes after the
+                    // final list.
+                    if constexpr (PARSER_MODE == PathParserMode::AnyPath) {
+                        res = (-(trailingSlash >> x3::omit[pathCompletions<COMPLETION_MODE>{m_filterFunction}])).parse(begin, end, ctx, rctx, attrData.m_trailingSlash);
+                    } else {
+                        res = -(trailingSlash).parse(begin, end, ctx, rctx, attrData.m_trailingSlash);
+                    }
                 }
             }
         }
