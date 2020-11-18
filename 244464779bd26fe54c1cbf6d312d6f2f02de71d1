@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a96e04f4_601e5ed9",
+        "filename": "src/cli.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-18T12:57:38Z",
+      "side": 1,
+      "message": "please add some (source code) comments to explain what these control keys are doing and why you need them",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 76
+      },
+      "revId": "244464779bd26fe54c1cbf6d312d6f2f02de71d1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7143019d_51ab0b68",
+        "filename": "src/cli.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-18T12:57:38Z",
+      "side": 1,
+      "message": "nit: whitespace line noise",
+      "revId": "244464779bd26fe54c1cbf6d312d6f2f02de71d1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
