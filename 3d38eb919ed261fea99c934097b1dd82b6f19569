@@ -51,6 +51,24 @@
       "revId": "3d38eb919ed261fea99c934097b1dd82b6f19569",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d5e22e1_96bab895",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-19T11:03:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a0ea933_c697f21a",
+      "revId": "3d38eb919ed261fea99c934097b1dd82b6f19569",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
