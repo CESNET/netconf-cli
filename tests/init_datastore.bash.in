@@ -42,8 +42,9 @@ if [[ "$BACKEND" = "netconf" ]]; then
     # session and also forks, which means it becomes invisible to ctest.  I want the name of the process to be
     # recognizable. For that `exec -a` can be used. Unfortunately `exec` is shell-builtin, so I need to run bash instead
     # of running `exec` directly. Finally, I redirect its stdout and stderr to a file.
+    NETOPEER_PIDFILE="@CMAKE_CURRENT_BINARY_DIR@/test_netopeer_files/$SYSREPO_SHM_PREFIX.pid"
     setsid -f \
-        bash -c "exec -a '${SYSREPO_SHM_PREFIX}_netopeer2-server' '$NETOPEER2' -d -v2 '-U$NETOPEER_SOCKET'" \
+        bash -c "exec -a '${SYSREPO_SHM_PREFIX}_netopeer2-server' '$NETOPEER2' -d -v2 '-U$NETOPEER_SOCKET' -p'$NETOPEER_PIDFILE'" \
         < /dev/null &> "@CMAKE_CURRENT_BINARY_DIR@/test_netopeer_outputs/$SYSREPO_SHM_PREFIX.out"
     sleep 5
 fi

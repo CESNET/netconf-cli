@@ -269,7 +269,7 @@ if(BUILD_TESTING)
         target_link_libraries(sysreposubscription PUBLIC datastoreaccess PRIVATE PkgConfig::SYSREPO)
 
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_repositories)
-        file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_sockets)
+        file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_netopeer_files)
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_netopeer_outputs)
     endif()
 
@@ -319,7 +319,7 @@ if(BUILD_TESTING)
         set_property(TEST ${TESTNAME} ${TESTNAME}_init ${TESTNAME}_cleanup APPEND PROPERTY ENVIRONMENT
             "SYSREPO_REPOSITORY_PATH=${CMAKE_CURRENT_BINARY_DIR}/test_repositories/${TESTNAME}"
             "SYSREPO_SHM_PREFIX=netconf-cli_${TESTNAME}"
-            "NETOPEER_SOCKET=${CMAKE_CURRENT_BINARY_DIR}/test_sockets/${TESTNAME}.sock"
+            "NETOPEER_SOCKET=${CMAKE_CURRENT_BINARY_DIR}/test_netopeer_files/${TESTNAME}.sock"
             )
 
     endfunction()
@@ -388,7 +388,7 @@ if(WITH_PYTHON_BINDINGS)
         set_property(TEST test_netconf_cli_py test_netconf_cli_py_init test_netconf_cli_py_cleanup APPEND PROPERTY ENVIRONMENT
             "SYSREPO_REPOSITORY_PATH=${CMAKE_CURRENT_BINARY_DIR}/test_repositories/test_netconf_cli_py"
             "SYSREPO_SHM_PREFIX=netconf-cli_test_netconf_cli_py"
-            "NETOPEER_SOCKET=${CMAKE_CURRENT_BINARY_DIR}/test_sockets/test_netconf_cli_py.sock"
+            "NETOPEER_SOCKET=${CMAKE_CURRENT_BINARY_DIR}/test_netopeer_files/test_netconf_cli_py.sock"
             )
 
         set(sanitizer_active OFF)
