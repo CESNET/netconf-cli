@@ -17,7 +17,17 @@ if [[ "$BACKEND" = "netconf" ]]; then
     # line, including stuff set by `exec -a`. Otherwise it matches the name in
     # /proc/{pid}/stat and that is usually limited to 15 characters, so
     # netopeer2-server appears as netopeer2-serve
+    NETOPEER_PID="$(pgrep -f "${SYSREPO_SHM_PREFIX}_netopeer2-server")"
     pkill -f "${SYSREPO_SHM_PREFIX}_netopeer2-server"
+
+    # Wait until netopeer actually exits, because I don't want to remove its repository/shm files while it is still
+    # running.
+    #
+    # One would think, that this is a job for the `wait` command, but that one unfortunately only works for child
+    # processes of the current shell. The `tail` command does implement this mechanism, so I can use that.
+    # https://stackoverflow.com/a/41613532
+    tail --pid="$NETOPEER_PID" -f /dev/null
+
     rm "$NETOPEER_SOCKET"
 fi
 
