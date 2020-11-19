@@ -100,6 +100,7 @@ if [[ ! ${ZUUL_JOB_NAME} =~ .*-no-sysrepo ]]; then
     # Normal builds should have the sysrepo and NETCONF tests
     ctest --show-only=json-v1 | jq -r '.["tests"] | map(.name)' | grep -q test_datastore_access_netconf
     ctest --show-only=json-v1 | jq -r '.["tests"] | map(.name)' | grep -q test_datastore_access_sysrepo
+    cp -r "${BUILD_DIR}/test_netopeer_outputs"  ~/zuul-output
 fi
 
 if [[ $JOB_PERFORM_EXTRA_WORK == 1 ]]; then

@@ -270,6 +270,7 @@ if(BUILD_TESTING)
 
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_repositories)
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_sockets)
+        file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_netopeer_outputs)
     endif()
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/yang_access_test_vars.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/yang_access_test_vars.hpp @ONLY)
@@ -319,6 +320,7 @@ if(BUILD_TESTING)
             "SYSREPO_REPOSITORY_PATH=${CMAKE_CURRENT_BINARY_DIR}/test_repositories/${TESTNAME}"
             "SYSREPO_SHM_PREFIX=netconf-cli_${TESTNAME}"
             "NETOPEER_SOCKET=${CMAKE_CURRENT_BINARY_DIR}/test_sockets/${TESTNAME}.sock"
+            "NETOPEER_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/test_netopeer_outputs/${TESTNAME}.out"
             )
 
     endfunction()
@@ -388,6 +390,7 @@ if(WITH_PYTHON_BINDINGS)
             "SYSREPO_REPOSITORY_PATH=${CMAKE_CURRENT_BINARY_DIR}/test_repositories/test_netconf_cli_py"
             "SYSREPO_SHM_PREFIX=netconf-cli_test_netconf_cli_py"
             "NETOPEER_SOCKET=${CMAKE_CURRENT_BINARY_DIR}/test_sockets/test_netconf_cli_py.sock"
+            "NETOPEER_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/test_netopeer_outputs/test_netconf_cli_py.out"
             )
 
         set(sanitizer_active OFF)
