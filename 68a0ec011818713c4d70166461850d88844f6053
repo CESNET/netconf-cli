@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b9ecfab_16a12a71",
+        "filename": "src/cli.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-19T08:54:49Z",
+      "side": 1,
+      "message": "I\u0027ll push a fix which changes this to EOF :).",
+      "range": {
+        "startLine": 171,
+        "startChar": 27,
+        "endLine": 171,
+        "endChar": 30
+      },
+      "revId": "68a0ec011818713c4d70166461850d88844f6053",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
