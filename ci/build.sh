@@ -91,7 +91,10 @@ if [[ ${ZUUL_JOB_NAME} =~ .*-no-sysrepo ]]; then
     rm ${PREFIX}/bin/sysrepo*
 fi
 
+mkdir ~/zuul-output/logs/test_netopeer_outputs
+
 cd ${BUILD_DIR}
+ln -s ~/zuul-output/logs/test_netopeer_outputs test_netopeer_outputs
 cmake -GNinja -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Debug} -DCMAKE_INSTALL_PREFIX=${PREFIX} ${CMAKE_OPTIONS} ${ZUUL_PROJECT_SRC_DIR}
 ninja-build
 ctest -j${CI_PARALLEL_JOBS} --output-on-failure

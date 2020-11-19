@@ -37,7 +37,13 @@ if [[ "$BACKEND" = "netconf" ]]; then
         "$SYSREPOCFG" --import="@CMAKE_CURRENT_SOURCE_DIR@/tests/disable-nacm.xml" --datastore="$datastore" --format=xml --module=ietf-netconf-acm
     done
 
-    # Run netopeer. Use exec -a, so that each process has a recognizable name for `pkill`.
-    (exec -a "${SYSREPO_SHM_PREFIX}_netopeer2-server" "$NETOPEER2" -v2 "-U$NETOPEER_SOCKET")
+    # I need to run netopeer in the foreground, because I want to get its standard outputs.  However, ctest doesn't like
+    # when child processes don't exit and always waits fot them.  The `setsid` command runs a program in a separate
+    # session and also forks, which means it becomes invisible to ctest.  I want the name of the process to be
+    # recognizable. For that `exec -a` can be used. Unfortunately `exec` is shell-builtin, so I need to run bash instead
+    # of running `exec` directly. Finally, I redirect its stdout and stderr to a file.
+    setsid -f \
+        bash -c "exec -a '${SYSREPO_SHM_PREFIX}_netopeer2-server' '$NETOPEER2' -d -v2 '-U$NETOPEER_SOCKET'" \
+        < /dev/null &> "@CMAKE_CURRENT_BINARY_DIR@/test_netopeer_outputs/$SYSREPO_SHM_PREFIX.out"
     sleep 5
 fi

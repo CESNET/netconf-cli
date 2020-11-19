@@ -270,6 +270,7 @@ if(BUILD_TESTING)
 
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_repositories)
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_sockets)
+        file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_netopeer_outputs)
     endif()
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/yang_access_test_vars.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/yang_access_test_vars.hpp @ONLY)
