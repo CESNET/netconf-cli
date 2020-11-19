@@ -33,6 +33,24 @@
       "revId": "3d38eb919ed261fea99c934097b1dd82b6f19569",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a0ea933_c697f21a",
+        "filename": "tests/init_datastore.bash.in",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-19T08:58:05Z",
+      "side": 1,
+      "message": "Huh! I was pretty sure that single quotes have a special meaning inside double quotes. Guess not",
+      "parentUuid": "eac90288_b840c5c4",
+      "revId": "3d38eb919ed261fea99c934097b1dd82b6f19569",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
