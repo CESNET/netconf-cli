@@ -464,7 +464,9 @@ auto const getPath_def =
     (module >> "*");
 
 auto const cdPath_def =
-    PathParser<PathParserMode::DataPath, CompletionMode::Data>{noRpcOrAction};
+    PathParser<PathParserMode::DataPath, CompletionMode::Data>{[] (const Schema& schema, const std::string& path) {
+        return noRpcOrAction(schema, path) && schema.nodeType(path) != yang::NodeTypes::Leaf;
+    }};
 
 auto const presenceContainerPath_def =
     dataPath;
