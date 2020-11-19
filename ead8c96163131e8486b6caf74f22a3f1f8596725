@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "beba0522_4b3bafa7",
+        "filename": "tests/cleanup_datastore.bash.in",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-19T00:31:49Z",
+      "side": 1,
+      "message": "Honzo, I checked the code for tail and it seems that it isn\u0027t particularly clever, it seems that just checks whether the process lives every X seconds and the default is 1. Well, I still think it\u0027s better to use someone else\u0027s program, instead of, for example, writting a for-loop which checks every second whether the process exists via `kill`.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 43
+      },
+      "revId": "ead8c96163131e8486b6caf74f22a3f1f8596725",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
