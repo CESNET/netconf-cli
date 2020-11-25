@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c9f3efd5_6fbb55d9",
+        "filename": "tests/leaf_data_helpers.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-25T17:56:40Z",
+      "side": 1,
+      "message": "At first I didn\u0027t understand how come that you have to start including *your* header (and not a system one ), but then if I make a guess it\u0027s probably because ast_values.hpp includes some system header and a consumer of this leaf_data_helpers.hpp depends on that. Correct?",
+      "revId": "e63ce03c8b4552d1db9be69e3ccdd4bef5d37273",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
