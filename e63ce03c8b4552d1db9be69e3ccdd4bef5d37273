@@ -16,6 +16,24 @@
       "revId": "e63ce03c8b4552d1db9be69e3ccdd4bef5d37273",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9af200f_62fdc9de",
+        "filename": "tests/leaf_data_helpers.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-25T18:32:03Z",
+      "side": 1,
+      "message": "No, the compiler suddenly needs a full definition of enum_. I\u0027m not sure why, but I think it\u0027s worth investigating. This is the error:\n\nIn file included from /home/vk/git/netconf-cli/tests/utils.cpp:11:\n/home/vk/git/netconf-cli/tests/leaf_data_helpers.hpp:7:16: error: invalid use of incomplete type \u0027enum_\u0027\n        return enum_{value};\n               ^\n/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/10.2.0/../../../../include/c++/10.2.0/bits/stl_algo.h:4313:14: note: in instantiation of function template specialization \u0027createEnum(const std::initializer_list\u003cconst char *\u003e \u0026)::(anonymous class)::operator()\u003cconst char *\u003e\u0027 requested here\n        *__result \u003d __unary_op(*__first);\n                    ^\n/home/vk/git/netconf-cli/tests/leaf_data_helpers.hpp:6:10: note: in instantiation of function template specialization \u0027std::transform\u003cconst char *const *, std::insert_iterator\u003cstd::set\u003cenum_, std::less\u003cenum_\u003e, std::allocator\u003cenum_\u003e\u003e\u003e, (lambda at /home/vk/git/netconf-cli/tests/leaf_data_helpers.hpp:6:81)\u003e\u0027 requested here\n    std::transform(list.begin(), list.end(), std::inserter(enums, enums.end()), [](const auto\u0026 value) {\n         ^\n/home/vk/git/netconf-cli/src/leaf_data_type.hpp:15:8: note: forward declaration of \u0027enum_\u0027\nstruct enum_;\n       ^\n1 error generated.",
+      "parentUuid": "c9f3efd5_6fbb55d9",
+      "revId": "e63ce03c8b4552d1db9be69e3ccdd4bef5d37273",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
