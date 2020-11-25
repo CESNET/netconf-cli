@@ -52,6 +52,24 @@
       "revId": "e63ce03c8b4552d1db9be69e3ccdd4bef5d37273",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2352b2e_bd46dcb2",
+        "filename": "tests/leaf_data_helpers.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-25T19:34:38Z",
+      "side": 1,
+      "message": "I think that \"Movability of Single-pass Iterators\" is not related to this. However, I managed to miss the fact that while it\u0027s a header, it contains code, and I think it should work on its own. TL;DR: your fix looks correct to me.",
+      "parentUuid": "67da425f_c5420e0b",
+      "revId": "e63ce03c8b4552d1db9be69e3ccdd4bef5d37273",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
