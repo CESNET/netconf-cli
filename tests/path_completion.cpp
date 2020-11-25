@@ -187,6 +187,24 @@ TEST_CASE("path_completion")
         }
     }
 
+    SECTION("get completion")
+    {
+        SECTION("get /example:ano/l")
+        {
+            input = "get /example:ano/l";
+            expectedCompletions = {"listInCont"};
+            expectedContextLength = 1;
+        }
+
+        SECTION("get /example:list/")
+        {
+            input = "get /example:list/";
+            expectedCompletions = {};
+            // The expectedContextLength is 13, because the completion isn't actually generated after the slash.
+            expectedContextLength = 13;
+        }
+    }
+
     SECTION("list keys completion")
     {
         SECTION("cd example:lis")
