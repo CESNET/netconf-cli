@@ -34,6 +34,24 @@
       "revId": "e63ce03c8b4552d1db9be69e3ccdd4bef5d37273",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67da425f_c5420e0b",
+        "filename": "tests/leaf_data_helpers.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-25T19:26:02Z",
+      "side": 1,
+      "message": "https://godbolt.org/z/scarfr This is the best I can do to reproduce. It seems that C++17 only needed the forward declaration. It is also connected to the generic lambda, if I change the argument to `int` then it doesn\u0027t compile even in C++17. It might be connected to this http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1207r4.pdf",
+      "parentUuid": "d9af200f_62fdc9de",
+      "revId": "e63ce03c8b4552d1db9be69e3ccdd4bef5d37273",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
