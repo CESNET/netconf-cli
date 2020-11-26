@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "87e1909b_81f6680a",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-26T08:12:47Z",
+      "side": 1,
+      "message": "This depends on ReplxxConfig.cmake (or something similar) that\u0027s provided by replxx, right? If that\u0027s the case, then the error message given to the user when the replxx package is not installed is, in my opinion, not that nice, which is why this was coded as it is right now.\n\nBut perhaps I do not remember stuff correctly, or perhaps CMake become more user friendly recently?",
+      "revId": "22e61b33b5b662b627b19c13ac550cf6a46b9608",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
