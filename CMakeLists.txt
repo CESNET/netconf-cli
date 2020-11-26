@@ -59,11 +59,7 @@ find_package(Boost REQUIRED COMPONENTS filesystem)
 # Fixes C++20 build
 # https://github.com/boostorg/asio/issues/312
 add_definitions(-DBOOST_ASIO_DISABLE_CONCEPTS)
-find_library(REPLXX_LIBRARY NAMES replxx replxx-d REQUIRED)
-find_path(REPLXX_PATH replxx.hxx)
-if("${REPLXX_PATH}" STREQUAL REPLXX_PATH-NOTFOUND)
-    message(FATAL_ERROR "Cannot find the \"replxx.hxx\" include file for the replxx library.")
-endif()
+find_package(replxx REQUIRED)
 
 find_package(PkgConfig)
 
@@ -212,8 +208,7 @@ target_link_libraries(proxydatastore PUBLIC datastoreaccess yangaccess)
 
 # Links libraries, that aren't specific to a datastore type
 function(cli_link_required cli_target)
-    target_include_directories(${cli_target} PRIVATE ${REPLXX_PATH})
-    target_link_libraries(${cli_target} proxydatastore yangschema docopt parser ${REPLXX_LIBRARY})
+    target_link_libraries(${cli_target} proxydatastore yangschema docopt parser replxx::replxx)
     add_dependencies(${cli_target} target-NETCONF_CLI_VERSION)
     target_include_directories(${cli_target} PRIVATE ${PROJECT_BINARY_DIR})
 endfunction()
