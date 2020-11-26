@@ -20,7 +20,7 @@ namespace libnetconf {
 
 namespace impl {
 
-static client::LogCb logCallback;
+static const client::LogCb logCallback;
 
 static void logViaCallback(NC_VERB_LEVEL level, const char* message)
 {
@@ -56,7 +56,7 @@ public:
     ClientInit& operator=(ClientInit&&) = delete;
 };
 
-static std::mutex clientOptions;
+static const std::mutex clientOptions;
 
 inline void custom_free_nc_reply_data(nc_reply_data* reply)
 {
@@ -75,7 +75,7 @@ char* ssh_auth_interactive_cb(const char* auth_name, const char* instruction, co
 }
 
 template <typename Type> using deleter_type_for = void (*)(Type*);
-template <typename Type> deleter_type_for<Type> deleter_for;
+template <typename Type> deleter_type_for<Type> const deleter_for;
 
 template <> const auto deleter_for<nc_rpc> = nc_rpc_free;
 template <> const auto deleter_for<nc_reply> = nc_reply_free;

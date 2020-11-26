@@ -96,8 +96,8 @@ struct datastore_symbol_table : x3::symbols<Datastore> {
     }
 } const datastore;
 
-auto copy_source = x3::rule<class source, Datastore>{"source datastore"} = datastore;
-auto copy_destination = x3::rule<class source, Datastore>{"destination datastore"} = datastore;
+const auto copy_source = x3::rule<class source, Datastore>{"source datastore"} = datastore;
+const auto copy_destination = x3::rule<class source, Datastore>{"destination datastore"} = datastore;
 
 const auto datastoreSuggestions = x3::eps[([](auto& ctx) {
     auto& parserContext = x3::get<parser_context_tag>(ctx);
@@ -131,7 +131,7 @@ struct copy_args : x3::parser<copy_args> {
 
         return true;
     }
-} copy_args;
+} const copy_args;
 
 auto const copy_def =
     copy_::name > space_separator > copy_args;
