@@ -49,6 +49,9 @@ Options:
   -i <data_file>        File to import data from
   --configonly          Disable editing of operational data)";
 #elif defined(NETCONF_CLI)
+#include <thread>
+#include "cli-netconf.hpp"
+#include "netconf_access.hpp"
 // FIXME: improve usage
 static const auto usage = R"(CLI interface for NETCONF
 
@@ -61,19 +64,7 @@ Options:
   -v         enable verbose mode
   -p <port>  port number [default: 830]
 )";
-#include "cli-netconf.hpp"
-#include "netconf_access.hpp"
 #define PROGRAM_NAME "netconf-access"
-// FIXME: this should be replaced by C++20 std::jthread at some point
-struct PoorMansJThread {
-    ~PoorMansJThread()
-    {
-        if (thread.joinable()) {
-            thread.join();
-        }
-    }
-    std::thread thread;
-};
 #else
 #error "Unknown CLI backend"
 #endif
@@ -158,12 +149,12 @@ int main(int argc, char* argv[])
     }
 
     SshProcess process;
-    PoorMansJThread processWatcher;
+    std::jthread processWatcher;
     std::shared_ptr<NetconfAccess> datastore;
 
     try {
         process = sshProcess(args.at("<host>").asString(), args.at("-p").asString());
-        processWatcher.thread = std::thread([&process, &lineEditor, &backendReturnCode] () {
+        processWatcher = std::jthread([&process, &lineEditor, &backendReturnCode] () {
             process.process.wait();
             backendReturnCode = process.process.exit_code();
             // CTRL-U clears from the cursor to the start of the line
