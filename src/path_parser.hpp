@@ -124,7 +124,10 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                     if constexpr (COMPLETION_MODE == CompletionMode::Schema) {
                         parserContext.m_suggestions.emplace(Completion{parseString + "/"});
                     } else {
-                        parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
+                        parserContext.m_suggestions.emplace(Completion{
+                                .m_value = parseString,
+                                .m_suffix = "[",
+                                .m_whenToAdd = Completion::WhenToAdd::IfFullMatch});
                     }
                     break;
                 case yang::NodeTypes::LeafList:
@@ -137,7 +140,10 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                     if constexpr (COMPLETION_MODE == CompletionMode::Schema) {
                         parserContext.m_suggestions.emplace(Completion{parseString + "/"});
                     } else {
-                        parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
+                        parserContext.m_suggestions.emplace(Completion{
+                                .m_value = parseString,
+                                .m_suffix = "[",
+                                .m_whenToAdd = Completion::WhenToAdd::IfFullMatch});
                     }
                     break;
                 case yang::NodeTypes::Rpc:

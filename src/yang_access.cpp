@@ -217,7 +217,7 @@ void YangAccess::moveItem(const std::string& source, std::variant<yang::move::Ab
         return;
     }
     auto sourceNode = set->set.d[0];
-    std::visit(impl_moveItem{m_datastore, sourceNode}, move);
+    std::visit(impl_moveItem{.m_datastore = m_datastore, .m_sourceNode = sourceNode}, move);
 }
 
 void YangAccess::commitChanges()

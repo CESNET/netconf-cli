@@ -101,7 +101,7 @@ auto copy_destination = x3::rule<class source, Datastore>{"destination datastore
 
 const auto datastoreSuggestions = x3::eps[([](auto& ctx) {
     auto& parserContext = x3::get<parser_context_tag>(ctx);
-    parserContext.m_suggestions = {Completion{"running", " "}, Completion{"startup", " "}};
+    parserContext.m_suggestions = {Completion{.m_value = "running", .m_suffix = " "}, Completion{.m_value = "startup", .m_suffix = " "}};
     parserContext.m_completionIterator = _where(ctx).begin();
 })];
 

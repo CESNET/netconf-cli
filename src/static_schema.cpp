@@ -27,7 +27,7 @@ bool StaticSchema::isModule(const std::string& name) const
 
 void StaticSchema::addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence)
 {
-    m_nodes.at(location).emplace(name, NodeInfo{yang::container{isPresence}, yang::AccessType::Writable});
+    m_nodes.at(location).emplace(name, NodeInfo{.m_nodeType = yang::container{isPresence}, .m_configType = yang::AccessType::Writable});
 
     //create a new set of children for the new node
     std::string key = joinPaths(location, name);
@@ -36,7 +36,7 @@ void StaticSchema::addContainer(const std::string& location, const std::string& 
 
 void StaticSchema::addRpc(const std::string& location, const std::string& name)
 {
-    m_nodes.at(location).emplace(name, NodeInfo{yang::rpc{}, yang::AccessType::Writable});
+    m_nodes.at(location).emplace(name, NodeInfo{.m_nodeType = yang::rpc{}, .m_configType = yang::AccessType::Writable});
 
     //create a new set of children for the new node
     std::string key = joinPaths(location, name);
@@ -45,7 +45,7 @@ void StaticSchema::addRpc(const std::string& location, const std::string& name)
 
 void StaticSchema::addAction(const std::string& location, const std::string& name)
 {
-    m_nodes.at(location).emplace(name, NodeInfo{yang::action{}, yang::AccessType::Writable});
+    m_nodes.at(location).emplace(name, NodeInfo{.m_nodeType = yang::action{}, .m_configType = yang::AccessType::Writable});
 
     //create a new set of children for the new node
     std::string key = joinPaths(location, name);
@@ -76,7 +76,7 @@ const std::set<std::string> StaticSchema::listKeys(const schemaPath_& listPath) 
 
 void StaticSchema::addList(const std::string& location, const std::string& name, const std::set<std::string>& keys)
 {
-    m_nodes.at(location).emplace(name, NodeInfo{yang::list{keys}, yang::AccessType::Writable});
+    m_nodes.at(location).emplace(name, NodeInfo{.m_nodeType = yang::list{keys}, .m_configType = yang::AccessType::Writable});
 
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
@@ -92,14 +92,14 @@ std::set<identityRef_> StaticSchema::validIdentities(std::string_view module, st
 
 void StaticSchema::addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type, const yang::AccessType accessType)
 {
-    m_nodes.at(location).emplace(name, NodeInfo{yang::leaf{yang::TypeInfo{type, std::nullopt}}, accessType});
+    m_nodes.at(location).emplace(name, NodeInfo{.m_nodeType = yang::leaf{yang::TypeInfo{type, std::nullopt}}, .m_configType = accessType});
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
 }
 
 void StaticSchema::addLeafList(const std::string& location, const std::string& name, const yang::LeafDataType& type)
 {
-    m_nodes.at(location).emplace(name, NodeInfo{yang::leaflist{yang::TypeInfo{type, std::nullopt}}, yang::AccessType::Writable});
+    m_nodes.at(location).emplace(name, NodeInfo{.m_nodeType = yang::leaflist{yang::TypeInfo{type, std::nullopt}}, .m_configType = yang::AccessType::Writable});
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
 }

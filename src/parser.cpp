@@ -75,12 +75,12 @@ Completions Parser::completeCommand(const std::string& line, std::ostream& error
             || filtered.begin()->m_value == std::string{completionIterator, line.end()}
             ? filtered.begin()->m_suffix
             : "";
-        return {{filtered.begin()->m_value + suffix}, completionContext};
+        return {.m_completions = {filtered.begin()->m_value + suffix}, .m_contextLength = completionContext};
     }
 
     std::set<std::string> res;
     std::transform(filtered.begin(), filtered.end(), std::inserter(res, res.end()), [](auto it) { return it.m_value; });
-    return {res, completionContext};
+    return {.m_completions = res, .m_contextLength = completionContext};
 }
 
 void Parser::changeNode(const dataPath_& name)
