@@ -433,7 +433,7 @@ struct WritableLeafPath : x3::parser<WritableLeafPath> {
         return true;
     }
 
-} writableLeafPath;
+} const writableLeafPath;
 
 struct RpcActionPath : x3::parser<RpcActionPath> {
     using attribute_type = dataPath_;

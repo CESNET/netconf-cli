@@ -75,7 +75,7 @@ char* ssh_auth_interactive_cb(const char* auth_name, const char* instruction, co
 }
 
 template <typename Type> using deleter_type_for = void (*)(Type*);
-template <typename Type> deleter_type_for<Type> deleter_for;
+template <typename Type> deleter_type_for<Type> const deleter_for;
 
 template <> const auto deleter_for<nc_rpc> = nc_rpc_free;
 template <> const auto deleter_for<nc_reply> = nc_reply_free;
