@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b4869fdd_ba22665b",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-26T08:10:56Z",
+      "side": 1,
+      "message": "nit: I think that this will look better when split into one line per each Completion{}.",
+      "revId": "48c4b1cfd739a09b4f846c91f1085bc9b004373f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e8b6226_b083bcfa",
+        "filename": "src/path_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-26T08:10:56Z",
+      "side": 1,
+      "message": "It\u0027s a style matter, but this feels redundant to me. If the enum value \"includes the type info\" and only one value of that type is passes, there\u0027s IMHO little point in giving it an explicit name. You\u0027re passing all parameters to the ctor, anyway...",
+      "range": {
+        "startLine": 130,
+        "startChar": 33,
+        "endLine": 130,
+        "endChar": 81
+      },
+      "revId": "48c4b1cfd739a09b4f846c91f1085bc9b004373f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
