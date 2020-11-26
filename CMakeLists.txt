@@ -1,6 +1,6 @@
 project(netconf-cli LANGUAGES CXX)
 cmake_minimum_required(VERSION 3.0)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
@@ -56,6 +56,9 @@ option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${D
 
 find_package(docopt REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
+# Fixes C++20 build
+# https://github.com/boostorg/asio/issues/312
+add_definitions(-DBOOST_ASIO_DISABLE_CONCEPTS)
 find_library(REPLXX_LIBRARY NAMES replxx replxx-d REQUIRED)
 find_path(REPLXX_PATH replxx.hxx)
 if("${REPLXX_PATH}" STREQUAL REPLXX_PATH-NOTFOUND)
@@ -365,7 +368,7 @@ endif()
 
 option(WITH_PYTHON_BINDINGS "Create and install Python3 bindings for accessing datastores" OFF)
 if(WITH_PYTHON_BINDINGS)
-    set(PYBIND11_CPP_STANDARD -std=c++17)
+    set(PYBIND11_CPP_STANDARD -std=c++20)
     find_package(pybind11 REQUIRED)
     pybind11_add_module(netconf_cli_py src/python_netconf.cpp)
     target_link_libraries(netconf_cli_py PUBLIC netconfaccess)
