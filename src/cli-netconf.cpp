@@ -32,5 +32,5 @@ SshProcess sshProcess(const std::string& target, const std::string& port)
             "netconf",
             bp::std_out > out, bp::std_in < in);
 
-    return {std::move(ssh), std::move(in), std::move(out)};
+    return {.process = std::move(ssh), .std_in = std::move(in), .std_out = std::move(out)};
 }
