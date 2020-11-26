@@ -16,6 +16,24 @@
       "revId": "22e61b33b5b662b627b19c13ac550cf6a46b9608",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7fa203f_5857c7cc",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-11-26T09:10:33Z",
+      "side": 1,
+      "message": "The error meesage given by cmake when it cannot find replxx looks like this:\nCMake Error at CMakeLists.txt:62 (find_package):\n  By not providing \"Findreplxx.cmake\" in CMAKE_MODULE_PATH this project has\n  asked CMake to find a package configuration file provided by \"replxx\", but\n  CMake did not find one.\n\n  Could not find a package configuration file provided by \"replxx\" with any\n  of the following names:\n\n    replxxConfig.cmake\n    replxx-config.cmake\n\n  Add the installation prefix of \"replxx\" to CMAKE_PREFIX_PATH or set\n  \"replxx_DIR\" to a directory containing one of the above files.  If \"replxx\"\n  provides a separate development package or SDK, be sure it has been\n  installed.\n\nThis doesn\u0027t seem too different from other error messages about missing packages... actually it is the same message that would be printed if for example docopt was missing and we use find_package for that, so I thought why not use find_package for replxx too? The actual reason (except \"cleanup\" I guess) is that replxx include directories were linked using -I and not -isystem and clang-tidy depends on system headers being included with -isystem. I know it wouldn\u0027t be difficult to tell cmake to use -isystem, but I thought using find_package is the right way.",
+      "parentUuid": "87e1909b_81f6680a",
+      "revId": "22e61b33b5b662b627b19c13ac550cf6a46b9608",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
     }
   ]
 }
