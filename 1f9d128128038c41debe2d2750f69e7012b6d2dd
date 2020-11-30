@@ -1,0 +1,291 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6abd4beb_835a2fdd",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "\"changes context TO a node\"",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 36
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "728da2d2_f6c4c212",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "\"list ITEMS, leaflist INSTANCES and presence containerS\"?\n\n(Also for delete if you change this)",
+      "range": {
+        "startLine": 82,
+        "startChar": 29,
+        "endLine": 82,
+        "endChar": 66
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b7fb778_e2741273",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "IMHO \"Sets\" is better, because this can also create a node behind the scenes (but perhaps that\u0027s too nitpicky, so take this just as a suggestion).",
+      "range": {
+        "startLine": 115,
+        "startChar": 4,
+        "endLine": 115,
+        "endChar": 11
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a786ff4_1822d943",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "- not just configuration, but ops data as well\n- the phrasing feel awkward to me\n\nWhat about:\n\n Prints out content of the current datastore at a specified path, or below the current context tree.",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 47
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eda05103_481c73ac",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "\"Shows\", because so far all other comments are not using imperative",
+      "range": {
+        "startLine": 160,
+        "startChar": 4,
+        "endLine": 160,
+        "endChar": 8
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20b98855_acc67c41",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "I would prefer one of:\n\n copy - Copy configuration\n\nor\n\n copy - Copy configuration between datastores",
+      "range": {
+        "startLine": 175,
+        "startChar": 65,
+        "endLine": 175,
+        "endChar": 75
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "478db474_ae5756a1",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "This phrasing and the `get`\u0027s description suggests to me that `get` prints out config:true, while this one prints both config:true and config:false. That\u0027s not the case, the difference is that this one is using a standard format, and that there\u0027s no path. What about:\n\n dump - Prints out datastore content as JSON or XML",
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b0fc0ec_fcc4012e",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "\"for entering\"",
+      "range": {
+        "startLine": 242,
+        "startChar": 31,
+        "endLine": 242,
+        "endChar": 53
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "265da5e4_17c72968",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "\"After setting the input, use `exec` to\"...",
+      "range": {
+        "startLine": 244,
+        "startChar": 30,
+        "endLine": 244,
+        "endChar": 74
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2b24c78_9416cfdb",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "\"RPC/action\"",
+      "range": {
+        "startLine": 244,
+        "startChar": 8,
+        "endLine": 244,
+        "endChar": 11
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f1a74ba_03ca28e0",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "...via the `prepare` command",
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc07f522_1ee2fd42",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "RPC/action",
+      "range": {
+        "startLine": 271,
+        "startChar": 66,
+        "endLine": 271,
+        "endChar": 69
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "706a2403_dbf18e0e",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-11-30T21:48:18Z",
+      "side": 1,
+      "message": "RPC/action",
+      "range": {
+        "startLine": 275,
+        "startChar": 46,
+        "endLine": 275,
+        "endChar": 49
+      },
+      "revId": "1f9d128128038c41debe2d2750f69e7012b6d2dd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
