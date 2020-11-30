@@ -40,10 +40,12 @@ struct ls_ : x3::position_tagged {
     static constexpr auto longHelp = R"(
     ls [--recursive] [path]
 
-    Lists available nodes in the current directory. Optionally
-    accepts a path argument. Accepts both schema paths and data
-    paths. Path starting with a forward slash means an absolute
-    path.
+    Lists available child nodes in the current context node. Optionally accepts
+    a path argument. Accepts both schema paths and data paths. Path starting
+    with a forward slash means an absolute path.
+
+    Options:
+        --recursive    makes `ls` work recursively
 
     Usage:
         /> ls
@@ -58,9 +60,10 @@ struct cd_ : x3::position_tagged {
     static constexpr auto name = "cd";
     static constexpr auto shortHelp = "cd - Enter a different node.";
     static constexpr auto longHelp = R"(
-    cd path
+    cd <path>
 
-    Enters a node specified by path. Only accepts data paths.
+    Changes context to a node specified by <path>. Only accepts data paths
+    (paths with all list keys supplied).
 
     Usage:
         /> cd /module:node/node2
@@ -71,14 +74,17 @@ struct cd_ : x3::position_tagged {
 
 struct create_ : x3::position_tagged {
     static constexpr auto name = "create";
-    static constexpr auto shortHelp = "create - Create a presence container.";
+    static constexpr auto shortHelp = "create - Create a node.";
     static constexpr auto longHelp = R"(
-    create path
+    create <path>
 
-    Creates a presence container or a list instance specified by path.
+    Creates a node specified by <path>.
+    Supported node types are list items, leaflist instance and presence
+    containers.
 
     Usage:
         /> create /module:pContainer
+        /> create /module:leafList['value']
         /> create /module:list[key=value][anotherKey=value])";
     bool operator==(const create_& b) const;
     dataPath_ m_path;
@@ -86,14 +92,17 @@ struct create_ : x3::position_tagged {
 
 struct delete_ : x3::position_tagged {
     static constexpr auto name = "delete";
-    static constexpr auto shortHelp = "delete - Delete a presence container.";
+    static constexpr auto shortHelp = "delete - Delete a node.";
     static constexpr auto longHelp = R"(
-    delete path
+    delete <path>
 
-    Deletes a presence container or a list instance specified by path.
+    Deletes a node specified by <path>.
+    Supported node types are leafs, list items, leaflist instance and presence
+    containers.
 
     Usage:
         /> delete /module:pContainer
+        /> delete /module:leafList['value']
         /> delete /module:list[key=value][anotherKey=value])";
     bool operator==(const delete_& b) const;
     dataPath_ m_path;
@@ -101,11 +110,11 @@ struct delete_ : x3::position_tagged {
 
 struct set_ : x3::position_tagged {
     static constexpr auto name = "set";
-    static constexpr auto shortHelp = "set - Change value of a leaf.";
+    static constexpr auto shortHelp = "set - Set value of a leaf.";
     static constexpr auto longHelp = R"(
-    set path_to_leaf value
+    set <path_to_leaf> <value>
 
-    Changes the leaf specified by path to value.
+    Sets the leaf specified by <path_to_leaf> to <value>.
 
     Usage:
         /> set /module:leaf 123
@@ -133,9 +142,8 @@ struct get_ : x3::position_tagged {
     static constexpr auto longHelp = R"(
     get [path]
 
-    Retrieves configuration of the current node. Works recursively.
-    Optionally takes an argument specifying a path, the output will,
-    as if the user was in that node.
+    Prints out content of the current datastore at a specified [path], or below
+    the current context tree.
 
     Usage:
         /> get
@@ -150,11 +158,11 @@ struct describe_ : x3::position_tagged {
     static constexpr auto longHelp = R"(
     describe <path>
 
-    Show documentation of YANG tree paths. In the YANG model, each item may
+    Shows documentation of YANG tree paths. In the YANG model, each item may
     have an optional `description` which often explains the function of that
-    node to the end user. This command takes the description from the YANG
-    model and shows it to the user along with additional data, such as the type
-    of the node, units of leaf values, etc.
+    node to the end user. This command takes the description from the YANG model
+    and shows it to the user along with additional data, such as the type of the
+    node, units of leaf values, etc.
 
     Usage:
         /> describe /module:node)";
@@ -165,9 +173,11 @@ struct describe_ : x3::position_tagged {
 
 struct copy_ : x3::position_tagged {
     static constexpr auto name = "copy";
-    static constexpr auto shortHelp = "copy - copy configuration datastores around";
+    static constexpr auto shortHelp = "copy - Copy configuration.";
     static constexpr auto longHelp = R"(
     copy <source> <destination>
+
+    Copies configuration from <source> to <destination>.
 
     Usage:
         /> copy running startup
@@ -187,17 +197,20 @@ enum class MoveMode {
 
 struct move_ : x3::position_tagged {
     static constexpr auto name = "move";
-    static constexpr auto shortHelp = "move - move (leaf)list instances around";
+    static constexpr auto shortHelp = "move - Move (leaf)list instances.";
     static constexpr auto longHelp = R"(
-    move <list-instance-path> begin
-    move <list-instance-path> end
-    move <list-instance-path> before <key>
-    move <list-instance-path> after <key>
+    move <path> begin
+    move <path> end
+    move <path> before <key>
+    move <path> after <key>
+
+    Moves the instance specified by <path> to the position specified by the
+    specified by the second and third argument.
 
     Usage:
         /> move mod:leaflist['abc'] begin
         /> move mod:leaflist['def'] after 'abc'
-        /> move mod:interfaces['eth0'] after ['eth1'])";
+        /> move mod:interfaces[name='eth0'] after [name='eth1'])";
     bool operator==(const move_& b) const;
 
     dataPath_ m_source;
@@ -207,9 +220,11 @@ struct move_ : x3::position_tagged {
 
 struct dump_ : x3::position_tagged {
     static constexpr auto name = "dump";
-    static constexpr auto shortHelp = "dump - dump entire content of the datastore";
+    static constexpr auto shortHelp = "dump - Print out datastore content as JSON or XML.";
     static constexpr auto longHelp = R"(
     dump xml|json
+
+    Prints out the content of the datastore. Supports JSON and XML.
 
     Usage:
         /> dump xml
@@ -221,14 +236,19 @@ struct dump_ : x3::position_tagged {
 
 struct prepare_ : x3::position_tagged {
     static constexpr auto name = "prepare";
-    static constexpr auto shortHelp = "prepare - initiate RPC or action";
+    static constexpr auto shortHelp = "prepare - Initiate RPC/action.";
     static constexpr auto longHelp = R"(
     prepare <path-to-rpc-or-action>
 
-    This command puts you into a mode where you can set your input parameters.
+    This command enters a mode for entering input parameters for the RPC/action.
+    In this mode, you can use commands like `set` on nodes inside the RPC/action
+    to set the input. After setting the input, use `exec` to execute the
+    RPC/action.
 
     Usage:
-        /> prepare <path-to-rpc-or-action>)";
+        /> prepare /mod:launch-nukes
+        /> set kilotons 1000
+        /> exec)";
     bool operator==(const prepare_& other) const;
 
     dataPath_ m_path;
@@ -236,11 +256,12 @@ struct prepare_ : x3::position_tagged {
 
 struct exec_ : x3::position_tagged {
     static constexpr auto name = "exec";
-    static constexpr auto shortHelp = "exec - execute RPC";
+    static constexpr auto shortHelp = "exec - Execute RPC/action.";
     static constexpr auto longHelp = R"(
     exec
 
-    This command executes the RPC you have previously initiated.
+    This command executes the RPC/action you have previously initiated via the
+    `prepare` command.
 
     Usage:
         /> exec)";
@@ -249,11 +270,11 @@ struct exec_ : x3::position_tagged {
 
 struct cancel_ : x3::position_tagged {
     static constexpr auto name = "cancel";
-    static constexpr auto shortHelp = "cancel - cancel an ongoing RPC input";
+    static constexpr auto shortHelp = "cancel - Cancel an ongoing RPC/action input.";
     static constexpr auto longHelp = R"(
     cancel
 
-    This command cancels a previously entered RPC context.
+    This command cancels a previously entered RPC/action context.
 
     Usage:
         /> cancel)";
