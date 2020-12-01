@@ -229,7 +229,7 @@ void YangAccess::discardChanges()
 {
 }
 
-[[noreturn]] void YangAccess::impl_execute(const std::string& type, const std::string& path, const Tree& input)
+[[noreturn]] DatastoreAccess::Tree YangAccess::execute(const std::string& path, const Tree& input)
 {
     auto root = lyWrap(lyd_new_path(nullptr, m_ctx.get(), path.c_str(), nullptr, LYD_ANYDATA_CONSTSTRING, 0));
     if (!root) {
@@ -244,17 +244,7 @@ void YangAccess::discardChanges()
             getErrorsAndThrow();
         }
     }
-    throw std::logic_error("in-memory datastore doesn't support executing " + type + "s");
-}
-
-DatastoreAccess::Tree YangAccess::executeRpc(const std::string& path, const Tree& input)
-{
-    impl_execute("RPC", path, input);
-}
-
-DatastoreAccess::Tree YangAccess::executeAction(const std::string& path, const Tree& input)
-{
-    impl_execute("action", path, input);
+    throw std::logic_error("in-memory datastore doesn't support executing RPC/action");
 }
 
 void YangAccess::copyConfig(const Datastore source, const Datastore dest)

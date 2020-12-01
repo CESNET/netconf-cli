@@ -329,15 +329,7 @@ DatastoreAccess::Tree toTree(const std::string& path, const std::shared_ptr<sysr
 }
 }
 
-// TODO: merge this with executeAction
-DatastoreAccess::Tree SysrepoAccess::executeRpc(const std::string& path, const Tree& input)
-{
-    auto srInput = toSrVals(path, input);
-    auto output = m_session->rpc_send(path.c_str(), srInput);
-    return toTree(path, output);
-}
-
-DatastoreAccess::Tree SysrepoAccess::executeAction(const std::string& path, const Tree& input)
+DatastoreAccess::Tree SysrepoAccess::execute(const std::string& path, const Tree& input)
 {
     auto srInput = toSrVals(path, input);
     auto output = m_session->rpc_send(path.c_str(), srInput);

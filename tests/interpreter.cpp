@@ -454,7 +454,7 @@ TEST_CASE("rpc")
         SECTION("exec")
         {
             REQUIRE_CALL(*input_datastore, getItems("/")).RETURN(DatastoreAccess::Tree{});
-            REQUIRE_CALL(*datastore, executeRpc("/example:launch-nukes", DatastoreAccess::Tree{})).RETURN(DatastoreAccess::Tree{});
+            REQUIRE_CALL(*datastore, execute("/example:launch-nukes", DatastoreAccess::Tree{})).RETURN(DatastoreAccess::Tree{});
             boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{exec_{}});
         }
 
