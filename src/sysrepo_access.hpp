@@ -33,8 +33,7 @@ public:
     void createItem(const std::string& path) override;
     void deleteItem(const std::string& path) override;
     void moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move) override;
-    Tree executeRpc(const std::string& path, const Tree& input) override;
-    Tree executeAction(const std::string& path, const Tree& input) override;
+    Tree execute(const std::string& path, const Tree& input) override;
 
     std::shared_ptr<Schema> schema() override;
 

@@ -59,34 +59,14 @@ std::string ProxyDatastore::dump(const DataFormat format) const
     return m_datastore->dump(format);
 }
 
-namespace {
-struct getInputPath {
-    template <typename InputType>
-    auto operator()(const InputType& input)
-    {
-        return input.m_path;
-    }
-};
-}
-
-void ProxyDatastore::initiateRpc(const std::string& rpcPath)
+void ProxyDatastore::initiate(const std::string& path)
 {
     if (m_inputDatastore) {
-        throw std::runtime_error("RPC/action input already in progress (" + std::visit(getInputPath{}, m_inputPath) + ")");
+        throw std::runtime_error("RPC/action input already in progress (" + m_inputPath + ")");
     }
     m_inputDatastore = m_createTemporaryDatastore(m_datastore);
-    m_inputPath = RpcInput{rpcPath};
-    m_inputDatastore->createItem(rpcPath);
-}
-
-void ProxyDatastore::initiateAction(const std::string& actionPath)
-{
-    if (m_inputDatastore) {
-        throw std::runtime_error("RPC/action input already in progress (" + std::visit(getInputPath{}, m_inputPath) + ")");
-    }
-    m_inputDatastore = m_createTemporaryDatastore(m_datastore);
-    m_inputPath = ActionInput{actionPath};
-    m_inputDatastore->createItem(actionPath);
+    m_inputPath = path;
+    m_inputDatastore->createItem(path);
 }
 
 DatastoreAccess::Tree ProxyDatastore::execute()
@@ -96,11 +76,7 @@ DatastoreAccess::Tree ProxyDatastore::execute()
     }
     auto inputData = m_inputDatastore->getItems("/");
     m_inputDatastore = nullptr;
-    if (std::holds_alternative<RpcInput>(m_inputPath)) {
-        return m_datastore->executeRpc(std::visit(getInputPath{}, m_inputPath), inputData);
-    } else {
-        return m_datastore->executeAction(std::visit(getInputPath{}, m_inputPath), inputData);
-    }
+    return m_datastore->execute(m_inputPath, inputData);
 }
 
 void ProxyDatastore::cancel()
@@ -115,7 +91,7 @@ std::shared_ptr<Schema> ProxyDatastore::schema() const
 
 std::shared_ptr<DatastoreAccess> ProxyDatastore::pickDatastore(const std::string& path) const
 {
-    if (!m_inputDatastore || !boost::starts_with(path, std::visit(getInputPath{}, m_inputPath))) {
+    if (!m_inputDatastore || !boost::starts_with(path, m_inputPath)) {
         return m_datastore;
     } else {
         return m_inputDatastore;

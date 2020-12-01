@@ -132,7 +132,7 @@ void NetconfAccess::discardChanges()
     m_session->discard();
 }
 
-DatastoreAccess::Tree NetconfAccess::impl_execute(const std::string& path, const Tree& input)
+DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree& input)
 {
     auto root = m_schema->dataNodeFromPath(path);
     for (const auto& [k, v] : input) {
@@ -147,16 +147,6 @@ DatastoreAccess::Tree NetconfAccess::impl_execute(const std::string& path, const
         lyNodesToTree(res, output->tree_for(), joinPaths(path, "/"));
     }
     return res;
-}
-
-DatastoreAccess::Tree NetconfAccess::executeRpc(const std::string& path, const Tree& input)
-{
-    return impl_execute(path, input);
-}
-
-DatastoreAccess::Tree NetconfAccess::executeAction(const std::string& path, const Tree& input)
-{
-    return impl_execute(path, input);
 }
 
 NC_DATASTORE toNcDatastore(Datastore datastore)

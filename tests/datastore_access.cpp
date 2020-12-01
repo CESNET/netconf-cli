@@ -951,7 +951,7 @@ TEST_CASE("rpc/action")
             SECTION("noop")
             {
                 rpc = "/example-schema:noop";
-                proxyDatastore.initiateRpc(rpc);
+                proxyDatastore.initiate(rpc);
             }
 
             SECTION("small nuke")
@@ -961,7 +961,7 @@ TEST_CASE("rpc/action")
                     {"description", "dummy"s},
                     {"payload/kilotons", uint64_t{333'666}},
                 };
-                proxyDatastore.initiateRpc(rpc);
+                proxyDatastore.initiate(rpc);
                 proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{333'666});
                 // no data are returned
             }
@@ -973,7 +973,7 @@ TEST_CASE("rpc/action")
                     {"description", "dummy"s},
                     {"payload/kilotons", uint64_t{4}},
                 };
-                proxyDatastore.initiateRpc(rpc);
+                proxyDatastore.initiate(rpc);
                 proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{4});
 
                 output = {
@@ -989,7 +989,7 @@ TEST_CASE("rpc/action")
                     {"payload/kilotons", uint64_t{6}},
                     {"cities/targets[city='Prague']/city", "Prague"s},
                 };
-                proxyDatastore.initiateRpc(rpc);
+                proxyDatastore.initiate(rpc);
                 proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{6});
                 proxyDatastore.createItem("/example-schema:launch-nukes/example-schema:cities/example-schema:targets[city='Prague']");
                 output = {
@@ -1012,17 +1012,17 @@ TEST_CASE("rpc/action")
                 input = {
                     {"whom", "Colton"s}
                 };
-                proxyDatastore.initiateRpc(rpc);
+                proxyDatastore.initiate(rpc);
                 proxyDatastore.setLeaf("/example-schema:fire/example-schema:whom", "Colton"s);
             }
 
-            catching<OnExec>([&] { REQUIRE(datastore->executeRpc(rpc, input) == output); });
+            catching<OnExec>([&] { REQUIRE(datastore->execute(rpc, input) == output); });
             catching<OnExec>([&] { REQUIRE(proxyDatastore.execute() == output); });
         }
 
         SECTION("non-existing RPC")
         {
-            catching<OnInvalidRpcPath>([&] { datastore->executeRpc("/example-schema:non-existing", DatastoreAccess::Tree{}); });
+            catching<OnInvalidRpcPath>([&] { datastore->execute("/example-schema:non-existing", DatastoreAccess::Tree{}); });
         }
     }
 
@@ -1045,7 +1045,7 @@ TEST_CASE("rpc/action")
             path = "/example-schema:ports[name='A']/shutdown";
         }
 
-        catching<OnExec>([&] { REQUIRE(datastore->executeAction(path, input) == output); });
+        catching<OnExec>([&] { REQUIRE(datastore->execute(path, input) == output); });
     }
 
     waitForCompletionAndBitMore(seq1);
