@@ -96,7 +96,9 @@ std::ostream& operator<<(std::ostream& s, const yang::LeafDataType& type)
 
 std::ostream& operator<<(std::ostream& s, const yang::TypeInfo& type)
 {
-    s << type.m_type << (type.m_units ? " units: " + *type.m_units : "");
+    s << type.m_type;
+    s << " units: " << (type.m_units ? *type.m_units : "std::nullopt");
+    s << " description: " << (type.m_description ? *type.m_description : "std::nullopt");
     return s;
 }
 

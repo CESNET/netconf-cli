@@ -88,6 +88,16 @@ module example-schema {
         }
     }
 
+    typedef myType {
+        type int32;
+        description "My type.";
+    }
+
+    leaf typedefedLeaf {
+        type myType;
+        description "This is a typedefed leaf.";
+    }
+
     grouping upAndDown {
         leaf up {
             type boolean;

@@ -10,11 +10,12 @@
 namespace yang {
 bool TypeInfo::operator==(const TypeInfo& other) const
 {
-    return this->m_type == other.m_type && this->m_units == other.m_units;
+    return std::tie(this->m_type, this->m_units, this->m_description) == std::tie(other.m_type, other.m_units, other.m_description);
 }
-TypeInfo::TypeInfo(const yang::LeafDataType& type, const std::optional<std::string> units)
+TypeInfo::TypeInfo(const yang::LeafDataType& type, const std::optional<std::string> units, const std::optional<std::string> description)
     : m_type(type)
     , m_units(units)
+    , m_description(description)
 {
 }
 Enum::Enum(std::set<enum_>&& values)

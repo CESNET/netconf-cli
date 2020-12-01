@@ -284,7 +284,19 @@ yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) con
             }
         }
 
-        return yang::TypeInfo(resType, resUnits);
+        std::optional<std::string> resDescription;
+
+        // checking for parentTypedef->type()->der() means I'm going to enter inside base types like "string". These
+        // also have a description, but it isn't too helpful ("human-readable string")
+        for (auto parentTypedef = type->der(); parentTypedef && parentTypedef->type()->der(); parentTypedef = parentTypedef->type()->der()) {
+            auto dsc = parentTypedef->dsc();
+            if (dsc) {
+                resDescription = dsc;
+                break;
+            }
+        }
+
+        return yang::TypeInfo(resType, resUnits, resDescription);
     };
     return resolveType(leaf->type());
 }
