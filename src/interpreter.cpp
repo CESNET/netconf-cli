@@ -156,6 +156,10 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
             ss << " [" + *leafType.m_units + "]";
         }
 
+        if (leafType.m_description) {
+            ss << "\n Type description: " << *leafType.m_description;
+        }
+
         if (m_datastore.schema()->leafIsKey(path)) {
             ss << " (key)";
         }

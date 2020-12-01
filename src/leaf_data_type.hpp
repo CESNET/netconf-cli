@@ -105,9 +105,12 @@ struct Union {
     std::vector<TypeInfo> m_unionTypes;
 };
 struct TypeInfo {
-    TypeInfo(const yang::LeafDataType& type, const std::optional<std::string> units = std::nullopt);
+    TypeInfo(const yang::LeafDataType& type,
+            const std::optional<std::string> units = std::nullopt,
+            const std::optional<std::string> description = std::nullopt);
     bool operator==(const TypeInfo& other) const;
     yang::LeafDataType m_type;
     std::optional<std::string> m_units;
+    std::optional<std::string> m_description;
 };
 }

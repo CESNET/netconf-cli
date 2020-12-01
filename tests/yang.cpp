@@ -171,6 +171,7 @@ module example-schema {
             enum lol;
             enum data;
         }
+        description "This is a restricted enum typedef.";
     }
 
     leaf leafEnumTypedef {
@@ -518,6 +519,7 @@ TEST_CASE("yangschema")
         SECTION("leafType")
         {
             yang::LeafDataType type;
+            std::optional<std::string> expectedDescription;
 
             SECTION("leafString")
             {
@@ -622,6 +624,7 @@ TEST_CASE("yangschema")
                 node.first = "example-schema";
                 node.second = "leafEnumTypedefRestricted2";
                 type = createEnum({"lol", "data"});
+                expectedDescription = "This is a restricted enum typedef.";
             }
 
             SECTION("pizzaSize")
@@ -736,7 +739,7 @@ TEST_CASE("yangschema")
             }
 
 
-            REQUIRE(ys.leafType(path, node) == type);
+            REQUIRE(ys.leafType(path, node) == yang::TypeInfo(type, std::nullopt, expectedDescription));
         }
         SECTION("availableNodes")
         {
@@ -1070,6 +1073,16 @@ TEST_CASE("yangschema")
             auto nodeType = ys.nodeType(pathToSchemaString(path, Prefixes::WhenNeeded));
             REQUIRE((nodeType == yang::NodeTypes::Leaf || nodeType == yang::NodeTypes::LeafList));
             REQUIRE(ys.leafType(pathToSchemaString(path, Prefixes::WhenNeeded)) == yang::TypeInfo{expectedType, expectedUnits});
+        }
+
+        SECTION("type description")
+        {
+            yang::LeafDataType expectedType = createEnum({"lol", "data"});
+            std::optional<std::string> expectedDescription;
+
+            path.m_nodes.emplace_back(module_{"example-schema"}, leaf_("leafEnumTypedefRestricted2"));
+            expectedDescription = "This is a restricted enum typedef.";
+            REQUIRE(ys.leafType(pathToSchemaString(path, Prefixes::WhenNeeded)) == yang::TypeInfo{expectedType, std::nullopt, expectedDescription});
         }
 
         SECTION("nodeType")
