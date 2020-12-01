@@ -28,14 +28,14 @@ TEST_CASE("prepare command")
     SECTION("rpc")
     {
         input = "prepare example:fire";
-        expected.m_path.m_nodes.push_back({module_{"example"}, rpcNode_{"fire"}});
+        expected.m_path.m_nodes.emplace_back(module_{"example"}, rpcNode_{"fire"});
     }
 
     SECTION("action")
     {
         input = "prepare example:port[name='eth0']/shutdown";
-        expected.m_path.m_nodes.push_back({module_{"example"}, listElement_{"port", {{"name", std::string{"eth0"}}}}});
-        expected.m_path.m_nodes.push_back({actionNode_{"shutdown"}});
+        expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_{"port", {{"name", std::string{"eth0"}}}});
+        expected.m_path.m_nodes.emplace_back(actionNode_{"shutdown"});
     }
 
     command_ command = parser.parseCommand(input, errorStream);
