@@ -226,11 +226,7 @@ void Interpreter::operator()(const dump_& dump) const
 
 void Interpreter::operator()(const prepare_& prepare) const
 {
-    if (std::holds_alternative<rpcNode_>(prepare.m_path.m_nodes.back().m_suffix)) {
-        m_datastore.initiateRpc(pathToString(toCanonicalPath(prepare.m_path)));
-    } else {
-        m_datastore.initiateAction(pathToString(toCanonicalPath(prepare.m_path)));
-    }
+    m_datastore.initiate(pathToString(toCanonicalPath(prepare.m_path)));
     m_parser.changeNode(prepare.m_path);
 }
 

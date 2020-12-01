@@ -30,8 +30,7 @@ public:
     void moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move) override;
     void commitChanges() override;
     void discardChanges() override;
-    Tree executeRpc(const std::string& path, const Tree& input) override;
-    Tree executeAction(const std::string& path, const Tree& input) override;
+    [[noreturn]] Tree execute(const std::string& path, const Tree& input) override;
     void copyConfig(const Datastore source, const Datastore destination) override;
 
     std::shared_ptr<Schema> schema() override;

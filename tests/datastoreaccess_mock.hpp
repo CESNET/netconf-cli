@@ -24,8 +24,7 @@ class MockDatastoreAccess : public trompeloeil::mock_interface<DatastoreAccess> 
     IMPLEMENT_MOCK1(createItem);
     IMPLEMENT_MOCK1(deleteItem);
     IMPLEMENT_MOCK2(moveItem);
-    IMPLEMENT_MOCK2(executeRpc);
-    IMPLEMENT_MOCK2(executeAction);
+    IMPLEMENT_MOCK2(execute);
 
     // Can't use IMPLEMENT_MOCK for private methods - IMPLEMENT_MOCK needs full visibility of the method
     MAKE_MOCK1(listInstances, std::vector<ListInstance>(const std::string&), override);
