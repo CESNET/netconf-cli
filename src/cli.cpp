@@ -255,6 +255,8 @@ int main(int argc, char* argv[])
             std::cerr << ex.what() << std::endl;
         } catch (std::runtime_error& ex) {
             std::cerr << ex.what() << std::endl;
+        } catch (std::logic_error& ex) {
+            std::cerr << ex.what() << std::endl;
         }
 
         lineEditor.history_add(line);

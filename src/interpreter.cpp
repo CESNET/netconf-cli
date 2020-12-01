@@ -171,11 +171,16 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
     case yang::NodeTypes::Rpc:
         ss << "RPC";
         break;
-    case yang::NodeTypes::Action:
-    case yang::NodeTypes::AnyXml:
     case yang::NodeTypes::LeafList:
+        ss << "leaf-list";
+        break;
+    case yang::NodeTypes::Action:
+        ss << "action";
+        break;
+    case yang::NodeTypes::AnyXml:
+        throw std::logic_error("Sorry, anyxml isn't supported yet.");
     case yang::NodeTypes::Notification:
-        throw std::logic_error("describe can't handle the type of " + path);
+        throw std::logic_error("Sorry, notifications aren't supported yet.");
     }
 
     if (!m_datastore.schema()->isConfig(path)) {
