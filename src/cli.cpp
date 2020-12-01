@@ -6,6 +6,7 @@
  *
 */
 #include <atomic>
+#include <boost/algorithm/string.hpp>
 #include <docopt.h>
 #include <iostream>
 #include <optional>
@@ -227,7 +228,18 @@ int main(int argc, char* argv[])
     }
 
     while (backendReturnCode == 0) {
-        auto line = lineEditor.input(parser.currentNode() + "> ");
+        auto fullContextPath = parser.currentNode();
+        std::string prompt;
+        if (auto activeRpcPath = proxyDatastore.inputDatastorePath()) {
+            auto rpcPrefixLength = activeRpcPath->size();
+            prompt = "(prepare: " + *activeRpcPath + ") " + fullContextPath.substr(rpcPrefixLength);
+        } else {
+            prompt = fullContextPath;
+        }
+
+        prompt += "> ";
+
+        auto line = lineEditor.input(prompt);
         if (!line) {
             // If user pressed CTRL-C to abort the line, errno gets set to EAGAIN.
             // If user pressed CTRL-D (for EOF), errno doesn't get set to EAGAIN, so we exit the program.
