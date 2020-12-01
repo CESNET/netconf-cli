@@ -227,7 +227,12 @@ int main(int argc, char* argv[])
     }
 
     while (backendReturnCode == 0) {
-        auto line = lineEditor.input(parser.currentNode() + "> ");
+        std::string prompt;
+        if (auto inputPath = proxyDatastore.inputDatastorePath()) {
+            prompt = "(RPC" + *inputPath + ") ";
+        }
+        prompt += parser.currentNode() + "> ";
+        auto line = lineEditor.input(prompt);
         if (!line) {
             // If user pressed CTRL-C to abort the line, errno gets set to EAGAIN.
             // If user pressed CTRL-D (for EOF), errno doesn't get set to EAGAIN, so we exit the program.
