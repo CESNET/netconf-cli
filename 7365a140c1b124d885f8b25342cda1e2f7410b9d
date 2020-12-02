@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2470caf4_fc91a176",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-12-02T12:12:50Z",
+      "side": 1,
+      "message": "this needs an explanation why it\u0027s safe to do it now (i.e., the TODO comment that gets removed)",
+      "revId": "7365a140c1b124d885f8b25342cda1e2f7410b9d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6d5aa3a_1b891156",
+        "filename": "src/yang_access.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-12-02T12:12:50Z",
+      "side": 1,
+      "message": "don\u0027t bother with it now, but this should go in a separate commit in general",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 16
+      },
+      "revId": "7365a140c1b124d885f8b25342cda1e2f7410b9d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
