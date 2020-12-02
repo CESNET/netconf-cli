@@ -51,3 +51,8 @@ bool prepare_::operator==(const prepare_& other) const
 {
     return this->m_path == other.m_path;
 }
+
+bool exec_::operator==(const exec_& other) const
+{
+    return this->m_path == other.m_path;
+}

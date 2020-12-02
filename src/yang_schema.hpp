@@ -47,6 +47,7 @@ public:
     [[nodiscard]] std::set<ModuleNodePair> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const override;
     [[nodiscard]] std::optional<std::string> description(const std::string& path) const override;
     [[nodiscard]] yang::Status status(const std::string& location) const override;
+    [[nodiscard]] bool hasInputNodes(const std::string& path) const override;
 
     void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb);
 

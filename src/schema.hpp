@@ -68,6 +68,7 @@ public:
     [[nodiscard]] virtual std::string leafrefPath(const std::string& leafrefPath) const = 0;
     [[nodiscard]] virtual std::optional<std::string> description(const std::string& location) const = 0;
     [[nodiscard]] virtual yang::Status status(const std::string& location) const = 0;
+    [[nodiscard]] virtual bool hasInputNodes(const std::string& path) const = 0;
 
     [[nodiscard]] virtual std::set<ModuleNodePair> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const = 0;
 };

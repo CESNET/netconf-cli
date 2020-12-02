@@ -80,6 +80,7 @@ public:
     std::set<ModuleNodePair> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const override;
     std::optional<std::string> description(const std::string& path) const override;
     yang::Status status(const std::string& location) const override;
+    bool hasInputNodes(const std::string& path) const override;
 
     /** A helper for making tests a little bit easier. It returns all
      * identities which are based on the argument passed and which can then be
