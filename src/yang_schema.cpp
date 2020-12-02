@@ -485,6 +485,17 @@ yang::Status YangSchema::status(const std::string& location) const
     }
 }
 
+bool YangSchema::hasInputNodes(const std::string& path) const
+{
+    auto node = getSchemaNode(path.c_str());
+    if (auto type = node->nodetype(); type != LYS_ACTION && type != LYS_RPC) {
+        throw std::logic_error("StaticSchema::hasInputNodes called with non-RPC/action path");
+    }
+
+    // The first child gives the /input node and then I check whether it has a child.
+    return node->child()->child().get();
+}
+
 bool YangSchema::isConfig(const std::string& path) const
 {
     auto node = getSchemaNode(path.c_str());
