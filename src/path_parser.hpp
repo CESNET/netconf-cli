@@ -428,12 +428,28 @@ struct WritableLeafPath : x3::parser<WritableLeafPath> {
 
 } const writableLeafPath;
 
-struct RpcActionPath : x3::parser<RpcActionPath> {
+enum class AllowInput {
+    Yes,
+    No
+};
+
+template <AllowInput ALLOW_INPUT>
+struct RpcActionPath : x3::parser<RpcActionPath<ALLOW_INPUT>> {
     using attribute_type = dataPath_;
     template <typename It, typename Ctx, typename RCtx, typename Attr>
     static bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr)
     {
-        bool res = dataPath.parse(begin, end, ctx, rctx, attr);
+        auto grammar = PathParser<PathParserMode::DataPath, CompletionMode::Data>{[] (const Schema& schema, const std::string& path) {
+            if constexpr (ALLOW_INPUT == AllowInput::No) {
+                auto nodeType = schema.nodeType(path);
+                if (nodeType == yang::NodeTypes::Rpc || nodeType == yang::NodeTypes::Action) {
+                    return !schema.hasInputNodes(path);
+                }
+            }
+
+            return true;
+        }};
+        bool res = grammar.parse(begin, end, ctx, rctx, attr);
         if (!res) {
             return false;
         }
@@ -448,8 +464,6 @@ struct RpcActionPath : x3::parser<RpcActionPath> {
         return true;
     }
 };
-
-auto const rpcActionPath = as<dataPath_>[RpcActionPath()];
 
 auto const noRpcOrAction = [](const Schema& schema, const std::string& path) {
     auto nodeType = schema.nodeType(path);
