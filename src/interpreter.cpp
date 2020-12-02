@@ -224,9 +224,12 @@ void Interpreter::operator()(const prepare_& prepare) const
     m_parser.changeNode(prepare.m_path);
 }
 
-void Interpreter::operator()(const exec_&) const
+void Interpreter::operator()(const exec_& exec) const
 {
     m_parser.changeNode({Scope::Absolute, {}});
+    if (exec.m_path) {
+        m_datastore.initiate(pathToString(toCanonicalPath(*exec.m_path)));
+    }
     auto output = m_datastore.execute();
     std::cout << "RPC/action output:\n";
     printTree(output);
