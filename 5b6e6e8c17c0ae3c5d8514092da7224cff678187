@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e020f33_2cd1f702",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-12-02T15:24:44Z",
+      "side": 1,
+      "message": "This is what I\u0027m getting, and I think it\u0027s ugly:\n \n/\u003e prepare /czechlight-roadm-device:HACK-RESTCONF-JSON-full-spectrum-scan/\n(RPC/czechlight-roadm-device:HACK-RESTCONF-JSON-full-spectrum-scan) /czechlight-roadm-device:HACK-RESTCONF-JSON-full-spectrum-scan\u003e\n\n- Don\u0027t say \"RPC\" when it can also be an action. IMHO it\u0027s best to say \"exec\" or \"prepare\" here.\n- there has to be some separation between that prefix and the XPath\n- a full XPath is repeated, which is redundant\n\nSo what about this instead:\n \n/\u003e prepare /czechlight-roadm-device:HACK-RESTCONF-JSON-full-spectrum-scan/\n(exec: /czechlight-roadm-device:HACK-RESTCONF-JSON-full-spectrum-scan)\u003e cd whatever\n(exec: /czechlight-roadm-device:HACK-RESTCONF-JSON-full-spectrum-scan) whatever\u003e set blah \"ahoj\"\n(exec: /czechlight-roadm-device:HACK-RESTCONF-JSON-full-spectrum-scan) whatever\u003e execute\n/\u003e",
+      "revId": "5b6e6e8c17c0ae3c5d8514092da7224cff678187",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22a00789_95e59fa4",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-12-02T15:24:44Z",
+      "side": 1,
+      "message": "you might as well call cancel() and lose that explicit reset of m_inputDatastore above",
+      "range": {
+        "startLine": 82,
+        "startChar": 47,
+        "endLine": 82,
+        "endChar": 74
+      },
+      "revId": "5b6e6e8c17c0ae3c5d8514092da7224cff678187",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": true
+    }
+  ]
+}
