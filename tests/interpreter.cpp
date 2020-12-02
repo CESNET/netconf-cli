@@ -32,6 +32,7 @@ public:
     MAKE_CONST_MOCK1(nodeType, yang::NodeTypes(const std::string&), override);
     MAKE_CONST_MOCK2(nodeType, yang::NodeTypes(const schemaPath_&, const ModuleNodePair&), override);
     IMPLEMENT_CONST_MOCK1(status);
+    IMPLEMENT_CONST_MOCK1(hasInputNodes);
 };
 
 TEST_CASE("interpreter tests")

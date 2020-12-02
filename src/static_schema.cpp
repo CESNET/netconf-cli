@@ -41,6 +41,8 @@ void StaticSchema::addRpc(const std::string& location, const std::string& name)
     //create a new set of children for the new node
     std::string key = joinPaths(location, name);
     m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
+    m_nodes.emplace(joinPaths(key, "input"), std::unordered_map<std::string, NodeInfo>());
+    m_nodes.emplace(joinPaths(key, "output"), std::unordered_map<std::string, NodeInfo>());
 }
 
 void StaticSchema::addAction(const std::string& location, const std::string& name)
@@ -270,6 +272,13 @@ std::optional<std::string> StaticSchema::description([[maybe_unused]] const std:
 yang::Status StaticSchema::status([[maybe_unused]] const std::string& location) const
 {
     throw std::runtime_error{"Internal error: StaticSchema::status(std::string) not implemented. The tests should not have called this overload."};
+}
+
+bool StaticSchema::hasInputNodes(const std::string& path) const
+{
+    assert(nodeType(path) == yang::NodeTypes::Action || nodeType(path) == yang::NodeTypes::Rpc);
+
+    return m_nodes.at(joinPaths(path, "input")).size() != 0;
 }
 
 yang::NodeTypes StaticSchema::nodeType(const std::string& path) const
