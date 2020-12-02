@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "71c3524a_683f5a64",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-12-02T12:06:47Z",
+      "side": 1,
+      "message": "I assumed that this is an incorrect form (\"everybody\" except Merriam Webster online says that it should be \"leaves\" in this context), but then I checked the RFC 7950 and they are using \"leafs\" consistently. Oh well, OK then.",
+      "range": {
+        "startLine": 100,
+        "startChar": 29,
+        "endLine": 100,
+        "endChar": 34
+      },
+      "revId": "419d917ad95420b1a289c30a8f485978475fe3a9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    }
+  ]
+}
