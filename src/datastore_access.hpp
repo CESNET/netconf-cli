@@ -37,6 +37,12 @@ private:
     std::string m_what;
 };
 
+enum class DatastoreMode {
+    Startup,
+    Running,
+    Operational
+};
+
 class Schema;
 
 struct dataPath_;
@@ -51,6 +57,7 @@ public:
     virtual void deleteItem(const std::string& path) = 0;
     virtual void moveItem(const std::string& path, std::variant<yang::move::Absolute, yang::move::Relative> move) = 0;
     virtual Tree execute(const std::string& path, const Tree& input) = 0;
+    void setMode(const DatastoreMode mode);
 
     virtual std::shared_ptr<Schema> schema() = 0;
 
@@ -58,6 +65,9 @@ public:
     virtual void discardChanges() = 0;
     virtual void copyConfig(const Datastore source, const Datastore destination) = 0;
     [[nodiscard]] virtual std::string dump(const DataFormat format) const = 0;
+
+protected:
+    DatastoreMode m_mode = DatastoreMode::Operational;
 
 private:
     friend class DataQuery;

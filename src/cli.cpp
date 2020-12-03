@@ -27,7 +27,7 @@ Usage:
   sysrepo-cli --version
 
 Options:
-  -d <datastore>   can be "running" or "startup" [default: running])";
+  -d <datastore_mode>   can be "running", "startup" or "operational" [default: operational])";
 #elif defined(YANG_CLI)
 #include <boost/spirit/home/x3.hpp>
 #include <filesystem>
@@ -54,15 +54,15 @@ Options:
 static const auto usage = R"(CLI interface for NETCONF
 
 Usage:
-  netconf-cli [-v] [-p <port>] <host>
-  netconf-cli [-v] --socket <path>
+  netconf-cli [-v] [-d <datastore>] [-p <port>] <host>
+  netconf-cli [-v] [-d <datastore>] --socket <path>
   netconf-cli (-h | --help)
   netconf-cli --version
 
 Options:
   -v         enable verbose mode
   -p <port>  port number [default: 830]
-)";
+  -d <datastore_mode>   can be "running", "startup" or "operational" [default: operational])";
 #include "cli-netconf.hpp"
 #include "netconf_access.hpp"
 #define PROGRAM_NAME "netconf-cli"
@@ -95,20 +95,26 @@ int main(int argc, char* argv[])
     Replxx lineEditor;
     std::atomic<int> backendReturnCode = 0;
 
-#if defined(SYSREPO_CLI)
-    auto datastoreType = Datastore::Running;
+    // For some reason, GCC10 still needs [[maybe_unused]] because of conditional compilation...
+    [[maybe_unused]] auto datastoreMode = DatastoreMode::Operational;
     if (const auto& ds = args["-d"]) {
         if (ds.asString() == "startup") {
-            datastoreType = Datastore::Startup;
+            datastoreMode = DatastoreMode::Startup;
         } else if (ds.asString() == "running") {
-            datastoreType = Datastore::Running;
+            datastoreMode = DatastoreMode::Running;
+        } else if (ds.asString() == "operational") {
+            datastoreMode = DatastoreMode::Operational;
         } else {
             std::cerr << PROGRAM_NAME << ": unknown datastore: " << ds.asString() << "\n";
             return 1;
         }
     }
-    auto datastore = std::make_shared<SysrepoAccess>(datastoreType);
-    std::cout << "Connected to sysrepo [datastore: " << (datastoreType == Datastore::Startup ? "startup" : "running") << "]" << std::endl;
+
+    auto datastoreModeString = args["-d"] ? args["-d"].asString() : std::string("operational");
+
+#if defined(SYSREPO_CLI)
+    auto datastore = std::make_shared<SysrepoAccess>();
+    std::cout << "Connected to sysrepo [datastore mode: " << datastoreModeString << "]" << std::endl;
 #elif defined(YANG_CLI)
     auto datastore = std::make_shared<YangAccess>();
     if (args["--configonly"].asBool()) {
@@ -189,9 +195,12 @@ int main(int argc, char* argv[])
             return 1;
         }
     }
+    std::cout << "Connected via NETCONF [datastore mode: " << datastoreModeString << "]" << std::endl;
 #else
 #error "Unknown CLI backend"
 #endif
+
+    datastore->setMode(datastoreMode);
 
 #if defined(SYSREPO_CLI) || defined(NETCONF_CLI)
     auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {

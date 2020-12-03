@@ -15,11 +15,34 @@
 
 
 NetconfAccess::~NetconfAccess() = default;
+namespace {
+auto modeToDs_get(const DatastoreMode mode)
+{
+    switch (mode) {
+    case DatastoreMode::Operational:
+        return libnetconf::NmdaDatastore::Operational;
+    case DatastoreMode::Running:
+        return libnetconf::NmdaDatastore::Running;
+    case DatastoreMode::Startup:
+        return libnetconf::NmdaDatastore::Startup;
+    }
+}
 
+auto modeToDs_set(const DatastoreMode mode)
+{
+    switch (mode) {
+    case DatastoreMode::Operational:
+    case DatastoreMode::Running:
+        return libnetconf::NmdaDatastore::Candidate;
+    case DatastoreMode::Startup:
+        return libnetconf::NmdaDatastore::Startup;
+    }
+}
+}
 DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
 {
     Tree res;
-    auto config = m_session->getData(libnetconf::NmdaDatastore::Operational, (path != "/") ? std::optional{path} : std::nullopt);
+    auto config = m_session->getData(modeToDs_get(m_mode), (path != "/") ? std::optional{path} : std::nullopt);
 
     if (config) {
         lyNodesToTree(res, config->tree_for());
@@ -116,10 +139,21 @@ void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move:
     doEditFromDataNode(sourceNode);
 }
 
+NC_DATASTORE toNcDatastore(Datastore datastore)
+{
+    switch (datastore) {
+    case Datastore::Running:
+        return NC_DATASTORE_CANDIDATE;
+    case Datastore::Startup:
+        return NC_DATASTORE_STARTUP;
+    }
+    __builtin_unreachable();
+}
+
 void NetconfAccess::doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode)
 {
     auto data = dataNode->print_mem(LYD_XML, 0);
-    m_session->editData(libnetconf::NmdaDatastore::Candidate, data);
+    m_session->editData(modeToDs_set(m_mode), data);
 }
 
 void NetconfAccess::commitChanges()
@@ -141,20 +175,10 @@ DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree
     return rpcOutputToTree(path, output);
 }
 
-NC_DATASTORE toNcDatastore(Datastore datastore)
-{
-    switch (datastore) {
-    case Datastore::Running:
-        return NC_DATASTORE_RUNNING;
-    case Datastore::Startup:
-        return NC_DATASTORE_STARTUP;
-    }
-    __builtin_unreachable();
-}
-
 void NetconfAccess::copyConfig(const Datastore source, const Datastore destination)
 {
     m_session->copyConfig(toNcDatastore(source), toNcDatastore(destination));
+    m_session->commit();
 }
 
 std::shared_ptr<Schema> NetconfAccess::schema()
