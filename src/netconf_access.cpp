@@ -15,11 +15,38 @@
 
 
 NetconfAccess::~NetconfAccess() = default;
+namespace {
+auto targetToDs_get(const DatastoreTarget target)
+{
+    switch (target) {
+    case DatastoreTarget::Operational:
+        return libnetconf::NmdaDatastore::Operational;
+    case DatastoreTarget::Running:
+        return libnetconf::NmdaDatastore::Running;
+    case DatastoreTarget::Startup:
+        return libnetconf::NmdaDatastore::Startup;
+    }
 
+    __builtin_unreachable();
+}
+
+auto targetToDs_set(const DatastoreTarget target)
+{
+    switch (target) {
+    case DatastoreTarget::Operational:
+    case DatastoreTarget::Running:
+        return libnetconf::NmdaDatastore::Candidate;
+    case DatastoreTarget::Startup:
+        return libnetconf::NmdaDatastore::Startup;
+    }
+
+    __builtin_unreachable();
+}
+}
 DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
 {
     Tree res;
-    auto config = m_session->getData(libnetconf::NmdaDatastore::Operational, (path != "/") ? std::optional{path} : std::nullopt);
+    auto config = m_session->getData(targetToDs_get(m_target), (path != "/") ? std::optional{path} : std::nullopt);
 
     if (config) {
         lyNodesToTree(res, config->tree_for());
@@ -119,7 +146,7 @@ void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move:
 void NetconfAccess::doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode)
 {
     auto data = dataNode->print_mem(LYD_XML, 0);
-    m_session->editData(libnetconf::NmdaDatastore::Candidate, data);
+    m_session->editData(targetToDs_set(m_target), data);
 }
 
 void NetconfAccess::commitChanges()
