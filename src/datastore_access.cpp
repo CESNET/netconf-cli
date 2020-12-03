@@ -31,6 +31,11 @@ DatastoreException::DatastoreException(const std::vector<DatastoreError>& errors
     }
 }
 
+void DatastoreAccess::setTarget(const DatastoreTarget mode)
+{
+    m_target = mode;
+}
+
 const char* DatastoreException::what() const noexcept
 {
     return m_what.c_str();

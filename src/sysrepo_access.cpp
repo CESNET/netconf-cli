@@ -77,16 +77,46 @@ sr_datastore_t toSrDatastore(Datastore datastore)
     __builtin_unreachable();
 }
 
-SysrepoAccess::SysrepoAccess(const Datastore datastore)
+SysrepoAccess::SysrepoAccess()
     : m_connection(std::make_shared<sysrepo::Connection>())
     , m_session(std::make_shared<sysrepo::Session>(m_connection))
     , m_schema(std::make_shared<YangSchema>(m_session->get_context()))
 {
     try {
-        m_session = std::make_shared<sysrepo::Session>(m_connection, toSrDatastore(datastore));
+        m_session = std::make_shared<sysrepo::Session>(m_connection);
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
+}
+
+namespace {
+auto targetToDs_get(const DatastoreTarget target)
+{
+    switch (target) {
+    case DatastoreTarget::Operational:
+        return SR_DS_OPERATIONAL;
+    case DatastoreTarget::Running:
+        return SR_DS_RUNNING;
+    case DatastoreTarget::Startup:
+        return SR_DS_STARTUP;
+    }
+
+    __builtin_unreachable();
+}
+
+auto targetToDs_set(const DatastoreTarget target)
+{
+    switch (target) {
+    case DatastoreTarget::Operational:
+    case DatastoreTarget::Running:
+        // TODO: Doing candidate here doesn't work, why?
+        return SR_DS_RUNNING;
+    case DatastoreTarget::Startup:
+        return SR_DS_STARTUP;
+    }
+
+    __builtin_unreachable();
+}
 }
 
 DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
@@ -95,10 +125,8 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
     Tree res;
 
     try {
-        auto oldDs = m_session->session_get_ds();
-        m_session->session_switch_ds(SR_DS_OPERATIONAL);
+        m_session->session_switch_ds(targetToDs_get(m_target));
         auto config = m_session->get_data(((path == "/") ? "/*" : path).c_str());
-        m_session->session_switch_ds(oldDs);
         if (config) {
             lyNodesToTree(res, config->tree_for());
         }
@@ -111,6 +139,7 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
 void SysrepoAccess::setLeaf(const std::string& path, leaf_data_ value)
 {
     try {
+        m_session->session_switch_ds(targetToDs_set(m_target));
         m_session->set_item(path.c_str(), boost::apply_visitor(valFromValue(), value));
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
@@ -120,6 +149,7 @@ void SysrepoAccess::setLeaf(const std::string& path, leaf_data_ value)
 void SysrepoAccess::createItem(const std::string& path)
 {
     try {
+        m_session->session_switch_ds(targetToDs_set(m_target));
         m_session->set_item(path.c_str());
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
@@ -131,6 +161,7 @@ void SysrepoAccess::deleteItem(const std::string& path)
     try {
         // Have to use SR_EDIT_ISOLATE, because deleting something that's been set without committing is not supported
         // https://github.com/sysrepo/sysrepo/issues/1967#issuecomment-625085090
+        m_session->session_switch_ds(targetToDs_set(m_target));
         m_session->delete_item(path.c_str(), SR_EDIT_ISOLATE);
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
@@ -164,12 +195,14 @@ void SysrepoAccess::moveItem(const std::string& source, std::variant<yang::move:
             destination = instanceToString(relative.m_path);
         }
     }
+    m_session->session_switch_ds(targetToDs_set(m_target));
     m_session->move_item(source.c_str(), toSrMoveOp(move), destination.c_str(), destination.c_str());
 }
 
 void SysrepoAccess::commitChanges()
 {
     try {
+        m_session->session_switch_ds(targetToDs_set(m_target));
         m_session->apply_changes(OPERATION_TIMEOUT_MS, 1);
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
@@ -179,6 +212,7 @@ void SysrepoAccess::commitChanges()
 void SysrepoAccess::discardChanges()
 {
     try {
+        m_session->session_switch_ds(targetToDs_set(m_target));
         m_session->discard_changes();
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
@@ -188,16 +222,15 @@ void SysrepoAccess::discardChanges()
 DatastoreAccess::Tree SysrepoAccess::execute(const std::string& path, const Tree& input)
 {
     auto inputNode = treeToRpcInput(m_session->get_context(), path, input);
+    m_session->session_switch_ds(targetToDs_set(m_target));
     auto output = m_session->rpc_send(inputNode);
     return rpcOutputToTree(path, output);
 }
 
 void SysrepoAccess::copyConfig(const Datastore source, const Datastore destination)
 {
-    auto oldDs = m_session->session_get_ds();
     m_session->session_switch_ds(toSrDatastore(destination));
     m_session->copy_config(toSrDatastore(source), nullptr, OPERATION_TIMEOUT_MS, 1);
-    m_session->session_switch_ds(oldDs);
 }
 
 std::shared_ptr<Schema> SysrepoAccess::schema()

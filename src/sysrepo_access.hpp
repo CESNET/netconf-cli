@@ -27,7 +27,7 @@ class YangSchema;
 class SysrepoAccess : public DatastoreAccess {
 public:
     ~SysrepoAccess() override;
-    SysrepoAccess(const Datastore datastore);
+    SysrepoAccess();
     [[nodiscard]] Tree getItems(const std::string& path) const override;
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createItem(const std::string& path) override;

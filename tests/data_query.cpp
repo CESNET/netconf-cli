@@ -37,7 +37,7 @@ TEST_CASE("data query")
     SysrepoSubscription subscriptionOther("other-module");
 
 #ifdef sysrepo_BACKEND
-    SysrepoAccess datastore(Datastore::Running);
+    SysrepoAccess datastore;
 #elif defined(netconf_BACKEND)
     const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
     NetconfAccess datastore(NETOPEER_SOCKET);
