@@ -120,6 +120,7 @@ TEST_CASE("setting/getting values")
 
 #ifdef sysrepo_BACKEND
     SysrepoAccess datastore(Datastore::Running);
+    SysrepoAccess startupDatastore(Datastore::Startup);
 #elif defined(netconf_BACKEND)
     const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
     NetconfAccess datastore(NETOPEER_SOCKET);
@@ -832,6 +833,23 @@ TEST_CASE("setting/getting values")
         datastore.commitChanges();
         REQUIRE(datastore.dump(DataFormat::Json).find("example-schema:point") != std::string::npos);
     }
+
+#ifdef sysrepo_BACKEND
+    SECTION("working with startup datastore")
+    {
+        REQUIRE(startupDatastore.getItems("/example-schema:leafInt32") == DatastoreAccess::Tree{});
+        {
+            REQUIRE_CALL(mock, write("/example-schema:leafInt32", std::nullopt, "54"s));
+            datastore.setLeaf("/example-schema:leafInt32", 54);
+            datastore.commitChanges();
+        }
+        startupDatastore.setLeaf("/example-schema:leafInt32", 54);
+        REQUIRE(startupDatastore.getItems("/example-schema:leafInt32") == DatastoreAccess::Tree{
+            {"/example-schema:leafInt32", 54}
+        });
+
+    }
+#endif
 
     waitForCompletionAndBitMore(seq1);
 }
