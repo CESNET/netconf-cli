@@ -76,10 +76,8 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
     {
     }
 
-    // GCC complains that `end` isn't used when doing completions only
-    // FIXME: GCC 10.1 doesn't emit a warning here. Remove [[maybe_unused]] when GCC 10 is available
     template <typename It, typename Ctx, typename RCtx, typename Attr>
-    bool parse(It& begin, [[maybe_unused]] It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
+    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
     {
         std::string tableName;
         if constexpr (std::is_same<attribute_type, schemaNode_>()) {
@@ -165,12 +163,7 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
         if constexpr (PARSER_MODE == NodeParserMode::CompletionsOnly) {
             return true;
         } else {
-            It saveIter;
-            // GCC complains that I assign saveIter because I use it only if NodeType is dataNode_
-            // FIXME: GCC 10.1 doesn't emit a warning here. Make this unconditional when GCC 10 is available.
-            if constexpr (std::is_same<attribute_type, dataNode_>()) {
-                saveIter = begin;
-            }
+            It saveIter = begin;
 
             auto res = table.parse(begin, end, ctx, rctx, attr);
 
