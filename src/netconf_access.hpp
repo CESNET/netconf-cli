@@ -50,6 +50,8 @@ public:
     Tree execute(const std::string& path, const Tree& input) override;
     void copyConfig(const Datastore source, const Datastore destination) override;
 
+    void setDatastore(const Datastore datastore);
+
     std::shared_ptr<Schema> schema() override;
 
     [[nodiscard]] std::string dump(const DataFormat format) const override;

@@ -122,7 +122,7 @@ TEST_CASE("setting/getting values")
     SysrepoSubscription subscription("example-schema", &mock);
 
 #ifdef sysrepo_BACKEND
-    SysrepoAccess datastore(Datastore::Running);
+    SysrepoAccess datastore;
 #elif defined(netconf_BACKEND)
     const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
     NetconfAccess datastore(NETOPEER_SOCKET);
@@ -913,7 +913,7 @@ TEST_CASE("rpc/action")
     trompeloeil::sequence seq1;
 
 #ifdef sysrepo_BACKEND
-    auto datastore = std::make_shared<SysrepoAccess>(Datastore::Running);
+    auto datastore = std::make_shared<SysrepoAccess>();
 #elif defined(netconf_BACKEND)
     const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
     auto datastore = std::make_shared<NetconfAccess>(NETOPEER_SOCKET);
