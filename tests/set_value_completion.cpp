@@ -29,6 +29,7 @@ TEST_CASE("set value completion")
     schema->addIdentity(identityRef_{"mod", "food"}, identityRef_{"mod", "spaghetti"});
     schema->addIdentity(identityRef_{"mod", "pizza"}, identityRef_{"pizza-module", "hawaii"});
     schema->addLeaf("/", "mod:foodIdentRef", yang::IdentityRef{schema->validIdentities("mod", "food")});
+    schema->addLeaf("/", "mod:flags", yang::Bits{{"parity", "zero", "carry", "sign"}});
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
     // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
     ALLOW_CALL(*mockDatastore, listInstances("/mod:list"))
@@ -86,6 +87,20 @@ TEST_CASE("set value completion")
         input = "set mod:foodIdentRef ";
         expectedCompletions = {"mod:food", "mod:pizza", "mod:spaghetti", "pizza-module:hawaii"};
         expectedContextLength = 0;
+    }
+
+    SECTION("set mod:flags ")
+    {
+        input = "set mod:flags ";
+        expectedCompletions = {"carry", "sign", "parity", "zero"};
+        expectedContextLength = 0;
+    }
+
+    SECTION("set mod:flags ze")
+    {
+        input = "set mod:flags ze";
+        expectedCompletions = {"zero"};
+        expectedContextLength = 2;
     }
 
     REQUIRE(parser.completeCommand(input, errorStream) == (Completions{expectedCompletions, expectedContextLength}));
