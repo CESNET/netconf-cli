@@ -205,6 +205,16 @@ TEST_CASE("path_completion")
         }
     }
 
+    SECTION("describe completion")
+    {
+        SECTION("path with list at the end")
+        {
+            input = "describe /example:list/";
+            expectedCompletions = {"contInList/", "number "};
+            expectedContextLength = 0;
+        }
+    }
+
     SECTION("list keys completion")
     {
         SECTION("cd example:lis")

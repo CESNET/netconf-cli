@@ -137,7 +137,7 @@ auto const copy_def =
     copy_::name > space_separator > copy_args;
 
 auto const describe_def =
-    describe_::name >> space_separator > (dataPathListEnd | anyPath);
+    describe_::name >> space_separator > anyPath;
 
 struct mode_table : x3::symbols<MoveMode> {
     mode_table()
