@@ -215,9 +215,13 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
 
     try {
         auto oldDs = m_session->session_get_ds();
-        m_session->session_switch_ds(SR_DS_OPERATIONAL);
+        if (oldDs != SR_DS_STARTUP) {
+            m_session->session_switch_ds(SR_DS_OPERATIONAL);
+        }
         auto config = m_session->get_data(((path == "/") ? "/*" : path).c_str());
-        m_session->session_switch_ds(oldDs);
+        if (oldDs != SR_DS_STARTUP) {
+            m_session->session_switch_ds(oldDs);
+        }
         if (config) {
             lyNodesToTree(res, config->tree_for());
         }
