@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bd8826f0_305ecdd6",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-12-03T01:31:22Z",
+      "side": 1,
+      "message": "I improved it",
+      "parentUuid": "0e020f33_2cd1f702",
+      "revId": "5b6e6e8c17c0ae3c5d8514092da7224cff678187",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "22a00789_95e59fa4",
         "filename": "src/proxy_datastore.cpp",
         "patchSetId": 2
@@ -39,6 +57,30 @@
       "revId": "5b6e6e8c17c0ae3c5d8514092da7224cff678187",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d367f8e_f8034dd1",
+        "filename": "src/proxy_datastore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-12-03T01:31:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22a00789_95e59fa4",
+      "range": {
+        "startLine": 82,
+        "startChar": 47,
+        "endLine": 82,
+        "endChar": 74
+      },
+      "revId": "5b6e6e8c17c0ae3c5d8514092da7224cff678187",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68",
+      "unresolved": false
     }
   ]
 }
