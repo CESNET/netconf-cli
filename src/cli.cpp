@@ -54,14 +54,14 @@ Options:
 static const auto usage = R"(CLI interface for NETCONF
 
 Usage:
-  netconf-cli [-v] [-p <port>] <host>
+  netconf-cli [-v] [-d <datastore>] [-p <port>] <host>
   netconf-cli (-h | --help)
   netconf-cli --version
 
 Options:
   -v         enable verbose mode
   -p <port>  port number [default: 830]
-)";
+  -d <datastore>   can be "running" or "startup" [default: running])";
 #include "cli-netconf.hpp"
 #include "netconf_access.hpp"
 #define PROGRAM_NAME "netconf-access"
@@ -94,7 +94,6 @@ int main(int argc, char* argv[])
     Replxx lineEditor;
     std::atomic<int> backendReturnCode = 0;
 
-#if defined(SYSREPO_CLI)
     auto datastoreType = Datastore::Running;
     if (const auto& ds = args["-d"]) {
         if (ds.asString() == "startup") {
@@ -106,6 +105,8 @@ int main(int argc, char* argv[])
             return 1;
         }
     }
+
+#if defined(SYSREPO_CLI)
     auto datastore = std::make_shared<SysrepoAccess>(datastoreType);
     std::cout << "Connected to sysrepo [datastore: " << (datastoreType == Datastore::Startup ? "startup" : "running") << "]" << std::endl;
 #elif defined(YANG_CLI)
@@ -175,6 +176,8 @@ int main(int argc, char* argv[])
             lineEditor.emulate_key_press(replxx::Replxx::KEY::control('D'));
         });
         datastore = std::make_shared<NetconfAccess>(process.std_out.native_source(), process.std_in.native_sink());
+        datastore->setDatastore(datastoreType);
+        std::cout << "Connected via NETCONF [datastore: " << (datastoreType == Datastore::Startup ? "startup" : "running") << "]" << std::endl;
     } catch (std::runtime_error& ex) {
         std::cerr << "SSH connection failed: " << ex.what() << "\n";
         return 1;

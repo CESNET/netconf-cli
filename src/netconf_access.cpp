@@ -116,10 +116,21 @@ void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move:
     doEditFromDataNode(sourceNode);
 }
 
+NC_DATASTORE toNcDatastore(Datastore datastore)
+{
+    switch (datastore) {
+    case Datastore::Running:
+        return NC_DATASTORE_CANDIDATE;
+    case Datastore::Startup:
+        return NC_DATASTORE_STARTUP;
+    }
+    __builtin_unreachable();
+}
+
 void NetconfAccess::doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode)
 {
     auto data = dataNode->print_mem(LYD_XML, 0);
-    m_session->editConfig(NC_DATASTORE_CANDIDATE, NC_RPC_EDIT_DFLTOP_MERGE, NC_RPC_EDIT_TESTOPT_TESTSET, NC_RPC_EDIT_ERROPT_STOP, data);
+    m_session->editConfig(toNcDatastore(m_datastore), NC_RPC_EDIT_DFLTOP_MERGE, NC_RPC_EDIT_TESTOPT_TESTSET, NC_RPC_EDIT_ERROPT_STOP, data);
 }
 
 void NetconfAccess::commitChanges()
@@ -149,20 +160,10 @@ DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree
     return res;
 }
 
-NC_DATASTORE toNcDatastore(Datastore datastore)
-{
-    switch (datastore) {
-    case Datastore::Running:
-        return NC_DATASTORE_RUNNING;
-    case Datastore::Startup:
-        return NC_DATASTORE_STARTUP;
-    }
-    __builtin_unreachable();
-}
-
 void NetconfAccess::copyConfig(const Datastore source, const Datastore destination)
 {
     m_session->copyConfig(toNcDatastore(source), toNcDatastore(destination));
+    m_session->commit();
 }
 
 std::string NetconfAccess::fetchSchema(const std::string_view module, const
@@ -229,6 +230,11 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
     }
 
     return res;
+}
+
+void NetconfAccess::setDatastore(const Datastore datastore)
+{
+    m_datastore = datastore;
 }
 
 std::string NetconfAccess::dump(const DataFormat format) const

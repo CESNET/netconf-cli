@@ -50,6 +50,8 @@ public:
     Tree execute(const std::string& path, const Tree& input) override;
     void copyConfig(const Datastore source, const Datastore destination) override;
 
+    void setDatastore(const Datastore datastore);
+
     std::shared_ptr<Schema> schema() override;
 
     [[nodiscard]] std::string dump(const DataFormat format) const override;
@@ -66,4 +68,6 @@ private:
 
     std::unique_ptr<libnetconf::client::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;
+
+    Datastore m_datastore = Datastore::Running;
 };
