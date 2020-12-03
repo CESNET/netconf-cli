@@ -162,6 +162,7 @@ struct impl_LeafData {
             parser.add(bit, bit);
             parserContext.m_suggestions.insert(Completion{bit});
         }
+        parserContext.m_completionIterator = first;
 
         std::vector<std::string> bitsRes;
 
