@@ -124,7 +124,7 @@ TEST_CASE("setting/getting values")
     SysrepoSubscription subStartup("example-schema", &mockStartup, SR_DS_STARTUP);
 
 #ifdef sysrepo_BACKEND
-    SysrepoAccess datastore(Datastore::Running);
+    SysrepoAccess datastore;
 #elif defined(netconf_BACKEND)
     const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
     NetconfAccess datastore(NETOPEER_SOCKET);
@@ -915,7 +915,7 @@ TEST_CASE("rpc/action")
     trompeloeil::sequence seq1;
 
 #ifdef sysrepo_BACKEND
-    auto datastore = std::make_shared<SysrepoAccess>(Datastore::Running);
+    auto datastore = std::make_shared<SysrepoAccess>();
 #elif defined(netconf_BACKEND)
     const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
     auto datastore = std::make_shared<NetconfAccess>(NETOPEER_SOCKET);
@@ -1069,3 +1069,72 @@ TEST_CASE("rpc/action")
 
     waitForCompletionAndBitMore(seq1);
 }
+
+#if not defined(yang_BACKEND)
+TEST_CASE("datastore targets")
+{
+    const auto testNode = "/example-schema:leafInt32";
+    {
+        auto conn = std::make_shared<sysrepo::Connection>();
+        auto sess = std::make_shared<sysrepo::Session>(conn);
+        sess->delete_item(testNode);
+        sess->apply_changes(1000, 1);
+        sess->session_switch_ds(SR_DS_STARTUP);
+        sess->delete_item(testNode);
+        sess->apply_changes(1000, 1);
+    }
+    MockRecorder mockRunning;
+    MockRecorder mockStartup;
+
+#ifdef sysrepo_BACKEND
+    SysrepoAccess datastore;
+#elif defined(netconf_BACKEND)
+    const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
+    NetconfAccess datastore(NETOPEER_SOCKET);
+#else
+#error "Unknown backend"
+#endif
+
+    auto testGetItems = [&datastore] (const auto& path, const DatastoreAccess::Tree& expected) {
+        REQUIRE(datastore.getItems(path) == expected);
+    };
+
+    SECTION("subscriptions change operational target")
+    {
+        // Default target is operational, so setting a value and reading it should return no values as there are no
+        // subscriptions yet.
+        datastore.setLeaf(testNode, 10);
+        datastore.commitChanges();
+        testGetItems(testNode, {});
+
+        // Now we create a subscription and try again.
+        SysrepoSubscription subRunning("example-schema", &mockRunning);
+        testGetItems(testNode, {{testNode, 10}});
+    }
+
+    SECTION("running shows stuff even without subscriptions")
+    {
+        datastore.setTarget(DatastoreTarget::Running);
+        datastore.setLeaf(testNode, 10);
+        datastore.commitChanges();
+        testGetItems(testNode, {{testNode, 10}});
+
+        // Actually creating a subscription shouldn't make a difference.
+        SysrepoSubscription subRunning("example-schema", &mockRunning);
+        testGetItems(testNode, {{testNode, 10}});
+    }
+
+    SECTION("startup changes only affect startup")
+    {
+        datastore.setTarget(DatastoreTarget::Startup);
+        datastore.setLeaf(testNode, 10);
+        datastore.commitChanges();
+        testGetItems(testNode, {{testNode, 10}});
+        datastore.setTarget(DatastoreTarget::Running);
+        testGetItems(testNode, {});
+        datastore.setTarget(DatastoreTarget::Operational);
+        testGetItems(testNode, {});
+    }
+
+}
+#endif
