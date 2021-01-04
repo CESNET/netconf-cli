@@ -16,6 +16,24 @@
       "message": "Can you write a test for this, please?",
       "revId": "a2189fe8ec7c9144a62e8c2fb9c9cfd44e1d3b17",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "748b155a_7f6a292d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-04T19:03:54Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "467719a0_0beddac7",
+      "revId": "a2189fe8ec7c9144a62e8c2fb9c9cfd44e1d3b17",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
