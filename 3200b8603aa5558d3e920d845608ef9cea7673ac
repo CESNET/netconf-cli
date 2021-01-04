@@ -16,6 +16,23 @@
       "message": "recheck",
       "revId": "3200b8603aa5558d3e920d845608ef9cea7673ac",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce0ef8de_1b74311f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-04T22:33:27Z",
+      "side": 1,
+      "message": "Looks like the cloud hit the ground, https://rt.cesnet.cz/rt/Ticket/Display.html?id\u003d806651",
+      "revId": "3200b8603aa5558d3e920d845608ef9cea7673ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
