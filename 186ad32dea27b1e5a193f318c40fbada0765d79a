@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb11bc79_42e2d08b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-04T12:00:08Z",
+      "side": 1,
+      "message": "This needs either a rebase, or marking the parent as a non-WIP.",
+      "revId": "186ad32dea27b1e5a193f318c40fbada0765d79a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
