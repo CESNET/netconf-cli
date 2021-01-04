@@ -34,6 +34,24 @@
       "parentUuid": "87bd6a67_da3373e8",
       "revId": "1ae24f4721009546a50b54eec3f712e985fa10f6",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c61cb957_0e35d53c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-04T22:37:04Z",
+      "side": 1,
+      "message": "Strange -- I was using several branches merged together, so I cannot rule out a PEBKAC on my side, but I can confirm that it works when cherry-picked on top of d11b5610 (current master). Thanks, and sorry for noise.",
+      "parentUuid": "805565f6_c59b21d7",
+      "revId": "1ae24f4721009546a50b54eec3f712e985fa10f6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
