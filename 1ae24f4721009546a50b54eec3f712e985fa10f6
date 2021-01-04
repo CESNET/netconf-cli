@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87bd6a67_da3373e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-04T17:54:53Z",
+      "side": 1,
+      "message": "No type description gets printed for me:\n \n/\u003e describe /czechlight-roadm-device:media-channels[channel\u003d\u0027C-band\u0027]/power/leaf-in \n/czechlight-roadm-device:media-channels[channel\u003d\u0027C-band\u0027]/power/leaf-in: optical-power-dBm (a decimal) [dBm] (ro)\n \nPower level for this MC at the common output port\n \nThis corresponds to the power level at the corresponding Express IN\nport for Line Degree ROADMs, and to the corresponding ADD port for\nAdd/Drop ROADMs.  This value is only present when the ROADM device is\nconfigured to \"add\" this Media Channel from some input port.\n/\u003e ",
+      "revId": "1ae24f4721009546a50b54eec3f712e985fa10f6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
