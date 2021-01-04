@@ -127,6 +127,7 @@ void Interpreter::operator()(const copy_& copy) const
 std::string Interpreter::buildTypeInfo(const std::string& path) const
 {
     std::ostringstream ss;
+    std::string typeDescription;
     switch (m_datastore.schema()->nodeType(path)) {
     case yang::NodeTypes::Container:
         ss << "container";
@@ -154,6 +155,10 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
 
         if (leafType.m_units) {
             ss << " [" + *leafType.m_units + "]";
+        }
+
+        if (leafType.m_description) {
+            typeDescription = "\nType description: " + *leafType.m_description;
         }
 
         if (m_datastore.schema()->leafIsKey(path)) {
@@ -184,24 +189,29 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
     }
 
     if (!m_datastore.schema()->isConfig(path)) {
-        ss << " (ro)";
+        ss << " (ro)\n";
     }
 
-    return ss.str();
-}
-
-void Interpreter::operator()(const describe_& describe) const
-{
-    auto path = pathToString(toCanonicalPath(describe.m_path));
     auto status = m_datastore.schema()->status(path);
     auto statusStr = status == yang::Status::Deprecated ? " (deprecated)" :
         status == yang::Status::Obsolete ? " (obsolete)" :
         "";
 
-    std::cout << path << ": " << buildTypeInfo(path) << statusStr << std::endl;
+    ss << statusStr;
+
     if (auto description = m_datastore.schema()->description(path)) {
-        std::cout << std::endl << *description << std::endl;
+        ss << std::endl << *description << std::endl;
     }
+
+    ss << typeDescription;
+    return ss.str();
+}
+
+void Interpreter::operator()(const describe_& describe) const
+{
+    auto fullPath = pathToString(toCanonicalPath(describe.m_path));
+
+    std::cout << pathToString(describe.m_path) << ": " << buildTypeInfo(fullPath) << std::endl;
 }
 
 void Interpreter::operator()(const move_& move) const
