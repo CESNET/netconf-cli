@@ -63,7 +63,7 @@ Options:
 )";
 #include "cli-netconf.hpp"
 #include "netconf_access.hpp"
-#define PROGRAM_NAME "netconf-access"
+#define PROGRAM_NAME "netconf-cli"
 // FIXME: this should be replaced by C++20 std::jthread at some point
 struct PoorMansJThread {
     ~PoorMansJThread()
