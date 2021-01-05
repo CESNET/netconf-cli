@@ -16,6 +16,24 @@
       "message": "Can you please describe in the commit message that bit about a switch from running to candidate, and why it\u0027s now necessary to call commit when copying config? Apart from that, LGTM.",
       "revId": "2b9f1def3da9244e402e4588d6a36bd35b85fab9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1d58a54_c05fea25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-05T23:16:12Z",
+      "side": 1,
+      "message": "The reason I made a switch candidate is that my app depends on the candidate datastore. The reason commit is now needed when copying config is because I copy startup to candidate (because I switched from running to candidate). And to really copy to running I need to commit.\n\nI think the candidate datastore is kind of weird because you really can\u0027t switch into it, it\u0027s just a workplace where you edit values. So candidate could be either startup-candidate or running-candidate depending on what your actice DS is.",
+      "parentUuid": "ecbd703a_8ff30676",
+      "revId": "2b9f1def3da9244e402e4588d6a36bd35b85fab9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
