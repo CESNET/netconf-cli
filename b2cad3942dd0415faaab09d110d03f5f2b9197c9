@@ -50,6 +50,46 @@
       "message": "awww \u003c/3",
       "revId": "b2cad3942dd0415faaab09d110d03f5f2b9197c9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7596081_eb053da8",
+        "filename": "src/static_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-05T11:46:13Z",
+      "side": 1,
+      "message": "assert() is optimized out in non-debug builds, and if it is not optimized out, the whole program just \"crashes\". Considering that the code uses exceptions everywhere, such as for non-implemented functions, I do not think that it\u0027s a good idea to assert-crash when the caller calls a has-X method.",
+      "range": {
+        "startLine": 279,
+        "startChar": 4,
+        "endLine": 279,
+        "endChar": 10
+      },
+      "revId": "b2cad3942dd0415faaab09d110d03f5f2b9197c9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66cb5930_f396fb91",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-05T11:46:13Z",
+      "side": 1,
+      "message": "don\u0027t assert, throw",
+      "revId": "b2cad3942dd0415faaab09d110d03f5f2b9197c9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
