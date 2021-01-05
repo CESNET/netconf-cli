@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc7b2c76_c40c42b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-05T19:23:32Z",
+      "side": 1,
+      "message": "Looking at the commit message, the actual code change, and the test case, I am confused about what the bug is and what the test is trying to verify.\n\nI *think* that the problem is that no matter what DS was selected, the SR backend would always return data from the ops one -- right? I then asked to have a test which verifies that no matter what backend is active, data retrieval from the startup DS only really reads from the startup DS. There should be no ops data in there, and the config content of the startup DS should be ignored. So the test could look roughly like this:\n \nds.switch(CANDIATE);\nds.set(\"/foo:bar/baz\", 123);\nds.switch(STARTUP);\nREQUIRE(ds.getItems(\"/foo:bar/baz\") \u003d\u003d DatastoreAccess::Tree{});\n\nBut perhaps I\u0027m just wrong. Also, I quickly went through the NETCONF RFCs, and it seems that the NC backend makes too many assumptions about the server being similar to Netopeer2 -- it doesn\u0027t check that `startup` is present, there\u0027s no locking for `candidate`, it also assumes that `candidate` is always there, etc. I wonder what implications this has.\n\nAnyway, this patch needs some clarification to the commit message to explain what the problem is and how it is fixed, and the test suite should be updated to ensure that both SR and NC backends perform the same thing.",
+      "revId": "5192fc0470e8f1a250e2f8bf53837c289ff46faf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
