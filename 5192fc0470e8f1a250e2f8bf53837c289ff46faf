@@ -34,6 +34,24 @@
       "parentUuid": "dc7b2c76_c40c42b9",
       "revId": "5192fc0470e8f1a250e2f8bf53837c289ff46faf",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aff4ccc2_c93abd9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-05T23:10:23Z",
+      "side": 1,
+      "message": "it\u0027s still #ifdef-ed for the sysrepo backend only",
+      "parentUuid": "2cea4f1e_76ae55db",
+      "revId": "5192fc0470e8f1a250e2f8bf53837c289ff46faf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
