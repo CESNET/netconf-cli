@@ -318,6 +318,22 @@ module example-schema {
 
     rpc myRpc {}
 
+    rpc rpcOneOutput {
+        output {
+            leaf ahoj {
+                type string;
+            }
+        }
+    }
+
+    rpc rpcOneInput {
+        input {
+            leaf ahoj {
+                type string;
+            }
+        }
+    }
+
     leaf numberOrString {
         type union {
             type int32;
@@ -779,6 +795,8 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "obsoleteLeafWithDeprecatedType"},
                         {"example-schema"s, "obsoleteLeafWithObsoleteType"},
                         {"example-schema"s, "myRpc"},
+                        {"example-schema"s, "rpcOneOutput"},
+                        {"example-schema"s, "rpcOneInput"},
                         {"example-schema"s, "systemStats"},
                         {"example-schema"s, "dummyLeaf"},
                         {"example-schema"s, "addresses"},
@@ -858,6 +876,8 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "length"},
                         {"example-schema"s, "loopback"},
                         {"example-schema"s, "myRpc"},
+                        {"example-schema"s, "rpcOneOutput"},
+                        {"example-schema"s, "rpcOneInput"},
                         {"example-schema"s, "numberOrString"},
                         {"example-schema"s, "obsoleteLeaf"},
                         {"example-schema"s, "obsoleteLeafWithDeprecatedType"},
@@ -923,6 +943,14 @@ TEST_CASE("yangschema")
                         {boost::none, "/example-schema:myRpc"},
                         {boost::none, "/example-schema:myRpc/input"},
                         {boost::none, "/example-schema:myRpc/output"},
+                        {boost::none, "/example-schema:rpcOneOutput"},
+                        {boost::none, "/example-schema:rpcOneOutput/input"},
+                        {boost::none, "/example-schema:rpcOneOutput/output"},
+                        {boost::none, "/example-schema:rpcOneOutput/output/ahoj"},
+                        {boost::none, "/example-schema:rpcOneInput"},
+                        {boost::none, "/example-schema:rpcOneInput/input"},
+                        {boost::none, "/example-schema:rpcOneInput/input/ahoj"},
+                        {boost::none, "/example-schema:rpcOneInput/output"},
                         {boost::none, "/example-schema:numberOrString"},
                         {boost::none, "/example-schema:obsoleteLeaf"},
                         {boost::none, "/example-schema:obsoleteLeafWithDeprecatedType"},
@@ -1147,6 +1175,30 @@ TEST_CASE("yangschema")
         {
             REQUIRE(ys.dataPathToSchemaPath("/example-schema:portSettings[port='eth0']") == "/example-schema:portSettings");
             REQUIRE(ys.dataPathToSchemaPath("/example-schema:portSettings[port='eth0']/shutdown") == "/example-schema:portSettings/shutdown");
+        }
+
+        SECTION("has input nodes")
+        {
+            bool expected;
+            SECTION("example-schema:myRpc")
+            {
+                path.m_nodes.emplace_back(module_{"example-schema"}, rpcNode_{"myRpc"});
+                expected = false;
+            }
+
+            SECTION("example-schema:rpcOneInput")
+            {
+                path.m_nodes.emplace_back(module_{"example-schema"}, rpcNode_{"rpcOneInput"});
+                expected = true;
+            }
+
+            SECTION("example-schema:rpcOneOutput")
+            {
+                path.m_nodes.emplace_back(module_{"example-schema"}, rpcNode_{"rpcOneOutput"});
+                expected = false;
+            }
+
+            REQUIRE(ys.hasInputNodes(pathToSchemaString(path, Prefixes::WhenNeeded)) == expected);
         }
     }
 

@@ -259,10 +259,10 @@ struct dump_args : x3::parser<dump_args> {
 } const dump_args;
 
 auto const prepare_def =
-    prepare_::name > space_separator > rpcActionPath;
+    prepare_::name > space_separator > as<dataPath_>[RpcActionPath<AllowInput::Yes>{}];
 
 auto const exec_def =
-    exec_::name >> x3::attr(exec_{});
+    exec_::name > -(space_separator > as<dataPath_>[RpcActionPath<AllowInput::No>{}]);
 
 auto const cancel_def =
     cancel_::name >> x3::attr(cancel_{});

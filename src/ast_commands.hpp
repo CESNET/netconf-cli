@@ -258,14 +258,20 @@ struct exec_ : x3::position_tagged {
     static constexpr auto name = "exec";
     static constexpr auto shortHelp = "exec - Execute RPC/action.";
     static constexpr auto longHelp = R"(
-    exec
+    exec [path]
 
     This command executes the RPC/action you have previously initiated via the
     `prepare` command.
 
+    If the RPC/action has no input parameters, it can be directly execute via
+    `exec` without usgin `prepare`.
+
     Usage:
-        /> exec)";
+        /> exec
+        /> exec /mod:myRpc)";
     bool operator==(const exec_& other) const;
+
+    boost::optional<dataPath_> m_path;
 };
 
 struct cancel_ : x3::position_tagged {
@@ -332,3 +338,4 @@ BOOST_FUSION_ADAPT_STRUCT(copy_, m_source, m_destination)
 BOOST_FUSION_ADAPT_STRUCT(move_, m_source, m_destination)
 BOOST_FUSION_ADAPT_STRUCT(dump_, m_format)
 BOOST_FUSION_ADAPT_STRUCT(prepare_, m_path)
+BOOST_FUSION_ADAPT_STRUCT(exec_, m_path)
