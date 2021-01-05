@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39cb5ed1_c15ba64a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-05T22:56:47Z",
+      "side": 1,
+      "message": "d",
+      "revId": "b1a25c04aa52ea8aaea819545d8929cf20f586b6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68daa8e8_5510a8c2",
@@ -14,6 +31,30 @@
       "writtenOn": "2021-01-05T16:09:46Z",
       "side": 1,
       "message": "That\u0027s hard to read for me, I am not happy with a combination of assert(starts_with) + substr. What about something like this:\n \nstd::string prompt;\nif (auto inputPath \u003d ...) {\n    prompt +\u003d \"(prepare: \" + *inputPath + \") \";\n}\nprompt +\u003d parser.currentNode() + \"\u003e \";",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 234,
+        "endChar": 89
+      },
+      "revId": "b1a25c04aa52ea8aaea819545d8929cf20f586b6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79c152ff_c1f79018",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-05T22:56:47Z",
+      "side": 1,
+      "message": "The point is that I delete the common prefix of inputPath and parser.currentNode(). So that the path is only shown once like this:\n\n(prepare: /ex:launch-nukes) \u003e \n\ninstead of\n\n(prepare: /ex:launch-nukes) /ex:launch-nukes\u003e",
+      "parentUuid": "68daa8e8_5510a8c2",
       "range": {
         "startLine": 231,
         "startChar": 0,
