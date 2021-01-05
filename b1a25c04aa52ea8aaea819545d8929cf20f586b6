@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68daa8e8_5510a8c2",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-05T16:09:46Z",
+      "side": 1,
+      "message": "That\u0027s hard to read for me, I am not happy with a combination of assert(starts_with) + substr. What about something like this:\n \nstd::string prompt;\nif (auto inputPath \u003d ...) {\n    prompt +\u003d \"(prepare: \" + *inputPath + \") \";\n}\nprompt +\u003d parser.currentNode() + \"\u003e \";",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 234,
+        "endChar": 89
+      },
+      "revId": "b1a25c04aa52ea8aaea819545d8929cf20f586b6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
