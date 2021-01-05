@@ -16,6 +16,24 @@
       "message": "@Vasek, please think about the unit tests.",
       "revId": "59cc5c5355437579ae677ec230029545eba6ea80",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c28944df_7cd4626e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-05T15:02:57Z",
+      "side": 1,
+      "message": "Added a test",
+      "parentUuid": "50892790_eb5182cd",
+      "revId": "59cc5c5355437579ae677ec230029545eba6ea80",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
