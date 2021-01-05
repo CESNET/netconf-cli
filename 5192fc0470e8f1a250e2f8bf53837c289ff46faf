@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17a60cf2_523c93e8",
+        "filename": "src/cli.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-05T19:07:18Z",
+      "side": 0,
+      "message": "I was wondering how come that it works after this thing got removed, but well, it works. Apparently it doesn\u0027t hurt to call args\u0027 operator[] with a non-existing index (for an arg that was not even defined) like below. OK, makes sense.",
+      "revId": "5192fc0470e8f1a250e2f8bf53837c289ff46faf",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
