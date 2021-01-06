@@ -33,6 +33,8 @@ public:
     [[nodiscard]] DatastoreAccess::Tree execute();
     void cancel();
 
+    std::optional<std::string> inputDatastorePath();
+
     [[nodiscard]] std::shared_ptr<Schema> schema() const;
 
 private:
@@ -47,5 +49,5 @@ private:
     std::function<std::shared_ptr<DatastoreAccess>(const std::shared_ptr<DatastoreAccess>&)> m_createTemporaryDatastore;
     std::shared_ptr<DatastoreAccess> m_inputDatastore;
 
-    std::string m_inputPath;
+    std::optional<std::string> m_inputPath;
 };

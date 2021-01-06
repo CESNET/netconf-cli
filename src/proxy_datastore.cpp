@@ -62,7 +62,7 @@ std::string ProxyDatastore::dump(const DataFormat format) const
 void ProxyDatastore::initiate(const std::string& path)
 {
     if (m_inputDatastore) {
-        throw std::runtime_error("RPC/action input already in progress (" + m_inputPath + ")");
+        throw std::runtime_error("RPC/action input already in progress (" + *m_inputPath + ")");
     }
     m_inputDatastore = m_createTemporaryDatastore(m_datastore);
     m_inputPath = path;
@@ -75,13 +75,17 @@ DatastoreAccess::Tree ProxyDatastore::execute()
         throw std::runtime_error("No RPC/action input in progress");
     }
     auto inputData = m_inputDatastore->getItems("/");
-    m_inputDatastore = nullptr;
-    return m_datastore->execute(m_inputPath, inputData);
+
+    auto out = m_datastore->execute(*m_inputPath, inputData);
+    cancel();
+
+    return out;
 }
 
 void ProxyDatastore::cancel()
 {
     m_inputDatastore = nullptr;
+    m_inputPath = std::nullopt;
 }
 
 std::shared_ptr<Schema> ProxyDatastore::schema() const
@@ -89,9 +93,14 @@ std::shared_ptr<Schema> ProxyDatastore::schema() const
     return m_datastore->schema();
 }
 
+std::optional<std::string> ProxyDatastore::inputDatastorePath()
+{
+    return m_inputPath;
+}
+
 std::shared_ptr<DatastoreAccess> ProxyDatastore::pickDatastore(const std::string& path) const
 {
-    if (!m_inputDatastore || !boost::starts_with(path, m_inputPath)) {
+    if (!m_inputDatastore || !boost::starts_with(path, *m_inputPath)) {
         return m_datastore;
     } else {
         return m_inputDatastore;
