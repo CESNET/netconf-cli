@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ac00767_37aa8fef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-07T15:02:04Z",
+      "side": 1,
+      "message": "@Vasek, looks like behavior of Netopeer2-server changed. The server\u0027s log now contains the following for this failing test:\n \n[INF]: SR: Published event \"rpc\" \"/ietf-netconf:get\" with ID 59 priority 0 for 1 subscribers.\n[INF]: SR: Processing \"/ietf-netconf:get\" \"rpc\" event with ID 59 priority 0 (remaining 1 subscribers).\n[INF]: SR: Published event \"operational\" \"/example-schema:users\" with ID 1.\n[ERR]: SR: Callback event \"rpc\" with ID 59 processing timed out.\n[WRN]: SR: Event \"rpc\" with ID 59 priority 0 failed (Timeout expired).\n[ERR]: NP: Failed to send an RPC (User callback failed).\n[ERR]: LN: Session 34: communication socket unexpectedly closed.\n[ERR]: LN: Session 34: failed to write reply (error).\n[INF]: NP: Session 34: thread 2 event new RPC.\n[INF]: NP: Session 34: thread 2 event reply error.\n[INF]: NP: Session 34: thread 2 event session terminated.\n[INF]: SR: There are no subscribers for \"ietf-netconf-notifications\" notifications.\n[INF]: NP: Generated new event (netconf-session-end).\n[INF]: NP: Server terminated.\n[ERR]: SR: Callback event \"operational\" with ID 1 processing timed out.\n[WRN]: SR: Event \"operational\" with ID 1 failed (Timeout expired).\n[INF]: SR: Published event \"operational\" \"/example-schema:temperature\" with ID 1.\n[ERR]: SR: Opening \"/home/ci/build/test_repositories/test_datastore_access_netconf/sr_evpipe37\" for writing failed (No such device or address).\n[ERR]: NP: Getting data \"/example-schema:*\" from sysrepo failed (System function call failed).\n[INF]: SR: Connection with CID 74 is not alive.\n[WRN]: SR: Cleaning up after a non-existent sysrepo client with CID 74.\n\nLooking at their commit log, it points to https://github.com/sysrepo/sysrepo/issues/2231 (ops data filtering). Can you please take a look and decide if you think that the new behavior is a bug? Either way, we need to do something.",
+      "revId": "a13282f36f8a2c382556f899266a44b8fe9348a6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
