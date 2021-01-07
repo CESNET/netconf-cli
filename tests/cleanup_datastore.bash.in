@@ -32,4 +32,4 @@ if [[ "$BACKEND" = "netconf" ]]; then
 fi
 
 rm -r "$SYSREPO_REPOSITORY_PATH"
-rm "/dev/shm/$SYSREPO_SHM_PREFIX"*
+rm -rf "/dev/shm/$SYSREPO_SHM_PREFIX"*
