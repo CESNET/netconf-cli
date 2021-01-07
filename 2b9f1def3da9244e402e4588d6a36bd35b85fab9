@@ -34,6 +34,24 @@
       "parentUuid": "ecbd703a_8ff30676",
       "revId": "2b9f1def3da9244e402e4588d6a36bd35b85fab9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b102021_85bcd5cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-07T00:14:01Z",
+      "side": 1,
+      "message": "Please put that into the commit message, and please rephrase that as well -- I don\u0027t understand the explanation for commit-when-copying. A good explanation would be \"when connected to XYZ and doing FOO, the datastore BAR remains stale, not syncing with the copy from BLAH, and that\u0027s a problem because we need both XYZ and BAR to be in sync because of REASONS\".",
+      "parentUuid": "b1d58a54_c05fea25",
+      "revId": "2b9f1def3da9244e402e4588d6a36bd35b85fab9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
