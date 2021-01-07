@@ -16,6 +16,24 @@
       "message": "The CI failure is legit, and I think I know what caused it. I\u0027ll push an update.",
       "revId": "81a1f05891f58b5da65bed450daf942f34259438",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffe420c8_b05837cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-07T14:46:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7044ef4_64c4293b",
+      "revId": "81a1f05891f58b5da65bed450daf942f34259438",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
