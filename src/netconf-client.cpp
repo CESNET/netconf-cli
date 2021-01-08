@@ -180,6 +180,16 @@ void do_rpc_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
         throw std::runtime_error{"Unexpected DATA reply"};
     }
 }
+
+std::shared_ptr<libyang::Data_Node> do_get(client::Session* session, unique_ptr_for<nc_rpc> rpc)
+{
+    auto reply = impl::do_rpc_data(session, std::move(rpc));
+    auto dataNode = libyang::create_new_Data_Node(reply->data);
+    // TODO: can we do without copying?
+    // If we just default-construct a new node (or use the create_new_Data_Node) and then set reply->data to nullptr,
+    // there are mem leaks and even libnetconf2 complains loudly.
+    return dataNode ? dataNode->dup_withsiblings(1) : nullptr;
+}
 }
 
 namespace client {
@@ -294,12 +304,7 @@ std::shared_ptr<libyang::Data_Node> Session::get(const std::optional<std::string
     if (!rpc) {
         throw std::runtime_error("Cannot create get RPC");
     }
-    auto reply = impl::do_rpc_data(this, std::move(rpc));
-    auto dataNode = libyang::create_new_Data_Node(reply->data);
-    // TODO: can we do without copying?
-    // If we just default-construct a new node (or use the create_new_Data_Node) and then set reply->data to nullptr,
-    // there are mem leaks and even libnetconf2 complains loudly.
-    return dataNode ? dataNode->dup_withsiblings(1) : nullptr;
+    return impl::do_get(this, std::move(rpc));
 }
 
 std::string Session::getSchema(const std::string_view identifier, const std::optional<std::string_view> version)
@@ -327,10 +332,7 @@ std::shared_ptr<libyang::Data_Node> Session::getConfig(const NC_DATASTORE datast
     if (!rpc) {
         throw std::runtime_error("Cannot create get-config RPC");
     }
-    auto reply = impl::do_rpc_data(this, std::move(rpc));
-    auto dataNode = libyang::create_new_Data_Node(reply->data);
-    // TODO: can we do without copying? See Session::get() for details.
-    return dataNode ? dataNode->dup_withsiblings(1) : nullptr;
+    return impl::do_get(this, std::move(rpc));
 }
 
 void Session::editConfig(const NC_DATASTORE datastore,
