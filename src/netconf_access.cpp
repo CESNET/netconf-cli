@@ -19,7 +19,7 @@ NetconfAccess::~NetconfAccess() = default;
 DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
 {
     Tree res;
-    auto config = m_session->get((path != "/") ? std::optional{path} : std::nullopt);
+    auto config = m_session->getData(libnetconf::NmdaDatastore::Operational, (path != "/") ? std::optional{path} : std::nullopt);
 
     if (config) {
         lyNodesToTree(res, config->tree_for());
