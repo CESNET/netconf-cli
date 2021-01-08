@@ -18,6 +18,24 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "631b1f26_3dde6b14",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-08T13:58:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d549a68d_0d098423",
+      "revId": "96987fecd838e193007adcf0a93161f52d43c7d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "920bdc08_2eb9c88a",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "Oh yeah, I just copied the other function including this comment",
       "parentUuid": "920bdc08_2eb9c88a",
+      "revId": "96987fecd838e193007adcf0a93161f52d43c7d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bc9dad2_5882ab65",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-08T13:58:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3eef51e3_9cb22b2b",
       "revId": "96987fecd838e193007adcf0a93161f52d43c7d3",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
