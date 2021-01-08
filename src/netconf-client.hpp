@@ -17,6 +17,11 @@ class Context;
 }
 
 namespace libnetconf {
+enum class NmdaDatastore {
+    Startup,
+    Running,
+    Operational
+};
 namespace client {
 
 class ReportedError : public std::runtime_error {
@@ -43,6 +48,7 @@ public:
     std::shared_ptr<libyang::Data_Node> getConfig(const NC_DATASTORE datastore,
                                                   const std::optional<const std::string> filter = std::nullopt); // TODO: arguments...
     std::shared_ptr<libyang::Data_Node> get(const std::optional<std::string>& filter = std::nullopt);
+    std::shared_ptr<libyang::Data_Node> getData(const NmdaDatastore datastore, const std::optional<std::string>& filter = std::nullopt);
     std::string getSchema(const std::string_view identifier, const std::optional<std::string_view> version);
     void editConfig(const NC_DATASTORE datastore,
                     const NC_RPC_EDIT_DFLTOP defaultOperation,

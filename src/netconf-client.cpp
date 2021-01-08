@@ -302,6 +302,33 @@ std::shared_ptr<libyang::Data_Node> Session::get(const std::optional<std::string
     return dataNode ? dataNode->dup_withsiblings(1) : nullptr;
 }
 
+const char* datastoreToString(NmdaDatastore datastore)
+{
+    switch (datastore) {
+    case NmdaDatastore::Startup:
+        return "ietf-datastores:startup";
+    case NmdaDatastore::Running:
+        return "ietf-datastores:running";
+    case NmdaDatastore::Operational:
+        return "ietf-datastores:operational";
+    }
+}
+
+// FIXME: getData, get and getConfig are very similar, maybe try to merge?
+std::shared_ptr<libyang::Data_Node> Session::getData(const NmdaDatastore datastore, const std::optional<std::string>& filter)
+{
+    auto rpc = impl::guarded(nc_rpc_getdata(datastoreToString(datastore), filter ? filter->c_str() : nullptr, nullptr, nullptr, 0, 0, 0, 0, NC_WD_ALL, NC_PARAMTYPE_CONST));
+    if (!rpc) {
+        throw std::runtime_error("Cannot create get RPC");
+    }
+    auto reply = impl::do_rpc_data(this, std::move(rpc));
+    auto dataNode = libyang::create_new_Data_Node(reply->data);
+    // TODO: can we do without copying?
+    // If we just default-construct a new node (or use the create_new_Data_Node) and then set reply->data to nullptr,
+    // there are mem leaks and even libnetconf2 complains loudly.
+    return dataNode ? dataNode->dup_withsiblings(1) : nullptr;
+}
+
 std::string Session::getSchema(const std::string_view identifier, const std::optional<std::string_view> version)
 {
     auto rpc = impl::guarded(nc_rpc_getschema(identifier.data(), version ? version.value().data() : nullptr, nullptr, NC_PARAMTYPE_CONST));
