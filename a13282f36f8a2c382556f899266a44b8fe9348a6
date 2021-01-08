@@ -34,6 +34,24 @@
       "parentUuid": "7ac00767_37aa8fef",
       "revId": "a13282f36f8a2c382556f899266a44b8fe9348a6",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29cc4eeb_ed26fb40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-08T13:25:02Z",
+      "side": 1,
+      "message": "I changed NetconfAccess to work with \u003cget-data\u003e. The test passes on my PC.",
+      "parentUuid": "a34e94d9_1fd37a09",
+      "revId": "a13282f36f8a2c382556f899266a44b8fe9348a6",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
