@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d549a68d_0d098423",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-08T13:39:08Z",
+      "side": 1,
+      "message": "this needs \"something\" to prevent that build failure, such as:\n \n__builtin_unreachable();\n\nI\u0027ll fix that.",
+      "revId": "96987fecd838e193007adcf0a93161f52d43c7d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "920bdc08_2eb9c88a",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-08T13:39:08Z",
+      "side": 1,
+      "message": "OK, I can do that I think -- let me try :)",
+      "revId": "96987fecd838e193007adcf0a93161f52d43c7d3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
