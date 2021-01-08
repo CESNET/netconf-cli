@@ -307,6 +307,28 @@ std::shared_ptr<libyang::Data_Node> Session::get(const std::optional<std::string
     return impl::do_get(this, std::move(rpc));
 }
 
+const char* datastoreToString(NmdaDatastore datastore)
+{
+    switch (datastore) {
+    case NmdaDatastore::Startup:
+        return "ietf-datastores:startup";
+    case NmdaDatastore::Running:
+        return "ietf-datastores:running";
+    case NmdaDatastore::Operational:
+        return "ietf-datastores:operational";
+    }
+    __builtin_unreachable();
+}
+
+std::shared_ptr<libyang::Data_Node> Session::getData(const NmdaDatastore datastore, const std::optional<std::string>& filter)
+{
+    auto rpc = impl::guarded(nc_rpc_getdata(datastoreToString(datastore), filter ? filter->c_str() : nullptr, nullptr, nullptr, 0, 0, 0, 0, NC_WD_ALL, NC_PARAMTYPE_CONST));
+    if (!rpc) {
+        throw std::runtime_error("Cannot create get RPC");
+    }
+    return impl::do_get(this, std::move(rpc));
+}
+
 std::string Session::getSchema(const std::string_view identifier, const std::optional<std::string_view> version)
 {
     auto rpc = impl::guarded(nc_rpc_getschema(identifier.data(), version ? version.value().data() : nullptr, nullptr, NC_PARAMTYPE_CONST));
