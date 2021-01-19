@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73caafd4_9a2e54f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-19T09:08:06Z",
+      "side": 1,
+      "message": "@Vasek, without this fix I cannot update the NETCONF SW stack -- I think it\u0027s because of https://github.com/CESNET/libnetconf2/commit/283c3c0f16f63a20b7f183a35cbfc4d30457f1ea",
+      "revId": "ea9cecde17f637a708f7de5e9497fcc05795a84f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
