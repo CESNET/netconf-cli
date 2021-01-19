@@ -381,7 +381,7 @@ void Session::copyConfigFromString(const NC_DATASTORE target, const std::string&
 
 void Session::commit()
 {
-    auto rpc = impl::guarded(nc_rpc_commit(1, /* "Optional confirm timeout" how do you optional an uint32_t? */ 0, nullptr, nullptr, NC_PARAMTYPE_CONST));
+    auto rpc = impl::guarded(nc_rpc_commit(0, /* "Optional confirm timeout" how do you optional an uint32_t? */ 0, nullptr, nullptr, NC_PARAMTYPE_CONST));
     if (!rpc) {
         throw std::runtime_error("Cannot create commit RPC");
     }
