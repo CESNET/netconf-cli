@@ -144,20 +144,61 @@ const std::set<std::string> YangSchema::listKeys(const schemaPath_& listPath) co
 }
 
 namespace {
-std::set<enum_> enumValues(const libyang::S_Type& typeArg)
+enum class ResolveMode {
+    Enum,
+    Identity
+};
+/** @brief Resolves a typedef to a type which defines values.
+ * When we need allowed values of a type and that type is a typedef, we need to recurse into the typedef until we find a
+ * type which defines values. These values are the allowed values.
+ * Example:
+ *
+ * typedef MyOtherEnum {
+ *   type enumeration {
+ *     enum "A";
+ *     enum "B";
+ *   }
+ * }
+ *
+ * typedef MyEnum {
+ *   type MyOtherEnum;
+ * }
+ *
+ * If `toResolve` points to MyEnum, then just doing ->enums()->enm() returns nothing and that means that this particular
+ * typedef (MyEnum) did not say which values are allowed. So, we need to dive into the parent enum (MyOtherEnum) with
+ * ->der()->type(). This typedef (MyOtherEnum) DID specify allowed values and enums()->enm() WILL contain them. These
+ *  values are the only relevant values and we don't care about other parent typedefs. We return these values to the
+ *  caller.
+ *
+ *  For enums, this function simply returns all allowed enums.
+ *  For identities, this function returns which bases `toResolve` has.
+ */
+template <ResolveMode TYPE>
+auto resolveTypedef(const libyang::S_Type& toResolve)
 {
-    auto type = typeArg;
-    auto enm = type->info()->enums()->enm();
-    // The enum can be a derived type and enm() only returns values,
-    // if that specific typedef changed the possible values. So we go
-    // up the hierarchy until we find a typedef that defined these values.
-    while (enm.empty()) {
+    auto type = toResolve;
+    auto getValuesFromType = [] (const libyang::S_Type& type) {
+        if constexpr (TYPE == ResolveMode::Identity) {
+            return type->info()->ident()->ref();
+        } else {
+            return type->info()->enums()->enm();
+        }
+    };
+    auto values = getValuesFromType(type);
+    while (values.empty()) {
         type = type->der()->type();
-        enm = type->info()->enums()->enm();
+        values = getValuesFromType(type);
     }
 
+    return values;
+}
+
+std::set<enum_> enumValues(const libyang::S_Type& type)
+{
+    auto values = resolveTypedef<ResolveMode::Enum>(type);
+
     std::vector<libyang::S_Type_Enum> enabled;
-    std::copy_if(enm.begin(), enm.end(), std::back_inserter(enabled), [](const libyang::S_Type_Enum& it) {
+    std::copy_if(values.begin(), values.end(), std::back_inserter(enabled), [](const libyang::S_Type_Enum& it) {
         auto iffeatures = it->iffeature();
         return std::all_of(iffeatures.begin(), iffeatures.end(), [](auto it) { return it->value(); });
     });
@@ -171,10 +212,7 @@ std::set<identityRef_> validIdentities(const libyang::S_Type& type)
 {
     std::set<identityRef_> identSet;
 
-    // auto topLevelModule = leaf->module();
-
-    auto info = type->info();
-    for (auto base : info->ident()->ref()) { // Iterate over all bases
+    for (auto base : resolveTypedef<ResolveMode::Identity>(type)) { // Iterate over all bases
         identSet.emplace(base->module()->name(), base->name());
         // Iterate over derived identities (this is recursive!)
         for (auto derived : base->der()->schema()) {

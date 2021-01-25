@@ -81,6 +81,16 @@ module example-schema {
         base "pizza";
     }
 
+    typedef foodTypedef {
+        type identityref {
+            base food;
+        }
+    }
+
+    leaf leafFoodTypedef {
+        type foodTypedef;
+    }
+
     container a {
         container a2 {
             container a3 {
@@ -754,6 +764,19 @@ TEST_CASE("yangschema")
                 type = yang::Bits{{"carry", "sign", "overflow"}};
             }
 
+            SECTION("foodTypedef")
+            {
+                node.first = "example-schema";
+                node.second = "leafFoodTypedef";
+                type = yang::IdentityRef{{
+                    {"example-schema", "food"},
+                    {"example-schema", "fruit"},
+                    {"example-schema", "hawaii"},
+                    {"example-schema", "pizza"},
+                    {"second-schema", "pineapple"},
+                }};
+            }
+
 
             REQUIRE(ys.leafType(path, node) == yang::TypeInfo(type, std::nullopt, expectedDescription));
         }
@@ -801,7 +824,8 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "dummyLeaf"},
                         {"example-schema"s, "addresses"},
                         {"example-schema"s, "subLeaf"},
-                        {"example-schema"s, "flagBits"}};
+                        {"example-schema"s, "flagBits"},
+                        {"example-schema"s, "leafFoodTypedef"}};
                 }
 
                 SECTION("example-schema:a")
@@ -864,6 +888,7 @@ TEST_CASE("yangschema")
                         {"example-schema"s, "leafEnumTypedef"},
                         {"example-schema"s, "leafEnumTypedefRestricted"},
                         {"example-schema"s, "leafEnumTypedefRestricted2"},
+                        {"example-schema"s, "leafFoodTypedef"},
                         {"example-schema"s, "leafInt16"},
                         {"example-schema"s, "leafInt32"},
                         {"example-schema"s, "leafInt64"},
@@ -930,6 +955,7 @@ TEST_CASE("yangschema")
                         {boost::none, "/example-schema:leafEnumTypedef"},
                         {boost::none, "/example-schema:leafEnumTypedefRestricted"},
                         {boost::none, "/example-schema:leafEnumTypedefRestricted2"},
+                        {boost::none, "/example-schema:leafFoodTypedef"},
                         {boost::none, "/example-schema:leafInt16"},
                         {boost::none, "/example-schema:leafInt32"},
                         {boost::none, "/example-schema:leafInt64"},
