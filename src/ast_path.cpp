@@ -272,6 +272,9 @@ std::string pathToDataString(const dataPath_& path, Prefixes prefixes)
             res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + std::visit(nodeToDataStringVisitor(), it.m_suffix));
         }
     }
+    if (path.m_trailingSlash == TrailingSlash::Present) {
+        res += "/";
+    }
 
     return res;
 }

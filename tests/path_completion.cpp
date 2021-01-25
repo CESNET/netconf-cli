@@ -41,6 +41,9 @@ TEST_CASE("path_completion")
     schema->addLeafList("/", "example:addresses", yang::String{});
     schema->addRpc("/", "second:fire");
     schema->addLeaf("/second:fire", "second:whom", yang::String{});
+    schema->addContainer("/", "example:system");
+    schema->addContainer("/example:system", "example:thing");
+    schema->addContainer("/", "example:system-state");
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
 
     // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
@@ -70,14 +73,14 @@ TEST_CASE("path_completion")
         SECTION("ls ")
         {
             input = "ls ";
-            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "second:amelie/", "second:fire/"};
+            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "second:amelie/", "second:fire/", "example:system/", "example:system-state/"};
             expectedContextLength = 0;
         }
 
         SECTION("ls e")
         {
             input = "ls e";
-            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/"};
+            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "example:system/", "example:system-state/"};
             expectedContextLength = 1;
         }
 
@@ -105,14 +108,14 @@ TEST_CASE("path_completion")
         SECTION("ls /")
         {
             input = "ls /";
-            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "second:amelie/", "second:fire/"};
+            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "second:amelie/", "second:fire/", "example:system/", "example:system-state/"};
             expectedContextLength = 0;
         }
 
         SECTION("ls /e")
         {
             input = "ls /e";
-            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/"};
+            expectedCompletions = {"example:addresses/", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list/", "example:ovoce/", "example:readonly ", "example:ovocezelenina/", "example:twoKeyList/", "example:system/", "example:system-state/"};
             expectedContextLength = 1;
         }
 
@@ -184,6 +187,13 @@ TEST_CASE("path_completion")
             input = "ls /example:list/contInList/";
             expectedCompletions = {};
             expectedContextLength = 0;
+        }
+
+        SECTION("ls /example:system-")
+        {
+            input = "ls /example:system-";
+            expectedCompletions = {"example:system-state/"};
+            expectedContextLength = 15;
         }
     }
 
@@ -383,21 +393,21 @@ TEST_CASE("path_completion")
     {
         parser.changeNode({{}, {{module_{"second"}, rpcNode_{"fire"}}}});
         input = "set ../";
-        expectedCompletions = {"example:addresses", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie/", "second:fire/"};
+        expectedCompletions = {"example:addresses", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie/", "second:fire/", "example:system/", "example:system-state/"};
         expectedContextLength = 0;
     }
 
     SECTION("rpc nodes not completed for the get command")
     {
         input = "get ";
-        expectedCompletions = {"example:addresses", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:readonly ", "example:twoKeyList", "second:amelie/"};
+        expectedCompletions = {"example:addresses", "example:ano/", "example:anoda/", "example:bota/", "example:leafInt ", "example:list", "example:ovoce", "example:ovocezelenina", "example:readonly ", "example:twoKeyList", "second:amelie/", "example:system/", "example:system-state/"};
         expectedContextLength = 0;
     }
 
     SECTION("leafs not completed for cd")
     {
         input = "cd ";
-        expectedCompletions = {"example:addresses", "example:ano/", "example:anoda/", "example:bota/","example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie/"};
+        expectedCompletions = {"example:addresses", "example:ano/", "example:anoda/", "example:bota/","example:list", "example:ovoce", "example:ovocezelenina", "example:twoKeyList", "second:amelie/", "example:system/", "example:system-state/"};
         expectedContextLength = 0;
     }
 

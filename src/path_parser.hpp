@@ -30,6 +30,7 @@ x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions
 x3::rule<createValueSuggestions_class, x3::unused_type> const createValueSuggestions = "createValueSuggestions";
 x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
 x3::rule<class leafListValue_class, leaf_data_> const leafListValue = "leafListValue";
+auto pathEnd = x3::rule<class PathEnd>{"pathEnd"} = &space_separator | x3::eoi;
 
 enum class NodeParserMode {
     CompleteDataNode,
@@ -218,7 +219,15 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
             }
 
             if (res) {
-                parserContext.pushPathFragment(attr);
+                // After a path fragment, there can only be a slash or a "pathEnd". If this is not the case
+                // then that means there are other unparsed characters after the fragment. In that case the parsing
+                // needs to fail.
+                res = (pathEnd | &char_('/')).parse(begin, end, ctx, rctx, x3::unused);
+                if (!res) {
+                    begin = saveIter;
+                } else {
+                    parserContext.pushPathFragment(attr);
+                }
             }
 
             return res;
@@ -270,7 +279,6 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
         initializePath.parse(begin, end, ctx, rctx, x3::unused);
         dataPath_ attrData;
 
-        auto pathEnd = x3::rule<class PathEnd>{"pathEnd"} = &space_separator | x3::eoi;
         // absoluteStart has to be separate from the dataPath parser,
         // otherwise, if the "dataNode % '/'" parser fails, the begin iterator
         // gets reverted to before the starting slash.

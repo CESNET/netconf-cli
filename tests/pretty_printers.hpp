@@ -181,6 +181,12 @@ std::ostream& operator<<(std::ostream& s, const ls_& ls)
     return s;
 }
 
+std::ostream& operator<<(std::ostream& s, const cd_& cd)
+{
+    s << "\ncd_ {\n    " << cd.m_path << "}\n";
+    return s;
+}
+
 std::ostream& operator<<(std::ostream& s, const move_& move)
 {
     s << "\nmove_ {\n";

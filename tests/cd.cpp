@@ -10,6 +10,7 @@
 #include "ast_commands.hpp"
 #include "leaf_data_helpers.hpp"
 #include "parser.hpp"
+#include "pretty_printers.hpp"
 #include "static_schema.hpp"
 
 TEST_CASE("cd")
