@@ -1,5 +1,4 @@
 set -eux
-export UBSAN_OPTIONS=halt_on_error=1 # UBSan doesn't stop on errors by default.
 
 if [[ $(dirname "$(dirname "$(realpath "$SYSREPO_REPOSITORY_PATH")")") != "@CMAKE_CURRENT_BINARY_DIR@" ]]; then
     echo "\$SYSREPO_REPOSITORY_PATH is not inside the build dir! Aborting. ($SYSREPO_REPOSITORY_PATH)"

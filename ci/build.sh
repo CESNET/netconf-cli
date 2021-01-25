@@ -28,6 +28,7 @@ if [[ $ZUUL_JOB_NAME =~ .*-ubsan ]]; then
     export CFLAGS="-fsanitize=undefined ${CFLAGS}"
     export CXXFLAGS="-fsanitize=undefined ${CXXFLAGS}"
     export LDFLAGS="-fsanitize=undefined ${LDFLAGS}"
+    export UBSAN_OPTIONS=print_stacktrace=1
 fi
 
 if [[ $ZUUL_JOB_NAME =~ .*-asan ]]; then

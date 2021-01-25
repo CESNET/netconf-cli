@@ -100,7 +100,7 @@ private:
             std::ofstream of(testConfigFile);
             of << dump(DataFormat::Xml);
         }
-        auto command = std::string(sysrepocfgExecutable) + " --import=" + testConfigFile + " --format=xml --datastore=running --module=example-schema -w";
+        auto command = std::string(sysrepocfgExecutable) + " --import=" + testConfigFile + " --format=xml --datastore=running --module=example-schema";
         REQUIRE(std::system(command.c_str()) == 0);
     }
 };
