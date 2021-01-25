@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f825afe6_152ea906",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-25T17:39:27Z",
+      "side": 1,
+      "message": "https://github.com/sysrepo/sysrepo/issues/2295",
+      "revId": "7b7b5ff48159acad7d751d424b98bcd0de7ef571",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
