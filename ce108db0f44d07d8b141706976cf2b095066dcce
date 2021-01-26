@@ -33,6 +33,23 @@
       "message": "test2",
       "revId": "ce108db0f44d07d8b141706976cf2b095066dcce",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df17c8a2_94700062",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-26T09:54:54Z",
+      "side": 1,
+      "message": "For some reason, Gerrit dashboard said I was still in the attention set, but after I opened the change, I wasn\u0027t... seems like a bug, but I fixed it now by adding and then removing myself again from attention set.",
+      "revId": "ce108db0f44d07d8b141706976cf2b095066dcce",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
