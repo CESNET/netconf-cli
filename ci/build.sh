@@ -28,6 +28,7 @@ if [[ $ZUUL_JOB_NAME =~ .*-ubsan ]]; then
     export CFLAGS="-fsanitize=undefined ${CFLAGS}"
     export CXXFLAGS="-fsanitize=undefined ${CXXFLAGS}"
     export LDFLAGS="-fsanitize=undefined ${LDFLAGS}"
+    export UBSAN_OPTIONS=print_stacktrace=1:halt_on_error=1
 fi
 
 if [[ $ZUUL_JOB_NAME =~ .*-asan ]]; then
@@ -40,7 +41,7 @@ if [[ $ZUUL_JOB_NAME =~ .*-tsan ]]; then
     export CFLAGS="-fsanitize=thread ${CFLAGS}"
     export CXXFLAGS="-fsanitize=thread ${CXXFLAGS}"
     export LDFLAGS="-fsanitize=thread ${LDFLAGS}"
-    export TSAN_OPTIONS="suppressions=$HOME/target/tsan.supp:detect_deadlocks=0"
+    export TSAN_OPTIONS="suppressions=$HOME/target/tsan.supp"
 fi
 
 if [[ ${ZUUL_JOB_NAME%%-cover?(-previous|-diff)} =~ -gcc$ ]]; then
