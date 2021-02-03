@@ -33,6 +33,24 @@
       "message": "recheck",
       "revId": "cff14ea10c07a6b123cd835e87b6832b562a5c14",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cce7aa6_0bf71ba4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-03T20:11:08Z",
+      "side": 1,
+      "message": "The leak is unfortunately consistent even on my PC 😞\n\nDirect leak of 72 byte(s) in 1 object(s) allocated from:\n    #0 0x556b80a6dce1 in calloc (/home/vk/git/netconf-cli/build-au/test_datastore_access_sysrepo+0x467ce1)\n    #1 0x7f26581b695b in lyb_new_node /home/vk/git/netconf-cli/submodules/dependencies/libyang/src/parser_lyb.c\n    #2 0x7f26581add05 in lyb_parse_subtree /home/vk/git/netconf-cli/submodules/dependencies/libyang/src/parser_lyb.c:1048:12\n    #3 0x7f26581abf42 in lyd_parse_lyb /home/vk/git/netconf-cli/submodules/dependencies/libyang/src/parser_lyb.c:1249:21\n    #4 0x7f265838735d in lyd_parse_ /home/vk/git/netconf-cli/submodules/dependencies/libyang/src/tree_data.c:970:18\n    #5 0x7f265833078f in lyd_parse_data_ /home/vk/git/netconf-cli/submodules/dependencies/libyang/src/tree_data.c:1039:12\n    #6 0x7f26583302b2 in lyd_parse_mem /home/vk/git/netconf-cli/submodules/dependencies/libyang/src/tree_data.c:1051:14\n    #7 0x7f2658ef2e8a in sr_shmsub_rpc_notify /home/vk/git/netconf-cli/submodules/dependencies/sysrepo/src/shm_sub.c:1646:19\n    #8 0x7f2658d57dad in sr_rpc_send_tree /home/vk/git/netconf-cli/submodules/dependencies/sysrepo/src/sysrepo.c:3882:21\n    #9 0x7f26590c68f4 in sysrepo::Session::rpc_send(std::shared_ptr\u003clibyang::Data_Node\u003e, unsigned int) /home/vk/git/netconf-cli/submodules/dependencies/sysrepo/bindings/cpp/src/Session.cpp:397:15\n    #10 0x556b80bd9766 in SysrepoAccess::execute(std::__cxx11::basic_string\u003cchar, std::char_traits\u003cchar\u003e, std::allocator\u003cchar\u003e \u003e const\u0026, std::vector\u003cstd::pair\u003cstd::__cxx11::basic_string\u003cchar, std::char_traits\u003cchar\u003e, std::allocator\u003cchar\u003e \u003e, boost::variant\u003cenum_, binary_, empty_, bits_, identityRef_, special_, double, bool, signed char, unsigned char, short, unsigned short, int, unsigned int, long, unsigned long, std::__cxx11::basic_string\u003cchar, std::char_traits\u003cchar\u003e, std::allocator\u003cchar\u003e \u003e \u003e \u003e, std::allocator\u003cstd::pair\u003cstd::__cxx11::basic_string\u003cchar, std::char_traits\u003cchar\u003e, std::allocator\u003cchar\u003e \u003e, boost::variant\u003cenum_, binary_, empty_, bits_, identityRef_, special_, double, bool, signed char, unsigned char, short, unsigned short, int, unsigned int, long, unsigned long, std::__cxx11::basic_string\u003cchar, std::char_traits\u003cchar\u003e, std::allocator\u003cchar\u003e \u003e \u003e \u003e \u003e \u003e const\u0026) /home/vk/git/netconf-cli/src/sysrepo_access.cpp:315:30\n    #11 0x556b80add66f in _DOCTEST_ANON_FUNC_134()::$_23::operator()() const /home/vk/git/netconf-cli/tests/datastore_access.cpp:1058:32\n    #12 0x556b80add66f in void (anonymous namespace)::catching\u003cvoid, _DOCTEST_ANON_FUNC_134()::$_23\u003e(_DOCTEST_ANON_FUNC_134()::$_23 const\u0026) /home/vk/git/netconf-cli/tests/datastore_access.cpp:67:9\n    #13 0x556b80ad5890 in _DOCTEST_ANON_FUNC_134() /home/vk/git/netconf-cli/tests/datastore_access.cpp:1058:9\n    #14 0x556b80b8b602 in doctest::Context::run() /opt/cesnet-au/include/doctest/doctest.h:5907:21\n    #15 0x556b80b910a6 in main /opt/cesnet-au/include/doctest/doctest.h:5991:71\n    #16 0x7f2657707151 in __libc_start_main (/usr/lib/libc.so.6+0x28151)",
+      "parentUuid": "489fc548_a765046f",
+      "revId": "cff14ea10c07a6b123cd835e87b6832b562a5c14",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
