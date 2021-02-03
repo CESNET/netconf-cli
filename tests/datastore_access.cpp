@@ -16,7 +16,7 @@
 using OnInvalidSchemaPathCreate = DatastoreException;
 using OnInvalidSchemaPathDelete = DatastoreException;
 using OnInvalidSchemaPathMove = sysrepo::sysrepo_exception;
-using OnInvalidRpcPath = sysrepo::sysrepo_exception;
+using OnInvalidRpcPath = std::runtime_error;
 using OnInvalidRpcInput = sysrepo::sysrepo_exception;
 using OnKeyNotFound = void;
 using OnExec = void;
@@ -1042,10 +1042,8 @@ TEST_CASE("rpc/action")
         DatastoreAccess::Tree input, output;
 
         output = {
-#ifdef netconf_BACKEND
             {"/example-schema:ports[name='A']", special_{SpecialValue::List}},
             {"/example-schema:ports[name='A']/name", enum_{"A"}},
-#endif
             {"success", true}
         };
         datastore->createItem("/example-schema:ports[name='A']");
