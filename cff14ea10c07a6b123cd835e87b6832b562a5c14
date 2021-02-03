@@ -16,6 +16,23 @@
       "message": "the code looks good, but please take a look at the reported memleak (if it rechecks, merge it)",
       "revId": "cff14ea10c07a6b123cd835e87b6832b562a5c14",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cc8c5af_661caf8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-03T12:12:29Z",
+      "side": 1,
+      "message": "recheck",
+      "revId": "cff14ea10c07a6b123cd835e87b6832b562a5c14",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
