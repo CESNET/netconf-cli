@@ -308,8 +308,7 @@ DatastoreAccess::Tree SysrepoAccess::execute(const std::string& path, const Tree
 {
     auto inputNode = m_schema->dataNodeFromPath(path);
     for (const auto& [k, v] : input) {
-        auto node = m_schema->dataNodeFromPath(joinPaths(path, k), leafDataToString(v));
-        inputNode->merge(node, 0);
+        inputNode->new_path(m_session->get_context(), k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
     }
 
     auto output = m_session->rpc_send(inputNode);

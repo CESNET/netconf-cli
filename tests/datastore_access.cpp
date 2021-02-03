@@ -961,8 +961,8 @@ TEST_CASE("rpc/action")
             {
                 rpc = "/example-schema:launch-nukes";
                 input = {
-                    {"description", "dummy"s},
-                    {"payload/kilotons", uint64_t{333'666}},
+                    {joinPaths(rpc, "description"), "dummy"s},
+                    {joinPaths(rpc, "payload/kilotons"), uint64_t{333'666}},
                 };
                 proxyDatastore.initiate(rpc);
                 proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{333'666});
@@ -973,8 +973,8 @@ TEST_CASE("rpc/action")
             {
                 rpc = "/example-schema:launch-nukes";
                 input = {
-                    {"description", "dummy"s},
-                    {"payload/kilotons", uint64_t{4}},
+                    {joinPaths(rpc, "description"), "dummy"s},
+                    {joinPaths(rpc, "payload/kilotons"), uint64_t{4}},
                 };
                 proxyDatastore.initiate(rpc);
                 proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{4});
@@ -989,8 +989,8 @@ TEST_CASE("rpc/action")
             {
                 rpc = "/example-schema:launch-nukes";
                 input = {
-                    {"payload/kilotons", uint64_t{6}},
-                    {"cities/targets[city='Prague']/city", "Prague"s},
+                    {joinPaths(rpc, "payload/kilotons"), uint64_t{6}},
+                    {joinPaths(rpc, "cities/targets[city='Prague']/city"), "Prague"s},
                 };
                 proxyDatastore.initiate(rpc);
                 proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{6});
@@ -1013,7 +1013,7 @@ TEST_CASE("rpc/action")
 
                 rpc = "/example-schema:fire";
                 input = {
-                    {"whom", "Colton"s}
+                    {joinPaths(rpc, "whom"), "Colton"s}
                 };
                 proxyDatastore.initiate(rpc);
                 proxyDatastore.setLeaf("/example-schema:fire/example-schema:whom", "Colton"s);
@@ -1038,6 +1038,10 @@ TEST_CASE("rpc/action")
 
     SECTION("action")
     {
+        auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {
+            return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
+        };
+        ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
         std::string path;
         DatastoreAccess::Tree input, output;
 
@@ -1046,16 +1050,23 @@ TEST_CASE("rpc/action")
             {"/example-schema:ports[name='A']", special_{SpecialValue::List}},
             {"/example-schema:ports[name='A']/name", enum_{"A"}},
 #endif
-            {"success", true}
+            {"/example-schema:ports[name='A']/shutdown/success", true}
         };
         datastore->createItem("/example-schema:ports[name='A']");
         datastore->commitChanges();
         SECTION("shutdown")
         {
-            path = "/example-schema:ports[name='A']/shutdown";
+            path = "/example-schema:ports[name='A']/example-schema:shutdown";
+            input = {
+                {"/example-schema:ports[name='A']/shutdown/force", true}
+            };
+            proxyDatastore.initiate(path);
+            proxyDatastore.setLeaf("/example-schema:ports[name='A']/example-schema:shutdown/example-schema:force", true);
+
         }
 
         catching<OnExec>([&] { REQUIRE(datastore->execute(path, input) == output); });
+        catching<OnExec>([&] { REQUIRE(proxyDatastore.execute() == output); });
     }
 
     waitForCompletionAndBitMore(seq1);

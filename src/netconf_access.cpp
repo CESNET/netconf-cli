@@ -136,8 +136,7 @@ DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree
 {
     auto root = m_schema->dataNodeFromPath(path);
     for (const auto& [k, v] : input) {
-        auto node = m_schema->dataNodeFromPath(joinPaths(path, k), leafDataToString(v));
-        root->merge(node, 0);
+        root->new_path(m_session->libyangContext(), k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
     }
     auto data = root->print_mem(LYD_XML, 0);
 
