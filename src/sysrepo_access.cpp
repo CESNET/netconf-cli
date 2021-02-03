@@ -308,16 +308,18 @@ DatastoreAccess::Tree SysrepoAccess::execute(const std::string& path, const Tree
 {
     auto inputNode = m_schema->dataNodeFromPath(path);
     for (const auto& [k, v] : input) {
-        auto node = m_schema->dataNodeFromPath(joinPaths(path, k), leafDataToString(v));
-        inputNode->merge(node, 0);
+        inputNode->new_path(m_session->get_context(), k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
     }
 
     Tree res;
     auto output = m_session->rpc_send(inputNode);
     if (output) {
         // The output is "some top-level node". If we actually want the output of our RPC/action we need to use
-        // find_path.
-        lyNodesToTree(res, output->find_path(path.c_str())->data(), joinPaths(path, "/"));
+        // find_path.  Also, our `path` is fully prefixed, but the output paths aren't. So we use outputNode->path() to
+        // get the unprefixed path.
+
+        auto outputNode = output->find_path(path.c_str())->data().front();
+        lyNodesToTree(res, {outputNode}, joinPaths(outputNode->path(), "/"));
     }
     return res;
 }

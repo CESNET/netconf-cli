@@ -131,11 +131,7 @@ DatastoreAccess::Tree YangAccess::getItems(const std::string& path) const
     auto set = lyWrap(lyd_find_path(m_datastore.get(), path == "/" ? "/*" : path.c_str()));
     auto setWrapper = libyang::Set(set.get(), nullptr);
     std::optional<std::string> ignoredXPathPrefix;
-    if (m_datastore->schema->nodetype == LYS_RPC) {
-        auto path = std::unique_ptr<char, decltype(&free)>(lys_path(m_datastore->schema, 0), &free);
-        ignoredXPathPrefix = joinPaths(path.get(), "/");
-    }
-    lyNodesToTree(res, setWrapper.data(), ignoredXPathPrefix);
+    lyNodesToTree(res, setWrapper.data());
     return res;
 }
 
@@ -239,10 +235,8 @@ void YangAccess::discardChanges()
         if (v.type() == typeid(special_) && boost::get<special_>(v).m_value != SpecialValue::PresenceContainer) {
             continue;
         }
-        auto node = lyd_new_path(root.get(), m_ctx.get(), joinPaths(path, k).c_str(), (void*)leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, 0);
-        if (!node) {
-            getErrorsAndThrow();
-        }
+
+        lyd_new_path(root.get(), m_ctx.get(), k.c_str(), (void*)leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
     }
     throw std::logic_error("in-memory datastore doesn't support executing RPC/action");
 }
