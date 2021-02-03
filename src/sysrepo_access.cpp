@@ -304,36 +304,18 @@ void SysrepoAccess::discardChanges()
     }
 }
 
-namespace {
-std::shared_ptr<sysrepo::Vals> toSrVals(const std::string& path, const DatastoreAccess::Tree& input)
-{
-    auto res = std::make_shared<sysrepo::Vals>(input.size());
-    {
-        size_t i = 0;
-        for (const auto& [k, v] : input) {
-            boost::apply_visitor(updateSrValFromValue(joinPaths(path, k), res->val(i)), v);
-            ++i;
-        }
-    }
-    return res;
-}
-
-DatastoreAccess::Tree toTree(const std::string& path, const std::shared_ptr<sysrepo::Vals>& output)
-{
-    DatastoreAccess::Tree res;
-    for (size_t i = 0; i < output->val_cnt(); ++i) {
-        const auto& v = output->val(i);
-        res.emplace_back(std::string(v->xpath()).substr(joinPaths(path, "/").size()), leafValueFromVal(v));
-    }
-    return res;
-}
-}
-
 DatastoreAccess::Tree SysrepoAccess::execute(const std::string& path, const Tree& input)
 {
-    auto srInput = toSrVals(path, input);
-    auto output = m_session->rpc_send(path.c_str(), srInput);
-    return toTree(path, output);
+    auto inputNode = m_schema->dataNodeFromPath(path);
+    for (const auto& [k, v] : input) {
+        auto node = m_schema->dataNodeFromPath(joinPaths(path, k), leafDataToString(v));
+        inputNode->merge(node, 0);
+    }
+
+    auto output = m_session->rpc_send(inputNode);
+    DatastoreAccess::Tree resTree;
+    lyNodesToTree(resTree, {output}, joinPaths(path, "/"));
+    return resTree;
 }
 
 void SysrepoAccess::copyConfig(const Datastore source, const Datastore destination)
