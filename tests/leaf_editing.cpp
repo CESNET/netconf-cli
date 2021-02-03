@@ -139,6 +139,13 @@ TEST_CASE("leaf editing")
                 expected.m_data = std::string("somedata");
             }
 
+            SECTION("more spaces before value")
+            {
+                input = "set mod:leafString   \"somedata\"";
+                expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafString"));
+                expected.m_data = std::string("somedata");
+            }
+
             SECTION("int8")
             {
                 input = "set mod:leafInt8 2";
