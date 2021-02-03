@@ -136,8 +136,7 @@ DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree
 {
     auto root = m_schema->dataNodeFromPath(path);
     for (const auto& [k, v] : input) {
-        auto node = m_schema->dataNodeFromPath(joinPaths(path, k), leafDataToString(v));
-        root->merge(node, 0);
+        root->new_path(m_session->libyangContext(), k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
     }
     auto data = root->print_mem(LYD_XML, 0);
 
@@ -145,8 +144,11 @@ DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree
     auto output = m_session->rpc_or_action(data);
     if (output) {
         // If there's output, it will be a top-level node. In case of action, the output can be nested so we need to use
-        // find_path to get to the actual output.
-        lyNodesToTree(res, output->find_path(path.c_str())->data(), joinPaths(path, "/"));
+        // find_path to get to the actual output. Also, our `path` is fully prefixed, but the output paths aren't. So
+        // we use outputNode->path() to get the unprefixed path.
+
+        auto outputNode = output->find_path(path.c_str())->data().front();
+        lyNodesToTree(res, {outputNode}, joinPaths(outputNode->path(), "/"));
     }
     return res;
 }

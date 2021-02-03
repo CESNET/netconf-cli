@@ -206,6 +206,12 @@ module example-schema {
         }
 
         action shutdown {
+            input {
+                leaf force {
+                    mandatory true;
+                    type boolean;
+                }
+            }
             output {
                 leaf success {
                     mandatory true;
