@@ -51,6 +51,24 @@
       "parentUuid": "489fc548_a765046f",
       "revId": "cff14ea10c07a6b123cd835e87b6832b562a5c14",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64cf5423_1fafcf14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-03T20:13:28Z",
+      "side": 1,
+      "message": "Or fortunately? :)",
+      "parentUuid": "7cce7aa6_0bf71ba4",
+      "revId": "cff14ea10c07a6b123cd835e87b6832b562a5c14",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
