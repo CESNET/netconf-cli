@@ -32,7 +32,7 @@ auto const module_identifier_def =
     ];
 
 auto const space_separator_def =
-    x3::omit[x3::no_skip[x3::space]];
+    x3::omit[x3::no_skip[+x3::space]];
 
 template <typename CoerceTo>
 struct as_type {
