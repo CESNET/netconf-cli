@@ -17,6 +17,7 @@ using OnInvalidSchemaPathCreate = DatastoreException;
 using OnInvalidSchemaPathDelete = DatastoreException;
 using OnInvalidSchemaPathMove = sysrepo::sysrepo_exception;
 using OnInvalidRpcPath = sysrepo::sysrepo_exception;
+using OnInvalidRpcInput = sysrepo::sysrepo_exception;
 using OnKeyNotFound = void;
 using OnExec = void;
 #elif defined(netconf_BACKEND)
@@ -24,6 +25,7 @@ using OnInvalidSchemaPathCreate = std::runtime_error;
 using OnInvalidSchemaPathDelete = std::runtime_error;
 using OnInvalidSchemaPathMove = std::runtime_error;
 using OnInvalidRpcPath = std::runtime_error;
+using OnInvalidRpcInput = std::runtime_error;
 using OnKeyNotFound = std::runtime_error;
 using OnExec = void;
 #include "netconf_access.hpp"
@@ -35,6 +37,7 @@ using OnInvalidSchemaPathCreate = DatastoreException;
 using OnInvalidSchemaPathDelete = DatastoreException;
 using OnInvalidSchemaPathMove = DatastoreException;
 using OnInvalidRpcPath = DatastoreException;
+using OnInvalidRpcInput = std::logic_error;
 using OnKeyNotFound = DatastoreException;
 using OnExec = std::logic_error;
 #else
@@ -1023,6 +1026,13 @@ TEST_CASE("rpc/action")
         SECTION("non-existing RPC")
         {
             catching<OnInvalidRpcPath>([&] { datastore->execute("/example-schema:non-existing", DatastoreAccess::Tree{}); });
+        }
+
+        SECTION("invalid RPC exec resets temporary datastore")
+        {
+            proxyDatastore.initiate("/example-schema:setIp");
+            catching<OnInvalidRpcInput>([&] { auto output = proxyDatastore.execute(); });
+            REQUIRE(proxyDatastore.inputDatastorePath() == std::nullopt);
         }
     }
 

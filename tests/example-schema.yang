@@ -167,6 +167,15 @@ module example-schema {
 
     rpc noop {}
 
+    rpc setIp {
+      input {
+        leaf ip {
+          mandatory true;
+          type string;
+        }
+      }
+    }
+
     list selectedNumbers {
         key 'value';
         leaf value {

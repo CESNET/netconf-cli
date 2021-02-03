@@ -5,6 +5,7 @@
  *
 */
 #include <boost/algorithm/string/predicate.hpp>
+#include "UniqueResource.hpp"
 #include "proxy_datastore.hpp"
 #include "yang_schema.hpp"
 
@@ -74,10 +75,10 @@ DatastoreAccess::Tree ProxyDatastore::execute()
     if (!m_inputDatastore) {
         throw std::runtime_error("No RPC/action input in progress");
     }
+    auto cancelOnReturn = make_unique_resource([] {}, [this] { cancel(); });
     auto inputData = m_inputDatastore->getItems("/");
 
     auto out = m_datastore->execute(*m_inputPath, inputData);
-    cancel();
 
     return out;
 }
