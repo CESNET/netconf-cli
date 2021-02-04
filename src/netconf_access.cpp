@@ -222,6 +222,16 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
 
         // I take the first child here, because the first element (the parent of the child()) will be the list
         for (const auto& keyLeaf : instance->child()->tree_for()) {
+            // FIXME: even though we specified we only want the key leafs, Netopeer disregards that and sends more data,
+            // even lists and other stuff. We only want keys, so filter out non-leafs and non-keys
+            // https://github.com/CESNET/netopeer2/issues/825
+            if (keyLeaf->schema()->nodetype() != LYS_LEAF) {
+                continue;
+            }
+            if (!std::make_shared<libyang::Schema_Node_Leaf>(keyLeaf->schema())->is_key()) {
+                continue;
+            }
+
             auto leafData = std::make_shared<libyang::Data_Node_Leaf_List>(keyLeaf);
             instanceRes.insert({leafData->schema()->name(), leafValueFromNode(leafData)});
         }
