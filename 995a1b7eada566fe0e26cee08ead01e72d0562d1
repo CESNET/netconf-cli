@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4753d0a1_b4bda2bf",
+        "filename": "src/cli.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-05T08:31:49Z",
+      "side": 1,
+      "message": "How does this work? Is it ok if `process` and `processWatcher` go out of scope? I would think that this would block at the of the try block.",
+      "range": {
+        "startLine": 164,
+        "startChar": 8,
+        "endLine": 175,
+        "endChar": 115
+      },
+      "revId": "995a1b7eada566fe0e26cee08ead01e72d0562d1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
