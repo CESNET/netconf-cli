@@ -307,10 +307,14 @@ void SysrepoAccess::discardChanges()
 DatastoreAccess::Tree SysrepoAccess::execute(const std::string& path, const Tree& input)
 {
     auto inputNode = treeToRpcInput(m_session->get_context(), path, input);
+
+
+    Tree res;
     auto output = m_session->rpc_send(inputNode);
-    DatastoreAccess::Tree resTree;
-    lyNodesToTree(resTree, {output}, joinPaths(path, "/"));
-    return resTree;
+    if (output) {
+        lyNodesToTree(res, output->tree_for(), joinPaths(path, "/"));
+    }
+    return res;
 }
 
 void SysrepoAccess::copyConfig(const Datastore source, const Datastore destination)
