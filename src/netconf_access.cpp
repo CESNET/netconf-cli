@@ -157,32 +157,6 @@ void NetconfAccess::copyConfig(const Datastore source, const Datastore destinati
     m_session->copyConfig(toNcDatastore(source), toNcDatastore(destination));
 }
 
-std::string NetconfAccess::fetchSchema(const std::string_view module, const
-        std::optional<std::string_view> revision, const
-        std::optional<std::string_view> submodule, const
-        std::optional<std::string_view> submoduleRevision)
-{
-    if (submodule) {
-        return m_session->getSchema(*submodule, submoduleRevision);
-    }
-    return m_session->getSchema(module, revision);
-}
-
-std::vector<std::string> NetconfAccess::listImplementedSchemas()
-{
-    auto data = m_session->get("/ietf-netconf-monitoring:netconf-state/schemas");
-    auto set = data->find_path("/ietf-netconf-monitoring:netconf-state/schemas/schema/identifier");
-
-    std::vector<std::string> res;
-    for (auto it : set->data()) {
-        if (it->schema()->nodetype() == LYS_LEAF) {
-            libyang::Data_Node_Leaf_List leaf(it);
-            res.emplace_back(leaf.value_str());
-        }
-    }
-    return res;
-}
-
 std::shared_ptr<Schema> NetconfAccess::schema()
 {
     return m_schema;
