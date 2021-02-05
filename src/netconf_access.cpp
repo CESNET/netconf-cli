@@ -144,7 +144,9 @@ DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree
     Tree res;
     auto output = m_session->rpc_or_action(data);
     if (output) {
-        lyNodesToTree(res, output->tree_for(), joinPaths(path, "/"));
+        // If there's output, it will be a top-level node. In case of action, the output can be nested so we need to use
+        // find_path to get to the actual output.
+        lyNodesToTree(res, output->find_path(path.c_str())->data(), joinPaths(path, "/"));
     }
     return res;
 }
