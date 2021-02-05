@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03a6c6e9_94c7b702",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-02-05T16:04:46Z",
+      "side": 1,
+      "message": "yup, makes sense, I think it\u0027s merely an implementation detail that both use libyang now",
+      "revId": "714bfd066a13802b4d277a8035fadf3ff82a4dcb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
