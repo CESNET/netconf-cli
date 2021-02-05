@@ -16,6 +16,24 @@
       "message": "this is a good change, but please do a similar thing for the output as well",
       "revId": "0609372c598250b35ae033ee75e67e39532c45ab",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fe4f0a9_b113a66b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-05T17:05:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a19e2be_24d20869",
+      "revId": "0609372c598250b35ae033ee75e67e39532c45ab",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
