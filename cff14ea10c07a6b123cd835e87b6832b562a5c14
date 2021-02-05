@@ -87,6 +87,23 @@
       "parentUuid": "64cf5423_1fafcf14",
       "revId": "cff14ea10c07a6b123cd835e87b6832b562a5c14",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8937f8cc_c4aa4ca2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-02-05T13:36:43Z",
+      "side": 1,
+      "message": "this patch also doesn\u0027t pass with the updated SR stack, yay.",
+      "revId": "cff14ea10c07a6b123cd835e87b6832b562a5c14",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
