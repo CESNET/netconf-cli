@@ -312,10 +312,14 @@ DatastoreAccess::Tree SysrepoAccess::execute(const std::string& path, const Tree
         inputNode->merge(node, 0);
     }
 
+    Tree res;
     auto output = m_session->rpc_send(inputNode);
-    DatastoreAccess::Tree resTree;
-    lyNodesToTree(resTree, {output}, joinPaths(path, "/"));
-    return resTree;
+    if (output) {
+        // If there's output, it will be a top-level node. In case of action, the output can be nested so we need to use
+        // find_path to get to the actual output.
+        lyNodesToTree(res, output->find_path(path.c_str())->data(), joinPaths(path, "/"));
+    }
+    return res;
 }
 
 void SysrepoAccess::copyConfig(const Datastore source, const Datastore destination)

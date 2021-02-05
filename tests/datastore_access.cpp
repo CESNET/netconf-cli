@@ -1042,8 +1042,6 @@ TEST_CASE("rpc/action")
         DatastoreAccess::Tree input, output;
 
         output = {
-            {"/example-schema:ports[name='A']", special_{SpecialValue::List}},
-            {"/example-schema:ports[name='A']/name", enum_{"A"}},
             {"success", true}
         };
         datastore->createItem("/example-schema:ports[name='A']");
