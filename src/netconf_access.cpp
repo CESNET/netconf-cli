@@ -134,23 +134,11 @@ void NetconfAccess::discardChanges()
 
 DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree& input)
 {
-    auto root = m_schema->dataNodeFromPath(path);
-    for (const auto& [k, v] : input) {
-        root->new_path(m_session->libyangContext(), k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
-    }
-    auto data = root->print_mem(LYD_XML, 0);
+    auto inputNode = treeToRpcInput(m_session->libyangContext(), path, input);
+    auto data = inputNode->print_mem(LYD_XML, 0);
 
-    Tree res;
     auto output = m_session->rpc_or_action(data);
-    if (output) {
-        // If there's output, it will be a top-level node. In case of action, the output can be nested so we need to use
-        // find_path to get to the actual output. Also, our `path` is fully prefixed, but the output paths aren't. So
-        // we use outputNode->path() to get the unprefixed path.
-
-        auto outputNode = output->find_path(path.c_str())->data().front();
-        lyNodesToTree(res, {outputNode}, joinPaths(outputNode->path(), "/"));
-    }
-    return res;
+    return rpcOutputToTree(path, output);
 }
 
 NC_DATASTORE toNcDatastore(Datastore datastore)
