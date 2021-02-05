@@ -55,6 +55,7 @@ static const auto usage = R"(CLI interface for NETCONF
 
 Usage:
   netconf-cli [-v] [-p <port>] <host>
+  netconf-cli [-v] --socket <path>
   netconf-cli (-h | --help)
   netconf-cli --version
 
@@ -160,22 +161,31 @@ int main(int argc, char* argv[])
 
     std::shared_ptr<NetconfAccess> datastore;
 
-    try {
-        auto process = sshProcess(args.at("<host>").asString(), args.at("-p").asString());
-        PoorMansJThread processWatcher{std::thread{[&process, &lineEditor, &backendReturnCode] () {
-            process.process.wait();
-            backendReturnCode = process.process.exit_code();
-            // CTRL-U clears from the cursor to the start of the line
-            // CTRL-K clears from the cursor to the end of the line
-            // CTRL-D send EOF
-            lineEditor.emulate_key_press(replxx::Replxx::KEY::control('U'));
-            lineEditor.emulate_key_press(replxx::Replxx::KEY::control('K'));
-            lineEditor.emulate_key_press(replxx::Replxx::KEY::control('D'));
-        }}};
-        datastore = std::make_shared<NetconfAccess>(process.std_out.native_source(), process.std_in.native_sink());
-    } catch (std::runtime_error& ex) {
-        std::cerr << "SSH connection failed: " << ex.what() << std::endl;
-        return 1;
+    if (args.at("--socket").asBool()) {
+        try {
+            datastore = std::make_shared<NetconfAccess>(args.at("<path>").asString());
+        } catch (std::runtime_error& ex) {
+            std::cerr << "UNIX socket connection failed: " << ex.what() << std::endl;
+            return 1;
+        }
+    } else {
+        try {
+            auto process = sshProcess(args.at("<host>").asString(), args.at("-p").asString());
+            PoorMansJThread processWatcher{std::thread{[&process, &lineEditor, &backendReturnCode] () {
+                process.process.wait();
+                backendReturnCode = process.process.exit_code();
+                // CTRL-U clears from the cursor to the start of the line
+                // CTRL-K clears from the cursor to the end of the line
+                // CTRL-D send EOF
+                lineEditor.emulate_key_press(replxx::Replxx::KEY::control('U'));
+                lineEditor.emulate_key_press(replxx::Replxx::KEY::control('K'));
+                lineEditor.emulate_key_press(replxx::Replxx::KEY::control('D'));
+            }}};
+            datastore = std::make_shared<NetconfAccess>(process.std_out.native_source(), process.std_in.native_sink());
+        } catch (std::runtime_error& ex) {
+            std::cerr << "SSH connection failed: " << ex.what() << std::endl;
+            return 1;
+        }
     }
 #else
 #error "Unknown CLI backend"
