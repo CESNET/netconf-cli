@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f9e2925_128377c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-02-05T12:34:06Z",
+      "side": 1,
+      "message": "(this is \"just a rebase\", let me self-CR+2 this)",
+      "revId": "1ccf0d41b0f2c499594a70a82a43d48a8a7791ad",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
