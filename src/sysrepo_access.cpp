@@ -306,13 +306,9 @@ void SysrepoAccess::discardChanges()
 
 DatastoreAccess::Tree SysrepoAccess::execute(const std::string& path, const Tree& input)
 {
-    auto inputNode = m_schema->dataNodeFromPath(path);
-    for (const auto& [k, v] : input) {
-        inputNode->new_path(m_session->get_context(), k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
-    }
-
-    Tree res;
+    auto inputNode = treeToRpcInput(m_session->get_context(), path, input);
     auto output = m_session->rpc_send(inputNode);
+    Tree res;
     if (output) {
         // If there's output, it will be a top-level node. In case of action, the output can be nested so we need to use
         // find_path to get to the actual output. Also, our `path` is fully prefixed, but the output paths aren't. So

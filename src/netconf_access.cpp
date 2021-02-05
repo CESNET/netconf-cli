@@ -134,11 +134,8 @@ void NetconfAccess::discardChanges()
 
 DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree& input)
 {
-    auto root = m_schema->dataNodeFromPath(path);
-    for (const auto& [k, v] : input) {
-        root->new_path(m_session->libyangContext(), k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
-    }
-    auto data = root->print_mem(LYD_XML, 0);
+    auto inputNode = treeToRpcInput(m_session->libyangContext(), path, input);
+    auto data = inputNode->print_mem(LYD_XML, 0);
 
     Tree res;
     auto output = m_session->rpc_or_action(data);
