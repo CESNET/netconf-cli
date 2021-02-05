@@ -158,13 +158,11 @@ int main(int argc, char* argv[])
         NetconfAccess::setNcLogLevel(NC_VERB_DEBUG);
     }
 
-    SshProcess process;
-    PoorMansJThread processWatcher;
     std::shared_ptr<NetconfAccess> datastore;
 
     try {
-        process = sshProcess(args.at("<host>").asString(), args.at("-p").asString());
-        processWatcher.thread = std::thread([&process, &lineEditor, &backendReturnCode] () {
+        auto process = sshProcess(args.at("<host>").asString(), args.at("-p").asString());
+        PoorMansJThread processWatcher{std::thread{[&process, &lineEditor, &backendReturnCode] () {
             process.process.wait();
             backendReturnCode = process.process.exit_code();
             // CTRL-U clears from the cursor to the start of the line
@@ -173,10 +171,10 @@ int main(int argc, char* argv[])
             lineEditor.emulate_key_press(replxx::Replxx::KEY::control('U'));
             lineEditor.emulate_key_press(replxx::Replxx::KEY::control('K'));
             lineEditor.emulate_key_press(replxx::Replxx::KEY::control('D'));
-        });
+        }}};
         datastore = std::make_shared<NetconfAccess>(process.std_out.native_source(), process.std_in.native_sink());
     } catch (std::runtime_error& ex) {
-        std::cerr << "SSH connection failed: " << ex.what() << "\n";
+        std::cerr << "SSH connection failed: " << ex.what() << std::endl;
         return 1;
     }
 #else
