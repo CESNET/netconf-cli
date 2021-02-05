@@ -90,9 +90,6 @@ void impl_lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::share
 }
 }
 
-// This is very similar to the fillMap lambda in SysrepoAccess, however,
-// Sysrepo returns a weird array-like structure, while libnetconf
-// returns libyang::Data_Node
 void lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix)
 {
     for (auto it = items.begin(); it < items.end(); it++) {
@@ -107,4 +104,14 @@ void lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr
             impl_lyNodesToTree(res, (*it)->tree_dfs(), ignoredXPathPrefix);
         }
     }
+}
+
+libyang::S_Data_Node treeToRpcInput(libyang::S_Context ctx, const std::string& path, DatastoreAccess::Tree in)
+{
+    auto root = std::make_shared<libyang::Data_Node>(ctx, path.c_str(), nullptr, LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
+    for (const auto& [k, v] : in) {
+        root->new_path(ctx, k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
+    }
+
+    return root;
 }

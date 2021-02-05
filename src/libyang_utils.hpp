@@ -11,3 +11,4 @@
 
 leaf_data_ leafValueFromNode(libyang::S_Data_Node_Leaf_List node);
 void lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix = std::nullopt);
+libyang::S_Data_Node treeToRpcInput(libyang::S_Context ctx, const std::string& path, DatastoreAccess::Tree in);
