@@ -18,63 +18,6 @@
 
 const auto OPERATION_TIMEOUT_MS = 1000;
 
-leaf_data_ leafValueFromVal(const sysrepo::S_Val& value)
-{
-    using namespace std::string_literals;
-    switch (value->type()) {
-    case SR_INT8_T:
-        return value->data()->get_int8();
-    case SR_UINT8_T:
-        return value->data()->get_uint8();
-    case SR_INT16_T:
-        return value->data()->get_int16();
-    case SR_UINT16_T:
-        return value->data()->get_uint16();
-    case SR_INT32_T:
-        return value->data()->get_int32();
-    case SR_UINT32_T:
-        return value->data()->get_uint32();
-    case SR_INT64_T:
-        return value->data()->get_int64();
-    case SR_UINT64_T:
-        return value->data()->get_uint64();
-    case SR_BOOL_T:
-        return value->data()->get_bool();
-    case SR_STRING_T:
-        return std::string(value->data()->get_string());
-    case SR_ENUM_T:
-        return enum_{std::string(value->data()->get_enum())};
-    case SR_IDENTITYREF_T: {
-        auto pair = splitModuleNode(value->data()->get_identityref());
-        return identityRef_{*pair.first, pair.second};
-    }
-    case SR_BINARY_T:
-        return binary_{value->data()->get_binary()};
-    case SR_LEAF_EMPTY_T:
-        return empty_{};
-    case SR_DECIMAL64_T:
-        return value->data()->get_decimal64();
-    case SR_CONTAINER_T:
-        return special_{SpecialValue::Container};
-    case SR_CONTAINER_PRESENCE_T:
-        return special_{SpecialValue::PresenceContainer};
-    case SR_LIST_T:
-        return special_{SpecialValue::List};
-    case SR_BITS_T: {
-        bits_ res;
-        std::istringstream ss(value->data()->get_bits());
-        while (!ss.eof()) {
-            std::string bit;
-            ss >> bit;
-            res.m_bits.push_back(bit);
-        }
-        return res;
-    }
-    default: // TODO: implement all types
-        return value->val_to_string();
-    }
-}
-
 struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
     sysrepo::S_Val operator()(const enum_& value) const
     {
@@ -118,68 +61,6 @@ struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
     sysrepo::S_Val operator()(const T& value) const
     {
         return std::make_shared<sysrepo::Val>(value);
-    }
-};
-
-struct updateSrValFromValue : boost::static_visitor<void> {
-    std::string xpath;
-    sysrepo::S_Val v;
-    updateSrValFromValue(const std::string& xpath, sysrepo::S_Val v)
-        : xpath(xpath)
-        , v(v)
-    {
-    }
-
-    void operator()(const enum_& value) const
-    {
-        v->set(xpath.c_str(), value.m_value.c_str(), SR_ENUM_T);
-    }
-
-    void operator()(const binary_& value) const
-    {
-        v->set(xpath.c_str(), value.m_value.c_str(), SR_BINARY_T);
-    }
-
-    void operator()(const empty_) const
-    {
-        v->set(xpath.c_str(), nullptr, SR_LEAF_EMPTY_T);
-    }
-
-    void operator()(const identityRef_& value) const
-    {
-        v->set(xpath.c_str(), (value.m_prefix.value().m_name + ":" + value.m_value).c_str(), SR_IDENTITYREF_T);
-    }
-
-    void operator()(const special_& value) const
-    {
-        switch (value.m_value) {
-        case SpecialValue::PresenceContainer:
-            v->set(xpath.c_str(), nullptr, SR_CONTAINER_PRESENCE_T);
-            break;
-        case SpecialValue::List:
-            v->set(xpath.c_str(), nullptr, SR_LIST_T);
-            break;
-        default:
-            throw std::runtime_error("Tried constructing S_Val from a " + specialValueToString(value));
-        }
-    }
-
-    auto operator()(const bits_& value) const
-    {
-        std::stringstream ss;
-        std::copy(value.m_bits.begin(), value.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
-        v->set(xpath.c_str(), ss.str().c_str(), SR_BITS_T);
-    }
-
-    void operator()(const std::string& value) const
-    {
-        v->set(xpath.c_str(), value.c_str(), SR_STRING_T);
-    }
-
-    template <typename T>
-    void operator()(const T value) const
-    {
-        v->set(xpath.c_str(), value);
     }
 };
 
