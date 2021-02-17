@@ -22,6 +22,30 @@
       },
       "revId": "2b3182b05aae8155e588d2bc4a55b69823d5baad",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7092e6d1_67cd50d6",
+        "filename": "tests/parser_rpc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-17T10:42:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c65049f6_1326f244",
+      "range": {
+        "startLine": 77,
+        "startChar": 25,
+        "endLine": 77,
+        "endChar": 26
+      },
+      "revId": "2b3182b05aae8155e588d2bc4a55b69823d5baad",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
