@@ -66,5 +66,29 @@ TEST_CASE("rpc")
             input = "exec example:shutdown";
             REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
         }
+
+        SECTION("require space between arguments")
+        {
+            input = "execexample:fire";
+            REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
+        }
+    }
+
+    SECTION("exec with no arguments")
+    {
+        exec_ execExpected;
+
+        SECTION("without space")
+        {
+            input = "exec";
+        }
+
+        SECTION("with space")
+        {
+            input = "exec ";
+        }
+        command_ command = parser.parseCommand(input, errorStream);
+        auto lol = boost::get<exec_>(command);
+        REQUIRE(boost::get<exec_>(command) == execExpected);
     }
 }
