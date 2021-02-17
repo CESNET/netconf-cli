@@ -262,7 +262,7 @@ auto const prepare_def =
     prepare_::name > space_separator > as<dataPath_>[RpcActionPath<AllowInput::Yes>{}];
 
 auto const exec_def =
-    exec_::name > -(space_separator > as<dataPath_>[RpcActionPath<AllowInput::No>{}]);
+    exec_::name > -space_separator > -as<dataPath_>[RpcActionPath<AllowInput::No>{}];
 
 auto const cancel_def =
     cancel_::name >> x3::attr(cancel_{});
