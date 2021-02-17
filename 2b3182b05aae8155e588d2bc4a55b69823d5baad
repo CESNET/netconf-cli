@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c65049f6_1326f244",
+        "filename": "tests/parser_rpc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-02-17T10:18:55Z",
+      "side": 1,
+      "message": "an extra space, which is important here",
+      "range": {
+        "startLine": 77,
+        "startChar": 25,
+        "endLine": 77,
+        "endChar": 26
+      },
+      "revId": "2b3182b05aae8155e588d2bc4a55b69823d5baad",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
