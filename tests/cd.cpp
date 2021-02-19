@@ -51,7 +51,6 @@ TEST_CASE("cd")
                 SECTION("trailing slash")
                 {
                     input = "cd example:a/";
-                    expected.m_path.m_trailingSlash = TrailingSlash::Present;
                 }
                 SECTION("no trailing slash")
                 {
@@ -65,7 +64,6 @@ TEST_CASE("cd")
                 SECTION("trailing slash")
                 {
                     input = "cd second:a/";
-                    expected.m_path.m_trailingSlash = TrailingSlash::Present;
                 }
                 SECTION("no trailing slash")
                 {
@@ -191,6 +189,9 @@ TEST_CASE("cd")
         command_ command = parser.parseCommand(input, errorStream);
         REQUIRE(command.type() == typeid(cd_));
         REQUIRE(boost::get<cd_>(command) == expected);
+        // Converting the path back to a string should never result with a path with a trailing slash, even if the
+        // original input string has it.
+        REQUIRE(pathToDataString(boost::get<cd_>(command).m_path, Prefixes::WhenNeeded).back() != '/');
     }
     SECTION("invalid input")
     {

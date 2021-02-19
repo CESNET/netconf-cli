@@ -21,7 +21,7 @@ x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
 x3::rule<leafListElementPath_class, dataPath_> const leafListElementPath = "leafListElementPath";
 x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
-x3::rule<trailingSlash_class, TrailingSlash> const trailingSlash = "trailingSlash";
+x3::rule<trailingSlash_class, x3::unused_type> const trailingSlash = "trailingSlash";
 x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
 x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
 x3::rule<key_identifier_class, std::string> const key_identifier = "key_identifier";
@@ -300,9 +300,9 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
                     // command. If we're in DataPathListEnd it doesn't make sense to parse put any more nodes after the
                     // final list.
                     if constexpr (PARSER_MODE == PathParserMode::AnyPath) {
-                        res = (-(trailingSlash >> x3::omit[pathCompletions<COMPLETION_MODE>{m_filterFunction}])).parse(begin, end, ctx, rctx, attrData.m_trailingSlash);
+                        res = (-(trailingSlash >> x3::omit[pathCompletions<COMPLETION_MODE>{m_filterFunction}])).parse(begin, end, ctx, rctx, x3::unused);
                     } else {
-                        res = (-trailingSlash).parse(begin, end, ctx, rctx, attrData.m_trailingSlash);
+                        res = (-trailingSlash).parse(begin, end, ctx, rctx, x3::unused);
                     }
                 }
             }
@@ -322,7 +322,7 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
                     // The schemaPath parser continues where the dataPath parser ended.
                     res = schemaPath.parse(begin, end, ctx, rctx, attrSchema.m_nodes);
                     auto trailing = -trailingSlash >> pathEnd;
-                    res = trailing.parse(begin, end, ctx, rctx, attrSchema.m_trailingSlash);
+                    res = trailing.parse(begin, end, ctx, rctx, x3::unused);
                     attr = attrSchema;
                 }
             }
@@ -397,7 +397,7 @@ auto const absoluteStart_def =
     x3::omit['/'] >> x3::attr(Scope::Absolute);
 
 auto const trailingSlash_def =
-    x3::omit['/'] >> x3::attr(TrailingSlash::Present);
+    x3::omit['/'];
 
 auto const filterConfigFalse = [](const Schema& schema, const std::string& path) {
     return schema.isConfig(path);

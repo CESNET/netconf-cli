@@ -170,10 +170,9 @@ void validatePathNodes(const std::vector<T>& nodes)
 
 schemaPath_::schemaPath_() = default;
 
-schemaPath_::schemaPath_(const Scope scope, const std::vector<schemaNode_>& nodes, const TrailingSlash trailingSlash)
+schemaPath_::schemaPath_(const Scope scope, const std::vector<schemaNode_>& nodes)
     : m_scope(scope)
     , m_nodes(nodes)
-    , m_trailingSlash(trailingSlash)
 {
     validatePathNodes(m_nodes);
 }
@@ -188,10 +187,9 @@ bool schemaPath_::operator==(const schemaPath_& b) const
 
 dataPath_::dataPath_() = default;
 
-dataPath_::dataPath_(const Scope scope, const std::vector<dataNode_>& nodes, const TrailingSlash trailingSlash)
+dataPath_::dataPath_(const Scope scope, const std::vector<dataNode_>& nodes)
     : m_scope(scope)
     , m_nodes(nodes)
-    , m_trailingSlash(trailingSlash)
 {
     validatePathNodes(m_nodes);
 }
@@ -271,9 +269,6 @@ std::string pathToDataString(const dataPath_& path, Prefixes prefixes)
         } else {
             res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + std::visit(nodeToDataStringVisitor(), it.m_suffix));
         }
-    }
-    if (path.m_trailingSlash == TrailingSlash::Present) {
-        res += "/";
     }
 
     return res;
