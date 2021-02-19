@@ -114,11 +114,6 @@ struct dataNode_ {
     bool operator==(const dataNode_& b) const;
 };
 
-enum class TrailingSlash {
-    Present,
-    NonPresent
-};
-
 enum class Scope {
     Absolute,
     Relative
@@ -126,22 +121,20 @@ enum class Scope {
 
 struct schemaPath_ {
     schemaPath_();
-    schemaPath_(const Scope scope, const std::vector<schemaNode_>& nodes, const TrailingSlash trailingSlash = TrailingSlash::NonPresent);
+    schemaPath_(const Scope scope, const std::vector<schemaNode_>& nodes);
     bool operator==(const schemaPath_& b) const;
     Scope m_scope = Scope::Relative;
     std::vector<schemaNode_> m_nodes;
-    TrailingSlash m_trailingSlash = TrailingSlash::NonPresent;
     // @brief Pushes a new fragment. Pops a fragment if it's nodeup_
     void pushFragment(const schemaNode_& fragment);
 };
 
 struct dataPath_ {
     dataPath_();
-    dataPath_(const Scope scope, const std::vector<dataNode_>& nodes, const TrailingSlash trailingSlash = TrailingSlash::NonPresent);
+    dataPath_(const Scope scope, const std::vector<dataNode_>& nodes);
     bool operator==(const dataPath_& b) const;
     Scope m_scope = Scope::Relative;
     std::vector<dataNode_> m_nodes;
-    TrailingSlash m_trailingSlash = TrailingSlash::NonPresent;
 
     // @brief Pushes a new fragment. Pops a fragment if it's nodeup_
     void pushFragment(const dataNode_& fragment);
@@ -167,5 +160,5 @@ BOOST_FUSION_ADAPT_STRUCT(leafListElement_, m_name, m_value)
 BOOST_FUSION_ADAPT_STRUCT(module_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(dataNode_, m_prefix, m_suffix)
 BOOST_FUSION_ADAPT_STRUCT(schemaNode_, m_prefix, m_suffix)
-BOOST_FUSION_ADAPT_STRUCT(dataPath_, m_scope, m_nodes, m_trailingSlash)
-BOOST_FUSION_ADAPT_STRUCT(schemaPath_, m_scope, m_nodes, m_trailingSlash)
+BOOST_FUSION_ADAPT_STRUCT(dataPath_, m_scope, m_nodes)
+BOOST_FUSION_ADAPT_STRUCT(schemaPath_, m_scope, m_nodes)
