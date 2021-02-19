@@ -457,10 +457,7 @@ void YangSchema::registerModuleCallback(const std::function<std::string(const ch
         return libyang::Context::mod_missing_cb_return{LYS_IN_YANG, strdup(moduleSource.c_str())};
     };
 
-    auto deleter = [](void* data) {
-        free(data); // NOLINT(cppcoreguidelines-owning-memory,cppcoreguidelines-no-malloc)
-    };
-    m_context->add_missing_module_callback(lambda, deleter);
+    m_context->add_missing_module_callback(lambda, free);
 }
 
 std::shared_ptr<libyang::Data_Node> YangSchema::dataNodeFromPath(const std::string& path, const std::optional<const std::string> value) const
