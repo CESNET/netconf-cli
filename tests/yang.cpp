@@ -674,7 +674,6 @@ TEST_CASE("yangschema")
                 node.first = "example-schema";
                 node.second = "foodIdentLeaf";
                 type = yang::IdentityRef{{{"second-schema", "pineapple"},
-                                          {"example-schema", "food"},
                                           {"example-schema", "pizza"},
                                           {"example-schema", "hawaii"},
                                           {"example-schema", "fruit"}}};
@@ -686,7 +685,6 @@ TEST_CASE("yangschema")
                 node.second = "pizzaIdentLeaf";
 
                 type = yang::IdentityRef{{
-                    {"example-schema", "pizza"},
                     {"example-schema", "hawaii"},
                 }};
             }
@@ -697,8 +695,6 @@ TEST_CASE("yangschema")
                 node.second = "foodDrinkIdentLeaf";
 
                 type = yang::IdentityRef{{
-                    {"example-schema", "food"},
-                    {"example-schema", "drink"},
                     {"example-schema", "fruit"},
                     {"example-schema", "hawaii"},
                     {"example-schema", "pizza"},
@@ -769,7 +765,6 @@ TEST_CASE("yangschema")
                 node.first = "example-schema";
                 node.second = "leafFoodTypedef";
                 type = yang::IdentityRef{{
-                    {"example-schema", "food"},
                     {"example-schema", "fruit"},
                     {"example-schema", "hawaii"},
                     {"example-schema", "pizza"},
