@@ -51,7 +51,6 @@ TEST_CASE("cd")
                 SECTION("trailing slash")
                 {
                     input = "cd example:a/";
-                    expected.m_path.m_trailingSlash = TrailingSlash::Present;
                 }
                 SECTION("no trailing slash")
                 {
@@ -65,7 +64,6 @@ TEST_CASE("cd")
                 SECTION("trailing slash")
                 {
                     input = "cd second:a/";
-                    expected.m_path.m_trailingSlash = TrailingSlash::Present;
                 }
                 SECTION("no trailing slash")
                 {
