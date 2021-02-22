@@ -113,13 +113,15 @@ TEST_CASE("setting/getting values")
 {
     sr_log_stderr(SR_LL_DBG);
     trompeloeil::sequence seq1;
-    MockRecorder mock;
+    MockRecorder mockRunning;
+    MockRecorder mockStartup;
     {
         auto conn = std::make_shared<sysrepo::Connection>();
         auto sess = std::make_shared<sysrepo::Session>(conn);
         sess->copy_config(SR_DS_STARTUP, "example-schema", 1000, true);
     }
-    SysrepoSubscription subscription("example-schema", &mock);
+    SysrepoSubscription subRunning("example-schema", &mockRunning);
+    SysrepoSubscription subStartup("example-schema", &mockStartup, SR_DS_STARTUP);
 
 #ifdef sysrepo_BACKEND
     SysrepoAccess datastore(Datastore::Running);
@@ -137,83 +139,83 @@ TEST_CASE("setting/getting values")
 
     SECTION("set leafInt8 to -128")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafInt8", std::nullopt, "-128"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafInt8", std::nullopt, "-128"s));
         datastore.setLeaf("/example-schema:leafInt8", int8_t{-128});
         datastore.commitChanges();
     }
 
     SECTION("set leafInt16 to -32768")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafInt16", std::nullopt, "-32768"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafInt16", std::nullopt, "-32768"s));
         datastore.setLeaf("/example-schema:leafInt16", int16_t{-32768});
         datastore.commitChanges();
     }
 
     SECTION("set leafInt32 to -2147483648")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafInt32", std::nullopt, "-2147483648"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafInt32", std::nullopt, "-2147483648"s));
         datastore.setLeaf("/example-schema:leafInt32", int32_t{-2147483648});
         datastore.commitChanges();
     }
 
     SECTION("set leafInt64 to -50000000000")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafInt64", std::nullopt, "-50000000000"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafInt64", std::nullopt, "-50000000000"s));
         datastore.setLeaf("/example-schema:leafInt64", int64_t{-50000000000});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt8 to 255")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafUInt8", std::nullopt, "255"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafUInt8", std::nullopt, "255"s));
         datastore.setLeaf("/example-schema:leafUInt8", uint8_t{255});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt16 to 65535")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafUInt16", std::nullopt, "65535"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafUInt16", std::nullopt, "65535"s));
         datastore.setLeaf("/example-schema:leafUInt16", uint16_t{65535});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt32 to 4294967295")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafUInt32", std::nullopt, "4294967295"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafUInt32", std::nullopt, "4294967295"s));
         datastore.setLeaf("/example-schema:leafUInt32", uint32_t{4294967295});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt64 to 50000000000")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafUInt64", std::nullopt, "50000000000"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafUInt64", std::nullopt, "50000000000"s));
         datastore.setLeaf("/example-schema:leafUInt64", uint64_t{50000000000});
         datastore.commitChanges();
     }
 
     SECTION("set leafEnum to coze")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafEnum", std::nullopt, "coze"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafEnum", std::nullopt, "coze"s));
         datastore.setLeaf("/example-schema:leafEnum", enum_{"coze"});
         datastore.commitChanges();
     }
 
     SECTION("set leafDecimal to 123.544")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafDecimal", std::nullopt, "123.544"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafDecimal", std::nullopt, "123.544"s));
         datastore.setLeaf("/example-schema:leafDecimal", 123.544);
         datastore.commitChanges();
     }
 
     SECTION("set a string, then delete it")
     {
-        REQUIRE_CALL(mock, write("/example-schema:leafString", std::nullopt, "blah"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafString", std::nullopt, "blah"s));
         datastore.setLeaf("/example-schema:leafString", "blah"s);
         datastore.commitChanges();
         DatastoreAccess::Tree expected{{"/example-schema:leafString", "blah"s}};
         REQUIRE(datastore.getItems("/example-schema:leafString") == expected);
 
-        REQUIRE_CALL(mock, write("/example-schema:leafString", "blah"s, std::nullopt));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafString", "blah"s, std::nullopt));
         datastore.deleteItem("/example-schema:leafString");
         datastore.commitChanges();
         expected.clear();
@@ -230,7 +232,7 @@ TEST_CASE("setting/getting values")
     SECTION("create presence container")
     {
         REQUIRE(datastore.dump(DataFormat::Json).find("example-schema:pContainer") == std::string::npos);
-        REQUIRE_CALL(mock, write("/example-schema:pContainer", std::nullopt, ""s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:pContainer", std::nullopt, ""s));
         datastore.createItem("/example-schema:pContainer");
         datastore.commitChanges();
         REQUIRE(datastore.dump(DataFormat::Json).find("example-schema:pContainer") != std::string::npos);
@@ -239,14 +241,14 @@ TEST_CASE("setting/getting values")
     SECTION("create/delete a list instance")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']", std::nullopt, ""s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", std::nullopt, "Nguyen"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Nguyen']", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Nguyen']/name", std::nullopt, "Nguyen"s));
             datastore.createItem("/example-schema:person[name='Nguyen']");
             datastore.commitChanges();
         }
         {
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']", ""s, std::nullopt));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Nguyen']/name", "Nguyen"s, std::nullopt));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Nguyen']", ""s, std::nullopt));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Nguyen']/name", "Nguyen"s, std::nullopt));
             datastore.deleteItem("/example-schema:person[name='Nguyen']");
             datastore.commitChanges();
         }
@@ -275,12 +277,12 @@ TEST_CASE("setting/getting values")
     SECTION("leafref pointing to a key of a list")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Dan']", std::nullopt, ""s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Dan']/name", std::nullopt, "Dan"s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']", std::nullopt, ""s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Elfi']/name", std::nullopt, "Elfi"s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']", std::nullopt, ""s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Kolafa']/name", std::nullopt, "Kolafa"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Dan']", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Dan']/name", std::nullopt, "Dan"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Elfi']", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Elfi']/name", std::nullopt, "Elfi"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Kolafa']", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Kolafa']/name", std::nullopt, "Kolafa"s));
             datastore.createItem("/example-schema:person[name='Dan']");
             datastore.createItem("/example-schema:person[name='Elfi']");
             datastore.createItem("/example-schema:person[name='Kolafa']");
@@ -305,7 +307,7 @@ TEST_CASE("setting/getting values")
 
         datastore.setLeaf("/example-schema:bossPerson", value);
         {
-            REQUIRE_CALL(mock, write("/example-schema:bossPerson", std::nullopt, value));
+            REQUIRE_CALL(mockRunning, write("/example-schema:bossPerson", std::nullopt, value));
             datastore.commitChanges();
         }
         REQUIRE(datastore.getItems("/example-schema:bossPerson") == DatastoreAccess::Tree{{"/example-schema:bossPerson", value}});
@@ -313,7 +315,7 @@ TEST_CASE("setting/getting values")
     SECTION("bool values get correctly represented as bools")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:down", std::nullopt, "true"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:down", std::nullopt, "true"s));
             datastore.setLeaf("/example-schema:down", bool{true});
             datastore.commitChanges();
         }
@@ -325,8 +327,8 @@ TEST_CASE("setting/getting values")
     SECTION("getting items from the whole module")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:up", std::nullopt, "true"s));
-            REQUIRE_CALL(mock, write("/example-schema:down", std::nullopt, "false"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:up", std::nullopt, "true"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:down", std::nullopt, "false"s));
             datastore.setLeaf("/example-schema:up", bool{true});
             datastore.setLeaf("/example-schema:down", bool{false});
             datastore.commitChanges();
@@ -342,7 +344,7 @@ TEST_CASE("setting/getting values")
     SECTION("getItems returns correct datatypes")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:leafEnum", std::nullopt, "lol"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:leafEnum", std::nullopt, "lol"s));
             datastore.setLeaf("/example-schema:leafEnum", enum_{"lol"});
             datastore.commitChanges();
         }
@@ -354,12 +356,12 @@ TEST_CASE("setting/getting values")
     SECTION("getItems on a list")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Jan']", std::nullopt, ""s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Jan']/name", std::nullopt, "Jan"s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Michal']", std::nullopt, ""s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Michal']/name", std::nullopt, "Michal"s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Petr']", std::nullopt, ""s));
-            REQUIRE_CALL(mock, write("/example-schema:person[name='Petr']/name", std::nullopt, "Petr"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Jan']", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Jan']/name", std::nullopt, "Jan"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Michal']", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Michal']/name", std::nullopt, "Michal"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Petr']", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:person[name='Petr']/name", std::nullopt, "Petr"s));
             datastore.createItem("/example-schema:person[name='Jan']");
             datastore.createItem("/example-schema:person[name='Michal']");
             datastore.createItem("/example-schema:person[name='Petr']");
@@ -384,7 +386,7 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:pContainer") == expected);
 
         {
-            REQUIRE_CALL(mock, write("/example-schema:pContainer", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:pContainer", std::nullopt, ""s));
             datastore.createItem("/example-schema:pContainer");
             datastore.commitChanges();
         }
@@ -395,7 +397,7 @@ TEST_CASE("setting/getting values")
 
         // Make sure it's not there after we delete it
         {
-            REQUIRE_CALL(mock, write("/example-schema:pContainer", ""s, std::nullopt));
+            REQUIRE_CALL(mockRunning, write("/example-schema:pContainer", ""s, std::nullopt));
             datastore.deleteItem("/example-schema:pContainer");
             datastore.commitChanges();
         }
@@ -425,7 +427,7 @@ TEST_CASE("setting/getting values")
         // Make sure it's not there before we create it
         REQUIRE(datastore.getItems("/example-schema:inventory/stuff") == expected);
         {
-            REQUIRE_CALL(mock, write("/example-schema:inventory/stuff", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:inventory/stuff", std::nullopt, ""s));
             datastore.createItem("/example-schema:inventory/stuff");
             datastore.commitChanges();
         }
@@ -434,7 +436,7 @@ TEST_CASE("setting/getting values")
         };
         REQUIRE(datastore.getItems("/example-schema:inventory/stuff") == expected);
         {
-            REQUIRE_CALL(mock, write("/example-schema:inventory/stuff", ""s, std::nullopt));
+            REQUIRE_CALL(mockRunning, write("/example-schema:inventory/stuff", ""s, std::nullopt));
             datastore.deleteItem("/example-schema:inventory/stuff");
             datastore.commitChanges();
         }
@@ -445,7 +447,7 @@ TEST_CASE("setting/getting values")
     SECTION("floats")
     {
         datastore.setLeaf("/example-schema:leafDecimal", 123.4);
-        REQUIRE_CALL(mock, write("/example-schema:leafDecimal", std::nullopt, "123.4"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafDecimal", std::nullopt, "123.4"s));
         datastore.commitChanges();
         DatastoreAccess::Tree expected{
             {"/example-schema:leafDecimal", 123.4},
@@ -456,7 +458,7 @@ TEST_CASE("setting/getting values")
     SECTION("unions")
     {
         datastore.setLeaf("/example-schema:unionIntString", int32_t{10});
-        REQUIRE_CALL(mock, write("/example-schema:unionIntString", std::nullopt, "10"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:unionIntString", std::nullopt, "10"s));
         datastore.commitChanges();
         DatastoreAccess::Tree expected{
             {"/example-schema:unionIntString", int32_t{10}},
@@ -467,7 +469,7 @@ TEST_CASE("setting/getting values")
     SECTION("identityref")
     {
         datastore.setLeaf("/example-schema:beast", identityRef_{"example-schema", "Mammal"});
-        REQUIRE_CALL(mock, write("/example-schema:beast", std::nullopt, "example-schema:Mammal"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:beast", std::nullopt, "example-schema:Mammal"s));
         datastore.commitChanges();
         DatastoreAccess::Tree expected{
             {"/example-schema:beast", identityRef_{"example-schema", "Mammal"}},
@@ -475,7 +477,7 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:beast") == expected);
 
         datastore.setLeaf("/example-schema:beast", identityRef_{"Whale"});
-        REQUIRE_CALL(mock, write("/example-schema:beast", "example-schema:Mammal", "example-schema:Whale"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:beast", "example-schema:Mammal", "example-schema:Whale"s));
         datastore.commitChanges();
         expected = {
             {"/example-schema:beast", identityRef_{"example-schema", "Whale"}},
@@ -486,7 +488,7 @@ TEST_CASE("setting/getting values")
     SECTION("binary")
     {
         datastore.setLeaf("/example-schema:blob", binary_{"cHduegByIQ=="s});
-        REQUIRE_CALL(mock, write("/example-schema:blob", std::nullopt, "cHduegByIQ=="s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:blob", std::nullopt, "cHduegByIQ=="s));
         datastore.commitChanges();
         DatastoreAccess::Tree expected{
             {"/example-schema:blob", binary_{"cHduegByIQ=="s}},
@@ -497,7 +499,7 @@ TEST_CASE("setting/getting values")
     SECTION("empty")
     {
         datastore.setLeaf("/example-schema:dummy", empty_{});
-        REQUIRE_CALL(mock, write("/example-schema:dummy", std::nullopt, ""s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:dummy", std::nullopt, ""s));
         datastore.commitChanges();
         DatastoreAccess::Tree expected{
             {"/example-schema:dummy", empty_{}},
@@ -508,7 +510,7 @@ TEST_CASE("setting/getting values")
     SECTION("bits")
     {
         datastore.setLeaf("/example-schema:flags", bits_{{"sign", "carry"}});
-        REQUIRE_CALL(mock, write("/example-schema:flags", std::nullopt, "carry sign"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:flags", std::nullopt, "carry sign"s));
         datastore.commitChanges();
         DatastoreAccess::Tree expected{
             {"/example-schema:flags", bits_{{"carry", "sign"}}},
@@ -551,8 +553,8 @@ TEST_CASE("setting/getting values")
     SECTION("leaf list")
     {
         DatastoreAccess::Tree expected;
-        REQUIRE_CALL(mock, write("/example-schema:addresses", std::nullopt, "0.0.0.0"s));
-        REQUIRE_CALL(mock, write("/example-schema:addresses", std::nullopt, "127.0.0.1"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:addresses", std::nullopt, "0.0.0.0"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:addresses", std::nullopt, "127.0.0.1"s));
         datastore.createItem("/example-schema:addresses[.='0.0.0.0']");
         datastore.createItem("/example-schema:addresses[.='127.0.0.1']");
         datastore.commitChanges();
@@ -563,7 +565,7 @@ TEST_CASE("setting/getting values")
         };
         REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
 
-        REQUIRE_CALL(mock, write("/example-schema:addresses", "0.0.0.0"s, std::nullopt));
+        REQUIRE_CALL(mockRunning, write("/example-schema:addresses", "0.0.0.0"s, std::nullopt));
         datastore.deleteItem("/example-schema:addresses[.='0.0.0.0']");
         datastore.commitChanges();
         expected = {
@@ -572,7 +574,7 @@ TEST_CASE("setting/getting values")
         };
         REQUIRE(datastore.getItems("/example-schema:addresses") == expected);
 
-        REQUIRE_CALL(mock, write("/example-schema:addresses", "127.0.0.1"s, std::nullopt));
+        REQUIRE_CALL(mockRunning, write("/example-schema:addresses", "127.0.0.1"s, std::nullopt));
         datastore.deleteItem("/example-schema:addresses[.='127.0.0.1']");
         datastore.commitChanges();
         expected = {};
@@ -604,12 +606,12 @@ TEST_CASE("setting/getting values")
     {
         {
             REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{});
-            REQUIRE_CALL(mock, write("/example-schema:leafInt16", std::nullopt, "123"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:leafInt16", std::nullopt, "123"s));
             datastore.setLeaf("/example-schema:leafInt16", int16_t{123});
             datastore.commitChanges();
         }
         REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{{"/example-schema:leafInt16", int16_t{123}}});
-        REQUIRE_CALL(mock, write("/example-schema:leafInt16", "123"s, std::nullopt));
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafInt16", "123"s, std::nullopt));
         datastore.copyConfig(Datastore::Startup, Datastore::Running);
         REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{});
     }
@@ -618,13 +620,13 @@ TEST_CASE("setting/getting values")
     {
         DatastoreAccess::Tree expected;
         {
-            REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "http"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:protocols", std::nullopt, "http"s));
             // FIXME: Why no notifications for these??
             // ... possibly because my subscription doesn't extract it properly?
             // REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "ftp"s));
             // REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "pop3"s));
-            REQUIRE_CALL(mock, write("/example-schema:protocols", "http"s, "ftp"s));
-            REQUIRE_CALL(mock, write("/example-schema:protocols", "ftp"s, "pop3"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:protocols", "http"s, "ftp"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:protocols", "ftp"s, "pop3"s));
             datastore.createItem("/example-schema:protocols[.='http']");
             datastore.createItem("/example-schema:protocols[.='ftp']");
             datastore.createItem("/example-schema:protocols[.='pop3']");
@@ -641,7 +643,7 @@ TEST_CASE("setting/getting values")
         std::string sourcePath;
         SECTION("begin")
         {
-            REQUIRE_CALL(mock, write("/example-schema:protocols", std::nullopt, "pop3"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:protocols", std::nullopt, "pop3"s));
             sourcePath = "/example-schema:protocols[.='pop3']";
             datastore.moveItem(sourcePath, yang::move::Absolute::Begin);
             datastore.commitChanges();
@@ -657,7 +659,7 @@ TEST_CASE("setting/getting values")
         SECTION("end")
         {
             sourcePath = "/example-schema:protocols[.='http']";
-            REQUIRE_CALL(mock, write("/example-schema:protocols", "pop3"s, "http"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:protocols", "pop3"s, "http"s));
             datastore.moveItem(sourcePath, yang::move::Absolute::End);
             datastore.commitChanges();
             expected = {
@@ -672,7 +674,7 @@ TEST_CASE("setting/getting values")
         SECTION("after")
         {
             sourcePath = "/example-schema:protocols[.='http']";
-            REQUIRE_CALL(mock, write("/example-schema:protocols", "ftp"s, "http"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:protocols", "ftp"s, "http"s));
             datastore.moveItem(sourcePath, yang::move::Relative{yang::move::Relative::Position::After, {{".", "ftp"s}}});
             datastore.commitChanges();
             expected = {
@@ -687,7 +689,7 @@ TEST_CASE("setting/getting values")
         SECTION("before")
         {
             sourcePath = "/example-schema:protocols[.='http']";
-            REQUIRE_CALL(mock, write("/example-schema:protocols", "ftp"s, "http"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:protocols", "ftp"s, "http"s));
             datastore.moveItem(sourcePath, yang::move::Relative{yang::move::Relative::Position::Before, {{".", "pop3"s}}});
             datastore.commitChanges();
             expected = {
@@ -712,12 +714,12 @@ TEST_CASE("setting/getting values")
     {
         DatastoreAccess::Tree expected;
         {
-            REQUIRE_CALL(mock, write("/example-schema:players[name='John']", std::nullopt, ""s));
-            REQUIRE_CALL(mock, write("/example-schema:players[name='John']/name", std::nullopt, "John"s));
-            REQUIRE_CALL(mock, write("/example-schema:players[name='Eve']", ""s, ""s));
-            REQUIRE_CALL(mock, write("/example-schema:players[name='Eve']/name", std::nullopt, "Eve"s));
-            REQUIRE_CALL(mock, write("/example-schema:players[name='Adam']", ""s, ""s));
-            REQUIRE_CALL(mock, write("/example-schema:players[name='Adam']/name", std::nullopt, "Adam"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:players[name='John']", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:players[name='John']/name", std::nullopt, "John"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:players[name='Eve']", ""s, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:players[name='Eve']/name", std::nullopt, "Eve"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:players[name='Adam']", ""s, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:players[name='Adam']/name", std::nullopt, "Adam"s));
             datastore.createItem("/example-schema:players[name='John']");
             datastore.createItem("/example-schema:players[name='Eve']");
             datastore.createItem("/example-schema:players[name='Adam']");
@@ -737,7 +739,7 @@ TEST_CASE("setting/getting values")
         SECTION("begin")
         {
             sourcePath = "/example-schema:players[name='Adam']";
-            REQUIRE_CALL(mock, write("/example-schema:players[name='Adam']", std::nullopt, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:players[name='Adam']", std::nullopt, ""s));
             datastore.moveItem(sourcePath, yang::move::Absolute::Begin);
             datastore.commitChanges();
             expected = {
@@ -754,7 +756,7 @@ TEST_CASE("setting/getting values")
         SECTION("end")
         {
             sourcePath = "/example-schema:players[name='John']";
-            REQUIRE_CALL(mock, write("/example-schema:players[name='John']", ""s, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:players[name='John']", ""s, ""s));
             datastore.moveItem(sourcePath, yang::move::Absolute::End);
             datastore.commitChanges();
             expected = {
@@ -771,7 +773,7 @@ TEST_CASE("setting/getting values")
         SECTION("after")
         {
             sourcePath = "/example-schema:players[name='John']";
-            REQUIRE_CALL(mock, write("/example-schema:players[name='John']", ""s, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:players[name='John']", ""s, ""s));
             datastore.moveItem(sourcePath, yang::move::Relative{yang::move::Relative::Position::After, {{"name", "Eve"s}}});
             datastore.commitChanges();
             expected = {
@@ -788,7 +790,7 @@ TEST_CASE("setting/getting values")
         SECTION("before")
         {
             sourcePath = "/example-schema:players[name='John']";
-            REQUIRE_CALL(mock, write("/example-schema:players[name='John']", ""s, ""s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:players[name='John']", ""s, ""s));
             datastore.moveItem(sourcePath, yang::move::Relative{yang::move::Relative::Position::Before, {{"name", "Adam"s}}});
             datastore.commitChanges();
             expected = {
@@ -806,7 +808,7 @@ TEST_CASE("setting/getting values")
     SECTION("getting /")
     {
         {
-            REQUIRE_CALL(mock, write("/example-schema:leafInt32", std::nullopt, "64"s));
+            REQUIRE_CALL(mockRunning, write("/example-schema:leafInt32", std::nullopt, "64"s));
             datastore.setLeaf("/example-schema:leafInt32", 64);
             datastore.commitChanges();
         }
@@ -828,9 +830,9 @@ TEST_CASE("setting/getting values")
 
     SECTION("two key lists")
     {
-        REQUIRE_CALL(mock, write("/example-schema:point[x='12'][y='10']", std::nullopt, ""s));
-        REQUIRE_CALL(mock, write("/example-schema:point[x='12'][y='10']/x", std::nullopt, "12"s));
-        REQUIRE_CALL(mock, write("/example-schema:point[x='12'][y='10']/y", std::nullopt, "10"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:point[x='12'][y='10']", std::nullopt, ""s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:point[x='12'][y='10']/x", std::nullopt, "12"s));
+        REQUIRE_CALL(mockRunning, write("/example-schema:point[x='12'][y='10']/y", std::nullopt, "10"s));
         datastore.createItem("/example-schema:point[x='12'][y='10']");
         datastore.commitChanges();
         REQUIRE(datastore.dump(DataFormat::Json).find("example-schema:point") != std::string::npos);

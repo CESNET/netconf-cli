@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <optional>
+#include <sysrepo-cpp/Session.hpp>
 #include "datastore_access.hpp"
 
 namespace sysrepo {
@@ -35,7 +36,7 @@ public:
 
 class SysrepoSubscription {
 public:
-    SysrepoSubscription(const std::string& moduleName, Recorder* rec = nullptr);
+    SysrepoSubscription(const std::string& moduleName, Recorder* rec = nullptr, sr_datastore_t ds = SR_DS_RUNNING);
 
 private:
     std::shared_ptr<sysrepo::Connection> m_connection;

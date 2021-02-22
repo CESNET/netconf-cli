@@ -264,7 +264,7 @@ if(BUILD_TESTING)
         add_library(sysreposubscription STATIC
             tests/mock/sysrepo_subscription.cpp
             )
-        target_link_libraries(sysreposubscription PUBLIC datastoreaccess PRIVATE PkgConfig::SYSREPO)
+        target_link_libraries(sysreposubscription PUBLIC datastoreaccess PkgConfig::SYSREPO)
 
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_repositories)
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_netopeer_files)

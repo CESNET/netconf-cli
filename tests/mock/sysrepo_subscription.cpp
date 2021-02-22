@@ -55,10 +55,10 @@ Recorder::~Recorder() = default;
 
 DataSupplier::~DataSupplier() = default;
 
-SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder* rec)
+SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder* rec, sr_datastore_t ds)
     : m_connection(std::make_shared<sysrepo::Connection>())
 {
-    m_session = std::make_shared<sysrepo::Session>(m_connection);
+    m_session = std::make_shared<sysrepo::Session>(m_connection, ds);
     m_subscription = std::make_shared<sysrepo::Subscribe>(m_session);
     sysrepo::ModuleChangeCb cb;
     if (rec) {
