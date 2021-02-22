@@ -270,6 +270,8 @@ struct action_class;
 
 struct exec_class;
 
+struct switch_class;
+
 struct cancel_class;
 
 struct command_class {
