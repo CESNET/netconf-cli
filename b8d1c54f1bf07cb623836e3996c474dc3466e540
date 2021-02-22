@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df2c746d_a8b05c1d",
+        "filename": "src/ast_commands.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-02-22T10:43:24Z",
+      "side": 1,
+      "message": "nit: lowercase, the command won\u0027t take the uppercase form",
+      "revId": "b8d1c54f1bf07cb623836e3996c474dc3466e540",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
