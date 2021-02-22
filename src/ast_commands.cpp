@@ -56,3 +56,8 @@ bool exec_::operator==(const exec_& other) const
 {
     return this->m_path == other.m_path;
 }
+
+bool switch_::operator==(const switch_& other) const
+{
+    return this->m_target == other.m_target;
+}
