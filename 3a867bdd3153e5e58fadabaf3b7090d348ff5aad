@@ -51,6 +51,24 @@
       "parentUuid": "37baaf57_88f8208e",
       "revId": "3a867bdd3153e5e58fadabaf3b7090d348ff5aad",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b916b6a4_1ca4fc70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-02-22T10:30:18Z",
+      "side": 1,
+      "message": "a specific example of when this failed was in the bugreport, but I agree that going via the ProxyDataStore is probably some extra work, so thanks for adding a test like the one you added.",
+      "parentUuid": "71b1f6ae_412142dd",
+      "revId": "3a867bdd3153e5e58fadabaf3b7090d348ff5aad",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
