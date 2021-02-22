@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73ffdc6c_62625f1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-02-22T18:43:41Z",
+      "side": 1,
+      "message": "I was confused for a while until I figured out that this refers exclusively to the test suite",
+      "revId": "eaf566825a1b0cb52b5f0d435b19ef800a9846b9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
