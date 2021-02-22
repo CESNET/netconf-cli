@@ -107,3 +107,8 @@ std::shared_ptr<DatastoreAccess> ProxyDatastore::pickDatastore(const std::string
         return m_inputDatastore;
     }
 }
+
+void ProxyDatastore::setMode(const DatastoreMode mode)
+{
+    m_datastore->setMode(mode);
+}

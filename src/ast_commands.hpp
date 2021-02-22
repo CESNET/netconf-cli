@@ -11,6 +11,7 @@
 #include <boost/spirit/home/x3/support/ast/position_tagged.hpp>
 #include "ast_path.hpp"
 #include "ast_values.hpp"
+#include "datastore_access.hpp"
 #include "yang_operations.hpp"
 
 namespace x3 = boost::spirit::x3;
@@ -287,8 +288,32 @@ struct cancel_ : x3::position_tagged {
     bool operator==(const cancel_& other) const;
 };
 
+struct switch_ : x3::position_tagged {
+    static constexpr auto name = "switch";
+    static constexpr auto shortHelp = "switch - Switch datastore mode.";
+    static constexpr auto longHelp = R"(
+    switch <mode>
+
+    This command switches the datastore mode. Available modes are:
+
+    Operational:
+        - reads from operational, writes to running
+    Startup:
+        - reads from startup, writes to startup
+    Running:
+        - reads from running, writes to running
+
+
+    Usage:
+        /> switch running
+        /> switch startup
+        /> switch operational)";
+    bool operator==(const switch_& other) const;
+    DatastoreMode m_mode;
+};
+
 struct help_;
-using CommandTypes = boost::mpl::vector<cancel_, cd_, commit_, copy_, create_, delete_, describe_, discard_, dump_, exec_, get_, help_, ls_, move_, prepare_, set_>;
+using CommandTypes = boost::mpl::vector<cancel_, cd_, commit_, copy_, create_, delete_, describe_, discard_, dump_, exec_, get_, help_, ls_, move_, prepare_, set_, switch_>;
 struct help_ : x3::position_tagged {
     static constexpr auto name = "help";
     static constexpr auto shortHelp = "help - Print help for commands.";
@@ -339,3 +364,4 @@ BOOST_FUSION_ADAPT_STRUCT(move_, m_source, m_destination)
 BOOST_FUSION_ADAPT_STRUCT(dump_, m_format)
 BOOST_FUSION_ADAPT_STRUCT(prepare_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(exec_, m_path)
+BOOST_FUSION_ADAPT_STRUCT(switch_, m_mode)

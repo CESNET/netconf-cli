@@ -31,6 +31,7 @@ x3::rule<move_class, move_> const move = "move";
 x3::rule<dump_class, dump_> const dump = "dump";
 x3::rule<prepare_class, prepare_> const prepare = "prepare";
 x3::rule<exec_class, exec_> const exec = "exec";
+x3::rule<switch_class, exec_> const switch_rule = "switch";
 x3::rule<cancel_class, cancel_> const cancel = "cancel";
 x3::rule<command_class, command_> const command = "command";
 
@@ -139,8 +140,8 @@ auto const copy_def =
 auto const describe_def =
     describe_::name >> space_separator > anyPath;
 
-struct mode_table : x3::symbols<MoveMode> {
-    mode_table()
+struct move_mode_table : x3::symbols<MoveMode> {
+    move_mode_table()
     {
         add
             ("after", MoveMode::After)
@@ -148,7 +149,7 @@ struct mode_table : x3::symbols<MoveMode> {
             ("begin", MoveMode::Begin)
             ("end", MoveMode::End);
     }
-} const mode_table;
+} const move_mode_table;
 
 struct move_absolute_table : x3::symbols<yang::move::Absolute> {
     move_absolute_table()
@@ -264,6 +265,25 @@ auto const prepare_def =
 auto const exec_def =
     exec_::name > -(space_separator > -as<dataPath_>[RpcActionPath<AllowInput::No>{}]);
 
+const auto dsModeSuggestions = x3::eps[([](auto& ctx) {
+    auto& parserContext = x3::get<parser_context_tag>(ctx);
+    parserContext.m_suggestions = {Completion{"running", " "}, Completion{"startup", " "}, Completion{"operational", " "}};
+    parserContext.m_completionIterator = _where(ctx).begin();
+})];
+
+struct ds_mode_table : x3::symbols<DatastoreMode> {
+    ds_mode_table ()
+    {
+        add
+            ("operational", DatastoreMode::Operational)
+            ("startup", DatastoreMode::Startup)
+            ("running", DatastoreMode::Running);
+    }
+} const ds_mode_table;
+
+auto const switch_rule_def =
+    switch_::name > space_separator > dsModeSuggestions > ds_mode_table;
+
 auto const cancel_def =
     cancel_::name >> x3::attr(cancel_{});
 
@@ -274,7 +294,7 @@ auto const createCommandSuggestions_def =
     x3::eps;
 
 auto const command_def =
-    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | prepare | exec | cancel];
+    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | prepare | exec | cancel | switch_rule];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -295,6 +315,7 @@ BOOST_SPIRIT_DEFINE(move)
 BOOST_SPIRIT_DEFINE(dump)
 BOOST_SPIRIT_DEFINE(prepare)
 BOOST_SPIRIT_DEFINE(exec)
+BOOST_SPIRIT_DEFINE(switch_rule)
 BOOST_SPIRIT_DEFINE(cancel)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)

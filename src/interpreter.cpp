@@ -247,6 +247,11 @@ void Interpreter::operator()(const cancel_&) const
     m_datastore.cancel();
 }
 
+void Interpreter::operator()(const switch_& switch_cmd) const
+{
+    m_datastore.setMode(switch_cmd.m_mode);
+}
+
 struct commandLongHelpVisitor : boost::static_visitor<const char*> {
     template <typename T>
     auto constexpr operator()(boost::type<T>) const

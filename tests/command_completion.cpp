@@ -21,7 +21,7 @@ TEST_CASE("command completion")
     int expectedContextLength;
     SECTION("no prefix")
     {
-        expectedCompletions = {"cd", "copy", "create", "delete", "set", "commit", "get", "ls", "discard", "help", "describe", "move", "dump", "prepare", "exec", "cancel"};
+        expectedCompletions = {"cd", "copy", "create", "delete", "set", "commit", "get", "ls", "discard", "help", "describe", "move", "dump", "prepare", "exec", "cancel", "switch"};
         expectedContextLength = 0;
         SECTION("no space")
         {
@@ -72,6 +72,13 @@ TEST_CASE("command completion")
     {
         input = "copy ";
         expectedCompletions = {"running", "startup"};
+        expectedContextLength = 0;
+    }
+
+    SECTION("switch datastore modes")
+    {
+        input = "switch ";
+        expectedCompletions = {"running", "startup", "operational"};
         expectedContextLength = 0;
     }
 

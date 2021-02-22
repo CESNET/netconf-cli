@@ -28,6 +28,7 @@ public:
     void discardChanges();
     void copyConfig(const Datastore source, const Datastore destination);
     [[nodiscard]] std::string dump(const DataFormat format) const;
+    void setMode(const DatastoreMode mode);
 
     void initiate(const std::string& path);
     [[nodiscard]] DatastoreAccess::Tree execute();
