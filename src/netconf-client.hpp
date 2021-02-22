@@ -20,6 +20,7 @@ namespace libnetconf {
 enum class NmdaDatastore {
     Startup,
     Running,
+    Candidate,
     Operational
 };
 namespace client {
@@ -55,6 +56,7 @@ public:
                     const NC_RPC_EDIT_TESTOPT testOption,
                     const NC_RPC_EDIT_ERROPT errorOption,
                     const std::string& data);
+    void editData(const NmdaDatastore datastore, const std::string& data);
     void copyConfigFromString(const NC_DATASTORE target, const std::string& data);
     std::shared_ptr<libyang::Data_Node> rpc_or_action(const std::string& xmlData);
     void copyConfig(const NC_DATASTORE source, const NC_DATASTORE destination);

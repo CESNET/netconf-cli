@@ -119,7 +119,7 @@ void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move:
 void NetconfAccess::doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode)
 {
     auto data = dataNode->print_mem(LYD_XML, 0);
-    m_session->editConfig(NC_DATASTORE_CANDIDATE, NC_RPC_EDIT_DFLTOP_MERGE, NC_RPC_EDIT_TESTOPT_TESTSET, NC_RPC_EDIT_ERROPT_STOP, data);
+    m_session->editData(libnetconf::NmdaDatastore::Candidate, data);
 }
 
 void NetconfAccess::commitChanges()

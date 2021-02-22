@@ -314,6 +314,8 @@ const char* datastoreToString(NmdaDatastore datastore)
         return "ietf-datastores:startup";
     case NmdaDatastore::Running:
         return "ietf-datastores:running";
+    case NmdaDatastore::Candidate:
+        return "ietf-datastores:candidate";
     case NmdaDatastore::Operational:
         return "ietf-datastores:operational";
     }
@@ -327,6 +329,15 @@ std::shared_ptr<libyang::Data_Node> Session::getData(const NmdaDatastore datasto
         throw std::runtime_error("Cannot create get RPC");
     }
     return impl::do_get(this, std::move(rpc));
+}
+
+void Session::editData(const NmdaDatastore datastore, const std::string& data)
+{
+    auto rpc = impl::guarded(nc_rpc_editdata(datastoreToString(datastore), NC_RPC_EDIT_DFLTOP_MERGE, data.c_str(), NC_PARAMTYPE_CONST));
+    if (!rpc) {
+        throw std::runtime_error("Cannot create get RPC");
+    }
+    return impl::do_rpc_ok(this, std::move(rpc));
 }
 
 std::string Session::getSchema(const std::string_view identifier, const std::optional<std::string_view> version)
