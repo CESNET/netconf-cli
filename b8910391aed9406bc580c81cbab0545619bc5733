@@ -16,6 +16,24 @@
       "message": "please explain in an inline comment or in the commit message why this is important",
       "revId": "b8910391aed9406bc580c81cbab0545619bc5733",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0e3513c_bb373e74",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-23T07:58:24Z",
+      "side": 1,
+      "message": "It actually wasn\u0027t important, now that this patch is taking a different approach (with the targets)",
+      "parentUuid": "1b0897ad_5a09ae56",
+      "revId": "b8910391aed9406bc580c81cbab0545619bc5733",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
