@@ -52,6 +52,24 @@
       "parentUuid": "b1d58a54_c05fea25",
       "revId": "2b9f1def3da9244e402e4588d6a36bd35b85fab9",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fcf3a67_f0f959c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-02-23T10:25:29Z",
+      "side": 1,
+      "message": "Vasek, this old comment suggests that some special handling is needed for copy-config. Is that still the case? Do we have a test for this?",
+      "parentUuid": "8b102021_85bcd5cc",
+      "revId": "2b9f1def3da9244e402e4588d6a36bd35b85fab9",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
