@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90b4f226_1adb15f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-08T09:04:11Z",
+      "side": 1,
+      "message": "Yes, please add a link to the bugreport to the commit message. Once that\u0027s done, this is good to go.",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 61
+      },
+      "revId": "c1e7cabb12428dc3b7936b5cb7c7b5e6d9e621fc",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0349853_9540f747",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-08T09:04:11Z",
+      "side": 1,
+      "message": "So this is the actual fix for the bug, except that then the code wouldn\u0027t work and required a fix for completion. Gotcha.",
+      "revId": "c1e7cabb12428dc3b7936b5cb7c7b5e6d9e621fc",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
