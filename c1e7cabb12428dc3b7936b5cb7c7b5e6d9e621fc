@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b6a3bef4_9afcec0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-03-08T11:06:46Z",
+      "side": 1,
+      "message": "Done. The situation actually changed a little, so I updated the commit message with info.",
+      "parentUuid": "90b4f226_1adb15f5",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 61
+      },
+      "revId": "c1e7cabb12428dc3b7936b5cb7c7b5e6d9e621fc",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f0349853_9540f747",
         "filename": "src/grammars.hpp",
         "patchSetId": 1
