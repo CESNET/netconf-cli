@@ -348,6 +348,7 @@ if(BUILD_TESTING)
     target_link_libraries(test_path_utils path)
     cli_test(keyvalue_completion)
     cli_test(parser_rpc)
+    cli_test(misc_commands)
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tests/init_datastore.bash.in
         ${CMAKE_CURRENT_BINARY_DIR}/init_datastore.bash @ONLY)

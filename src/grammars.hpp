@@ -31,7 +31,7 @@ x3::rule<move_class, move_> const move = "move";
 x3::rule<dump_class, dump_> const dump = "dump";
 x3::rule<prepare_class, prepare_> const prepare = "prepare";
 x3::rule<exec_class, exec_> const exec = "exec";
-x3::rule<switch_class, exec_> const switch_rule = "switch";
+x3::rule<switch_class, switch_> const switch_rule = "switch";
 x3::rule<cancel_class, cancel_> const cancel = "cancel";
 x3::rule<command_class, command_> const command = "command";
 
@@ -282,7 +282,7 @@ struct ds_target_table : x3::symbols<DatastoreTarget> {
 } const ds_target_table;
 
 auto const switch_rule_def =
-    switch_::name > space_separator > dsTargetSuggestions > ds_target_table;
+    switch_::name > space_separator > as<x3::unused_type>[dsTargetSuggestions] > ds_target_table;
 
 auto const cancel_def =
     cancel_::name >> x3::attr(cancel_{});
