@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b1d199a_93faecf7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-08T15:45:41Z",
+      "side": 1,
+      "message": "I see that the test suite passes, but I have no clue if the issue helped uncover something. So, OK to merge from my point of view, but feel free to fix this properly (or open a tracking issue if you prefer to perform some biggish refactoring later on).",
+      "revId": "1d593904dd5f775642dbfd591d19dc0409600c8b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
