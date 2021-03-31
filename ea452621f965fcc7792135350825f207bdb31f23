@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af11f7e2_f839d326",
+        "filename": "src/ast_commands.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-31T10:47:44Z",
+      "side": 1,
+      "message": "This patch is clearly incomplete because it fails to use `stejné` here and `a_zároveň` for \u0026\u0026. We cannot afford to confuse these poor sods^H^H^Hthe maintenance programmers by such horrid inconsistencies.",
+      "range": {
+        "startLine": 13,
+        "startChar": 22,
+        "endLine": 13,
+        "endChar": 24
+      },
+      "revId": "ea452621f965fcc7792135350825f207bdb31f23",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
