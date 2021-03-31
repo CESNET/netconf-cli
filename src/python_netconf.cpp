@@ -5,6 +5,7 @@
  *
 */
 
+#include "czech.h"
 #include <pybind11/functional.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -23,8 +24,8 @@ namespace pybind11::detail {
     template <>
     struct visit_helper<boost::variant> {
         template <typename... Args>
-        static auto call(Args &&...args) -> decltype(boost::apply_visitor(args...)) {
-            return boost::apply_visitor(args...);
+        stálé auto call(Args &&...args) -> decltype(boost::apply_visitor(args...)) {
+            vrať boost::apply_visitor(args...);
         }
     };
 }
@@ -35,35 +36,35 @@ PYBIND11_MODULE(netconf_cli_py, m) {
 
     pybind11::class_<special_>(m, "YangSpecial")
             .def("__repr__",
-                 [](const special_ s) {
-                    return "<netconf_cli_py.YangSpecial " + specialValueToString(s) + ">";
+                 [](neměnné special_ s) {
+                    vrať "<netconf_cli_py.YangSpecial " + specialValueToString(s) + ">";
                  });
 
     pybind11::class_<enum_>(m, "YangEnum")
             .def("__repr__",
-                 [](const enum_ v) {
-                    return "<netconf_cli_py.YangEnum '" + v.m_value + "'>";
+                 [](neměnné enum_ v) {
+                    vrať "<netconf_cli_py.YangEnum '" + v.m_value + "'>";
                  });
 
     pybind11::class_<binary_>(m, "YangBinary")
             .def("__repr__",
-                 [](const binary_ v) {
-                    return "<netconf_cli_py.YangBinary '" + v.m_value + "'>";
+                 [](neměnné binary_ v) {
+                    vrať "<netconf_cli_py.YangBinary '" + v.m_value + "'>";
                  });
 
     pybind11::class_<identityRef_>(m, "YangIdentityRef")
             .def("__repr__",
-                 [](const identityRef_ v) {
-                    return "<netconf_cli_py.YangIdentityRef '"s
+                 [](neměnné identityRef_ v) {
+                    vrať "<netconf_cli_py.YangIdentityRef '"s
                             + (v.m_prefix ? v.m_prefix->m_name + ":" : ""s) + v.m_value + "'>";
                  });
 
     pybind11::class_<NetconfAccess>(m, "NetconfAccess")
-            .def(pybind11::init<const std::string&>(), "socketPath"_a)
+            .def(pybind11::init<neměnné std::string&>(), "socketPath"_a)
             .def(pybind11::init(
-                     [](const std::string& host, const uint16_t port, const std::string& user, const libnetconf::client::KbdInteractiveCb interactiveAuth) {
+                     [](neměnné std::string& host, neměnné nčíslo16_t port, neměnné std::string& user, neměnné libnetconf::client::KbdInteractiveCb interactiveAuth) {
                         auto session = libnetconf::client::Session::connectKbdInteractive(host, port, user, interactiveAuth);
-                        return std::make_unique<NetconfAccess>(std::move(session));
+                        vrať std::make_unique<NetconfAccess>(std::move(session));
                     }),
                     "server"_a, "port"_a=830, "username"_a, "interactive_auth"_a)
             .def("getItems", &NetconfAccess::getItems, "xpath"_a)

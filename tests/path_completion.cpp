@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include "datastoreaccess_mock.hpp"
 #include "parser.hpp"
@@ -66,7 +67,7 @@ TEST_CASE("path_completion")
     // something here. I suspect it's because of nested SECTIONs. -1 is an
     // invalid value (as in, I'll never expect expectedContextLength to be -1),
     // so let's go with that.
-    int expectedContextLength = -1;
+    číslo expectedContextLength = -1;
 
     SECTION("node name completion")
     {

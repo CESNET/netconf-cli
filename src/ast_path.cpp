@@ -6,47 +6,48 @@
  *
 */
 
+#include "czech.h"
 #include <experimental/iterator>
 #include <sstream>
 #include "ast_path.hpp"
 #include "utils.hpp"
 
-container_::container_(const std::string& name)
+container_::container_(neměnné std::string& name)
     : m_name(name)
 {
 }
 
-bool container_::operator==(const container_& b) const
+pravdivost container_::operator==(neměnné container_& b) neměnné
 {
-    return this->m_name == b.m_name;
+    vrať this->m_name == b.m_name;
 }
 
-leaf_::leaf_(const std::string& name)
+leaf_::leaf_(neměnné std::string& name)
     : m_name(name)
 {
 }
 
-bool leafListElement_::operator==(const leafListElement_& b) const
+pravdivost leafListElement_::operator==(neměnné leafListElement_& b) neměnné
 {
-    return this->m_name == b.m_name && this->m_value == b.m_value;
+    vrať this->m_name == b.m_name && this->m_value == b.m_value;
 }
 
-leafList_::leafList_(const std::string& name)
+leafList_::leafList_(neměnné std::string& name)
     : m_name(name)
 {
 }
 
-bool leafList_::operator==(const leafList_& b) const
+pravdivost leafList_::operator==(neměnné leafList_& b) neměnné
 {
-    return this->m_name == b.m_name;
+    vrať this->m_name == b.m_name;
 }
 
-bool module_::operator==(const module_& b) const
+pravdivost module_::operator==(neměnné module_& b) neměnné
 {
-    return this->m_name == b.m_name;
+    vrať this->m_name == b.m_name;
 }
 
-dataNode_::dataNode_() = default;
+dataNode_::dataNode_() = výchozí;
 
 dataNode_::dataNode_(decltype(m_suffix) node)
     : m_suffix(node)
@@ -76,89 +77,89 @@ schemaNode_::schemaNode_(module_ module, decltype(m_suffix) node)
 {
 }
 
-schemaNode_::schemaNode_() = default;
+schemaNode_::schemaNode_() = výchozí;
 
-bool schemaNode_::operator==(const schemaNode_& b) const
+pravdivost schemaNode_::operator==(neměnné schemaNode_& b) neměnné
 {
-    return this->m_suffix == b.m_suffix && this->m_prefix == b.m_prefix;
+    vrať this->m_suffix == b.m_suffix && this->m_prefix == b.m_prefix;
 }
 
-bool dataNode_::operator==(const dataNode_& b) const
+pravdivost dataNode_::operator==(neměnné dataNode_& b) neměnné
 {
-    return this->m_suffix == b.m_suffix && this->m_prefix == b.m_prefix;
+    vrať this->m_suffix == b.m_suffix && this->m_prefix == b.m_prefix;
 }
 
-bool leaf_::operator==(const leaf_& b) const
+pravdivost leaf_::operator==(neměnné leaf_& b) neměnné
 {
-    return this->m_name == b.m_name;
+    vrať this->m_name == b.m_name;
 }
 
-listElement_::listElement_(const std::string& listName, const ListInstance& keys)
+listElement_::listElement_(neměnné std::string& listName, neměnné ListInstance& keys)
     : m_name(listName)
     , m_keys(keys)
 {
 }
 
-bool listElement_::operator==(const listElement_& b) const
+pravdivost listElement_::operator==(neměnné listElement_& b) neměnné
 {
-    return (this->m_name == b.m_name && this->m_keys == b.m_keys);
+    vrať (this->m_name == b.m_name && this->m_keys == b.m_keys);
 }
 
-bool list_::operator==(const list_& b) const
+pravdivost list_::operator==(neměnné list_& b) neměnné
 {
-    return (this->m_name == b.m_name);
+    vrať (this->m_name == b.m_name);
 }
 
-bool rpcNode_::operator==(const rpcNode_& other) const
+pravdivost rpcNode_::operator==(neměnné rpcNode_& other) neměnné
 {
-    return this->m_name == other.m_name;
+    vrať this->m_name == other.m_name;
 }
 
-bool actionNode_::operator==(const actionNode_& other) const
+pravdivost actionNode_::operator==(neměnné actionNode_& other) neměnné
 {
-    return this->m_name == other.m_name;
+    vrať this->m_name == other.m_name;
 }
 
-list_::list_(const std::string& listName)
+list_::list_(neměnné std::string& listName)
     : m_name(listName)
 {
 }
 
 namespace {
 template <typename T, typename U>
-auto findFirstOf(const std::vector<U>& nodes)
+auto findFirstOf(neměnné std::vector<U>& nodes)
 {
-    return std::find_if(nodes.begin(), nodes.end(), [](const auto& e) {
-        return std::holds_alternative<T>(e.m_suffix);
+    vrať std::find_if(nodes.begin(), nodes.end(), [](neměnné auto& e) {
+        vrať std::holds_alternative<T>(e.m_suffix);
     });
 }
 
 template <typename T>
-void validatePathNodes(const std::vector<T>& nodes)
+prázdno validatePathNodes(neměnné std::vector<T>& nodes)
 {
     static_assert(std::is_same<T, dataNode_>() || std::is_same<T, schemaNode_>());
 
-    if (nodes.empty()) {
+    když (nodes.empty()) {
         // there are default ctors, so it makes sense to specify the same thing via explicit args and not fail
-        return;
+        vrať;
     }
 
-    if (auto firstLeaf = findFirstOf<leaf_>(nodes);
+    když (auto firstLeaf = findFirstOf<leaf_>(nodes);
             firstLeaf != nodes.end() && firstLeaf != nodes.end() - 1) {
         throw std::logic_error{"Cannot put any extra nodes after a leaf"};
     }
 
-    if (auto firstLeafList = findFirstOf<leafList_>(nodes);
+    když (auto firstLeafList = findFirstOf<leafList_>(nodes);
             firstLeafList != nodes.end() && firstLeafList != nodes.end() - 1) {
         throw std::logic_error{"Cannot put any extra nodes after a leaf-list"};
     }
 
-    if constexpr (std::is_same<T, dataNode_>()) {
-        if (auto firstLeafListElements = findFirstOf<leafListElement_>(nodes);
+    když constexpr (std::is_same<T, dataNode_>()) {
+        když (auto firstLeafListElements = findFirstOf<leafListElement_>(nodes);
                 firstLeafListElements != nodes.end() && firstLeafListElements != nodes.end() - 1) {
             throw std::logic_error{"Cannot put any extra nodes after a leaf-list with element specification"};
         }
-        if (auto firstList = findFirstOf<list_>(nodes);
+        když (auto firstList = findFirstOf<list_>(nodes);
                 firstList != nodes.end() && firstList != nodes.end() - 1) {
             throw std::logic_error{
                 "A list with no key specification can be present only as a last item in a dataPath. Did you mean to use a schemaPath?"
@@ -168,58 +169,58 @@ void validatePathNodes(const std::vector<T>& nodes)
 }
 }
 
-schemaPath_::schemaPath_() = default;
+schemaPath_::schemaPath_() = výchozí;
 
-schemaPath_::schemaPath_(const Scope scope, const std::vector<schemaNode_>& nodes)
+schemaPath_::schemaPath_(neměnné Scope scope, neměnné std::vector<schemaNode_>& nodes)
     : m_scope(scope)
     , m_nodes(nodes)
 {
     validatePathNodes(m_nodes);
 }
 
-bool schemaPath_::operator==(const schemaPath_& b) const
+pravdivost schemaPath_::operator==(neměnné schemaPath_& b) neměnné
 {
-    if (this->m_nodes.size() != b.m_nodes.size()) {
-        return false;
+    když (this->m_nodes.size() != b.m_nodes.size()) {
+        vrať false;
     }
-    return this->m_nodes == b.m_nodes;
+    vrať this->m_nodes == b.m_nodes;
 }
 
-dataPath_::dataPath_() = default;
+dataPath_::dataPath_() = výchozí;
 
-dataPath_::dataPath_(const Scope scope, const std::vector<dataNode_>& nodes)
+dataPath_::dataPath_(neměnné Scope scope, neměnné std::vector<dataNode_>& nodes)
     : m_scope(scope)
     , m_nodes(nodes)
 {
     validatePathNodes(m_nodes);
 }
 
-bool dataPath_::operator==(const dataPath_& b) const
+pravdivost dataPath_::operator==(neměnné dataPath_& b) neměnné
 {
-    if (this->m_nodes.size() != b.m_nodes.size()) {
-        return false;
+    když (this->m_nodes.size() != b.m_nodes.size()) {
+        vrať false;
     }
-    return this->m_nodes == b.m_nodes;
+    vrať this->m_nodes == b.m_nodes;
 }
 
 struct nodeToSchemaStringVisitor {
-    std::string operator()(const nodeup_&) const
+    std::string operator()(neměnné nodeup_&) neměnné
     {
-        return "..";
+        vrať "..";
     }
     template <class T>
-    std::string operator()(const T& node) const
+    std::string operator()(neměnné T& node) neměnné
     {
-        return node.m_name;
+        vrať node.m_name;
     }
 };
 
-std::string escapeListKeyString(const std::string& what)
+std::string escapeListKeyString(neměnné std::string& what)
 {
     // If we have both single and double quote, then we're screwed, but that "shouldn't happen"
     // in <= YANG 1.1 due to limitations in XPath 1.0.
-    if (what.find('\'') != std::string::npos) {
-        return '\"' + what + '\"';
+    když (what.find('\'') != std::string::npos) {
+        vrať '\"' + what + '\"';
     } else {
         return '\'' + what + '\'';
     }
@@ -240,26 +241,26 @@ struct nodeToDataStringVisitor {
     {
         return node.m_name + "[.=" + escapeListKeyString(leafDataToString(node.m_value)) + "]";
     }
-    std::string operator()(const nodeup_&) const
+    std::string operator()(neměnné nodeup_&) neměnné
     {
-        return "..";
+        vrať "..";
     }
     template <class T>
-    std::string operator()(const T& node) const
+    std::string operator()(neměnné T& node) neměnné
     {
-        return node.m_name;
+        vrať node.m_name;
     }
 };
 
 std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node)
 {
-    return std::visit(nodeToSchemaStringVisitor(), node.m_suffix);
+    vrať std::visit(nodeToSchemaStringVisitor(), node.m_suffix);
 }
 
-std::string pathToDataString(const dataPath_& path, Prefixes prefixes)
+std::string pathToDataString(neměnné dataPath_& path, Prefixes prefixes)
 {
     std::string res;
-    if (path.m_scope == Scope::Absolute) {
+    když (path.m_scope == Scope::Absolute) {
         res = "/";
     }
 
@@ -288,73 +289,73 @@ std::string pathToSchemaString(const schemaPath_& path, Prefixes prefixes)
             res = joinPaths(res, (prefixes == Prefixes::Always ? path.m_nodes.at(0).m_prefix.value().m_name + ":" : "") + std::visit(nodeToSchemaStringVisitor(), it.m_suffix));
         }
     }
-    return res;
+    vrať res;
 }
 
-std::string pathToSchemaString(const dataPath_& path, Prefixes prefixes)
+std::string pathToSchemaString(neměnné dataPath_& path, Prefixes prefixes)
 {
-    return pathToSchemaString(dataPathToSchemaPath(path), prefixes);
+    vrať pathToSchemaString(dataPathToSchemaPath(path), prefixes);
 }
 
 struct dataSuffixToSchemaSuffix {
     using ReturnType = decltype(schemaNode_::m_suffix);
-    ReturnType operator()(const listElement_& listElement) const
+    ReturnType operator()(neměnné listElement_& listElement) neměnné
     {
-        return list_{listElement.m_name};
+        vrať list_{listElement.m_name};
     }
 
-    ReturnType operator()(const leafListElement_& leafListElement) const
+    ReturnType operator()(neměnné leafListElement_& leafListElement) neměnné
     {
-        return leafList_{leafListElement.m_name};
+        vrať leafList_{leafListElement.m_name};
     }
 
     template <typename T>
-    ReturnType operator()(const T& suffix) const
+    ReturnType operator()(neměnné T& suffix) neměnné
     {
-        return suffix;
+        vrať suffix;
     }
 };
 
-schemaNode_ dataNodeToSchemaNode(const dataNode_& node)
+schemaNode_ dataNodeToSchemaNode(neměnné dataNode_& node)
 {
     schemaNode_ res;
     res.m_prefix = node.m_prefix;
     res.m_suffix = std::visit(dataSuffixToSchemaSuffix(), node.m_suffix);
-    return res;
+    vrať res;
 }
 
-schemaPath_ dataPathToSchemaPath(const dataPath_& path)
+schemaPath_ dataPathToSchemaPath(neměnné dataPath_& path)
 {
     schemaPath_ res{path.m_scope, {}};
 
     std::transform(path.m_nodes.begin(), path.m_nodes.end(),
                    std::back_inserter(res.m_nodes),
-                   [](const dataNode_& node) { return dataNodeToSchemaNode(node); });
+                   [](neměnné dataNode_& node) { vrať dataNodeToSchemaNode(node); });
 
-    return res;
+    vrať res;
 }
 
 namespace {
 template <typename NodeType>
-void impl_pushFragment(std::vector<NodeType>& where, const NodeType& what)
+prázdno impl_pushFragment(std::vector<NodeType>& where, neměnné NodeType& what)
 {
-    if (std::holds_alternative<nodeup_>(what.m_suffix)) {
-        if (!where.empty()) { // Allow going up, when already at root
+    když (std::holds_alternative<nodeup_>(what.m_suffix)) {
+        když (!where.empty()) { // Allow going up, when already at root
             where.pop_back();
         }
-    } else {
+    } jinak {
         where.emplace_back(what);
     }
 }
 }
 
-void schemaPath_::pushFragment(const schemaNode_& fragment)
+prázdno schemaPath_::pushFragment(neměnné schemaNode_& fragment)
 {
     impl_pushFragment(m_nodes, fragment);
     validatePathNodes(m_nodes);
 }
 
-void dataPath_::pushFragment(const dataNode_& fragment)
+prázdno dataPath_::pushFragment(neměnné dataNode_& fragment)
 {
     impl_pushFragment(m_nodes, fragment);
     validatePathNodes(m_nodes);

@@ -4,6 +4,7 @@
  * Written by Václav Kubernát <kubernat@cesnet.cz>
  *
 */
+#include "czech.h"
 #include <set>
 #include <string>
 struct Completion {
@@ -11,8 +12,8 @@ struct Completion {
         Always,
         IfFullMatch
     };
-    bool operator<(const Completion& b) const;
-    bool operator==(const Completion& b) const;
+    pravdivost operator<(neměnné Completion& b) neměnné;
+    pravdivost operator==(neměnné Completion& b) neměnné;
     std::string m_value;
 
     /** A completion can have a suffix specified. This suffix is appended to the completion, if it's the only valid completion present in
@@ -32,4 +33,4 @@ struct Completion {
 };
 
 /** Returns a subset of the original set with only the strings starting with prefix */
-std::set<Completion> filterByPrefix(const std::set<Completion>& set, const std::string_view prefix);
+std::set<Completion> filterByPrefix(neměnné std::set<Completion>& set, neměnné std::string_view prefix);

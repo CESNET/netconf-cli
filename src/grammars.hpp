@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "czech.h"
 #include <boost/spirit/home/x3.hpp>
 #include "ast_commands.hpp"
 #include "ast_handlers.hpp"
@@ -16,26 +17,26 @@
 #include "path_parser.hpp"
 
 
-x3::rule<discard_class, discard_> const discard = "discard";
-x3::rule<ls_class, ls_> const ls = "ls";
-x3::rule<cd_class, cd_> const cd = "cd";
-x3::rule<set_class, set_> const set = "set";
-x3::rule<get_class, get_> const get = "get";
-x3::rule<create_class, create_> const create = "create";
-x3::rule<delete_class, delete_> const delete_rule = "delete_rule";
-x3::rule<commit_class, commit_> const commit = "commit";
-x3::rule<describe_class, describe_> const describe = "describe";
-x3::rule<help_class, help_> const help = "help";
-x3::rule<copy_class, copy_> const copy = "copy";
-x3::rule<move_class, move_> const move = "move";
-x3::rule<dump_class, dump_> const dump = "dump";
-x3::rule<prepare_class, prepare_> const prepare = "prepare";
-x3::rule<exec_class, exec_> const exec = "exec";
-x3::rule<switch_class, switch_> const switch_rule = "switch";
-x3::rule<cancel_class, cancel_> const cancel = "cancel";
-x3::rule<command_class, command_> const command = "command";
+x3::rule<discard_class, discard_> neměnné discard = "discard";
+x3::rule<ls_class, ls_> neměnné ls = "ls";
+x3::rule<cd_class, cd_> neměnné cd = "cd";
+x3::rule<set_class, set_> neměnné set = "set";
+x3::rule<get_class, get_> neměnné get = "get";
+x3::rule<create_class, create_> neměnné create = "create";
+x3::rule<delete_class, delete_> neměnné delete_rule = "delete_rule";
+x3::rule<commit_class, commit_> neměnné commit = "commit";
+x3::rule<describe_class, describe_> neměnné describe = "describe";
+x3::rule<help_class, help_> neměnné help = "help";
+x3::rule<copy_class, copy_> neměnné copy = "copy";
+x3::rule<move_class, move_> neměnné move = "move";
+x3::rule<dump_class, dump_> neměnné dump = "dump";
+x3::rule<prepare_class, prepare_> neměnné prepare = "prepare";
+x3::rule<exec_class, exec_> neměnné exec = "exec";
+x3::rule<switch_class, switch_> neměnné switch_rule = "switch";
+x3::rule<cancel_class, cancel_> neměnné cancel = "cancel";
+x3::rule<command_class, command_> neměnné command = "command";
 
-x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
+x3::rule<createCommandSuggestions_class, x3::unused_type> neměnné createCommandSuggestions = "createCommandSuggestions";
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -50,30 +51,30 @@ struct ls_options_table : x3::symbols<LsOption> {
     add
         ("--recursive", LsOption::Recursive);
     }
-} const ls_options;
+} neměnné ls_options;
 
-auto const ls_def =
+auto neměnné ls_def =
     ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> (anyPath | (module >> "*")));
 
-auto const cd_def =
+auto neměnné cd_def =
     cd_::name >> space_separator > cdPath;
 
-auto const create_def =
+auto neměnné create_def =
     create_::name >> space_separator > (presenceContainerPath | listInstancePath | leafListElementPath);
 
-auto const delete_rule_def =
+auto neměnné delete_rule_def =
     delete_::name >> space_separator > (presenceContainerPath | listInstancePath | leafListElementPath | writableLeafPath);
 
-auto const get_def =
+auto neměnné get_def =
     get_::name >> -(space_separator >> getPath);
 
-auto const set_def =
+auto neměnné set_def =
     set_::name >> space_separator > writableLeafPath > space_separator > leaf_data;
 
-auto const commit_def =
+auto neměnné commit_def =
     commit_::name >> x3::attr(commit_());
 
-auto const discard_def =
+auto neměnné discard_def =
     discard_::name >> x3::attr(discard_());
 
 struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
@@ -83,9 +84,9 @@ struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
             add(commandNamesVisitor(cmd), decltype(help_::m_cmd)(cmd));
         });
     }
-} const command_names;
+} neměnné command_names;
 
-auto const help_def =
+auto neměnné help_def =
     help_::name > createCommandSuggestions >> -command_names;
 
 struct datastore_symbol_table : x3::symbols<Datastore> {
@@ -95,12 +96,12 @@ struct datastore_symbol_table : x3::symbols<Datastore> {
             ("running", Datastore::Running)
             ("startup", Datastore::Startup);
     }
-} const datastore;
+} neměnné datastore;
 
-const auto copy_source = x3::rule<class source, Datastore>{"source datastore"} = datastore;
-const auto copy_destination = x3::rule<class source, Datastore>{"destination datastore"} = datastore;
+neměnné auto copy_source = x3::rule<class source, Datastore>{"source datastore"} = datastore;
+neměnné auto copy_destination = x3::rule<class source, Datastore>{"destination datastore"} = datastore;
 
-const auto datastoreSuggestions = x3::eps[([](auto& ctx) {
+neměnné auto datastoreSuggestions = x3::eps[([](auto& ctx) {
     auto& parserContext = x3::get<parser_context_tag>(ctx);
     parserContext.m_suggestions = {Completion{"running", " "}, Completion{"startup", " "}};
     parserContext.m_completionIterator = _where(ctx).begin();
@@ -109,7 +110,7 @@ const auto datastoreSuggestions = x3::eps[([](auto& ctx) {
 struct copy_args : x3::parser<copy_args> {
     using attribute_type = copy_;
     template <typename It, typename Ctx, typename RCtx>
-    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, copy_& attr) const
+    pravdivost parse(It& begin, It end, Ctx neměnné& ctx, RCtx& rctx, copy_& attr) neměnné
     {
         auto& parserContext = x3::get<parser_context_tag>(ctx);
         auto iterBeforeDestination = begin;
@@ -124,20 +125,20 @@ struct copy_args : x3::parser<copy_args> {
             throw;
         }
 
-        if (attr.m_source == attr.m_destination) {
+        když (attr.m_source == attr.m_destination) {
             begin = iterBeforeDestination; // Restoring the iterator here makes the error caret point to the second datastore
             parserContext.m_errorMsg = "Source datastore and destination datastore can't be the same.";
-            return false;
+            vrať false;
         }
 
-        return true;
+        vrať true;
     }
-} const copy_args;
+} neměnné copy_args;
 
-auto const copy_def =
+auto neměnné copy_def =
     copy_::name > space_separator > copy_args;
 
-auto const describe_def =
+auto neměnné describe_def =
     describe_::name >> space_separator > anyPath;
 
 struct move_mode_table : x3::symbols<MoveMode> {
@@ -149,7 +150,7 @@ struct move_mode_table : x3::symbols<MoveMode> {
             ("begin", MoveMode::Begin)
             ("end", MoveMode::End);
     }
-} const move_mode_table;
+} neměnné move_mode_table;
 
 struct move_absolute_table : x3::symbols<yang::move::Absolute> {
     move_absolute_table()
@@ -158,7 +159,7 @@ struct move_absolute_table : x3::symbols<yang::move::Absolute> {
             ("begin", yang::move::Absolute::Begin)
             ("end", yang::move::Absolute::End);
     }
-} const move_absolute_table;
+} neměnné move_absolute_table;
 
 struct move_relative_table : x3::symbols<yang::move::Relative::Position> {
     move_relative_table()
@@ -167,45 +168,45 @@ struct move_relative_table : x3::symbols<yang::move::Relative::Position> {
             ("before", yang::move::Relative::Position::Before)
             ("after", yang::move::Relative::Position::After);
     }
-} const move_relative_table;
+} neměnné move_relative_table;
 
 struct move_args : x3::parser<move_args> {
     using attribute_type = move_;
     template <typename It, typename Ctx, typename RCtx>
-    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, move_& attr) const
+    pravdivost parse(It& begin, It end, Ctx neměnné& ctx, RCtx& rctx, move_& attr) neměnné
     {
         ParserContext& parserContext = x3::get<parser_context_tag>(ctx);
         dataPath_ movePath;
         auto movePathGrammar = listInstancePath | leafListElementPath;
         auto res = movePathGrammar.parse(begin, end, ctx, rctx, attr.m_source);
-        if (!res) {
+        když (!res) {
             parserContext.m_errorMsg = "Expected source path here:";
-            return false;
+            vrať false;
         }
 
         // Try absolute move first.
         res = (space_separator >> move_absolute_table).parse(begin, end, ctx, rctx, attr.m_destination);
-        if (res) {
+        když (res) {
             // Absolute move parsing succeeded, we don't need to parse anything else.
-            return true;
+            vrať true;
         }
 
         // If absolute move didn't succeed, try relative.
         attr.m_destination = yang::move::Relative{};
         res = (space_separator >> move_relative_table).parse(begin, end, ctx, rctx, std::get<yang::move::Relative>(attr.m_destination).m_position);
 
-        if (!res) {
+        když (!res) {
             parserContext.m_errorMsg = "Expected a move position (begin, end, before, after) here:";
-            return false;
+            vrať false;
         }
 
-        if (std::holds_alternative<leafListElement_>(attr.m_source.m_nodes.back().m_suffix)) {
+        když (std::holds_alternative<leafListElement_>(attr.m_source.m_nodes.back().m_suffix)) {
             leaf_data_ value;
             res = (space_separator >> leaf_data).parse(begin, end, ctx, rctx, value);
-            if (res) {
+            když (res) {
                 std::get<yang::move::Relative>(attr.m_destination).m_path = {{".", value}};
             }
-        } else {
+        } jinak {
             ListInstance listInstance;
             // The source list instance will be stored inside the parser context path.
             // The source list instance will be full data path (with keys included).
@@ -218,20 +219,20 @@ struct move_args : x3::parser<move_args> {
             parserContext.m_tmpListPath.m_nodes.emplace_back(attr.m_source.m_nodes.back().m_prefix, list);
 
             res = (space_separator >> listSuffix).parse(begin, end, ctx, rctx, listInstance);
-            if (res) {
+            když (res) {
                 std::get<yang::move::Relative>(attr.m_destination).m_path = listInstance;
             }
         }
 
-        if (!res) {
+        když (!res) {
             parserContext.m_errorMsg = "Expected a destination here:";
         }
 
-        return res;
+        vrať res;
     }
-} const move_args;
+} neměnné move_args;
 
-auto const move_def =
+auto neměnné move_def =
     move_::name >> space_separator >> move_args;
 
 struct format_table : x3::symbols<DataFormat> {
@@ -241,31 +242,31 @@ struct format_table : x3::symbols<DataFormat> {
             ("xml", DataFormat::Xml)
             ("json", DataFormat::Json);
     }
-} const format_table;
+} neměnné format_table;
 
 struct dump_args : x3::parser<dump_args> {
     using attribute_type = dump_;
     template <typename It, typename Ctx, typename RCtx>
-    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, dump_& attr) const
+    pravdivost parse(It& begin, It end, Ctx neměnné& ctx, RCtx& rctx, dump_& attr) neměnné
     {
         ParserContext& parserContext = x3::get<parser_context_tag>(ctx);
         parserContext.m_suggestions = {{"xml"}, {"json"}};
         parserContext.m_completionIterator = begin;
         auto res = format_table.parse(begin, end, ctx, rctx, attr);
-        if (!res) {
+        když (!res) {
             parserContext.m_errorMsg = "Expected a data format (xml, json) here:";
         }
-        return res;
+        vrať res;
     }
-} const dump_args;
+} neměnné dump_args;
 
-auto const prepare_def =
+auto neměnné prepare_def =
     prepare_::name > space_separator > as<dataPath_>[RpcActionPath<AllowInput::Yes>{}];
 
-auto const exec_def =
+auto neměnné exec_def =
     exec_::name > -(space_separator > -as<dataPath_>[RpcActionPath<AllowInput::No>{}]);
 
-const auto dsTargetSuggestions = x3::eps[([](auto& ctx) {
+neměnné auto dsTargetSuggestions = x3::eps[([](auto& ctx) {
     auto& parserContext = x3::get<parser_context_tag>(ctx);
     parserContext.m_suggestions = {Completion{"running", " "}, Completion{"startup", " "}, Completion{"operational", " "}};
     parserContext.m_completionIterator = _where(ctx).begin();
@@ -279,21 +280,21 @@ struct ds_target_table : x3::symbols<DatastoreTarget> {
             ("startup", DatastoreTarget::Startup)
             ("running", DatastoreTarget::Running);
     }
-} const ds_target_table;
+} neměnné ds_target_table;
 
-auto const switch_rule_def =
+auto neměnné switch_rule_def =
     switch_::name > space_separator > as<x3::unused_type>[dsTargetSuggestions] > ds_target_table;
 
-auto const cancel_def =
+auto neměnné cancel_def =
     cancel_::name >> x3::attr(cancel_{});
 
-auto const dump_def =
+auto neměnné dump_def =
     dump_::name > space_separator >> dump_args;
 
-auto const createCommandSuggestions_def =
+auto neměnné createCommandSuggestions_def =
     x3::eps;
 
-auto const command_def =
+auto neměnné command_def =
     createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | prepare | exec | cancel | switch_rule];
 
 #if __clang__

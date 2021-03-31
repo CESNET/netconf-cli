@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include <libyang/Libyang.hpp>
 #include <libyang/Tree_Data.hpp>
 #include <libyang/Tree_Schema.hpp>
@@ -17,19 +18,19 @@
 class YangLoadError : public std::runtime_error {
 public:
     using std::runtime_error::runtime_error;
-    ~YangLoadError() override = default;
+    ~YangLoadError() override = výchozí;
 };
 
 class UnsupportedYangTypeException : public std::runtime_error {
 public:
     using std::runtime_error::runtime_error;
-    ~UnsupportedYangTypeException() override = default;
+    ~UnsupportedYangTypeException() override = výchozí;
 };
 
 class InvalidSchemaQueryException : public std::runtime_error {
 public:
     using std::runtime_error::runtime_error;
-    ~InvalidSchemaQueryException() override = default;
+    ~InvalidSchemaQueryException() override = výchozí;
 };
 
 YangSchema::YangSchema()
@@ -42,58 +43,58 @@ YangSchema::YangSchema(std::shared_ptr<libyang::Context> lyCtx)
 {
 }
 
-YangSchema::~YangSchema() = default;
+YangSchema::~YangSchema() = výchozí;
 
-void YangSchema::addSchemaString(const char* schema)
+prázdno YangSchema::addSchemaString(neměnné znak* schema)
 {
-    if (!m_context->parse_module_mem(schema, LYS_IN_YANG)) {
+    když (!m_context->parse_module_mem(schema, LYS_IN_YANG)) {
         throw YangLoadError("Couldn't load schema");
     }
 }
 
-void YangSchema::addSchemaDirectory(const char* directoryName)
+prázdno YangSchema::addSchemaDirectory(neměnné znak* directoryName)
 {
-    if (m_context->set_searchdir(directoryName)) {
+    když (m_context->set_searchdir(directoryName)) {
         throw YangLoadError("Couldn't add schema search directory");
     }
 }
 
-void YangSchema::addSchemaFile(const char* filename)
+prázdno YangSchema::addSchemaFile(neměnné znak* filename)
 {
-    if (!m_context->parse_module_path(filename, LYS_IN_YANG)) {
+    když (!m_context->parse_module_path(filename, LYS_IN_YANG)) {
         throw YangLoadError("Couldn't load schema");
     }
 }
 
-bool YangSchema::isModule(const std::string& name) const
+pravdivost YangSchema::isModule(neměnné std::string& name) neměnné
 {
-    const auto set = modules();
-    return set.find(name) != set.end();
+    neměnné auto set = modules();
+    vrať set.find(name) != set.end();
 }
 
-bool YangSchema::listHasKey(const schemaPath_& listPath, const std::string& key) const
+pravdivost YangSchema::listHasKey(neměnné schemaPath_& listPath, neměnné std::string& key) neměnné
 {
-    const auto keys = listKeys(listPath);
-    return keys.find(key) != keys.end();
+    neměnné auto keys = listKeys(listPath);
+    vrať keys.find(key) != keys.end();
 }
 
-bool YangSchema::leafIsKey(const std::string& leafPath) const
+pravdivost YangSchema::leafIsKey(neměnné std::string& leafPath) neměnné
 {
     auto node = getSchemaNode(leafPath);
-    if (!node || node->nodetype() != LYS_LEAF) {
-        return false;
+    když (!node || node->nodetype() != LYS_LEAF) {
+        vrať false;
     }
 
-    return libyang::Schema_Node_Leaf{node}.is_key().get();
+    vrať libyang::Schema_Node_Leaf{node}.is_key().get();
 }
 
-libyang::S_Schema_Node YangSchema::impl_getSchemaNode(const std::string& node) const
+libyang::S_Schema_Node YangSchema::impl_getSchemaNode(neměnné std::string& node) neměnné
 {
     // If no node is found find_path prints an error message, so we have to
     // disable logging
     // https://github.com/CESNET/libyang/issues/753
     {
-        int oldOptions;
+        číslo oldOptions;
         auto logBlocker = make_unique_resource(
             [&oldOptions]() {
                 oldOptions = libyang::set_log_options(0);
@@ -102,45 +103,45 @@ libyang::S_Schema_Node YangSchema::impl_getSchemaNode(const std::string& node) c
                 libyang::set_log_options(oldOptions);
             });
         auto res = m_context->get_node(nullptr, node.c_str());
-        if (!res) { // If no node is found, try output rpc nodes too.
+        když (!res) { // If no node is found, try output rpc nodes too.
             res = m_context->get_node(nullptr, node.c_str(), 1);
         }
-        return res;
+        vrať res;
     }
 }
 
 
-libyang::S_Schema_Node YangSchema::getSchemaNode(const std::string& node) const
+libyang::S_Schema_Node YangSchema::getSchemaNode(neměnné std::string& node) neměnné
 {
-    return impl_getSchemaNode(node);
+    vrať impl_getSchemaNode(node);
 }
 
-libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& location, const ModuleNodePair& node) const
+libyang::S_Schema_Node YangSchema::getSchemaNode(neměnné schemaPath_& location, neměnné ModuleNodePair& node) neměnné
 {
     std::string absPath = joinPaths(pathToSchemaString(location, Prefixes::Always), fullNodeName(location, node));
 
-    return impl_getSchemaNode(absPath);
+    vrať impl_getSchemaNode(absPath);
 }
 
-libyang::S_Schema_Node YangSchema::getSchemaNode(const schemaPath_& listPath) const
+libyang::S_Schema_Node YangSchema::getSchemaNode(neměnné schemaPath_& listPath) neměnné
 {
     std::string absPath = pathToSchemaString(listPath, Prefixes::Always);
-    return impl_getSchemaNode(absPath);
+    vrať impl_getSchemaNode(absPath);
 }
 
-const std::set<std::string> YangSchema::listKeys(const schemaPath_& listPath) const
+neměnné std::set<std::string> YangSchema::listKeys(neměnné schemaPath_& listPath) neměnné
 {
     auto node = getSchemaNode(listPath);
-    if (node->nodetype() != LYS_LIST) {
-        return {};
+    když (node->nodetype() != LYS_LIST) {
+        vrať {};
     }
 
     auto list = std::make_shared<libyang::Schema_Node_List>(node);
     std::set<std::string> keys;
-    const auto& keysVec = list->keys();
+    neměnné auto& keysVec = list->keys();
 
-    std::transform(keysVec.begin(), keysVec.end(), std::inserter(keys, keys.begin()), [](const auto& it) { return it->name(); });
-    return keys;
+    std::transform(keysVec.begin(), keysVec.end(), std::inserter(keys, keys.begin()), [](neměnné auto& it) { vrať it->name(); });
+    vrať keys;
 }
 
 namespace {
@@ -174,62 +175,62 @@ enum class ResolveMode {
  *  For identities, this function returns which bases `toResolve` has.
  */
 template <ResolveMode TYPE>
-auto resolveTypedef(const libyang::S_Type& toResolve)
+auto resolveTypedef(neměnné libyang::S_Type& toResolve)
 {
     auto type = toResolve;
-    auto getValuesFromType = [] (const libyang::S_Type& type) {
-        if constexpr (TYPE == ResolveMode::Identity) {
-            return type->info()->ident()->ref();
-        } else {
-            return type->info()->enums()->enm();
+    auto getValuesFromType = [] (neměnné libyang::S_Type& type) {
+        když constexpr (TYPE == ResolveMode::Identity) {
+            vrať type->info()->ident()->ref();
+        } jinak {
+            vrať type->info()->enums()->enm();
         }
     };
     auto values = getValuesFromType(type);
-    while (values.empty()) {
+    dokud (values.empty()) {
         type = type->der()->type();
         values = getValuesFromType(type);
     }
 
-    return values;
+    vrať values;
 }
 
-std::set<enum_> enumValues(const libyang::S_Type& type)
+std::set<enum_> enumValues(neměnné libyang::S_Type& type)
 {
     auto values = resolveTypedef<ResolveMode::Enum>(type);
 
     std::vector<libyang::S_Type_Enum> enabled;
-    std::copy_if(values.begin(), values.end(), std::back_inserter(enabled), [](const libyang::S_Type_Enum& it) {
+    std::copy_if(values.begin(), values.end(), std::back_inserter(enabled), [](neměnné libyang::S_Type_Enum& it) {
         auto iffeatures = it->iffeature();
-        return std::all_of(iffeatures.begin(), iffeatures.end(), [](auto it) { return it->value(); });
+        vrať std::all_of(iffeatures.begin(), iffeatures.end(), [](auto it) { vrať it->value(); });
     });
 
     std::set<enum_> enumSet;
-    std::transform(enabled.begin(), enabled.end(), std::inserter(enumSet, enumSet.end()), [](auto it) { return enum_{it->name()}; });
-    return enumSet;
+    std::transform(enabled.begin(), enabled.end(), std::inserter(enumSet, enumSet.end()), [](auto it) { vrať enum_{it->name()}; });
+    vrať enumSet;
 }
 
-std::set<identityRef_> validIdentities(const libyang::S_Type& type)
+std::set<identityRef_> validIdentities(neměnné libyang::S_Type& type)
 {
     std::set<identityRef_> identSet;
 
-    for (auto base : resolveTypedef<ResolveMode::Identity>(type)) { // Iterate over all bases
+    pro (auto base : resolveTypedef<ResolveMode::Identity>(type)) { // Iterate over all bases
         // Iterate over derived identities (this is recursive!)
-        for (auto derived : base->der()->schema()) {
+        pro (auto derived : base->der()->schema()) {
             identSet.emplace(derived->module()->name(), derived->name());
         }
     }
 
-    return identSet;
+    vrať identSet;
 }
 
-std::string leafrefPath(const libyang::S_Type& type)
+std::string leafrefPath(neměnné libyang::S_Type& type)
 {
-    return type->info()->lref()->target()->path(LYS_PATH_FIRST_PREFIX);
+    vrať type->info()->lref()->target()->path(LYS_PATH_FIRST_PREFIX);
 }
 }
 
 template <typename NodeType>
-yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) const
+yang::TypeInfo YangSchema::impl_leafType(neměnné libyang::S_Schema_Node& node) neměnné
 {
     using namespace std::string_literals;
     auto leaf = std::make_shared<NodeType>(node);
@@ -237,86 +238,86 @@ yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) con
     std::function<yang::TypeInfo(std::shared_ptr<libyang::Type>)> resolveType;
     resolveType = [this, &resolveType, leaf, leafUnits](std::shared_ptr<libyang::Type> type) -> yang::TypeInfo {
         yang::LeafDataType resType;
-        switch (type->base()) {
-        case LY_TYPE_STRING:
+        přepínač (type->base()) {
+        případ LY_TYPE_STRING:
             resType.emplace<yang::String>();
-            break;
-        case LY_TYPE_DEC64:
+            rozbij;
+        případ LY_TYPE_DEC64:
             resType.emplace<yang::Decimal>();
-            break;
-        case LY_TYPE_BOOL:
+            rozbij;
+        případ LY_TYPE_BOOL:
             resType.emplace<yang::Bool>();
-            break;
-        case LY_TYPE_INT8:
+            rozbij;
+        případ LY_TYPE_INT8:
             resType.emplace<yang::Int8>();
-            break;
-        case LY_TYPE_INT16:
+            rozbij;
+        případ LY_TYPE_INT16:
             resType.emplace<yang::Int16>();
-            break;
-        case LY_TYPE_INT32:
+            rozbij;
+        případ LY_TYPE_INT32:
             resType.emplace<yang::Int32>();
-            break;
-        case LY_TYPE_INT64:
+            rozbij;
+        případ LY_TYPE_INT64:
             resType.emplace<yang::Int64>();
-            break;
-        case LY_TYPE_UINT8:
+            rozbij;
+        případ LY_TYPE_UINT8:
             resType.emplace<yang::Uint8>();
-            break;
-        case LY_TYPE_UINT16:
+            rozbij;
+        případ LY_TYPE_UINT16:
             resType.emplace<yang::Uint16>();
-            break;
-        case LY_TYPE_UINT32:
+            rozbij;
+        případ LY_TYPE_UINT32:
             resType.emplace<yang::Uint32>();
-            break;
-        case LY_TYPE_UINT64:
+            rozbij;
+        případ LY_TYPE_UINT64:
             resType.emplace<yang::Uint64>();
-            break;
-        case LY_TYPE_BINARY:
+            rozbij;
+        případ LY_TYPE_BINARY:
             resType.emplace<yang::Binary>();
-            break;
-        case LY_TYPE_EMPTY:
+            rozbij;
+        případ LY_TYPE_EMPTY:
             resType.emplace<yang::Empty>();
-            break;
-        case LY_TYPE_ENUM:
+            rozbij;
+        případ LY_TYPE_ENUM:
             resType.emplace<yang::Enum>(enumValues(type));
-            break;
-        case LY_TYPE_IDENT:
+            rozbij;
+        případ LY_TYPE_IDENT:
             resType.emplace<yang::IdentityRef>(validIdentities(type));
-            break;
-        case LY_TYPE_LEAFREF:
+            rozbij;
+        případ LY_TYPE_LEAFREF:
             resType.emplace<yang::LeafRef>(::leafrefPath(type), std::make_unique<yang::TypeInfo>(leafType(::leafrefPath(type))));
-            break;
-        case LY_TYPE_BITS: {
+            rozbij;
+        případ LY_TYPE_BITS: {
             auto resBits = yang::Bits{};
-            for (const auto& bit : type->info()->bits()->bit()) {
+            pro (neměnné auto& bit : type->info()->bits()->bit()) {
                 resBits.m_allowedValues.emplace(bit->name());
             }
             resType.emplace<yang::Bits>(std::move(resBits));
-            break;
+            rozbij;
         }
-        case LY_TYPE_UNION: {
+        případ LY_TYPE_UNION: {
             auto resUnion = yang::Union{};
-            for (auto unionType : type->info()->uni()->types()) {
+            pro (auto unionType : type->info()->uni()->types()) {
                 resUnion.m_unionTypes.emplace_back(resolveType(unionType));
             }
             resType.emplace<yang::Union>(std::move(resUnion));
-            break;
+            rozbij;
         }
-        default:
+        výchozí:
             using namespace std::string_literals;
             throw UnsupportedYangTypeException("the type of "s + leaf->name() + " is not supported: " + std::to_string(leaf->type()->base()));
         }
 
         std::optional<std::string> resUnits;
 
-        if (leafUnits) {
+        když (leafUnits) {
             resUnits = leafUnits;
-        } else {
-            for (auto parentTypedef = type->der(); parentTypedef; parentTypedef = parentTypedef->type()->der()) {
+        } jinak {
+            pro (auto parentTypedef = type->der(); parentTypedef; parentTypedef = parentTypedef->type()->der()) {
                 auto units = parentTypedef->units();
-                if (units) {
+                když (units) {
                     resUnits = units;
-                    break;
+                    rozbij;
                 }
             }
         }
@@ -325,100 +326,100 @@ yang::TypeInfo YangSchema::impl_leafType(const libyang::S_Schema_Node& node) con
 
         // checking for parentTypedef->type()->der() means I'm going to enter inside base types like "string". These
         // also have a description, but it isn't too helpful ("human-readable string")
-        for (auto parentTypedef = type->der(); parentTypedef && parentTypedef->type()->der(); parentTypedef = parentTypedef->type()->der()) {
+        pro (auto parentTypedef = type->der(); parentTypedef && parentTypedef->type()->der(); parentTypedef = parentTypedef->type()->der()) {
             auto dsc = parentTypedef->dsc();
-            if (dsc) {
+            když (dsc) {
                 resDescription = dsc;
-                break;
+                rozbij;
             }
         }
 
-        return yang::TypeInfo(resType, resUnits, resDescription);
+        vrať yang::TypeInfo(resType, resUnits, resDescription);
     };
-    return resolveType(leaf->type());
+    vrať resolveType(leaf->type());
 }
 
-yang::TypeInfo YangSchema::leafType(const schemaPath_& location, const ModuleNodePair& node) const
+yang::TypeInfo YangSchema::leafType(neměnné schemaPath_& location, neměnné ModuleNodePair& node) neměnné
 {
     auto lyNode = getSchemaNode(location, node);
-    switch (lyNode->nodetype()) {
-    case LYS_LEAF:
-        return impl_leafType<libyang::Schema_Node_Leaf>(lyNode);
-    case LYS_LEAFLIST:
-        return impl_leafType<libyang::Schema_Node_Leaflist>(lyNode);
-    default:
+    přepínač (lyNode->nodetype()) {
+    případ LYS_LEAF:
+        vrať impl_leafType<libyang::Schema_Node_Leaf>(lyNode);
+    případ LYS_LEAFLIST:
+        vrať impl_leafType<libyang::Schema_Node_Leaflist>(lyNode);
+    výchozí:
         throw std::logic_error("YangSchema::leafType: type must be leaf or leaflist");
     }
 }
 
-yang::TypeInfo YangSchema::leafType(const std::string& path) const
+yang::TypeInfo YangSchema::leafType(neměnné std::string& path) neměnné
 {
     auto lyNode = getSchemaNode(path);
-    switch (lyNode->nodetype()) {
-    case LYS_LEAF:
-        return impl_leafType<libyang::Schema_Node_Leaf>(lyNode);
-    case LYS_LEAFLIST:
-        return impl_leafType<libyang::Schema_Node_Leaflist>(lyNode);
-    default:
+    přepínač (lyNode->nodetype()) {
+    případ LYS_LEAF:
+        vrať impl_leafType<libyang::Schema_Node_Leaf>(lyNode);
+    případ LYS_LEAFLIST:
+        vrať impl_leafType<libyang::Schema_Node_Leaflist>(lyNode);
+    výchozí:
         throw std::logic_error("YangSchema::leafType: type must be leaf or leaflist");
     }
 }
 
-std::optional<std::string> YangSchema::leafTypeName(const std::string& path) const
+std::optional<std::string> YangSchema::leafTypeName(neměnné std::string& path) neměnné
 {
     libyang::Schema_Node_Leaf leaf(getSchemaNode(path));
-    return leaf.type()->der().get() && leaf.type()->der()->type()->der().get() ? std::optional{leaf.type()->der()->name()} : std::nullopt;
+    vrať leaf.type()->der().get() && leaf.type()->der()->type()->der().get() ? std::optional{leaf.type()->der()->name()} : std::nullopt;
 }
 
-std::string YangSchema::leafrefPath(const std::string& leafrefPath) const
+std::string YangSchema::leafrefPath(neměnné std::string& leafrefPath) neměnné
 {
     using namespace std::string_literals;
     libyang::Schema_Node_Leaf leaf(getSchemaNode(leafrefPath));
-    return leaf.type()->info()->lref()->target()->path(LYS_PATH_FIRST_PREFIX);
+    vrať leaf.type()->info()->lref()->target()->path(LYS_PATH_FIRST_PREFIX);
 }
 
-std::set<std::string> YangSchema::modules() const
+std::set<std::string> YangSchema::modules() neměnné
 {
-    const auto& modules = m_context->get_module_iter();
+    neměnné auto& modules = m_context->get_module_iter();
 
     std::set<std::string> res;
-    std::transform(modules.begin(), modules.end(), std::inserter(res, res.end()), [](const auto module) { return module->name(); });
-    return res;
+    std::transform(modules.begin(), modules.end(), std::inserter(res, res.end()), [](neměnné auto module) { vrať module->name(); });
+    vrať res;
 }
 
-std::set<ModuleNodePair> YangSchema::availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const
+std::set<ModuleNodePair> YangSchema::availableNodes(neměnné boost::variant<dataPath_, schemaPath_, module_>& path, neměnné Recursion recursion) neměnné
 {
     using namespace std::string_view_literals;
     std::set<ModuleNodePair> res;
     std::vector<libyang::S_Schema_Node> nodes;
     std::string topLevelModule;
 
-    if (path.type() == typeid(module_)) {
+    když (path.type() == typeid(module_)) {
         nodes = m_context->get_module(boost::get<module_>(path).m_name.c_str())->data_instantiables(0);
-    } else {
+    } jinak {
         auto schemaPath = anyPathToSchemaPath(path);
-        if (schemaPath.m_nodes.empty()) {
+        když (schemaPath.m_nodes.empty()) {
             nodes = m_context->data_instantiables(0);
-        } else {
-            const auto pathString = pathToSchemaString(schemaPath, Prefixes::Always);
-            const auto node = getSchemaNode(pathString);
+        } jinak {
+            neměnné auto pathString = pathToSchemaString(schemaPath, Prefixes::Always);
+            neměnné auto node = getSchemaNode(pathString);
             nodes = node->child_instantiables(0);
             topLevelModule = schemaPath.m_nodes.begin()->m_prefix->m_name;
         }
     }
 
-    for (const auto& node : nodes) {
-        if (node->module()->name() == "ietf-yang-library"sv) {
-            continue;
+    pro (neměnné auto& node : nodes) {
+        když (node->module()->name() == "ietf-yang-library"sv) {
+            pokračuj;
         }
 
-        if (recursion == Recursion::Recursive) {
-            for (auto it : node->tree_dfs()) {
+        když (recursion == Recursion::Recursive) {
+            pro (auto it : node->tree_dfs()) {
                 res.insert(ModuleNodePair(boost::none, it->path(LYS_PATH_FIRST_PREFIX)));
             }
-        } else {
+        } jinak {
             ModuleNodePair toInsert;
-            if (topLevelModule.empty() || topLevelModule != node->module()->name()) {
+            když (topLevelModule.empty() || topLevelModule != node->module()->name()) {
                 toInsert.first = node->module()->type() == 0 ? node->module()->name() : libyang::Submodule(node->module()).belongsto()->name();
             }
             toInsert.second = node->name();
@@ -426,158 +427,158 @@ std::set<ModuleNodePair> YangSchema::availableNodes(const boost::variant<dataPat
         }
     }
 
-    return res;
+    vrať res;
 }
 
-void YangSchema::loadModule(const std::string& moduleName)
+prázdno YangSchema::loadModule(neměnné std::string& moduleName)
 {
     m_context->load_module(moduleName.c_str());
 }
 
-void YangSchema::enableFeature(const std::string& moduleName, const std::string& featureName)
+prázdno YangSchema::enableFeature(neměnné std::string& moduleName, neměnné std::string& featureName)
 {
     using namespace std::string_literals;
     auto module = getYangModule(moduleName);
-    if (!module) {
+    když (!module) {
         throw std::runtime_error("Module \""s + moduleName + "\" doesn't exist.");
     }
-    if (module->feature_enable(featureName.c_str())) {
+    když (module->feature_enable(featureName.c_str())) {
         throw std::runtime_error("Can't enable feature \""s + featureName + "\" for module \"" + moduleName + "\".");
     }
 }
 
-void YangSchema::registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb)
+prázdno YangSchema::registerModuleCallback(neměnné std::function<std::string(neměnné znak*, neměnné znak*, neměnné znak*, neměnné znak*)>& clb)
 {
-    auto lambda = [clb](const char* mod_name, const char* mod_revision, const char* submod_name, const char* submod_revision) {
-        (void)submod_revision;
+    auto lambda = [clb](neměnné znak* mod_name, neměnné znak* mod_revision, neměnné znak* submod_name, neměnné znak* submod_revision) {
+        (prázdno)submod_revision;
         auto moduleSource = clb(mod_name, mod_revision, submod_name, submod_revision);
-        if (moduleSource.empty()) {
-            return libyang::Context::mod_missing_cb_return{LYS_IN_YANG, nullptr};
+        když (moduleSource.empty()) {
+            vrať libyang::Context::mod_missing_cb_return{LYS_IN_YANG, nullptr};
         }
-        return libyang::Context::mod_missing_cb_return{LYS_IN_YANG, strdup(moduleSource.c_str())};
+        vrať libyang::Context::mod_missing_cb_return{LYS_IN_YANG, řeťzdv(moduleSource.c_str())};
     };
 
-    m_context->add_missing_module_callback(lambda, free);
+    m_context->add_missing_module_callback(lambda, osvoboď);
 }
 
-std::shared_ptr<libyang::Data_Node> YangSchema::dataNodeFromPath(const std::string& path, const std::optional<const std::string> value) const
+std::shared_ptr<libyang::Data_Node> YangSchema::dataNodeFromPath(neměnné std::string& path, neměnné std::optional<neměnné std::string> value) neměnné
 {
-    return std::make_shared<libyang::Data_Node>(m_context,
+    vrať std::make_shared<libyang::Data_Node>(m_context,
                                                 path.c_str(),
                                                 value ? value.value().c_str() : nullptr,
                                                 LYD_ANYDATA_CONSTSTRING,
                                                 LYD_PATH_OPT_EDIT);
 }
 
-std::shared_ptr<libyang::Module> YangSchema::getYangModule(const std::string& name)
+std::shared_ptr<libyang::Module> YangSchema::getYangModule(neměnné std::string& name)
 {
-    return m_context->get_module(name.c_str());
+    vrať m_context->get_module(name.c_str());
 }
 
 namespace {
-yang::NodeTypes impl_nodeType(const libyang::S_Schema_Node& node)
+yang::NodeTypes impl_nodeType(neměnné libyang::S_Schema_Node& node)
 {
-    if (!node) {
+    když (!node) {
         throw InvalidNodeException();
     }
-    switch (node->nodetype()) {
-    case LYS_CONTAINER:
-        return libyang::Schema_Node_Container{node}.presence() ? yang::NodeTypes::PresenceContainer : yang::NodeTypes::Container;
-    case LYS_LEAF:
-        return yang::NodeTypes::Leaf;
-    case LYS_LIST:
-        return yang::NodeTypes::List;
-    case LYS_RPC:
-        return yang::NodeTypes::Rpc;
-    case LYS_ACTION:
-        return yang::NodeTypes::Action;
-    case LYS_NOTIF:
-        return yang::NodeTypes::Notification;
-    case LYS_ANYXML:
-        return yang::NodeTypes::AnyXml;
-    case LYS_LEAFLIST:
-        return yang::NodeTypes::LeafList;
-    default:
+    přepínač (node->nodetype()) {
+    případ LYS_CONTAINER:
+        vrať libyang::Schema_Node_Container{node}.presence() ? yang::NodeTypes::PresenceContainer : yang::NodeTypes::Container;
+    případ LYS_LEAF:
+        vrať yang::NodeTypes::Leaf;
+    případ LYS_LIST:
+        vrať yang::NodeTypes::List;
+    případ LYS_RPC:
+        vrať yang::NodeTypes::Rpc;
+    případ LYS_ACTION:
+        vrať yang::NodeTypes::Action;
+    případ LYS_NOTIF:
+        vrať yang::NodeTypes::Notification;
+    případ LYS_ANYXML:
+        vrať yang::NodeTypes::AnyXml;
+    případ LYS_LEAFLIST:
+        vrať yang::NodeTypes::LeafList;
+    výchozí:
         throw InvalidNodeException(); // FIXME: Implement all types.
     }
 }
 }
 
-yang::NodeTypes YangSchema::nodeType(const schemaPath_& location, const ModuleNodePair& node) const
+yang::NodeTypes YangSchema::nodeType(neměnné schemaPath_& location, neměnné ModuleNodePair& node) neměnné
 {
-    return impl_nodeType(getSchemaNode(location, node));
+    vrať impl_nodeType(getSchemaNode(location, node));
 }
 
-yang::NodeTypes YangSchema::nodeType(const std::string& path) const
+yang::NodeTypes YangSchema::nodeType(neměnné std::string& path) neměnné
 {
-    return impl_nodeType(getSchemaNode(path));
+    vrať impl_nodeType(getSchemaNode(path));
 }
 
-std::optional<std::string> YangSchema::description(const std::string& path) const
+std::optional<std::string> YangSchema::description(neměnné std::string& path) neměnné
 {
     auto node = getSchemaNode(path.c_str());
-    return node->dsc() ? std::optional{node->dsc()} : std::nullopt;
+    vrať node->dsc() ? std::optional{node->dsc()} : std::nullopt;
 }
 
-yang::Status YangSchema::status(const std::string& location) const
+yang::Status YangSchema::status(neměnné std::string& location) neměnné
 {
     auto node = getSchemaNode(location.c_str());
-    if (node->flags() & LYS_STATUS_DEPRC) {
-        return yang::Status::Deprecated;
-    } else if (node->flags() & LYS_STATUS_OBSLT) {
-        return yang::Status::Obsolete;
-    } else {
-        return yang::Status::Current;
+    když (node->flags() & LYS_STATUS_DEPRC) {
+        vrať yang::Status::Deprecated;
+    } jinak když (node->flags() & LYS_STATUS_OBSLT) {
+        vrať yang::Status::Obsolete;
+    } jinak {
+        vrať yang::Status::Current;
     }
 }
 
-bool YangSchema::hasInputNodes(const std::string& path) const
+pravdivost YangSchema::hasInputNodes(neměnné std::string& path) neměnné
 {
     auto node = getSchemaNode(path.c_str());
-    if (auto type = node->nodetype(); type != LYS_ACTION && type != LYS_RPC) {
+    když (auto type = node->nodetype(); type != LYS_ACTION && type != LYS_RPC) {
         throw std::logic_error("StaticSchema::hasInputNodes called with non-RPC/action path");
     }
 
     // The first child gives the /input node and then I check whether it has a child.
-    return node->child()->child().get();
+    vrať node->child()->child().get();
 }
 
-bool YangSchema::isConfig(const std::string& path) const
+pravdivost YangSchema::isConfig(neměnné std::string& path) neměnné
 {
     auto node = getSchemaNode(path.c_str());
-    if (node->flags() & LYS_CONFIG_W) {
-        return true;
+    když (node->flags() & LYS_CONFIG_W) {
+        vrať true;
     }
 
     // Node can still be an input node.
-    while (node->parent()) {
+    dokud (node->parent()) {
         node = node->parent();
-        if (node->nodetype() == LYS_INPUT) {
-            return true;
+        když (node->nodetype() == LYS_INPUT) {
+            vrať true;
         }
     }
 
-    return false;
+    vrať false;
 }
 
-std::optional<std::string> YangSchema::defaultValue(const std::string& leafPath) const
+std::optional<std::string> YangSchema::defaultValue(neměnné std::string& leafPath) neměnné
 {
     libyang::Schema_Node_Leaf leaf(getSchemaNode(leafPath));
 
-    if (auto leafDefault = leaf.dflt()) {
-        return leafDefault;
+    když (auto leafDefault = leaf.dflt()) {
+        vrať leafDefault;
     }
 
-    for (auto type = leaf.type()->der(); type != nullptr; type = type->type()->der()) {
-        if (auto defaultValue = type->dflt()) {
-            return defaultValue;
+    pro (auto type = leaf.type()->der(); type != nullptr; type = type->type()->der()) {
+        když (auto defaultValue = type->dflt()) {
+            vrať defaultValue;
         }
     }
 
-    return std::nullopt;
+    vrať std::nullopt;
 }
 
-std::string YangSchema::dataPathToSchemaPath(const std::string& path)
+std::string YangSchema::dataPathToSchemaPath(neměnné std::string& path)
 {
-    return getSchemaNode(path)->path(LYS_PATH_FIRST_PREFIX);
+    vrať getSchemaNode(path)->path(LYS_PATH_FIRST_PREFIX);
 }

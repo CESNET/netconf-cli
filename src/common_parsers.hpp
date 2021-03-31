@@ -6,32 +6,33 @@
 */
 
 #pragma once
+#include "czech.h"
 #include <boost/spirit/home/x3.hpp>
 #include "ast_handlers.hpp"
-x3::rule<module_identifier_class, std::string> const module_identifier = "module_identifier";
-x3::rule<module_class, module_> const module = "module";
-x3::rule<node_identifier_class, std::string> const node_identifier = "node_identifier";
-x3::rule<space_separator_class, x3::unused_type> const space_separator = "a space";
-x3::rule<completing_class, x3::unused_type> const completing = "completing";
+x3::rule<module_identifier_class, std::string> neměnné module_identifier = "module_identifier";
+x3::rule<module_class, module_> neměnné module = "module";
+x3::rule<node_identifier_class, std::string> neměnné node_identifier = "node_identifier";
+x3::rule<space_separator_class, x3::unused_type> neměnné space_separator = "a space";
+x3::rule<completing_class, x3::unused_type> neměnné completing = "completing";
 
 // This is a pseudo-parser, that fails if we're not completing a command
-auto const completing_def =
+auto neměnné completing_def =
     x3::no_skip[x3::eps];
 
-auto const node_identifier_def =
+auto neměnné node_identifier_def =
     x3::lexeme[
             ((x3::alpha | x3::char_("_")) >> *(x3::alnum | x3::char_("_") | x3::char_("-") | x3::char_(".")))
     ];
 
-auto const module_def =
+auto neměnné module_def =
     module_identifier >> x3::no_skip[':'] >> !x3::no_skip[x3::space];
 
-auto const module_identifier_def =
+auto neměnné module_identifier_def =
     x3::lexeme[
             ((x3::alpha | x3::char_("_")) >> *(x3::alnum | x3::char_("_") | x3::char_("-") | x3::char_(".")))
     ];
 
-auto const space_separator_def =
+auto neměnné space_separator_def =
     x3::omit[x3::no_skip[+x3::space]];
 
 template <typename CoerceTo>
@@ -39,8 +40,8 @@ struct as_type {
     template <typename...> struct Tag{};
 
     template <typename ParserType>
-    auto operator[](ParserType p) const {
-        return x3::rule<Tag<CoerceTo, ParserType>, CoerceTo> {"as"} = x3::as_parser(p);
+    auto operator[](ParserType p) neměnné {
+        vrať x3::rule<Tag<CoerceTo, ParserType>, CoerceTo> {"as"} = x3::as_parser(p);
     }
 };
 
@@ -48,7 +49,7 @@ struct as_type {
 // Example usage: as<std::string>[someParser]
 // someParser will have its attribute coerced to std::string
 // https://github.com/boostorg/spirit/issues/530#issuecomment-584836532
-template <typename CoerceTo> const as_type<CoerceTo> as{};
+template <typename CoerceTo> neměnné as_type<CoerceTo> as{};
 
 BOOST_SPIRIT_DEFINE(node_identifier)
 BOOST_SPIRIT_DEFINE(module)

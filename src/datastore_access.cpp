@@ -6,24 +6,25 @@
  *
 */
 
+#include "czech.h"
 #include "datastore_access.hpp"
 
-DatastoreError::DatastoreError(const std::string& message, const std::optional<std::string>& xpath)
+DatastoreError::DatastoreError(neměnné std::string& message, neměnné std::optional<std::string>& xpath)
     : message(message)
     , xpath(xpath)
 {
 }
 
-DatastoreAccess::~DatastoreAccess() = default;
+DatastoreAccess::~DatastoreAccess() = výchozí;
 
-DatastoreException::DatastoreException(const std::vector<DatastoreError>& errors)
+DatastoreException::DatastoreException(neměnné std::vector<DatastoreError>& errors)
 {
     m_what = "The following errors occured:\n";
-    for (const auto& it : errors) {
+    pro (neměnné auto& it : errors) {
         m_what += " Message: ";
         m_what += it.message;
         m_what += "\n";
-        if (it.xpath) {
+        když (it.xpath) {
             m_what += " XPath: ";
             m_what += it.xpath.value();
             m_what += "\n";
@@ -31,12 +32,12 @@ DatastoreException::DatastoreException(const std::vector<DatastoreError>& errors
     }
 }
 
-void DatastoreAccess::setTarget(const DatastoreTarget target)
+prázdno DatastoreAccess::setTarget(neměnné DatastoreTarget target)
 {
     m_target = target;
 }
 
-const char* DatastoreException::what() const noexcept
+neměnné znak* DatastoreException::what() neměnné noexcept
 {
-    return m_what.c_str();
+    vrať m_what.c_str();
 }

@@ -4,65 +4,66 @@
  * Written by Václav Kubernát <kubernat@cesnet.cz>
  *
 */
+#include "czech.h"
 #include <boost/algorithm/string/predicate.hpp>
 #include "UniqueResource.hpp"
 #include "proxy_datastore.hpp"
 #include "yang_schema.hpp"
 
-ProxyDatastore::ProxyDatastore(const std::shared_ptr<DatastoreAccess>& datastore, std::function<std::shared_ptr<DatastoreAccess>(const std::shared_ptr<DatastoreAccess>&)> createTemporaryDatastore)
+ProxyDatastore::ProxyDatastore(neměnné std::shared_ptr<DatastoreAccess>& datastore, std::function<std::shared_ptr<DatastoreAccess>(neměnné std::shared_ptr<DatastoreAccess>&)> createTemporaryDatastore)
     : m_datastore(datastore)
     , m_createTemporaryDatastore(createTemporaryDatastore)
 {
 }
 
-DatastoreAccess::Tree ProxyDatastore::getItems(const std::string& path) const
+DatastoreAccess::Tree ProxyDatastore::getItems(neměnné std::string& path) neměnné
 {
-    return pickDatastore(path)->getItems(path);
+    vrať pickDatastore(path)->getItems(path);
 }
 
-void ProxyDatastore::setLeaf(const std::string& path, leaf_data_ value)
+prázdno ProxyDatastore::setLeaf(neměnné std::string& path, leaf_data_ value)
 {
     pickDatastore(path)->setLeaf(path, value);
 }
 
-void ProxyDatastore::createItem(const std::string& path)
+prázdno ProxyDatastore::createItem(neměnné std::string& path)
 {
     pickDatastore(path)->createItem(path);
 }
 
-void ProxyDatastore::deleteItem(const std::string& path)
+prázdno ProxyDatastore::deleteItem(neměnné std::string& path)
 {
     pickDatastore(path)->deleteItem(path);
 }
 
-void ProxyDatastore::moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move)
+prázdno ProxyDatastore::moveItem(neměnné std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move)
 {
     pickDatastore(source)->moveItem(source, move);
 }
 
-void ProxyDatastore::commitChanges()
+prázdno ProxyDatastore::commitChanges()
 {
     m_datastore->commitChanges();
 }
 
-void ProxyDatastore::discardChanges()
+prázdno ProxyDatastore::discardChanges()
 {
     m_datastore->discardChanges();
 }
 
-void ProxyDatastore::copyConfig(const Datastore source, const Datastore destination)
+prázdno ProxyDatastore::copyConfig(neměnné Datastore source, neměnné Datastore destination)
 {
     m_datastore->copyConfig(source, destination);
 }
 
-std::string ProxyDatastore::dump(const DataFormat format) const
+std::string ProxyDatastore::dump(neměnné DataFormat format) neměnné
 {
-    return m_datastore->dump(format);
+    vrať m_datastore->dump(format);
 }
 
-void ProxyDatastore::initiate(const std::string& path)
+prázdno ProxyDatastore::initiate(neměnné std::string& path)
 {
-    if (m_inputDatastore) {
+    když (m_inputDatastore) {
         throw std::runtime_error("RPC/action input already in progress (" + *m_inputPath + ")");
     }
     m_inputDatastore = m_createTemporaryDatastore(m_datastore);
@@ -72,7 +73,7 @@ void ProxyDatastore::initiate(const std::string& path)
 
 DatastoreAccess::Tree ProxyDatastore::execute()
 {
-    if (!m_inputDatastore) {
+    když (!m_inputDatastore) {
         throw std::runtime_error("No RPC/action input in progress");
     }
     auto cancelOnReturn = make_unique_resource([] {}, [this] { cancel(); });
@@ -80,35 +81,35 @@ DatastoreAccess::Tree ProxyDatastore::execute()
 
     auto out = m_datastore->execute(*m_inputPath, inputData);
 
-    return out;
+    vrať out;
 }
 
-void ProxyDatastore::cancel()
+prázdno ProxyDatastore::cancel()
 {
     m_inputDatastore = nullptr;
     m_inputPath = std::nullopt;
 }
 
-std::shared_ptr<Schema> ProxyDatastore::schema() const
+std::shared_ptr<Schema> ProxyDatastore::schema() neměnné
 {
-    return m_datastore->schema();
+    vrať m_datastore->schema();
 }
 
 std::optional<std::string> ProxyDatastore::inputDatastorePath()
 {
-    return m_inputPath;
+    vrať m_inputPath;
 }
 
-std::shared_ptr<DatastoreAccess> ProxyDatastore::pickDatastore(const std::string& path) const
+std::shared_ptr<DatastoreAccess> ProxyDatastore::pickDatastore(neměnné std::string& path) neměnné
 {
-    if (!m_inputDatastore || !boost::starts_with(path, *m_inputPath)) {
-        return m_datastore;
-    } else {
-        return m_inputDatastore;
+    když (!m_inputDatastore || !boost::starts_with(path, *m_inputPath)) {
+        vrať m_datastore;
+    } jinak {
+        vrať m_inputDatastore;
     }
 }
 
-void ProxyDatastore::setTarget(const DatastoreTarget target)
+prázdno ProxyDatastore::setTarget(neměnné DatastoreTarget target)
 {
     m_datastore->setTarget(target);
 }

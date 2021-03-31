@@ -4,15 +4,16 @@
  * Written by Václav Kubernát <kubernat@cesnet.cz>
  *
 */
+#include "czech.h"
 #include "ast_values.hpp"
 #include "leaf_data_type.hpp"
 
 namespace yang {
-bool TypeInfo::operator==(const TypeInfo& other) const
+pravdivost TypeInfo::operator==(neměnné TypeInfo& other) neměnné
 {
-    return std::tie(this->m_type, this->m_units, this->m_description) == std::tie(other.m_type, other.m_units, other.m_description);
+    vrať std::tie(this->m_type, this->m_units, this->m_description) == std::tie(other.m_type, other.m_units, other.m_description);
 }
-TypeInfo::TypeInfo(const yang::LeafDataType& type, const std::optional<std::string> units, const std::optional<std::string> description)
+TypeInfo::TypeInfo(neměnné yang::LeafDataType& type, neměnné std::optional<std::string> units, neměnné std::optional<std::string> description)
     : m_type(type)
     , m_units(units)
     , m_description(description)
@@ -22,91 +23,91 @@ Enum::Enum(std::set<enum_>&& values)
     : m_allowedValues(std::move(values))
 {
 }
-bool Enum::operator==(const Enum& other) const
+pravdivost Enum::operator==(neměnné Enum& other) neměnné
 {
-    return this->m_allowedValues == other.m_allowedValues;
+    vrať this->m_allowedValues == other.m_allowedValues;
 }
 IdentityRef::IdentityRef(std::set<identityRef_>&& values)
     : m_allowedValues(std::move(values))
 {
 }
-bool IdentityRef::operator==(const IdentityRef& other) const
+pravdivost IdentityRef::operator==(neměnné IdentityRef& other) neměnné
 {
-    return this->m_allowedValues == other.m_allowedValues;
+    vrať this->m_allowedValues == other.m_allowedValues;
 }
 // Copy constructor needed, because unique_ptr is not copy-constructible
-LeafRef::LeafRef(const LeafRef& src)
+LeafRef::LeafRef(neměnné LeafRef& src)
     : m_targetXPath(src.m_targetXPath)
     , m_targetType(std::make_unique<TypeInfo>(*src.m_targetType))
 {
 }
-LeafRef::LeafRef(const std::string& xpath, std::unique_ptr<TypeInfo>&& type)
+LeafRef::LeafRef(neměnné std::string& xpath, std::unique_ptr<TypeInfo>&& type)
     : m_targetXPath(xpath)
     , m_targetType(std::move(type))
 {
 }
-bool LeafRef::operator==(const LeafRef& other) const
+pravdivost LeafRef::operator==(neměnné LeafRef& other) neměnné
 {
-    return this->m_targetXPath == other.m_targetXPath && *this->m_targetType == *other.m_targetType;
+    vrať this->m_targetXPath == other.m_targetXPath && *this->m_targetType == *other.m_targetType;
 }
-bool Union::operator==(const Union& other) const
+pravdivost Union::operator==(neměnné Union& other) neměnné
 {
-    return this->m_unionTypes == other.m_unionTypes;
+    vrať this->m_unionTypes == other.m_unionTypes;
 }
-bool String::operator==(const String&) const
+pravdivost String::operator==(neměnné String&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Decimal::operator==(const Decimal&) const
+pravdivost Decimal::operator==(neměnné Decimal&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Bool::operator==(const Bool&) const
+pravdivost Bool::operator==(neměnné Bool&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Int8::operator==(const Int8&) const
+pravdivost Int8::operator==(neměnné Int8&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Uint8::operator==(const Uint8&) const
+pravdivost Uint8::operator==(neměnné Uint8&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Int16::operator==(const Int16&) const
+pravdivost Int16::operator==(neměnné Int16&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Uint16::operator==(const Uint16&) const
+pravdivost Uint16::operator==(neměnné Uint16&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Int32::operator==(const Int32&) const
+pravdivost Int32::operator==(neměnné Int32&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Uint32::operator==(const Uint32&) const
+pravdivost Uint32::operator==(neměnné Uint32&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Int64::operator==(const Int64&) const
+pravdivost Int64::operator==(neměnné Int64&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Uint64::operator==(const Uint64&) const
+pravdivost Uint64::operator==(neměnné Uint64&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Binary::operator==(const Binary&) const
+pravdivost Binary::operator==(neměnné Binary&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Empty::operator==(const Empty&) const
+pravdivost Empty::operator==(neměnné Empty&) neměnné
 {
-    return true;
+    vrať true;
 }
-bool Bits::operator==(const Bits& other) const
+pravdivost Bits::operator==(neměnné Bits& other) neměnné
 {
-    return this->m_allowedValues == other.m_allowedValues;
+    vrať this->m_allowedValues == other.m_allowedValues;
 }
 }

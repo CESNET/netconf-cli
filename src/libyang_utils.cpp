@@ -1,3 +1,4 @@
+#include "czech.h"
 #include <boost/algorithm/string/predicate.hpp>
 #include <cmath>
 #include "datastore_access.hpp"
@@ -9,79 +10,79 @@ leaf_data_ leafValueFromNode(libyang::S_Data_Node_Leaf_List node)
     std::function<leaf_data_(libyang::S_Data_Node_Leaf_List)> impl = [&impl](libyang::S_Data_Node_Leaf_List node) -> leaf_data_ {
         // value_type() is what's ACTUALLY stored inside `node`
         // Leafrefs sometimes don't hold a reference to another, but they have the actual pointed-to value.
-        switch (node->value_type()) {
-        case LY_TYPE_ENUM:
-            return enum_{node->value()->enm()->name()};
-        case LY_TYPE_UINT8:
-            return node->value()->uint8();
-        case LY_TYPE_UINT16:
-            return node->value()->uint16();
-        case LY_TYPE_UINT32:
-            return node->value()->uint32();
-        case LY_TYPE_UINT64:
-            return node->value()->uint64();
-        case LY_TYPE_INT8:
-            return node->value()->int8();
-        case LY_TYPE_INT16:
-            return node->value()->int16();
-        case LY_TYPE_INT32:
-            return node->value()->int32();
-        case LY_TYPE_INT64:
-            return node->value()->int64();
-        case LY_TYPE_DEC64: {
+        přepínač (node->value_type()) {
+        případ LY_TYPE_ENUM:
+            vrať enum_{node->value()->enm()->name()};
+        případ LY_TYPE_UINT8:
+            vrať node->value()->uint8();
+        případ LY_TYPE_UINT16:
+            vrať node->value()->uint16();
+        případ LY_TYPE_UINT32:
+            vrať node->value()->uint32();
+        případ LY_TYPE_UINT64:
+            vrať node->value()->uint64();
+        případ LY_TYPE_INT8:
+            vrať node->value()->int8();
+        případ LY_TYPE_INT16:
+            vrať node->value()->int16();
+        případ LY_TYPE_INT32:
+            vrať node->value()->int32();
+        případ LY_TYPE_INT64:
+            vrať node->value()->int64();
+        případ LY_TYPE_DEC64: {
             auto v = node->value()->dec64();
-            return v.value * std::pow(10, -v.digits);
+            vrať v.value * std::pow(10, -v.digits);
         }
-        case LY_TYPE_BOOL:
-            return node->value()->bln();
-        case LY_TYPE_STRING:
-            return std::string{node->value()->string()};
-        case LY_TYPE_BINARY:
-            return binary_{node->value()->binary()};
-        case LY_TYPE_IDENT:
-            return identityRef_{node->value()->ident()->module()->name(), node->value()->ident()->name()};
-        case LY_TYPE_EMPTY:
-            return empty_{};
-        case LY_TYPE_LEAFREF: {
+        případ LY_TYPE_BOOL:
+            vrať node->value()->bln();
+        případ LY_TYPE_STRING:
+            vrať std::string{node->value()->string()};
+        případ LY_TYPE_BINARY:
+            vrať binary_{node->value()->binary()};
+        případ LY_TYPE_IDENT:
+            vrať identityRef_{node->value()->ident()->module()->name(), node->value()->ident()->name()};
+        případ LY_TYPE_EMPTY:
+            vrať empty_{};
+        případ LY_TYPE_LEAFREF: {
             auto refsTo = node->value()->leafref();
             assert(refsTo);
-            return impl(std::make_shared<libyang::Data_Node_Leaf_List>(node->value()->leafref()));
+            vrať impl(std::make_shared<libyang::Data_Node_Leaf_List>(node->value()->leafref()));
         }
-        case LY_TYPE_BITS: {
+        případ LY_TYPE_BITS: {
             auto bits = node->value()->bit();
             std::vector<libyang::S_Type_Bit> filterNull;
-            std::copy_if(bits.begin(), bits.end(), std::back_inserter(filterNull), [](auto bit) { return bit; });
+            std::copy_if(bits.begin(), bits.end(), std::back_inserter(filterNull), [](auto bit) { vrať bit; });
             bits_ res;
-            std::transform(filterNull.begin(), filterNull.end(), std::inserter(res.m_bits, res.m_bits.end()), [](const auto& bit) { return bit->name(); });
-            return bits_{res};
+            std::transform(filterNull.begin(), filterNull.end(), std::inserter(res.m_bits, res.m_bits.end()), [](neměnné auto& bit) { vrať bit->name(); });
+            vrať bits_{res};
         }
-        default:
-            return std::string{"(can't print)"};
+        výchozí:
+            vrať std::string{"(can't print)"};
         }
     };
-    return impl(node);
+    vrať impl(node);
 }
 
 namespace {
-void impl_lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix)
+prázdno impl_lyNodesToTree(DatastoreAccess::Tree& res, neměnné std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix)
 {
     auto stripXPathPrefix = [&ignoredXPathPrefix](auto path) {
-        return ignoredXPathPrefix && path.find(*ignoredXPathPrefix) != std::string::npos ? path.substr(ignoredXPathPrefix->size()) : path;
+        vrať ignoredXPathPrefix && path.find(*ignoredXPathPrefix) != std::string::npos ? path.substr(ignoredXPathPrefix->size()) : path;
     };
 
-    for (const auto& it : items) {
-        if (it->schema()->nodetype() == LYS_CONTAINER) {
-            if (libyang::Schema_Node_Container{it->schema()}.presence()) {
+    pro (neměnné auto& it : items) {
+        když (it->schema()->nodetype() == LYS_CONTAINER) {
+            když (libyang::Schema_Node_Container{it->schema()}.presence()) {
                 // The fact that the container is included in the data tree
                 // means that it is present and I don't need to check any
                 // value.
                 res.emplace_back(stripXPathPrefix(it->path()), special_{SpecialValue::PresenceContainer});
             }
         }
-        if (it->schema()->nodetype() == LYS_LIST) {
+        když (it->schema()->nodetype() == LYS_LIST) {
             res.emplace_back(stripXPathPrefix(it->path()), special_{SpecialValue::List});
         }
-        if (it->schema()->nodetype() == LYS_LEAF || it->schema()->nodetype() == LYS_LEAFLIST) {
+        když (it->schema()->nodetype() == LYS_LEAF || it->schema()->nodetype() == LYS_LEAFLIST) {
             auto leaf = std::make_shared<libyang::Data_Node_Leaf_List>(it);
             auto value = leafValueFromNode(leaf);
             res.emplace_back(stripXPathPrefix(it->path()), value);
@@ -90,26 +91,26 @@ void impl_lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::share
 }
 }
 
-void lyNodesToTree(DatastoreAccess::Tree& res, const std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix)
+prázdno lyNodesToTree(DatastoreAccess::Tree& res, neměnné std::vector<std::shared_ptr<libyang::Data_Node>> items, std::optional<std::string> ignoredXPathPrefix)
 {
-    for (auto it = items.begin(); it < items.end(); it++) {
-        if ((*it)->schema()->nodetype() == LYS_LEAFLIST) {
+    pro (auto it = items.begin(); it < items.end(); it++) {
+        když ((*it)->schema()->nodetype() == LYS_LEAFLIST) {
             auto leafListPath = stripLeafListValueFromPath((*it)->path());
             res.emplace_back(leafListPath, special_{SpecialValue::LeafList});
-            while (it != items.end() && boost::starts_with((*it)->path(), leafListPath)) {
+            dokud (it != items.end() && boost::starts_with((*it)->path(), leafListPath)) {
                 impl_lyNodesToTree(res, (*it)->tree_dfs(), ignoredXPathPrefix);
                 it++;
             }
-        } else {
+        } jinak {
             impl_lyNodesToTree(res, (*it)->tree_dfs(), ignoredXPathPrefix);
         }
     }
 }
 
-DatastoreAccess::Tree rpcOutputToTree(const std::string& rpcPath, libyang::S_Data_Node output)
+DatastoreAccess::Tree rpcOutputToTree(neměnné std::string& rpcPath, libyang::S_Data_Node output)
 {
     DatastoreAccess::Tree res;
-    if (output) {
+    když (output) {
         // The output is "some top-level node". If we actually want the output of our RPC/action we need to use
         // find_path.  Also, our `path` is fully prefixed, but the output paths aren't. So we use outputNode->path() to
         // get the unprefixed path.
@@ -117,15 +118,15 @@ DatastoreAccess::Tree rpcOutputToTree(const std::string& rpcPath, libyang::S_Dat
         auto outputNode = output->find_path(rpcPath.c_str())->data().front();
         lyNodesToTree(res, {outputNode}, joinPaths(outputNode->path(), "/"));
     }
-    return res;
+    vrať res;
 }
 
-libyang::S_Data_Node treeToRpcInput(libyang::S_Context ctx, const std::string& path, DatastoreAccess::Tree in)
+libyang::S_Data_Node treeToRpcInput(libyang::S_Context ctx, neměnné std::string& path, DatastoreAccess::Tree in)
 {
     auto root = std::make_shared<libyang::Data_Node>(ctx, path.c_str(), nullptr, LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
-    for (const auto& [k, v] : in) {
+    pro (neměnné auto& [k, v] : in) {
         root->new_path(ctx, k.c_str(), leafDataToString(v).c_str(), LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
     }
 
-    return root;
+    vrať root;
 }

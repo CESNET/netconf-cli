@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include "ast_commands.hpp"
 #include "leaf_data_helpers.hpp"
@@ -106,7 +107,7 @@ TEST_CASE("cd")
             {
                 input = "cd example:list[number=1]";
                 auto keys = ListInstance{
-                    {"number", int32_t{1}}};
+                    {"number", číslo32_t{1}}};
                 expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("list", keys));
             }
 
@@ -114,7 +115,7 @@ TEST_CASE("cd")
             {
                 input = "cd example:list[number=1]/contInList";
                 auto keys = ListInstance{
-                    {"number", int32_t{1}}};
+                    {"number", číslo32_t{1}}};
                 expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("list", keys));
                 expected.m_path.m_nodes.emplace_back(container_("contInList"));
             }
@@ -123,7 +124,7 @@ TEST_CASE("cd")
             {
                 input = "cd example:twoKeyList[number=4][name='abcd']";
                 auto keys = ListInstance{
-                    {"number", int32_t{4}},
+                    {"number", číslo32_t{4}},
                     {"name", std::string{"abcd"}}};
                 expected.m_path.m_nodes.emplace_back(module_{"example"}, listElement_("twoKeyList", keys));
             }

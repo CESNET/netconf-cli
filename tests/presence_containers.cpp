@@ -7,6 +7,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include "ast_commands.hpp"
 #include "parser.hpp"

@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "czech.h"
 #include "datastore_access.hpp"
 
 /*! \class YangAccess
@@ -23,37 +24,37 @@ public:
     YangAccess();
     YangAccess(std::shared_ptr<YangSchema> schema);
     ~YangAccess() override;
-    [[nodiscard]] Tree getItems(const std::string& path) const override;
-    void setLeaf(const std::string& path, leaf_data_ value) override;
-    void createItem(const std::string& path) override;
-    void deleteItem(const std::string& path) override;
-    void moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move) override;
-    void commitChanges() override;
-    void discardChanges() override;
-    [[noreturn]] Tree execute(const std::string& path, const Tree& input) override;
-    void copyConfig(const Datastore source, const Datastore destination) override;
+    [[nodiscard]] Tree getItems(neměnné std::string& path) neměnné override;
+    prázdno setLeaf(neměnné std::string& path, leaf_data_ value) override;
+    prázdno createItem(neměnné std::string& path) override;
+    prázdno deleteItem(neměnné std::string& path) override;
+    prázdno moveItem(neměnné std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move) override;
+    prázdno commitChanges() override;
+    prázdno discardChanges() override;
+    [[noreturn]] Tree execute(neměnné std::string& path, neměnné Tree& input) override;
+    prázdno copyConfig(neměnné Datastore source, neměnné Datastore destination) override;
 
     std::shared_ptr<Schema> schema() override;
 
-    void enableFeature(const std::string& module, const std::string& feature);
-    [[nodiscard]] std::string dump(const DataFormat format) const override;
+    prázdno enableFeature(neměnné std::string& module, neměnné std::string& feature);
+    [[nodiscard]] std::string dump(neměnné DataFormat format) neměnné override;
 
-    void loadModule(const std::string& name);
-    void addSchemaFile(const std::string& path);
-    void addSchemaDir(const std::string& path);
-    void addDataFile(const std::string& path);
+    prázdno loadModule(neměnné std::string& name);
+    prázdno addSchemaFile(neměnné std::string& path);
+    prázdno addSchemaDir(neměnné std::string& path);
+    prázdno addDataFile(neměnné std::string& path);
 
 private:
-    std::vector<ListInstance> listInstances(const std::string& path) override;
-    [[noreturn]] void impl_execute(const std::string& type, const std::string& path, const Tree& input);
+    std::vector<ListInstance> listInstances(neměnné std::string& path) override;
+    [[noreturn]] prázdno impl_execute(neměnné std::string& type, neměnné std::string& path, neměnné Tree& input);
 
-    [[noreturn]] void getErrorsAndThrow() const;
-    void impl_newPath(const std::string& path, const std::optional<std::string>& value = std::nullopt);
-    void impl_removeNode(const std::string& path);
-    void validate();
+    [[noreturn]] prázdno getErrorsAndThrow() neměnné;
+    prázdno impl_newPath(neměnné std::string& path, neměnné std::optional<std::string>& value = std::nullopt);
+    prázdno impl_removeNode(neměnné std::string& path);
+    prázdno validate();
 
-    std::unique_ptr<ly_ctx, void (*)(ly_ctx*)> m_ctx;
-    std::unique_ptr<lyd_node, void (*)(lyd_node*)> m_datastore;
+    std::unique_ptr<ly_ctx, prázdno (*)(ly_ctx*)> m_ctx;
+    std::unique_ptr<lyd_node, prázdno (*)(lyd_node*)> m_datastore;
     std::shared_ptr<YangSchema> m_schema;
-    const int m_validation_mode;
+    neměnné číslo m_validation_mode;
 };

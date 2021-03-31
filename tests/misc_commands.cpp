@@ -5,6 +5,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include "parser.hpp"
 #include "pretty_printers.hpp"

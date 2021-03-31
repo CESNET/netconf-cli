@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "czech.h"
 #include <memory>
 #include <optional>
 #include <sysrepo-cpp/Session.hpp>
@@ -24,19 +25,19 @@ class YangSchema;
 class Recorder {
 public:
     virtual ~Recorder();
-    virtual void write(const std::string& xpath, const std::optional<std::string>& oldValue, const std::optional<std::string>& newValue) = 0;
+    virtual prázdno write(neměnné std::string& xpath, neměnné std::optional<std::string>& oldValue, neměnné std::optional<std::string>& newValue) = 0;
 };
 
 class DataSupplier {
 public:
     virtual ~DataSupplier();
-    [[nodiscard]] virtual DatastoreAccess::Tree get_data(const std::string& xpath) const = 0;
+    [[nodiscard]] virtual DatastoreAccess::Tree get_data(neměnné std::string& xpath) neměnné = 0;
 };
 
 
 class SysrepoSubscription {
 public:
-    SysrepoSubscription(const std::string& moduleName, Recorder* rec = nullptr, sr_datastore_t ds = SR_DS_RUNNING);
+    SysrepoSubscription(neměnné std::string& moduleName, Recorder* rec = nullptr, sr_datastore_t ds = SR_DS_RUNNING);
 
 private:
     std::shared_ptr<sysrepo::Connection> m_connection;
@@ -47,7 +48,7 @@ private:
 
 class OperationalDataSubscription {
 public:
-    OperationalDataSubscription(const std::string& moduleName, const std::string& path, const DataSupplier& dataSupplier);
+    OperationalDataSubscription(neměnné std::string& moduleName, neměnné std::string& path, neměnné DataSupplier& dataSupplier);
 
 private:
     std::shared_ptr<sysrepo::Connection> m_connection;

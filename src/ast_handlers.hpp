@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "czech.h"
 #include <boost/mpl/for_each.hpp>
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/support/utility/error_reporting.hpp>
@@ -23,42 +24,42 @@ struct parser_context_tag;
 
 struct keyValue_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T& ast, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
 
-        if (parserContext.m_tmpListKeys.find(ast.first) != parserContext.m_tmpListKeys.end()) {
+        když (parserContext.m_tmpListKeys.find(ast.first) != parserContext.m_tmpListKeys.end()) {
             _pass(context) = false;
             parserContext.m_errorMsg = "Key \"" + ast.first + "\" was entered more than once.";
-        } else {
+        } jinak {
             parserContext.m_tmpListKeys.insert({ast.first, ast.second});
         }
     }
 
     template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
+    x3::error_handler_result on_error(Iterator&, Iterator neměnné&, Exception neměnné&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.m_errorMsg = "Error parsing key values here:";
-        return x3::error_handler_result::rethrow;
+        vrať x3::error_handler_result::rethrow;
     }
 };
 
 struct node_identifier_class;
 
-boost::optional<std::string> optModuleToOptString(const boost::optional<module_> module);
+boost::optional<std::string> optModuleToOptString(neměnné boost::optional<module_> module);
 
 struct key_identifier_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T& ast, Context neměnné& context)
     {
         ParserContext& parserContext = x3::get<parser_context_tag>(context);
-        const Schema& schema = parserContext.m_schema;
+        neměnné Schema& schema = parserContext.m_schema;
 
-        if (schema.listHasKey(dataPathToSchemaPath(parserContext.m_tmpListPath), ast)) {
+        když (schema.listHasKey(dataPathToSchemaPath(parserContext.m_tmpListPath), ast)) {
             parserContext.m_tmpListKeyLeafPath.m_location = dataPathToSchemaPath(parserContext.m_tmpListPath);
             parserContext.m_tmpListKeyLeafPath.m_node = {optModuleToOptString(parserContext.m_tmpListPath.m_nodes.back().m_prefix), ast};
-        } else {
+        } jinak {
             auto listName = std::get<list_>(parserContext.m_tmpListPath.m_nodes.back().m_suffix).m_name;
             parserContext.m_errorMsg = listName + " is not indexed by \"" + ast + "\".";
             _pass(context) = false;
@@ -70,18 +71,18 @@ struct module_identifier_class;
 
 struct listSuffix_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T& ast, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        const Schema& schema = parserContext.m_schema;
+        neměnné Schema& schema = parserContext.m_schema;
 
-        const auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
+        neměnné auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
         std::set<std::string> keysSupplied;
-        for (const auto& it : ast) {
+        pro (neměnné auto& it : ast) {
             keysSupplied.insert(it.first);
         }
 
-        if (keysNeeded != keysSupplied) {
+        když (keysNeeded != keysSupplied) {
             auto listName = std::get<list_>(parserContext.m_tmpListPath.m_nodes.back().m_suffix).m_name;
             parserContext.m_errorMsg = "Not enough keys for " + listName + ". " +
                                        "These keys were not supplied:";
@@ -90,13 +91,13 @@ struct listSuffix_class {
                                 keysSupplied.begin(), keysSupplied.end(),
                                 std::inserter(missingKeys, missingKeys.end()));
 
-            for (const auto& it : missingKeys) {
+            pro (neměnné auto& it : missingKeys) {
                 parserContext.m_errorMsg += " " + it;
             }
             parserContext.m_errorMsg += ".";
 
             _pass(context) = false;
-            return;
+            vrať;
         }
 
         // Clean up after listSuffix, in case someone wants to parse more listSuffixes
@@ -104,24 +105,24 @@ struct listSuffix_class {
     }
 
     template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
+    x3::error_handler_result on_error(Iterator&, Iterator neměnné&, Exception neměnné&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty()) {
+        když (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Expecting ']' here:";
         }
-        return x3::error_handler_result::rethrow;
+        vrať x3::error_handler_result::rethrow;
     }
 };
 
 struct module_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T& ast, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        const auto& schema = parserContext.m_schema;
+        neměnné auto& schema = parserContext.m_schema;
 
-        if (!schema.isModule(ast.m_name)) {
+        když (!schema.isModule(ast.m_name)) {
             parserContext.m_errorMsg = "Invalid module name.";
             _pass(context) = false;
         }
@@ -130,7 +131,7 @@ struct module_class {
 
 struct absoluteStart_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.clearPath();
@@ -143,29 +144,29 @@ struct ls_class;
 
 struct cd_class {
     template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
+    x3::error_handler_result on_error(Iterator&, Iterator neměnné&, Exception neměnné& x, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty()) {
+        když (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Expected " + x.which() + " here:";
         }
-        return x3::error_handler_result::rethrow;
+        vrať x3::error_handler_result::rethrow;
     }
 };
 
 struct presenceContainerPath_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T& ast, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        const auto& schema = parserContext.m_schema;
-        if (ast.m_nodes.empty()) {
+        neměnné auto& schema = parserContext.m_schema;
+        když (ast.m_nodes.empty()) {
             parserContext.m_errorMsg = "This container is not a presence container.";
             _pass(context) = false;
-            return;
+            vrať;
         }
 
-        if (schema.nodeType(pathToSchemaString(parserContext.currentSchemaPath(), Prefixes::Always)) != yang::NodeTypes::PresenceContainer) {
+        když (schema.nodeType(pathToSchemaString(parserContext.currentSchemaPath(), Prefixes::Always)) != yang::NodeTypes::PresenceContainer) {
             parserContext.m_errorMsg = "This container is not a presence container.";
             _pass(context) = false;
         }
@@ -174,10 +175,10 @@ struct presenceContainerPath_class {
 
 struct listInstancePath_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T& ast, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (ast.m_nodes.empty() || !std::holds_alternative<listElement_>(ast.m_nodes.back().m_suffix)) {
+        když (ast.m_nodes.empty() || !std::holds_alternative<listElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a list instance.";
             _pass(context) = false;
         }
@@ -186,10 +187,10 @@ struct listInstancePath_class {
 
 struct leafListElementPath_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T& ast, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (ast.m_nodes.empty() || !std::holds_alternative<leafListElement_>(ast.m_nodes.back().m_suffix)) {
+        když (ast.m_nodes.empty() || !std::holds_alternative<leafListElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a leaf list element.";
             _pass(context) = false;
         }
@@ -198,7 +199,7 @@ struct leafListElementPath_class {
 
 struct space_separator_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.m_suggestions.clear();
@@ -208,25 +209,25 @@ struct space_separator_class {
 
 struct create_class {
     template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
+    x3::error_handler_result on_error(Iterator&, Iterator neměnné&, Exception neměnné&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty()) {
+        když (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Couldn't parse create/delete command.";
         }
-        return x3::error_handler_result::rethrow;
+        vrať x3::error_handler_result::rethrow;
     }
 };
 
 struct delete_class {
     template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const&, Context const& context)
+    x3::error_handler_result on_error(Iterator&, Iterator neměnné&, Exception neměnné&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty()) {
+        když (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Couldn't parse create/delete command.";
         }
-        return x3::error_handler_result::rethrow;
+        vrať x3::error_handler_result::rethrow;
     }
 };
 
@@ -240,13 +241,13 @@ struct getPath_class;
 
 struct set_class {
     template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
+    x3::error_handler_result on_error(Iterator&, Iterator neměnné&, Exception neměnné& x, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (parserContext.m_errorMsg.empty()) {
+        když (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Expected " + x.which() + " here:";
         }
-        return x3::error_handler_result::rethrow;
+        vrať x3::error_handler_result::rethrow;
     }
 };
 
@@ -276,21 +277,21 @@ struct cancel_class;
 
 struct command_class {
     template <typename Iterator, typename Exception, typename Context>
-    x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
+    x3::error_handler_result on_error(Iterator&, Iterator neměnné&, Exception neměnné& x, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         auto& error_handler = x3::get<x3::error_handler_tag>(context).get();
-        if (parserContext.m_errorMsg.empty()) {
+        když (parserContext.m_errorMsg.empty()) {
             parserContext.m_errorMsg = "Unknown command.";
         }
         error_handler(x.where(), parserContext.m_errorMsg);
-        return x3::error_handler_result::fail;
+        vrať x3::error_handler_result::fail;
     }
 };
 
 struct initializePath_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.resetPath();
@@ -306,48 +307,48 @@ std::set<Completion> generateMissingKeyCompletionSet(std::set<std::string> keysN
 
 struct createKeySuggestions_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    prázdno on_success(Iterator neměnné& begin, Iterator neměnné&, T&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        const auto& schema = parserContext.m_schema;
+        neměnné auto& schema = parserContext.m_schema;
 
         parserContext.m_completionIterator = begin;
 
-        const auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
+        neměnné auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
         parserContext.m_suggestions = generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys);
     }
 };
 
-std::string leafDataToCompletion(const leaf_data_& value);
+std::string leafDataToCompletion(neměnné leaf_data_& value);
 
 struct createValueSuggestions_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    prázdno on_success(Iterator neměnné& begin, Iterator neměnné&, T&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        if (!parserContext.m_completing) {
-            return;
+        když (!parserContext.m_completing) {
+            vrať;
         }
-        const auto& dataQuery = parserContext.m_dataquery;
+        neměnné auto& dataQuery = parserContext.m_dataquery;
 
         parserContext.m_completionIterator = begin;
         auto listInstances = dataQuery->listKeys(parserContext.m_tmpListPath);
 
         decltype(listInstances) filteredInstances;
         //This filters out instances, which don't correspond to the partial instance we have.
-        const auto partialFitsComplete = [&parserContext](const auto& complete) {
-            const auto& partial = parserContext.m_tmpListKeys;
-            return std::all_of(partial.begin(), partial.end(), [&complete](const auto& oneKV) {
-                const auto& [k, v] = oneKV;
-                return complete.at(k) == v;
+        neměnné auto partialFitsComplete = [&parserContext](neměnné auto& complete) {
+            neměnné auto& partial = parserContext.m_tmpListKeys;
+            vrať std::all_of(partial.begin(), partial.end(), [&complete](neměnné auto& oneKV) {
+                neměnné auto& [k, v] = oneKV;
+                vrať complete.at(k) == v;
             });
         };
         std::copy_if(listInstances.begin(), listInstances.end(), std::inserter(filteredInstances, filteredInstances.end()), partialFitsComplete);
 
         std::set<Completion> validValues;
 
-        std::transform(filteredInstances.begin(), filteredInstances.end(), std::inserter(validValues, validValues.end()), [&parserContext](const auto& instance) {
-            return Completion{leafDataToCompletion(instance.at(parserContext.m_tmpListKeyLeafPath.m_node.second))};
+        std::transform(filteredInstances.begin(), filteredInstances.end(), std::inserter(validValues, validValues.end()), [&parserContext](neměnné auto& instance) {
+            vrať Completion{leafDataToCompletion(instance.at(parserContext.m_tmpListKeyLeafPath.m_node.second))};
         });
 
         parserContext.m_suggestions = validValues;
@@ -356,16 +357,16 @@ struct createValueSuggestions_class {
 
 struct suggestKeysEnd_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    prázdno on_success(Iterator neměnné& begin, Iterator neměnné&, T&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
-        const auto& schema = parserContext.m_schema;
+        neměnné auto& schema = parserContext.m_schema;
 
         parserContext.m_completionIterator = begin;
-        const auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
-        if (generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys).empty()) {
+        neměnné auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
+        když (generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys).empty()) {
             parserContext.m_suggestions = {Completion{"]/"}};
-        } else {
+        } jinak {
             parserContext.m_suggestions = {Completion{"]["}};
         }
     }
@@ -374,12 +375,12 @@ struct suggestKeysEnd_class {
 template <typename T>
 std::string commandNamesVisitor(boost::type<T>)
 {
-    return T::name;
+    vrať T::name;
 }
 
 struct createCommandSuggestions_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    prázdno on_success(Iterator neměnné& begin, Iterator neměnné&, T&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         parserContext.m_completionIterator = begin;
@@ -393,11 +394,11 @@ struct createCommandSuggestions_class {
 
 struct completing_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    prázdno on_success(Iterator neměnné&, Iterator neměnné&, T&, Context neměnné& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
 
-        if (!parserContext.m_completing) {
+        když (!parserContext.m_completing) {
             _pass(context) = false;
         }
     }

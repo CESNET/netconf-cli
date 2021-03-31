@@ -7,6 +7,7 @@
 */
 #pragma once
 
+#include "czech.h"
 #include <boost/mpl/vector.hpp>
 #include <boost/spirit/home/x3/support/ast/position_tagged.hpp>
 #include "ast_path.hpp"
@@ -23,22 +24,22 @@ enum class LsOption {
 };
 
 struct discard_ : x3::position_tagged {
-    static constexpr auto name = "discard";
-    static constexpr auto shortHelp = "discard - Discard current changes.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "discard";
+    stálé constexpr auto shortHelp = "discard - Discard current changes.";
+    stálé constexpr auto longHelp = R"(
     discard
 
     Discards current changes. Accepts no arguments.
 
     Usage:
         /> discard)";
-    bool operator==(const discard_& b) const;
+    pravdivost operator==(neměnné discard_& b) neměnné;
 };
 
 struct ls_ : x3::position_tagged {
-    static constexpr auto name = "ls";
-    static constexpr auto shortHelp = "ls - List available nodes.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "ls";
+    stálé constexpr auto shortHelp = "ls - List available nodes.";
+    stálé constexpr auto longHelp = R"(
     ls [--recursive] [path]
 
     Lists available child nodes in the current context node. Optionally accepts
@@ -52,15 +53,15 @@ struct ls_ : x3::position_tagged {
         /> ls
         /> ls --recursive module:node
         /> ls /module:node)";
-    bool operator==(const ls_& b) const;
+    pravdivost operator==(neměnné ls_& b) neměnné;
     std::vector<LsOption> m_options;
     boost::optional<boost::variant<dataPath_, schemaPath_, module_>> m_path;
 };
 
 struct cd_ : x3::position_tagged {
-    static constexpr auto name = "cd";
-    static constexpr auto shortHelp = "cd - Enter a different node.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "cd";
+    stálé constexpr auto shortHelp = "cd - Enter a different node.";
+    stálé constexpr auto longHelp = R"(
     cd <path>
 
     Changes context to a node specified by <path>. Only accepts data paths
@@ -69,14 +70,14 @@ struct cd_ : x3::position_tagged {
     Usage:
         /> cd /module:node/node2
         /> cd ..)";
-    bool operator==(const cd_& b) const;
+    pravdivost operator==(neměnné cd_& b) neměnné;
     dataPath_ m_path;
 };
 
 struct create_ : x3::position_tagged {
-    static constexpr auto name = "create";
-    static constexpr auto shortHelp = "create - Create a node.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "create";
+    stálé constexpr auto shortHelp = "create - Create a node.";
+    stálé constexpr auto longHelp = R"(
     create <path>
 
     Creates a node specified by <path>.
@@ -87,14 +88,14 @@ struct create_ : x3::position_tagged {
         /> create /module:pContainer
         /> create /module:leafList['value']
         /> create /module:list[key=value][anotherKey=value])";
-    bool operator==(const create_& b) const;
+    pravdivost operator==(neměnné create_& b) neměnné;
     dataPath_ m_path;
 };
 
 struct delete_ : x3::position_tagged {
-    static constexpr auto name = "delete";
-    static constexpr auto shortHelp = "delete - Delete a node.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "delete";
+    stálé constexpr auto shortHelp = "delete - Delete a node.";
+    stálé constexpr auto longHelp = R"(
     delete <path>
 
     Deletes a node specified by <path>.
@@ -105,14 +106,14 @@ struct delete_ : x3::position_tagged {
         /> delete /module:pContainer
         /> delete /module:leafList['value']
         /> delete /module:list[key=value][anotherKey=value])";
-    bool operator==(const delete_& b) const;
+    pravdivost operator==(neměnné delete_& b) neměnné;
     dataPath_ m_path;
 };
 
 struct set_ : x3::position_tagged {
-    static constexpr auto name = "set";
-    static constexpr auto shortHelp = "set - Set value of a leaf.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "set";
+    stálé constexpr auto shortHelp = "set - Set value of a leaf.";
+    stálé constexpr auto longHelp = R"(
     set <path_to_leaf> <value>
 
     Sets the leaf specified by <path_to_leaf> to <value>.
@@ -120,15 +121,15 @@ struct set_ : x3::position_tagged {
     Usage:
         /> set /module:leaf 123
         /> set /module:leaf abc)";
-    bool operator==(const set_& b) const;
+    pravdivost operator==(neměnné set_& b) neměnné;
     dataPath_ m_path;
     leaf_data_ m_data;
 };
 
 struct commit_ : x3::position_tagged {
-    static constexpr auto name = "commit";
-    static constexpr auto shortHelp = "commit - Commit current changes.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "commit";
+    stálé constexpr auto shortHelp = "commit - Commit current changes.";
+    stálé constexpr auto longHelp = R"(
     commit
 
     Commits the current changes. Accepts no arguments.
@@ -138,9 +139,9 @@ struct commit_ : x3::position_tagged {
 };
 
 struct get_ : x3::position_tagged {
-    static constexpr auto name = "get";
-    static constexpr auto shortHelp = "get - Retrieve configuration from the server.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "get";
+    stálé constexpr auto shortHelp = "get - Retrieve configuration from the server.";
+    stálé constexpr auto longHelp = R"(
     get [path]
 
     Prints out content of the current datastore at a specified [path], or below
@@ -149,14 +150,14 @@ struct get_ : x3::position_tagged {
     Usage:
         /> get
         /> get /module:path)";
-    bool operator==(const get_& b) const;
+    pravdivost operator==(neměnné get_& b) neměnné;
     boost::optional<boost::variant<dataPath_, module_>> m_path;
 };
 
 struct describe_ : x3::position_tagged {
-    static constexpr auto name = "describe";
-    static constexpr auto shortHelp = "describe - Print information about YANG tree path.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "describe";
+    stálé constexpr auto shortHelp = "describe - Print information about YANG tree path.";
+    stálé constexpr auto longHelp = R"(
     describe <path>
 
     Shows documentation of YANG tree paths. In the YANG model, each item may
@@ -167,15 +168,15 @@ struct describe_ : x3::position_tagged {
 
     Usage:
         /> describe /module:node)";
-    bool operator==(const describe_& b) const;
+    pravdivost operator==(neměnné describe_& b) neměnné;
 
     boost::variant<schemaPath_, dataPath_> m_path;
 };
 
 struct copy_ : x3::position_tagged {
-    static constexpr auto name = "copy";
-    static constexpr auto shortHelp = "copy - Copy configuration.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "copy";
+    stálé constexpr auto shortHelp = "copy - Copy configuration.";
+    stálé constexpr auto longHelp = R"(
     copy <source> <destination>
 
     Copies configuration from <source> to <destination>.
@@ -183,7 +184,7 @@ struct copy_ : x3::position_tagged {
     Usage:
         /> copy running startup
         /> copy startup running)";
-    bool operator==(const copy_& b) const;
+    pravdivost operator==(neměnné copy_& b) neměnné;
 
     Datastore m_source;
     Datastore m_destination;
@@ -197,9 +198,9 @@ enum class MoveMode {
 };
 
 struct move_ : x3::position_tagged {
-    static constexpr auto name = "move";
-    static constexpr auto shortHelp = "move - Move (leaf)list instances.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "move";
+    stálé constexpr auto shortHelp = "move - Move (leaf)list instances.";
+    stálé constexpr auto longHelp = R"(
     move <path> begin
     move <path> end
     move <path> before <key>
@@ -212,7 +213,7 @@ struct move_ : x3::position_tagged {
         /> move mod:leaflist['abc'] begin
         /> move mod:leaflist['def'] after 'abc'
         /> move mod:interfaces[name='eth0'] after [name='eth1'])";
-    bool operator==(const move_& b) const;
+    pravdivost operator==(neměnné move_& b) neměnné;
 
     dataPath_ m_source;
 
@@ -220,9 +221,9 @@ struct move_ : x3::position_tagged {
 };
 
 struct dump_ : x3::position_tagged {
-    static constexpr auto name = "dump";
-    static constexpr auto shortHelp = "dump - Print out datastore content as JSON or XML.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "dump";
+    stálé constexpr auto shortHelp = "dump - Print out datastore content as JSON or XML.";
+    stálé constexpr auto longHelp = R"(
     dump xml|json
 
     Prints out the content of the datastore. Supports JSON and XML.
@@ -230,15 +231,15 @@ struct dump_ : x3::position_tagged {
     Usage:
         /> dump xml
         /> dump json)";
-    bool operator==(const dump_& other) const;
+    pravdivost operator==(neměnné dump_& other) neměnné;
 
     DataFormat m_format;
 };
 
 struct prepare_ : x3::position_tagged {
-    static constexpr auto name = "prepare";
-    static constexpr auto shortHelp = "prepare - Initiate RPC/action.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "prepare";
+    stálé constexpr auto shortHelp = "prepare - Initiate RPC/action.";
+    stálé constexpr auto longHelp = R"(
     prepare <path-to-rpc-or-action>
 
     This command enters a mode for entering input parameters for the RPC/action.
@@ -250,15 +251,15 @@ struct prepare_ : x3::position_tagged {
         /> prepare /mod:launch-nukes
         /> set kilotons 1000
         /> exec)";
-    bool operator==(const prepare_& other) const;
+    pravdivost operator==(neměnné prepare_& other) neměnné;
 
     dataPath_ m_path;
 };
 
 struct exec_ : x3::position_tagged {
-    static constexpr auto name = "exec";
-    static constexpr auto shortHelp = "exec - Execute RPC/action.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "exec";
+    stálé constexpr auto shortHelp = "exec - Execute RPC/action.";
+    stálé constexpr auto longHelp = R"(
     exec [path]
 
     This command executes the RPC/action you have previously initiated via the
@@ -270,28 +271,28 @@ struct exec_ : x3::position_tagged {
     Usage:
         /> exec
         /> exec /mod:myRpc)";
-    bool operator==(const exec_& other) const;
+    pravdivost operator==(neměnné exec_& other) neměnné;
 
     boost::optional<dataPath_> m_path;
 };
 
 struct cancel_ : x3::position_tagged {
-    static constexpr auto name = "cancel";
-    static constexpr auto shortHelp = "cancel - Cancel an ongoing RPC/action input.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "cancel";
+    stálé constexpr auto shortHelp = "cancel - Cancel an ongoing RPC/action input.";
+    stálé constexpr auto longHelp = R"(
     cancel
 
     This command cancels a previously entered RPC/action context.
 
     Usage:
         /> cancel)";
-    bool operator==(const cancel_& other) const;
+    pravdivost operator==(neměnné cancel_& other) neměnné;
 };
 
 struct switch_ : x3::position_tagged {
-    static constexpr auto name = "switch";
-    static constexpr auto shortHelp = "switch - Switch datastore target.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "switch";
+    stálé constexpr auto shortHelp = "switch - Switch datastore target.";
+    stálé constexpr auto longHelp = R"(
     switch <target>
 
     This command switches the datastore target. Available targets are:
@@ -308,16 +309,16 @@ struct switch_ : x3::position_tagged {
         /> switch running
         /> switch startup
         /> switch operational)";
-    bool operator==(const switch_& other) const;
+    pravdivost operator==(neměnné switch_& other) neměnné;
     DatastoreTarget m_target;
 };
 
 struct help_;
 using CommandTypes = boost::mpl::vector<cancel_, cd_, commit_, copy_, create_, delete_, describe_, discard_, dump_, exec_, get_, help_, ls_, move_, prepare_, set_, switch_>;
 struct help_ : x3::position_tagged {
-    static constexpr auto name = "help";
-    static constexpr auto shortHelp = "help - Print help for commands.";
-    static constexpr auto longHelp = R"(
+    stálé constexpr auto name = "help";
+    stálé constexpr auto shortHelp = "help - Print help for commands.";
+    stálé constexpr auto longHelp = R"(
     help [command_name]
 
     Print help for command_name. If used without an argument,
@@ -327,7 +328,7 @@ struct help_ : x3::position_tagged {
         /> help
         /> help cd
         /> help help)";
-    bool operator==(const help_& b) const;
+    pravdivost operator==(neměnné help_& b) neměnné;
 
     // The help command has got one optional argument – a command name (type).
     // All commands are saved in CommandTypes, so we could just use that, but

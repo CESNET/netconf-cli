@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/mpl/for_each.hpp>
 #include <iostream>
@@ -15,35 +16,35 @@
 #include "utils.hpp"
 
 struct pathToStringVisitor : boost::static_visitor<std::string> {
-    std::string operator()(const module_& path) const
+    std::string operator()(neměnné module_& path) neměnné
     {
         using namespace std::string_literals;
-        return "/"s + boost::get<module_>(path).m_name + ":*";
+        vrať "/"s + boost::get<module_>(path).m_name + ":*";
     }
-    std::string operator()(const schemaPath_& path) const
+    std::string operator()(neměnné schemaPath_& path) neměnné
     {
-        return pathToSchemaString(path, Prefixes::WhenNeeded);
+        vrať pathToSchemaString(path, Prefixes::WhenNeeded);
     }
-    std::string operator()(const dataPath_& path) const
+    std::string operator()(neměnné dataPath_& path) neměnné
     {
-        return pathToDataString(path, Prefixes::WhenNeeded);
+        vrať pathToDataString(path, Prefixes::WhenNeeded);
     }
 };
 
 namespace {
-void printTree(const DatastoreAccess::Tree tree)
+prázdno printTree(neměnné DatastoreAccess::Tree tree)
 {
-    for (auto it = tree.begin(); it != tree.end(); it++) {
+    pro (auto it = tree.begin(); it != tree.end(); it++) {
         auto [path, value] = *it;
-        if (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
+        když (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
             auto leafListPrefix = path;
             std::cout << path << " = " << leafDataToString(value) << std::endl;
 
-            while (it + 1 != tree.end() && boost::starts_with((it + 1)->first, leafListPrefix)) {
+            dokud (it + 1 != tree.end() && boost::starts_with((it + 1)->first, leafListPrefix)) {
                 ++it;
                 std::cout << stripLeafListValueFromPath(it->first) << " = " << leafDataToString(it->second) << std::endl;
             }
-        } else {
+        } jinak {
             std::cout << path << " = " << leafDataToString(value) << std::endl;
         }
     }
@@ -51,29 +52,29 @@ void printTree(const DatastoreAccess::Tree tree)
 }
 
 template <typename PathType>
-std::string pathToString(const PathType& path)
+std::string pathToString(neměnné PathType& path)
 {
-    return boost::apply_visitor(pathToStringVisitor(), path);
+    vrať boost::apply_visitor(pathToStringVisitor(), path);
 }
 
-void Interpreter::operator()(const commit_&) const
+prázdno Interpreter::operator()(neměnné commit_&) neměnné
 {
     m_datastore.commitChanges();
 }
 
-void Interpreter::operator()(const discard_&) const
+prázdno Interpreter::operator()(neměnné discard_&) neměnné
 {
     m_datastore.discardChanges();
 }
 
-void Interpreter::operator()(const set_& set) const
+prázdno Interpreter::operator()(neměnné set_& set) neměnné
 {
     auto data = set.m_data;
 
     // If the user didn't supply a module prefix for identityref, we need to add it ourselves
-    if (data.type() == typeid(identityRef_)) {
+    když (data.type() == typeid(identityRef_)) {
         auto identityRef = boost::get<identityRef_>(data);
-        if (!identityRef.m_prefix) {
+        když (!identityRef.m_prefix) {
             identityRef.m_prefix = set.m_path.m_nodes.front().m_prefix.value();
             data = identityRef;
         }
@@ -81,114 +82,114 @@ void Interpreter::operator()(const set_& set) const
     m_datastore.setLeaf(pathToString(toCanonicalPath(set.m_path)), data);
 }
 
-void Interpreter::operator()(const get_& get) const
+prázdno Interpreter::operator()(neměnné get_& get) neměnné
 {
     auto items = m_datastore.getItems(pathToString(toCanonicalPath(get.m_path)));
     printTree(items);
 }
 
-void Interpreter::operator()(const cd_& cd) const
+prázdno Interpreter::operator()(neměnné cd_& cd) neměnné
 {
     m_parser.changeNode(cd.m_path);
 }
 
-void Interpreter::operator()(const create_& create) const
+prázdno Interpreter::operator()(neměnné create_& create) neměnné
 {
     m_datastore.createItem(pathToString(toCanonicalPath(create.m_path)));
 }
 
-void Interpreter::operator()(const delete_& delet) const
+prázdno Interpreter::operator()(neměnné delete_& delet) neměnné
 {
     m_datastore.deleteItem(pathToString(toCanonicalPath(delet.m_path)));
 }
 
-void Interpreter::operator()(const ls_& ls) const
+prázdno Interpreter::operator()(neměnné ls_& ls) neměnné
 {
     std::cout << "Possible nodes:" << std::endl;
     auto recursion{Recursion::NonRecursive};
-    for (auto it : ls.m_options) {
-        if (it == LsOption::Recursive) {
+    pro (auto it : ls.m_options) {
+        když (it == LsOption::Recursive) {
             recursion = Recursion::Recursive;
         }
     }
 
     auto toPrint = m_datastore.schema()->availableNodes(toCanonicalPath(ls.m_path), recursion);
 
-    for (const auto& it : toPrint) {
+    pro (neměnné auto& it : toPrint) {
         std::cout << (it.first ? *it.first + ":" : "") + it.second << std::endl;
     }
 }
 
-void Interpreter::operator()(const copy_& copy) const
+prázdno Interpreter::operator()(neměnné copy_& copy) neměnné
 {
     m_datastore.copyConfig(copy.m_source, copy.m_destination);
 }
 
-std::string Interpreter::buildTypeInfo(const std::string& path) const
+std::string Interpreter::buildTypeInfo(neměnné std::string& path) neměnné
 {
     std::ostringstream ss;
     std::string typeDescription;
-    switch (m_datastore.schema()->nodeType(path)) {
-    case yang::NodeTypes::Container:
+    přepínač (m_datastore.schema()->nodeType(path)) {
+    případ yang::NodeTypes::Container:
         ss << "container";
-        break;
-    case yang::NodeTypes::PresenceContainer:
+        rozbij;
+    případ yang::NodeTypes::PresenceContainer:
         ss << "presence container";
-        break;
-    case yang::NodeTypes::Leaf: {
+        rozbij;
+    případ yang::NodeTypes::Leaf: {
         auto leafType = m_datastore.schema()->leafType(path);
         auto typedefName = m_datastore.schema()->leafTypeName(path);
         std::string baseTypeStr;
-        if (std::holds_alternative<yang::LeafRef>(leafType.m_type)) {
+        když (std::holds_alternative<yang::LeafRef>(leafType.m_type)) {
             ss << "-> ";
             ss << m_datastore.schema()->leafrefPath(path) << " ";
             baseTypeStr = leafDataTypeToString(std::get<yang::LeafRef>(leafType.m_type).m_targetType->m_type);
-        } else {
+        } jinak {
             baseTypeStr = leafDataTypeToString(leafType.m_type);
         }
 
-        if (typedefName) {
+        když (typedefName) {
             ss << *typedefName << " (" << baseTypeStr << ")";
-        } else {
+        } jinak {
             ss << baseTypeStr;
         }
 
-        if (leafType.m_units) {
+        když (leafType.m_units) {
             ss << " [" + *leafType.m_units + "]";
         }
 
-        if (leafType.m_description) {
+        když (leafType.m_description) {
             typeDescription = "\nType description: " + *leafType.m_description;
         }
 
-        if (m_datastore.schema()->leafIsKey(path)) {
+        když (m_datastore.schema()->leafIsKey(path)) {
             ss << " (key)";
         }
 
-        if (auto defaultValue = m_datastore.schema()->defaultValue(path)) {
+        když (auto defaultValue = m_datastore.schema()->defaultValue(path)) {
             ss << " default: " << leafDataToString(*defaultValue);
         }
-        break;
+        rozbij;
     }
-    case yang::NodeTypes::List:
+    případ yang::NodeTypes::List:
         ss << "list";
-        break;
-    case yang::NodeTypes::Rpc:
+        rozbij;
+    případ yang::NodeTypes::Rpc:
         ss << "RPC";
-        break;
-    case yang::NodeTypes::LeafList:
+        rozbij;
+    případ yang::NodeTypes::LeafList:
         ss << "leaf-list";
-        break;
-    case yang::NodeTypes::Action:
+        rozbij;
+    případ yang::NodeTypes::Action:
         ss << "action";
-        break;
-    case yang::NodeTypes::AnyXml:
+        rozbij;
+    případ yang::NodeTypes::AnyXml:
         throw std::logic_error("Sorry, anyxml isn't supported yet.");
-    case yang::NodeTypes::Notification:
+    případ yang::NodeTypes::Notification:
         throw std::logic_error("Sorry, notifications aren't supported yet.");
     }
 
-    if (!m_datastore.schema()->isConfig(path)) {
+    když (!m_datastore.schema()->isConfig(path)) {
         ss << " (ro)\n";
     }
 
@@ -199,41 +200,41 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
 
     ss << statusStr;
 
-    if (auto description = m_datastore.schema()->description(path)) {
+    když (auto description = m_datastore.schema()->description(path)) {
         ss << std::endl << *description << std::endl;
     }
 
     ss << typeDescription;
-    return ss.str();
+    vrať ss.str();
 }
 
-void Interpreter::operator()(const describe_& describe) const
+prázdno Interpreter::operator()(neměnné describe_& describe) neměnné
 {
     auto fullPath = pathToString(toCanonicalPath(describe.m_path));
 
     std::cout << pathToString(describe.m_path) << ": " << buildTypeInfo(fullPath) << std::endl;
 }
 
-void Interpreter::operator()(const move_& move) const
+prázdno Interpreter::operator()(neměnné move_& move) neměnné
 {
     m_datastore.moveItem(pathToDataString(move.m_source, Prefixes::WhenNeeded), move.m_destination);
 }
 
-void Interpreter::operator()(const dump_& dump) const
+prázdno Interpreter::operator()(neměnné dump_& dump) neměnné
 {
     std::cout << m_datastore.dump(dump.m_format) << "\n";
 }
 
-void Interpreter::operator()(const prepare_& prepare) const
+prázdno Interpreter::operator()(neměnné prepare_& prepare) neměnné
 {
     m_datastore.initiate(pathToString(toCanonicalPath(prepare.m_path)));
     m_parser.changeNode(prepare.m_path);
 }
 
-void Interpreter::operator()(const exec_& exec) const
+prázdno Interpreter::operator()(neměnné exec_& exec) neměnné
 {
     m_parser.changeNode({Scope::Absolute, {}});
-    if (exec.m_path) {
+    když (exec.m_path) {
         m_datastore.initiate(pathToString(toCanonicalPath(*exec.m_path)));
     }
     auto output = m_datastore.execute();
@@ -241,38 +242,38 @@ void Interpreter::operator()(const exec_& exec) const
     printTree(output);
 }
 
-void Interpreter::operator()(const cancel_&) const
+prázdno Interpreter::operator()(neměnné cancel_&) neměnné
 {
     m_parser.changeNode({Scope::Absolute, {}});
     m_datastore.cancel();
 }
 
-void Interpreter::operator()(const switch_& switch_cmd) const
+prázdno Interpreter::operator()(neměnné switch_& switch_cmd) neměnné
 {
     m_datastore.setTarget(switch_cmd.m_target);
 }
 
-struct commandLongHelpVisitor : boost::static_visitor<const char*> {
+struct commandLongHelpVisitor : boost::static_visitor<neměnné znak*> {
     template <typename T>
-    auto constexpr operator()(boost::type<T>) const
+    auto constexpr operator()(boost::type<T>) neměnné
     {
-        return T::longHelp;
+        vrať T::longHelp;
     }
 };
 
-struct commandShortHelpVisitor : boost::static_visitor<const char*> {
+struct commandShortHelpVisitor : boost::static_visitor<neměnné znak*> {
     template <typename T>
-    auto constexpr operator()(boost::type<T>) const
+    auto constexpr operator()(boost::type<T>) neměnné
     {
-        return T::shortHelp;
+        vrať T::shortHelp;
     }
 };
 
-void Interpreter::operator()(const help_& help) const
+prázdno Interpreter::operator()(neměnné help_& help) neměnné
 {
-    if (help.m_cmd) {
+    když (help.m_cmd) {
         std::cout << boost::apply_visitor(commandLongHelpVisitor(), help.m_cmd.get()) << std::endl;
-    } else {
+    } jinak {
         boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([](auto cmd) {
             std::cout << commandShortHelpVisitor()(cmd) << std::endl;
         });
@@ -280,67 +281,67 @@ void Interpreter::operator()(const help_& help) const
 }
 
 template <typename PathType>
-boost::variant<dataPath_, schemaPath_, module_> Interpreter::toCanonicalPath(const boost::optional<PathType>& optPath) const
+boost::variant<dataPath_, schemaPath_, module_> Interpreter::toCanonicalPath(neměnné boost::optional<PathType>& optPath) neměnné
 {
-    if (!optPath) {
-        return m_parser.currentPath();
+    když (!optPath) {
+        vrať m_parser.currentPath();
     }
-    return toCanonicalPath(*optPath);
+    vrať toCanonicalPath(*optPath);
 }
 
 struct impl_toCanonicalPath {
-    const dataPath_& m_parserPath;
+    neměnné dataPath_& m_parserPath;
 
     using ReturnType = boost::variant<dataPath_, schemaPath_, module_>;
 
-    impl_toCanonicalPath(const dataPath_& parserPath)
+    impl_toCanonicalPath(neměnné dataPath_& parserPath)
         : m_parserPath(parserPath)
     {
     }
-    ReturnType operator()(const module_& path) const
+    ReturnType operator()(neměnné module_& path) neměnné
     {
-        return path;
+        vrať path;
     }
-    ReturnType operator()(const schemaPath_& path) const
+    ReturnType operator()(neměnné schemaPath_& path) neměnné
     {
-        return impl(path);
+        vrať impl(path);
     }
-    ReturnType operator()(const dataPath_& path) const
+    ReturnType operator()(neměnné dataPath_& path) neměnné
     {
-        return impl(path);
+        vrať impl(path);
     }
 
 private:
     template <typename PathType>
-    [[nodiscard]] ReturnType impl(const PathType& suffix) const
+    [[nodiscard]] ReturnType impl(neměnné PathType& suffix) neměnné
     {
         PathType res = [this] {
-            if constexpr (std::is_same<PathType, schemaPath_>()) {
-                return dataPathToSchemaPath(m_parserPath);
-            } else {
-                return m_parserPath;
+            když constexpr (std::is_same<PathType, schemaPath_>()) {
+                vrať dataPathToSchemaPath(m_parserPath);
+            } jinak {
+                vrať m_parserPath;
             }
         }();
 
-        if (suffix.m_scope == Scope::Absolute) {
+        když (suffix.m_scope == Scope::Absolute) {
             res = {Scope::Absolute, {}};
         }
 
-        for (const auto& fragment : suffix.m_nodes) {
+        pro (neměnné auto& fragment : suffix.m_nodes) {
             res.pushFragment(fragment);
         }
 
-        return res;
+        vrať res;
     }
 };
 
 template <typename PathType>
-boost::variant<dataPath_, schemaPath_, module_> Interpreter::toCanonicalPath(const PathType& path) const
+boost::variant<dataPath_, schemaPath_, module_> Interpreter::toCanonicalPath(neměnné PathType& path) neměnné
 {
-    if constexpr (std::is_same<PathType, dataPath_>()) {
-        return impl_toCanonicalPath(m_parser.currentPath())(path);
-    } else {
-        return boost::apply_visitor(impl_toCanonicalPath(m_parser.currentPath()), path);
+    když constexpr (std::is_same<PathType, dataPath_>()) {
+        vrať impl_toCanonicalPath(m_parser.currentPath())(path);
+    } jinak {
+        vrať boost::apply_visitor(impl_toCanonicalPath(m_parser.currentPath()), path);
     }
 }
 

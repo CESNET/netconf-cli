@@ -1,5 +1,6 @@
 #pragma once
 
+#include "czech.h"
 #include <functional>
 #include <libnetconf2/log.h>
 #include <libnetconf2/messages_client.h>
@@ -27,41 +28,41 @@ namespace client {
 
 class ReportedError : public std::runtime_error {
 public:
-    ReportedError(const std::string& what);
+    ReportedError(neměnné std::string& what);
     ~ReportedError() override;
 };
 
-using KbdInteractiveCb = std::function<std::string(const std::string&, const std::string&, const std::string&, bool)>;
-using LogCb = std::function<void(NC_VERB_LEVEL, const char*)>;
+using KbdInteractiveCb = std::function<std::string(neměnné std::string&, neměnné std::string&, neměnné std::string&, pravdivost)>;
+using LogCb = std::function<prázdno(NC_VERB_LEVEL, neměnné znak*)>;
 
-void setLogLevel(NC_VERB_LEVEL level);
-void setLogCallback(const LogCb& callback);
+prázdno setLogLevel(NC_VERB_LEVEL level);
+prázdno setLogCallback(neměnné LogCb& callback);
 
 class Session {
 public:
     Session(struct nc_session* session);
     ~Session();
-    static std::unique_ptr<Session> connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath);
-    static std::unique_ptr<Session> connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback);
-    static std::unique_ptr<Session> connectSocket(const std::string& path);
-    static std::unique_ptr<Session> connectFd(const int source, const int sink);
-    [[nodiscard]] std::vector<std::string_view> capabilities() const;
-    std::shared_ptr<libyang::Data_Node> getConfig(const NC_DATASTORE datastore,
-                                                  const std::optional<const std::string> filter = std::nullopt); // TODO: arguments...
-    std::shared_ptr<libyang::Data_Node> get(const std::optional<std::string>& filter = std::nullopt);
-    std::shared_ptr<libyang::Data_Node> getData(const NmdaDatastore datastore, const std::optional<std::string>& filter = std::nullopt);
-    std::string getSchema(const std::string_view identifier, const std::optional<std::string_view> version);
-    void editConfig(const NC_DATASTORE datastore,
-                    const NC_RPC_EDIT_DFLTOP defaultOperation,
-                    const NC_RPC_EDIT_TESTOPT testOption,
-                    const NC_RPC_EDIT_ERROPT errorOption,
-                    const std::string& data);
-    void editData(const NmdaDatastore datastore, const std::string& data);
-    void copyConfigFromString(const NC_DATASTORE target, const std::string& data);
-    std::shared_ptr<libyang::Data_Node> rpc_or_action(const std::string& xmlData);
-    void copyConfig(const NC_DATASTORE source, const NC_DATASTORE destination);
-    void commit();
-    void discard();
+    stálé std::unique_ptr<Session> connectPubkey(neměnné std::string& host, neměnné nčíslo16_t port, neměnné std::string& user, neměnné std::string& pubPath, neměnné std::string& privPath);
+    stálé std::unique_ptr<Session> connectKbdInteractive(neměnné std::string& host, neměnné nčíslo16_t port, neměnné std::string& user, neměnné KbdInteractiveCb& callback);
+    stálé std::unique_ptr<Session> connectSocket(neměnné std::string& path);
+    stálé std::unique_ptr<Session> connectFd(neměnné číslo source, neměnné číslo sink);
+    [[nodiscard]] std::vector<std::string_view> capabilities() neměnné;
+    std::shared_ptr<libyang::Data_Node> getConfig(neměnné NC_DATASTORE datastore,
+                                                  neměnné std::optional<neměnné std::string> filter = std::nullopt); // TODO: arguments...
+    std::shared_ptr<libyang::Data_Node> get(neměnné std::optional<std::string>& filter = std::nullopt);
+    std::shared_ptr<libyang::Data_Node> getData(neměnné NmdaDatastore datastore, neměnné std::optional<std::string>& filter = std::nullopt);
+    std::string getSchema(neměnné std::string_view identifier, neměnné std::optional<std::string_view> version);
+    prázdno editConfig(neměnné NC_DATASTORE datastore,
+                    neměnné NC_RPC_EDIT_DFLTOP defaultOperation,
+                    neměnné NC_RPC_EDIT_TESTOPT testOption,
+                    neměnné NC_RPC_EDIT_ERROPT errorOption,
+                    neměnné std::string& data);
+    prázdno editData(neměnné NmdaDatastore datastore, neměnné std::string& data);
+    prázdno copyConfigFromString(neměnné NC_DATASTORE target, neměnné std::string& data);
+    std::shared_ptr<libyang::Data_Node> rpc_or_action(neměnné std::string& xmlData);
+    prázdno copyConfig(neměnné NC_DATASTORE source, neměnné NC_DATASTORE destination);
+    prázdno commit();
+    prázdno discard();
 
     std::shared_ptr<libyang::Context> libyangContext();
     struct nc_session* session_internal(); // FIXME: remove me

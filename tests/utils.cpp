@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include "completion.hpp"
 #include "leaf_data_helpers.hpp"
@@ -113,7 +114,7 @@ TEST_CASE("utils")
     }
 }
 
-const auto schema = R"(
+neměnné auto schema = R"(
 module test-schema {
     namespace "http://example.com/ayyyy";
     prefix AHOJ;
@@ -223,7 +224,7 @@ module test-schema {
 }
 )";
 
-const auto data = R"(
+neměnné auto data = R"(
 {
     "test-schema:int8": 8,
     "test-schema:int16": 300,
@@ -280,42 +281,42 @@ TEST_CASE("libyang_utils")
         SECTION("test-schema:int8")
         {
             path = "test-schema:int8";
-            expectedLeafData = int8_t{8};
+            expectedLeafData = číslo8_t{8};
         }
         SECTION("test-schema:int16")
         {
             path = "test-schema:int16";
-            expectedLeafData = int16_t{300};
+            expectedLeafData = číslo16_t{300};
         }
         SECTION("test-schema:int32")
         {
             path = "test-schema:int32";
-            expectedLeafData = int32_t{-300};
+            expectedLeafData = číslo32_t{-300};
         }
         SECTION("test-schema:int64")
         {
             path = "test-schema:int64";
-            expectedLeafData = int64_t{-999999999999999};
+            expectedLeafData = číslo64_t{-999999999999999};
         }
         SECTION("test-schema:uint8")
         {
             path = "test-schema:uint8";
-            expectedLeafData = uint8_t{8};
+            expectedLeafData = nčíslo8_t{8};
         }
         SECTION("test-schema:uint16")
         {
             path = "test-schema:uint16";
-            expectedLeafData = uint16_t{300};
+            expectedLeafData = nčíslo16_t{300};
         }
         SECTION("test-schema:uint32")
         {
             path = "test-schema:uint32";
-            expectedLeafData = uint32_t{300};
+            expectedLeafData = nčíslo32_t{300};
         }
         SECTION("test-schema:uint64")
         {
             path = "test-schema:uint64";
-            expectedLeafData = uint64_t{999999999999999};
+            expectedLeafData = nčíslo64_t{999999999999999};
         }
         SECTION("test-schema:boolean")
         {
@@ -377,14 +378,14 @@ TEST_CASE("libyang_utils")
     SECTION("lyNodesToTree")
     {
         DatastoreAccess::Tree expected{
-            {"/test-schema:int8", int8_t{8}},
-            {"/test-schema:int16", int16_t{300}},
-            {"/test-schema:int32", int32_t{-300}},
-            {"/test-schema:int64", int64_t{-999999999999999}},
-            {"/test-schema:uint8", uint8_t{8}},
-            {"/test-schema:uint16", uint16_t{300}},
-            {"/test-schema:uint32", uint32_t{300}},
-            {"/test-schema:uint64", uint64_t{999999999999999}},
+            {"/test-schema:int8", číslo8_t{8}},
+            {"/test-schema:int16", číslo16_t{300}},
+            {"/test-schema:int32", číslo32_t{-300}},
+            {"/test-schema:int64", číslo64_t{-999999999999999}},
+            {"/test-schema:uint8", nčíslo8_t{8}},
+            {"/test-schema:uint16", nčíslo16_t{300}},
+            {"/test-schema:uint32", nčíslo32_t{300}},
+            {"/test-schema:uint64", nčíslo64_t{999999999999999}},
             {"/test-schema:boolean", true},
             {"/test-schema:string", std::string{"AHOJ"}},
             {"/test-schema:enum", enum_{"A"}},

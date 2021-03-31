@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include <boost/core/demangle.hpp>
 #include "ast_commands.hpp"
@@ -124,7 +125,7 @@ TEST_CASE("leaf editing")
         {
             input = "set mod:list[number=1]/leafInList \"another_data\"";
             auto keys = ListInstance{
-                {"number", int32_t{1}}};
+                {"number", číslo32_t{1}}};
             expected.m_path.m_nodes.emplace_back(module_{"mod"}, listElement_("list", keys));
             expected.m_path.m_nodes.emplace_back(leaf_("leafInList"));
             expected.m_data = std::string("another_data");
@@ -150,63 +151,63 @@ TEST_CASE("leaf editing")
             {
                 input = "set mod:leafInt8 2";
                 expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafInt8"));
-                expected.m_data = int8_t{2};
+                expected.m_data = číslo8_t{2};
             }
 
             SECTION("negative int8")
             {
                 input = "set mod:leafInt8 -10";
                 expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafInt8"));
-                expected.m_data = int8_t{-10};
+                expected.m_data = číslo8_t{-10};
             }
 
             SECTION("uint8")
             {
                 input = "set mod:leafUint8 2";
                 expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafUint8"));
-                expected.m_data = uint8_t{2};
+                expected.m_data = nčíslo8_t{2};
             }
 
             SECTION("int16")
             {
                 input = "set mod:leafInt16 30000";
                 expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafInt16"));
-                expected.m_data = int16_t{30'000};
+                expected.m_data = číslo16_t{30'000};
             }
 
             SECTION("uint16")
             {
                 input = "set mod:leafUint16 30000";
                 expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafUint16"));
-                expected.m_data = uint16_t{30'000};
+                expected.m_data = nčíslo16_t{30'000};
             }
 
             SECTION("int32")
             {
                 input = "set mod:leafInt32 30000";
                 expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafInt32"));
-                expected.m_data = int32_t{30'000};
+                expected.m_data = číslo32_t{30'000};
             }
 
             SECTION("uint32")
             {
                 input = "set mod:leafUint32 30000";
                 expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafUint32"));
-                expected.m_data = uint32_t{30'000};
+                expected.m_data = nčíslo32_t{30'000};
             }
 
             SECTION("int32")
             {
                 input = "set mod:leafInt32 30000";
                 expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafInt32"));
-                expected.m_data = int32_t{30'000};
+                expected.m_data = číslo32_t{30'000};
             }
 
             SECTION("uint64")
             {
                 input = "set mod:leafUint64 30000";
                 expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafUint64"));
-                expected.m_data = uint64_t{30'000};
+                expected.m_data = nčíslo64_t{30'000};
             }
 
             SECTION("decimal")
@@ -236,7 +237,7 @@ TEST_CASE("leaf editing")
                 {
                     expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("intOrString"));
                     input = "set mod:intOrString 90";
-                    expected.m_data = int32_t{90};
+                    expected.m_data = číslo32_t{90};
                 }
                 SECTION("string")
                 {
@@ -251,12 +252,12 @@ TEST_CASE("leaf editing")
                     SECTION("uint8")
                     {
                         input = "set mod:twoInts 100";
-                        expected.m_data = uint8_t{100};
+                        expected.m_data = nčíslo8_t{100};
                     }
                     SECTION("int16")
                     {
                         input = "set mod:twoInts 6666";
-                        expected.m_data = int16_t{6666};
+                        expected.m_data = číslo16_t{6666};
                     }
                 }
 
@@ -450,7 +451,7 @@ TEST_CASE("leaf editing")
                 {
                     input = "set mod:refToInt8 42";
                     expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("refToInt8"));
-                    expected.m_data = int8_t{42};
+                    expected.m_data = číslo8_t{42};
                 }
 
                 SECTION("refToLeafInCont")

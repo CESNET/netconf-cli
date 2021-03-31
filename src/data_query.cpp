@@ -1,3 +1,4 @@
+#include "czech.h"
 #include "data_query.hpp"
 #include "datastore_access.hpp"
 #include "schema.hpp"
@@ -10,9 +11,9 @@ DataQuery::DataQuery(DatastoreAccess& datastore)
 {
 }
 
-std::vector<ListInstance> DataQuery::listKeys(const dataPath_& listPath) const
+std::vector<ListInstance> DataQuery::listKeys(neměnné dataPath_& listPath) neměnné
 {
     auto listPathString = pathToDataString(listPath, Prefixes::Always);
 
-    return m_datastore.listInstances(listPathString);
+    vrať m_datastore.listInstances(listPathString);
 }

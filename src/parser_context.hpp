@@ -7,22 +7,23 @@
 */
 #pragma once
 
+#include "czech.h"
 #include "completion.hpp"
 #include "data_query.hpp"
 #include "schema.hpp"
 
 struct ParserContext {
-    ParserContext(const Schema& schema, const std::shared_ptr<const DataQuery> dataQuery, const dataPath_& curDir);
+    ParserContext(neměnné Schema& schema, neměnné std::shared_ptr<neměnné DataQuery> dataQuery, neměnné dataPath_& curDir);
     schemaPath_ currentSchemaPath();
     dataPath_ currentDataPath();
-    void clearPath();
-    void pushPathFragment(const dataNode_& node);
-    void pushPathFragment(const schemaNode_& node);
-    void resetPath();
+    prázdno clearPath();
+    prázdno pushPathFragment(neměnné dataNode_& node);
+    prázdno pushPathFragment(neměnné schemaNode_& node);
+    prázdno resetPath();
 
-    const Schema& m_schema;
-    const dataPath_ m_curPathOrig;
-    const std::shared_ptr<const DataQuery> m_dataquery;
+    neměnné Schema& m_schema;
+    neměnné dataPath_ m_curPathOrig;
+    neměnné std::shared_ptr<neměnné DataQuery> m_dataquery;
     std::string m_errorMsg;
 
     struct {
@@ -34,8 +35,8 @@ struct ParserContext {
     dataPath_ m_tmpListPath;
     ListInstance m_tmpListKeys;
 
-    bool m_errorHandled = false;
-    bool m_completing = false;
+    pravdivost m_errorHandled = false;
+    pravdivost m_completing = false;
 
     std::set<Completion> m_suggestions;
     // Iterator pointing to where suggestions were created

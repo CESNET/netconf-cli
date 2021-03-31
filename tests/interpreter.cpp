@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include <experimental/iterator>
 #include "ast_commands.hpp"
@@ -21,16 +22,16 @@ public:
     IMPLEMENT_CONST_MOCK1(description);
     IMPLEMENT_CONST_MOCK2(availableNodes);
     IMPLEMENT_CONST_MOCK1(isConfig);
-    MAKE_CONST_MOCK1(leafType, yang::TypeInfo(const std::string&), override);
-    MAKE_CONST_MOCK2(leafType, yang::TypeInfo(const schemaPath_&, const ModuleNodePair&), override);
+    MAKE_CONST_MOCK1(leafType, yang::TypeInfo(neměnné std::string&), override);
+    MAKE_CONST_MOCK2(leafType, yang::TypeInfo(neměnné schemaPath_&, neměnné ModuleNodePair&), override);
     IMPLEMENT_CONST_MOCK1(leafTypeName);
     IMPLEMENT_CONST_MOCK1(isModule);
     IMPLEMENT_CONST_MOCK1(leafrefPath);
     IMPLEMENT_CONST_MOCK2(listHasKey);
     IMPLEMENT_CONST_MOCK1(leafIsKey);
     IMPLEMENT_CONST_MOCK1(listKeys);
-    MAKE_CONST_MOCK1(nodeType, yang::NodeTypes(const std::string&), override);
-    MAKE_CONST_MOCK2(nodeType, yang::NodeTypes(const schemaPath_&, const ModuleNodePair&), override);
+    MAKE_CONST_MOCK1(nodeType, yang::NodeTypes(neměnné std::string&), override);
+    MAKE_CONST_MOCK2(nodeType, yang::NodeTypes(neměnné schemaPath_&, neměnné ModuleNodePair&), override);
     IMPLEMENT_CONST_MOCK1(status);
     IMPLEMENT_CONST_MOCK1(hasInputNodes);
 };
@@ -41,8 +42,8 @@ TEST_CASE("interpreter tests")
     Parser parser(schema);
     auto datastore = std::make_shared<MockDatastoreAccess>();
     auto input_datastore = std::make_shared<MockDatastoreAccess>();
-    auto createTemporaryDatastore = [input_datastore]([[maybe_unused]] const std::shared_ptr<DatastoreAccess>& datastore) {
-        return input_datastore;
+    auto createTemporaryDatastore = [input_datastore]([[maybe_unused]] neměnné std::shared_ptr<DatastoreAccess>& datastore) {
+        vrať input_datastore;
     };
     ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
     std::vector<std::unique_ptr<trompeloeil::expectation>> expectations;
@@ -285,7 +286,7 @@ TEST_CASE("interpreter tests")
                 treeReturned = {
                     {"/mod:AHOJ", 30},
                     {"/mod:CAU", std::string{"AYYY"}},
-                    {"/mod:CUS", bool{true}}
+                    {"/mod:CUS", pravdivost{true}}
                 };
             }
 
@@ -422,7 +423,7 @@ TEST_CASE("interpreter tests")
         }
     }
 
-    for (const auto& command : toInterpret) {
+    pro (neměnné auto& command : toInterpret) {
         boost::apply_visitor(Interpreter(parser, proxyDatastore), command);
     }
 }
@@ -433,8 +434,8 @@ TEST_CASE("rpc")
     Parser parser(schema);
     auto datastore = std::make_shared<MockDatastoreAccess>();
     auto input_datastore = std::make_shared<MockDatastoreAccess>();
-    auto createTemporaryDatastore = [input_datastore]([[maybe_unused]] const std::shared_ptr<DatastoreAccess>& datastore) {
-        return input_datastore;
+    auto createTemporaryDatastore = [input_datastore]([[maybe_unused]] neměnné std::shared_ptr<DatastoreAccess>& datastore) {
+        vrať input_datastore;
     };
     ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
 

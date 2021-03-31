@@ -6,6 +6,7 @@
  *
  */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include "datastoreaccess_mock.hpp"
 #include "leaf_data_helpers.hpp"
@@ -44,7 +45,7 @@ TEST_CASE("set value completion")
     std::ostringstream errorStream;
 
     std::set<std::string> expectedCompletions;
-    int expectedContextLength;
+    číslo expectedContextLength;
 
     SECTION("set mod:leafEnum ")
     {

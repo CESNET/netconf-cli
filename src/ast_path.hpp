@@ -7,6 +7,7 @@
 */
 #pragma once
 
+#include "czech.h"
 #include <boost/fusion/adapted/struct/adapt_struct.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/std_pair.hpp>
@@ -23,72 +24,72 @@ enum class Prefixes {
 };
 
 struct nodeup_ {
-    bool operator==(const nodeup_&) const
+    pravdivost operator==(neměnné nodeup_&) neměnné
     {
-        return true;
+        vrať true;
     }
 };
 
 struct container_ {
-    container_() = default;
-    container_(const std::string& name);
+    container_() = výchozí;
+    container_(neměnné std::string& name);
 
-    bool operator==(const container_& b) const;
+    pravdivost operator==(neměnné container_& b) neměnné;
 
     std::string m_name;
 };
 
 struct leaf_ {
-    leaf_() = default;
-    leaf_(const std::string& name);
+    leaf_() = výchozí;
+    leaf_(neměnné std::string& name);
 
-    bool operator==(const leaf_& b) const;
+    pravdivost operator==(neměnné leaf_& b) neměnné;
 
     std::string m_name;
 };
 
 struct leafList_ {
-    leafList_(const std::string& name);
+    leafList_(neměnné std::string& name);
 
-    bool operator==(const leafList_& b) const;
+    pravdivost operator==(neměnné leafList_& b) neměnné;
 
     std::string m_name;
 };
 
 struct leafListElement_ {
-    bool operator==(const leafListElement_& b) const;
+    pravdivost operator==(neměnné leafListElement_& b) neměnné;
 
     std::string m_name;
     leaf_data_ m_value;
 };
 
 struct listElement_ {
-    listElement_() = default;
-    listElement_(const std::string& listName, const ListInstance& keys);
+    listElement_() = výchozí;
+    listElement_(neměnné std::string& listName, neměnné ListInstance& keys);
 
-    bool operator==(const listElement_& b) const;
+    pravdivost operator==(neměnné listElement_& b) neměnné;
 
     std::string m_name;
     ListInstance m_keys;
 };
 
 struct list_ {
-    list_() = default;
-    list_(const std::string& listName);
+    list_() = výchozí;
+    list_(neměnné std::string& listName);
 
-    bool operator==(const list_& b) const;
+    pravdivost operator==(neměnné list_& b) neměnné;
 
     std::string m_name;
 };
 
 struct rpcNode_ {
-    bool operator==(const rpcNode_& other) const;
+    pravdivost operator==(neměnné rpcNode_& other) neměnné;
 
     std::string m_name;
 };
 
 struct actionNode_ {
-    bool operator==(const actionNode_& other) const;
+    pravdivost operator==(neměnné actionNode_& other) neměnné;
 
     std::string m_name;
 };
@@ -100,7 +101,7 @@ struct schemaNode_ {
     schemaNode_();
     schemaNode_(decltype(m_suffix) node);
     schemaNode_(module_ module, decltype(m_suffix) node);
-    bool operator==(const schemaNode_& b) const;
+    pravdivost operator==(neměnné schemaNode_& b) neměnné;
 };
 
 struct dataNode_ {
@@ -111,7 +112,7 @@ struct dataNode_ {
     dataNode_(decltype(m_suffix) node);
     dataNode_(boost::optional<module_> module, decltype(m_suffix) node);
     dataNode_(module_ module, decltype(m_suffix) node);
-    bool operator==(const dataNode_& b) const;
+    pravdivost operator==(neměnné dataNode_& b) neměnné;
 };
 
 enum class Scope {
@@ -121,23 +122,23 @@ enum class Scope {
 
 struct schemaPath_ {
     schemaPath_();
-    schemaPath_(const Scope scope, const std::vector<schemaNode_>& nodes);
-    bool operator==(const schemaPath_& b) const;
+    schemaPath_(neměnné Scope scope, neměnné std::vector<schemaNode_>& nodes);
+    pravdivost operator==(neměnné schemaPath_& b) neměnné;
     Scope m_scope = Scope::Relative;
     std::vector<schemaNode_> m_nodes;
     // @brief Pushes a new fragment. Pops a fragment if it's nodeup_
-    void pushFragment(const schemaNode_& fragment);
+    prázdno pushFragment(neměnné schemaNode_& fragment);
 };
 
 struct dataPath_ {
     dataPath_();
-    dataPath_(const Scope scope, const std::vector<dataNode_>& nodes);
-    bool operator==(const dataPath_& b) const;
+    dataPath_(neměnné Scope scope, neměnné std::vector<dataNode_>& nodes);
+    pravdivost operator==(neměnné dataPath_& b) neměnné;
     Scope m_scope = Scope::Relative;
     std::vector<dataNode_> m_nodes;
 
     // @brief Pushes a new fragment. Pops a fragment if it's nodeup_
-    void pushFragment(const dataNode_& fragment);
+    prázdno pushFragment(neměnné dataNode_& fragment);
 };
 
 enum class WritableOps {
@@ -147,12 +148,12 @@ enum class WritableOps {
 
 std::string nodeToSchemaString(decltype(dataPath_::m_nodes)::value_type node);
 
-std::string pathToDataString(const dataPath_& path, Prefixes prefixes);
-std::string pathToSchemaString(const schemaPath_& path, Prefixes prefixes);
-std::string pathToSchemaString(const dataPath_& path, Prefixes prefixes);
-schemaNode_ dataNodeToSchemaNode(const dataNode_& node);
-schemaPath_ dataPathToSchemaPath(const dataPath_& path);
-std::string escapeListKeyString(const std::string& what);
+std::string pathToDataString(neměnné dataPath_& path, Prefixes prefixes);
+std::string pathToSchemaString(neměnné schemaPath_& path, Prefixes prefixes);
+std::string pathToSchemaString(neměnné dataPath_& path, Prefixes prefixes);
+schemaNode_ dataNodeToSchemaNode(neměnné dataNode_& node);
+schemaPath_ dataPathToSchemaPath(neměnné dataPath_& path);
+std::string escapeListKeyString(neměnné std::string& what);
 
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)

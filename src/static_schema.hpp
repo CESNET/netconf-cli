@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "czech.h"
 #include <set>
 #include <unordered_map>
 #include "ast_path.hpp"
@@ -65,39 +66,39 @@ class StaticSchema : public Schema {
 public:
     StaticSchema();
 
-    yang::NodeTypes nodeType(const std::string& path) const override;
-    yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const override;
-    bool isModule(const std::string& name) const override;
-    bool listHasKey(const schemaPath_& listPath, const std::string& key) const override;
-    bool leafIsKey(const std::string& leafPath) const override;
-    bool isConfig(const std::string& leafPath) const override;
-    std::optional<std::string> defaultValue(const std::string& leafPath) const override;
-    const std::set<std::string> listKeys(const schemaPath_& listPath) const override;
-    yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const override;
-    yang::TypeInfo leafType(const std::string& path) const override;
-    std::optional<std::string> leafTypeName(const std::string& path) const override;
-    std::string leafrefPath(const std::string& leafrefPath) const override;
-    std::set<ModuleNodePair> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const override;
-    std::optional<std::string> description(const std::string& path) const override;
-    yang::Status status(const std::string& location) const override;
-    bool hasInputNodes(const std::string& path) const override;
+    yang::NodeTypes nodeType(neměnné std::string& path) neměnné override;
+    yang::NodeTypes nodeType(neměnné schemaPath_& location, neměnné ModuleNodePair& node) neměnné override;
+    pravdivost isModule(neměnné std::string& name) neměnné override;
+    pravdivost listHasKey(neměnné schemaPath_& listPath, neměnné std::string& key) neměnné override;
+    pravdivost leafIsKey(neměnné std::string& leafPath) neměnné override;
+    pravdivost isConfig(neměnné std::string& leafPath) neměnné override;
+    std::optional<std::string> defaultValue(neměnné std::string& leafPath) neměnné override;
+    neměnné std::set<std::string> listKeys(neměnné schemaPath_& listPath) neměnné override;
+    yang::TypeInfo leafType(neměnné schemaPath_& location, neměnné ModuleNodePair& node) neměnné override;
+    yang::TypeInfo leafType(neměnné std::string& path) neměnné override;
+    std::optional<std::string> leafTypeName(neměnné std::string& path) neměnné override;
+    std::string leafrefPath(neměnné std::string& leafrefPath) neměnné override;
+    std::set<ModuleNodePair> availableNodes(neměnné boost::variant<dataPath_, schemaPath_, module_>& path, neměnné Recursion recursion) neměnné override;
+    std::optional<std::string> description(neměnné std::string& path) neměnné override;
+    yang::Status status(neměnné std::string& location) neměnné override;
+    pravdivost hasInputNodes(neměnné std::string& path) neměnné override;
 
     /** A helper for making tests a little bit easier. It returns all
      * identities which are based on the argument passed and which can then be
      * used in addLeaf for the `type` argument */
     std::set<identityRef_> validIdentities(std::string_view module, std::string_view value);
-    void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
-    void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type, const yang::AccessType accessType = yang::AccessType::Writable);
-    void addLeafList(const std::string& location, const std::string& name, const yang::LeafDataType& type);
-    void addList(const std::string& location, const std::string& name, const std::set<std::string>& keys);
-    void addRpc(const std::string& location, const std::string& name);
-    void addAction(const std::string& location, const std::string& name);
-    void addModule(const std::string& name);
-    void addIdentity(const std::optional<identityRef_>& base, const identityRef_& name);
+    prázdno addContainer(neměnné std::string& location, neměnné std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
+    prázdno addLeaf(neměnné std::string& location, neměnné std::string& name, neměnné yang::LeafDataType& type, neměnné yang::AccessType accessType = yang::AccessType::Writable);
+    prázdno addLeafList(neměnné std::string& location, neměnné std::string& name, neměnné yang::LeafDataType& type);
+    prázdno addList(neměnné std::string& location, neměnné std::string& name, neměnné std::set<std::string>& keys);
+    prázdno addRpc(neměnné std::string& location, neměnné std::string& name);
+    prázdno addAction(neměnné std::string& location, neměnné std::string& name);
+    prázdno addModule(neměnné std::string& name);
+    prázdno addIdentity(neměnné std::optional<identityRef_>& base, neměnné identityRef_& name);
 
 private:
-    const std::unordered_map<std::string, NodeInfo>& children(const std::string& name) const;
-    void getIdentSet(const identityRef_& ident, std::set<identityRef_>& res) const;
+    neměnné std::unordered_map<std::string, NodeInfo>& children(neměnné std::string& name) neměnné;
+    prázdno getIdentSet(neměnné identityRef_& ident, std::set<identityRef_>& res) neměnné;
 
     std::unordered_map<std::string, std::unordered_map<std::string, NodeInfo>> m_nodes;
     std::set<std::string> m_modules;

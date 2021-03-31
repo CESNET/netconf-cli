@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "czech.h"
 #include <boost/variant/variant.hpp>
 #include <set>
 #include <stdexcept>
@@ -54,21 +55,21 @@ class Schema {
 public:
     virtual ~Schema();
 
-    [[nodiscard]] virtual yang::NodeTypes nodeType(const std::string& path) const = 0;
-    [[nodiscard]] virtual yang::NodeTypes nodeType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
-    [[nodiscard]] virtual bool isModule(const std::string& name) const = 0;
-    [[nodiscard]] virtual bool listHasKey(const schemaPath_& listPath, const std::string& key) const = 0;
-    [[nodiscard]] virtual bool leafIsKey(const std::string& leafPath) const = 0;
-    [[nodiscard]] virtual bool isConfig(const std::string& path) const = 0;
-    [[nodiscard]] virtual std::optional<std::string> defaultValue(const std::string& leafPath) const = 0;
-    [[nodiscard]] virtual const std::set<std::string> listKeys(const schemaPath_& listPath) const = 0;
-    [[nodiscard]] virtual yang::TypeInfo leafType(const schemaPath_& location, const ModuleNodePair& node) const = 0;
-    [[nodiscard]] virtual yang::TypeInfo leafType(const std::string& path) const = 0;
-    [[nodiscard]] virtual std::optional<std::string> leafTypeName(const std::string& path) const = 0;
-    [[nodiscard]] virtual std::string leafrefPath(const std::string& leafrefPath) const = 0;
-    [[nodiscard]] virtual std::optional<std::string> description(const std::string& location) const = 0;
-    [[nodiscard]] virtual yang::Status status(const std::string& location) const = 0;
-    [[nodiscard]] virtual bool hasInputNodes(const std::string& path) const = 0;
+    [[nodiscard]] virtual yang::NodeTypes nodeType(neměnné std::string& path) neměnné = 0;
+    [[nodiscard]] virtual yang::NodeTypes nodeType(neměnné schemaPath_& location, neměnné ModuleNodePair& node) neměnné = 0;
+    [[nodiscard]] virtual pravdivost isModule(neměnné std::string& name) neměnné = 0;
+    [[nodiscard]] virtual pravdivost listHasKey(neměnné schemaPath_& listPath, neměnné std::string& key) neměnné = 0;
+    [[nodiscard]] virtual pravdivost leafIsKey(neměnné std::string& leafPath) neměnné = 0;
+    [[nodiscard]] virtual pravdivost isConfig(neměnné std::string& path) neměnné = 0;
+    [[nodiscard]] virtual std::optional<std::string> defaultValue(neměnné std::string& leafPath) neměnné = 0;
+    [[nodiscard]] virtual neměnné std::set<std::string> listKeys(neměnné schemaPath_& listPath) neměnné = 0;
+    [[nodiscard]] virtual yang::TypeInfo leafType(neměnné schemaPath_& location, neměnné ModuleNodePair& node) neměnné = 0;
+    [[nodiscard]] virtual yang::TypeInfo leafType(neměnné std::string& path) neměnné = 0;
+    [[nodiscard]] virtual std::optional<std::string> leafTypeName(neměnné std::string& path) neměnné = 0;
+    [[nodiscard]] virtual std::string leafrefPath(neměnné std::string& leafrefPath) neměnné = 0;
+    [[nodiscard]] virtual std::optional<std::string> description(neměnné std::string& location) neměnné = 0;
+    [[nodiscard]] virtual yang::Status status(neměnné std::string& location) neměnné = 0;
+    [[nodiscard]] virtual pravdivost hasInputNodes(neměnné std::string& path) neměnné = 0;
 
-    [[nodiscard]] virtual std::set<ModuleNodePair> availableNodes(const boost::variant<dataPath_, schemaPath_, module_>& path, const Recursion recursion) const = 0;
+    [[nodiscard]] virtual std::set<ModuleNodePair> availableNodes(neměnné boost::variant<dataPath_, schemaPath_, module_>& path, neměnné Recursion recursion) neměnné = 0;
 };

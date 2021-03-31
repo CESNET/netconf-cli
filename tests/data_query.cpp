@@ -5,6 +5,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include <experimental/iterator>
 #include <sysrepo-cpp/Session.hpp>
@@ -39,7 +40,7 @@ TEST_CASE("data query")
 #ifdef sysrepo_BACKEND
     SysrepoAccess datastore;
 #elif defined(netconf_BACKEND)
-    const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
+    neměnné auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
     NetconfAccess datastore(NETOPEER_SOCKET);
 #elif defined(yang_BACKEND)
     YangAccess datastore;
@@ -84,9 +85,9 @@ TEST_CASE("data query")
             datastore.createItem("/example-schema:selectedNumbers[value='127']");
             listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"selectedNumbers"});
             expected = {
-                {{"value", int8_t{127}}},
-                {{"value", int8_t{45}}},
-                {{"value", int8_t{99}}}
+                {{"value", číslo8_t{127}}},
+                {{"value", číslo8_t{45}}},
+                {{"value", číslo8_t{99}}}
             };
         }
 
@@ -233,8 +234,8 @@ TEST_CASE("data query")
             listPath.m_nodes.emplace_back(module_{"other-module"}, container_{"parking-lot"});
             listPath.m_nodes.emplace_back(module_{"example-schema"}, list_{"cars"});
             expected = {
-                {{"id", int32_t{1}}},
-                {{"id", int32_t{2}}},
+                {{"id", číslo32_t{1}}},
+                {{"id", číslo32_t{2}}},
             };
         }
 

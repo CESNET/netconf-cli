@@ -4,23 +4,24 @@
  * Written by Václav Kubernát <kubernat@cesnet.cz>
  *
 */
+#include "czech.h"
 #include <boost/algorithm/string/predicate.hpp>
 #include <tuple>
 #include "completion.hpp"
 
-bool Completion::operator<(const Completion& b) const
+pravdivost Completion::operator<(neměnné Completion& b) neměnné
 {
-    return std::tie(this->m_value, this->m_suffix, this->m_whenToAdd) < std::tie(b.m_value, b.m_suffix, b.m_whenToAdd);
+    vrať std::tie(this->m_value, this->m_suffix, this->m_whenToAdd) < std::tie(b.m_value, b.m_suffix, b.m_whenToAdd);
 }
 
-bool Completion::operator==(const Completion& b) const
+pravdivost Completion::operator==(neměnné Completion& b) neměnné
 {
-    return std::tie(this->m_value, this->m_suffix, this->m_whenToAdd) == std::tie(b.m_value, b.m_suffix, b.m_whenToAdd);
+    vrať std::tie(this->m_value, this->m_suffix, this->m_whenToAdd) == std::tie(b.m_value, b.m_suffix, b.m_whenToAdd);
 }
 
-std::set<Completion> filterByPrefix(const std::set<Completion>& set, const std::string_view prefix)
+std::set<Completion> filterByPrefix(neměnné std::set<Completion>& set, neměnné std::string_view prefix)
 {
     std::set<Completion> filtered;
-    std::copy_if(set.begin(), set.end(), std::inserter(filtered, filtered.end()), [prefix](Completion it) { return boost::starts_with(it.m_value, prefix); });
-    return filtered;
+    std::copy_if(set.begin(), set.end(), std::inserter(filtered, filtered.end()), [prefix](Completion it) { vrať boost::starts_with(it.m_value, prefix); });
+    vrať filtered;
 }

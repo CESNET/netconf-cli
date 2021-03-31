@@ -5,6 +5,7 @@
  *
 */
 #pragma once
+#include "czech.h"
 #include <map>
 #include <string>
 #include "ast_values.hpp"

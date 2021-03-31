@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include "schema.hpp"
 
-Schema::~Schema() = default;
+Schema::~Schema() = výchozí;

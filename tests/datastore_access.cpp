@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include <sysrepo-cpp/Session.hpp>
 #include "proxy_datastore.hpp"
@@ -18,8 +19,8 @@ using OnInvalidSchemaPathDelete = DatastoreException;
 using OnInvalidSchemaPathMove = sysrepo::sysrepo_exception;
 using OnInvalidRpcPath = std::runtime_error;
 using OnInvalidRpcInput = sysrepo::sysrepo_exception;
-using OnKeyNotFound = void;
-using OnExec = void;
+using OnKeyNotFound = prázdno;
+using OnExec = prázdno;
 #elif defined(netconf_BACKEND)
 using OnInvalidSchemaPathCreate = std::runtime_error;
 using OnInvalidSchemaPathDelete = std::runtime_error;
@@ -27,7 +28,7 @@ using OnInvalidSchemaPathMove = std::runtime_error;
 using OnInvalidRpcPath = std::runtime_error;
 using OnInvalidRpcInput = std::runtime_error;
 using OnKeyNotFound = std::runtime_error;
-using OnExec = void;
+using OnExec = prázdno;
 #include "netconf_access.hpp"
 #elif defined(yang_BACKEND)
 #include <fstream>
@@ -61,21 +62,21 @@ public:
 
 namespace {
 template <class ...> constexpr std::false_type always_false [[maybe_unused]] {};
-template <class Exception, typename Callable> void catching(const Callable& what) {
+template <class Exception, typename Callable> prázdno catching(neměnné Callable& what) {
 
-    if constexpr (std::is_same_v<Exception, void>) {
+    když constexpr (std::is_same_v<Exception, prázdno>) {
         what();
-    } else if constexpr (std::is_same<Exception, std::runtime_error>()) {
+    } jinak když constexpr (std::is_same<Exception, std::runtime_error>()) {
         // cannot use REQUIRE_THROWS_AS(..., Exception) directly because that one
         // needs an extra `typename` deep in the bowels of doctest
         REQUIRE_THROWS_AS(what(), std::runtime_error);
-    } else if constexpr (std::is_same<Exception, std::logic_error>()) {
+    } jinak když constexpr (std::is_same<Exception, std::logic_error>()) {
         REQUIRE_THROWS_AS(what(), std::logic_error);
-    } else if constexpr (std::is_same<Exception, DatastoreException>()) {
+    } jinak když constexpr (std::is_same<Exception, DatastoreException>()) {
         REQUIRE_THROWS_AS(what(), DatastoreException);
-    } else if constexpr (std::is_same<Exception, sysrepo::sysrepo_exception>()) {
+    } jinak když constexpr (std::is_same<Exception, sysrepo::sysrepo_exception>()) {
         REQUIRE_THROWS_AS(what(), sysrepo::sysrepo_exception);
-    } else {
+    } jinak {
         static_assert(always_false<Exception>); // https://stackoverflow.com/a/53945549/2245623
     }
 }
@@ -84,20 +85,20 @@ template <class Exception, typename Callable> void catching(const Callable& what
 #if defined(yang_BACKEND)
 class TestYangAccess : public YangAccess {
 public:
-    void commitChanges() override
+    prázdno commitChanges() override
     {
         YangAccess::commitChanges();
         dumpToSysrepo();
     }
 
-    void copyConfig(const Datastore source, const Datastore destination) override
+    prázdno copyConfig(neměnné Datastore source, neměnné Datastore destination) override
     {
         YangAccess::copyConfig(source, destination);
         dumpToSysrepo();
     }
 
 private:
-    void dumpToSysrepo()
+    prázdno dumpToSysrepo()
     {
         {
             std::ofstream of(testConfigFile);
@@ -126,7 +127,7 @@ TEST_CASE("setting/getting values")
 #ifdef sysrepo_BACKEND
     SysrepoAccess datastore;
 #elif defined(netconf_BACKEND)
-    const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
+    neměnné auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
     NetconfAccess datastore(NETOPEER_SOCKET);
 #elif defined(yang_BACKEND)
     TestYangAccess datastore;
@@ -140,56 +141,56 @@ TEST_CASE("setting/getting values")
     SECTION("set leafInt8 to -128")
     {
         REQUIRE_CALL(mockRunning, write("/example-schema:leafInt8", std::nullopt, "-128"s));
-        datastore.setLeaf("/example-schema:leafInt8", int8_t{-128});
+        datastore.setLeaf("/example-schema:leafInt8", číslo8_t{-128});
         datastore.commitChanges();
     }
 
     SECTION("set leafInt16 to -32768")
     {
         REQUIRE_CALL(mockRunning, write("/example-schema:leafInt16", std::nullopt, "-32768"s));
-        datastore.setLeaf("/example-schema:leafInt16", int16_t{-32768});
+        datastore.setLeaf("/example-schema:leafInt16", číslo16_t{-32768});
         datastore.commitChanges();
     }
 
     SECTION("set leafInt32 to -2147483648")
     {
         REQUIRE_CALL(mockRunning, write("/example-schema:leafInt32", std::nullopt, "-2147483648"s));
-        datastore.setLeaf("/example-schema:leafInt32", int32_t{-2147483648});
+        datastore.setLeaf("/example-schema:leafInt32", číslo32_t{-2147483648});
         datastore.commitChanges();
     }
 
     SECTION("set leafInt64 to -50000000000")
     {
         REQUIRE_CALL(mockRunning, write("/example-schema:leafInt64", std::nullopt, "-50000000000"s));
-        datastore.setLeaf("/example-schema:leafInt64", int64_t{-50000000000});
+        datastore.setLeaf("/example-schema:leafInt64", číslo64_t{-50000000000});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt8 to 255")
     {
         REQUIRE_CALL(mockRunning, write("/example-schema:leafUInt8", std::nullopt, "255"s));
-        datastore.setLeaf("/example-schema:leafUInt8", uint8_t{255});
+        datastore.setLeaf("/example-schema:leafUInt8", nčíslo8_t{255});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt16 to 65535")
     {
         REQUIRE_CALL(mockRunning, write("/example-schema:leafUInt16", std::nullopt, "65535"s));
-        datastore.setLeaf("/example-schema:leafUInt16", uint16_t{65535});
+        datastore.setLeaf("/example-schema:leafUInt16", nčíslo16_t{65535});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt32 to 4294967295")
     {
         REQUIRE_CALL(mockRunning, write("/example-schema:leafUInt32", std::nullopt, "4294967295"s));
-        datastore.setLeaf("/example-schema:leafUInt32", uint32_t{4294967295});
+        datastore.setLeaf("/example-schema:leafUInt32", nčíslo32_t{4294967295});
         datastore.commitChanges();
     }
 
     SECTION("set leafUInt64 to 50000000000")
     {
         REQUIRE_CALL(mockRunning, write("/example-schema:leafUInt64", std::nullopt, "50000000000"s));
-        datastore.setLeaf("/example-schema:leafUInt64", uint64_t{50000000000});
+        datastore.setLeaf("/example-schema:leafUInt64", nčíslo64_t{50000000000});
         datastore.commitChanges();
     }
 
@@ -316,11 +317,11 @@ TEST_CASE("setting/getting values")
     {
         {
             REQUIRE_CALL(mockRunning, write("/example-schema:down", std::nullopt, "true"s));
-            datastore.setLeaf("/example-schema:down", bool{true});
+            datastore.setLeaf("/example-schema:down", pravdivost{true});
             datastore.commitChanges();
         }
 
-        DatastoreAccess::Tree expected{{"/example-schema:down", bool{true}}};
+        DatastoreAccess::Tree expected{{"/example-schema:down", pravdivost{true}}};
         REQUIRE(datastore.getItems("/example-schema:down") == expected);
     }
 
@@ -329,14 +330,14 @@ TEST_CASE("setting/getting values")
         {
             REQUIRE_CALL(mockRunning, write("/example-schema:up", std::nullopt, "true"s));
             REQUIRE_CALL(mockRunning, write("/example-schema:down", std::nullopt, "false"s));
-            datastore.setLeaf("/example-schema:up", bool{true});
-            datastore.setLeaf("/example-schema:down", bool{false});
+            datastore.setLeaf("/example-schema:up", pravdivost{true});
+            datastore.setLeaf("/example-schema:down", pravdivost{false});
             datastore.commitChanges();
         }
 
         DatastoreAccess::Tree expected{
-            {"/example-schema:up", bool{true}},
-            {"/example-schema:down", bool{false}}
+            {"/example-schema:up", pravdivost{true}},
+            {"/example-schema:down", pravdivost{false}}
         };
         REQUIRE(datastore.getItems("/example-schema:*") == expected);
     }
@@ -457,11 +458,11 @@ TEST_CASE("setting/getting values")
 
     SECTION("unions")
     {
-        datastore.setLeaf("/example-schema:unionIntString", int32_t{10});
+        datastore.setLeaf("/example-schema:unionIntString", číslo32_t{10});
         REQUIRE_CALL(mockRunning, write("/example-schema:unionIntString", std::nullopt, "10"s));
         datastore.commitChanges();
         DatastoreAccess::Tree expected{
-            {"/example-schema:unionIntString", int32_t{10}},
+            {"/example-schema:unionIntString", číslo32_t{10}},
         };
         REQUIRE(datastore.getItems("/example-schema:unionIntString") == expected);
     }
@@ -529,7 +530,7 @@ TEST_CASE("setting/getting values")
 
         SECTION("temperature")
         {
-            expected = {{"/example-schema:temperature", int32_t{22}}};
+            expected = {{"/example-schema:temperature", číslo32_t{22}}};
             xpath = "/example-schema:temperature";
         }
 
@@ -607,10 +608,10 @@ TEST_CASE("setting/getting values")
         {
             REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{});
             REQUIRE_CALL(mockRunning, write("/example-schema:leafInt16", std::nullopt, "123"s));
-            datastore.setLeaf("/example-schema:leafInt16", int16_t{123});
+            datastore.setLeaf("/example-schema:leafInt16", číslo16_t{123});
             datastore.commitChanges();
         }
-        REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{{"/example-schema:leafInt16", int16_t{123}}});
+        REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{{"/example-schema:leafInt16", číslo16_t{123}}});
         REQUIRE_CALL(mockRunning, write("/example-schema:leafInt16", "123"s, std::nullopt));
         datastore.copyConfig(Datastore::Startup, Datastore::Running);
         REQUIRE(datastore.getItems("/example-schema:leafInt16") == DatastoreAccess::Tree{});
@@ -817,8 +818,8 @@ TEST_CASE("setting/getting values")
             {"/example-schema:leafInt32", 64}
         };
         // This tests if we at least get the data WE added.
-        REQUIRE(std::all_of(expected.begin(), expected.end(), [items = datastore.getItems("/")] (const auto& item) {
-            return std::find(items.begin(), items.end(), item) != items.end();
+        REQUIRE(std::all_of(expected.begin(), expected.end(), [items = datastore.getItems("/")] (neměnné auto& item) {
+            vrať std::find(items.begin(), items.end(), item) != items.end();
         }));
     }
 
@@ -842,69 +843,69 @@ TEST_CASE("setting/getting values")
 }
 
 struct ActionCb {
-    int operator()(sysrepo::S_Session session,
-            const char* xpath,
-            [[maybe_unused]] const sysrepo::S_Vals input,
+    číslo operator()(sysrepo::S_Session session,
+            neměnné znak* xpath,
+            [[maybe_unused]] neměnné sysrepo::S_Vals input,
             [[maybe_unused]] sr_event_t event,
-            [[maybe_unused]] uint32_t request_id,
+            [[maybe_unused]] nčíslo32_t request_id,
             sysrepo::S_Vals_Holder output)
     {
-        if (session->get_context()->get_node(nullptr, xpath)->path(LYS_PATH_FIRST_PREFIX) == "/example-schema:ports/shutdown") {
+        když (session->get_context()->get_node(nullptr, xpath)->path(LYS_PATH_FIRST_PREFIX) == "/example-schema:ports/shutdown") {
             auto buf = output->allocate(1);
             buf->val(0)->set(joinPaths(xpath, "success").c_str(), true);
-            return SR_ERR_OK;
+            vrať SR_ERR_OK;
         }
         throw std::runtime_error("unrecognized RPC");
     }
 };
 
 struct RpcCb {
-    int operator()([[maybe_unused]] sysrepo::S_Session session,
-            const char* xpath,
-            const sysrepo::S_Vals input,
+    číslo operator()([[maybe_unused]] sysrepo::S_Session session,
+            neměnné znak* xpath,
+            neměnné sysrepo::S_Vals input,
             [[maybe_unused]] sr_event_t event,
-            [[maybe_unused]] uint32_t request_id,
+            [[maybe_unused]] nčíslo32_t request_id,
             sysrepo::S_Vals_Holder output)
     {
-        const auto nukes = "/example-schema:launch-nukes"s;
-        if (xpath == "/example-schema:noop"s || xpath == "/example-schema:fire"s) {
-            return SR_ERR_OK;
+        neměnné auto nukes = "/example-schema:launch-nukes"s;
+        když (xpath == "/example-schema:noop"s || xpath == "/example-schema:fire"s) {
+            vrať SR_ERR_OK;
         }
 
-        if (xpath == nukes) {
-            uint64_t kilotons = 0;
-            bool hasCities = false;
-            for (size_t i = 0; i < input->val_cnt(); ++i) {
-                const auto& val = input->val(i);
-                if (val->xpath() == nukes + "/payload") {
-                    continue; // ignore, container
+        když (xpath == nukes) {
+            nčíslo64_t kilotons = 0;
+            pravdivost hasCities = false;
+            pro (velikost_t i = 0; i < input->val_cnt(); ++i) {
+                neměnné auto& val = input->val(i);
+                když (val->xpath() == nukes + "/payload") {
+                    pokračuj; // ignore, container
                 }
-                if (val->xpath() == nukes + "/description") {
-                    continue; // unused
+                když (val->xpath() == nukes + "/description") {
+                    pokračuj; // unused
                 }
 
-                if (val->xpath() == nukes + "/payload/kilotons") {
+                když (val->xpath() == nukes + "/payload/kilotons") {
                     kilotons = val->data()->get_uint64();
-                } else if (std::string_view{val->xpath()}.find(nukes + "/cities") == 0) {
+                } jinak když (std::string_view{val->xpath()}.find(nukes + "/cities") == 0) {
                     hasCities = true;
-                } else {
+                } jinak {
                     throw std::runtime_error("RPC launch-nukes: unexpected input "s + val->xpath());
                 }
             }
-            if (kilotons == 333'666) {
+            když (kilotons == 333'666) {
                 // magic, just do not generate any output. This is important because the NETCONF RPC returns just <ok/>.
-                return SR_ERR_OK;
+                vrať SR_ERR_OK;
             }
             auto buf = output->allocate(2);
-            size_t i = 0;
-            buf->val(i++)->set((nukes + "/blast-radius").c_str(), uint32_t{33'666});
-            buf->val(i++)->set((nukes + "/actual-yield").c_str(), static_cast<uint64_t>(1.33 * kilotons));
-            if (hasCities) {
+            velikost_t i = 0;
+            buf->val(i++)->set((nukes + "/blast-radius").c_str(), nčíslo32_t{33'666});
+            buf->val(i++)->set((nukes + "/actual-yield").c_str(), static_cast<nčíslo64_t>(1.33 * kilotons));
+            když (hasCities) {
                 buf = output->reallocate(output->val_cnt() + 2);
                 buf->val(i++)->set((nukes + "/damaged-places/targets[city='London']/city").c_str(), "London");
                 buf->val(i++)->set((nukes + "/damaged-places/targets[city='Berlin']/city").c_str(), "Berlin");
             }
-            return SR_ERR_OK;
+            vrať SR_ERR_OK;
         }
         throw std::runtime_error("unrecognized RPC");
     }
@@ -917,7 +918,7 @@ TEST_CASE("rpc/action")
 #ifdef sysrepo_BACKEND
     auto datastore = std::make_shared<SysrepoAccess>();
 #elif defined(netconf_BACKEND)
-    const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
+    neměnné auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
     auto datastore = std::make_shared<NetconfAccess>(NETOPEER_SOCKET);
 #elif defined(yang_BACKEND)
     auto datastore = std::make_shared<YangAccess>();
@@ -942,8 +943,8 @@ TEST_CASE("rpc/action")
 
     SECTION("rpc")
     {
-        auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {
-            return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
+        auto createTemporaryDatastore = [](neměnné std::shared_ptr<DatastoreAccess>& datastore) {
+            vrať std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
         };
         ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
 
@@ -964,10 +965,10 @@ TEST_CASE("rpc/action")
                 rpc = "/example-schema:launch-nukes";
                 input = {
                     {joinPaths(rpc, "description"), "dummy"s},
-                    {joinPaths(rpc, "payload/kilotons"), uint64_t{333'666}},
+                    {joinPaths(rpc, "payload/kilotons"), nčíslo64_t{333'666}},
                 };
                 proxyDatastore.initiate(rpc);
-                proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{333'666});
+                proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", nčíslo64_t{333'666});
                 // no data are returned
             }
 
@@ -976,14 +977,14 @@ TEST_CASE("rpc/action")
                 rpc = "/example-schema:launch-nukes";
                 input = {
                     {joinPaths(rpc, "description"), "dummy"s},
-                    {joinPaths(rpc, "payload/kilotons"), uint64_t{4}},
+                    {joinPaths(rpc, "payload/kilotons"), nčíslo64_t{4}},
                 };
                 proxyDatastore.initiate(rpc);
-                proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{4});
+                proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", nčíslo64_t{4});
 
                 output = {
-                    {"blast-radius", uint32_t{33'666}},
-                    {"actual-yield", uint64_t{5}},
+                    {"blast-radius", nčíslo32_t{33'666}},
+                    {"actual-yield", nčíslo64_t{5}},
                 };
             }
 
@@ -991,15 +992,15 @@ TEST_CASE("rpc/action")
             {
                 rpc = "/example-schema:launch-nukes";
                 input = {
-                    {joinPaths(rpc, "payload/kilotons"), uint64_t{6}},
+                    {joinPaths(rpc, "payload/kilotons"), nčíslo64_t{6}},
                     {joinPaths(rpc, "cities/targets[city='Prague']/city"), "Prague"s},
                 };
                 proxyDatastore.initiate(rpc);
-                proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", uint64_t{6});
+                proxyDatastore.setLeaf("/example-schema:launch-nukes/example-schema:payload/example-schema:kilotons", nčíslo64_t{6});
                 proxyDatastore.createItem("/example-schema:launch-nukes/example-schema:cities/example-schema:targets[city='Prague']");
                 output = {
-                    {"blast-radius", uint32_t{33'666}},
-                    {"actual-yield", uint64_t{7}},
+                    {"blast-radius", nčíslo32_t{33'666}},
+                    {"actual-yield", nčíslo64_t{7}},
                     {"damaged-places", special_{SpecialValue::PresenceContainer}},
                     {"damaged-places/targets[city='London']", special_{SpecialValue::List}},
                     {"damaged-places/targets[city='London']/city", "London"s},
@@ -1040,8 +1041,8 @@ TEST_CASE("rpc/action")
 
     SECTION("action")
     {
-        auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {
-            return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
+        auto createTemporaryDatastore = [](neměnné std::shared_ptr<DatastoreAccess>& datastore) {
+            vrať std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
         };
         ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
         std::string path;
@@ -1073,7 +1074,7 @@ TEST_CASE("rpc/action")
 #if not defined(yang_BACKEND)
 TEST_CASE("datastore targets")
 {
-    const auto testNode = "/example-schema:leafInt32";
+    neměnné auto testNode = "/example-schema:leafInt32";
     {
         auto conn = std::make_shared<sysrepo::Connection>();
         auto sess = std::make_shared<sysrepo::Session>(conn);
@@ -1089,13 +1090,13 @@ TEST_CASE("datastore targets")
 #ifdef sysrepo_BACKEND
     SysrepoAccess datastore;
 #elif defined(netconf_BACKEND)
-    const auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
+    neměnné auto NETOPEER_SOCKET = getenv("NETOPEER_SOCKET");
     NetconfAccess datastore(NETOPEER_SOCKET);
 #else
 #error "Unknown backend"
 #endif
 
-    auto testGetItems = [&datastore] (const auto& path, const DatastoreAccess::Tree& expected) {
+    auto testGetItems = [&datastore] (neměnné auto& path, neměnné DatastoreAccess::Tree& expected) {
         REQUIRE(datastore.getItems(path) == expected);
     };
 

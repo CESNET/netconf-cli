@@ -5,23 +5,24 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#include "czech.h"
 #include <experimental/iterator>
 #include <sstream>
 #include "completion.hpp"
 #include "utils.hpp"
 
-std::string joinPaths(const std::string& prefix, const std::string& suffix)
+std::string joinPaths(neměnné std::string& prefix, neměnné std::string& suffix)
 {
     // These two if statements are essential for the algorithm:
     // The first one solves joining nothing and a relative path - the algorithm
     // down below adds a leading slash, turning it into an absolute path.
     // The second one would always add a trailing slash to the path.
-    if (prefix.empty()) {
-        return suffix;
+    když (prefix.empty()) {
+        vrať suffix;
     }
 
-    if (suffix.empty()) {
-        return prefix;
+    když (suffix.empty()) {
+        vrať prefix;
     }
 
     // Otherwise, strip slashes where the join is going to happen. This will
@@ -31,241 +32,241 @@ std::string joinPaths(const std::string& prefix, const std::string& suffix)
     auto suffixWithoutLeadingSlash = !suffix.empty() && suffix.front() == '/' ? suffix.substr(1) : suffix;
 
     // And join the result with a slash.
-    return prefixWithoutTrailingSlash + '/' + suffixWithoutLeadingSlash;
+    vrať prefixWithoutTrailingSlash + '/' + suffixWithoutLeadingSlash;
 }
 
-std::string stripLastNodeFromPath(const std::string& path)
+std::string stripLastNodeFromPath(neměnné std::string& path)
 {
     std::string res = path;
     auto pos = res.find_last_of('/');
-    if (pos == res.npos) { // path has no backslash - it's either empty, or is a relative path with one fragment
+    když (pos == res.npos) { // path has no backslash - it's either empty, or is a relative path with one fragment
         res.clear();
-    } else if (pos == 0) { // path has one backslash at the start - it's either "/" or "/one-path-fragment"
-        return "/";
-    } else {
+    } jinak když (pos == 0) { // path has one backslash at the start - it's either "/" or "/one-path-fragment"
+        vrať "/";
+    } jinak {
         res.erase(pos);
     }
-    return res;
+    vrať res;
 }
 
-schemaPath_ pathWithoutLastNode(const schemaPath_& path)
+schemaPath_ pathWithoutLastNode(neměnné schemaPath_& path)
 {
-    return schemaPath_{path.m_scope, decltype(schemaPath_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};
+    vrať schemaPath_{path.m_scope, decltype(schemaPath_::m_nodes)(path.m_nodes.begin(), path.m_nodes.end() - 1)};
 }
 
-ModuleNodePair splitModuleNode(const std::string& input)
+ModuleNodePair splitModuleNode(neměnné std::string& input)
 {
     auto colonLocation = input.find_first_of(':');
-    if (colonLocation != std::string::npos) {
-        return ModuleNodePair{input.substr(0, colonLocation), input.substr(colonLocation + 1)};
+    když (colonLocation != std::string::npos) {
+        vrať ModuleNodePair{input.substr(0, colonLocation), input.substr(colonLocation + 1)};
     }
     throw std::logic_error("Internal error: got module-unqualified node name");
 }
 
 struct impl_leafDataTypeToString {
-    std::string operator()(const yang::String)
+    std::string operator()(neměnné yang::String)
     {
-        return "a string";
+        vrať "a string";
     }
-    std::string operator()(const yang::Decimal)
+    std::string operator()(neměnné yang::Decimal)
     {
-        return "a decimal";
+        vrať "a decimal";
     }
-    std::string operator()(const yang::Bool)
+    std::string operator()(neměnné yang::Bool)
     {
-        return "a boolean";
+        vrať "a boolean";
     }
-    std::string operator()(const yang::Int8)
+    std::string operator()(neměnné yang::Int8)
     {
-        return "an 8-bit integer";
+        vrať "an 8-bit integer";
     }
-    std::string operator()(const yang::Uint8)
+    std::string operator()(neměnné yang::Uint8)
     {
-        return "an 8-bit unsigned integer";
+        vrať "an 8-bit unsigned integer";
     }
-    std::string operator()(const yang::Int16)
+    std::string operator()(neměnné yang::Int16)
     {
-        return "a 16-bit integer";
+        vrať "a 16-bit integer";
     }
-    std::string operator()(const yang::Uint16)
+    std::string operator()(neměnné yang::Uint16)
     {
-        return "a 16-bit unsigned integer";
+        vrať "a 16-bit unsigned integer";
     }
-    std::string operator()(const yang::Int32)
+    std::string operator()(neměnné yang::Int32)
     {
-        return "a 32-bit integer";
+        vrať "a 32-bit integer";
     }
-    std::string operator()(const yang::Uint32)
+    std::string operator()(neměnné yang::Uint32)
     {
-        return "a 32-bit unsigned integer";
+        vrať "a 32-bit unsigned integer";
     }
-    std::string operator()(const yang::Int64)
+    std::string operator()(neměnné yang::Int64)
     {
-        return "a 64-bit integer";
+        vrať "a 64-bit integer";
     }
-    std::string operator()(const yang::Uint64)
+    std::string operator()(neměnné yang::Uint64)
     {
-        return "a 64-bit unsigned integer";
+        vrať "a 64-bit unsigned integer";
     }
-    std::string operator()(const yang::Binary)
+    std::string operator()(neměnné yang::Binary)
     {
-        return "a base64-encoded binary value";
+        vrať "a base64-encoded binary value";
     }
-    std::string operator()(const yang::Enum&)
+    std::string operator()(neměnné yang::Enum&)
     {
-        return "an enum";
+        vrať "an enum";
     }
-    std::string operator()(const yang::IdentityRef&)
+    std::string operator()(neměnné yang::IdentityRef&)
     {
-        return "an identity";
+        vrať "an identity";
     }
-    std::string operator()(const yang::LeafRef&)
+    std::string operator()(neměnné yang::LeafRef&)
     {
-        return "a leafref";
+        vrať "a leafref";
     }
-    std::string operator()(const yang::Empty&)
+    std::string operator()(neměnné yang::Empty&)
     {
-        return "an empty leaf";
+        vrať "an empty leaf";
     }
-    std::string operator()(const yang::Union& type)
+    std::string operator()(neměnné yang::Union& type)
     {
         std::ostringstream ss;
-        std::transform(type.m_unionTypes.begin(), type.m_unionTypes.end(), std::experimental::make_ostream_joiner(ss, ", "), [this](const auto& unionType) {
-            return std::visit(*this, unionType.m_type);
+        std::transform(type.m_unionTypes.begin(), type.m_unionTypes.end(), std::experimental::make_ostream_joiner(ss, ", "), [this](neměnné auto& unionType) {
+            vrať std::visit(*this, unionType.m_type);
         });
-        return ss.str();
+        vrať ss.str();
     }
-    std::string operator()(const yang::Bits& type)
+    std::string operator()(neměnné yang::Bits& type)
     {
         std::ostringstream ss;
         ss << "bits {";
         std::copy(type.m_allowedValues.begin(), type.m_allowedValues.end(), std::experimental::make_ostream_joiner(ss, ", "));
         ss << "}";
-        return ss.str();
+        vrať ss.str();
     }
 };
 
-std::string leafDataTypeToString(const yang::LeafDataType& type)
+std::string leafDataTypeToString(neměnné yang::LeafDataType& type)
 {
-    return std::visit(impl_leafDataTypeToString{}, type);
+    vrať std::visit(impl_leafDataTypeToString{}, type);
 }
 
-std::string fullNodeName(const schemaPath_& location, const ModuleNodePair& pair)
+std::string fullNodeName(neměnné schemaPath_& location, neměnné ModuleNodePair& pair)
 {
-    if (!pair.first) {
-        return location.m_nodes.at(0).m_prefix.value().m_name + ":" + pair.second;
-    } else {
-        return pair.first.value() + ":" + pair.second;
+    když (!pair.first) {
+        vrať location.m_nodes.at(0).m_prefix.value().m_name + ":" + pair.second;
+    } jinak {
+        vrať pair.first.value() + ":" + pair.second;
     }
 }
 
-std::string fullNodeName(const dataPath_& location, const ModuleNodePair& pair)
+std::string fullNodeName(neměnné dataPath_& location, neměnné ModuleNodePair& pair)
 {
-    return fullNodeName(dataPathToSchemaPath(location), pair);
+    vrať fullNodeName(dataPathToSchemaPath(location), pair);
 }
 
 struct leafDataToStringVisitor : boost::static_visitor<std::string> {
-    std::string operator()(const enum_& data) const
+    std::string operator()(neměnné enum_& data) neměnné
     {
-        return data.m_value;
+        vrať data.m_value;
     }
 
-    std::string operator()(const binary_& data) const
+    std::string operator()(neměnné binary_& data) neměnné
     {
-        return data.m_value;
+        vrať data.m_value;
     }
 
-    std::string operator()(const empty_) const
+    std::string operator()(neměnné empty_) neměnné
     {
-        return "[empty]";
+        vrať "[empty]";
     }
 
-    std::string operator()(const identityRef_& data) const
+    std::string operator()(neměnné identityRef_& data) neměnné
     {
-        return data.m_prefix ? (data.m_prefix.value().m_name + ":" + data.m_value) : data.m_value;
+        vrať data.m_prefix ? (data.m_prefix.value().m_name + ":" + data.m_value) : data.m_value;
     }
 
-    std::string operator()(const special_& data) const
+    std::string operator()(neměnné special_& data) neměnné
     {
-        return specialValueToString(data);
+        vrať specialValueToString(data);
     }
 
-    std::string operator()(const std::string& data) const
+    std::string operator()(neměnné std::string& data) neměnné
     {
-        return data;
+        vrať data;
     }
 
-    std::string operator()(const bool& data) const
+    std::string operator()(neměnné pravdivost& data) neměnné
     {
-        if (data) {
-            return "true";
-        } else {
-            return "false";
+        když (data) {
+            vrať "true";
+        } jinak {
+            vrať "false";
         }
     }
 
-    std::string operator()(const bits_& data) const
+    std::string operator()(neměnné bits_& data) neměnné
     {
         std::stringstream ss;
         std::copy(data.m_bits.begin(), data.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
-        return ss.str();
+        vrať ss.str();
     }
 
     template <typename T>
-    std::string operator()(const T& data) const
+    std::string operator()(neměnné T& data) neměnné
     {
-        return std::to_string(data);
+        vrať std::to_string(data);
     }
 };
 
-std::string leafDataToString(const leaf_data_ value)
+std::string leafDataToString(neměnné leaf_data_ value)
 {
-    return boost::apply_visitor(leafDataToStringVisitor(), value);
+    vrať boost::apply_visitor(leafDataToStringVisitor(), value);
 }
 
 struct getSchemaPathVisitor : boost::static_visitor<schemaPath_> {
-    schemaPath_ operator()(const dataPath_& path) const
+    schemaPath_ operator()(neměnné dataPath_& path) neměnné
     {
-        return dataPathToSchemaPath(path);
+        vrať dataPathToSchemaPath(path);
     }
 
-    schemaPath_ operator()(const schemaPath_& path) const
+    schemaPath_ operator()(neměnné schemaPath_& path) neměnné
     {
-        return path;
+        vrať path;
     }
 
-    [[noreturn]] schemaPath_ operator()([[maybe_unused]] const module_& path) const
+    [[noreturn]] schemaPath_ operator()([[maybe_unused]] neměnné module_& path) neměnné
     {
         throw std::logic_error("getSchemaPathVisitor: Tried getting a schema path from a module");
     }
 };
 
-schemaPath_ anyPathToSchemaPath(const boost::variant<dataPath_, schemaPath_, module_>& path)
+schemaPath_ anyPathToSchemaPath(neměnné boost::variant<dataPath_, schemaPath_, module_>& path)
 {
-    return boost::apply_visitor(getSchemaPathVisitor(), path);
+    vrať boost::apply_visitor(getSchemaPathVisitor(), path);
 }
 
-std::string stripLeafListValueFromPath(const std::string& path)
+std::string stripLeafListValueFromPath(neměnné std::string& path)
 {
     auto res = path;
     res.erase(res.find_last_of('['));
-    return res;
+    vrať res;
 }
 
-std::string stripLastListInstanceFromPath(const std::string& path)
+std::string stripLastListInstanceFromPath(neměnné std::string& path)
 {
     auto res = path;
     res.erase(res.find_first_of('[', res.find_last_of('/')));
-    return res;
+    vrať res;
 }
 
-std::string instanceToString(const ListInstance& instance, const std::optional<std::string>& modName)
+std::string instanceToString(neměnné ListInstance& instance, neměnné std::optional<std::string>& modName)
 {
     std::string instanceStr;
     auto modulePrefix = modName ? *modName + ":" : "";
-    for (const auto& [key, value] : instance) {
+    pro (neměnné auto& [key, value] : instance) {
         using namespace std::string_literals;
         instanceStr += "[" + modulePrefix + key + "=" + escapeListKeyString(leafDataToString(value)) + "]";
     }
-    return instanceStr;
+    vrať instanceStr;
 }

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "czech.h"
 #include <string>
 #include "datastore_access.hpp"
 
@@ -28,24 +29,24 @@ class SysrepoAccess : public DatastoreAccess {
 public:
     ~SysrepoAccess() override;
     SysrepoAccess();
-    [[nodiscard]] Tree getItems(const std::string& path) const override;
-    void setLeaf(const std::string& path, leaf_data_ value) override;
-    void createItem(const std::string& path) override;
-    void deleteItem(const std::string& path) override;
-    void moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move) override;
-    Tree execute(const std::string& path, const Tree& input) override;
+    [[nodiscard]] Tree getItems(neměnné std::string& path) neměnné override;
+    prázdno setLeaf(neměnné std::string& path, leaf_data_ value) override;
+    prázdno createItem(neměnné std::string& path) override;
+    prázdno deleteItem(neměnné std::string& path) override;
+    prázdno moveItem(neměnné std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move) override;
+    Tree execute(neměnné std::string& path, neměnné Tree& input) override;
 
     std::shared_ptr<Schema> schema() override;
 
-    void commitChanges() override;
-    void discardChanges() override;
-    void copyConfig(const Datastore source, const Datastore destination) override;
+    prázdno commitChanges() override;
+    prázdno discardChanges() override;
+    prázdno copyConfig(neměnné Datastore source, neměnné Datastore destination) override;
 
-    [[nodiscard]] std::string dump(const DataFormat format) const override;
+    [[nodiscard]] std::string dump(neměnné DataFormat format) neměnné override;
 
 private:
-    std::vector<ListInstance> listInstances(const std::string& path) override;
-    [[noreturn]] void reportErrors() const;
+    std::vector<ListInstance> listInstances(neměnné std::string& path) override;
+    [[noreturn]] prázdno reportErrors() neměnné;
 
     std::shared_ptr<sysrepo::Connection> m_connection;
     std::shared_ptr<sysrepo::Session> m_session;

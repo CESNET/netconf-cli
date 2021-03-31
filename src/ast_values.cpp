@@ -4,113 +4,114 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#include "czech.h"
 #include "ast_values.hpp"
 
-enum_::enum_() = default;
+enum_::enum_() = výchozí;
 
-enum_::enum_(const std::string& value)
+enum_::enum_(neměnné std::string& value)
     : m_value(value)
 {
 }
 
-identityRef_::identityRef_() = default;
+identityRef_::identityRef_() = výchozí;
 
-identityRef_::identityRef_(const std::string& value)
+identityRef_::identityRef_(neměnné std::string& value)
     : m_value(value)
 {
 }
 
-identityRef_::identityRef_(const std::string& module, const std::string& value)
+identityRef_::identityRef_(neměnné std::string& module, neměnné std::string& value)
     : m_prefix(module_{module})
     , m_value(value)
 {
 }
 
-binary_::binary_() = default;
+binary_::binary_() = výchozí;
 
-binary_::binary_(const std::string& value)
+binary_::binary_(neměnné std::string& value)
     : m_value(value)
 {
 }
 
-empty_::empty_() = default;
+empty_::empty_() = výchozí;
 
-bool bits_::operator==(const bits_& other) const
+pravdivost bits_::operator==(neměnné bits_& other) neměnné
 {
-    return this->m_bits == other.m_bits;
+    vrať this->m_bits == other.m_bits;
 }
 
-bool bits_::operator<(const bits_& other) const
+pravdivost bits_::operator<(neměnné bits_& other) neměnné
 {
-    return this->m_bits < other.m_bits;
+    vrať this->m_bits < other.m_bits;
 }
 
-bool module_::operator<(const module_& b) const
+pravdivost module_::operator<(neměnné module_& b) neměnné
 {
-    return this->m_name < b.m_name;
+    vrať this->m_name < b.m_name;
 }
 
-bool identityRef_::operator==(const identityRef_& b) const
+pravdivost identityRef_::operator==(neměnné identityRef_& b) neměnné
 {
-    return this->m_prefix == b.m_prefix && this->m_value == b.m_value;
+    vrať this->m_prefix == b.m_prefix && this->m_value == b.m_value;
 }
 
-bool identityRef_::operator<(const identityRef_& b) const
+pravdivost identityRef_::operator<(neměnné identityRef_& b) neměnné
 {
-    return std::tie(this->m_prefix, this->m_value) < std::tie(b.m_prefix, b.m_value);
+    vrať std::tie(this->m_prefix, this->m_value) < std::tie(b.m_prefix, b.m_value);
 }
 
-bool binary_::operator==(const binary_& b) const
+pravdivost binary_::operator==(neměnné binary_& b) neměnné
 {
-    return this->m_value == b.m_value;
+    vrať this->m_value == b.m_value;
 }
 
-bool binary_::operator<(const binary_& b) const
+pravdivost binary_::operator<(neměnné binary_& b) neměnné
 {
-    return this->m_value < b.m_value;
+    vrať this->m_value < b.m_value;
 }
 
-bool empty_::operator==(const empty_) const
+pravdivost empty_::operator==(neměnné empty_) neměnné
 {
-    return true;
+    vrať true;
 }
 
-bool empty_::operator<(const empty_) const
+pravdivost empty_::operator<(neměnné empty_) neměnné
 {
-    return false;
+    vrať false;
 }
 
-bool enum_::operator==(const enum_& b) const
+pravdivost enum_::operator==(neměnné enum_& b) neměnné
 {
-    return this->m_value == b.m_value;
+    vrať this->m_value == b.m_value;
 }
 
-bool enum_::operator<(const enum_& b) const
+pravdivost enum_::operator<(neměnné enum_& b) neměnné
 {
-    return this->m_value < b.m_value;
+    vrať this->m_value < b.m_value;
 }
 
-bool special_::operator==(const special_& b) const
+pravdivost special_::operator==(neměnné special_& b) neměnné
 {
-    return this->m_value == b.m_value;
+    vrať this->m_value == b.m_value;
 }
 
-bool special_::operator<(const special_& b) const
+pravdivost special_::operator<(neměnné special_& b) neměnné
 {
-    return this->m_value < b.m_value;
+    vrať this->m_value < b.m_value;
 }
 
-std::string specialValueToString(const special_& value)
+std::string specialValueToString(neměnné special_& value)
 {
-    switch (value.m_value) {
-    case SpecialValue::Container:
-        return "(container)";
-    case SpecialValue::PresenceContainer:
-        return "(presence container)";
-    case SpecialValue::List:
-        return "(list)";
-    case SpecialValue::LeafList:
-        return "(leaflist)";
+    přepínač (value.m_value) {
+    případ SpecialValue::Container:
+        vrať "(container)";
+    případ SpecialValue::PresenceContainer:
+        vrať "(presence container)";
+    případ SpecialValue::List:
+        vrať "(list)";
+    případ SpecialValue::LeafList:
+        vrať "(leaflist)";
     }
 
     __builtin_unreachable();

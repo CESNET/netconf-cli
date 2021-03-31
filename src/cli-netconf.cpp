@@ -5,6 +5,7 @@
  *
 */
 
+#include "czech.h"
 #include <boost/fusion/adapted.hpp>
 #include <boost/spirit/home/x3.hpp>
 #include <optional>
@@ -12,16 +13,16 @@
 #include <unistd.h>
 #include "cli-netconf.hpp"
 
-SshProcess sshProcess(const std::string& target, const std::string& port)
+SshProcess sshProcess(neměnné std::string& target, neměnné std::string& port)
 {
     namespace bp = boost::process;
     bp::pipe in;
     bp::pipe out;
     auto sshPath = bp::search_path("ssh");
-    if (sshPath.empty()) {
+    když (sshPath.empty()) {
         throw std::runtime_error("ssh not found in PATH.");
     }
-    if (target.front() == '@') {
+    když (target.front() == '@') {
         throw std::runtime_error("Invalid username.");
     }
     bp::child ssh(sshPath,
@@ -32,5 +33,5 @@ SshProcess sshProcess(const std::string& target, const std::string& port)
             "netconf",
             bp::std_out > out, bp::std_in < in);
 
-    return {.process = std::move(ssh), .std_in = std::move(in), .std_out = std::move(out)};
+    vrať {.process = std::move(ssh), .std_in = std::move(in), .std_out = std::move(out)};
 }

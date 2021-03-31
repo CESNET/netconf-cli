@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "czech.h"
 #include <boost/spirit/home/x3.hpp>
 #include "ast_handlers.hpp"
 #include "common_parsers.hpp"
@@ -14,22 +15,22 @@
 
 namespace x3 = boost::spirit::x3;
 
-x3::rule<cdPath_class, dataPath_> const cdPath = "cdPath";
-x3::rule<getPath_class, decltype(get_::m_path)> const getPath = "getPath";
-x3::rule<rpcPath_class, dataPath_> const rpcPath = "rpcPath";
-x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
-x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
-x3::rule<leafListElementPath_class, dataPath_> const leafListElementPath = "leafListElementPath";
-x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
-x3::rule<trailingSlash_class, x3::unused_type> const trailingSlash = "trailingSlash";
-x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
-x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
-x3::rule<key_identifier_class, std::string> const key_identifier = "key_identifier";
-x3::rule<listSuffix_class, std::vector<keyValue_>> const listSuffix = "listSuffix";
-x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
-x3::rule<createValueSuggestions_class, x3::unused_type> const createValueSuggestions = "createValueSuggestions";
-x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
-x3::rule<class leafListValue_class, leaf_data_> const leafListValue = "leafListValue";
+x3::rule<cdPath_class, dataPath_> neměnné cdPath = "cdPath";
+x3::rule<getPath_class, decltype(get_::m_path)> neměnné getPath = "getPath";
+x3::rule<rpcPath_class, dataPath_> neměnné rpcPath = "rpcPath";
+x3::rule<presenceContainerPath_class, dataPath_> neměnné presenceContainerPath = "presenceContainerPath";
+x3::rule<listInstancePath_class, dataPath_> neměnné listInstancePath = "listInstancePath";
+x3::rule<leafListElementPath_class, dataPath_> neměnné leafListElementPath = "leafListElementPath";
+x3::rule<initializePath_class, x3::unused_type> neměnné initializePath = "initializePath";
+x3::rule<trailingSlash_class, x3::unused_type> neměnné trailingSlash = "trailingSlash";
+x3::rule<absoluteStart_class, Scope> neměnné absoluteStart = "absoluteStart";
+x3::rule<keyValue_class, keyValue_> neměnné keyValue = "keyValue";
+x3::rule<key_identifier_class, std::string> neměnné key_identifier = "key_identifier";
+x3::rule<listSuffix_class, std::vector<keyValue_>> neměnné listSuffix = "listSuffix";
+x3::rule<createKeySuggestions_class, x3::unused_type> neměnné createKeySuggestions = "createKeySuggestions";
+x3::rule<createValueSuggestions_class, x3::unused_type> neměnné createValueSuggestions = "createValueSuggestions";
+x3::rule<suggestKeysEnd_class, x3::unused_type> neměnné suggestKeysEnd = "suggestKeysEnd";
+x3::rule<class leafListValue_class, leaf_data_> neměnné leafListValue = "leafListValue";
 auto pathEnd = x3::rule<class PathEnd>{"pathEnd"} = &space_separator | x3::eoi;
 
 enum class NodeParserMode {
@@ -70,89 +71,89 @@ template <NodeParserMode PARSER_MODE, CompletionMode COMPLETION_MODE>
 struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
     using attribute_type = typename ModeToAttribute<PARSER_MODE>::type;
 
-    std::function<bool(const Schema&, const std::string& path)> m_filterFunction;
+    std::function<pravdivost(neměnné Schema&, neměnné std::string& path)> m_filterFunction;
 
-    NodeParser(const std::function<bool(const Schema&, const std::string& path)>& filterFunction)
+    NodeParser(neměnné std::function<pravdivost(neměnné Schema&, neměnné std::string& path)>& filterFunction)
         : m_filterFunction(filterFunction)
     {
     }
 
     template <typename It, typename Ctx, typename RCtx, typename Attr>
-    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
+    pravdivost parse(It& begin, It end, Ctx neměnné& ctx, RCtx& rctx, Attr& attr) neměnné
     {
         std::string tableName;
-        if constexpr (std::is_same<attribute_type, schemaNode_>()) {
+        když constexpr (std::is_same<attribute_type, schemaNode_>()) {
             tableName = "schemaNode";
-        } else {
+        } jinak {
             tableName = "dataNode";
         }
         x3::symbols<attribute_type> table(tableName);
 
         ParserContext& parserContext = x3::get<parser_context_tag>(ctx);
         parserContext.m_suggestions.clear();
-        for (const auto& child : parserContext.m_schema.availableNodes(parserContext.currentSchemaPath(), Recursion::NonRecursive)) {
+        pro (neměnné auto& child : parserContext.m_schema.availableNodes(parserContext.currentSchemaPath(), Recursion::NonRecursive)) {
             attribute_type out;
             std::string parseString;
-            if (child.first) {
+            když (child.first) {
                 out.m_prefix = module_{*child.first};
                 parseString = *child.first + ":";
             }
             parseString += child.second;
 
-            if (!m_filterFunction(parserContext.m_schema, joinPaths(pathToSchemaString(parserContext.currentSchemaPath(), Prefixes::Always), parseString))) {
-                continue;
+            když (!m_filterFunction(parserContext.m_schema, joinPaths(pathToSchemaString(parserContext.currentSchemaPath(), Prefixes::Always), parseString))) {
+                pokračuj;
             }
 
-            switch (parserContext.m_schema.nodeType(parserContext.currentSchemaPath(), child)) {
-                case yang::NodeTypes::Container:
-                case yang::NodeTypes::PresenceContainer:
+            přepínač (parserContext.m_schema.nodeType(parserContext.currentSchemaPath(), child)) {
+                případ yang::NodeTypes::Container:
+                případ yang::NodeTypes::PresenceContainer:
                     out.m_suffix = container_{child.second};
                     parserContext.m_suggestions.emplace(Completion{parseString + "/"});
-                    break;
-                case yang::NodeTypes::Leaf:
+                    rozbij;
+                případ yang::NodeTypes::Leaf:
                     out.m_suffix = leaf_{child.second};
                     parserContext.m_suggestions.emplace(Completion{parseString + " "});
-                    break;
-                case yang::NodeTypes::List:
-                    if constexpr (std::is_same<attribute_type, schemaNode_>()) {
+                    rozbij;
+                případ yang::NodeTypes::List:
+                    když constexpr (std::is_same<attribute_type, schemaNode_>()) {
                         out.m_suffix = list_{child.second};
-                    } else {
+                    } jinak {
                         out.m_suffix = listElement_{child.second, {}};
                     }
 
-                    if constexpr (COMPLETION_MODE == CompletionMode::Schema) {
+                    když constexpr (COMPLETION_MODE == CompletionMode::Schema) {
                         parserContext.m_suggestions.emplace(Completion{parseString + "/"});
-                    } else {
+                    } jinak {
                         parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
                     }
-                    break;
-                case yang::NodeTypes::LeafList:
-                    if constexpr (std::is_same<attribute_type, schemaNode_>()) {
+                    rozbij;
+                případ yang::NodeTypes::LeafList:
+                    když constexpr (std::is_same<attribute_type, schemaNode_>()) {
                         out.m_suffix = leafList_{child.second};
-                    } else {
+                    } jinak {
                         out.m_suffix = leafListElement_{child.second, {}};
                     }
 
-                    if constexpr (COMPLETION_MODE == CompletionMode::Schema) {
+                    když constexpr (COMPLETION_MODE == CompletionMode::Schema) {
                         parserContext.m_suggestions.emplace(Completion{parseString + "/"});
-                    } else {
+                    } jinak {
                         parserContext.m_suggestions.emplace(Completion{parseString, "[", Completion::WhenToAdd::IfFullMatch});
                     }
-                    break;
-                case yang::NodeTypes::Rpc:
+                    rozbij;
+                případ yang::NodeTypes::Rpc:
                     out.m_suffix = rpcNode_{child.second};
                     parserContext.m_suggestions.emplace(Completion{parseString + "/"});
-                    break;
-                case yang::NodeTypes::Action:
+                    rozbij;
+                případ yang::NodeTypes::Action:
                     out.m_suffix = actionNode_{child.second};
                     parserContext.m_suggestions.emplace(Completion{parseString + "/"});
-                    break;
-                case yang::NodeTypes::AnyXml:
-                case yang::NodeTypes::Notification:
-                    continue;
+                    rozbij;
+                případ yang::NodeTypes::AnyXml:
+                případ yang::NodeTypes::Notification:
+                    pokračuj;
             }
             table.add(parseString, out);
-            if (!child.first) {
+            když (!child.first) {
                 auto topLevelModule = parserContext.currentSchemaPath().m_nodes.begin()->m_prefix;
                 out.m_prefix = topLevelModule;
                 table.add(topLevelModule->m_name + ":" + parseString, out);
@@ -161,24 +162,24 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
         table.add("..", attribute_type{nodeup_{}});
         parserContext.m_completionIterator = begin;
 
-        if constexpr (PARSER_MODE == NodeParserMode::CompletionsOnly) {
-            return true;
-        } else {
+        když constexpr (PARSER_MODE == NodeParserMode::CompletionsOnly) {
+            vrať true;
+        } jinak {
             It saveIter = begin;
 
             auto res = table.parse(begin, end, ctx, rctx, attr);
 
-            if (std::holds_alternative<leaf_>(attr.m_suffix)) {
+            když (std::holds_alternative<leaf_>(attr.m_suffix)) {
                 parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
-                ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
-                                        return boost::optional<std::string>{it.m_name};
+                ModuleNodePair node{attr.m_prefix.flat_map([](neměnné auto& it) {
+                                        vrať boost::optional<std::string>{it.m_name};
                                     }),
                                     std::get<leaf_>(attr.m_suffix).m_name};
                 parserContext.m_tmpListKeyLeafPath.m_node = node;
             }
 
-            if constexpr (std::is_same<attribute_type, dataNode_>()) {
-                if (std::holds_alternative<listElement_>(attr.m_suffix)) {
+            když constexpr (std::is_same<attribute_type, dataNode_>()) {
+                když (std::holds_alternative<listElement_>(attr.m_suffix)) {
                     parserContext.m_tmpListPath = parserContext.currentDataPath();
                     auto tmpList = list_{std::get<listElement_>(attr.m_suffix).m_name};
                     parserContext.m_tmpListPath.m_nodes.emplace_back(attr.m_prefix, tmpList);
@@ -186,51 +187,51 @@ struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
                     res = listSuffix.parse(begin, end, ctx, rctx, std::get<listElement_>(attr.m_suffix).m_keys);
 
                     // FIXME: think of a better way to do this, that is, get rid of manual iterator reverting
-                    if (!res) {
+                    když (!res) {
                         // If listSuffix didn't succeed, we check, if we allow incomplete nodes. If we do, then we replace listElement_ with list_.
                         // If we don't, we fail the whole symbol table.
-                        if constexpr (PARSER_MODE == NodeParserMode::IncompleteDataNode) {
+                        když constexpr (PARSER_MODE == NodeParserMode::IncompleteDataNode) {
                             res = true;
                             attr.m_suffix = list_{std::get<listElement_>(attr.m_suffix).m_name};
-                        } else {
+                        } jinak {
                             begin = saveIter;
                         }
                     }
                 }
 
-                if (std::holds_alternative<leafListElement_>(attr.m_suffix)) {
+                když (std::holds_alternative<leafListElement_>(attr.m_suffix)) {
                     parserContext.m_tmpListKeyLeafPath.m_location = parserContext.currentSchemaPath();
-                    ModuleNodePair node{attr.m_prefix.flat_map([](const auto& it) {
-                                            return boost::optional<std::string>{it.m_name};
+                    ModuleNodePair node{attr.m_prefix.flat_map([](neměnné auto& it) {
+                                            vrať boost::optional<std::string>{it.m_name};
                                         }),
                                         std::get<leafListElement_>(attr.m_suffix).m_name};
                     parserContext.m_tmpListKeyLeafPath.m_node = node;
                     res = leafListValue.parse(begin, end, ctx, rctx, std::get<leafListElement_>(attr.m_suffix).m_value);
 
-                    if (!res) {
-                        if constexpr (PARSER_MODE == NodeParserMode::IncompleteDataNode) {
+                    když (!res) {
+                        když constexpr (PARSER_MODE == NodeParserMode::IncompleteDataNode) {
                             res = true;
                             attr.m_suffix = leafList_{std::get<leafListElement_>(attr.m_suffix).m_name};
-                        } else {
+                        } jinak {
                             begin = saveIter;
                         }
                     }
                 }
             }
 
-            if (res) {
+            když (res) {
                 // After a path fragment, there can only be a slash or a "pathEnd". If this is not the case
                 // then that means there are other unparsed characters after the fragment. In that case the parsing
                 // needs to fail.
                 res = (pathEnd | &char_('/')).parse(begin, end, ctx, rctx, x3::unused);
-                if (!res) {
+                když (!res) {
                     begin = saveIter;
-                } else {
+                } jinak {
                     parserContext.pushPathFragment(attr);
                 }
             }
 
-            return res;
+            vrať res;
         }
     }
 };
@@ -266,15 +267,15 @@ struct ModeToAttribute<PathParserMode::DataPathListEnd> {
 template <PathParserMode PARSER_MODE, CompletionMode COMPLETION_MODE>
 struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
     using attribute_type = ModeToAttribute<PARSER_MODE>;
-    std::function<bool(const Schema&, const std::string& path)> m_filterFunction;
+    std::function<pravdivost(neměnné Schema&, neměnné std::string& path)> m_filterFunction;
 
-    PathParser(const std::function<bool(const Schema&, const std::string& path)>& filterFunction = [](const auto&, const auto&) { return true; })
+    PathParser(neměnné std::function<pravdivost(neměnné Schema&, neměnné std::string& path)>& filterFunction = [](neměnné auto&, neměnné auto&) { vrať true; })
         : m_filterFunction(filterFunction)
     {
     }
 
     template <typename It, typename Ctx, typename RCtx, typename Attr>
-    bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr) const
+    pravdivost parse(It& begin, It end, Ctx neměnné& ctx, RCtx& rctx, Attr& attr) neměnné
     {
         initializePath.parse(begin, end, ctx, rctx, x3::unused);
         dataPath_ attrData;
@@ -289,19 +290,19 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
         res = dataPath.parse(begin, end, ctx, rctx, attrData);
 
         // If we allow data paths with a list at the end, we just try to parse that separately.
-        if constexpr (PARSER_MODE == PathParserMode::DataPathListEnd || PARSER_MODE == PathParserMode::AnyPath) {
-            if (!res || !pathEnd.parse(begin, end, ctx, rctx, x3::unused)) {
+        když constexpr (PARSER_MODE == PathParserMode::DataPathListEnd || PARSER_MODE == PathParserMode::AnyPath) {
+            když (!res || !pathEnd.parse(begin, end, ctx, rctx, x3::unused)) {
                 dataNode_ attrNodeList;
                 auto hasListEnd = incompleteDataNode<COMPLETION_MODE>{m_filterFunction}.parse(begin, end, ctx, rctx, attrNodeList);
-                if (hasListEnd) {
+                když (hasListEnd) {
                     attrData.m_nodes.emplace_back(attrNodeList);
                     // If the trailing slash matches, no more nodes are parsed. That means no more completion. So, I
                     // generate them manually, but only if we're in AnyPath mode, so, for example, inside an `ls`
                     // command. If we're in DataPathListEnd it doesn't make sense to parse put any more nodes after the
                     // final list.
-                    if constexpr (PARSER_MODE == PathParserMode::AnyPath) {
+                    když constexpr (PARSER_MODE == PathParserMode::AnyPath) {
                         res = (-(trailingSlash >> x3::omit[pathCompletions<COMPLETION_MODE>{m_filterFunction}])).parse(begin, end, ctx, rctx, x3::unused);
-                    } else {
+                    } jinak {
                         res = (-trailingSlash).parse(begin, end, ctx, rctx, x3::unused);
                     }
                 }
@@ -309,13 +310,13 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
         }
 
         attr = attrData;
-        if constexpr (PARSER_MODE == PathParserMode::AnyPath) {
+        když constexpr (PARSER_MODE == PathParserMode::AnyPath) {
             // If our data path already has some listElement_ fragments, we can't parse rest of the path as a schema path
             auto hasLists = std::any_of(attrData.m_nodes.begin(), attrData.m_nodes.end(),
-                [] (const auto& node) { return std::holds_alternative<listElement_>(node.m_suffix); });
+                [] (neměnné auto& node) { vrať std::holds_alternative<listElement_>(node.m_suffix); });
             // If parsing failed, or if there's more input we try parsing schema nodes.
-            if (!hasLists) {
-                if (!res || !pathEnd.parse(begin, end, ctx, rctx, x3::unused)) {
+            když (!hasLists) {
+                když (!res || !pathEnd.parse(begin, end, ctx, rctx, x3::unused)) {
                     // If dataPath parsed some nodes, they will be saved in `attrData`. We have to keep these.
                     schemaPath_ attrSchema = dataPathToSchemaPath(attrData);
                     auto schemaPath = schemaNode<COMPLETION_MODE>{m_filterFunction} % '/';
@@ -327,7 +328,7 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
                 }
             }
         }
-        return res;
+        vrať res;
     }
 };
 
@@ -338,9 +339,9 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
 // The PathParser class would get a boost::variant as the attribute, but I
 // don't want to deal with that, so I use these wrappers to ensure the
 // attribute I want (and let Spirit deal with boost::variant).
-auto const anyPath = x3::rule<class anyPath_class, AnyPath>{"anyPath"} = PathParser<PathParserMode::AnyPath, CompletionMode::Schema>{};
-auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPath, CompletionMode::Data>{};
-auto const dataPathListEnd = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{};
+auto neměnné anyPath = x3::rule<class anyPath_class, AnyPath>{"anyPath"} = PathParser<PathParserMode::AnyPath, CompletionMode::Schema>{};
+auto neměnné dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPath, CompletionMode::Data>{};
+auto neměnné dataPathListEnd = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{};
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -350,57 +351,57 @@ auto const dataPathListEnd = x3::rule<class dataPath_class, dataPath_>{"dataPath
 struct SuggestLeafListEnd : x3::parser<SuggestLeafListEnd> {
     using attribute_type = x3::unused_type;
     template <typename It, typename Ctx, typename RCtx, typename Attr>
-    bool parse(It& begin, It, Ctx const& ctx, RCtx&, Attr&) const
+    pravdivost parse(It& begin, It, Ctx neměnné& ctx, RCtx&, Attr&) neměnné
     {
         auto& parserContext = x3::get<parser_context_tag>(ctx);
         parserContext.m_completionIterator = begin;
         parserContext.m_suggestions = {Completion{"]"}};
 
-        return true;
+        vrať true;
     }
-} const suggestLeafListEnd;
+} neměnné suggestLeafListEnd;
 
-auto const leafListValue_def =
+auto neměnné leafListValue_def =
     '[' >> leaf_data >> suggestLeafListEnd >> ']';
 
-auto const rest =
+auto neměnné rest =
     x3::omit[x3::no_skip[+(x3::char_ - '/' - space_separator)]];
 
-auto const key_identifier_def =
+auto neměnné key_identifier_def =
     x3::lexeme[
         ((x3::alpha | char_("_")) >> *(x3::alnum | char_("_") | char_("-") | char_(".")))
     ];
 
-auto const createKeySuggestions_def =
+auto neměnné createKeySuggestions_def =
     x3::eps;
 
-auto const createValueSuggestions_def =
+auto neměnné createValueSuggestions_def =
     x3::eps;
 
-auto const suggestKeysEnd_def =
+auto neměnné suggestKeysEnd_def =
     x3::eps;
 
-auto const keyValue_def =
+auto neměnné keyValue_def =
     key_identifier > '=' > createValueSuggestions > leaf_data;
 
-auto const keyValueWrapper =
+auto neměnné keyValueWrapper =
     x3::no_skip['[' > createKeySuggestions > keyValue > suggestKeysEnd > ']'];
 
 // even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
-auto const listSuffix_def =
+auto neměnné listSuffix_def =
     *keyValueWrapper;
 
-auto const list_def =
+auto neměnné list_def =
     node_identifier >> !char_('[');
 
-auto const absoluteStart_def =
+auto neměnné absoluteStart_def =
     x3::omit['/'] >> x3::attr(Scope::Absolute);
 
-auto const trailingSlash_def =
+auto neměnné trailingSlash_def =
     x3::omit['/'];
 
-auto const filterConfigFalse = [](const Schema& schema, const std::string& path) {
-    return schema.isConfig(path);
+auto neměnné filterConfigFalse = [](neměnné Schema& schema, neměnné std::string& path) {
+    vrať schema.isConfig(path);
 };
 
 // A WritableOps value is injected through the `x3::with` with this tag (see usage of the tag). It controls whether
@@ -408,33 +409,33 @@ auto const filterConfigFalse = [](const Schema& schema, const std::string& path)
 // the full datastore, including the "read-only" data.
 struct writableOps_tag;
 
-PathParser<PathParserMode::DataPath, CompletionMode::Data> const dataPathFilterConfigFalse{filterConfigFalse};
+PathParser<PathParserMode::DataPath, CompletionMode::Data> neměnné dataPathFilterConfigFalse{filterConfigFalse};
 
 struct WritableLeafPath : x3::parser<WritableLeafPath> {
     using attribute_type = dataPath_;
     template <typename It, typename Ctx, typename RCtx, typename Attr>
-    static bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr)
+    stálé pravdivost parse(It& begin, It end, Ctx neměnné& ctx, RCtx& rctx, Attr& attr)
     {
-        bool res;
-        if (x3::get<writableOps_tag>(ctx) == WritableOps::Yes) {
+        pravdivost res;
+        když (x3::get<writableOps_tag>(ctx) == WritableOps::Yes) {
             res = dataPath.parse(begin, end, ctx, rctx, attr);
-        } else {
+        } jinak {
             res = dataPathFilterConfigFalse.parse(begin, end, ctx, rctx, attr);
         }
-        if (!res) {
-            return false;
+        když (!res) {
+            vrať false;
         }
 
-        if (attr.m_nodes.empty() || !std::holds_alternative<leaf_>(attr.m_nodes.back().m_suffix)) {
+        když (attr.m_nodes.empty() || !std::holds_alternative<leaf_>(attr.m_nodes.back().m_suffix)) {
             auto& parserContext = x3::get<parser_context_tag>(ctx);
             parserContext.m_errorMsg = "This is not a path to leaf.";
-            return false;
+            vrať false;
         }
 
-        return true;
+        vrať true;
     }
 
-} const writableLeafPath;
+} neměnné writableLeafPath;
 
 enum class AllowInput {
     Yes,
@@ -445,59 +446,59 @@ template <AllowInput ALLOW_INPUT>
 struct RpcActionPath : x3::parser<RpcActionPath<ALLOW_INPUT>> {
     using attribute_type = dataPath_;
     template <typename It, typename Ctx, typename RCtx, typename Attr>
-    static bool parse(It& begin, It end, Ctx const& ctx, RCtx& rctx, Attr& attr)
+    stálé pravdivost parse(It& begin, It end, Ctx neměnné& ctx, RCtx& rctx, Attr& attr)
     {
-        auto grammar = PathParser<PathParserMode::DataPath, CompletionMode::Data>{[] (const Schema& schema, const std::string& path) {
-            if constexpr (ALLOW_INPUT == AllowInput::No) {
+        auto grammar = PathParser<PathParserMode::DataPath, CompletionMode::Data>{[] (neměnné Schema& schema, neměnné std::string& path) {
+            když constexpr (ALLOW_INPUT == AllowInput::No) {
                 auto nodeType = schema.nodeType(path);
-                if (nodeType == yang::NodeTypes::Rpc || nodeType == yang::NodeTypes::Action) {
-                    return !schema.hasInputNodes(path);
+                když (nodeType == yang::NodeTypes::Rpc || nodeType == yang::NodeTypes::Action) {
+                    vrať !schema.hasInputNodes(path);
                 }
             }
 
-            return true;
+            vrať true;
         }};
-        bool res = grammar.parse(begin, end, ctx, rctx, attr);
-        if (!res) {
-            return false;
+        pravdivost res = grammar.parse(begin, end, ctx, rctx, attr);
+        když (!res) {
+            vrať false;
         }
 
-        if (attr.m_nodes.empty()
+        když (attr.m_nodes.empty()
             || (!std::holds_alternative<rpcNode_>(attr.m_nodes.back().m_suffix) && !std::holds_alternative<actionNode_>(attr.m_nodes.back().m_suffix))) {
             auto& parserContext = x3::get<parser_context_tag>(ctx);
             parserContext.m_errorMsg = "This is not a path to an RPC/action.";
-            return false;
+            vrať false;
         }
 
-        return true;
+        vrať true;
     }
 };
 
-auto const noRpcOrAction = [](const Schema& schema, const std::string& path) {
+auto neměnné noRpcOrAction = [](neměnné Schema& schema, neměnné std::string& path) {
     auto nodeType = schema.nodeType(path);
-    return nodeType != yang::NodeTypes::Rpc && nodeType != yang::NodeTypes::Action;
+    vrať nodeType != yang::NodeTypes::Rpc && nodeType != yang::NodeTypes::Action;
 };
 
-auto const getPath_def =
+auto neměnné getPath_def =
     PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{noRpcOrAction} |
     (module >> "*");
 
-auto const cdPath_def =
-    PathParser<PathParserMode::DataPath, CompletionMode::Data>{[] (const Schema& schema, const std::string& path) {
-        return noRpcOrAction(schema, path) && schema.nodeType(path) != yang::NodeTypes::Leaf;
+auto neměnné cdPath_def =
+    PathParser<PathParserMode::DataPath, CompletionMode::Data>{[] (neměnné Schema& schema, neměnné std::string& path) {
+        vrať noRpcOrAction(schema, path) && schema.nodeType(path) != yang::NodeTypes::Leaf;
     }};
 
-auto const presenceContainerPath_def =
+auto neměnné presenceContainerPath_def =
     dataPath;
 
-auto const listInstancePath_def =
+auto neměnné listInstancePath_def =
     dataPath;
 
-auto const leafListElementPath_def =
+auto neměnné leafListElementPath_def =
     dataPath;
 
 // A "nothing" parser, which is used to indicate we tried to parse a path
-auto const initializePath_def =
+auto neměnné initializePath_def =
     x3::eps;
 
 

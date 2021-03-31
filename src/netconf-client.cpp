@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include <cstring>
 #include <libyang/Tree_Data.hpp>
 #include <mutex>
@@ -20,9 +21,9 @@ namespace libnetconf {
 
 namespace impl {
 
-static client::LogCb logCallback;
+stálé client::LogCb logCallback;
 
-static void logViaCallback(NC_VERB_LEVEL level, const char* message)
+stálé prázdno logViaCallback(NC_VERB_LEVEL level, neměnné znak* message)
 {
     logCallback(level, message);
 }
@@ -44,43 +45,43 @@ class ClientInit {
     }
 
 public:
-    static ClientInit& instance()
+    stálé ClientInit& instance()
     {
-        static ClientInit lib;
-        return lib;
+        stálé ClientInit lib;
+        vrať lib;
     }
 
-    ClientInit(const ClientInit&) = delete;
+    ClientInit(neměnné ClientInit&) = delete;
     ClientInit(ClientInit&&) = delete;
-    ClientInit& operator=(const ClientInit&) = delete;
+    ClientInit& operator=(neměnné ClientInit&) = delete;
     ClientInit& operator=(ClientInit&&) = delete;
 };
 
-static std::mutex clientOptions;
+stálé std::mutex clientOptions;
 
-inline void custom_free_nc_reply_data(nc_reply_data* reply)
+inline prázdno custom_free_nc_reply_data(nc_reply_data* reply)
 {
     nc_reply_free(reinterpret_cast<nc_reply*>(reply));
 }
-inline void custom_free_nc_reply_error(nc_reply_error* reply)
+inline prázdno custom_free_nc_reply_error(nc_reply_error* reply)
 {
     nc_reply_free(reinterpret_cast<nc_reply*>(reply));
 }
 
-char* ssh_auth_interactive_cb(const char* auth_name, const char* instruction, const char* prompt, int echo, void* priv)
+znak* ssh_auth_interactive_cb(neměnné znak* auth_name, neměnné znak* instruction, neměnné znak* prompt, číslo echo, prázdno* priv)
 {
-    const auto cb = static_cast<const client::KbdInteractiveCb*>(priv);
+    neměnné auto cb = static_cast<neměnné client::KbdInteractiveCb*>(priv);
     auto res = (*cb)(auth_name, instruction, prompt, echo);
-    return ::strdup(res.c_str());
+    vrať ::řeťzdv(res.c_str());
 }
 
-template <typename Type> using deleter_type_for = void (*)(Type*);
-template <typename Type> deleter_type_for<Type> const deleter_for;
+template <typename Type> using deleter_type_for = prázdno (*)(Type*);
+template <typename Type> deleter_type_for<Type> neměnné deleter_for;
 
-template <> const auto deleter_for<nc_rpc> = nc_rpc_free;
-template <> const auto deleter_for<nc_reply> = nc_reply_free;
-template <> const auto deleter_for<nc_reply_data> = custom_free_nc_reply_data;
-template <> const auto deleter_for<nc_reply_error> = custom_free_nc_reply_error;
+template <> neměnné auto deleter_for<nc_rpc> = nc_rpc_free;
+template <> neměnné auto deleter_for<nc_reply> = nc_reply_free;
+template <> neměnné auto deleter_for<nc_reply_data> = custom_free_nc_reply_data;
+template <> neměnné auto deleter_for<nc_reply_error> = custom_free_nc_reply_error;
 
 template <typename T>
 using unique_ptr_for = std::unique_ptr<T, decltype(deleter_for<T>)>;
@@ -88,39 +89,39 @@ using unique_ptr_for = std::unique_ptr<T, decltype(deleter_for<T>)>;
 template <typename T>
 auto guarded(T* ptr)
 {
-    return unique_ptr_for<T>(ptr, deleter_for<T>);
+    vrať unique_ptr_for<T>(ptr, deleter_for<T>);
 }
 
 unique_ptr_for<struct nc_reply> do_rpc(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
 {
-    uint64_t msgid;
+    nčíslo64_t msgid;
     NC_MSG_TYPE msgtype;
 
     msgtype = nc_send_rpc(session->session_internal(), rpc.get(), 1000, &msgid);
-    if (msgtype == NC_MSG_ERROR) {
+    když (msgtype == NC_MSG_ERROR) {
         throw std::runtime_error{"Failed to send RPC"};
     }
-    if (msgtype == NC_MSG_WOULDBLOCK) {
+    když (msgtype == NC_MSG_WOULDBLOCK) {
         throw std::runtime_error{"Timeout sending an RPC"};
     }
 
     struct nc_reply* raw_reply;
-    while (true) {
+    dokud (true) {
         msgtype = nc_recv_reply(session->session_internal(), rpc.get(), msgid, 20000, LYD_OPT_DESTRUCT | LYD_OPT_NOSIBLINGS, &raw_reply);
         auto reply = guarded(raw_reply);
         raw_reply = nullptr;
 
-        switch (msgtype) {
-        case NC_MSG_ERROR:
+        přepínač (msgtype) {
+        případ NC_MSG_ERROR:
             throw std::runtime_error{"Failed to receive an RPC reply"};
-        case NC_MSG_WOULDBLOCK:
+        případ NC_MSG_WOULDBLOCK:
             throw std::runtime_error{"Timed out waiting for RPC reply"};
-        case NC_MSG_REPLY_ERR_MSGID:
+        případ NC_MSG_REPLY_ERR_MSGID:
             throw std::runtime_error{"Received a wrong reply -- msgid mismatch"};
-        case NC_MSG_NOTIF:
-            continue;
-        default:
-            return reply;
+        případ NC_MSG_NOTIF:
+            pokračuj;
+        výchozí:
+            vrať reply;
         }
     }
     __builtin_unreachable();
@@ -128,7 +129,7 @@ unique_ptr_for<struct nc_reply> do_rpc(client::Session* session, unique_ptr_for<
 
 client::ReportedError make_error(unique_ptr_for<struct nc_reply>&& reply)
 {
-    if (reply->type != NC_RPL_ERROR) {
+    když (reply->type != NC_RPL_ERROR) {
         throw std::logic_error{"Cannot extract an error from a non-error server reply"};
     }
 
@@ -137,29 +138,29 @@ client::ReportedError make_error(unique_ptr_for<struct nc_reply>&& reply)
     // TODO: capture the error details, not just that human-readable string
     std::ostringstream ss;
     ss << "Server error:" << std::endl;
-    for (uint32_t i = 0; i < errorReply->count; ++i) {
-        const auto e = errorReply->err[i];
+    pro (nčíslo32_t i = 0; i < errorReply->count; ++i) {
+        neměnné auto e = errorReply->err[i];
         ss << " #" << i << ": " << e.message;
-        if (e.path) {
+        když (e.path) {
             ss << " (XPath " << e.path << ")";
         }
         ss << std::endl;
     }
-    return client::ReportedError{ss.str()};
+    vrať client::ReportedError{ss.str()};
 }
 
 std::optional<unique_ptr_for<struct nc_reply_data>> do_rpc_data_or_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
 {
     auto x = do_rpc(session, std::move(rpc));
 
-    switch (x->type) {
-    case NC_RPL_DATA:
-        return guarded(reinterpret_cast<struct nc_reply_data*>(x.release()));
-    case NC_RPL_OK:
-        return std::nullopt;
-    case NC_RPL_ERROR:
+    přepínač (x->type) {
+    případ NC_RPL_DATA:
+        vrať guarded(reinterpret_cast<struct nc_reply_data*>(x.release()));
+    případ NC_RPL_OK:
+        vrať std::nullopt;
+    případ NC_RPL_ERROR:
         throw make_error(std::move(x));
-    default:
+    výchozí:
         throw std::runtime_error{"Unhandled reply type"};
     }
 }
@@ -167,16 +168,16 @@ std::optional<unique_ptr_for<struct nc_reply_data>> do_rpc_data_or_ok(client::Se
 unique_ptr_for<struct nc_reply_data> do_rpc_data(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
 {
     auto x = do_rpc_data_or_ok(session, std::move(rpc));
-    if (!x) {
+    když (!x) {
         throw std::runtime_error{"Received OK instead of a data reply"};
     }
-    return std::move(*x);
+    vrať std::move(*x);
 }
 
-void do_rpc_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
+prázdno do_rpc_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
 {
     auto x = do_rpc_data_or_ok(session, std::move(rpc));
-    if (x) {
+    když (x) {
         throw std::runtime_error{"Unexpected DATA reply"};
     }
 }
@@ -188,18 +189,18 @@ std::shared_ptr<libyang::Data_Node> do_get(client::Session* session, unique_ptr_
     // TODO: can we do without copying?
     // If we just default-construct a new node (or use the create_new_Data_Node) and then set reply->data to nullptr,
     // there are mem leaks and even libnetconf2 complains loudly.
-    return dataNode ? dataNode->dup_withsiblings(1) : nullptr;
+    vrať dataNode ? dataNode->dup_withsiblings(1) : nullptr;
 }
 }
 
 namespace client {
 
-void setLogLevel(NC_VERB_LEVEL level)
+prázdno setLogLevel(NC_VERB_LEVEL level)
 {
     nc_verbosity(level);
 }
 
-void setLogCallback(const client::LogCb& callback)
+prázdno setLogCallback(neměnné client::LogCb& callback)
 {
     impl::logCallback = callback;
     nc_set_print_clb(impl::logViaCallback);
@@ -207,12 +208,12 @@ void setLogCallback(const client::LogCb& callback)
 
 struct nc_session* Session::session_internal()
 {
-    return m_session;
+    vrať m_session;
 }
 
 libyang::S_Context Session::libyangContext()
 {
-    return std::make_shared<libyang::Context>(nc_session_get_ctx(m_session), nullptr);
+    vrať std::make_shared<libyang::Context>(nc_session_get_ctx(m_session), nullptr);
 }
 
 Session::Session(struct nc_session* session)
@@ -226,7 +227,7 @@ Session::~Session()
     ::nc_session_free(m_session, nullptr);
 }
 
-std::unique_ptr<Session> Session::connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath)
+std::unique_ptr<Session> Session::connectPubkey(neměnné std::string& host, neměnné nčíslo16_t port, neměnné std::string& user, neměnné std::string& pubPath, neměnné std::string& privPath)
 {
     impl::ClientInit::instance();
 
@@ -238,13 +239,13 @@ std::unique_ptr<Session> Session::connectPubkey(const std::string& host, const u
         nc_client_ssh_add_keypair(pubPath.c_str(), privPath.c_str());
     }
     auto session = std::make_unique<Session>(nc_connect_ssh(host.c_str(), port, nullptr));
-    if (!session->m_session) {
+    když (!session->m_session) {
         throw std::runtime_error{"nc_connect_ssh failed"};
     }
-    return session;
+    vrať session;
 }
 
-std::unique_ptr<Session> Session::connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback)
+std::unique_ptr<Session> Session::connectKbdInteractive(neměnné std::string& host, neměnné nčíslo16_t port, neměnné std::string& user, neměnné KbdInteractiveCb& callback)
 {
     impl::ClientInit::instance();
 
@@ -252,191 +253,191 @@ std::unique_ptr<Session> Session::connectKbdInteractive(const std::string& host,
     auto cb_guard = make_unique_resource([user, &callback]() {
         nc_client_ssh_set_username(user.c_str());
         nc_client_ssh_set_auth_pref(NC_SSH_AUTH_INTERACTIVE, 5);
-        nc_client_ssh_set_auth_interactive_clb(impl::ssh_auth_interactive_cb, static_cast<void *>(&const_cast<KbdInteractiveCb&>(callback)));
+        nc_client_ssh_set_auth_interactive_clb(impl::ssh_auth_interactive_cb, static_cast<prázdno *>(&const_cast<KbdInteractiveCb&>(callback)));
     }, []() {
         nc_client_ssh_set_auth_interactive_clb(nullptr, nullptr);
         nc_client_ssh_set_username(nullptr);
     });
 
     auto session = std::make_unique<Session>(nc_connect_ssh(host.c_str(), port, nullptr));
-    if (!session->m_session) {
+    když (!session->m_session) {
         throw std::runtime_error{"nc_connect_ssh failed"};
     }
-    return session;
+    vrať session;
 }
 
-std::unique_ptr<Session> Session::connectFd(const int source, const int sink)
+std::unique_ptr<Session> Session::connectFd(neměnné číslo source, neměnné číslo sink)
 {
     impl::ClientInit::instance();
 
     auto session = std::make_unique<Session>(nc_connect_inout(source, sink, nullptr));
-    if (!session->m_session) {
+    když (!session->m_session) {
         throw std::runtime_error{"nc_connect_inout failed"};
     }
-    return session;
+    vrať session;
 }
 
-std::unique_ptr<Session> Session::connectSocket(const std::string& path)
+std::unique_ptr<Session> Session::connectSocket(neměnné std::string& path)
 {
     impl::ClientInit::instance();
 
     auto session = std::make_unique<Session>(nc_connect_unix(path.c_str(), nullptr));
-    if (!session->m_session) {
+    když (!session->m_session) {
         throw std::runtime_error{"nc_connect_unix failed"};
     }
-    return session;
+    vrať session;
 }
 
-std::vector<std::string_view> Session::capabilities() const
+std::vector<std::string_view> Session::capabilities() neměnné
 {
     std::vector<std::string_view> res;
     auto caps = nc_session_get_cpblts(m_session);
-    while (*caps) {
+    dokud (*caps) {
         res.emplace_back(*caps);
         ++caps;
     }
-    return res;
+    vrať res;
 }
 
-std::shared_ptr<libyang::Data_Node> Session::get(const std::optional<std::string>& filter)
+std::shared_ptr<libyang::Data_Node> Session::get(neměnné std::optional<std::string>& filter)
 {
     auto rpc = impl::guarded(nc_rpc_get(filter ? filter->c_str() : nullptr, NC_WD_ALL, NC_PARAMTYPE_CONST));
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create get RPC");
     }
-    return impl::do_get(this, std::move(rpc));
+    vrať impl::do_get(this, std::move(rpc));
 }
 
-const char* datastoreToString(NmdaDatastore datastore)
+neměnné znak* datastoreToString(NmdaDatastore datastore)
 {
-    switch (datastore) {
-    case NmdaDatastore::Startup:
-        return "ietf-datastores:startup";
-    case NmdaDatastore::Running:
-        return "ietf-datastores:running";
-    case NmdaDatastore::Candidate:
-        return "ietf-datastores:candidate";
-    case NmdaDatastore::Operational:
-        return "ietf-datastores:operational";
+    přepínač (datastore) {
+    případ NmdaDatastore::Startup:
+        vrať "ietf-datastores:startup";
+    případ NmdaDatastore::Running:
+        vrať "ietf-datastores:running";
+    případ NmdaDatastore::Candidate:
+        vrať "ietf-datastores:candidate";
+    případ NmdaDatastore::Operational:
+        vrať "ietf-datastores:operational";
     }
     __builtin_unreachable();
 }
 
-std::shared_ptr<libyang::Data_Node> Session::getData(const NmdaDatastore datastore, const std::optional<std::string>& filter)
+std::shared_ptr<libyang::Data_Node> Session::getData(neměnné NmdaDatastore datastore, neměnné std::optional<std::string>& filter)
 {
     auto rpc = impl::guarded(nc_rpc_getdata(datastoreToString(datastore), filter ? filter->c_str() : nullptr, nullptr, nullptr, 0, 0, 0, 0, NC_WD_ALL, NC_PARAMTYPE_CONST));
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create get RPC");
     }
-    return impl::do_get(this, std::move(rpc));
+    vrať impl::do_get(this, std::move(rpc));
 }
 
-void Session::editData(const NmdaDatastore datastore, const std::string& data)
+prázdno Session::editData(neměnné NmdaDatastore datastore, neměnné std::string& data)
 {
     auto rpc = impl::guarded(nc_rpc_editdata(datastoreToString(datastore), NC_RPC_EDIT_DFLTOP_MERGE, data.c_str(), NC_PARAMTYPE_CONST));
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create get RPC");
     }
-    return impl::do_rpc_ok(this, std::move(rpc));
+    vrať impl::do_rpc_ok(this, std::move(rpc));
 }
 
-std::string Session::getSchema(const std::string_view identifier, const std::optional<std::string_view> version)
+std::string Session::getSchema(neměnné std::string_view identifier, neměnné std::optional<std::string_view> version)
 {
     auto rpc = impl::guarded(nc_rpc_getschema(identifier.data(), version ? version.value().data() : nullptr, nullptr, NC_PARAMTYPE_CONST));
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create get-schema RPC");
     }
     auto reply = impl::do_rpc_data(this, std::move(rpc));
 
     auto node = libyang::create_new_Data_Node(reply->data)->dup_withsiblings(1);
     auto set = node->find_path("data");
-    for (auto node : set->data()) {
-        if (node->schema()->nodetype() == LYS_ANYXML) {
+    pro (auto node : set->data()) {
+        když (node->schema()->nodetype() == LYS_ANYXML) {
             libyang::Data_Node_Anydata anydata(node);
-            return anydata.value().str;
+            vrať anydata.value().str;
         }
     }
     throw std::runtime_error("Got a reply to get-schema, but it didn't contain the required schema");
 }
 
-std::shared_ptr<libyang::Data_Node> Session::getConfig(const NC_DATASTORE datastore, const std::optional<const std::string> filter)
+std::shared_ptr<libyang::Data_Node> Session::getConfig(neměnné NC_DATASTORE datastore, neměnné std::optional<neměnné std::string> filter)
 {
     auto rpc = impl::guarded(nc_rpc_getconfig(datastore, filter ? filter->c_str() : nullptr, NC_WD_ALL, NC_PARAMTYPE_CONST));
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create get-config RPC");
     }
-    return impl::do_get(this, std::move(rpc));
+    vrať impl::do_get(this, std::move(rpc));
 }
 
-void Session::editConfig(const NC_DATASTORE datastore,
-                         const NC_RPC_EDIT_DFLTOP defaultOperation,
-                         const NC_RPC_EDIT_TESTOPT testOption,
-                         const NC_RPC_EDIT_ERROPT errorOption,
-                         const std::string& data)
+prázdno Session::editConfig(neměnné NC_DATASTORE datastore,
+                         neměnné NC_RPC_EDIT_DFLTOP defaultOperation,
+                         neměnné NC_RPC_EDIT_TESTOPT testOption,
+                         neměnné NC_RPC_EDIT_ERROPT errorOption,
+                         neměnné std::string& data)
 {
     auto rpc = impl::guarded(nc_rpc_edit(datastore, defaultOperation, testOption, errorOption, data.c_str(), NC_PARAMTYPE_CONST));
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create edit-config RPC");
     }
     impl::do_rpc_ok(this, std::move(rpc));
 }
 
-void Session::copyConfigFromString(const NC_DATASTORE target, const std::string& data)
+prázdno Session::copyConfigFromString(neměnné NC_DATASTORE target, neměnné std::string& data)
 {
     auto rpc = impl::guarded(nc_rpc_copy(target, nullptr, target /* yeah, cannot be 0... */, data.c_str(), NC_WD_UNKNOWN, NC_PARAMTYPE_CONST));
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create copy-config RPC");
     }
     impl::do_rpc_ok(this, std::move(rpc));
 }
 
-void Session::commit()
+prázdno Session::commit()
 {
     auto rpc = impl::guarded(nc_rpc_commit(0, /* "Optional confirm timeout" how do you optional an uint32_t? */ 0, nullptr, nullptr, NC_PARAMTYPE_CONST));
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create commit RPC");
     }
     impl::do_rpc_ok(this, std::move(rpc));
 }
 
-void Session::discard()
+prázdno Session::discard()
 {
     auto rpc = impl::guarded(nc_rpc_discard());
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create discard RPC");
     }
     impl::do_rpc_ok(this, std::move(rpc));
 }
 
-std::shared_ptr<libyang::Data_Node> Session::rpc_or_action(const std::string& xmlData)
+std::shared_ptr<libyang::Data_Node> Session::rpc_or_action(neměnné std::string& xmlData)
 {
     auto rpc = impl::guarded(nc_rpc_act_generic_xml(xmlData.c_str(), NC_PARAMTYPE_CONST));
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create generic RPC");
     }
     auto reply = impl::do_rpc_data_or_ok(this, std::move(rpc));
-    if (reply) {
+    když (reply) {
         auto dataNode = libyang::create_new_Data_Node((*reply)->data);
-        return dataNode->dup_withsiblings(1);
-    } else {
-        return nullptr;
+        vrať dataNode->dup_withsiblings(1);
+    } jinak {
+        vrať nullptr;
     }
 }
 
-void Session::copyConfig(const NC_DATASTORE source, const NC_DATASTORE destination)
+prázdno Session::copyConfig(neměnné NC_DATASTORE source, neměnné NC_DATASTORE destination)
 {
     auto rpc = impl::guarded(nc_rpc_copy(destination, nullptr, source, nullptr, NC_WD_UNKNOWN, NC_PARAMTYPE_CONST));
-    if (!rpc) {
+    když (!rpc) {
         throw std::runtime_error("Cannot create copy-config RPC");
     }
     impl::do_rpc_ok(this, std::move(rpc));
 }
 
-ReportedError::ReportedError(const std::string& what)
+ReportedError::ReportedError(neměnné std::string& what)
     : std::runtime_error(what)
 {
 }
 
-ReportedError::~ReportedError() = default;
+ReportedError::~ReportedError() = výchozí;
 }
 }

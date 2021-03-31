@@ -1,19 +1,20 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "czech.h"
 #include <doctest/doctest.h>
 #include <trompeloeil.hpp>
 
 namespace trompeloeil {
 template <>
-void reporter<specialized>::send(
+prázdno reporter<specialized>::send(
     severity s,
-    const char* file,
-    unsigned long line,
-    const char* msg)
+    neměnné znak* file,
+    bezznaménkový dlouhé line,
+    neměnné znak* msg)
 {
     auto f = line ? file : "[file/line unavailable]";
-    if (s == severity::fatal) {
+    když (s == severity::fatal) {
         ADD_FAIL_AT(f, line, msg);
-    } else {
+    } jinak {
         ADD_FAIL_CHECK_AT(f, line, msg);
     }
 }

@@ -5,59 +5,60 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#include "czech.h"
 #include "ast_commands.hpp"
 
-bool set_::operator==(const set_& b) const
+pravdivost set_::operator==(neměnné set_& b) neměnné
 {
-    return this->m_path == b.m_path && this->m_data == b.m_data;
+    vrať this->m_path == b.m_path && this->m_data == b.m_data;
 }
 
-bool get_::operator==(const get_& b) const
+pravdivost get_::operator==(neměnné get_& b) neměnné
 {
-    return this->m_path == b.m_path;
+    vrať this->m_path == b.m_path;
 }
 
-bool cd_::operator==(const cd_& b) const
+pravdivost cd_::operator==(neměnné cd_& b) neměnné
 {
-    return this->m_path == b.m_path;
+    vrať this->m_path == b.m_path;
 }
 
-bool ls_::operator==(const ls_& b) const
+pravdivost ls_::operator==(neměnné ls_& b) neměnné
 {
-    return this->m_path == b.m_path && this->m_options == b.m_options;
+    vrať this->m_path == b.m_path && this->m_options == b.m_options;
 }
 
-bool create_::operator==(const create_& b) const
+pravdivost create_::operator==(neměnné create_& b) neměnné
 {
-    return this->m_path == b.m_path;
+    vrať this->m_path == b.m_path;
 }
 
-bool delete_::operator==(const delete_& b) const
+pravdivost delete_::operator==(neměnné delete_& b) neměnné
 {
-    return this->m_path == b.m_path;
+    vrať this->m_path == b.m_path;
 }
 
-bool move_::operator==(const move_& other) const
+pravdivost move_::operator==(neměnné move_& other) neměnné
 {
-    return this->m_source == other.m_source && this->m_destination == other.m_destination;
+    vrať this->m_source == other.m_source && this->m_destination == other.m_destination;
 }
 
-bool dump_::operator==(const dump_& other) const
+pravdivost dump_::operator==(neměnné dump_& other) neměnné
 {
-    return this->m_format == other.m_format;
+    vrať this->m_format == other.m_format;
 }
 
-bool prepare_::operator==(const prepare_& other) const
+pravdivost prepare_::operator==(neměnné prepare_& other) neměnné
 {
-    return this->m_path == other.m_path;
+    vrať this->m_path == other.m_path;
 }
 
-bool exec_::operator==(const exec_& other) const
+pravdivost exec_::operator==(neměnné exec_& other) neměnné
 {
-    return this->m_path == other.m_path;
+    vrať this->m_path == other.m_path;
 }
 
-bool switch_::operator==(const switch_& other) const
+pravdivost switch_::operator==(neměnné switch_& other) neměnné
 {
-    return this->m_target == other.m_target;
+    vrať this->m_target == other.m_target;
 }

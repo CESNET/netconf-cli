@@ -5,6 +5,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include <experimental/iterator>
 #include <iostream>

@@ -5,6 +5,7 @@
  *
 */
 #pragma once
+#include "czech.h"
 #include <variant>
 #include "list_instance.hpp"
 
@@ -14,9 +15,9 @@ enum class Absolute {
     End
 };
 struct Relative {
-    bool operator==(const yang::move::Relative& other) const
+    pravdivost operator==(neměnné yang::move::Relative& other) neměnné
     {
-        return this->m_position == other.m_position && this->m_path == other.m_path;
+        vrať this->m_position == other.m_position && this->m_path == other.m_path;
     }
     enum class Position {
         Before,

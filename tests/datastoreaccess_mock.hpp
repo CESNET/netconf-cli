@@ -5,6 +5,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include <map>
 #include "datastore_access.hpp"
@@ -12,7 +13,7 @@
 
 namespace trompeloeil {
     template <>
-    inline void print(std::ostream& os, const leaf_data_& data)
+    inline prázdno print(std::ostream& os, neměnné leaf_data_& data)
     {
         os << leafDataToString(data);
     }
@@ -27,7 +28,7 @@ class MockDatastoreAccess : public trompeloeil::mock_interface<DatastoreAccess> 
     IMPLEMENT_MOCK2(execute);
 
     // Can't use IMPLEMENT_MOCK for private methods - IMPLEMENT_MOCK needs full visibility of the method
-    MAKE_MOCK1(listInstances, std::vector<ListInstance>(const std::string&), override);
+    MAKE_MOCK1(listInstances, std::vector<ListInstance>(neměnné std::string&), override);
 
 
     IMPLEMENT_MOCK0(schema);

@@ -6,13 +6,14 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include <experimental/iterator>
 #include "leaf_data_helpers.hpp"
 #include "pretty_printers.hpp"
 #include "yang_schema.hpp"
 
-const char* second_schema = R"(
+neměnné znak* second_schema = R"(
 module second-schema {
     namespace "http://example.com/nevim";
     prefix second;
@@ -37,7 +38,7 @@ module second-schema {
 }
 )";
 
-const char* included_submodule = R"(
+neměnné znak* included_submodule = R"(
 submodule sub-module {
     yang-version 1.1;
 
@@ -51,7 +52,7 @@ submodule sub-module {
 }
 )";
 
-const char* example_schema = R"(
+neměnné znak* example_schema = R"(
 module example-schema {
     yang-version 1.1;
     namespace "http://example.com/example-sports";
@@ -472,14 +473,14 @@ TEST_CASE("yangschema")
     using namespace std::string_view_literals;
     YangSchema ys;
     ys.registerModuleCallback([]([[maybe_unused]] auto modName, auto, auto subModule, auto) {
-        if (modName != "example-schema"sv) {
+        když (modName != "example-schema"sv) {
             throw std::logic_error("unrecognized module "s + modName);
         }
-        if (subModule == nullptr) {
-            return example_schema;
+        když (subModule == nullptr) {
+            vrať example_schema;
         }
-        if (subModule == "sub-module"sv) {
-            return included_submodule;
+        když (subModule == "sub-module"sv) {
+            vrať included_submodule;
         }
 
         throw std::logic_error("unrecognized submodule "s + subModule);
@@ -1200,7 +1201,7 @@ TEST_CASE("yangschema")
 
         SECTION("has input nodes")
         {
-            bool expected;
+            pravdivost expected;
             SECTION("example-schema:myRpc")
             {
                 path.m_nodes.emplace_back(module_{"example-schema"}, rpcNode_{"myRpc"});

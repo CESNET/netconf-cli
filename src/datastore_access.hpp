@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "czech.h"
 #include <map>
 #include <memory>
 #include <optional>
@@ -24,14 +25,14 @@ struct DatastoreError {
     std::string message;
     std::optional<std::string> xpath;
 
-    DatastoreError(const std::string& message, const std::optional<std::string>& xpath = std::nullopt);
+    DatastoreError(neměnné std::string& message, neměnné std::optional<std::string>& xpath = std::nullopt);
 };
 
 class DatastoreException : public std::exception {
 public:
-    DatastoreException(const std::vector<DatastoreError>& errors);
-    ~DatastoreException() override = default;
-    [[nodiscard]] const char* what() const noexcept override;
+    DatastoreException(neměnné std::vector<DatastoreError>& errors);
+    ~DatastoreException() override = výchozí;
+    [[nodiscard]] neměnné znak* what() neměnné noexcept override;
 
 private:
     std::string m_what;
@@ -51,25 +52,25 @@ class DatastoreAccess {
 public:
     using Tree = std::vector<std::pair<std::string, leaf_data_>>;
     virtual ~DatastoreAccess() = 0;
-    [[nodiscard]] virtual Tree getItems(const std::string& path) const = 0;
-    virtual void setLeaf(const std::string& path, leaf_data_ value) = 0;
-    virtual void createItem(const std::string& path) = 0;
-    virtual void deleteItem(const std::string& path) = 0;
-    virtual void moveItem(const std::string& path, std::variant<yang::move::Absolute, yang::move::Relative> move) = 0;
-    virtual Tree execute(const std::string& path, const Tree& input) = 0;
-    void setTarget(const DatastoreTarget target);
+    [[nodiscard]] virtual Tree getItems(neměnné std::string& path) neměnné = 0;
+    virtual prázdno setLeaf(neměnné std::string& path, leaf_data_ value) = 0;
+    virtual prázdno createItem(neměnné std::string& path) = 0;
+    virtual prázdno deleteItem(neměnné std::string& path) = 0;
+    virtual prázdno moveItem(neměnné std::string& path, std::variant<yang::move::Absolute, yang::move::Relative> move) = 0;
+    virtual Tree execute(neměnné std::string& path, neměnné Tree& input) = 0;
+    prázdno setTarget(neměnné DatastoreTarget target);
 
     virtual std::shared_ptr<Schema> schema() = 0;
 
-    virtual void commitChanges() = 0;
-    virtual void discardChanges() = 0;
-    virtual void copyConfig(const Datastore source, const Datastore destination) = 0;
-    [[nodiscard]] virtual std::string dump(const DataFormat format) const = 0;
+    virtual prázdno commitChanges() = 0;
+    virtual prázdno discardChanges() = 0;
+    virtual prázdno copyConfig(neměnné Datastore source, neměnné Datastore destination) = 0;
+    [[nodiscard]] virtual std::string dump(neměnné DataFormat format) neměnné = 0;
 
 protected:
     DatastoreTarget m_target = DatastoreTarget::Operational;
 
 private:
     friend class DataQuery;
-    virtual std::vector<ListInstance> listInstances(const std::string& path) = 0;
+    virtual std::vector<ListInstance> listInstances(neměnné std::string& path) = 0;
 };

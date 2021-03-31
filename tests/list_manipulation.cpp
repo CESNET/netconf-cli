@@ -5,6 +5,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include "parser.hpp"
 #include "pretty_printers.hpp"
@@ -38,7 +39,7 @@ TEST_CASE("list manipulation")
         {
             input = "mod:list[number=3]";
             auto keys = ListInstance{
-                {"number", int32_t{3}}};
+                {"number", číslo32_t{3}}};
             expectedPath.m_nodes.emplace_back(module_{"mod"}, listElement_("list", keys));
         }
 
@@ -49,7 +50,7 @@ TEST_CASE("list manipulation")
                 {"department", identityRef_{"other", "engineering"}}};
             expectedPath.m_nodes.emplace_back(module_{"mod"}, listElement_("company", keys));
             keys = ListInstance{
-                {"id", int32_t{1337}}};
+                {"id", číslo32_t{1337}}};
             expectedPath.m_nodes.emplace_back(listElement_("inventory", keys));
         }
 
@@ -148,11 +149,11 @@ TEST_CASE("list manipulation")
         {
             input = "move mod:list[number=12] before [number=15]";
             auto keys = std::map<std::string, leaf_data_>{
-                {"number", int32_t{12}}};
+                {"number", číslo32_t{12}}};
             expected.m_source.m_nodes.emplace_back(module_{"mod"}, listElement_("list", keys));
             expected.m_destination = yang::move::Relative{
                 yang::move::Relative::Position::Before,
-                ListInstance{{"number", int32_t{15}}}
+                ListInstance{{"number", číslo32_t{15}}}
             };
         }
 
@@ -160,7 +161,7 @@ TEST_CASE("list manipulation")
         {
             input = "move mod:list[number=3] begin";
             auto keys = std::map<std::string, leaf_data_>{
-                {"number", int32_t{3}}};
+                {"number", číslo32_t{3}}};
             expected.m_source.m_nodes.emplace_back(module_{"mod"}, listElement_("list", keys));
             expected.m_destination = yang::move::Absolute::Begin;
         }

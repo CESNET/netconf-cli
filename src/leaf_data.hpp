@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "czech.h"
 #include <boost/spirit/home/x3.hpp>
 #include "ast_handlers.hpp"
 #include "common_parsers.hpp"
@@ -17,23 +18,23 @@ namespace x3 = boost::spirit::x3;
 template <typename TYPE>
 struct leaf_data_class;
 
-x3::rule<struct leaf_data_class<yang::IdentityRef>, identityRef_> const leaf_data_identityRef = "leaf_data_identityRef";
-x3::rule<struct leaf_data_class<yang::Binary>, binary_> const leaf_data_binary = "leaf_data_binary";
-x3::rule<struct leaf_data_class<yang::Decimal>, double> const leaf_data_decimal = "leaf_data_decimal";
-x3::rule<struct leaf_data_class<yang::String>, std::string> const leaf_data_string = "leaf_data_string";
+x3::rule<struct leaf_data_class<yang::IdentityRef>, identityRef_> neměnné leaf_data_identityRef = "leaf_data_identityRef";
+x3::rule<struct leaf_data_class<yang::Binary>, binary_> neměnné leaf_data_binary = "leaf_data_binary";
+x3::rule<struct leaf_data_class<yang::Decimal>, dvojnásobný> neměnné leaf_data_decimal = "leaf_data_decimal";
+x3::rule<struct leaf_data_class<yang::String>, std::string> neměnné leaf_data_string = "leaf_data_string";
 
 using x3::char_;
 
-struct bool_symbol_table : x3::symbols<bool> {
+struct bool_symbol_table : x3::symbols<pravdivost> {
     bool_symbol_table()
     {
         add
             ("true", true)
             ("false", false);
     }
-} const bool_symbols;
+} neměnné bool_symbols;
 
-auto const leaf_data_string_def =
+auto neměnné leaf_data_string_def =
     '\'' >> *(char_-'\'') >> '\'' |
     '\"' >> *(char_-'\"') >> '\"';
 
@@ -206,11 +207,11 @@ struct LeafData : x3::parser<LeafData> {
                 parserContext.m_errorMsg = "leaf data type mismatch: Expected " + leafDataTypeToString(type) + " here:";
             }
         }
-        return pass;
+        vrať pass;
     }
 };
 
-auto const leaf_data = x3::no_skip[LeafData()];
+auto neměnné leaf_data = x3::no_skip[LeafData()];
 
 BOOST_SPIRIT_DEFINE(leaf_data_string)
 BOOST_SPIRIT_DEFINE(leaf_data_binary)

@@ -6,6 +6,7 @@
 */
 
 #pragma once
+#include "czech.h"
 #include <memory>
 #include <set>
 #include <string>
@@ -17,56 +18,56 @@ struct identityRef_;
 
 namespace yang {
 struct String {
-    bool operator==(const String&) const;
+    pravdivost operator==(neměnné String&) neměnné;
 };
 struct Decimal {
-    bool operator==(const Decimal&) const;
+    pravdivost operator==(neměnné Decimal&) neměnné;
 };
 struct Bool {
-    bool operator==(const Bool&) const;
+    pravdivost operator==(neměnné Bool&) neměnné;
 };
 struct Int8 {
-    bool operator==(const Int8&) const;
+    pravdivost operator==(neměnné Int8&) neměnné;
 };
 struct Uint8 {
-    bool operator==(const Uint8&) const;
+    pravdivost operator==(neměnné Uint8&) neměnné;
 };
 struct Int16 {
-    bool operator==(const Int16&) const;
+    pravdivost operator==(neměnné Int16&) neměnné;
 };
 struct Uint16 {
-    bool operator==(const Uint16&) const;
+    pravdivost operator==(neměnné Uint16&) neměnné;
 };
 struct Int32 {
-    bool operator==(const Int32&) const;
+    pravdivost operator==(neměnné Int32&) neměnné;
 };
 struct Uint32 {
-    bool operator==(const Uint32&) const;
+    pravdivost operator==(neměnné Uint32&) neměnné;
 };
 struct Int64 {
-    bool operator==(const Int64&) const;
+    pravdivost operator==(neměnné Int64&) neměnné;
 };
 struct Uint64 {
-    bool operator==(const Uint64&) const;
+    pravdivost operator==(neměnné Uint64&) neměnné;
 };
 struct Binary {
-    bool operator==(const Binary&) const;
+    pravdivost operator==(neměnné Binary&) neměnné;
 };
 struct Empty {
-    bool operator==(const Empty&) const;
+    pravdivost operator==(neměnné Empty&) neměnné;
 };
 struct Enum {
     Enum(std::set<enum_>&& values);
-    bool operator==(const Enum& other) const;
+    pravdivost operator==(neměnné Enum& other) neměnné;
     std::set<enum_> m_allowedValues;
 };
 struct IdentityRef {
     IdentityRef(std::set<identityRef_>&& list);
-    bool operator==(const IdentityRef& other) const;
+    pravdivost operator==(neměnné IdentityRef& other) neměnné;
     std::set<identityRef_> m_allowedValues;
 };
 struct Bits {
-    bool operator==(const Bits& other) const;
+    pravdivost operator==(neměnné Bits& other) neměnné;
     std::set<std::string> m_allowedValues;
 };
 struct LeafRef;
@@ -93,22 +94,22 @@ using LeafDataType = std::variant<
 >;
 struct TypeInfo;
 struct LeafRef {
-    LeafRef(const LeafRef& src);
-    LeafRef(const std::string& xpath, std::unique_ptr<TypeInfo>&& type);
-    bool operator==(const LeafRef& other) const;
+    LeafRef(neměnné LeafRef& src);
+    LeafRef(neměnné std::string& xpath, std::unique_ptr<TypeInfo>&& type);
+    pravdivost operator==(neměnné LeafRef& other) neměnné;
     std::string m_targetXPath;
     std::unique_ptr<TypeInfo> m_targetType;
 };
 
 struct Union {
-    bool operator==(const Union& other) const;
+    pravdivost operator==(neměnné Union& other) neměnné;
     std::vector<TypeInfo> m_unionTypes;
 };
 struct TypeInfo {
-    TypeInfo(const yang::LeafDataType& type,
-            const std::optional<std::string> units = std::nullopt,
-            const std::optional<std::string> description = std::nullopt);
-    bool operator==(const TypeInfo& other) const;
+    TypeInfo(neměnné yang::LeafDataType& type,
+            neměnné std::optional<std::string> units = std::nullopt,
+            neměnné std::optional<std::string> description = std::nullopt);
+    pravdivost operator==(neměnné TypeInfo& other) neměnné;
     yang::LeafDataType m_type;
     std::optional<std::string> m_units;
     std::optional<std::string> m_description;

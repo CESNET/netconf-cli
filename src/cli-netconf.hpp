@@ -4,6 +4,7 @@
  * Written by Václav Kubernát <kubernat@cesnet.cz>
  *
 */
+#include "czech.h"
 #include <boost/process.hpp>
 #include <string>
 
@@ -12,4 +13,4 @@ struct SshProcess {
     boost::process::pipe std_in;
     boost::process::pipe std_out;
 };
-SshProcess sshProcess(const std::string& target, const std::string& port);
+SshProcess sshProcess(neměnné std::string& target, neměnné std::string& port);

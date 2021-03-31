@@ -7,6 +7,7 @@
 */
 
 #pragma once
+#include "czech.h"
 #include "ast_commands.hpp"
 #include "ast_path.hpp"
 #include "data_query.hpp"
@@ -26,23 +27,23 @@ public:
 };
 
 struct Completions {
-    bool operator==(const Completions& b) const;
+    pravdivost operator==(neměnné Completions& b) neměnné;
     std::set<std::string> m_completions;
-    int m_contextLength;
+    číslo m_contextLength;
 };
 
 class Parser {
 public:
-    Parser(const std::shared_ptr<const Schema> schema, WritableOps writableOps = WritableOps::No, const std::shared_ptr<const DataQuery> dataQuery = nullptr);
-    command_ parseCommand(const std::string& line, std::ostream& errorStream);
-    void changeNode(const dataPath_& name);
-    [[nodiscard]] std::string currentNode() const;
-    Completions completeCommand(const std::string& line, std::ostream& errorStream) const;
+    Parser(neměnné std::shared_ptr<neměnné Schema> schema, WritableOps writableOps = WritableOps::No, neměnné std::shared_ptr<neměnné DataQuery> dataQuery = nullptr);
+    command_ parseCommand(neměnné std::string& line, std::ostream& errorStream);
+    prázdno changeNode(neměnné dataPath_& name);
+    [[nodiscard]] std::string currentNode() neměnné;
+    Completions completeCommand(neměnné std::string& line, std::ostream& errorStream) neměnné;
     dataPath_ currentPath();
 
 private:
-    const std::shared_ptr<const Schema> m_schema;
-    const std::shared_ptr<const DataQuery> m_dataquery;
+    neměnné std::shared_ptr<neměnné Schema> m_schema;
+    neměnné std::shared_ptr<neměnné DataQuery> m_dataquery;
     dataPath_ m_curDir;
-    const WritableOps m_writableOps;
+    neměnné WritableOps m_writableOps;
 };

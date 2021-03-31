@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include <experimental/iterator>
 #include <libyang/Tree_Data.hpp>
 #include <libyang/Tree_Schema.hpp>
@@ -16,63 +17,63 @@
 #include "utils.hpp"
 #include "yang_schema.hpp"
 
-const auto OPERATION_TIMEOUT_MS = 1000;
+neměnné auto OPERATION_TIMEOUT_MS = 1000;
 
 struct valFromValue : boost::static_visitor<sysrepo::S_Val> {
-    sysrepo::S_Val operator()(const enum_& value) const
+    sysrepo::S_Val operator()(neměnné enum_& value) neměnné
     {
-        return std::make_shared<sysrepo::Val>(value.m_value.c_str(), SR_ENUM_T);
+        vrať std::make_shared<sysrepo::Val>(value.m_value.c_str(), SR_ENUM_T);
     }
 
-    sysrepo::S_Val operator()(const binary_& value) const
+    sysrepo::S_Val operator()(neměnné binary_& value) neměnné
     {
-        return std::make_shared<sysrepo::Val>(value.m_value.c_str(), SR_BINARY_T);
+        vrať std::make_shared<sysrepo::Val>(value.m_value.c_str(), SR_BINARY_T);
     }
 
-    sysrepo::S_Val operator()(const empty_) const
+    sysrepo::S_Val operator()(neměnné empty_) neměnné
     {
-        return std::make_shared<sysrepo::Val>(nullptr, SR_LEAF_EMPTY_T);
+        vrať std::make_shared<sysrepo::Val>(nullptr, SR_LEAF_EMPTY_T);
     }
 
-    sysrepo::S_Val operator()(const identityRef_& value) const
+    sysrepo::S_Val operator()(neměnné identityRef_& value) neměnné
     {
         auto res = value.m_prefix ? (value.m_prefix.value().m_name + ":" + value.m_value) : value.m_value;
-        return std::make_shared<sysrepo::Val>(res.c_str(), SR_IDENTITYREF_T);
+        vrať std::make_shared<sysrepo::Val>(res.c_str(), SR_IDENTITYREF_T);
     }
 
-    sysrepo::S_Val operator()(const special_& value) const
+    sysrepo::S_Val operator()(neměnné special_& value) neměnné
     {
         throw std::runtime_error("Tried constructing S_Val from a " + specialValueToString(value));
     }
 
-    sysrepo::S_Val operator()(const std::string& value) const
+    sysrepo::S_Val operator()(neměnné std::string& value) neměnné
     {
-        return std::make_shared<sysrepo::Val>(value.c_str());
+        vrať std::make_shared<sysrepo::Val>(value.c_str());
     }
 
-    sysrepo::S_Val operator()(const bits_& value) const
+    sysrepo::S_Val operator()(neměnné bits_& value) neměnné
     {
         std::stringstream ss;
         std::copy(value.m_bits.begin(), value.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
-        return std::make_shared<sysrepo::Val>(ss.str().c_str(), SR_BITS_T);
+        vrať std::make_shared<sysrepo::Val>(ss.str().c_str(), SR_BITS_T);
     }
 
     template <typename T>
-    sysrepo::S_Val operator()(const T& value) const
+    sysrepo::S_Val operator()(neměnné T& value) neměnné
     {
-        return std::make_shared<sysrepo::Val>(value);
+        vrať std::make_shared<sysrepo::Val>(value);
     }
 };
 
-SysrepoAccess::~SysrepoAccess() = default;
+SysrepoAccess::~SysrepoAccess() = výchozí;
 
 sr_datastore_t toSrDatastore(Datastore datastore)
 {
-    switch (datastore) {
-    case Datastore::Running:
-        return SR_DS_RUNNING;
-    case Datastore::Startup:
-        return SR_DS_STARTUP;
+    přepínač (datastore) {
+    případ Datastore::Running:
+        vrať SR_DS_RUNNING;
+    případ Datastore::Startup:
+        vrať SR_DS_STARTUP;
     }
     __builtin_unreachable();
 }
@@ -90,36 +91,36 @@ SysrepoAccess::SysrepoAccess()
 }
 
 namespace {
-auto targetToDs_get(const DatastoreTarget target)
+auto targetToDs_get(neměnné DatastoreTarget target)
 {
-    switch (target) {
-    case DatastoreTarget::Operational:
-        return SR_DS_OPERATIONAL;
-    case DatastoreTarget::Running:
-        return SR_DS_RUNNING;
-    case DatastoreTarget::Startup:
-        return SR_DS_STARTUP;
+    přepínač (target) {
+    případ DatastoreTarget::Operational:
+        vrať SR_DS_OPERATIONAL;
+    případ DatastoreTarget::Running:
+        vrať SR_DS_RUNNING;
+    případ DatastoreTarget::Startup:
+        vrať SR_DS_STARTUP;
     }
 
     __builtin_unreachable();
 }
 
-auto targetToDs_set(const DatastoreTarget target)
+auto targetToDs_set(neměnné DatastoreTarget target)
 {
-    switch (target) {
-    case DatastoreTarget::Operational:
-    case DatastoreTarget::Running:
+    přepínač (target) {
+    případ DatastoreTarget::Operational:
+    případ DatastoreTarget::Running:
         // TODO: Doing candidate here doesn't work, why?
-        return SR_DS_RUNNING;
-    case DatastoreTarget::Startup:
-        return SR_DS_STARTUP;
+        vrať SR_DS_RUNNING;
+    případ DatastoreTarget::Startup:
+        vrať SR_DS_STARTUP;
     }
 
     __builtin_unreachable();
 }
 }
 
-DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
+DatastoreAccess::Tree SysrepoAccess::getItems(neměnné std::string& path) neměnné
 {
     using namespace std::string_literals;
     Tree res;
@@ -127,16 +128,16 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
     try {
         m_session->session_switch_ds(targetToDs_get(m_target));
         auto config = m_session->get_data(((path == "/") ? "/*" : path).c_str());
-        if (config) {
+        když (config) {
             lyNodesToTree(res, config->tree_for());
         }
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
-    return res;
+    vrať res;
 }
 
-void SysrepoAccess::setLeaf(const std::string& path, leaf_data_ value)
+prázdno SysrepoAccess::setLeaf(neměnné std::string& path, leaf_data_ value)
 {
     try {
         m_session->session_switch_ds(targetToDs_set(m_target));
@@ -146,7 +147,7 @@ void SysrepoAccess::setLeaf(const std::string& path, leaf_data_ value)
     }
 }
 
-void SysrepoAccess::createItem(const std::string& path)
+prázdno SysrepoAccess::createItem(neměnné std::string& path)
 {
     try {
         m_session->session_switch_ds(targetToDs_set(m_target));
@@ -156,7 +157,7 @@ void SysrepoAccess::createItem(const std::string& path)
     }
 }
 
-void SysrepoAccess::deleteItem(const std::string& path)
+prázdno SysrepoAccess::deleteItem(neměnné std::string& path)
 {
     try {
         // Have to use SR_EDIT_ISOLATE, because deleting something that's been set without committing is not supported
@@ -171,27 +172,27 @@ void SysrepoAccess::deleteItem(const std::string& path)
 struct impl_toSrMoveOp {
     sr_move_position_t operator()(yang::move::Absolute& absolute)
     {
-        return absolute == yang::move::Absolute::Begin ? SR_MOVE_FIRST : SR_MOVE_LAST;
+        vrať absolute == yang::move::Absolute::Begin ? SR_MOVE_FIRST : SR_MOVE_LAST;
     }
     sr_move_position_t operator()(yang::move::Relative& relative)
     {
-        return relative.m_position == yang::move::Relative::Position::After ? SR_MOVE_AFTER : SR_MOVE_BEFORE;
+        vrať relative.m_position == yang::move::Relative::Position::After ? SR_MOVE_AFTER : SR_MOVE_BEFORE;
     }
 };
 
 sr_move_position_t toSrMoveOp(std::variant<yang::move::Absolute, yang::move::Relative> move)
 {
-    return std::visit(impl_toSrMoveOp{}, move);
+    vrať std::visit(impl_toSrMoveOp{}, move);
 }
 
-void SysrepoAccess::moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move)
+prázdno SysrepoAccess::moveItem(neměnné std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move)
 {
     std::string destination;
-    if (std::holds_alternative<yang::move::Relative>(move)) {
+    když (std::holds_alternative<yang::move::Relative>(move)) {
         auto relative = std::get<yang::move::Relative>(move);
-        if (m_schema->nodeType(source) == yang::NodeTypes::LeafList) {
+        když (m_schema->nodeType(source) == yang::NodeTypes::LeafList) {
             destination = leafDataToString(relative.m_path.at("."));
-        } else {
+        } jinak {
             destination = instanceToString(relative.m_path);
         }
     }
@@ -199,7 +200,7 @@ void SysrepoAccess::moveItem(const std::string& source, std::variant<yang::move:
     m_session->move_item(source.c_str(), toSrMoveOp(move), destination.c_str(), destination.c_str());
 }
 
-void SysrepoAccess::commitChanges()
+prázdno SysrepoAccess::commitChanges()
 {
     try {
         m_session->session_switch_ds(targetToDs_set(m_target));
@@ -209,7 +210,7 @@ void SysrepoAccess::commitChanges()
     }
 }
 
-void SysrepoAccess::discardChanges()
+prázdno SysrepoAccess::discardChanges()
 {
     try {
         m_session->session_switch_ds(targetToDs_set(m_target));
@@ -219,15 +220,15 @@ void SysrepoAccess::discardChanges()
     }
 }
 
-DatastoreAccess::Tree SysrepoAccess::execute(const std::string& path, const Tree& input)
+DatastoreAccess::Tree SysrepoAccess::execute(neměnné std::string& path, neměnné Tree& input)
 {
     auto inputNode = treeToRpcInput(m_session->get_context(), path, input);
     m_session->session_switch_ds(targetToDs_set(m_target));
     auto output = m_session->rpc_send(inputNode);
-    return rpcOutputToTree(path, output);
+    vrať rpcOutputToTree(path, output);
 }
 
-void SysrepoAccess::copyConfig(const Datastore source, const Datastore destination)
+prázdno SysrepoAccess::copyConfig(neměnné Datastore source, neměnné Datastore destination)
 {
     m_session->session_switch_ds(toSrDatastore(destination));
     m_session->copy_config(toSrDatastore(source), nullptr, OPERATION_TIMEOUT_MS, 1);
@@ -235,10 +236,10 @@ void SysrepoAccess::copyConfig(const Datastore source, const Datastore destinati
 
 std::shared_ptr<Schema> SysrepoAccess::schema()
 {
-    return m_schema;
+    vrať m_schema;
 }
 
-[[noreturn]] void SysrepoAccess::reportErrors() const
+[[noreturn]] prázdno SysrepoAccess::reportErrors() neměnné
 {
     // I only use get_error to get error info, since the error code from
     // sysrepo_exception doesn't really give any meaningful information. For
@@ -248,35 +249,35 @@ std::shared_ptr<Schema> SysrepoAccess::schema()
     auto srErrors = m_session->get_error();
     std::vector<DatastoreError> res;
 
-    for (size_t i = 0; i < srErrors->error_cnt(); i++) {
+    pro (velikost_t i = 0; i < srErrors->error_cnt(); i++) {
         res.emplace_back(srErrors->message(i), srErrors->xpath(i) ? std::optional<std::string>{srErrors->xpath(i)} : std::nullopt);
     }
 
     throw DatastoreException(res);
 }
 
-std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
+std::vector<ListInstance> SysrepoAccess::listInstances(neměnné std::string& path)
 {
     std::vector<ListInstance> res;
     auto lists = getItems(path);
 
     decltype(lists) instances;
     auto wantedTree = *(m_schema->dataNodeFromPath(path)->find_path(path.c_str())->data().begin());
-    std::copy_if(lists.begin(), lists.end(), std::inserter(instances, instances.end()), [this, pathToCheck = wantedTree->schema()->path()](const auto& item) {
+    std::copy_if(lists.begin(), lists.end(), std::inserter(instances, instances.end()), [this, pathToCheck = wantedTree->schema()->path()](neměnné auto& item) {
         // This filters out non-instances.
-        if (item.second.type() != typeid(special_) || boost::get<special_>(item.second).m_value != SpecialValue::List) {
-            return false;
+        když (item.second.type() != typeid(special_) || boost::get<special_>(item.second).m_value != SpecialValue::List) {
+            vrať false;
         }
 
         // Now, getItems is recursive: it gives everything including nested lists. So I try create a tree from the instance...
         auto instanceTree = *(m_schema->dataNodeFromPath(item.first)->find_path(item.first.c_str())->data().begin());
         // And then check if its schema path matches the list we actually want. This filters out lists which are not the ones I requested.
-        return instanceTree->schema()->path() == pathToCheck;
+        vrať instanceTree->schema()->path() == pathToCheck;
     });
 
     // If there are no instances, then just return
-    if (instances.empty()) {
-        return res;
+    když (instances.empty()) {
+        vrať res;
     }
 
     // I need to find out which keys does the list have. To do that, I create a
@@ -292,10 +293,10 @@ std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
     // would be a pain (and after sysrepo switches to libyang meaningless), so
     // I just use this algorithm to create data nodes one by one and get the
     // key values from them.
-    for (const auto& instance : instances) {
+    pro (neměnné auto& instance : instances) {
         auto wantedList = *(m_schema->dataNodeFromPath(instance.first)->find_path(path.c_str())->data().begin());
         ListInstance instanceRes;
-        for (const auto& key : keys) {
+        pro (neměnné auto& key : keys) {
             auto vec = wantedList->find_path(key->name())->data();
             auto leaf = std::make_shared<libyang::Data_Node_Leaf_List>(*(vec.begin()));
             instanceRes.emplace(key->name(), leafValueFromNode(leaf));
@@ -303,11 +304,11 @@ std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
         res.emplace_back(instanceRes);
     }
 
-    return res;
+    vrať res;
 }
 
-std::string SysrepoAccess::dump(const DataFormat format) const
+std::string SysrepoAccess::dump(neměnné DataFormat format) neměnné
 {
     auto root = m_session->get_data("/*");
-    return root->print_mem(format == DataFormat::Xml ? LYD_XML : LYD_JSON, LYP_WITHSIBLINGS | LYP_FORMAT);
+    vrať root->print_mem(format == DataFormat::Xml ? LYD_XML : LYD_JSON, LYP_WITHSIBLINGS | LYP_FORMAT);
 }

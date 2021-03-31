@@ -7,14 +7,15 @@
 
 #pragma once
 
+#include "czech.h"
 #include <functional>
 
 class UniqueResource {
 public:
-    using Func = std::function<void()>;
-    UniqueResource(const UniqueResource& other) = delete;
-    UniqueResource& operator=(const UniqueResource& other) = delete;
-    UniqueResource(UniqueResource&& other) = default;
+    using Func = std::function<prázdno()>;
+    UniqueResource(neměnné UniqueResource& other) = delete;
+    UniqueResource& operator=(neměnné UniqueResource& other) = delete;
+    UniqueResource(UniqueResource&& other) = výchozí;
     ~UniqueResource()
     {
         cleanup();
@@ -32,5 +33,5 @@ private:
 
 inline auto make_unique_resource(UniqueResource::Func&& init, UniqueResource::Func&& cleanup)
 {
-    return UniqueResource(std::move(init), std::move(cleanup));
+    vrať UniqueResource(std::move(init), std::move(cleanup));
 }

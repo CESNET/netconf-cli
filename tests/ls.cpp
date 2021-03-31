@@ -6,6 +6,7 @@
  *
 */
 
+#include "czech.h"
 #include "trompeloeil_doctest.hpp"
 #include "ast_commands.hpp"
 #include "parser.hpp"
@@ -181,7 +182,7 @@ TEST_CASE("ls")
             {
                 input = "ls example:list[number=342]/contInList";
                 auto keys = ListInstance{
-                    {"number", int32_t{342}}};
+                    {"number", číslo32_t{342}}};
                 expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, listElement_{"list", keys}),
                                                                 dataNode_(container_{"contInList"})}};
             }
@@ -204,7 +205,7 @@ TEST_CASE("ls")
             {
                 input = "ls example:list[number=343]/..";
                 auto keys = ListInstance{
-                    {"number", int32_t{343}}};
+                    {"number", číslo32_t{343}}};
                 expected.m_path = dataPath_{Scope::Relative, {dataNode_(module_{"example"}, listElement_{"list", keys}), dataNode_{nodeup_{}}}};
             }
 
