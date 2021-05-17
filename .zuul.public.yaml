@@ -1,23 +1,23 @@
 - job:
-    name: f33-gcc-netconf-cli-no-sysrepo
+    name: f34-gcc-netconf-cli-no-sysrepo
     description: |
       Build a minimal version without sysrepo or the test suite
-    parent: f33-gcc
+    parent: f34-gcc
 
 - project:
     check:
       jobs:
-        - f33-gcc-cover:
-            requires: CzechLight-deps-f33-gcc
-        - f33-clang-asan-ubsan:
-            requires: CzechLight-deps-f33-clang-asan-ubsan
-        - f33-clang-tsan:
-            requires: CzechLight-deps-f33-clang-tsan
-        - f33-gcc-netconf-cli-no-sysrepo:
-            requires: CzechLight-deps-f33-gcc
-        - f33-cpp-coverage-diff:
+        - f34-gcc-cover:
+            requires: CzechLight-deps-f34-gcc
+        - f34-clang-asan-ubsan:
+            requires: CzechLight-deps-f34-clang-asan-ubsan
+        - f34-clang-tsan:
+            requires: CzechLight-deps-f34-clang-tsan
+        - f34-gcc-netconf-cli-no-sysrepo:
+            requires: CzechLight-deps-f34-gcc
+        - f34-cpp-coverage-diff:
             voting: false
         - clang-format:
             voting: false
-        - f33-gcc-cover-previous:
-            requires: CzechLight-deps-f33-gcc
+        - f34-gcc-cover-previous:
+            requires: CzechLight-deps-f34-gcc
