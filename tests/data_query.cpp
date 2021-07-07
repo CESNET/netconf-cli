@@ -29,9 +29,8 @@ TEST_CASE("data query")
 {
     trompeloeil::sequence seq1;
     {
-        auto conn = std::make_shared<sysrepo::Connection>();
-        auto sess = std::make_shared<sysrepo::Session>(conn);
-        sess->copy_config(SR_DS_STARTUP, "example-schema", 1000, true);
+        auto sess = sysrepo::Connection{}.sessionStart();
+        sess.copyConfig(sysrepo::Datastore::Startup, "example-schema", std::chrono::milliseconds{1000});
     }
     SysrepoSubscription subscriptionExample("example-schema");
     SysrepoSubscription subscriptionOther("other-module");
