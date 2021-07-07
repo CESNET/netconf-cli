@@ -21,10 +21,6 @@ class Session;
 }
 }
 
-namespace libyang {
-class Data_Node;
-}
-
 class Schema;
 class YangSchema;
 
@@ -57,7 +53,7 @@ public:
 private:
     std::vector<ListInstance> listInstances(const std::string& path) override;
 
-    void doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode);
+    void doEditFromDataNode(libyang::DataNode dataNode);
 
     std::unique_ptr<libnetconf::client::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;

@@ -1,3 +1,4 @@
+#include <iostream>
 /*
  * Copyright (C) 2019 CESNET, https://photonics.cesnet.cz/
  *
@@ -7,7 +8,8 @@
 */
 
 #include <cstring>
-#include <libyang/Tree_Data.hpp>
+#include <libyang-cpp/Context.hpp>
+#include <libyang-cpp/DataNode.hpp>
 #include <mutex>
 extern "C" {
 #include <nc_client.h>
@@ -58,15 +60,6 @@ public:
 
 static std::mutex clientOptions;
 
-inline void custom_free_nc_reply_data(nc_reply_data* reply)
-{
-    nc_reply_free(reinterpret_cast<nc_reply*>(reply));
-}
-inline void custom_free_nc_reply_error(nc_reply_error* reply)
-{
-    nc_reply_free(reinterpret_cast<nc_reply*>(reply));
-}
-
 char* ssh_auth_interactive_cb(const char* auth_name, const char* instruction, const char* prompt, int echo, void* priv)
 {
     const auto cb = static_cast<const client::KbdInteractiveCb*>(priv);
@@ -74,24 +67,21 @@ char* ssh_auth_interactive_cb(const char* auth_name, const char* instruction, co
     return ::strdup(res.c_str());
 }
 
-template <typename Type> using deleter_type_for = void (*)(Type*);
-template <typename Type> deleter_type_for<Type> const deleter_for;
-
-template <> const auto deleter_for<nc_rpc> = nc_rpc_free;
-template <> const auto deleter_for<nc_reply> = nc_reply_free;
-template <> const auto deleter_for<nc_reply_data> = custom_free_nc_reply_data;
-template <> const auto deleter_for<nc_reply_error> = custom_free_nc_reply_error;
-
-template <typename T>
-using unique_ptr_for = std::unique_ptr<T, decltype(deleter_for<T>)>;
-
-template <typename T>
-auto guarded(T* ptr)
+auto guarded(nc_rpc* ptr)
 {
-    return unique_ptr_for<T>(ptr, deleter_for<T>);
+    return std::unique_ptr<nc_rpc, decltype(&nc_rpc_free)>(ptr, nc_rpc_free);
 }
 
-unique_ptr_for<struct nc_reply> do_rpc(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
+namespace {
+const auto getData_path = "/ietf-netconf-nmda:get-data/data";
+const auto get_path = "/ietf-netconf:get/data";
+}
+
+using managed_rpc = std::invoke_result_t<decltype(guarded), nc_rpc*>;
+// FIXME: or I could just do: `using managed_rpc = decltype(guarded(std::declval<nc_rpc*>()));`
+// but invoke_result_t is designed for this.
+
+std::optional<libyang::DataNode> do_rpc(client::Session* session, managed_rpc&& rpc, const char* dataIdentifier)
 {
     uint64_t msgid;
     NC_MSG_TYPE msgtype;
@@ -104,11 +94,12 @@ unique_ptr_for<struct nc_reply> do_rpc(client::Session* session, unique_ptr_for<
         throw std::runtime_error{"Timeout sending an RPC"};
     }
 
-    struct nc_reply* raw_reply;
+    lyd_node* raw_reply;
+    lyd_node* envp; // TODO: what is this for
     while (true) {
-        msgtype = nc_recv_reply(session->session_internal(), rpc.get(), msgid, 20000, LYD_OPT_DESTRUCT | LYD_OPT_NOSIBLINGS, &raw_reply);
-        auto reply = guarded(raw_reply);
-        raw_reply = nullptr;
+        // msgtype = nc_recv_reply(session->session_internal(), rpc.get(), msgid, 20000, LYD_OPT_DESTRUCT | LYD_OPT_NOSIBLINGS, &raw_reply);
+        msgtype = nc_recv_reply(session->session_internal(), rpc.get(), msgid, 20000, &envp, &raw_reply);
+        auto replyInfo = libyang::wrapRawNode(envp);
 
         switch (msgtype) {
         case NC_MSG_ERROR:
@@ -120,75 +111,44 @@ unique_ptr_for<struct nc_reply> do_rpc(client::Session* session, unique_ptr_for<
         case NC_MSG_NOTIF:
             continue;
         default:
-            return reply;
+            if (!raw_reply) { // <ok> reply, or empty data node, or error
+                // FIXME: improve this "error finding" algorithm
+                std::string msg;
+                std::string path;
+                for (const auto& child : replyInfo.childrenDfs()) {
+                    if (child.asOpaque().name().name == "error-message") {
+                        msg = child.asOpaque().value();
+                    }
+
+                    if (child.asOpaque().name().name == "error-path") {
+                        path = child.asOpaque().value();
+                    }
+                }
+
+                if (!msg.empty()) {
+                    throw client::ReportedError{"Error: " + msg + "\nPath: " + path};
+                }
+
+                return std::nullopt;
+            }
+            auto lol = libyang::wrapRawNode(raw_reply);
+
+            // Wrap the anydata node here, we will definitely need to free it.
+            return std::get<libyang::DataNode>(
+                        *lol.findPath(dataIdentifier, libyang::OutputNodes::Yes)
+                        ->asAny()
+                        .releaseValue());
         }
     }
     __builtin_unreachable();
 }
 
-client::ReportedError make_error(unique_ptr_for<struct nc_reply>&& reply)
+void do_rpc_ok(client::Session* session, managed_rpc&& rpc)
 {
-    if (reply->type != NC_RPL_ERROR) {
-        throw std::logic_error{"Cannot extract an error from a non-error server reply"};
-    }
-
-    auto errorReply = guarded(reinterpret_cast<struct nc_reply_error*>(reply.release()));
-
-    // TODO: capture the error details, not just that human-readable string
-    std::ostringstream ss;
-    ss << "Server error:" << std::endl;
-    for (uint32_t i = 0; i < errorReply->count; ++i) {
-        const auto e = errorReply->err[i];
-        ss << " #" << i << ": " << e.message;
-        if (e.path) {
-            ss << " (XPath " << e.path << ")";
-        }
-        ss << std::endl;
-    }
-    return client::ReportedError{ss.str()};
-}
-
-std::optional<unique_ptr_for<struct nc_reply_data>> do_rpc_data_or_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
-{
-    auto x = do_rpc(session, std::move(rpc));
-
-    switch (x->type) {
-    case NC_RPL_DATA:
-        return guarded(reinterpret_cast<struct nc_reply_data*>(x.release()));
-    case NC_RPL_OK:
-        return std::nullopt;
-    case NC_RPL_ERROR:
-        throw make_error(std::move(x));
-    default:
-        throw std::runtime_error{"Unhandled reply type"};
-    }
-}
-
-unique_ptr_for<struct nc_reply_data> do_rpc_data(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
-{
-    auto x = do_rpc_data_or_ok(session, std::move(rpc));
-    if (!x) {
-        throw std::runtime_error{"Received OK instead of a data reply"};
-    }
-    return std::move(*x);
-}
-
-void do_rpc_ok(client::Session* session, unique_ptr_for<struct nc_rpc>&& rpc)
-{
-    auto x = do_rpc_data_or_ok(session, std::move(rpc));
+    auto x = do_rpc(session, std::move(rpc), nullptr);
     if (x) {
         throw std::runtime_error{"Unexpected DATA reply"};
     }
-}
-
-std::shared_ptr<libyang::Data_Node> do_get(client::Session* session, unique_ptr_for<nc_rpc> rpc)
-{
-    auto reply = impl::do_rpc_data(session, std::move(rpc));
-    auto dataNode = libyang::create_new_Data_Node(reply->data);
-    // TODO: can we do without copying?
-    // If we just default-construct a new node (or use the create_new_Data_Node) and then set reply->data to nullptr,
-    // there are mem leaks and even libnetconf2 complains loudly.
-    return dataNode ? dataNode->dup_withsiblings(1) : nullptr;
 }
 }
 
@@ -210,9 +170,9 @@ struct nc_session* Session::session_internal()
     return m_session;
 }
 
-libyang::S_Context Session::libyangContext()
+libyang::Context Session::libyangContext()
 {
-    return std::make_shared<libyang::Context>(nc_session_get_ctx(m_session), nullptr);
+    return libyang::createUnmanagedContext(nc_session_get_ctx(m_session));
 }
 
 Session::Session(struct nc_session* session)
@@ -298,13 +258,13 @@ std::vector<std::string_view> Session::capabilities() const
     return res;
 }
 
-std::shared_ptr<libyang::Data_Node> Session::get(const std::optional<std::string>& filter)
+std::optional<libyang::DataNode> Session::get(const std::optional<std::string>& filter)
 {
     auto rpc = impl::guarded(nc_rpc_get(filter ? filter->c_str() : nullptr, NC_WD_ALL, NC_PARAMTYPE_CONST));
     if (!rpc) {
         throw std::runtime_error("Cannot create get RPC");
     }
-    return impl::do_get(this, std::move(rpc));
+    return impl::do_rpc(this, std::move(rpc), impl::get_path);
 }
 
 const char* datastoreToString(NmdaDatastore datastore)
@@ -322,13 +282,14 @@ const char* datastoreToString(NmdaDatastore datastore)
     __builtin_unreachable();
 }
 
-std::shared_ptr<libyang::Data_Node> Session::getData(const NmdaDatastore datastore, const std::optional<std::string>& filter)
+std::optional<libyang::DataNode> Session::getData(const NmdaDatastore datastore, const std::optional<std::string>& filter)
 {
+    // RANT: jesus, does this function really have 10 args? XD lmao
     auto rpc = impl::guarded(nc_rpc_getdata(datastoreToString(datastore), filter ? filter->c_str() : nullptr, nullptr, nullptr, 0, 0, 0, 0, NC_WD_ALL, NC_PARAMTYPE_CONST));
     if (!rpc) {
         throw std::runtime_error("Cannot create get RPC");
     }
-    return impl::do_get(this, std::move(rpc));
+    return impl::do_rpc(this, std::move(rpc), impl::getData_path);
 }
 
 void Session::editData(const NmdaDatastore datastore, const std::string& data)
@@ -340,32 +301,34 @@ void Session::editData(const NmdaDatastore datastore, const std::string& data)
     return impl::do_rpc_ok(this, std::move(rpc));
 }
 
-std::string Session::getSchema(const std::string_view identifier, const std::optional<std::string_view> version)
+std::string_view Session::getSchema(const std::string_view identifier, const std::optional<std::string_view> version)
 {
     auto rpc = impl::guarded(nc_rpc_getschema(identifier.data(), version ? version.value().data() : nullptr, nullptr, NC_PARAMTYPE_CONST));
     if (!rpc) {
         throw std::runtime_error("Cannot create get-schema RPC");
     }
-    auto reply = impl::do_rpc_data(this, std::move(rpc));
+    auto reply = impl::do_rpc(this, std::move(rpc), "???"); // FIXME
 
-    auto node = libyang::create_new_Data_Node(reply->data)->dup_withsiblings(1);
-    auto set = node->find_path("data");
-    for (auto node : set->data()) {
-        if (node->schema()->nodetype() == LYS_ANYXML) {
-            libyang::Data_Node_Anydata anydata(node);
-            return anydata.value().str;
-        }
+    if (!reply) {
+        throw std::runtime_error("Got a reply to get-schema, but it contained no data");
     }
-    throw std::runtime_error("Got a reply to get-schema, but it didn't contain the required schema");
+
+    auto node = reply->findPath("data");
+
+    if (!node || node->schema().nodeType() == libyang::NodeType::AnyData) {
+        throw std::runtime_error("Got a reply to get-schema, but it didn't contain the required schema");
+    }
+
+    return node->asTerm().valueStr();
 }
 
-std::shared_ptr<libyang::Data_Node> Session::getConfig(const NC_DATASTORE datastore, const std::optional<const std::string> filter)
+std::optional<libyang::DataNode> Session::getConfig(const NC_DATASTORE datastore, const std::optional<const std::string> filter)
 {
     auto rpc = impl::guarded(nc_rpc_getconfig(datastore, filter ? filter->c_str() : nullptr, NC_WD_ALL, NC_PARAMTYPE_CONST));
     if (!rpc) {
         throw std::runtime_error("Cannot create get-config RPC");
     }
-    return impl::do_get(this, std::move(rpc));
+    return impl::do_rpc(this, std::move(rpc), "???"); // FIXME
 }
 
 void Session::editConfig(const NC_DATASTORE datastore,
@@ -408,19 +371,14 @@ void Session::discard()
     impl::do_rpc_ok(this, std::move(rpc));
 }
 
-std::shared_ptr<libyang::Data_Node> Session::rpc_or_action(const std::string& xmlData)
+std::optional<libyang::DataNode> Session::rpc_or_action(const std::string& xmlData)
 {
     auto rpc = impl::guarded(nc_rpc_act_generic_xml(xmlData.c_str(), NC_PARAMTYPE_CONST));
     if (!rpc) {
         throw std::runtime_error("Cannot create generic RPC");
     }
-    auto reply = impl::do_rpc_data_or_ok(this, std::move(rpc));
-    if (reply) {
-        auto dataNode = libyang::create_new_Data_Node((*reply)->data);
-        return dataNode->dup_withsiblings(1);
-    } else {
-        return nullptr;
-    }
+
+    return impl::do_rpc(this, std::move(rpc), "???"); // FIXME
 }
 
 void Session::copyConfig(const NC_DATASTORE source, const NC_DATASTORE destination)
