@@ -203,8 +203,10 @@ int main(int argc, char* argv[])
     datastore->setTarget(datastoreTarget);
 
 #if defined(SYSREPO_CLI) || defined(NETCONF_CLI)
-    auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>& datastore) {
-        return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
+    auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>&) {
+        // return std::make_shared<YangAccess>(std::static_pointer_cast<YangSchema>(datastore->schema()));
+        // FIXME:
+        return nullptr;
     };
 #elif defined(YANG_CLI)
     auto createTemporaryDatastore = [](const std::shared_ptr<DatastoreAccess>&) {

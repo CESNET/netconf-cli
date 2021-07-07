@@ -10,21 +10,15 @@
 
 #include <memory>
 #include <optional>
-#include <sysrepo-cpp/Session.hpp>
+#include <sysrepo-cpp/Connection.hpp>
 #include "datastore_access.hpp"
 
-namespace sysrepo {
-class Callback;
-class Connection;
-class Session;
-class Subscribe;
-}
 class YangSchema;
 
 class Recorder {
 public:
     virtual ~Recorder();
-    virtual void write(const std::string& xpath, const std::optional<std::string>& oldValue, const std::optional<std::string>& newValue) = 0;
+    virtual void write(const sysrepo::ChangeOperation operation, const std::string& xpath, const std::optional<std::string>& oldValue, const std::optional<std::string>& newValue) = 0;
 };
 
 class DataSupplier {
@@ -36,22 +30,19 @@ public:
 
 class SysrepoSubscription {
 public:
-    SysrepoSubscription(const std::string& moduleName, Recorder* rec = nullptr, sr_datastore_t ds = SR_DS_RUNNING);
+    SysrepoSubscription(const std::string& moduleName, Recorder* rec = nullptr, sysrepo::Datastore ds = sysrepo::Datastore::Running);
 
 private:
-    std::shared_ptr<sysrepo::Connection> m_connection;
-    std::shared_ptr<sysrepo::Session> m_session;
-    std::shared_ptr<YangSchema> m_schema;
-    std::shared_ptr<sysrepo::Subscribe> m_subscription;
+    sysrepo::Subscription m_subscription;
 };
 
-class OperationalDataSubscription {
-public:
-    OperationalDataSubscription(const std::string& moduleName, const std::string& path, const DataSupplier& dataSupplier);
+// class OperationalDataSubscription {
+// public:
+//     OperationalDataSubscription(const std::string& moduleName, const std::string& path, const DataSupplier& dataSupplier);
 
-private:
-    std::shared_ptr<sysrepo::Connection> m_connection;
-    std::shared_ptr<sysrepo::Session> m_session;
-    std::shared_ptr<YangSchema> m_schema;
-    std::shared_ptr<sysrepo::Subscribe> m_subscription;
-};
+// private:
+//     sysrepo::Connection m_connection;
+//     sysrepo::Session m_session;
+//     std::shared_ptr<YangSchema> m_schema;
+//     sysrepo::Subscription m_subscription;
+// };
