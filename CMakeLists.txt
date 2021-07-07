@@ -77,14 +77,14 @@ if(NOT BUILD_TESTING AND ENABLE_FULL_TESTS STREQUAL ON)
     message(FATAL_ERROR "Cannot combine ENABLE_FULL_TESTS=ON with BUILD_TESTING=OFF")
 endif()
 
-pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=1.0.248 IMPORTED_TARGET libyang)
-pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=1.1.48 IMPORTED_TARGET libnetconf2)
+pkg_check_modules(LIBYANG-CPP REQUIRED libyang-cpp>=1.0.0 IMPORTED_TARGET)
+pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=2.0.5 IMPORTED_TARGET)
 
 if(ENABLE_FULL_TESTS STREQUAL OFF AND ENABLE_SYSREPO_CLI STREQUAL OFF)
     message(STATUS "Skipping sysrepo per configure options")
     set(SYSREPO_FOUND 0)
 else()
-    pkg_check_modules(SYSREPO sysrepo-cpp>=1.4.148 IMPORTED_TARGET sysrepo)
+    pkg_check_modules(SYSREPO sysrepo-cpp>=1.0.0 IMPORTED_TARGET sysrepo)
 endif()
 
 if(SYSREPO_FOUND)
@@ -165,7 +165,7 @@ if(DO_ENABLE_SYSREPO_CLI OR DO_ENABLE_NETCONF_TESTS)
         src/sysrepo_access.cpp
         )
 
-    target_link_libraries(sysrepoaccess PUBLIC datastoreaccess ast_values PRIVATE PkgConfig::SYSREPO PkgConfig::LIBYANG)
+    target_link_libraries(sysrepoaccess PUBLIC datastoreaccess ast_values PkgConfig::SYSREPO PRIVATE PkgConfig::LIBYANG-CPP)
 endif()
 
 add_library(netconfaccess STATIC
@@ -173,23 +173,23 @@ add_library(netconfaccess STATIC
     src/netconf_access.cpp
     )
 
-target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PkgConfig::LIBNETCONF2 PRIVATE PkgConfig::LIBYANG)
+target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PkgConfig::LIBNETCONF2 PRIVATE PkgConfig::LIBYANG-CPP)
 
 add_library(yangaccess STATIC
     src/yang_access.cpp
     )
 
-target_link_libraries(yangaccess PUBLIC datastoreaccess yangschema PRIVATE PkgConfig::LIBYANG)
+target_link_libraries(yangaccess PUBLIC datastoreaccess yangschema PRIVATE PkgConfig::LIBYANG-CPP)
 
 add_library(yangutils STATIC
     src/libyang_utils.cpp
     )
-target_link_libraries(yangutils PUBLIC PkgConfig::LIBYANG)
+target_link_libraries(yangutils PUBLIC PkgConfig::LIBYANG-CPP)
 
 add_library(yangschema STATIC
     src/yang_schema.cpp
     )
-target_link_libraries(yangschema PUBLIC schemas utils yangutils PRIVATE PkgConfig::LIBYANG)
+target_link_libraries(yangschema PUBLIC schemas utils yangutils PRIVATE PkgConfig::LIBYANG-CPP)
 
 add_library(parser STATIC
     src/parser.cpp
@@ -199,7 +199,7 @@ add_library(parser STATIC
     src/ast_handlers.cpp
     src/completion.cpp
     )
-target_link_libraries(parser schemas utils ast_values)
+target_link_libraries(parser schemas utils ast_values yangutils)
 
 add_library(proxydatastore STATIC
     src/proxy_datastore.cpp
@@ -257,7 +257,7 @@ if(BUILD_TESTING)
         tests/wait-a-bit-longer.cpp
         )
     target_include_directories(DoctestIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-    target_link_libraries(DoctestIntegration doctest::doctest trompeloeil)
+    target_link_libraries(DoctestIntegration doctest::doctest trompeloeil::trompeloeil)
     target_compile_definitions(DoctestIntegration PUBLIC DOCTEST_CONFIG_SUPER_FAST_ASSERTS)
 
     if(DO_ENABLE_NETCONF_TESTS)

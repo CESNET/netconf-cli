@@ -683,7 +683,7 @@ module schema-with-revision {
                 }
                 SECTION("bigPizzas enabled")
                 {
-                    ys.enableFeature("example-schema", "bigPizzas");
+                    ys.setEnabledFeatures("example-schema", {"bigPizzas"});
                     type = createEnum({"small", "medium", "large"});
                 }
             }
@@ -727,7 +727,7 @@ module schema-with-revision {
                 node.first = "example-schema";
                 node.second = "activeNumber";
                 type.emplace<yang::LeafRef>(
-                    "/example-schema:_list/number",
+                    "/_list/number",
                     std::make_unique<yang::TypeInfo>(ys.leafType("/example-schema:_list/number"))
                 );
             }
@@ -744,22 +744,19 @@ module schema-with-revision {
                 }
                 SECTION("weird ports enabled")
                 {
-                    ys.enableFeature("example-schema", "weirdPortNames");
+                    ys.setEnabledFeatures("example-schema", {"weirdPortNames"});
                     enums = createEnum({"WEIRD", "utf2", "utf3"});
                 }
 
                 type = yang::Union{{
                     yang::TypeInfo{createEnum({"wlan0", "wlan1"})},
                     yang::TypeInfo{yang::LeafRef{
-                        "/example-schema:portSettings/port",
+                        "../portSettings/port",
                         std::make_unique<yang::TypeInfo>(createEnum({"eth0", "eth1", "eth2"}))
                     }},
                     yang::TypeInfo{yang::LeafRef{
-                        "/example-schema:activeMappedPort",
-                        std::make_unique<yang::TypeInfo>(yang::LeafRef{
-                                "/example-schema:portMapping/port",
-                                std::make_unique<yang::TypeInfo>(enums)
-                        })
+                        "../activeMappedPort",
+                        std::make_unique<yang::TypeInfo>(enums)
                     }},
                     yang::TypeInfo{yang::Empty{}},
                 }};
@@ -939,6 +936,7 @@ module schema-with-revision {
                         {"example-schema"s, "zero"},
                         {"example-schema"s, "subLeaf"}
                     };
+
                     expectedRecursive = {
                         {boost::none, "/example-schema:_list"},
                         {boost::none, "/example-schema:_list/contInList"},
@@ -966,10 +964,10 @@ module schema-with-revision {
                         {boost::none, "/example-schema:foodDrinkIdentLeaf"},
                         {boost::none, "/example-schema:foodDrinkIdentLeaf"},
                         {boost::none, "/example-schema:foodIdentLeaf"},
-                        {boost::none, "/example-schema:interface/caseEthernet/ethernet"},
-                        {boost::none, "/example-schema:interface/caseEthernet/ethernet/ip"},
-                        {boost::none, "/example-schema:interface/caseLoopback/loopback"},
-                        {boost::none, "/example-schema:interface/caseLoopback/loopback/ip"},
+                        {boost::none, "/example-schema:ethernet"},
+                        {boost::none, "/example-schema:ethernet/ip"},
+                        {boost::none, "/example-schema:loopback"},
+                        {boost::none, "/example-schema:loopback/ip"},
                         {boost::none, "/example-schema:interrupt"},
                         {boost::none, "/example-schema:leafBool"},
                         {boost::none, "/example-schema:leafDecimal"},
@@ -990,16 +988,10 @@ module schema-with-revision {
                         {boost::none, "/example-schema:leafUint8"},
                         {boost::none, "/example-schema:length"},
                         {boost::none, "/example-schema:myRpc"},
-                        {boost::none, "/example-schema:myRpc/input"},
-                        {boost::none, "/example-schema:myRpc/output"},
                         {boost::none, "/example-schema:rpcOneOutput"},
-                        {boost::none, "/example-schema:rpcOneOutput/input"},
-                        {boost::none, "/example-schema:rpcOneOutput/output"},
-                        {boost::none, "/example-schema:rpcOneOutput/output/ahoj"},
+                        {boost::none, "/example-schema:rpcOneOutput/ahoj"},
                         {boost::none, "/example-schema:rpcOneInput"},
-                        {boost::none, "/example-schema:rpcOneInput/input"},
-                        {boost::none, "/example-schema:rpcOneInput/input/ahoj"},
-                        {boost::none, "/example-schema:rpcOneInput/output"},
+                        {boost::none, "/example-schema:rpcOneInput/ahoj"},
                         {boost::none, "/example-schema:numberOrString"},
                         {boost::none, "/example-schema:obsoleteLeaf"},
                         {boost::none, "/example-schema:obsoleteLeafWithDeprecatedType"},
@@ -1010,10 +1002,6 @@ module schema-with-revision {
                         {boost::none, "/example-schema:portMapping/port"},
                         {boost::none, "/example-schema:portSettings"},
                         {boost::none, "/example-schema:portSettings/port"},
-                        {boost::none, "/example-schema:portSettings/shutdown"},
-                        {boost::none, "/example-schema:portSettings/shutdown/input"},
-                        {boost::none, "/example-schema:portSettings/shutdown/output"},
-                        {boost::none, "/example-schema:portSettings/shutdown/output/success"},
                         {boost::none, "/example-schema:systemStats"},
                         {boost::none, "/example-schema:systemStats/upTime"},
                         {boost::none, "/example-schema:subLeaf"},
@@ -1196,7 +1184,7 @@ module schema-with-revision {
 
         SECTION("leafrefPath")
         {
-            REQUIRE(ys.leafrefPath("/example-schema:activeNumber") == "/example-schema:_list/number");
+            REQUIRE(ys.leafrefPath("/example-schema:activeNumber") == "/_list/number");
         }
 
         SECTION("isConfig")
@@ -1217,7 +1205,7 @@ module schema-with-revision {
         SECTION("leafTypeName")
         {
             REQUIRE(ys.leafTypeName("/example-schema:leafEnumTypedefRestricted") == "enumTypedef");
-            REQUIRE(ys.leafTypeName("/example-schema:leafInt32") == std::nullopt);
+            REQUIRE(ys.leafTypeName("/example-schema:leafInt32") == "int32");
         }
 
         SECTION("dataPathToSchemaPath")
@@ -1334,14 +1322,14 @@ module schema-with-revision {
             REQUIRE_THROWS(ys.nodeType(path, node));
         }
 
-        SECTION("enableFeature - non existing module")
+        SECTION("setEnabledFeatures - non existing module")
         {
-            REQUIRE_THROWS_AS(ys.enableFeature("non-existing", "just-no"), std::runtime_error);
+            REQUIRE_THROWS_AS(ys.setEnabledFeatures("non-existing", {"just-no"}), std::runtime_error);
         }
 
-        SECTION("enableFeature - non existing feature")
+        SECTION("setEnabledFeatures - non existing feature")
         {
-            REQUIRE_THROWS_AS(ys.enableFeature("example-schema", "just-no"), std::runtime_error);
+            REQUIRE_THROWS_AS(ys.setEnabledFeatures("example-schema", {"just-no"}), std::runtime_error);
         }
     }
 }
