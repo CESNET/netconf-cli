@@ -8,16 +8,22 @@
     check:
       jobs:
         - f34-gcc-cover:
+            pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc
         - f34-clang-asan-ubsan:
+            pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-clang-asan-ubsan
         - f34-clang-tsan:
+            pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-clang-tsan
         - f34-gcc-netconf-cli-no-sysrepo:
+            pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc
         - f34-cpp-coverage-diff:
+            pre-run: ci/pre.yaml
             voting: false
         - clang-format:
             voting: false
         - f34-gcc-cover-previous:
+            pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc

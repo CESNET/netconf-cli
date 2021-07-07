@@ -7,6 +7,7 @@
 */
 
 #include "trompeloeil_doctest.hpp"
+#include <libyang-cpp/Context.hpp>
 #include "completion.hpp"
 #include "leaf_data_helpers.hpp"
 #include "libyang_utils.hpp"
@@ -206,12 +207,6 @@ module test-schema {
         }
     }
 
-    leaf leafRefNonPresent {
-        type leafref {
-            path ../stuff/name;
-        }
-    }
-
     container users {
         config false;
         list userList {
@@ -238,7 +233,7 @@ const auto data = R"(
     "test-schema:enum": "A",
     "test-schema:identityRef": "apple",
     "test-schema:binary": "QUhPSgo=",
-    "test-schema:empty": "",
+    "test-schema:empty": [null],
     "test-schema:bits": "a AHOJ",
     "test-schema:capabilities": "switch hub",
     "test-schema:dec64": "43242.43260",
@@ -248,7 +243,6 @@ const auto data = R"(
         }
     ],
     "test-schema:leafRefPresent": "Xaver",
-    "test-schema:leafRefNonPresent": "Lucas",
     "test-schema:users": {
         "userList": [
             {
@@ -268,9 +262,9 @@ const auto data = R"(
 
 TEST_CASE("libyang_utils")
 {
-    auto ctx = std::make_shared<libyang::Context>();
-    ctx->parse_module_mem(schema, LYS_IN_YANG);
-    auto dataNode = ctx->parse_data_mem(data, LYD_JSON, LYD_OPT_DATA_NO_YANGLIB | LYD_OPT_NOEXTDEPS | LYD_OPT_STRICT);
+    libyang::Context ctx;
+    ctx.parseModuleMem(schema, libyang::SchemaFormat::YANG);
+    auto dataNode = ctx.parseDataMem(data, libyang::DataFormat::JSON, std::nullopt, libyang::ValidationOptions::Present);
 
     SECTION("leafValueFromNode")
     {
@@ -362,16 +356,9 @@ TEST_CASE("libyang_utils")
             path = "test-schema:leafRefPresent";
             expectedLeafData = std::string{"Xaver"};
         }
-        SECTION("test-schema:leafRefNonPresent")
-        {
-            path = "test-schema:leafRefNonPresent";
-            expectedLeafData = std::string{"Lucas"};
-        }
 
-        auto leaf = dataNode->find_path(("/" + path).c_str());
-        REQUIRE(leaf->number() == 1);
-        auto firstLeaf = std::make_shared<libyang::Data_Node_Leaf_List>(leaf->data().front());
-        REQUIRE(leafValueFromNode(firstLeaf) == expectedLeafData);
+        auto leaf = dataNode->findPath(("/" + path).c_str());
+        REQUIRE(leafValueFromNode(leaf->asTerm()) == expectedLeafData);
     }
 
     SECTION("lyNodesToTree")
@@ -397,7 +384,6 @@ TEST_CASE("libyang_utils")
             {"/test-schema:stuff[name='Xaver']", special_{SpecialValue::List}},
             {"/test-schema:stuff[name='Xaver']/name", std::string{"Xaver"}},
             {"/test-schema:leafRefPresent", std::string{"Xaver"}},
-            {"/test-schema:leafRefNonPresent", std::string{"Lucas"}},
             {"/test-schema:users/userList[1]", special_{SpecialValue::List}},
             {"/test-schema:users/userList[1]/name", std::string{"John"}},
             {"/test-schema:users/userList[2]", special_{SpecialValue::List}},
@@ -407,7 +393,7 @@ TEST_CASE("libyang_utils")
         };
 
         DatastoreAccess::Tree tree;
-        lyNodesToTree(tree, {dataNode->tree_for()});
+        lyNodesToTree(tree, dataNode->siblings());
         REQUIRE(tree == expected);
     }
 }
