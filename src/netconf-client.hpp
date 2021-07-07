@@ -12,8 +12,8 @@
 struct nc_session;
 
 namespace libyang {
-class Data_Node;
 class Context;
+class DataNode;
 }
 
 namespace libnetconf {
@@ -46,11 +46,8 @@ public:
     static std::unique_ptr<Session> connectSocket(const std::string& path);
     static std::unique_ptr<Session> connectFd(const int source, const int sink);
     [[nodiscard]] std::vector<std::string_view> capabilities() const;
-    std::shared_ptr<libyang::Data_Node> getConfig(const NC_DATASTORE datastore,
-                                                  const std::optional<const std::string> filter = std::nullopt); // TODO: arguments...
-    std::shared_ptr<libyang::Data_Node> get(const std::optional<std::string>& filter = std::nullopt);
-    std::shared_ptr<libyang::Data_Node> getData(const NmdaDatastore datastore, const std::optional<std::string>& filter = std::nullopt);
-    std::string getSchema(const std::string_view identifier, const std::optional<std::string_view> version);
+    std::optional<libyang::DataNode> get(const std::optional<std::string>& filter = std::nullopt);
+    std::optional<libyang::DataNode> getData(const NmdaDatastore datastore, const std::optional<std::string>& filter = std::nullopt);
     void editConfig(const NC_DATASTORE datastore,
                     const NC_RPC_EDIT_DFLTOP defaultOperation,
                     const NC_RPC_EDIT_TESTOPT testOption,
@@ -58,12 +55,12 @@ public:
                     const std::string& data);
     void editData(const NmdaDatastore datastore, const std::string& data);
     void copyConfigFromString(const NC_DATASTORE target, const std::string& data);
-    std::shared_ptr<libyang::Data_Node> rpc_or_action(const std::string& xmlData);
+    std::optional<libyang::DataNode> rpc_or_action(const std::string& xmlData);
     void copyConfig(const NC_DATASTORE source, const NC_DATASTORE destination);
     void commit();
     void discard();
 
-    std::shared_ptr<libyang::Context> libyangContext();
+    libyang::Context libyangContext();
     struct nc_session* session_internal(); // FIXME: remove me
 protected:
     struct nc_session* m_session;
