@@ -9,6 +9,7 @@
 #pragma once
 
 #include <string>
+#include <sysrepo-cpp/Connection.hpp>
 #include "datastore_access.hpp"
 
 /*! \class DatastoreAccess
@@ -47,7 +48,7 @@ private:
     std::vector<ListInstance> listInstances(const std::string& path) override;
     [[noreturn]] void reportErrors() const;
 
-    std::shared_ptr<sysrepo::Connection> m_connection;
-    std::shared_ptr<sysrepo::Session> m_session;
+    sysrepo::Connection m_connection;
+    sysrepo::Session m_session;
     std::shared_ptr<YangSchema> m_schema;
 };
