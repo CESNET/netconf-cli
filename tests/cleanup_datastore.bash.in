@@ -28,8 +28,8 @@ if [[ "$BACKEND" = "netconf" ]]; then
     # https://stackoverflow.com/a/41613532
     tail --pid="$NETOPEER_PID" -f /dev/null
 
-    rm "$NETOPEER_SOCKET"
+    rm -f "$NETOPEER_SOCKET"
 fi
 
-rm -r "$SYSREPO_REPOSITORY_PATH"
+rm -rf "$SYSREPO_REPOSITORY_PATH"
 rm -rf "/dev/shm/$SYSREPO_SHM_PREFIX"*
