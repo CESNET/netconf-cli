@@ -7,6 +7,7 @@
 */
 
 #include "trompeloeil_doctest.hpp"
+#include <libyang-cpp/Context.hpp>
 #include "completion.hpp"
 #include "leaf_data_helpers.hpp"
 #include "libyang_utils.hpp"
@@ -268,9 +269,9 @@ const auto data = R"(
 
 TEST_CASE("libyang_utils")
 {
-    auto ctx = std::make_shared<libyang::Context>();
-    ctx->parse_module_mem(schema, LYS_IN_YANG);
-    auto dataNode = ctx->parse_data_mem(data, LYD_JSON, LYD_OPT_DATA_NO_YANGLIB | LYD_OPT_NOEXTDEPS | LYD_OPT_STRICT);
+    libyang::Context ctx;
+    ctx.parseModuleMem(schema, libyang::SchemaFormat::YANG);
+    auto dataNode = ctx.parseDataMem(data, libyang::DataFormat::JSON);
 
     SECTION("leafValueFromNode")
     {
@@ -368,10 +369,8 @@ TEST_CASE("libyang_utils")
             expectedLeafData = std::string{"Lucas"};
         }
 
-        auto leaf = dataNode->find_path(("/" + path).c_str());
-        REQUIRE(leaf->number() == 1);
-        auto firstLeaf = std::make_shared<libyang::Data_Node_Leaf_List>(leaf->data().front());
-        REQUIRE(leafValueFromNode(firstLeaf) == expectedLeafData);
+        auto leaf = dataNode->findPath(("/" + path).c_str());
+        REQUIRE(leafValueFromNode(leaf->asTerm()) == expectedLeafData);
     }
 
     SECTION("lyNodesToTree")
@@ -407,7 +406,7 @@ TEST_CASE("libyang_utils")
         };
 
         DatastoreAccess::Tree tree;
-        lyNodesToTree(tree, {dataNode->tree_for()});
+        lyNodesToTree(tree, dataNode->siblings());
         REQUIRE(tree == expected);
     }
 }
