@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <libyang-cpp/Context.hpp>
 #include "datastore_access.hpp"
 
 /*! \class YangAccess
@@ -35,7 +36,7 @@ public:
 
     std::shared_ptr<Schema> schema() override;
 
-    void enableFeature(const std::string& module, const std::string& feature);
+    void setEnabledFeatures(const std::string& module, const std::vector<std::string>& features);
     [[nodiscard]] std::string dump(const DataFormat format) const override;
 
     void loadModule(const std::string& name);
@@ -52,8 +53,7 @@ private:
     void impl_removeNode(const std::string& path);
     void validate();
 
-    std::unique_ptr<ly_ctx, void (*)(ly_ctx*)> m_ctx;
-    std::unique_ptr<lyd_node, void (*)(lyd_node*)> m_datastore;
+    libyang::Context m_ctx;
+    std::optional<libyang::DataNode> m_datastore;
     std::shared_ptr<YangSchema> m_schema;
-    const int m_validation_mode;
 };
