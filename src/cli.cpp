@@ -137,6 +137,7 @@ int main(int argc, char* argv[])
     }
     if (const auto& enableFeatures = args["-e"]) {
         namespace x3 = boost::spirit::x3;
+        std::map<std::string, std::vector<std::string>> toEnable;
         auto grammar = +(x3::char_-":") >> ":" >> +(x3::char_-":");
         for (const auto& enableFeature : enableFeatures.asStringList()) {
             std::pair<std::string, std::string> parsed;
@@ -146,12 +147,15 @@ int main(int argc, char* argv[])
                 std::cerr << "Error parsing feature enable flags: " << enableFeature << "\n";
                 return 1;
             }
-            try {
-                datastore->enableFeature(parsed.first, parsed.second);
-            } catch (std::runtime_error& ex) {
-                std::cerr << ex.what() << "\n";
-                return 1;
+            toEnable[parsed.first].emplace_back(parsed.second);
+        }
+        try {
+            for (const auto& [moduleName, features] : toEnable) {
+                datastore->setEnabledFeatures(moduleName, features);
             }
+        } catch (std::runtime_error& ex) {
+            std::cerr << ex.what() << "\n";
+            return 1;
         }
     }
     if (const auto& dataFiles = args["-i"]) {
