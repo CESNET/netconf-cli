@@ -1,0 +1,7 @@
+- hosts: all
+  tasks:
+    - name: install pcre2
+      package:
+        name: pcre2-devel
+        state: present
+      become: true
