@@ -2,7 +2,7 @@
 #include <experimental/iterator>
 #include <fstream>
 #include <iostream>
-#include <libyang/Tree_Data.hpp>
+#include <libyang-cpp/DataNode.hpp>
 #include <libyang/libyang.h>
 #include "UniqueResource.hpp"
 #include "libyang_utils.hpp"
@@ -11,35 +11,23 @@
 #include "yang_schema.hpp"
 
 namespace {
-template <typename Type> using lyPtrDeleter_type = void (*)(Type*);
-template <typename Type> const lyPtrDeleter_type<Type> lyPtrDeleter;
-template <> const auto lyPtrDeleter<ly_set> = ly_set_free;
-template <> const auto lyPtrDeleter<ly_ctx> = static_cast<lyPtrDeleter_type<ly_ctx>>([] (auto* ptr) {ly_ctx_destroy(ptr, nullptr);});
-template <> const auto lyPtrDeleter<lyd_node> = lyd_free_withsiblings;
-
-template <typename Type>
-auto lyWrap(Type* ptr)
-{
-    return std::unique_ptr<Type, lyPtrDeleter_type<Type>>{ptr, lyPtrDeleter<Type>};
-}
-
 // Convenient for functions that take m_datastore as an argument
-using DatastoreType = std::unique_ptr<lyd_node, lyPtrDeleter_type<lyd_node>>;
+using DatastoreType = std::optional<libyang::DataNode>;
 }
 
 YangAccess::YangAccess()
-    : m_ctx(lyWrap(ly_ctx_new(nullptr, LY_CTX_DISABLE_SEARCHDIR_CWD)))
-    , m_datastore(lyWrap<lyd_node>(nullptr))
-    , m_schema(std::make_shared<YangSchema>(libyang::create_new_Context(m_ctx.get())))
-    , m_validation_mode(LYD_OPT_DATA)
+    : m_ctx(nullptr, libyang::ContextOptions::DisableSearchCwd)
+    , m_datastore(std::nullopt)
+    , m_schema(std::make_shared<YangSchema>(m_ctx))
+    // , m_validation_mode(LYD_OPT_DATA)
 {
 }
 
 YangAccess::YangAccess(std::shared_ptr<YangSchema> schema)
-    : m_ctx(schema->m_context->swig_ctx(), [](auto) {})
-    , m_datastore(lyWrap<lyd_node>(nullptr))
+    : m_ctx(schema->m_context)
+    , m_datastore(std::nullopt)
     , m_schema(schema)
-    , m_validation_mode(LYD_OPT_RPC)
+    // , m_validation_mode(LYD_OPT_RPC)
 {
 }
 
@@ -47,78 +35,84 @@ YangAccess::~YangAccess() = default;
 
 [[noreturn]] void YangAccess::getErrorsAndThrow() const
 {
-    auto errors = libyang::get_ly_errors(libyang::create_new_Context(m_ctx.get()));
-    std::vector<DatastoreError> errorsRes;
-    for (const auto& error : errors) {
-        using namespace std::string_view_literals;
-        errorsRes.emplace_back(error->errmsg(), error->errpath() != ""sv ? std::optional{error->errpath()} : std::nullopt);
-    }
+    // auto errors = libyang::get_ly_errors(libyang::create_new_Context(m_ctx.get()));
+    // std::vector<DatastoreError> errorsRes;
+    // for (const auto& error : errors) {
+    //     using namespace std::string_view_literals;
+    //     errorsRes.emplace_back(error->errmsg(), error->errpath() != ""sv ? std::optional{error->errpath()} : std::nullopt);
+    // }
 
-    throw DatastoreException(errorsRes);
+    // throw DatastoreException(errorsRes);
+    throw std::runtime_error("");
 }
 
 void YangAccess::impl_newPath(const std::string& path, const std::optional<std::string>& value)
 {
-    auto newNode = lyd_new_path(m_datastore.get(), m_ctx.get(), path.c_str(), value ? (void*)value->c_str() : nullptr, LYD_ANYDATA_CONSTSTRING, LYD_PATH_OPT_UPDATE);
-    if (!newNode) {
-        getErrorsAndThrow();
+    if (m_datastore) {
+        m_datastore->newPath(path.c_str(), value ? value->c_str() : nullptr, libyang::CreationOptions::Update);
+    } else {
+        m_datastore = m_ctx.newPath(path.c_str(), value ? value->c_str() : nullptr, libyang::CreationOptions::Update);
     }
-    if (!m_datastore) {
-        m_datastore = lyWrap(newNode);
-    }
+    // if (!newNode) {
+    //     getErrorsAndThrow();
+    // }
+    // if (!m_datastore) {
+    //     m_datastore = lyWrap(newNode);
+    // }
 }
 
 namespace {
-void impl_unlink(DatastoreType& datastore, lyd_node* what)
+void impl_unlink(DatastoreType& datastore, libyang::DataNode what)
 {
     // If the node to be unlinked is the one our datastore variable points to, we need to find a new one to point to (one of its siblings)
-    if (datastore.get() == what) {
-        auto oldDatastore = datastore.release();
-        if (oldDatastore->prev != oldDatastore) {
-            datastore = lyWrap(oldDatastore->prev);
+    if (datastore == what) {
+        auto oldDatastore = datastore;
+        if (oldDatastore->previousSibling() != oldDatastore) {
+            datastore = oldDatastore->previousSibling();
         } else {
-            datastore = lyWrap(oldDatastore->next);
+            datastore = oldDatastore->nextSibling();
         }
     }
 
-    lyd_unlink(what);
+    what.unlink();
 }
 }
 
 void YangAccess::impl_removeNode(const std::string& path)
 {
-    auto set = lyWrap(lyd_find_path(m_datastore.get(), path.c_str()));
-    if (!set || set->number == 0) {
-        // Check if schema node exists - lyd_find_path first checks if the first argument is non-null before checking for path validity
-        if (!ly_ctx_get_node(m_ctx.get(), nullptr, path.c_str(), 0)) {
-            throw DatastoreException{{DatastoreError{"Schema node doesn't exist.", path}}};
-        }
-        // Check if libyang found another error
-        if (ly_err_first(m_ctx.get())) {
-            getErrorsAndThrow();
-        }
-
+    auto toRemove = m_datastore->findPath(path.c_str());
+    if (!toRemove) {
         // Otherwise the datastore just doesn't contain the wanted node.
         throw DatastoreException{{DatastoreError{"Data node doesn't exist.", path}}};
     }
+    // auto set = lyWrap(lyd_find_path(m_datastore.get(), path.c_str()));
+    // if (!set || set->number == 0) {
+    //     // Check if schema node exists - lyd_find_path first checks if the first argument is non-null before checking for path validity
+    //     if (!ly_ctx_get_node(m_ctx.get(), nullptr, path.c_str(), 0)) {
+    //         throw DatastoreException{{DatastoreError{"Schema node doesn't exist.", path}}};
+    //     }
+    //     // Check if libyang found another error
+    //     if (ly_err_first(m_ctx.get())) {
+    //         getErrorsAndThrow();
+    //     }
 
-    auto toRemove = set->set.d[0];
+    // }
 
-    impl_unlink(m_datastore, toRemove);
-
-    lyd_free(toRemove);
+    impl_unlink(m_datastore, *toRemove);
 }
 
 void YangAccess::validate()
 {
-    auto datastore = m_datastore.release();
+    // auto datastore = m_datastore.release();
 
-    if (m_validation_mode == LYD_OPT_RPC) {
-        lyd_validate(&datastore, m_validation_mode, nullptr);
-    } else {
-        lyd_validate(&datastore, m_validation_mode | LYD_OPT_DATA_NO_YANGLIB, m_ctx.get());
+    // if (m_validation_mode == LYD_OPT_RPC) {
+    //     lyd_validate(&datastore, m_validation_mode, nullptr);
+    // } else {
+    //     lyd_validate(&datastore, m_validation_mode | LYD_OPT_DATA_NO_YANGLIB, m_ctx.get());
+    // }
+    if (m_datastore) {
+        m_datastore->validateAll();
     }
-    m_datastore = lyWrap(datastore);
 }
 
 DatastoreAccess::Tree YangAccess::getItems(const std::string& path) const
@@ -128,10 +122,9 @@ DatastoreAccess::Tree YangAccess::getItems(const std::string& path) const
         return res;
     }
 
-    auto set = lyWrap(lyd_find_path(m_datastore.get(), path == "/" ? "/*" : path.c_str()));
-    auto setWrapper = libyang::Set(set.get(), nullptr);
-    std::optional<std::string> ignoredXPathPrefix;
-    lyNodesToTree(res, setWrapper.data());
+    auto set = m_datastore->findXPath(path == "/" ? "/*" : path.c_str());
+
+    lyNodesToTree(res, set);
     return res;
 }
 
@@ -154,19 +147,19 @@ void YangAccess::deleteItem(const std::string& path)
 namespace {
 struct impl_moveItem {
     DatastoreType& m_datastore;
-    lyd_node* m_sourceNode;
+    libyang::DataNode m_sourceNode;
 
     void operator()(yang::move::Absolute absolute) const
     {
-        auto set = lyWrap(lyd_find_instance(m_sourceNode, m_sourceNode->schema));
-        if (set->number == 1) { // m_sourceNode is the sole instance, do nothing
+        auto set = m_sourceNode.findXPath(m_sourceNode.path().get().get());
+        if (set.begin()++ == set.end()) { // m_sourceNode is the sole instance, do nothing
             return;
         }
 
         doUnlink();
         switch (absolute) {
         case yang::move::Absolute::Begin:
-            if (set->set.d[0] == m_sourceNode) { // List is already at the beginning, do nothing
+            if (*set.begin() == m_sourceNode) { // List is already at the beginning, do nothing
                 return;
             }
             lyd_insert_before(set->set.d[0], m_sourceNode);
