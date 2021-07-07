@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <libyang-cpp/Context.hpp>
 #include "datastore_access.hpp"
 
 /*! \class YangAccess
@@ -52,8 +53,8 @@ private:
     void impl_removeNode(const std::string& path);
     void validate();
 
-    std::unique_ptr<ly_ctx, void (*)(ly_ctx*)> m_ctx;
-    std::unique_ptr<lyd_node, void (*)(lyd_node*)> m_datastore;
+    libyang::Context m_ctx;
+    std::optional<libyang::DataNode> m_datastore;
     std::shared_ptr<YangSchema> m_schema;
-    const int m_validation_mode;
+    // const libyang::ValidationOptions m_validation_mode;
 };

@@ -1,3 +1,4 @@
+#include <iostream>
 /*
  * Copyright (C) 2019 CESNET, https://photonics.cesnet.cz/
  *
@@ -5,8 +6,6 @@
  *
 */
 
-#include <libyang/Libyang.hpp>
-#include <libyang/Tree_Data.hpp>
 #include "libyang_utils.hpp"
 #include "netconf-client.hpp"
 #include "netconf_access.hpp"
@@ -55,7 +54,10 @@ DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
     }();
 
     if (config) {
-        lyNodesToTree(res, config->tree_for());
+        // lyNodesToTree(res, config->tree_for());
+        // FIXME: I need to implement ->tree_for :/ but for now I just want this to compile... also lyNodesToTree
+        // expects a vector, so maybe that should be changed to a "SiblingIterator" or seomthing like that? Investigate.
+        lyNodesToTree(res, config->siblings());
     }
     return res;
 }
@@ -120,8 +122,9 @@ void NetconfAccess::createItem(const std::string& path)
 void NetconfAccess::deleteItem(const std::string& path)
 {
     auto node = m_schema->dataNodeFromPath(path);
-    auto container = *(node->find_path(path.c_str())->data().begin());
-    container->insert_attr(m_schema->getYangModule("ietf-netconf"), "operation", "delete");
+    auto container = *(node.findPath(path.c_str()));
+
+    container.newMeta(*m_schema->getYangModule("ietf-netconf"), "operation", "delete");
     doEditFromDataNode(node);
 }
 
@@ -144,28 +147,29 @@ std::string toYangInsert(std::variant<yang::move::Absolute, yang::move::Relative
 void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move)
 {
     auto node = m_schema->dataNodeFromPath(source);
-    auto sourceNode = *(node->find_path(source.c_str())->data().begin());
-    auto yangModule = m_schema->getYangModule("yang");
-    sourceNode->insert_attr(yangModule, "insert", toYangInsert(move).c_str());
+    auto sourceNode = *(node.findPath(source.c_str()));
+    auto yangModule = *m_schema->getYangModule("yang");
+    sourceNode.newMeta(yangModule, "insert", toYangInsert(move).c_str());
 
     if (std::holds_alternative<yang::move::Relative>(move)) {
         auto relative = std::get<yang::move::Relative>(move);
         if (m_schema->nodeType(source) == yang::NodeTypes::LeafList) {
-            sourceNode->insert_attr(yangModule, "value", leafDataToString(relative.m_path.at(".")).c_str());
+            sourceNode.newMeta(yangModule, "value", leafDataToString(relative.m_path.at(".")).c_str());
         } else {
-            sourceNode->insert_attr(yangModule, "key", instanceToString(relative.m_path, node->node_module()->name()).c_str());
+            sourceNode.newMeta(yangModule, "key", instanceToString(relative.m_path, std::string{node.schema().module().name()}).c_str());
         }
     }
     doEditFromDataNode(sourceNode);
 }
 
-void NetconfAccess::doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode)
+void NetconfAccess::doEditFromDataNode(libyang::DataNode dataNode)
 {
-    auto data = dataNode->print_mem(LYD_XML, 0);
+    // auto data = dataNode.print_mem(LYD_XML, 0);
+    auto data = dataNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings); // FIXME: ... is this correct?
     if (m_serverHasNMDA) {
-        m_session->editData(targetToDs_set(m_target), data);
+        m_session->editData(targetToDs_set(m_target), std::string{data});
     } else {
-        m_session->editConfig(NC_DATASTORE_CANDIDATE, NC_RPC_EDIT_DFLTOP_MERGE, NC_RPC_EDIT_TESTOPT_TESTSET, NC_RPC_EDIT_ERROPT_STOP, data);
+        m_session->editConfig(NC_DATASTORE_CANDIDATE, NC_RPC_EDIT_DFLTOP_MERGE, NC_RPC_EDIT_TESTOPT_TESTSET, NC_RPC_EDIT_ERROPT_STOP, std::string{data});
     }
 }
 
@@ -182,10 +186,14 @@ void NetconfAccess::discardChanges()
 DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree& input)
 {
     auto inputNode = treeToRpcInput(m_session->libyangContext(), path, input);
-    auto data = inputNode->print_mem(LYD_XML, 0);
+    // auto data = inputNode->print_mem(LYD_XML, 0);
+    auto data = inputNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings); // FIXME: is this correct?
 
-    auto output = m_session->rpc_or_action(data);
-    return rpcOutputToTree(path, output);
+    auto output = m_session->rpc_or_action(std::string{data});
+    if (!output) {
+        return {};
+    }
+    return rpcOutputToTree(path, *output);
 }
 
 NC_DATASTORE toNcDatastore(Datastore datastore)
@@ -216,37 +224,42 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
 
     // This inserts selection nodes - I only want keys not other data
     // To get the keys, I have to call find_path here - otherwise I would get keys of a top-level node (which might not even be a list)
-    auto keys = libyang::Schema_Node_List{(*(list->find_path(path.c_str())->data().begin()))->schema()}.keys();
+    // auto keys = libyang::Schema_Node_List{(*(list->find_path(path.c_str())->data().begin()))->schema()}.keys();
+    auto keys = list.findPath(path.c_str())->schema().asList().keys();
     for (const auto& keyLeaf : keys) {
         // Have to call find_path here - otherwise I'll have the list, not the leaf inside it
-        auto selectionLeaf = *(m_schema->dataNodeFromPath(keyLeaf->path())->find_path(keyLeaf->path().c_str())->data().begin());
-        auto actualList = *(list->find_path(path.c_str())->data().begin());
-        actualList->insert(selectionLeaf);
+        // auto selectionLeaf = *(m_schema->dataNodeFromPath(keyLeaf->path())->find_path(keyLeaf->path().c_str())->data().begin());
+        // FIXME: get rid of this .get().get()
+        auto selectionLeaf = m_schema->dataNodeFromPath(keyLeaf.path().get().get()).findPath(keyLeaf.path().get().get());
+        auto actualList = *list.findPath(path.c_str());
+        // actualList->insert(selectionLeaf);
+        // FIXME: implement insert_child in libyang-cpp
     }
 
-    auto instances = m_session->get(list->print_mem(LYD_XML, 0));
+    auto instances = m_session->get(std::string{list.printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings)});
 
     if (!instances) {
         return res;
     }
 
-    for (const auto& instance : instances->find_path(path.c_str())->data()) {
+    //TODO: this algorithm relies on find_path taking a list path with no keys, need to implement that in libyang-cpp
+    for (const auto& instance : instances->findXPath(path.c_str())) {
         ListInstance instanceRes;
 
         // I take the first child here, because the first element (the parent of the child()) will be the list
-        for (const auto& keyLeaf : instance->child()->tree_for()) {
+        for (const auto& keyLeaf : instance.childrenDfs().begin()->childrenDfs()) {// FIXME will tis work?
             // FIXME: even though we specified we only want the key leafs, Netopeer disregards that and sends more data,
             // even lists and other stuff. We only want keys, so filter out non-leafs and non-keys
             // https://github.com/CESNET/netopeer2/issues/825
-            if (keyLeaf->schema()->nodetype() != LYS_LEAF) {
+            if (keyLeaf.schema().nodeType() != libyang::NodeType::Leaf) {
                 continue;
             }
-            if (!std::make_shared<libyang::Schema_Node_Leaf>(keyLeaf->schema())->is_key()) {
+            if (!keyLeaf.schema().asLeaf().isKey()) {
                 continue;
             }
 
-            auto leafData = std::make_shared<libyang::Data_Node_Leaf_List>(keyLeaf);
-            instanceRes.insert({leafData->schema()->name(), leafValueFromNode(leafData)});
+            auto leafData = keyLeaf.asTerm();
+            instanceRes.insert({std::string{leafData.schema().name()}, leafValueFromNode(leafData)});
         }
         res.emplace_back(instanceRes);
     }
@@ -260,5 +273,5 @@ std::string NetconfAccess::dump(const DataFormat format) const
     if (!config) {
         return "";
     }
-    return config->print_mem(format == DataFormat::Xml ? LYD_XML : LYD_JSON, LYP_WITHSIBLINGS | LYP_FORMAT);
+    return std::string{config->printStr(format == DataFormat::Xml ? libyang::DataFormat::XML : libyang::DataFormat::JSON, libyang::PrintFlags::WithSiblings)};
 }

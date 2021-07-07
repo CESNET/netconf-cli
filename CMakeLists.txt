@@ -77,14 +77,14 @@ if(NOT BUILD_TESTING AND ENABLE_FULL_TESTS STREQUAL ON)
     message(FATAL_ERROR "Cannot combine ENABLE_FULL_TESTS=ON with BUILD_TESTING=OFF")
 endif()
 
-pkg_check_modules(LIBYANG REQUIRED libyang-cpp>=1.0.248 IMPORTED_TARGET libyang)
-pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=1.1.48 IMPORTED_TARGET libnetconf2)
+pkg_check_modules(LIBYANG REQUIRED libyang-cpp=alpha IMPORTED_TARGET libyang-cpp)
+pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=2.0.5 IMPORTED_TARGET libnetconf2)
 
 if(ENABLE_FULL_TESTS STREQUAL OFF AND ENABLE_SYSREPO_CLI STREQUAL OFF)
     message(STATUS "Skipping sysrepo per configure options")
     set(SYSREPO_FOUND 0)
 else()
-    pkg_check_modules(SYSREPO sysrepo-cpp>=1.4.148 IMPORTED_TARGET sysrepo)
+    pkg_check_modules(SYSREPO sysrepo-cpp>=alpha IMPORTED_TARGET sysrepo)
 endif()
 
 if(SYSREPO_FOUND)
@@ -179,7 +179,7 @@ add_library(yangaccess STATIC
     src/yang_access.cpp
     )
 
-target_link_libraries(yangaccess PUBLIC datastoreaccess yangschema PRIVATE PkgConfig::LIBYANG)
+target_link_libraries(yangaccess PUBLIC datastoreaccess yangschema PRIVATE PkgConfig::LIBYANG PkgConfig)
 
 add_library(yangutils STATIC
     src/libyang_utils.cpp
@@ -204,7 +204,8 @@ target_link_libraries(parser schemas utils ast_values)
 add_library(proxydatastore STATIC
     src/proxy_datastore.cpp
     )
-target_link_libraries(proxydatastore PUBLIC datastoreaccess yangaccess)
+# target_link_libraries(proxydatastore PUBLIC datastoreaccess yangaccess)
+target_link_libraries(proxydatastore PUBLIC datastoreaccess yangschema) # FIXME: need yangaccess here
 
 # Links libraries, that aren't specific to a datastore type
 function(cli_link_required cli_target)
