@@ -227,7 +227,12 @@ int main(int argc, char* argv[])
 
     lineEditor.set_completion_callback([&parser](const std::string& input, int& context) {
         std::stringstream stream;
-        auto completions = parser.completeCommand(input, stream);
+        Completions completions;
+        try {
+            completions = parser.completeCommand(input, stream);
+        } catch (std::exception& ex) {
+            std::cerr << "Error while completing: " << ex.what() << "\n";
+        }
 
         std::vector<replxx::Replxx::Completion> res;
         std::copy(completions.m_completions.begin(), completions.m_completions.end(), std::back_inserter(res));
