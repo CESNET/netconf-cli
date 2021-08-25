@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b3ff3b1_26e6fa89",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-25T06:50:44Z",
+      "side": 1,
+      "message": "I would prefer to find the root cause here. I went through the replxx codebase, and there are two `try` statements, and neither of these looks relevant. Got a backtrace or something?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 17
+      },
+      "revId": "5f3554b957dc912a528017d0fa30d958ac018d55",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
