@@ -22,6 +22,30 @@
       },
       "revId": "5f3554b957dc912a528017d0fa30d958ac018d55",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99502207_213727df",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-25T18:43:31Z",
+      "side": 1,
+      "message": "So, as Vasek correctly pointed out, replxx\u0027 input() silently eats all exceptions (yay). Please clarify that in the commit message, and after that this one is good to go.",
+      "parentUuid": "9b3ff3b1_26e6fa89",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 17
+      },
+      "revId": "5f3554b957dc912a528017d0fa30d958ac018d55",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
