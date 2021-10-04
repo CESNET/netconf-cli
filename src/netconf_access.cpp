@@ -46,7 +46,13 @@ auto targetToDs_set(const DatastoreTarget target)
 DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
 {
     Tree res;
-    auto config = m_session->getData(targetToDs_get(m_target), (path != "/") ? std::optional{path} : std::nullopt);
+    auto config = [this, &path] {
+        if (m_serverHasNMDA) {
+            return m_session->getData(targetToDs_get(m_target), (path != "/") ? std::optional{path} : std::nullopt);
+        }
+
+        return m_session->get((path != "/") ? std::optional{path} : std::nullopt);
+    }();
 
     if (config) {
         lyNodesToTree(res, config->tree_for());
@@ -58,24 +64,34 @@ NetconfAccess::NetconfAccess(const std::string& hostname, uint16_t port, const s
     : m_session(libnetconf::client::Session::connectPubkey(hostname, port, user, pubKey, privKey))
     , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
+    checkNMDA();
 }
 
 NetconfAccess::NetconfAccess(const int source, const int sink)
     : m_session(libnetconf::client::Session::connectFd(source, sink))
     , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
+    checkNMDA();
 }
 
 NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session)
     : m_session(std::move(session))
     , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
+    checkNMDA();
 }
 
 NetconfAccess::NetconfAccess(const std::string& socketPath)
     : m_session(libnetconf::client::Session::connectSocket(socketPath))
     , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
+    checkNMDA();
+}
+
+void NetconfAccess::checkNMDA()
+{
+    auto nmdaMod = m_schema->getYangModule("ietf-netconf-nmda");
+    m_serverHasNMDA = nmdaMod && nmdaMod->implemented();
 }
 
 void NetconfAccess::setNcLogLevel(NC_VERB_LEVEL level)
@@ -146,7 +162,11 @@ void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move:
 void NetconfAccess::doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode)
 {
     auto data = dataNode->print_mem(LYD_XML, 0);
-    m_session->editData(targetToDs_set(m_target), data);
+    if (m_serverHasNMDA) {
+        m_session->editData(targetToDs_set(m_target), data);
+    } else {
+        m_session->editConfig(NC_DATASTORE_CANDIDATE, NC_RPC_EDIT_DFLTOP_MERGE, NC_RPC_EDIT_TESTOPT_TESTSET, NC_RPC_EDIT_ERROPT_STOP, data);
+    }
 }
 
 void NetconfAccess::commitChanges()
