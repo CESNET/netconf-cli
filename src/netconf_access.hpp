@@ -59,6 +59,10 @@ private:
 
     void doEditFromDataNode(std::shared_ptr<libyang::Data_Node> dataNode);
 
+    void checkNMDA();
+
+    bool m_serverHasNMDA;
+
     std::unique_ptr<libnetconf::client::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;
 };
