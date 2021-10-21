@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03807c88_c9a24c04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2021-10-21T07:39:33Z",
+      "side": 1,
+      "message": "Could you please link the github issue in the commit message?",
+      "revId": "e5f00d1589d0dae10b5346fffc80716a89f1a294",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
