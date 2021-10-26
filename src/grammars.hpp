@@ -15,6 +15,39 @@
 #include "leaf_data.hpp"
 #include "path_parser.hpp"
 
+#if BOOST_VERSION <= 107700
+namespace boost::spirit::x3::traits
+{
+    // Backport https://github.com/boostorg/spirit/pull/702
+    // with instructions from https://github.com/boostorg/spirit/issues/701#issuecomment-946743099
+    template <typename... Types, typename T>
+    struct variant_find_substitute<boost::variant<Types...>, T>
+    {
+        using variant_type = boost::variant<Types...>;
+
+        typedef typename variant_type::types types;
+        typedef typename mpl::end<types>::type end;
+
+        typedef typename mpl::find<types, T>::type iter_1;
+
+        typedef typename
+            mpl::eval_if<
+            is_same<iter_1, end>,
+            mpl::find_if<types, traits::is_substitute<T, mpl::_1> >,
+            mpl::identity<iter_1>
+                >::type
+                iter;
+
+        typedef typename
+            mpl::eval_if<
+            is_same<iter, end>,
+            mpl::identity<T>,
+            mpl::deref<iter>
+                >::type
+                type;
+    };
+}
+#endif
 
 x3::rule<discard_class, discard_> const discard = "discard";
 x3::rule<ls_class, ls_> const ls = "ls";
