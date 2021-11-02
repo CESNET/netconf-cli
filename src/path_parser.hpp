@@ -397,7 +397,7 @@ auto const absoluteStart_def =
     x3::omit['/'] >> x3::attr(Scope::Absolute);
 
 auto const trailingSlash_def =
-    x3::omit['/'];
+    x3::no_skip[x3::omit['/']];
 
 auto const filterConfigFalse = [](const Schema& schema, const std::string& path) {
     return schema.isConfig(path);
