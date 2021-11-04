@@ -222,6 +222,17 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:leafString") == expected);
     }
 
+    SECTION("set a string, then set it to something else without commiting")
+    {
+        REQUIRE_CALL(mockRunning, write("/example-schema:leafString", std::nullopt, "oops"s));
+        datastore.setLeaf("/example-schema:leafString", "blah"s);
+        datastore.setLeaf("/example-schema:leafString", "oops"s);
+        datastore.commitChanges();
+        DatastoreAccess::Tree expected{{"/example-schema:leafString", "oops"s}};
+        REQUIRE(datastore.getItems("/example-schema:leafString") == expected);
+
+    }
+
     SECTION("set a non-existing leaf")
     {
         catching<OnInvalidSchemaPathCreate>([&] {

@@ -140,7 +140,7 @@ void SysrepoAccess::setLeaf(const std::string& path, leaf_data_ value)
 {
     try {
         m_session->session_switch_ds(targetToDs_set(m_target));
-        m_session->set_item(path.c_str(), boost::apply_visitor(valFromValue(), value));
+        m_session->set_item(path.c_str(), boost::apply_visitor(valFromValue(), value), SR_EDIT_ISOLATE);
     } catch (sysrepo::sysrepo_exception& ex) {
         reportErrors();
     }
