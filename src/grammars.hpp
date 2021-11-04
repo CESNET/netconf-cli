@@ -91,11 +91,26 @@ auto const ls_def =
 auto const cd_def =
     cd_::name >> space_separator > cdPath;
 
+#if BOOST_VERSION <= 107700
+auto const create_def =
+    create_::name >> space_separator >
+    (x3::eps >> presenceContainerPath |
+     x3::eps >> listInstancePath |
+     x3::eps >> leafListElementPath);
+
+auto const delete_rule_def =
+    delete_::name >> space_separator >
+    (x3::eps >> presenceContainerPath |
+     x3::eps >> listInstancePath |
+     x3::eps >> leafListElementPath |
+     x3::eps >> writableLeafPath);
+#else
 auto const create_def =
     create_::name >> space_separator > (presenceContainerPath | listInstancePath | leafListElementPath);
 
 auto const delete_rule_def =
     delete_::name >> space_separator > (presenceContainerPath | listInstancePath | leafListElementPath | writableLeafPath);
+#endif
 
 auto const get_def =
     get_::name >> -(space_separator >> getPath);
@@ -209,7 +224,11 @@ struct move_args : x3::parser<move_args> {
     {
         ParserContext& parserContext = x3::get<parser_context_tag>(ctx);
         dataPath_ movePath;
+#if BOOST_VERSION <= 107700
+        auto movePathGrammar = x3::eps >> listInstancePath | x3::eps >> leafListElementPath;
+#else
         auto movePathGrammar = listInstancePath | leafListElementPath;
+#endif
         auto res = movePathGrammar.parse(begin, end, ctx, rctx, attr.m_source);
         if (!res) {
             parserContext.m_errorMsg = "Expected source path here:";
