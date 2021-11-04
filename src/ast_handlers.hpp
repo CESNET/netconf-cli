@@ -155,18 +155,20 @@ struct cd_class {
 
 struct presenceContainerPath_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const& was, Iterator& will, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
         if (ast.m_nodes.empty()) {
             parserContext.m_errorMsg = "This container is not a presence container.";
+            will = was;
             _pass(context) = false;
             return;
         }
 
         if (schema.nodeType(pathToSchemaString(parserContext.currentSchemaPath(), Prefixes::Always)) != yang::NodeTypes::PresenceContainer) {
             parserContext.m_errorMsg = "This container is not a presence container.";
+            will = was;
             _pass(context) = false;
         }
     }
@@ -174,11 +176,12 @@ struct presenceContainerPath_class {
 
 struct listInstancePath_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const& was, Iterator& will, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         if (ast.m_nodes.empty() || !std::holds_alternative<listElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a list instance.";
+            will = was;
             _pass(context) = false;
         }
     }
@@ -186,11 +189,12 @@ struct listInstancePath_class {
 
 struct leafListElementPath_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const& was, Iterator& will, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         if (ast.m_nodes.empty() || !std::holds_alternative<leafListElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a leaf list element.";
+            will = was;
             _pass(context) = false;
         }
     }
