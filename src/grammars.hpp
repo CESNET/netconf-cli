@@ -342,6 +342,9 @@ auto const createCommandSuggestions_def =
     x3::eps;
 
 auto const command_def =
+#if BOOST_VERSION <= 107700
+    x3::eps >>
+#endif
     createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | prepare | exec | cancel | switch_rule];
 
 #if __clang__
