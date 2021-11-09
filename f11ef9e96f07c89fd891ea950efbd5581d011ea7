@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98ac7d4a_cc9d05ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-11-09T00:32:03Z",
+      "side": 1,
+      "message": "Some error message handling is still missing, but I have cleaned up the code a little bit",
+      "revId": "f11ef9e96f07c89fd891ea950efbd5581d011ea7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
