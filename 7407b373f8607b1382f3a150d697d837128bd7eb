@@ -16,6 +16,24 @@
       "message": "use this https://github.com/boostorg/spirit/issues/703#issuecomment-962257914",
       "revId": "7407b373f8607b1382f3a150d697d837128bd7eb",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7ec0a26_a8cabfa0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-11-24T15:20:48Z",
+      "side": 1,
+      "message": "Don\u0027t use it, because it\u0027s not compatible with the older boost version",
+      "parentUuid": "b1971e91_54f0053c",
+      "revId": "7407b373f8607b1382f3a150d697d837128bd7eb",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
