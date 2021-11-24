@@ -34,6 +34,24 @@
       "parentUuid": "02eacd5b_c8488c61",
       "revId": "689e10c4fceb283953ab69c1ea8285f738db2e07",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3cded13_104a344a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-11-24T15:18:35Z",
+      "side": 1,
+      "message": "Nevermind the other solution si not compatible with all the spirit versions, so I\u0027ll keep the first workaround",
+      "parentUuid": "ef8831c8_487c28ae",
+      "revId": "689e10c4fceb283953ab69c1ea8285f738db2e07",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
