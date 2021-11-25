@@ -27,6 +27,10 @@ shift
 BACKEND="$1"
 shift
 if [[ "$BACKEND" = "netconf" ]]; then
+    # Kill previous instances of Netopeer2 that are associated with this test. These can appear when you run tests and
+    # press CTRL-C before let the cleanup tests run.
+    pkill -f "${SYSREPO_SHM_PREFIX}_netopeer2-server" || true
+
     NETOPEER2="@NETOPEER2_EXECUTABLE@"
     # Setup netopeer config
     "$SYSREPOCFG" --import --datastore=running --format=xml --module=ietf-netconf-server <<< ""
