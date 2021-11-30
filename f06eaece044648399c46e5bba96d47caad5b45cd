@@ -16,6 +16,24 @@
       "message": "this doesn\u0027t build anymore (I\u0027m trying with https://gerrit.cesnet.cz/c/CzechLight/libyang-cpp/+/5296/ and https://gerrit.cesnet.cz/c/CzechLight/sysrepo-cpp/+/5247/):\n \n[4/90] Building CXX object CMakeFiles/sysrepoaccess.dir/src/sysrepo_access.cpp.o\nFAILED: CMakeFiles/sysrepoaccess.dir/src/sysrepo_access.cpp.o \n/nix/store/6p8w8kcais0a16flaxny049b431py12p-clang-wrapper-12.0.1/bin/clang++ -DBOOST_ALL_NO_LIB -DBOOST_ASIO_DISABLE_CONCEPTS -I/home/jkt/work/cesnet/gerrit/CzechLight/netconf-cli/src -isystem /nix/store/imn577dj9k54pzayxkh49vvgcx1y1mkq-boost-1.75.0-dev/include -isystem /home/jkt/work/prog/_build/czechlight-asan-ubsan-ly2/target/include -Wall -Wextra -pedantic -Woverloaded-virtual -Wimplicit-fallthrough -O2 -O2 -ggdb -march\u003dnative -pipe -fdiagnostics-color\u003dalways -fsanitize\u003daddress,undefined -Werror -g -fPIC -std\u003dgnu++20 -MD -MT CMakeFiles/sysrepoaccess.dir/src/sysrepo_access.cpp.o -MF CMakeFiles/sysrepoaccess.dir/src/sysrepo_access.cpp.o.d -o CMakeFiles/sysrepoaccess.dir/src/sysrepo_access.cpp.o -c /home/jkt/work/cesnet/gerrit/CzechLight/netconf-cli/src/sysrepo_access.cpp\n/home/jkt/work/cesnet/gerrit/CzechLight/netconf-cli/src/sysrepo_access.cpp:79:40: error: no member named \u0027siblings\u0027 in \u0027sysrepo::Data\u0027\n            lyNodesToTree(res, config-\u003esiblings());\n                               ~~~~~~~~^\n/home/jkt/work/cesnet/gerrit/CzechLight/netconf-cli/src/sysrepo_access.cpp:177:12: error: no matching function for call to \u0027rpcOutputToTree\u0027\n    return rpcOutputToTree(output);\n           ^~~~~~~~~~~~~~~\n/home/jkt/work/cesnet/gerrit/CzechLight/netconf-cli/src/libyang_utils.hpp:16:23: note: candidate function not viable: no known conversion from \u0027sysrepo::Data\u0027 to \u0027libyang::DataNode\u0027 for 1st argument\nDatastoreAccess::Tree rpcOutputToTree(libyang::DataNode output);\n                      ^\n/home/jkt/work/cesnet/gerrit/CzechLight/netconf-cli/src/sysrepo_access.cpp:217:29: error: no member named \u0027findXPath\u0027 in \u0027sysrepo::Data\u0027\n    auto instances \u003d lists-\u003efindXPath(path.c_str());\n                     ~~~~~~~^\n/home/jkt/work/cesnet/gerrit/CzechLight/netconf-cli/src/sysrepo_access.cpp:239:22: error: no member named \u0027printStr\u0027 in \u0027sysrepo::Data\u0027\n    auto str \u003d root-\u003eprintStr(format \u003d\u003d DataFormat::Xml ? libyang::DataFormat::XML : libyang::DataFormat::JSON, libyang::PrintFlags::WithSiblings);\n               ~~~~~~^\n4 errors generated.",
       "revId": "f06eaece044648399c46e5bba96d47caad5b45cd",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c175716_16f65035",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-11-30T15:47:53Z",
+      "side": 1,
+      "message": "not anymore I guess",
+      "parentUuid": "98e0a6bc_4a2b0915",
+      "revId": "f06eaece044648399c46e5bba96d47caad5b45cd",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }

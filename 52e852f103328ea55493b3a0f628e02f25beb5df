@@ -81,6 +81,30 @@
       "parentUuid": "5b96f5e7_5fb9310f",
       "revId": "52e852f103328ea55493b3a0f628e02f25beb5df",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "252bf5c4_4a6183b3",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 12
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-11-30T15:47:53Z",
+      "side": 1,
+      "message": "This is explained here, https://cmake.org/cmake/help/latest/module/FindPkgConfig.html#command:pkg_check_modules . You\u0027re asking CMake to create \"something that you can link against\" with a name \"PkgConfig::libyang-cpp\". You are not linking against that.",
+      "parentUuid": "583542a8_145feccb",
+      "range": {
+        "startLine": 80,
+        "startChar": 69,
+        "endLine": 80,
+        "endChar": 80
+      },
+      "revId": "52e852f103328ea55493b3a0f628e02f25beb5df",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
