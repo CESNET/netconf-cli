@@ -485,6 +485,15 @@ TEST_CASE("yangschema")
         throw std::logic_error("unrecognized submodule "s + subModule);
     });
     ys.addSchemaString(second_schema);
+    ys.addSchemaString(R"(
+module schema-with-revision {
+    yang-version 1.1;
+    namespace "http://example.com/lol";
+    prefix oof;
+
+    revision "2022-01-12";
+}
+    )");
 
     schemaPath_ path{Scope::Absolute, {}};
     ModuleNodePair node;
@@ -494,6 +503,7 @@ TEST_CASE("yangschema")
         SECTION("isModule")
         {
             REQUIRE(ys.isModule("example-schema"));
+            REQUIRE(ys.isModule("schema-with-revision"));
         }
 
         SECTION("listHasKey")
