@@ -78,7 +78,7 @@ if(NOT BUILD_TESTING AND ENABLE_FULL_TESTS STREQUAL ON)
 endif()
 
 pkg_check_modules(LIBYANG-CPP REQUIRED libyang-cpp=alpha IMPORTED_TARGET)
-pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=2.0.5 IMPORTED_TARGET)
+pkg_check_modules(LIBNETCONF2-CPP REQUIRED libnetconf2-cpp=alpha IMPORTED_TARGET)
 
 if(ENABLE_FULL_TESTS STREQUAL OFF AND ENABLE_SYSREPO_CLI STREQUAL OFF)
     message(STATUS "Skipping sysrepo per configure options")
@@ -169,11 +169,10 @@ if(DO_ENABLE_SYSREPO_CLI OR DO_ENABLE_NETCONF_TESTS)
 endif()
 
 add_library(netconfaccess STATIC
-    src/netconf-client.cpp
     src/netconf_access.cpp
     )
 
-target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PkgConfig::LIBNETCONF2 PRIVATE PkgConfig::LIBYANG-CPP)
+target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PRIVATE PkgConfig::LIBYANG-CPP PkgConfig::LIBNETCONF2-CPP)
 
 add_library(yangaccess STATIC
     src/yang_access.cpp
@@ -367,7 +366,7 @@ if(WITH_PYTHON_BINDINGS)
     set(PYBIND11_CPP_STANDARD -std=c++20)
     find_package(pybind11 REQUIRED)
     pybind11_add_module(netconf_cli_py src/python_netconf.cpp)
-    target_link_libraries(netconf_cli_py PUBLIC netconfaccess)
+    target_link_libraries(netconf_cli_py PUBLIC netconfaccess PkgConfig::LIBNETCONF2-CPP)
 
     if(BUILD_TESTING)
         pybind11_add_module(sysrepo_subscription_py tests/mock/sysrepo_subscription_python.cpp)

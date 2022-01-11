@@ -5,8 +5,8 @@
  *
 */
 
+#include <libnetconf2-cpp/netconf-client.hpp>
 #include "libyang_utils.hpp"
-#include "netconf-client.hpp"
 #include "netconf_access.hpp"
 #include "utils.hpp"
 #include "yang_schema.hpp"

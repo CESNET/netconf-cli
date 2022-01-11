@@ -5,10 +5,10 @@
  *
 */
 
+#include <libnetconf2-cpp/netconf-client.hpp>
 #include <pybind11/functional.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include "netconf-client.hpp"
 #include "netconf_access.hpp"
 
 using namespace std::literals;
