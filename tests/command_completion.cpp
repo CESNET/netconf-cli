@@ -19,6 +19,7 @@ TEST_CASE("command completion")
     std::ostringstream errorStream;
     std::set<std::string> expectedCompletions;
     int expectedContextLength;
+
     SECTION("no prefix")
     {
         expectedCompletions = {"cd", "copy", "create", "delete", "set", "commit", "get", "ls", "discard", "help", "describe", "move", "dump", "prepare", "exec", "cancel", "switch"};
