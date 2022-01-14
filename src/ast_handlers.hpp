@@ -16,6 +16,7 @@
 #include "ast_commands.hpp"
 #include "parser_context.hpp"
 #include "schema.hpp"
+#include "UniqueResource.hpp"
 #include "utils.hpp"
 namespace x3 = boost::spirit::x3;
 
@@ -153,10 +154,24 @@ struct cd_class {
     }
 };
 
+template <typename Iterator>
+[[nodiscard]] auto makeIteratorRollbacker(Iterator const& was, Iterator& will, bool& passFlag)
+{
+    return make_unique_resource([] {},
+    [&was, &will, &passFlag] {
+        if (!passFlag) {
+            will = was;
+        }
+    });
+}
+
 struct presenceContainerPath_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const& was, Iterator& will, T& ast, Context const& context)
     {
+#if BOOST_VERSION <= 107800
+        auto rollback = makeIteratorRollbacker(was, will, _pass(context));
+#endif
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
         if (ast.m_nodes.empty()) {
@@ -174,8 +189,11 @@ struct presenceContainerPath_class {
 
 struct listInstancePath_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const& was, Iterator& will, T& ast, Context const& context)
     {
+#if BOOST_VERSION <= 107800
+        auto rollback = makeIteratorRollbacker(was, will, _pass(context));
+#endif
         auto& parserContext = x3::get<parser_context_tag>(context);
         if (ast.m_nodes.empty() || !std::holds_alternative<listElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a list instance.";
@@ -186,8 +204,11 @@ struct listInstancePath_class {
 
 struct leafListElementPath_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const& was, Iterator& will, T& ast, Context const& context)
     {
+#if BOOST_VERSION <= 107800
+        auto rollback = makeIteratorRollbacker(was, will, _pass(context));
+#endif
         auto& parserContext = x3::get<parser_context_tag>(context);
         if (ast.m_nodes.empty() || !std::holds_alternative<leafListElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a leaf list element.";
@@ -379,10 +400,13 @@ std::string commandNamesVisitor(boost::type<T>)
 
 struct createCommandSuggestions_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    void on_success(Iterator const& was, Iterator& will, T&, Context const& context)
     {
+#if BOOST_VERSION <= 107800
+        auto rollback = makeIteratorRollbacker(was, will, _pass(context));
+#endif
         auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.m_completionIterator = begin;
+        parserContext.m_completionIterator = was;
 
         parserContext.m_suggestions.clear();
         boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([&parserContext](auto cmd) {
