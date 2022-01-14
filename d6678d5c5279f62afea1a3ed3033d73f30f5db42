@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d19239b_984bcd50",
+        "filename": "src/ast_handlers.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-01-14T11:24:18Z",
+      "side": 1,
+      "message": "I think you\u0027ll need a different signature for \"any Boost except the future one\" (same as the one used so far), and a different signature for the future Boost which contains https://github.com/boostorg/spirit/pull/711 .\n\nIn the end, the code which ends up being merged to this repo should work with:\n\n- the latest Boost,\n- whatever boost that ships with Fedora which we are using for builds (patching is problematic here),\n- a version of Boost which ships with Buildroot (and we can patch this one if needed)",
+      "revId": "d6678d5c5279f62afea1a3ed3033d73f30f5db42",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
