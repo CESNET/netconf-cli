@@ -13,6 +13,11 @@
  *     \brief Implementation of DatastoreAccess with a local libyang data node instance
  */
 
+enum class StrictDataParsing {
+    Yes,
+    No
+};
+
 class YangSchema;
 
 struct ly_ctx;
@@ -41,7 +46,7 @@ public:
     void loadModule(const std::string& name);
     void addSchemaFile(const std::string& path);
     void addSchemaDir(const std::string& path);
-    void addDataFile(const std::string& path);
+    void addDataFile(const std::string& path, const StrictDataParsing strict);
 
 private:
     std::vector<ListInstance> listInstances(const std::string& path) override;

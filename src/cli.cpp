@@ -40,15 +40,16 @@ static const auto usage = R"(CLI interface for creating local YANG data instance
   will be used to find a schema for that module.
 
 Usage:
-  yang-cli [--configonly] [-s <search_dir>] [-e enable_features]... [-i data_file]... <schema_file_or_module_name>...
+  yang-cli [--configonly] [--ignore-unknown-data] [-s <search_dir>] [-e enable_features]... [-i data_file]... <schema_file_or_module_name>...
   yang-cli (-h | --help)
   yang-cli --version
 
 Options:
-  -s <search_dir>       Set search for schema lookup
-  -e <enable_features>  Feature to enable after modules are loaded. This option can be supplied more than once. Format: <module_name>:<feature>
-  -i <data_file>        File to import data from
-  --configonly          Disable editing of operational data)";
+  -s <search_dir>        Set search for schema lookup
+  -e <enable_features>   Feature to enable after modules are loaded. This option can be supplied more than once. Format: <module_name>:<feature>
+  -i <data_file>         File to import data from
+  --configonly           Disable editing of operational data
+  --ignore-unknown-data  Silently ignore data with no available schema file)";
 #elif defined(NETCONF_CLI)
 // FIXME: improve usage
 static const auto usage = R"(CLI interface for NETCONF
@@ -154,9 +155,12 @@ int main(int argc, char* argv[])
             }
         }
     }
+
+    auto strict = args.at("--ignore-unknown-data").asBool() ? StrictDataParsing::No : StrictDataParsing::Yes;
+
     if (const auto& dataFiles = args["-i"]) {
         for (const auto& dataFile : dataFiles.asStringList()) {
-            datastore->addDataFile(dataFile);
+            datastore->addDataFile(dataFile, strict);
         }
     }
 #elif defined(NETCONF_CLI)

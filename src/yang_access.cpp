@@ -312,14 +312,19 @@ void YangAccess::enableFeature(const std::string& module, const std::string& fea
     m_schema->enableFeature(module, feature);
 }
 
-void YangAccess::addDataFile(const std::string& path)
+void YangAccess::addDataFile(const std::string& path, const StrictDataParsing strict)
 {
     std::ifstream fs(path);
     char firstChar;
     fs >> firstChar;
 
     std::cout << "Parsing \"" << path << "\" as " << (firstChar == '{' ? "JSON" : "XML") << "...\n";
-    auto dataNode = lyd_parse_path(m_ctx.get(), path.c_str(), firstChar == '{' ? LYD_JSON : LYD_XML, LYD_OPT_DATA | LYD_OPT_DATA_NO_YANGLIB | LYD_OPT_TRUSTED);
+
+    auto parseFlags = LYD_OPT_DATA | LYD_OPT_DATA_NO_YANGLIB | LYD_OPT_TRUSTED;
+    if (strict == StrictDataParsing::Yes) {
+        parseFlags |= LYD_OPT_STRICT;
+    }
+    auto dataNode = lyd_parse_path(m_ctx.get(), path.c_str(), firstChar == '{' ? LYD_JSON : LYD_XML, parseFlags);
 
     if (!dataNode) {
         throw std::runtime_error("Supplied data file " + path + " couldn't be parsed.");
