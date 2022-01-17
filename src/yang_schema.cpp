@@ -214,8 +214,10 @@ std::set<identityRef_> validIdentities(const libyang::S_Type& type)
 
     for (auto base : resolveTypedef<ResolveMode::Identity>(type)) { // Iterate over all bases
         // Iterate over derived identities (this is recursive!)
-        for (auto derived : base->der()->schema()) {
-            identSet.emplace(derived->module()->name(), derived->name());
+        if (auto der = base->der()) {
+            for (auto derived : der->schema()) {
+                identSet.emplace(derived->module()->name(), derived->name());
+            }
         }
     }
 

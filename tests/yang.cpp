@@ -59,6 +59,15 @@ module example-schema {
 
     include sub-module;
 
+    identity identNoderived {
+    }
+
+    leaf leafNoValidIdent {
+        type identityref {
+            base "identNoderived";
+        }
+    }
+
     identity drink {
     }
 
@@ -782,6 +791,12 @@ module schema-with-revision {
                 }};
             }
 
+            SECTION("leafNoValidIdent")
+            {
+                node.first = "example-schema";
+                node.second = "leafNoValidIdent";
+                type = yang::IdentityRef{{}};
+            }
 
             REQUIRE(ys.leafType(path, node) == yang::TypeInfo(type, std::nullopt, expectedDescription));
         }
@@ -830,7 +845,8 @@ module schema-with-revision {
                         {"example-schema"s, "addresses"},
                         {"example-schema"s, "subLeaf"},
                         {"example-schema"s, "flagBits"},
-                        {"example-schema"s, "leafFoodTypedef"}};
+                        {"example-schema"s, "leafFoodTypedef"},
+                        {"example-schema"s, "leafNoValidIdent"}};
                 }
 
                 SECTION("example-schema:a")
@@ -898,6 +914,7 @@ module schema-with-revision {
                         {"example-schema"s, "leafInt32"},
                         {"example-schema"s, "leafInt64"},
                         {"example-schema"s, "leafInt8"},
+                        {"example-schema"s, "leafNoValidIdent"},
                         {"example-schema"s, "leafString"},
                         {"example-schema"s, "leafUint16"},
                         {"example-schema"s, "leafUint32"},
@@ -965,6 +982,7 @@ module schema-with-revision {
                         {boost::none, "/example-schema:leafInt32"},
                         {boost::none, "/example-schema:leafInt64"},
                         {boost::none, "/example-schema:leafInt8"},
+                        {boost::none, "/example-schema:leafNoValidIdent"},
                         {boost::none, "/example-schema:leafString"},
                         {boost::none, "/example-schema:leafUint16"},
                         {boost::none, "/example-schema:leafUint32"},
