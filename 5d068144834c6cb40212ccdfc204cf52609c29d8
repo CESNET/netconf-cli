@@ -16,6 +16,24 @@
       "message": "perhaps --ignore-unknown-data would convey that meaning better? Not everyone knows libyang :), so we can reasonably use a different naming scheme here.",
       "revId": "5d068144834c6cb40212ccdfc204cf52609c29d8",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "788e24e7_dd48704d",
+        "filename": "src/cli.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-01-18T10:22:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8c29716_60ab2ef0",
+      "revId": "5d068144834c6cb40212ccdfc204cf52609c29d8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
