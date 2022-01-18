@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "271e1ab4_5dd574b0",
+        "filename": "tests/command_completion.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-01-18T01:00:49Z",
+      "side": 1,
+      "message": "is this relevant to this patch?",
+      "revId": "629d562a53511a02fe190d90e6cbcc218ec11bf1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
