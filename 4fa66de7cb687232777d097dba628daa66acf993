@@ -22,6 +22,30 @@
       },
       "revId": "4fa66de7cb687232777d097dba628daa66acf993",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fb419ff_de3d9272",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-01-18T10:22:23Z",
+      "side": 0,
+      "message": "This flag makes it possible to import data which is not 100% valid, for example, you have data where some mandatory nodes are missing and you want to fix that in yang-cli. i added the flag back",
+      "parentUuid": "71de19f8_0a8ae523",
+      "range": {
+        "startLine": 322,
+        "startChar": 142,
+        "endLine": 322,
+        "endChar": 157
+      },
+      "revId": "4fa66de7cb687232777d097dba628daa66acf993",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
