@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71de19f8_0a8ae523",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-01-18T01:04:14Z",
+      "side": 0,
+      "message": "why was it here before, and why is it being removed now?",
+      "range": {
+        "startLine": 322,
+        "startChar": 142,
+        "endLine": 322,
+        "endChar": 157
+      },
+      "revId": "4fa66de7cb687232777d097dba628daa66acf993",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
