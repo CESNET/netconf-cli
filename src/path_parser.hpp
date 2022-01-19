@@ -364,9 +364,7 @@ auto const leafListValue_def =
     '[' >> leaf_data >> suggestLeafListEnd >> ']';
 
 auto const key_identifier_def =
-    x3::lexeme[
-        ((x3::alpha | char_("_")) >> *(x3::alnum | char_("_") | char_("-") | char_(".")))
-    ];
+    ((x3::alpha | char_("_")) >> *(x3::alnum | char_("_") | char_("-") | char_(".")));
 
 auto const createKeySuggestions_def =
     x3::eps;
@@ -381,7 +379,7 @@ auto const keyValue_def =
     key_identifier > '=' > createValueSuggestions > leaf_data;
 
 auto const keyValueWrapper =
-    x3::no_skip['[' > createKeySuggestions > keyValue > suggestKeysEnd > ']'];
+    '[' > createKeySuggestions > keyValue > suggestKeysEnd > ']';
 
 // even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
 auto const listSuffix_def =
@@ -394,7 +392,7 @@ auto const absoluteStart_def =
     x3::omit['/'] >> x3::attr(Scope::Absolute);
 
 auto const trailingSlash_def =
-    x3::no_skip[x3::omit['/']];
+    x3::omit['/'];
 
 auto const filterConfigFalse = [](const Schema& schema, const std::string& path) {
     return schema.isConfig(path);

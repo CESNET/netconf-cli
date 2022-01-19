@@ -16,23 +16,19 @@ x3::rule<completing_class, x3::unused_type> const completing = "completing";
 
 // This is a pseudo-parser, that fails if we're not completing a command
 auto const completing_def =
-    x3::no_skip[x3::eps];
+    x3::eps;
 
 auto const node_identifier_def =
-    x3::lexeme[
-            ((x3::alpha | x3::char_("_")) >> *(x3::alnum | x3::char_("_") | x3::char_("-") | x3::char_(".")))
-    ];
+    ((x3::alpha | x3::char_("_")) >> *(x3::alnum | x3::char_("_") | x3::char_("-") | x3::char_(".")));
 
 auto const module_def =
-    module_identifier >> x3::no_skip[':'] >> !x3::no_skip[x3::space];
+    module_identifier >> ':' >> !x3::space;
 
 auto const module_identifier_def =
-    x3::lexeme[
-            ((x3::alpha | x3::char_("_")) >> *(x3::alnum | x3::char_("_") | x3::char_("-") | x3::char_(".")))
-    ];
+    ((x3::alpha | x3::char_("_")) >> *(x3::alnum | x3::char_("_") | x3::char_("-") | x3::char_(".")));
 
 auto const space_separator_def =
-    x3::omit[x3::no_skip[+x3::space]];
+    x3::omit[+x3::space];
 
 template <typename CoerceTo>
 struct as_type {

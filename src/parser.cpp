@@ -40,7 +40,7 @@ command_ Parser::parseCommand(const std::string& line, std::ostream& errorStream
             x3::with<x3::error_handler_tag>(std::ref(errorHandler))[
             x3::with<writableOps_tag>(m_writableOps)[command]]
     ];
-    bool result = x3::phrase_parse(it, line.end(), grammar, x3::space, parsedCommand);
+    bool result = x3::parse(it, line.end(), grammar, parsedCommand);
 
     if (!result || it != line.end()) {
         throw InvalidCommandException(std::string(it, line.end()) + " this was left of input");
@@ -63,7 +63,7 @@ Completions Parser::completeCommand(const std::string& line, std::ostream& error
             x3::with<x3::error_handler_tag>(std::ref(errorHandler))[
             x3::with<writableOps_tag>(m_writableOps)[command]]
     ];
-    x3::phrase_parse(it, line.end(), grammar, x3::space, parsedCommand);
+    x3::parse(it, line.end(), grammar, parsedCommand);
 
     auto completionIterator = ctx.m_completionIterator ? *ctx.m_completionIterator : line.end();
 
