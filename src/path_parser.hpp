@@ -363,9 +363,6 @@ struct SuggestLeafListEnd : x3::parser<SuggestLeafListEnd> {
 auto const leafListValue_def =
     '[' >> leaf_data >> suggestLeafListEnd >> ']';
 
-auto const rest =
-    x3::omit[x3::no_skip[+(x3::char_ - '/' - space_separator)]];
-
 auto const key_identifier_def =
     x3::lexeme[
         ((x3::alpha | char_("_")) >> *(x3::alnum | char_("_") | char_("-") | char_(".")))
