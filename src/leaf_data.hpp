@@ -210,7 +210,7 @@ struct LeafData : x3::parser<LeafData> {
     }
 };
 
-auto const leaf_data = x3::no_skip[LeafData()];
+auto const leaf_data = LeafData();
 
 BOOST_SPIRIT_DEFINE(leaf_data_string)
 BOOST_SPIRIT_DEFINE(leaf_data_binary)

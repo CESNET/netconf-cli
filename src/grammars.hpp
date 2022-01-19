@@ -105,7 +105,7 @@ struct ls_options_table : x3::symbols<LsOption> {
 } const ls_options;
 
 auto const ls_def =
-    ls_::name >> *(space_separator >> ls_options) >> -(space_separator >> (anyPath | (module >> "*")));
+    ls_::name >> *(space_separator >> ls_options) >> -(space_separator > (anyPath | (module >> "*")));
 
 auto const cd_def =
     cd_::name >> space_separator > cdPath;
@@ -146,7 +146,7 @@ struct ds_target_table : x3::symbols<DatastoreTarget> {
 auto const get_def =
     get_::name
     >> -(space_separator >> "-" > staticSuggestions({"-datastore"}) > "-datastore" > space_separator > dsTargetSuggestions > ds_target_table)
-    >> -(space_separator >> getPath);
+    >> -(space_separator > getPath);
 
 auto const set_def =
     set_::name >> space_separator > writableLeafPath > space_separator > leaf_data;
@@ -190,7 +190,7 @@ struct copy_args : x3::parser<copy_args> {
     {
         auto& parserContext = x3::get<parser_context_tag>(ctx);
         auto iterBeforeDestination = begin;
-        auto save_iter = x3::no_skip[x3::eps[([&iterBeforeDestination](auto& ctx) { iterBeforeDestination = _where(ctx).begin(); })]];
+        auto save_iter = x3::eps[([&iterBeforeDestination](auto& ctx) { iterBeforeDestination = _where(ctx).begin(); })];
         auto grammar = datastoreSuggestions > copy_source > space_separator > datastoreSuggestions > save_iter > copy_destination;
 
         try {
@@ -365,7 +365,7 @@ auto const command_def =
 #if BOOST_VERSION <= 107800
     x3::eps >>
 #endif
-    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | prepare | exec | cancel | switch_rule | quit];
+    -space_separator >> createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | prepare | exec | cancel | switch_rule | quit] >> -space_separator;
 
 #if __clang__
 #pragma GCC diagnostic pop
