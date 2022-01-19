@@ -349,7 +349,7 @@ auto const command_def =
 #if BOOST_VERSION <= 107800
     x3::eps >>
 #endif
-    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | prepare | exec | cancel | switch_rule];
+    -space_separator >> createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | prepare | exec | cancel | switch_rule] >> -space_separator;
 
 #if __clang__
 #pragma GCC diagnostic pop
