@@ -1,0 +1,215 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd4d8cc9_c2d3bf45",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 49
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "what do you mean by this -- how does this affect the end-user operation of the app? can I query the output nodes as well (e.g., their types/desc)?",
+      "range": {
+        "startLine": 16,
+        "startChar": 12,
+        "endLine": 16,
+        "endChar": 65
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da849730_b30902a9",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "If there\u0027s no \u003cerror-message\u003e and no \u003cerror-path\u003e, then the resulting error message will be just some whitespace. Is there a reasonable way around that, like logging at least the tags or something else? Actually, why are the tags not logged?",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21d2d9f7_1add3013",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "does this need any change now that there\u0027s also that module for YANG schema mount?",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74f0c319_6cf7ba53",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "is this still needed with ly2? The linked issue showed a small hint that it might not be needed in future, and I think that future might have happened. Could you please check whether we have that feature in this future? :)",
+      "range": {
+        "startLine": 83,
+        "startChar": 1,
+        "endLine": 86,
+        "endChar": 51
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a9fad29_a44a2bd3",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "this needs an inline comment (it looks to me that this thing will look for regular nodes as usual, and input rpc/action nodes if that\u0027s the case, and that it needs a flag to go look for the output nodes)",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7919df7_f17f3d36",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "the linked issue shows one way of *possibly* getting this info in certain cases; can you please implement that?",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd0754a0_ad3ca902",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "now that it\u0027s not a C-style bitfield, but a proper enum, please use a switch here so that the compiler warns us if something is not handled",
+      "range": {
+        "startLine": 480,
+        "startChar": 0,
+        "endLine": 486,
+        "endChar": 5
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90943d69_13271334",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "when does this happen, and why it\u0027s important to silently ignore these errors?",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84264839_ca9b0ace",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "What does it mean? Is there a behavior change? I also do not understand the comment because no matter how an actual change is constructed, even if it\u0027s an overwrite of a DS by some other data, the end result should be always the same (AFAIK) -- there\u0027s some old state, there\u0027s some new state, and these two states can be compared and the resulting diff presented to the change CB.",
+      "range": {
+        "startLine": 672,
+        "startChar": 0,
+        "endLine": 673,
+        "endChar": 77
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58cb2091_0861536e",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "check that, please (ASAN should yell if there\u0027s a problem) -- simply removing the SysrepoSubscription should do the trick, I suppose?",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca903b5b_dbc2a30b",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-15T20:35:56Z",
+      "side": 1,
+      "message": "this needs an update now that the schema mounts landed",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
