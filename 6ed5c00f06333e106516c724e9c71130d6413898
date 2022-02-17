@@ -83,6 +83,24 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "153be60b_fb545e8c",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-17T16:08:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "def109b3_7ef8549d",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21d2d9f7_1add3013",
@@ -96,6 +114,24 @@
       "writtenOn": "2022-02-15T20:35:56Z",
       "side": 1,
       "message": "does this need any change now that there\u0027s also that module for YANG schema mount?",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d063684_65c724b7",
+        "filename": "src/yang_access.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-17T16:08:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21d2d9f7_1add3013",
       "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
@@ -180,6 +216,30 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "444cdabb_e412095d",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-17T16:08:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd0754a0_ad3ca902",
+      "range": {
+        "startLine": 480,
+        "startChar": 0,
+        "endLine": 486,
+        "endChar": 5
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90943d69_13271334",
@@ -193,6 +253,24 @@
       "writtenOn": "2022-02-15T20:35:56Z",
       "side": 1,
       "message": "when does this happen, and why it\u0027s important to silently ignore these errors?",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bec9247_f33b1415",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-17T16:08:50Z",
+      "side": 1,
+      "message": "the old code code does that I am not sure why exactly...",
+      "parentUuid": "90943d69_13271334",
       "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
@@ -222,6 +300,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ca172fe6_9512e992",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-17T16:08:50Z",
+      "side": 1,
+      "message": "at this point I have no idea, but I think it\u0027s just that when NetconfAccess writes stuff, it the underlying sysrepo does stuff a different way than when SysrepoAccess directly writes stuff. The resulting datastore contents are the same, but the change callbacks differ. I guess there can be many ways to describe a DS change by these ChangeOperations?",
+      "parentUuid": "84264839_ca9b0ace",
+      "range": {
+        "startLine": 672,
+        "startChar": 0,
+        "endLine": 673,
+        "endChar": 77
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58cb2091_0861536e",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 49
@@ -233,6 +335,24 @@
       "writtenOn": "2022-02-15T20:35:56Z",
       "side": 1,
       "message": "check that, please (ASAN should yell if there\u0027s a problem) -- simply removing the SysrepoSubscription should do the trick, I suppose?",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69a1a357_a3b93a83",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-17T16:08:50Z",
+      "side": 1,
+      "message": "I swapped them and ASAN says nothing, so I guess the problem is no longer there",
+      "parentUuid": "58cb2091_0861536e",
       "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
@@ -250,6 +370,24 @@
       "writtenOn": "2022-02-15T20:35:56Z",
       "side": 1,
       "message": "this needs an update now that the schema mounts landed",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b3173f4_4bd829c5",
+        "filename": "tests/yang.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-17T16:08:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca903b5b_dbc2a30b",
       "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
