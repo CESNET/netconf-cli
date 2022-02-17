@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64cd2deb_88169be8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 49
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-17T09:23:22Z",
+      "side": 1,
+      "message": "I\u0027m not sure if you could do that even before... well, at least there are no tests for that, I guess I could add them? Anyway, the real problem is that an input node and an output node could have the same name, so there could be collisions...",
+      "parentUuid": "fd4d8cc9_c2d3bf45",
+      "range": {
+        "startLine": 16,
+        "startChar": 12,
+        "endLine": 16,
+        "endChar": 65
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da849730_b30902a9",
         "filename": "src/netconf-client.cpp",
         "patchSetId": 49
@@ -37,6 +61,24 @@
       "writtenOn": "2022-02-15T20:35:56Z",
       "side": 1,
       "message": "If there\u0027s no \u003cerror-message\u003e and no \u003cerror-path\u003e, then the resulting error message will be just some whitespace. Is there a reasonable way around that, like logging at least the tags or something else? Actually, why are the tags not logged?",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "def109b3_7ef8549d",
+        "filename": "src/netconf-client.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-17T09:23:22Z",
+      "side": 1,
+      "message": "I wasn\u0027t aware of how the format looked like when I was writing this. I\u0027ll improve it.",
+      "parentUuid": "da849730_b30902a9",
       "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
