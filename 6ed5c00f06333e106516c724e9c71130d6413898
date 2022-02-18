@@ -48,6 +48,30 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56c290ff_9a092686",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 49
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-18T10:01:50Z",
+      "side": 1,
+      "message": "One possibility would be adding the `input` and `output` names to schema paths, but that sounds like an intrusive change. Another option is something like `describe --output \u003cTab\u003e`. OK, let\u0027s defer this until later.",
+      "parentUuid": "64cd2deb_88169be8",
+      "range": {
+        "startLine": 16,
+        "startChar": 12,
+        "endLine": 16,
+        "endChar": 65
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da849730_b30902a9",
@@ -277,6 +301,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c735308b_22803590",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-18T10:01:50Z",
+      "side": 1,
+      "message": "I\u0027m not talking about \"a default return\", but about error handling. How come that this now needs exception handling? Is this new version perhaps calling this method on an invalid path while it was not doing so in the ly1 version?",
+      "parentUuid": "4bec9247_f33b1415",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84264839_ca9b0ace",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 49
@@ -312,6 +354,30 @@
       "side": 1,
       "message": "at this point I have no idea, but I think it\u0027s just that when NetconfAccess writes stuff, it the underlying sysrepo does stuff a different way than when SysrepoAccess directly writes stuff. The resulting datastore contents are the same, but the change callbacks differ. I guess there can be many ways to describe a DS change by these ChangeOperations?",
       "parentUuid": "84264839_ca9b0ace",
+      "range": {
+        "startLine": 672,
+        "startChar": 0,
+        "endLine": 673,
+        "endChar": 77
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75b3b85e_fc2eadda",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-18T10:01:50Z",
+      "side": 1,
+      "message": "As a minimum, the comment needs updating.\n\nHowever, if the NETCONF and sysrepo backends differ, that\u0027s a pretty strong indication that it needs a careful review. Are you sure that the NETCONF operation that you send is a correct move (\"move `http` to the end\")? How does it look on the wire?",
+      "parentUuid": "ca172fe6_9512e992",
       "range": {
         "startLine": 672,
         "startChar": 0,
