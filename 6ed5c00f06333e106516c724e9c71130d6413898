@@ -377,6 +377,24 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "831360a2_40940cda",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-21T19:40:06Z",
+      "side": 1,
+      "message": "thanks",
+      "parentUuid": "1bdbb574_fe3e8120",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84264839_ca9b0ace",
