@@ -183,6 +183,30 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7291db7f_2447e228",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-21T10:37:51Z",
+      "side": 1,
+      "message": "It seems that it is not needed, I tested this https://tree.taiga.io/project/jktjkt-netconf-cli/issue/50",
+      "parentUuid": "74f0c319_6cf7ba53",
+      "range": {
+        "startLine": 83,
+        "startChar": 1,
+        "endLine": 86,
+        "endChar": 51
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a9fad29_a44a2bd3",
@@ -196,6 +220,24 @@
       "writtenOn": "2022-02-15T20:35:56Z",
       "side": 1,
       "message": "this needs an inline comment (it looks to me that this thing will look for regular nodes as usual, and input rpc/action nodes if that\u0027s the case, and that it needs a flag to go look for the output nodes)",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f5be43b_293f0cfd",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-21T10:37:51Z",
+      "side": 1,
+      "message": "I have updated the comments to make them clearer",
+      "parentUuid": "4a9fad29_a44a2bd3",
       "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
@@ -313,6 +355,24 @@
       "side": 1,
       "message": "I\u0027m not talking about \"a default return\", but about error handling. How come that this now needs exception handling? Is this new version perhaps calling this method on an invalid path while it was not doing so in the ly1 version?",
       "parentUuid": "4bec9247_f33b1415",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bdbb574_fe3e8120",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-21T10:37:51Z",
+      "side": 1,
+      "message": "This method is mainly used in the `describe` method and also to filter out nodes for the `set` command. The original code checked the flags field and returned true if the LYS_CONFIG_W was present. new libyang-cpp now has a method for retrieving config true/false that checks for the LYS_CONFIG_W and LYS_CONFIG_R flags. If neither is present, then it throws. This is the only time it can throw. However, netconf-cli expects that for these kinds nodes (for example RPC nodes), YangSchema::isConfig returns false. I have updated the comment.",
+      "parentUuid": "c735308b_22803590",
       "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
