@@ -390,6 +390,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18059132_68d07aec",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-21T09:49:40Z",
+      "side": 1,
+      "message": "I am quite sure, because I also check the state after the operation wth getItems. For the sysrepo backend, the change notification is 100% correct.\n\nMy reasoning for why the notifications differ is that with SysrepoAccess, I directly use `sr_move_item`, however, with NetconfAccess, sysrepo might not have this info form libnetconf2 (that I\u0027m just moving one item) and need more general notifications to encode the change. For YangAccess, I\u0027m using sysrepoctl to replace the config, so there\u0027s also probably not enough info... I guess I can ask on GH if my assumption is correct.",
+      "parentUuid": "75b3b85e_fc2eadda",
+      "range": {
+        "startLine": 672,
+        "startChar": 0,
+        "endLine": 673,
+        "endChar": 77
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58cb2091_0861536e",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 49
