@@ -516,6 +516,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44da902a_b37abc96",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-22T08:26:19Z",
+      "side": 1,
+      "message": "My assumption may be correct, I asked here https://github.com/sysrepo/sysrepo/issues/2732",
+      "parentUuid": "0032ae8e_253ebbad",
+      "range": {
+        "startLine": 672,
+        "startChar": 0,
+        "endLine": 673,
+        "endChar": 77
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58cb2091_0861536e",
         "filename": "tests/datastore_access.cpp",
         "patchSetId": 49
