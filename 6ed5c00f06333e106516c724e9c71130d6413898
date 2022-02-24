@@ -259,6 +259,24 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1daa5f1_bc8d8b23",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-24T03:03:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7919df7_f17f3d36",
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd0754a0_ad3ca902",
@@ -528,6 +546,30 @@
       "side": 1,
       "message": "My assumption may be correct, I asked here https://github.com/sysrepo/sysrepo/issues/2732",
       "parentUuid": "0032ae8e_253ebbad",
+      "range": {
+        "startLine": 672,
+        "startChar": 0,
+        "endLine": 673,
+        "endChar": 77
+      },
+      "revId": "6ed5c00f06333e106516c724e9c71130d6413898",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e72809b8_8d54e9bb",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-24T03:03:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44da902a_b37abc96",
       "range": {
         "startLine": 672,
         "startChar": 0,
