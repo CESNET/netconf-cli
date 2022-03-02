@@ -212,7 +212,7 @@ Session::~Session()
     ::nc_session_free(m_session, nullptr);
 }
 
-std::unique_ptr<Session> Session::connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath)
+std::unique_ptr<Session> Session::connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath, ly_ctx* ctx)
 {
     impl::ClientInit::instance();
 
@@ -223,14 +223,14 @@ std::unique_ptr<Session> Session::connectPubkey(const std::string& host, const u
         nc_client_ssh_set_auth_pref(NC_SSH_AUTH_PUBLICKEY, 5);
         nc_client_ssh_add_keypair(pubPath.c_str(), privPath.c_str());
     }
-    auto session = std::make_unique<Session>(nc_connect_ssh(host.c_str(), port, nullptr));
+    auto session = std::make_unique<Session>(nc_connect_ssh(host.c_str(), port, ctx));
     if (!session->m_session) {
         throw std::runtime_error{"nc_connect_ssh failed"};
     }
     return session;
 }
 
-std::unique_ptr<Session> Session::connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback)
+std::unique_ptr<Session> Session::connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback, ly_ctx* ctx)
 {
     impl::ClientInit::instance();
 
@@ -244,29 +244,29 @@ std::unique_ptr<Session> Session::connectKbdInteractive(const std::string& host,
         nc_client_ssh_set_username(nullptr);
     });
 
-    auto session = std::make_unique<Session>(nc_connect_ssh(host.c_str(), port, nullptr));
+    auto session = std::make_unique<Session>(nc_connect_ssh(host.c_str(), port, ctx));
     if (!session->m_session) {
         throw std::runtime_error{"nc_connect_ssh failed"};
     }
     return session;
 }
 
-std::unique_ptr<Session> Session::connectFd(const int source, const int sink)
+std::unique_ptr<Session> Session::connectFd(const int source, const int sink, ly_ctx* ctx)
 {
     impl::ClientInit::instance();
 
-    auto session = std::make_unique<Session>(nc_connect_inout(source, sink, nullptr));
+    auto session = std::make_unique<Session>(nc_connect_inout(source, sink, ctx));
     if (!session->m_session) {
         throw std::runtime_error{"nc_connect_inout failed"};
     }
     return session;
 }
 
-std::unique_ptr<Session> Session::connectSocket(const std::string& path)
+std::unique_ptr<Session> Session::connectSocket(const std::string& path, ly_ctx* ctx)
 {
     impl::ClientInit::instance();
 
-    auto session = std::make_unique<Session>(nc_connect_unix(path.c_str(), nullptr));
+    auto session = std::make_unique<Session>(nc_connect_unix(path.c_str(), ctx));
     if (!session->m_session) {
         throw std::runtime_error{"nc_connect_unix failed"};
     }

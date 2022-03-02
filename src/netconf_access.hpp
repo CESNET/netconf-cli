@@ -59,6 +59,6 @@ private:
 
     bool m_serverHasNMDA;
 
-    std::unique_ptr<libnetconf::client::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;
+    std::unique_ptr<libnetconf::client::Session> m_session;
 };
