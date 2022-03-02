@@ -59,30 +59,33 @@ DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
 }
 
 NetconfAccess::NetconfAccess(const std::string& hostname, uint16_t port, const std::string& user, const std::string& pubKey, const std::string& privKey)
-    : m_session(libnetconf::client::Session::connectPubkey(hostname, port, user, pubKey, privKey))
-    , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
+    libyang::Context ctx(nullptr, libyang::ContextOptions::SetPrivParsed);
+    m_session = libnetconf::client::Session::connectPubkey(hostname, port, user, pubKey, privKey, libyang::retrieveContext(ctx));
+    m_schema = std::make_shared<YangSchema>(ctx);
     checkNMDA();
 }
 
 NetconfAccess::NetconfAccess(const int source, const int sink)
-    : m_session(libnetconf::client::Session::connectFd(source, sink))
-    , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
+    libyang::Context ctx(nullptr, libyang::ContextOptions::SetPrivParsed);
+    m_session = libnetconf::client::Session::connectFd(source, sink, libyang::retrieveContext(ctx));
+    m_schema = std::make_shared<YangSchema>(ctx);
     checkNMDA();
 }
 
 NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session)
     : m_session(std::move(session))
-    , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
+    m_schema = std::make_shared<YangSchema>(m_session->libyangContext());
     checkNMDA();
 }
 
 NetconfAccess::NetconfAccess(const std::string& socketPath)
-    : m_session(libnetconf::client::Session::connectSocket(socketPath))
-    , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
+    libyang::Context ctx(nullptr, libyang::ContextOptions::SetPrivParsed);
+    m_session = libnetconf::client::Session::connectSocket(socketPath, libyang::retrieveContext(ctx));
+    m_schema = std::make_shared<YangSchema>(ctx);
     checkNMDA();
 }
 

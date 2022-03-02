@@ -10,6 +10,7 @@
 #include <vector>
 
 struct nc_session;
+struct ly_ctx;
 
 namespace libyang {
 class Context;
@@ -41,10 +42,10 @@ class Session {
 public:
     Session(struct nc_session* session);
     ~Session();
-    static std::unique_ptr<Session> connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath);
-    static std::unique_ptr<Session> connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback);
-    static std::unique_ptr<Session> connectSocket(const std::string& path);
-    static std::unique_ptr<Session> connectFd(const int source, const int sink);
+    static std::unique_ptr<Session> connectPubkey(const std::string& host, const uint16_t port, const std::string& user, const std::string& pubPath, const std::string& privPath, ly_ctx* ctx = nullptr);
+    static std::unique_ptr<Session> connectKbdInteractive(const std::string& host, const uint16_t port, const std::string& user, const KbdInteractiveCb& callback, ly_ctx* ctx = nullptr);
+    static std::unique_ptr<Session> connectSocket(const std::string& path, ly_ctx* ctx = nullptr);
+    static std::unique_ptr<Session> connectFd(const int source, const int sink, ly_ctx* ctx = nullptr);
     [[nodiscard]] std::vector<std::string_view> capabilities() const;
     std::optional<libyang::DataNode> get(const std::optional<std::string>& filter = std::nullopt);
     std::optional<libyang::DataNode> getData(const NmdaDatastore datastore, const std::optional<std::string>& filter = std::nullopt);
