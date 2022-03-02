@@ -8,6 +8,7 @@
 #pragma once
 
 #include <libnetconf2/log.h>
+#include <libyang-cpp/Context.hpp>
 #include <string>
 #include "datastore_access.hpp"
 
@@ -59,6 +60,7 @@ private:
 
     bool m_serverHasNMDA;
 
+    libyang::Context m_context;
     std::unique_ptr<libnetconf::client::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;
 };

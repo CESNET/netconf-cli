@@ -253,9 +253,15 @@ yang::TypeInfo YangSchema::impl_leafType(const NodeType& node) const
                     " is not supported: " +
                     std::to_string(std::underlying_type_t<libyang::LeafBaseType>(leaf->valueType().base())));
         }
+        std::optional<std::string_view> typeDesc;
 
+        try {
+            typeDesc = type.description();
+        } catch (libyang::Error&) {
+            // libyang context doesn't have the parsed info.
+        }
 
-        return yang::TypeInfo(resType, std::optional<std::string>{leafUnits}, std::optional<std::string>{type.description()});
+        return yang::TypeInfo(resType, std::optional<std::string>{leafUnits}, std::optional<std::string>{typeDesc});
     };
     return resolveType(leaf->valueType());
 }
@@ -289,7 +295,11 @@ yang::TypeInfo YangSchema::leafType(const std::string& path) const
 std::optional<std::string> YangSchema::leafTypeName(const std::string& path) const
 {
     auto leaf = getSchemaNode(path)->asLeaf();
-    return std::string{leaf.valueType().name()};
+    try {
+        return std::string{leaf.valueType().name()};
+    } catch (libyang::ParsedInfoUnavailable&) {
+        return std::nullopt;
+    }
 }
 
 std::string YangSchema::leafrefPath(const std::string& leafrefPath) const

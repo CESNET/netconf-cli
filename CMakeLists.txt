@@ -173,7 +173,7 @@ add_library(netconfaccess STATIC
     src/netconf_access.cpp
     )
 
-target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PkgConfig::LIBNETCONF2 PRIVATE PkgConfig::LIBYANG-CPP)
+target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PkgConfig::LIBNETCONF2 PkgConfig::LIBYANG-CPP)
 
 add_library(yangaccess STATIC
     src/yang_access.cpp

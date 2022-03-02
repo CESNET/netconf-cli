@@ -1114,6 +1114,19 @@ TEST_CASE("rpc/action")
         catching<OnExec>([&] { REQUIRE(proxyDatastore.execute() == output); });
     }
 
+    SECTION("parsed info in yang context")
+    {
+        auto schema = datastore->schema();
+        auto leafTypeName = schema->leafTypeName("/example-schema:typedefedLeaf");
+
+#if defined(sysrepo_BACKEND)
+        // Sysrepo is not available yet, with libyang parsed info context
+        REQUIRE(leafTypeName == std::nullopt);
+#else
+        REQUIRE(leafTypeName == "myType");
+#endif
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
 
