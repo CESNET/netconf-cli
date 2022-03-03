@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "593b5e03_082d7ad2",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-03-03T23:08:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f82e8ea4_7331f855",
+      "revId": "5ae728a46728abc5ab24b62247e527bb7f12d68e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "fb8d3fc5_6b257737",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 3
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "91485db1_5679c129",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-03-03T23:08:05Z",
+      "side": 1,
+      "message": "This might change, but as of now, the method only throws when SetPrivParsed is not enabled. In fact, I might have a good solution: create a new exception called libyang::ParsedInfoUnavailable or something. What do you think?",
+      "parentUuid": "fb8d3fc5_6b257737",
+      "range": {
+        "startLine": 258,
+        "startChar": 0,
+        "endLine": 262,
+        "endChar": 9
+      },
+      "revId": "5ae728a46728abc5ab24b62247e527bb7f12d68e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8f69bd2_9e2cf760",
         "filename": "src/yang_schema.cpp",
         "patchSetId": 3
@@ -54,6 +96,30 @@
       "writtenOn": "2022-03-03T11:03:08Z",
       "side": 1,
       "message": "this is not needed now",
+      "range": {
+        "startLine": 264,
+        "startChar": 78,
+        "endLine": 264,
+        "endChar": 104
+      },
+      "revId": "5ae728a46728abc5ab24b62247e527bb7f12d68e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e01a163_7a5d2580",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-03-03T23:08:05Z",
+      "side": 1,
+      "message": "It is",
+      "parentUuid": "f8f69bd2_9e2cf760",
       "range": {
         "startLine": 264,
         "startChar": 78,
