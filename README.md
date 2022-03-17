@@ -10,15 +10,15 @@ For building, one needs:
 * A C++20 compiler
 * [Boost](https://www.boost.org/) (we're testing with `1.75`)
 * [cmake](https://cmake.org/download/) for managing the build
-* [libyang](https://github.com/CESNET/libyang) **version 1.0.x** built with C++ support (`-DGEN_LANGUAGE_BINDINGS=ON`) for working with YANG models
-* [libnetconf2](https://github.com/CESNET/libnetconf2) **version 1.1.x** for connecting to NETCONF servers
+* [libyang](https://github.com/CESNET/libyang) **version 2.0** plus the [C++ bindings](https://github.com/CESNET/libyang-cpp)
+* [libnetconf2](https://github.com/CESNET/libnetconf2) **version 2.1** for connecting to NETCONF servers
 * [replxx](https://github.com/AmokHuginnsson/replxx) which provides interactive line prompts
 * [docopt](https://github.com/docopt/docopt.cpp) for CLI option parsing
 * [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) for building
 * optionally, [Doctest](https://github.com/onqtam/doctest/) as a C++ unit test framework
 * optionally, [trompeloeil](https://github.com/rollbear/trompeloeil) for mock objects in C++
-* optionally, [sysrepo](https://github.com/sysrepo/sysrepo/) **version 1.4.x** for the local sysrepo backend, and for the comprehensive test suite
-* optionally, [netopeer2](https://github.com/CESNET/netopeer2) **version 1.1.x** for a test suite
+* optionally, [sysrepo](https://github.com/sysrepo/sysrepo/) **version 2.1** plus the [C++ bindings](https://github.com/sysrepo/sysrepo-cpp) for the local sysrepo backend, and for the comprehensive test suite
+* optionally, [netopeer2](https://github.com/CESNET/netopeer2) **version 2.1** for a test suite
 
 Use an **exact commit** of any dependencies as specified in `submodules/dependencies/*`.
 
