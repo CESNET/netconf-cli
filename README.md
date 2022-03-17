@@ -1,5 +1,10 @@
 # Console interface to NETCONF servers
 
+![License](https://img.shields.io/github/license/CESNET/netconf-cli)
+[![Gerrit](https://img.shields.io/badge/patches-via%20Gerrit-blue)](https://gerrit.cesnet.cz/q/project:CzechLight/netconf-cli)
+[![Zuul CI](https://img.shields.io/badge/zuul-checked-blue)](https://zuul.gerrit.cesnet.cz/t/public/buildsets?project=CzechLight/netconf-cli)
+[![taiga.io](https://img.shields.io/badge/bugs%20via-taiga.io-informational)](https://tree.taiga.io/project/jktjkt-netconf-cli)
+
 This program provides an interactive console for working with YANG data.
 It can connect to NETCONF servers, and also talk to [sysrepo](http://www.sysrepo.org/) locally.
 
