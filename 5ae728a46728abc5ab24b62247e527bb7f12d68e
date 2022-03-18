@@ -155,6 +155,30 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34cea23f_ee871ebb",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-03-18T01:10:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5337393_f623e76b",
+      "range": {
+        "startLine": 258,
+        "startChar": 0,
+        "endLine": 262,
+        "endChar": 9
+      },
+      "revId": "5ae728a46728abc5ab24b62247e527bb7f12d68e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8f69bd2_9e2cf760",
