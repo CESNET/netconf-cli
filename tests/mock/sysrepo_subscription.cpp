@@ -34,7 +34,7 @@ public:
             return sysrepo::ErrorCode::Ok;
         }
 
-        for (const auto& it : sess.getChanges(("/"s + module_name.data() + ":*//.").c_str())) {
+        for (const auto& it : sess.getChanges("/"s + module_name.data() + ":*//.")) {
             auto xpath = it.node.path();
             std::optional<std::string> oldValue;
             std::optional<std::string> newValue;
@@ -72,7 +72,7 @@ DataSupplier::~DataSupplier() = default;
 
 SysrepoSubscription::SysrepoSubscription(const std::string& moduleName, Recorder* rec, sysrepo::Datastore ds)
     : m_subscription([&moduleName, &rec, ds] { // This is an immediately invoked lambda.
-        return sysrepo::Connection{}.sessionStart(ds).onModuleChange(moduleName.c_str(),
+        return sysrepo::Connection{}.sessionStart(ds).onModuleChange(moduleName,
                 rec ? sysrepo::ModuleChangeCb{MyCallback{moduleName, rec}}
                 : sysrepo::ModuleChangeCb{[](auto, auto, auto, auto, auto, auto) { return sysrepo::ErrorCode::Ok; }});
     }())
@@ -97,9 +97,9 @@ public:
         auto data = m_dataSupplier.get_data(subXPath->data());
         for (const auto& [p, v] : data) {
             if (!output) {
-                output = session.getContext().newPath(p.c_str(), v.type() == typeid(empty_) ? nullptr : leafDataToString(v).c_str());
+                output = session.getContext().newPath(p, v.type() == typeid(empty_) ? std::nullopt : std::optional<std::string>(leafDataToString(v)));
             } else {
-                output->newPath(p.c_str(), v.type() == typeid(empty_) ? nullptr : leafDataToString(v).c_str());
+                output->newPath(p, v.type() == typeid(empty_) ? std::nullopt : std::optional<std::string>(leafDataToString(v)));
             }
         }
         return sysrepo::ErrorCode::Ok;
@@ -110,6 +110,6 @@ private:
 };
 
 OperationalDataSubscription::OperationalDataSubscription(const std::string& moduleName, const std::string& path, const DataSupplier& dataSupplier)
-    : m_subscription(sysrepo::Connection{}.sessionStart().onOperGet(moduleName.c_str(), OperationalDataCallback{dataSupplier}, path.c_str()))
+    : m_subscription(sysrepo::Connection{}.sessionStart().onOperGet(moduleName, OperationalDataCallback{dataSupplier}, path))
 {
 }

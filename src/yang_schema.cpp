@@ -32,7 +32,7 @@ public:
 };
 
 YangSchema::YangSchema()
-    : m_context(nullptr, libyang::ContextOptions::DisableSearchDirs | libyang::ContextOptions::SetPrivParsed)
+    : m_context(std::nullopt, libyang::ContextOptions::DisableSearchDirs | libyang::ContextOptions::SetPrivParsed)
 {
 }
 
@@ -60,7 +60,7 @@ void YangSchema::addSchemaFile(const char* filename)
 
 bool YangSchema::isModule(const std::string& name) const
 {
-    return m_context.getModuleImplemented(name.c_str()).has_value();
+    return m_context.getModuleImplemented(name).has_value();
 }
 
 bool YangSchema::listHasKey(const schemaPath_& listPath, const std::string& key) const
@@ -86,14 +86,14 @@ std::optional<libyang::SchemaNode> YangSchema::impl_getSchemaNode(const std::str
     //
     // Also, we need to use findPath twice if we're trying to find output nodes.
     try {
-        return m_context.findPath(node.c_str());
+        return m_context.findPath(node);
     } catch (libyang::ErrorWithCode& err) {
         if (err.code() != libyang::ErrorCode::ValidationFailure) {
             throw;
         }
     }
     try {
-        return m_context.findPath(node.c_str(), libyang::OutputNodes::Yes);
+        return m_context.findPath(node, libyang::OutputNodes::Yes);
     } catch (libyang::ErrorWithCode& err) {
         if (err.code() != libyang::ErrorCode::ValidationFailure) {
             throw;
@@ -325,7 +325,7 @@ std::set<ModuleNodePair> YangSchema::availableNodes(const boost::variant<dataPat
     std::string topLevelModule;
 
     if (path.type() == typeid(module_)) {
-        nodeCollections.emplace_back(m_context.getModule(boost::get<module_>(path).m_name.c_str())->childInstantiables());
+        nodeCollections.emplace_back(m_context.getModule(boost::get<module_>(path).m_name)->childInstantiables());
     } else {
         auto schemaPath = anyPathToSchemaPath(path);
         if (schemaPath.m_nodes.empty()) {
@@ -372,7 +372,7 @@ std::set<ModuleNodePair> YangSchema::availableNodes(const boost::variant<dataPat
 
 void YangSchema::loadModule(const std::string& moduleName)
 {
-    m_context.loadModule(moduleName.c_str());
+    m_context.loadModule(moduleName);
 }
 
 void YangSchema::setEnabledFeatures(const std::string& moduleName, const std::vector<std::string>& features)
@@ -398,7 +398,7 @@ void YangSchema::registerModuleCallback(const std::function<std::string(const ch
             return std::nullopt;
         }
         return libyang::ModuleInfo {
-            .data = moduleSource.c_str(),
+            .data = moduleSource,
             .format = libyang::SchemaFormat::YANG
 
         };
@@ -420,12 +420,12 @@ libyang::CreatedNodes YangSchema::dataNodeFromPath(const std::string& path, cons
 
         return std::optional<libyang::CreationOptions>{};
     }();
-    return m_context.newPath2(path.c_str(), value ? value->c_str() : nullptr, options);
+    return m_context.newPath2(path, value, options);
 }
 
 std::optional<libyang::Module> YangSchema::getYangModule(const std::string& name)
 {
-    return m_context.getModuleImplemented(name.c_str());
+    return m_context.getModuleImplemented(name);
 }
 
 namespace {

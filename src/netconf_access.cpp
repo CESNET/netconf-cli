@@ -59,7 +59,7 @@ DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
 }
 
 NetconfAccess::NetconfAccess(const std::string& hostname, uint16_t port, const std::string& user, const std::string& pubKey, const std::string& privKey)
-    : m_context(nullptr, libyang::ContextOptions::SetPrivParsed)
+    : m_context(std::nullopt, libyang::ContextOptions::SetPrivParsed)
     , m_session(libnetconf::client::Session::connectPubkey(hostname, port, user, pubKey, privKey, m_context))
     , m_schema(std::make_shared<YangSchema>(m_context))
 {
@@ -67,7 +67,7 @@ NetconfAccess::NetconfAccess(const std::string& hostname, uint16_t port, const s
 }
 
 NetconfAccess::NetconfAccess(const int source, const int sink)
-    : m_context(nullptr, libyang::ContextOptions::SetPrivParsed)
+    : m_context(std::nullopt, libyang::ContextOptions::SetPrivParsed)
     , m_session(libnetconf::client::Session::connectFd(source, sink, m_context))
     , m_schema(std::make_shared<YangSchema>(m_context))
 {
@@ -82,7 +82,7 @@ NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& sess
 }
 
 NetconfAccess::NetconfAccess(const std::string& socketPath)
-    : m_context(nullptr, libyang::ContextOptions::SetPrivParsed)
+    : m_context(std::nullopt, libyang::ContextOptions::SetPrivParsed)
     , m_session(libnetconf::client::Session::connectSocket(socketPath, m_context))
     , m_schema(std::make_shared<YangSchema>(m_context))
 {
@@ -151,16 +151,16 @@ std::string toYangInsert(std::variant<yang::move::Absolute, yang::move::Relative
 void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move)
 {
     auto nodes = m_schema->dataNodeFromPath(source);
-    auto sourceNode = *(nodes.createdNode->findPath(source.c_str()));
+    auto sourceNode = *(nodes.createdNode->findPath(source));
     auto yangModule = *m_schema->getYangModule("yang");
-    sourceNode.newMeta(yangModule, "insert", toYangInsert(move).c_str());
+    sourceNode.newMeta(yangModule, "insert", toYangInsert(move));
 
     if (std::holds_alternative<yang::move::Relative>(move)) {
         auto relative = std::get<yang::move::Relative>(move);
         if (m_schema->nodeType(source) == yang::NodeTypes::LeafList) {
-            sourceNode.newMeta(yangModule, "value", leafDataToString(relative.m_path.at(".")).c_str());
+            sourceNode.newMeta(yangModule, "value", leafDataToString(relative.m_path.at(".")));
         } else {
-            sourceNode.newMeta(yangModule, "key", instanceToString(relative.m_path, std::string{nodes.createdNode->schema().module().name()}).c_str());
+            sourceNode.newMeta(yangModule, "key", instanceToString(relative.m_path, std::string{nodes.createdNode->schema().module().name()}));
         }
     }
     doEditFromDataNode(sourceNode);
@@ -222,15 +222,15 @@ std::shared_ptr<Schema> NetconfAccess::schema()
 std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
 {
     std::vector<ListInstance> res;
-    auto keys = m_session->libyangContext().findXPath(path.c_str()).front().asList().keys();
-    auto nodes = m_session->libyangContext().newPath2(path.c_str(), nullptr, libyang::CreationOptions::Opaque);
+    auto keys = m_session->libyangContext().findXPath(path).front().asList().keys();
+    auto nodes = m_session->libyangContext().newPath2(path, std::nullopt, libyang::CreationOptions::Opaque);
 
     // Here we create a tree with "selection leafs" for all they keys of our wanted list. These leafs tell NETCONF, that
     // we only want the list's keys and not any other data.
     for (const auto& keyLeaf : keys) {
         // Selection leafs need to be inserted directly to the list using relative paths, that's why `newNode` is used
         // here.
-        nodes.createdNode->newPath(keyLeaf.name().data(), nullptr, libyang::CreationOptions::Opaque);
+        nodes.createdNode->newPath(keyLeaf.name().data(), std::nullopt, libyang::CreationOptions::Opaque);
     }
 
     // Have to use `newParent` in case our wanted list is a nested list. With `newNode` I would only send the inner
@@ -241,7 +241,7 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
         return res;
     }
 
-    for (const auto& instance : instances->findXPath(path.c_str())) {
+    for (const auto& instance : instances->findXPath(path)) {
         ListInstance instanceRes;
 
         for (const auto& keyLeaf : instance.child()->siblings()) {

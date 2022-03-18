@@ -16,7 +16,7 @@ using DatastoreType = std::optional<libyang::DataNode>;
 }
 
 YangAccess::YangAccess()
-    : m_ctx(nullptr, libyang::ContextOptions::DisableSearchCwd | libyang::ContextOptions::SetPrivParsed)
+    : m_ctx(std::nullopt, libyang::ContextOptions::DisableSearchCwd | libyang::ContextOptions::SetPrivParsed)
     , m_datastore(std::nullopt)
     , m_schema(std::make_shared<YangSchema>(m_ctx))
 {
@@ -45,9 +45,9 @@ void YangAccess::impl_newPath(const std::string& path, const std::optional<std::
 {
     try {
         if (m_datastore) {
-            m_datastore->newPath(path.c_str(), value ? value->c_str() : nullptr, libyang::CreationOptions::Update);
+            m_datastore->newPath(path, value, libyang::CreationOptions::Update);
         } else {
-            m_datastore = m_ctx.newPath(path.c_str(), value ? value->c_str() : nullptr, libyang::CreationOptions::Update);
+            m_datastore = m_ctx.newPath(path, value, libyang::CreationOptions::Update);
         }
     } catch (libyang::Error&) {
         getErrorsAndThrow();
@@ -82,7 +82,7 @@ void YangAccess::impl_removeNode(const std::string& path)
         // Otherwise the datastore just doesn't contain the wanted node.
         throw DatastoreException{{DatastoreError{"Datastore is empty.", path}}};
     }
-    auto toRemove = m_datastore->findPath(path.c_str());
+    auto toRemove = m_datastore->findPath(path);
     if (!toRemove) {
         // Otherwise the datastore just doesn't contain the wanted node.
         throw DatastoreException{{DatastoreError{"Data node doesn't exist.", path}}};
@@ -105,7 +105,7 @@ DatastoreAccess::Tree YangAccess::getItems(const std::string& path) const
         return res;
     }
 
-    auto set = m_datastore->findXPath(path == "/" ? "/*" : path.c_str());
+    auto set = m_datastore->findXPath(path == "/" ? "/*" : path);
 
     lyNodesToTree(res, set);
     return res;
@@ -134,7 +134,7 @@ struct impl_moveItem {
 
     void operator()(yang::move::Absolute absolute) const
     {
-        auto set = m_sourceNode.findXPath(m_sourceNode.schema().path().get().get());
+        auto set = m_sourceNode.findXPath(m_sourceNode.schema().path());
         if (set.size() == 1) { // m_sourceNode is the sole instance, do nothing
             return;
         }
@@ -160,7 +160,7 @@ struct impl_moveItem {
     {
         auto keySuffix = m_sourceNode.schema().nodeType() == libyang::NodeType::List ? instanceToString(relative.m_path)
                                                                     : leafDataToString(relative.m_path.at("."));
-        auto destNode = m_sourceNode.findSiblingVal(m_sourceNode.schema(), keySuffix.c_str());
+        auto destNode = m_sourceNode.findSiblingVal(m_sourceNode.schema(), keySuffix);
 
         if (relative.m_position == yang::move::Relative::Position::After) {
             destNode->insertAfter(m_sourceNode);
@@ -177,7 +177,7 @@ void YangAccess::moveItem(const std::string& source, std::variant<yang::move::Ab
         throw DatastoreException{{DatastoreError{"Datastore is empty.", source}}};
     }
 
-    auto sourceNode = m_datastore->findPath(source.c_str());
+    auto sourceNode = m_datastore->findPath(source);
 
     if (!sourceNode) {
         // The datastore doesn't contain the wanted node.
@@ -199,7 +199,7 @@ void YangAccess::discardChanges()
 {
     auto root = [&path, this]  {
         try {
-            return m_ctx.newPath(path.c_str());
+            return m_ctx.newPath(path);
         } catch (libyang::ErrorWithCode& err) {
             getErrorsAndThrow();
         }
@@ -211,7 +211,7 @@ void YangAccess::discardChanges()
         }
 
         try {
-            root.newPath(k.c_str(), leafDataToString(v).c_str(), libyang::CreationOptions::Update);
+            root.newPath(k, leafDataToString(v), libyang::CreationOptions::Update);
         } catch (libyang::ErrorWithCode& err) {
             getErrorsAndThrow();
         }
@@ -238,7 +238,7 @@ std::vector<ListInstance> YangAccess::listInstances(const std::string& path)
         return res;
     }
 
-    auto instances = m_datastore->findXPath(path.c_str());
+    auto instances = m_datastore->findXPath(path);
     for (const auto& list : instances) {
         ListInstance instance;
         for (const auto& child : list.child()->siblings()) {
@@ -297,7 +297,7 @@ void YangAccess::addDataFile(const std::string& path, const StrictDataParsing st
     std::cout << "Parsing \"" << path << "\" as " << (firstChar == '{' ? "JSON" : "XML") << "...\n";
 
     auto dataNode = m_ctx.parseDataPath(
-            path.c_str(),
+            path,
             firstChar == '{' ? libyang::DataFormat::JSON : libyang::DataFormat::XML,
             strict == StrictDataParsing::Yes ? std::optional{libyang::ParseOptions::Strict} : std::nullopt,
             libyang::ValidationOptions::Present);
