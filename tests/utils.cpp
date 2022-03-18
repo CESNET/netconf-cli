@@ -357,7 +357,7 @@ TEST_CASE("libyang_utils")
             expectedLeafData = std::string{"Xaver"};
         }
 
-        auto leaf = dataNode->findPath(("/" + path).c_str());
+        auto leaf = dataNode->findPath("/" + path);
         REQUIRE(leafValueFromNode(leaf->asTerm()) == expectedLeafData);
     }
 

@@ -477,21 +477,19 @@ module example-schema {
 
 TEST_CASE("yangschema")
 {
-    using namespace std::string_literals;
-    using namespace std::string_view_literals;
     YangSchema ys;
-    ys.registerModuleCallback([]([[maybe_unused]] auto modName, auto, auto subModule, auto) {
-        if (modName != "example-schema"sv) {
-            throw std::logic_error("unrecognized module "s + modName);
+    ys.registerModuleCallback([](const auto modName, auto, const auto subModule, auto) {
+        if (modName != "example-schema") {
+            throw std::logic_error("unrecognized module " + std::string{modName});
         }
-        if (subModule == nullptr) {
+        if (!subModule) {
             return example_schema;
         }
-        if (subModule == "sub-module"sv) {
+        if (*subModule == "sub-module") {
             return included_submodule;
         }
 
-        throw std::logic_error("unrecognized submodule "s + subModule);
+        throw std::logic_error("unrecognized submodule " + std::string{*subModule});
     });
     ys.addSchemaString(second_schema);
     ys.addSchemaString(R"(

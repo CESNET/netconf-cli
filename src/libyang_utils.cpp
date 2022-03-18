@@ -123,9 +123,9 @@ DatastoreAccess::Tree rpcOutputToTree(libyang::DataNode output)
 
 libyang::DataNode treeToRpcInput(libyang::Context ctx, const std::string& path, DatastoreAccess::Tree in)
 {
-    auto root = ctx.newPath(path.c_str(), nullptr, libyang::CreationOptions::Update);
+    auto root = ctx.newPath(path, std::nullopt, libyang::CreationOptions::Update);
     for (const auto& [k, v] : in) {
-        root.newPath(k.c_str(), leafDataToString(v).c_str(), libyang::CreationOptions::Update);
+        root.newPath(k, leafDataToString(v), libyang::CreationOptions::Update);
     }
 
     return root;

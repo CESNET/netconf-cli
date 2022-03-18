@@ -42,7 +42,7 @@ public:
     [[nodiscard]] yang::Status status(const std::string& location) const override;
     [[nodiscard]] bool hasInputNodes(const std::string& path) const override;
 
-    void registerModuleCallback(const std::function<std::string(const char*, const char*, const char*, const char*)>& clb);
+    void registerModuleCallback(const std::function<std::string(const std::string_view, const std::optional<std::string_view>, const std::optional<std::string_view>, const std::optional<std::string_view>)>& clb);
 
     /** @short Loads a module called moduleName. */
     void loadModule(const std::string& moduleName);

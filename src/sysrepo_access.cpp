@@ -74,7 +74,7 @@ DatastoreAccess::Tree SysrepoAccess::getItems(const std::string& path) const
 
     try {
         m_session.switchDatastore(targetToDs_get(m_target));
-        auto config = m_session.getData(((path == "/") ? "/*" : path).c_str());
+        auto config = m_session.getData((path == "/") ? "/*" : path);
         if (config) {
             lyNodesToTree(res, config->siblings());
         }
@@ -89,7 +89,7 @@ void SysrepoAccess::setLeaf(const std::string& path, leaf_data_ value)
     try {
         m_session.switchDatastore(targetToDs_set(m_target));
         auto lyValue = value.type() == typeid(empty_) ? "" : leafDataToString(value);
-        m_session.setItem(path.c_str(), lyValue.c_str(), sysrepo::EditOptions::Isolate);
+        m_session.setItem(path, lyValue, sysrepo::EditOptions::Isolate);
     } catch (sysrepo::Error& ex) {
         reportErrors();
     }
@@ -99,7 +99,7 @@ void SysrepoAccess::createItem(const std::string& path)
 {
     try {
         m_session.switchDatastore(targetToDs_set(m_target));
-        m_session.setItem(path.c_str(), nullptr);
+        m_session.setItem(path, std::nullopt);
     } catch (sysrepo::Error& ex) {
         reportErrors();
     }
@@ -112,7 +112,7 @@ void SysrepoAccess::deleteItem(const std::string& path)
         // not supported.
         // https://github.com/sysrepo/sysrepo/issues/1967#issuecomment-625085090
         m_session.switchDatastore(targetToDs_set(m_target));
-        m_session.deleteItem(path.c_str(), sysrepo::EditOptions::Isolate);
+        m_session.deleteItem(path, sysrepo::EditOptions::Isolate);
     } catch (sysrepo::Error& ex) {
         reportErrors();
     }
@@ -146,7 +146,7 @@ void SysrepoAccess::moveItem(const std::string& source, std::variant<yang::move:
         }
     }
     m_session.switchDatastore(targetToDs_set(m_target));
-    m_session.moveItem(source.c_str(), toSrMoveOp(move), destination.c_str());
+    m_session.moveItem(source, toSrMoveOp(move), destination);
 }
 
 void SysrepoAccess::commitChanges()
@@ -180,7 +180,7 @@ DatastoreAccess::Tree SysrepoAccess::execute(const std::string& path, const Tree
 void SysrepoAccess::copyConfig(const Datastore source, const Datastore destination)
 {
     m_session.switchDatastore(toSrDatastore(destination));
-    m_session.copyConfig(toSrDatastore(source), nullptr, OPERATION_TIMEOUT_MS);
+    m_session.copyConfig(toSrDatastore(source), std::nullopt, OPERATION_TIMEOUT_MS);
 }
 
 std::shared_ptr<Schema> SysrepoAccess::schema()
@@ -206,12 +206,12 @@ std::shared_ptr<Schema> SysrepoAccess::schema()
 std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
 {
     std::vector<ListInstance> res;
-    auto lists = m_session.getData(path.c_str());
+    auto lists = m_session.getData(path);
     if (!lists) {
         return res;
     }
 
-    auto instances = lists->findXPath(path.c_str());
+    auto instances = lists->findXPath(path);
     if (instances.empty()) {
         return res;
     }

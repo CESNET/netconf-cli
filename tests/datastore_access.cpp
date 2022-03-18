@@ -901,7 +901,7 @@ struct ActionCb {
             // `xpath` holds the subscription xpath which won't have list keys. We need the path with list keys and
             // we'll find that in the input.
             auto inputPath = input.findXPath("/example-schema:ports/shutdown").front().path();
-            output.newPath(joinPaths(std::string{inputPath}, "success").c_str(), "true", libyang::CreationOptions::Output);
+            output.newPath(joinPaths(inputPath, "success"), "true", libyang::CreationOptions::Output);
             return sysrepo::ErrorCode::Ok;
         }
         throw std::runtime_error("unrecognized RPC");
@@ -939,21 +939,21 @@ struct RpcCb {
 
                 if (inputNode.path() == nukes + "/payload/kilotons") {
                     kilotons = std::get<uint64_t>(inputNode.asTerm().value());
-                } else if (std::string_view{inputNode.path().get().get()}.find(nukes + "/cities") == 0) {
+                } else if (inputNode.path().find(nukes + "/cities") == 0) {
                     hasCities = true;
                 } else {
-                    throw std::runtime_error("RPC launch-nukes: unexpected input "s + inputNode.path().get().get());
+                    throw std::runtime_error("RPC launch-nukes: unexpected input "s + inputNode.path());
                 }
             }
             if (kilotons == 333'666) {
                 // magic, just do not generate any output. This is important because the NETCONF RPC returns just <ok/>.
                 return sysrepo::ErrorCode::Ok;
             }
-            output.newPath((nukes + "/blast-radius").c_str(), "33666", libyang::CreationOptions::Output);
-            output.newPath((nukes + "/actual-yield").c_str(), std::to_string(static_cast<uint64_t>(1.33 * kilotons)).c_str(), libyang::CreationOptions::Output);
+            output.newPath(nukes + "/blast-radius", "33666", libyang::CreationOptions::Output);
+            output.newPath(nukes + "/actual-yield", std::to_string(static_cast<uint64_t>(1.33 * kilotons)), libyang::CreationOptions::Output);
             if (hasCities) {
-                output.newPath((nukes + "/damaged-places/targets[city='London']/city").c_str(), "London", libyang::CreationOptions::Output);
-                output.newPath((nukes + "/damaged-places/targets[city='Berlin']/city").c_str(), "Berlin", libyang::CreationOptions::Output);
+                output.newPath(nukes + "/damaged-places/targets[city='London']/city", "London", libyang::CreationOptions::Output);
+                output.newPath(nukes + "/damaged-places/targets[city='Berlin']/city", "Berlin", libyang::CreationOptions::Output);
             }
             return sysrepo::ErrorCode::Ok;
         }
