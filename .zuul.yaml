@@ -27,3 +27,7 @@
         - f34-gcc-cover-previous:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc
+        - czechlight-clearfog:
+            required-projects:
+              - CzechLight/br2-external
+            requires: CzechLight-br2-build-clearfog

@@ -1,7 +1,0 @@
-- project:
-    check:
-      jobs:
-        - czechlight-clearfog:
-            required-projects:
-              - CzechLight/br2-external
-            requires: CzechLight-br2-build-clearfog
