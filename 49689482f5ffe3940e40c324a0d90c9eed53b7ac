@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8a3195e_45162c06",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-03-21T08:39:08Z",
+      "side": 1,
+      "message": "I think you can get rid of the cast to string here?",
+      "range": {
+        "startLine": 904,
+        "startChar": 37,
+        "endLine": 904,
+        "endChar": 59
+      },
+      "revId": "49689482f5ffe3940e40c324a0d90c9eed53b7ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "638f7ee9_a04fad53",
+        "filename": "tests/datastore_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-03-21T08:39:08Z",
+      "side": 1,
+      "message": "And here you can probably get rid of the cast to string_view",
+      "range": {
+        "startLine": 942,
+        "startChar": 27,
+        "endLine": 942,
+        "endChar": 61
+      },
+      "revId": "49689482f5ffe3940e40c324a0d90c9eed53b7ac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
