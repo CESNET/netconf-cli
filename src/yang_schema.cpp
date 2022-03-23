@@ -500,6 +500,10 @@ bool YangSchema::hasInputNodes(const std::string& path) const
 bool YangSchema::isConfig(const std::string& path) const
 {
     auto node = getSchemaNode(path.c_str());
+    if (node->isInput()) {
+        return true;
+    }
+
     try {
         if (node->config() == libyang::Config::True) {
             return true;
