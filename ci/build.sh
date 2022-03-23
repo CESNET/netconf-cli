@@ -9,7 +9,7 @@ ZUUL_PROJECT_SRC_DIR=$HOME/$(jq < ~/zuul-env.json -r '.project.src_dir')
 ZUUL_PROJECT_SHORT_NAME=$(jq < ~/zuul-env.json -r '.project.short_name')
 ZUUL_GERRIT_HOSTNAME=$(jq < ~/zuul-env.json -r '.project.canonical_hostname')
 
-CI_PARALLEL_JOBS=$(grep -c '^processor' /proc/cpuinfo)
+CI_PARALLEL_JOBS=$(awk -vcpu=$(getconf _NPROCESSORS_ONLN) 'BEGIN{printf "%.0f", cpu*1.3+1}')
 CMAKE_OPTIONS=""
 CFLAGS=""
 CXXFLAGS=""
@@ -61,25 +61,19 @@ PREFIX=~/target
 mkdir ${PREFIX}
 BUILD_DIR=~/build
 mkdir ${BUILD_DIR}
-export PATH=${PREFIX}/bin:$PATH
+export PATH=${PREFIX}/bin:/sbin:/usr/sbin:$PATH
 export LD_LIBRARY_PATH=${PREFIX}/lib64:${PREFIX}/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 export PKG_CONFIG_PATH=${PREFIX}/lib64/pkgconfig:${PREFIX}/lib/pkgconfig:${PREFIX}/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}
 
 ARTIFACT_URL=$(jq < ~/zuul-env.json -r '[.artifacts[]? | select(.name == "tarball") | select(.project == "CzechLight/dependencies")][-1]?.url + ""')
 
-DEP_SUBMODULE_COMMIT=$(git ls-tree -l master submodules/dependencies | cut -d ' ' -f 3)
-
 if [[ -z "${ARTIFACT_URL}" ]]; then
-    # fallback to a promoted artifact
+    # nothing ahead in the pipeline -> fallback to the latest promoted artifact
+    DEPSRCDIR=$(jq < ~/zuul-env.json -e -r ".projects[] | select(.name == \"CzechLight/dependencies\").src_dir")
+    DEP_SUBMODULE_COMMIT=$(git --git-dir ${HOME}/${DEPSRCDIR}/.git rev-parse HEAD)
     ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME%%+(-cover?(-previous)|-netconf-cli-no-sysrepo)}/${DEP_SUBMODULE_COMMIT}.tar.zst"
 fi
 
-ARTIFACT_FILE=$(basename ${ARTIFACT_URL})
-DEP_HASH_FROM_ARTIFACT=$(echo "${ARTIFACT_FILE}" | sed -e 's/^czechlight-dependencies-//' -e 's/\.tar\.zst$//')
-if [[ "${DEP_HASH_FROM_ARTIFACT}" != "${DEP_SUBMODULE_COMMIT}" ]]; then
-    echo "Mismatched artifact: HEAD of ./submodules/dependencies does not match artifact commit ref"
-    exit 1
-fi
 curl ${ARTIFACT_URL} | unzstd --stdout | tar -C ${PREFIX} -xf -
 
 if [[ ${ZUUL_JOB_NAME} =~ .*-no-sysrepo ]]; then
