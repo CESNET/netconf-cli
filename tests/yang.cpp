@@ -1188,6 +1188,7 @@ module schema-with-revision {
         SECTION("isConfig")
         {
             REQUIRE(ys.isConfig("/example-schema:leafInt32"));
+            REQUIRE(ys.isConfig("/example-schema:rpcOneInput/ahoj"));
             REQUIRE_FALSE(ys.isConfig("/example-schema:clockSpeed"));
             REQUIRE_FALSE(ys.isConfig("/example-schema:systemStats"));
             REQUIRE_FALSE(ys.isConfig("/example-schema:systemStats/upTime"));
