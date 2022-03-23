@@ -25,8 +25,6 @@ For building, one needs:
 * optionally, [sysrepo](https://github.com/sysrepo/sysrepo/) **version 2.1** plus the [C++ bindings](https://github.com/sysrepo/sysrepo-cpp) for the local sysrepo backend, and for the comprehensive test suite
 * optionally, [netopeer2](https://github.com/CESNET/netopeer2) **version 2.1** for a test suite
 
-Use an **exact commit** of any dependencies as specified in `submodules/dependencies/*`.
-
 The build process uses [CMake](https://cmake.org/runningcmake/).
 A quick-and-dirty build with no fancy options can be as simple as `mkdir build && cd build && cmake .. && make && make install`.
 

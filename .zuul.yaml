@@ -10,15 +10,20 @@
         - f34-gcc-cover:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc
+            required-projects: &projects
+              - CzechLight/dependencies
         - f34-clang-asan-ubsan:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-clang-asan-ubsan
+            required-projects: *projects
         - f34-clang-tsan:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-clang-tsan
+            required-projects: *projects
         - f34-gcc-netconf-cli-no-sysrepo:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc
+            required-projects: *projects
         - f34-cpp-coverage-diff:
             pre-run: ci/pre.yaml
             voting: false
@@ -27,6 +32,7 @@
         - f34-gcc-cover-previous:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc
+            required-projects: *projects
         - czechlight-clearfog:
             required-projects:
               - CzechLight/br2-external
