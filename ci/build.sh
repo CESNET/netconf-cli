@@ -5,8 +5,9 @@ shopt -s failglob extglob
 
 ZUUL_JOB_NAME=$(jq < ~/zuul-env.json -r '.job')
 ZUUL_TENANT=$(jq < ~/zuul-env.json -r '.tenant')
-ZUUL_PROJECT_SRC_DIR=$HOME/$(jq < ~/zuul-env.json -r '.project.src_dir')
-ZUUL_PROJECT_SHORT_NAME=$(jq < ~/zuul-env.json -r '.project.short_name')
+LEAF_PROJECT_NAME=CzechLight/netconf-cli
+ZUUL_PROJECT_SRC_DIR=$HOME/$(jq < ~/zuul-env.json -r '.projects[] | select(.name == \"'${LEAF_PROJECT_NAME}'\").src_dir')
+ZUUL_PROJECT_SHORT_NAME=$(jq < ~/zuul-env.json -r '.projects[] | select(.name == \"'${LEAF_PROJECT_NAME}'\").short_name')
 ZUUL_GERRIT_HOSTNAME=$(jq < ~/zuul-env.json -r '.project.canonical_hostname')
 
 CI_PARALLEL_JOBS=$(awk -vcpu=$(getconf _NPROCESSORS_ONLN) 'BEGIN{printf "%.0f", cpu*1.3+1}')
@@ -71,7 +72,8 @@ if [[ -z "${ARTIFACT_URL}" ]]; then
     # nothing ahead in the pipeline -> fallback to the latest promoted artifact
     DEPSRCDIR=$(jq < ~/zuul-env.json -e -r ".projects[] | select(.name == \"CzechLight/dependencies\").src_dir")
     DEP_SUBMODULE_COMMIT=$(git --git-dir ${HOME}/${DEPSRCDIR}/.git rev-parse HEAD)
-    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME%%+(-cover?(-previous)|-netconf-cli-no-sysrepo)}/${DEP_SUBMODULE_COMMIT}.tar.zst"
+    ZUUL_JOB_NAME_NO_PROJECT=${ZUUL_JOB_NAME##${ZUUL_PROJECT_SHORT_NAME}-}
+    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME_NO_PROJECT%%+(-cover?(-previous)|-netconf-cli-no-sysrepo)}/${DEP_SUBMODULE_COMMIT}.tar.zst"
 fi
 
 curl ${ARTIFACT_URL} | unzstd --stdout | tar -C ${PREFIX} -xf -
