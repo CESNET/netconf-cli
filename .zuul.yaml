@@ -12,14 +12,18 @@
             requires: CzechLight-deps-f34-gcc
             required-projects: &projects
               - CzechLight/dependencies
+            vars: &z_proj_vars
+              zuul_work_dir: "{{ zuul.projects[zuul.project.canonical_hostname + '/CzechLight/netconf-cli'].src_dir }}"
         - f34-clang-asan-ubsan:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-clang-asan-ubsan
             required-projects: *projects
+            vars: *z_proj_vars
         - f34-clang-tsan:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-clang-tsan
             required-projects: *projects
+            vars: *z_proj_vars
         - f34-gcc-netconf-cli-no-sysrepo:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc
