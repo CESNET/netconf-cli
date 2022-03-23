@@ -4,18 +4,24 @@
       Build a minimal version without sysrepo or the test suite
     parent: f34-gcc
 
+- job:
+    name: netconf-cli-f34-clang-asan-ubsan
+    parent: f34-clang-asan-ubsan
+    pre-run: ci/pre.yaml
+    requires: CzechLight-deps-f34-clang-asan-ubsan
+    required-projects: &projects
+      - CzechLight/dependencies
+    vars: &z_proj_vars
+      zuul_work_dir: "{{ zuul.projects[zuul.project.canonical_hostname + '/CzechLight/netconf-cli'].src_dir }}"
+
 - project:
     check:
       jobs:
         - f34-gcc-cover:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc
-            required-projects: &projects
-              - CzechLight/dependencies
-        - f34-clang-asan-ubsan:
-            pre-run: ci/pre.yaml
-            requires: CzechLight-deps-f34-clang-asan-ubsan
             required-projects: *projects
+        - netconf-cli-f34-clang-asan-ubsan
         - f34-clang-tsan:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-clang-tsan
