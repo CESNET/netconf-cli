@@ -5,8 +5,8 @@
  *
 */
 
+#include <libnetconf2-cpp/netconf-client.hpp>
 #include "libyang_utils.hpp"
-#include "netconf-client.hpp"
 #include "netconf_access.hpp"
 #include "utils.hpp"
 #include "yang_schema.hpp"
@@ -95,7 +95,7 @@ void NetconfAccess::checkNMDA()
     m_serverHasNMDA = nmdaMod && nmdaMod->implemented();
 }
 
-void NetconfAccess::setNcLogLevel(NC_VERB_LEVEL level)
+void NetconfAccess::setNcLogLevel(libnetconf::LogLevel level)
 {
     libnetconf::client::setLogLevel(level);
 }
@@ -172,7 +172,12 @@ void NetconfAccess::doEditFromDataNode(libyang::DataNode dataNode)
     if (m_serverHasNMDA) {
         m_session->editData(targetToDs_set(m_target), std::string{*data});
     } else {
-        m_session->editConfig(NC_DATASTORE_CANDIDATE, NC_RPC_EDIT_DFLTOP_MERGE, NC_RPC_EDIT_TESTOPT_TESTSET, NC_RPC_EDIT_ERROPT_STOP, std::string{*data});
+        m_session->editConfig(
+                libnetconf::Datastore::Candidate,
+                libnetconf::EditDefaultOp::Merge,
+                libnetconf::EditTestOpt::TestSet,
+                libnetconf::EditErrorOpt::Stop,
+                std::string{*data});
     }
 }
 
@@ -198,13 +203,13 @@ DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree
     return rpcOutputToTree(*output);
 }
 
-NC_DATASTORE toNcDatastore(Datastore datastore)
+libnetconf::Datastore toNcDatastore(Datastore datastore)
 {
     switch (datastore) {
     case Datastore::Running:
-        return NC_DATASTORE_RUNNING;
+        return libnetconf::Datastore::Running;
     case Datastore::Startup:
-        return NC_DATASTORE_STARTUP;
+        return libnetconf::Datastore::Startup;
     }
     __builtin_unreachable();
 }
