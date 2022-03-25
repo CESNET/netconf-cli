@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <libnetconf2/log.h>
 #include <libyang-cpp/Context.hpp>
+#include <libnetconf2-cpp/Enum.hpp>
 #include <string>
 #include "datastore_access.hpp"
 
@@ -25,7 +25,7 @@ class Session;
 class Schema;
 class YangSchema;
 
-using LogCb = std::function<void(NC_VERB_LEVEL, const char*)>;
+using LogCb = std::function<void(libnetconf::LogLevel, const char*)>;
 
 class NetconfAccess : public DatastoreAccess {
 public:
@@ -36,7 +36,7 @@ public:
     ~NetconfAccess() override;
     [[nodiscard]] Tree getItems(const std::string& path) const override;
 
-    static void setNcLogLevel(NC_VERB_LEVEL level);
+    static void setNcLogLevel(libnetconf::LogLevel level);
     static void setNcLogCallback(const LogCb& callback);
     void setLeaf(const std::string& path, leaf_data_ value) override;
     void createItem(const std::string& path) override;

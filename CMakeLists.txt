@@ -78,7 +78,7 @@ if(NOT BUILD_TESTING AND ENABLE_FULL_TESTS STREQUAL ON)
 endif()
 
 pkg_check_modules(LIBYANG-CPP REQUIRED libyang-cpp>=1.0.0 IMPORTED_TARGET)
-pkg_check_modules(LIBNETCONF2 REQUIRED libnetconf2>=2.0.5 IMPORTED_TARGET)
+pkg_check_modules(LIBNETCONF2-CPP REQUIRED libnetconf2-cpp>=1.0.0 IMPORTED_TARGET)
 
 if(ENABLE_FULL_TESTS STREQUAL OFF AND ENABLE_SYSREPO_CLI STREQUAL OFF)
     message(STATUS "Skipping sysrepo per configure options")
@@ -169,11 +169,10 @@ if(DO_ENABLE_SYSREPO_CLI OR DO_ENABLE_NETCONF_TESTS)
 endif()
 
 add_library(netconfaccess STATIC
-    src/netconf-client.cpp
     src/netconf_access.cpp
     )
 
-target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PkgConfig::LIBNETCONF2 PkgConfig::LIBYANG-CPP)
+target_link_libraries(netconfaccess PUBLIC datastoreaccess yangschema ast_values utils PkgConfig::LIBNETCONF2-CPP PkgConfig::LIBYANG-CPP)
 
 add_library(yangaccess STATIC
     src/yang_access.cpp

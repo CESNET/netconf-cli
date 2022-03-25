@@ -170,7 +170,7 @@ int main(int argc, char* argv[])
 #elif defined(NETCONF_CLI)
     auto verbose = args.at("-v").asBool();
     if (verbose) {
-        NetconfAccess::setNcLogLevel(NC_VERB_DEBUG);
+        NetconfAccess::setNcLogLevel(libnetconf::LogLevel::Debug);
     }
 
     SshProcess process;
