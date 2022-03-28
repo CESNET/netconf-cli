@@ -73,7 +73,7 @@ if [[ -z "${ARTIFACT_URL}" ]]; then
     # nothing ahead in the pipeline -> fallback to the latest promoted artifact
     DEPSRCDIR=$(jq < ~/zuul-env.json -e -r ".projects[] | select(.name == \"CzechLight/dependencies\").src_dir")
     DEP_SUBMODULE_COMMIT=$(git --git-dir ${HOME}/${DEPSRCDIR}/.git rev-parse HEAD)
-    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/${ZUUL_JOB_NAME_NO_PROJECT%%+(-cover?(-previous)|-netconf-cli-no-sysrepo)}/${DEP_SUBMODULE_COMMIT}.tar.zst"
+    ARTIFACT_URL="https://object-store.cloud.muni.cz/swift/v1/ci-artifacts-${ZUUL_TENANT}/${ZUUL_GERRIT_HOSTNAME}/CzechLight/dependencies/deps-${ZUUL_JOB_NAME_NO_PROJECT%%+(-cover?(-previous)|-netconf-cli-no-sysrepo)}/${DEP_SUBMODULE_COMMIT}.tar.zst"
 fi
 
 curl ${ARTIFACT_URL} | unzstd --stdout | tar -C ${PREFIX} -xf -
