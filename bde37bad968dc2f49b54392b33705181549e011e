@@ -16,6 +16,23 @@
       "message": "recheck",
       "revId": "bde37bad968dc2f49b54392b33705181549e011e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c4babb9_b8b001fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-28T15:38:33Z",
+      "side": 1,
+      "message": "CI failed for the ARM build because this needs an update to br2-external, which simply has to happen in a separate commit.",
+      "revId": "bde37bad968dc2f49b54392b33705181549e011e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
