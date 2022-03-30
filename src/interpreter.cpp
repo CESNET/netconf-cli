@@ -89,6 +89,9 @@ void Interpreter::operator()(const get_& get) const
 
 void Interpreter::operator()(const cd_& cd) const
 {
+    if (auto rpcInputPath = m_datastore.inputDatastorePath(); rpcInputPath && !pathToDataString(cd.m_path, Prefixes::WhenNeeded).starts_with(m_parser.currentNode())) {
+        throw std::runtime_error("Can't cd out of `prepare` context");
+    }
     m_parser.changeNode(cd.m_path);
 }
 
