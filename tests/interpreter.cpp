@@ -452,6 +452,13 @@ TEST_CASE("rpc")
 
         REQUIRE(parser.currentPath() == rpcPath);
 
+        SECTION("can't leave the context with cd")
+        {
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Absolute, {dataNode_{module_{{"example"}}, container_{"somewhereElse"}}}}}}));
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Relative, {dataNode_{nodeup_{}}}}}}));
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cancel_{}});
+        }
+
         SECTION("exec")
         {
             REQUIRE_CALL(*input_datastore, getItems("/")).RETURN(DatastoreAccess::Tree{});
