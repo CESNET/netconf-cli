@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e4c3d9f_78919d16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-30T23:59:07Z",
+      "side": 1,
+      "message": "dunno how to fix that GCC build failure in a clean manner.",
+      "revId": "72cbbc6a9fbcc741a8e86099b1d6e6eda1495603",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8d0e6a8_017494b0",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-30T23:59:07Z",
+      "side": 1,
+      "message": "Can you please also add a test for a relative path (or a comment explaining why it\u0027s not needed)?",
+      "revId": "72cbbc6a9fbcc741a8e86099b1d6e6eda1495603",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
