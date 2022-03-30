@@ -116,10 +116,12 @@ struct set_ : x3::position_tagged {
     set <path_to_leaf> <value>
 
     Sets the leaf specified by <path_to_leaf> to <value>.
+    Values of type string must be enclosed in quotation marks (" or ').
 
     Usage:
-        /> set /module:leaf 123
-        /> set /module:leaf abc)";
+        /> set /module:someNumber 123
+        /> set /module:someString 'abc'
+        /> set /module:someString "abc")";
     bool operator==(const set_& b) const;
     dataPath_ m_path;
     leaf_data_ m_data;
