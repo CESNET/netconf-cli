@@ -57,6 +57,7 @@ public:
     virtual void deleteItem(const std::string& path) = 0;
     virtual void moveItem(const std::string& path, std::variant<yang::move::Absolute, yang::move::Relative> move) = 0;
     virtual Tree execute(const std::string& path, const Tree& input) = 0;
+    DatastoreTarget target() const;
     void setTarget(const DatastoreTarget target);
 
     virtual std::shared_ptr<Schema> schema() = 0;

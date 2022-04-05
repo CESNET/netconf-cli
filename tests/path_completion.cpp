@@ -213,6 +213,27 @@ TEST_CASE("path_completion")
             // The expectedContextLength is 13, because the completion isn't actually generated after the slash.
             expectedContextLength = 13;
         }
+
+        SECTION("get -")
+        {
+            input = "get -";
+            expectedCompletions = {"-datastore"};
+            expectedContextLength = 0;
+        }
+
+        SECTION("get --datastore ")
+        {
+            input = "get --datastore ";
+            expectedCompletions = {"operational", "running", "startup"};
+            expectedContextLength = 0;
+        }
+
+        SECTION("get --datastore running /second")
+        {
+            input = "get --datastore running /second";
+            expectedCompletions = {"second:amelie/"};
+            expectedContextLength = 6;
+        }
     }
 
     SECTION("describe completion")
