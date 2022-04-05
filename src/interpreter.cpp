@@ -10,6 +10,7 @@
 #include <boost/mpl/for_each.hpp>
 #include <iostream>
 #include <sstream>
+#include "UniqueResource.hpp"
 #include "datastore_access.hpp"
 #include "interpreter.hpp"
 #include "utils.hpp"
@@ -83,6 +84,16 @@ void Interpreter::operator()(const set_& set) const
 
 void Interpreter::operator()(const get_& get) const
 {
+    auto oldTarget = m_datastore.target();
+
+    if (get.m_dsTarget) {
+        m_datastore.setTarget(*get.m_dsTarget);
+    }
+
+    auto targetSwitcher = make_unique_resource([] {}, [this, oldTarget] {
+        m_datastore.setTarget(oldTarget);
+    });
+
     auto items = m_datastore.getItems(pathToString(toCanonicalPath(get.m_path)));
     printTree(items);
 }

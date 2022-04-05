@@ -14,7 +14,7 @@ bool set_::operator==(const set_& b) const
 
 bool get_::operator==(const get_& b) const
 {
-    return this->m_path == b.m_path;
+    return this->m_path == b.m_path && this->m_dsTarget == b.m_dsTarget;
 }
 
 bool cd_::operator==(const cd_& b) const
