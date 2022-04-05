@@ -15,6 +15,15 @@
 #include "leaf_data.hpp"
 #include "path_parser.hpp"
 
+auto staticSuggestions(std::set<Completion> completions)
+{
+    return x3::eps[([completions](auto& ctx) {
+        auto& parserContext = x3::get<parser_context_tag>(ctx);
+        parserContext.m_suggestions = completions;
+        parserContext.m_completionIterator = _where(ctx).begin();
+    })];
+}
+
 #if BOOST_VERSION <= 107700
 namespace boost::spirit::x3::traits
 {
@@ -148,11 +157,7 @@ struct datastore_symbol_table : x3::symbols<Datastore> {
 const auto copy_source = x3::rule<class source, Datastore>{"source datastore"} = datastore;
 const auto copy_destination = x3::rule<class source, Datastore>{"destination datastore"} = datastore;
 
-const auto datastoreSuggestions = x3::eps[([](auto& ctx) {
-    auto& parserContext = x3::get<parser_context_tag>(ctx);
-    parserContext.m_suggestions = {Completion{"running", " "}, Completion{"startup", " "}};
-    parserContext.m_completionIterator = _where(ctx).begin();
-})];
+const auto datastoreSuggestions = staticSuggestions({Completion{"running", " "}, Completion{"startup", " "}});
 
 struct copy_args : x3::parser<copy_args> {
     using attribute_type = copy_;
@@ -317,11 +322,7 @@ auto const prepare_def =
 auto const exec_def =
     exec_::name > -(space_separator > -as<dataPath_>[RpcActionPath<AllowInput::No>{}]);
 
-const auto dsTargetSuggestions = x3::eps[([](auto& ctx) {
-    auto& parserContext = x3::get<parser_context_tag>(ctx);
-    parserContext.m_suggestions = {Completion{"running", " "}, Completion{"startup", " "}, Completion{"operational", " "}};
-    parserContext.m_completionIterator = _where(ctx).begin();
-})];
+const auto dsTargetSuggestions = staticSuggestions({Completion{"running", " "}, Completion{"startup", " "}, Completion{"operational", " "}});
 
 struct ds_target_table : x3::symbols<DatastoreTarget> {
     ds_target_table()
