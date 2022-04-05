@@ -15,7 +15,7 @@
 namespace x3 = boost::spirit::x3;
 
 x3::rule<cdPath_class, dataPath_> const cdPath = "cdPath";
-x3::rule<getPath_class, decltype(get_::m_path)> const getPath = "getPath";
+x3::rule<getPath_class, decltype(get_::m_path)::value_type> const getPath = "getPath";
 x3::rule<rpcPath_class, dataPath_> const rpcPath = "rpcPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
@@ -265,7 +265,7 @@ struct ModeToAttribute<PathParserMode::DataPathListEnd> {
 
 template <PathParserMode PARSER_MODE, CompletionMode COMPLETION_MODE>
 struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
-    using attribute_type = ModeToAttribute<PARSER_MODE>;
+    using attribute_type = typename ModeToAttribute<PARSER_MODE>::type;
     std::function<bool(const Schema&, const std::string& path)> m_filterFunction;
 
     PathParser(const std::function<bool(const Schema&, const std::string& path)>& filterFunction = [](const auto&, const auto&) { return true; })
