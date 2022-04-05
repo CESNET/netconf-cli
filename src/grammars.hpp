@@ -15,6 +15,22 @@
 #include "leaf_data.hpp"
 #include "path_parser.hpp"
 
+/**
+ * Returns a parser that generates suggestions based on a Completion set.
+ * Usage:
+ * const auto suggestSomeStuff = staticSuggestions({Completion{"some", "/"}, Completion{"stuff", " "}});
+ *
+ * You can use this as a standard parser in a Spirit grammar.
+ */
+auto staticSuggestions(const std::set<Completion>& completions)
+{
+    return as<x3::unused_type>[x3::eps[([completions](auto& ctx) {
+        auto& parserContext = x3::get<parser_context_tag>(ctx);
+        parserContext.m_suggestions = completions;
+        parserContext.m_completionIterator = _where(ctx).begin();
+    })]];
+}
+
 #if BOOST_VERSION <= 107700
 namespace boost::spirit::x3::traits
 {
@@ -148,11 +164,7 @@ struct datastore_symbol_table : x3::symbols<Datastore> {
 const auto copy_source = x3::rule<class source, Datastore>{"source datastore"} = datastore;
 const auto copy_destination = x3::rule<class source, Datastore>{"destination datastore"} = datastore;
 
-const auto datastoreSuggestions = x3::eps[([](auto& ctx) {
-    auto& parserContext = x3::get<parser_context_tag>(ctx);
-    parserContext.m_suggestions = {Completion{"running", " "}, Completion{"startup", " "}};
-    parserContext.m_completionIterator = _where(ctx).begin();
-})];
+const auto datastoreSuggestions = staticSuggestions({Completion{"running", " "}, Completion{"startup", " "}});
 
 struct copy_args : x3::parser<copy_args> {
     using attribute_type = copy_;
@@ -317,11 +329,7 @@ auto const prepare_def =
 auto const exec_def =
     exec_::name > -(space_separator > -as<dataPath_>[RpcActionPath<AllowInput::No>{}]);
 
-const auto dsTargetSuggestions = x3::eps[([](auto& ctx) {
-    auto& parserContext = x3::get<parser_context_tag>(ctx);
-    parserContext.m_suggestions = {Completion{"running", " "}, Completion{"startup", " "}, Completion{"operational", " "}};
-    parserContext.m_completionIterator = _where(ctx).begin();
-})];
+const auto dsTargetSuggestions = staticSuggestions({Completion{"running", " "}, Completion{"startup", " "}, Completion{"operational", " "}});
 
 struct ds_target_table : x3::symbols<DatastoreTarget> {
     ds_target_table()
@@ -334,7 +342,7 @@ struct ds_target_table : x3::symbols<DatastoreTarget> {
 } const ds_target_table;
 
 auto const switch_rule_def =
-    switch_::name > space_separator > as<x3::unused_type>[dsTargetSuggestions] > ds_target_table;
+    switch_::name > space_separator > dsTargetSuggestions > ds_target_table;
 
 auto const cancel_def =
     cancel_::name >> x3::attr(cancel_{});
