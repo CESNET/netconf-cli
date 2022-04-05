@@ -131,8 +131,22 @@ auto const delete_rule_def =
     delete_::name >> space_separator > (presenceContainerPath | listInstancePath | leafListElementPath | writableLeafPath);
 #endif
 
+const auto dsTargetSuggestions = staticSuggestions({"running", "startup", "operational"});
+
+struct ds_target_table : x3::symbols<DatastoreTarget> {
+    ds_target_table()
+    {
+        add
+            ("operational", DatastoreTarget::Operational)
+            ("startup", DatastoreTarget::Startup)
+            ("running", DatastoreTarget::Running);
+    }
+} const ds_target_table;
+
 auto const get_def =
-    get_::name >> -(space_separator >> getPath);
+    get_::name
+    >> -(space_separator >> "-" > staticSuggestions({{"-datastore", ""}}) > "-datastore" > space_separator > dsTargetSuggestions > ds_target_table)
+    >> -(space_separator >> getPath);
 
 auto const set_def =
     set_::name >> space_separator > writableLeafPath > space_separator > leaf_data;
@@ -331,18 +345,6 @@ auto const prepare_def =
 
 auto const exec_def =
     exec_::name > -(space_separator > -as<dataPath_>[RpcActionPath<AllowInput::No>{}]);
-
-const auto dsTargetSuggestions = staticSuggestions({"running", "startup", "operational"});
-
-struct ds_target_table : x3::symbols<DatastoreTarget> {
-    ds_target_table()
-    {
-        add
-            ("operational", DatastoreTarget::Operational)
-            ("startup", DatastoreTarget::Startup)
-            ("running", DatastoreTarget::Running);
-    }
-} const ds_target_table;
 
 auto const switch_rule_def =
     switch_::name > space_separator > dsTargetSuggestions > ds_target_table;

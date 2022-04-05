@@ -152,6 +152,7 @@ struct get_ : x3::position_tagged {
         /> get
         /> get /module:path)";
     bool operator==(const get_& b) const;
+    boost::optional<DatastoreTarget> m_dsTarget;
     boost::optional<boost::variant<dataPath_, module_>> m_path;
 };
 
@@ -360,7 +361,7 @@ BOOST_FUSION_ADAPT_STRUCT(commit_)
 BOOST_FUSION_ADAPT_STRUCT(describe_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(help_, m_cmd)
 BOOST_FUSION_ADAPT_STRUCT(discard_)
-BOOST_FUSION_ADAPT_STRUCT(get_, m_path)
+BOOST_FUSION_ADAPT_STRUCT(get_, m_dsTarget, m_path)
 BOOST_FUSION_ADAPT_STRUCT(copy_, m_source, m_destination)
 BOOST_FUSION_ADAPT_STRUCT(move_, m_source, m_destination)
 BOOST_FUSION_ADAPT_STRUCT(dump_, m_format)
