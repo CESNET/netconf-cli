@@ -108,6 +108,11 @@ std::shared_ptr<DatastoreAccess> ProxyDatastore::pickDatastore(const std::string
     }
 }
 
+DatastoreTarget ProxyDatastore::target() const
+{
+    return m_datastore->target();
+}
+
 void ProxyDatastore::setTarget(const DatastoreTarget target)
 {
     m_datastore->setTarget(target);

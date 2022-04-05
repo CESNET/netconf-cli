@@ -31,6 +31,11 @@ DatastoreException::DatastoreException(const std::vector<DatastoreError>& errors
     }
 }
 
+DatastoreTarget DatastoreAccess::target() const
+{
+    return m_target;
+}
+
 void DatastoreAccess::setTarget(const DatastoreTarget target)
 {
     m_target = target;
