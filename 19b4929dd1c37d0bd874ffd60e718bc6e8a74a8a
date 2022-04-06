@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "02790646_39fd37ab",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-06T00:04:27Z",
+      "side": 1,
+      "message": "This helper, just takes the completion set and creates a parser that sets the completions to anything you give to it. I am not sure if I\u0027ll need some other suffixes, but that\u0027s just how the completion works. I changed the comment a bit...",
+      "parentUuid": "351c9941_7b900755",
+      "range": {
+        "startLine": 21,
+        "startChar": 97,
+        "endLine": 21,
+        "endChar": 99
+      },
+      "revId": "19b4929dd1c37d0bd874ffd60e718bc6e8a74a8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18e04944_d20e0d57",
         "filename": "src/grammars.hpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-05T10:16:08Z",
       "side": 1,
       "message": "I think that if this is a const\u0026, there will be one less copy. Am I right, or do I misunderstand copy elision?",
+      "range": {
+        "startLine": 25,
+        "startChar": 23,
+        "endLine": 25,
+        "endChar": 43
+      },
+      "revId": "19b4929dd1c37d0bd874ffd60e718bc6e8a74a8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6653494b_849fcdca",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-06T00:04:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18e04944_d20e0d57",
       "range": {
         "startLine": 25,
         "startChar": 23,
