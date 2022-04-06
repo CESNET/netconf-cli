@@ -21,6 +21,9 @@ MODULE="$1"
 YANG_DIR=$(dirname "$1")
 shift
 
+# Uninstall the module
+"$SYSREPOCTL" --uninstall "$(basename "$MODULE" ".yang")" -v3 || true
+
 # Install the module
 "$SYSREPOCTL" --search-dirs "$YANG_DIR" --install "$MODULE" -v3
 
