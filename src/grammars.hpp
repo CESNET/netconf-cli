@@ -16,8 +16,7 @@
 #include "path_parser.hpp"
 
 #if BOOST_VERSION <= 107700
-namespace boost::spirit::x3::traits
-{
+namespace boost::spirit::x3::traits {
     // Backport https://github.com/boostorg/spirit/pull/702
     // with instructions from https://github.com/boostorg/spirit/issues/701#issuecomment-946743099
     template <typename... Types, typename T>
