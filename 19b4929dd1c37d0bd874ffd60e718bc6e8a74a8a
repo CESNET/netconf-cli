@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e76579bd_0b0fdca8",
+        "filename": "src/grammars.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-06T10:47:37Z",
+      "side": 1,
+      "message": "I\u0027m not suggesting to remove support for suffixes from completion. I\u0027m suggesting changing this newly added helper so that it helps a little more :).",
+      "parentUuid": "02790646_39fd37ab",
+      "range": {
+        "startLine": 21,
+        "startChar": 97,
+        "endLine": 21,
+        "endChar": 99
+      },
+      "revId": "19b4929dd1c37d0bd874ffd60e718bc6e8a74a8a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18e04944_d20e0d57",
         "filename": "src/grammars.hpp",
         "patchSetId": 2
