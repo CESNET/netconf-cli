@@ -38,6 +38,7 @@ public:
 
     std::shared_ptr<Schema> schema() override;
 
+    Tree pendingChanges() const override;
     void commitChanges() override;
     void discardChanges() override;
     void copyConfig(const Datastore source, const Datastore destination) override;
