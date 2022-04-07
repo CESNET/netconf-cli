@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5075c588_e09098bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-07T09:00:09Z",
+      "side": 1,
+      "message": "I like this. The Mock DS access needs to implement that new method, though.",
+      "revId": "7b007e1fa0d3277c8c0754b7a47768b471763618",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
