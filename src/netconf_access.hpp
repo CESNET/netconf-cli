@@ -16,10 +16,8 @@
  *     \brief Implementation of DatastoreAccess for accessing a NETCONF server
  */
 
-namespace libnetconf {
-namespace client {
+namespace libnetconf::client {
 class Session;
-}
 }
 
 class Schema;
