@@ -168,6 +168,12 @@ void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move:
 
 void NetconfAccess::doEditFromDataNode(libyang::DataNode dataNode)
 {
+    if (m_pendingChanges) {
+        m_pendingChanges->merge(dataNode);
+    } else {
+        m_pendingChanges = dataNode;
+    }
+
     auto data = dataNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings);
     if (m_serverHasNMDA) {
         m_session->editData(targetToDs_set(m_target), std::string{*data});
@@ -181,13 +187,27 @@ void NetconfAccess::doEditFromDataNode(libyang::DataNode dataNode)
     }
 }
 
+DatastoreAccess::Tree NetconfAccess::pendingChanges() const
+{
+    DatastoreAccess::Tree res;
+    if (!m_pendingChanges) {
+        return res;
+    }
+
+    lyNodesToTree(res, m_pendingChanges->siblings());
+
+    return res;
+}
+
 void NetconfAccess::commitChanges()
 {
+    m_pendingChanges = std::nullopt;
     m_session->commit();
 }
 
 void NetconfAccess::discardChanges()
 {
+    m_pendingChanges = std::nullopt;
     m_session->discard();
 }
 
