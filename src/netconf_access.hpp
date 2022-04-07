@@ -42,6 +42,7 @@ public:
     void createItem(const std::string& path) override;
     void deleteItem(const std::string& path) override;
     void moveItem(const std::string& path, std::variant<yang::move::Absolute, yang::move::Relative> move) override;
+    Tree pendingChanges() const override;
     void commitChanges() override;
     void discardChanges() override;
     Tree execute(const std::string& path, const Tree& input) override;
@@ -60,6 +61,7 @@ private:
 
     bool m_serverHasNMDA;
 
+    std::optional<libyang::DataNode> m_pendingChanges;
     libyang::Context m_context;
     std::unique_ptr<libnetconf::client::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;

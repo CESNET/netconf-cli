@@ -884,6 +884,38 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.dump(DataFormat::Json).find("example-schema:point") != std::string::npos);
     }
 
+    SECTION("retrieving pending changes")
+    {
+        DatastoreAccess::Tree expected{};
+
+        // There are no pending changes at the start.
+        REQUIRE(datastore.pendingChanges() == DatastoreAccess::Tree{});
+
+        std::unique_ptr<trompeloeil::expectation> expectation;
+        datastore.setLeaf("/example-schema:leafInt8", int8_t{-128});
+
+        // There are some pending changes when setting a leaf.
+        REQUIRE(datastore.pendingChanges() == DatastoreAccess::Tree{
+            {"/example-schema:leafInt8", int8_t{-128}}
+        });
+        // But they aren't available yet in the actual datastore.
+        REQUIRE(datastore.getItems("/example-schema:leafInt8") == DatastoreAccess::Tree{});
+
+        SECTION("commit")
+        {
+            expectation = NAMED_REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:leafInt8", std::nullopt, "-128"s, std::nullopt));
+            datastore.commitChanges();
+        }
+
+        SECTION("discard")
+        {
+            datastore.discardChanges();
+        }
+
+        // After commiting/discarding, there are no more pending changes.
+        REQUIRE(datastore.pendingChanges() == DatastoreAccess::Tree{});
+    }
+
     waitForCompletionAndBitMore(seq1);
 }
 
