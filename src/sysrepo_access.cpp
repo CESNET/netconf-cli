@@ -149,6 +149,20 @@ void SysrepoAccess::moveItem(const std::string& source, std::variant<yang::move:
     m_session.moveItem(source, toSrMoveOp(move), destination);
 }
 
+DatastoreAccess::Tree SysrepoAccess::pendingChanges() const
+{
+    DatastoreAccess::Tree res;
+    auto changes = m_session.getPendingChanges();
+
+    if (!changes) {
+        return res;
+    }
+
+    lyNodesToTree(res, changes->siblings());
+
+    return res;
+}
+
 void SysrepoAccess::commitChanges()
 {
     try {

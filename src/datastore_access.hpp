@@ -62,6 +62,7 @@ public:
 
     virtual std::shared_ptr<Schema> schema() = 0;
 
+    virtual Tree pendingChanges() const = 0;
     virtual void commitChanges() = 0;
     virtual void discardChanges() = 0;
     virtual void copyConfig(const Datastore source, const Datastore destination) = 0;
