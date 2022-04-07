@@ -34,6 +34,7 @@ public:
     void createItem(const std::string& path) override;
     void deleteItem(const std::string& path) override;
     void moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move) override;
+    Tree pendingChanges() const override;
     void commitChanges() override;
     void discardChanges() override;
     [[noreturn]] Tree execute(const std::string& path, const Tree& input) override;
