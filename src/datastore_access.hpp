@@ -62,6 +62,20 @@ public:
 
     virtual std::shared_ptr<Schema> schema() = 0;
 
+    enum class Operation {
+        Merge,
+        Remove
+    };
+
+    struct Change {
+        bool operator==(const Change&) const = default;
+        std::string xpath;
+        leaf_data_ value;
+        Operation operation;
+    };
+
+    using ChangeTree = std::vector<Change>;
+    virtual ChangeTree pendingChanges() const = 0;
     virtual void commitChanges() = 0;
     virtual void discardChanges() = 0;
     virtual void copyConfig(const Datastore source, const Datastore destination) = 0;

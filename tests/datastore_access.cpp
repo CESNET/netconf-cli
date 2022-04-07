@@ -884,6 +884,48 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.dump(DataFormat::Json).find("example-schema:point") != std::string::npos);
     }
 
+#if not defined(yang_BACKEND)
+    SECTION("retrieving pending changes")
+    {
+        REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:leafString", std::nullopt, "some-initial-value"s, std::nullopt));
+        datastore.setLeaf("/example-schema:leafString", "some-initial-value"s);
+        datastore.commitChanges();
+
+        DatastoreAccess::ChangeTree expected{};
+
+        // There are no pending changes at the start.
+        REQUIRE(datastore.pendingChanges() == DatastoreAccess::ChangeTree{});
+
+        std::vector<std::unique_ptr<trompeloeil::expectation>> expectations;
+        datastore.setLeaf("/example-schema:leafInt8", int8_t{-128});
+        datastore.deleteItem("/example-schema:leafString");
+
+        // There are some pending changes when setting a leaf.
+        REQUIRE(datastore.pendingChanges() == DatastoreAccess::ChangeTree{
+            {"/example-schema:leafInt8", int8_t{-128}, DatastoreAccess::Operation::Merge},
+            {"/example-schema:leafString", std::string{}, DatastoreAccess::Operation::Remove}
+        });
+        // But they aren't available yet in the actual datastore.
+        REQUIRE(datastore.getItems("/example-schema:leafInt8") == DatastoreAccess::Tree{});
+
+        SECTION("commit")
+        {
+            expectations.push_back(NAMED_REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:leafInt8", std::nullopt, "-128"s, std::nullopt)));
+            expectations.push_back(NAMED_REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Deleted, "/example-schema:leafString", "some-initial-value", std::nullopt, std::nullopt)));
+
+            datastore.commitChanges();
+        }
+
+        SECTION("discard")
+        {
+            datastore.discardChanges();
+        }
+
+        // After commiting/discarding, there are no more pending changes.
+        REQUIRE(datastore.pendingChanges() == DatastoreAccess::ChangeTree{});
+    }
+#endif
+
     waitForCompletionAndBitMore(seq1);
 }
 

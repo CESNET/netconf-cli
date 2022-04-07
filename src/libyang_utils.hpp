@@ -10,7 +10,7 @@
 #include "datastore_access.hpp"
 
 leaf_data_ leafValueFromNode(libyang::DataNodeTerm node);
-template <typename CollectionType>
-void lyNodesToTree(DatastoreAccess::Tree& res, CollectionType items, std::optional<std::string> ignoredXPathPrefix = std::nullopt);
+template <typename OutputType, typename CollectionType>
+void lyNodesToTree(OutputType& res, CollectionType items, std::optional<std::string> ignoredXPathPrefix = std::nullopt);
 libyang::DataNode treeToRpcInput(libyang::Context ctx, const std::string& path, DatastoreAccess::Tree in);
 DatastoreAccess::Tree rpcOutputToTree(libyang::DataNode output);

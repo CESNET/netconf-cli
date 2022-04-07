@@ -54,6 +54,16 @@ std::ostream& operator<<(std::ostream& s, const DatastoreAccess::Tree& tree)
     return s;
 }
 
+std::ostream& operator<<(std::ostream& s, const DatastoreAccess::ChangeTree& tree)
+{
+    s << "DatastoreAccess::ChangeTree {\n";
+    for (const auto& [xpath, value, op] : tree) {
+        s << "    {" << xpath << ", " << boost::core::demangle(value.type().name()) << "{" << leafDataToString(value) << "}," << (int)op << "},\n";
+    }
+    s << "}\n";
+    return s;
+}
+
 std::ostream& operator<<(std::ostream& s, const yang::LeafDataType& type)
 {
     s << std::endl

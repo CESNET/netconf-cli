@@ -186,6 +186,12 @@ void YangAccess::moveItem(const std::string& source, std::variant<yang::move::Ab
     std::visit(impl_moveItem{m_datastore, *sourceNode}, move);
 }
 
+DatastoreAccess::ChangeTree YangAccess::pendingChanges() const
+{
+    // TODO: implement a discard/commit mechanism in YangAccess.
+    return {};
+}
+
 void YangAccess::commitChanges()
 {
     validate();

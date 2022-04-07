@@ -58,11 +58,30 @@ leaf_data_ leafValueFromNode(libyang::DataNodeTerm node)
 }
 
 namespace {
-template <typename CollectionType>
-void impl_lyNodesToTree(DatastoreAccess::Tree& res, CollectionType items, std::optional<std::string> ignoredXPathPrefix)
+template <typename OutputType, typename CollectionType>
+void impl_lyNodesToTree(OutputType& res, CollectionType items, std::optional<std::string> ignoredXPathPrefix)
 {
     auto stripXPathPrefix = [&ignoredXPathPrefix](auto path) {
         return ignoredXPathPrefix && path.find(*ignoredXPathPrefix) != std::string::npos ? path.substr(ignoredXPathPrefix->size()) : path;
+    };
+
+    auto emplaceItem = [&] (auto item, auto path, auto value) {
+        if constexpr (std::is_same<OutputType, DatastoreAccess::Tree>()) {
+            res.emplace_back(stripXPathPrefix(path), value);
+        } else {
+            auto meta = item.meta();
+            auto op = DatastoreAccess::Operation::Merge;
+
+            if (std::find_if(meta.begin(), meta.end(),
+                [] (const libyang::Meta& meta) { return meta.name() == "operation" && (meta.valueStr() == "remove" || meta.valueStr() == "delete"); }) != meta.end()) {
+                op = DatastoreAccess::Operation::Remove;
+            }
+            res.emplace_back(DatastoreAccess::Change{
+                    .xpath = path,
+                    .value = value,
+                    .operation = op
+            });
+        }
     };
 
     for (const auto& it : items) {
@@ -71,28 +90,36 @@ void impl_lyNodesToTree(DatastoreAccess::Tree& res, CollectionType items, std::o
                 // The fact that the container is included in the data tree
                 // means that it is present and I don't need to check any
                 // value.
-                res.emplace_back(stripXPathPrefix(std::string{it.path()}), special_{SpecialValue::PresenceContainer});
+                emplaceItem(it, it.path(), special_{SpecialValue::PresenceContainer});
             }
         }
         if (it.schema().nodeType() == libyang::NodeType::List) {
-            res.emplace_back(stripXPathPrefix(std::string{it.path()}), special_{SpecialValue::List});
+            emplaceItem(it, it.path(), special_{SpecialValue::List});
         }
         if (it.schema().nodeType() == libyang::NodeType::Leaf || it.schema().nodeType() == libyang::NodeType::Leaflist) {
             auto term = it.asTerm();
             auto value = leafValueFromNode(term);
-            res.emplace_back(stripXPathPrefix(std::string{it.path()}), value);
+            emplaceItem(it, it.path(), value);
         }
     }
 }
 }
 
-template <typename CollectionType>
-void lyNodesToTree(DatastoreAccess::Tree& res, CollectionType items, std::optional<std::string> ignoredXPathPrefix)
+template <typename OutputType, typename CollectionType>
+void lyNodesToTree(OutputType& res, CollectionType items, std::optional<std::string> ignoredXPathPrefix)
 {
     for (auto it = items.begin(); it != items.end(); /* nothing */) {
         if ((*it).schema().nodeType() == libyang::NodeType::Leaflist) {
             auto leafListPath = stripLeafListValueFromPath(std::string{(*it).path()});
-            res.emplace_back(leafListPath, special_{SpecialValue::LeafList});
+            if constexpr (std::is_same<OutputType, DatastoreAccess::Tree>()) {
+                res.emplace_back(leafListPath, special_{SpecialValue::LeafList});
+            } else {
+                res.emplace_back(DatastoreAccess::Change{
+                    .xpath = leafListPath,
+                    .value = special_{SpecialValue::LeafList},
+                    .operation = DatastoreAccess::Operation::Merge
+                });
+            }
             while (it != items.end() && boost::starts_with(std::string{(*it).path()}, leafListPath)) {
                 impl_lyNodesToTree(res, it->childrenDfs(), ignoredXPathPrefix);
                 it++;
@@ -108,11 +135,13 @@ using SiblingColl = libyang::Collection<libyang::DataNode, libyang::IterationTyp
 using DfsColl = libyang::Collection<libyang::DataNode, libyang::IterationType::Dfs>;
 
 template
-void lyNodesToTree<SiblingColl>(DatastoreAccess::Tree& res, SiblingColl items, std::optional<std::string> ignoredXPathPrefix);
+void lyNodesToTree<DatastoreAccess::Tree, SiblingColl>(DatastoreAccess::Tree& res, SiblingColl items, std::optional<std::string> ignoredXPathPrefix);
 template
-void lyNodesToTree<DfsColl>(DatastoreAccess::Tree& res, DfsColl items, std::optional<std::string> ignoredXPathPrefix);
+void lyNodesToTree<DatastoreAccess::ChangeTree, SiblingColl>(DatastoreAccess::ChangeTree& res, SiblingColl items, std::optional<std::string> ignoredXPathPrefix);
 template
-void lyNodesToTree<libyang::Set<libyang::DataNode>>(DatastoreAccess::Tree& res, libyang::Set<libyang::DataNode> items, std::optional<std::string> ignoredXPathPrefix);
+void lyNodesToTree<DatastoreAccess::Tree, DfsColl>(DatastoreAccess::Tree& res, DfsColl items, std::optional<std::string> ignoredXPathPrefix);
+template
+void lyNodesToTree<DatastoreAccess::Tree, libyang::Set<libyang::DataNode>>(DatastoreAccess::Tree& res, libyang::Set<libyang::DataNode> items, std::optional<std::string> ignoredXPathPrefix);
 
 DatastoreAccess::Tree rpcOutputToTree(libyang::DataNode output)
 {
