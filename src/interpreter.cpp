@@ -291,6 +291,11 @@ void Interpreter::operator()(const help_& help) const
     }
 }
 
+void Interpreter::operator()(const quit_&) const
+{
+    // no operation
+}
+
 template <typename PathType>
 boost::variant<dataPath_, schemaPath_, module_> Interpreter::toCanonicalPath(const boost::optional<PathType>& optPath) const
 {
