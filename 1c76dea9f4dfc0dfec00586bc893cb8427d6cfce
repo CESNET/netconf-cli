@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "075eeab9_ddf72948",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-13T20:54:40Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "1c76dea9f4dfc0dfec00586bc893cb8427d6cfce",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a70fd8ea_401a28c0",
+        "filename": "src/cli.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-13T20:54:40Z",
+      "side": 1,
+      "message": "Interesting -- if I was writing this, I would have used a dedicated exception thrown from the Interpreter\u0027s handler of `quit_`, but that would also require some explicit handling here. So this is as good as it gets, I guess.\n\n(Also, we should stop raising and catching catch-all exceptions like logic_error and runtime_error below, but that\u0027s unrelated to your patch.)",
+      "range": {
+        "startLine": 296,
+        "startChar": 0,
+        "endLine": 298,
+        "endChar": 13
+      },
+      "revId": "1c76dea9f4dfc0dfec00586bc893cb8427d6cfce",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
