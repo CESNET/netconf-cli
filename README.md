@@ -34,7 +34,7 @@ Issue reporting and feature requests are welcome [via Taiga.io](https://tree.tai
 
 ## Development
 
-We are using [Gerrit](https://gerrit.cesnet.cz/q/project:CzechLight%252Fnetconf-cli+status:open) for patch submission, code review and Continuous Integration (CI).
+We are using [Gerrit](https://gerrit.cesnet.cz/q/project:CzechLight%252Fnetconf-cli) for patch submission, code review and Continuous Integration (CI).
 A [quick introduction](https://gerrit.cesnet.cz/Documentation/intro-user.html) is recommended for first-time Gerrit users.
 Development roadmap and planning happens [over Taiga.io](https://tree.taiga.io/project/jktjkt-netconf-cli/kanban).
 Both sites support logins via, e.g., GitHub.
