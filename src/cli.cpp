@@ -293,6 +293,9 @@ int main(int argc, char* argv[])
         try {
             command_ cmd = parser.parseCommand(line, std::cout);
             boost::apply_visitor(Interpreter(parser, proxyDatastore), cmd);
+            if (cmd.type() == typeid(quit_)) {
+                break;
+            }
         } catch (InvalidCommandException& ex) {
             std::cerr << ex.what() << std::endl;
         } catch (DatastoreException& ex) {
