@@ -16,7 +16,7 @@ For building, one needs:
 * [Boost](https://www.boost.org/) (we're testing with `1.75`)
 * [cmake](https://cmake.org/download/) for managing the build
 * [libyang](https://github.com/CESNET/libyang) **version 2.0** plus the [C++ bindings](https://github.com/CESNET/libyang-cpp)
-* [libnetconf2](https://github.com/CESNET/libnetconf2) **version 2.1** for connecting to NETCONF servers
+* [libnetconf2](https://github.com/CESNET/libnetconf2) **version 2.1** plus the [C++ bindings](https://github.com/CESNET/libnetconf2-cpp) for connecting to NETCONF servers
 * [replxx](https://github.com/AmokHuginnsson/replxx) which provides interactive line prompts
 * [docopt](https://github.com/docopt/docopt.cpp) for CLI option parsing
 * [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) for building
