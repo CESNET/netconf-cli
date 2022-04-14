@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cbd6d41_386d5fb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000072
+      },
+      "writtenOn": "2022-04-14T09:11:12Z",
+      "side": 1,
+      "message": "I know that README should be short and simple, but still a little more guidance might be beneficial (see the detailed comment.)",
+      "revId": "ab30e985a9a6a7ef99b9c423fe1b6e16070baaa7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba080b87_4c1cf41a",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000072
+      },
+      "writtenOn": "2022-04-14T09:11:12Z",
+      "side": 1,
+      "message": "For me the most important message was: choose \"CESNET - Sign in with GitHub\". I would suggest to add this explicitly. The list of academic institutions on the Gerrit login screen is somehow discouraging that I even didn\u0027t try to search for anything there.",
+      "revId": "ab30e985a9a6a7ef99b9c423fe1b6e16070baaa7",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
