@@ -16,7 +16,7 @@ For building, one needs:
 * [Boost](https://www.boost.org/) (we're testing with `1.75`)
 * [cmake](https://cmake.org/download/) for managing the build
 * [libyang](https://github.com/CESNET/libyang) **version 2.0** plus the [C++ bindings](https://github.com/CESNET/libyang-cpp)
-* [libnetconf2](https://github.com/CESNET/libnetconf2) **version 2.1** for connecting to NETCONF servers
+* [libnetconf2](https://github.com/CESNET/libnetconf2) **version 2.1** plus the [C++ bindings](https://github.com/CESNET/libnetconf2-cpp) for connecting to NETCONF servers
 * [replxx](https://github.com/AmokHuginnsson/replxx) which provides interactive line prompts
 * [docopt](https://github.com/docopt/docopt.cpp) for CLI option parsing
 * [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) for building
@@ -34,7 +34,9 @@ Issue reporting and feature requests are welcome [via Taiga.io](https://tree.tai
 
 ## Development
 
-We are using [Gerrit](https://gerrit.cesnet.cz/q/project:CzechLight%252Fnetconf-cli+status:open) for patch submission, code review and Continuous Integration (CI).
+We are using [Gerrit](https://gerrit.cesnet.cz/q/project:CzechLight%252Fnetconf-cli) for patch submission, code review and Continuous Integration (CI).
+A [quick introduction](https://gerrit.cesnet.cz/Documentation/intro-user.html) is recommended for first-time Gerrit users.
+Choose *CESNET - Sign in with GitHub* for login.
 Development roadmap and planning happens [over Taiga.io](https://tree.taiga.io/project/jktjkt-netconf-cli/kanban).
 
 ## Credits
