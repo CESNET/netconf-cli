@@ -111,6 +111,8 @@ std::string specialValueToString(const special_& value)
         return "(list)";
     case SpecialValue::LeafList:
         return "(leaflist)";
+    case SpecialValue::Deleted:
+        return "(deleted)";
     }
 
     __builtin_unreachable();

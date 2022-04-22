@@ -24,6 +24,7 @@ public:
     void createItem(const std::string& path);
     void deleteItem(const std::string& path);
     void moveItem(const std::string& source, std::variant<yang::move::Absolute, yang::move::Relative> move);
+    DatastoreAccess::ChangeTree pendingChanges();
     void commitChanges();
     void discardChanges();
     void copyConfig(const Datastore source, const Datastore destination);

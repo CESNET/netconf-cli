@@ -321,11 +321,14 @@ auto const dump = x3::rule<struct dump_class, dump_>{"dump"} =
 auto const quit = x3::rule<struct quit_class, quit_>{"quit"} =
     quit_::name >> x3::attr(quit_{});
 
+auto const pending = x3::rule<struct pending_class, pending_>{"pending"} =
+    pending_::name >> x3::attr(pending_{});
+
 auto const command = x3::rule<command_class, command_>{"command"} =
 #if BOOST_VERSION <= 107800
     x3::eps >>
 #endif
-    -space_separator >> createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | prepare | exec | cancel | switch_rule | quit] >> -space_separator;
+    -space_separator >> createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | pending | prepare | exec | cancel | switch_rule | quit] >> -space_separator;
 
 #if __clang__
 #pragma GCC diagnostic pop

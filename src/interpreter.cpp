@@ -32,20 +32,49 @@ struct pathToStringVisitor : boost::static_visitor<std::string> {
 };
 
 namespace {
-void printTree(const DatastoreAccess::Tree tree)
+template <typename TreeType>
+void printTree(const TreeType tree)
 {
+    auto pathMember = [] {
+        if constexpr (std::is_same<TreeType, DatastoreAccess::Tree>()) {
+            return &std::pair<std::string, leaf_data_>::first;
+        } else {
+            return &DatastoreAccess::Change::xpath;
+        }
+    }();
+    auto valueMember = [] {
+        if constexpr (std::is_same<TreeType, DatastoreAccess::Tree>()) {
+            return &std::pair<std::string, leaf_data_>::second;
+        } else {
+            return &DatastoreAccess::Change::value;
+        }
+    }();
+
     for (auto it = tree.begin(); it != tree.end(); it++) {
-        auto [path, value] = *it;
+        auto path = *it.*pathMember;
+        auto value = *it.*valueMember;
         if (value.type() == typeid(special_) && boost::get<special_>(value).m_value == SpecialValue::LeafList) {
             auto leafListPrefix = path;
             std::cout << path << " = " << leafDataToString(value) << std::endl;
 
-            while (it + 1 != tree.end() && boost::starts_with((it + 1)->first, leafListPrefix)) {
+            while (it + 1 != tree.end() && boost::starts_with(*(it + 1).*pathMember, leafListPrefix)) {
                 ++it;
-                std::cout << stripLeafListValueFromPath(it->first) << " = " << leafDataToString(it->second) << std::endl;
+                std::cout << stripLeafListValueFromPath(*it.*pathMember) << " = " << leafDataToString(*it.*valueMember);
+                if constexpr (std::is_same<TreeType, DatastoreAccess::ChangeTree>()) {
+                    if (it->operation == DatastoreAccess::Operation::Remove) {
+                        std::cout <<  " REMOVED";
+                    }
+                }
             }
+            std::cout << std::endl;
         } else {
-            std::cout << path << " = " << leafDataToString(value) << std::endl;
+            std::cout << path << " = " << leafDataToString(value);
+            if constexpr (std::is_same<TreeType, DatastoreAccess::ChangeTree>()) {
+                if (it->operation == DatastoreAccess::Operation::Remove) {
+                    std::cout <<  " REMOVED";
+                }
+            }
+            std::cout << std::endl;
         }
     }
 }
@@ -294,6 +323,11 @@ void Interpreter::operator()(const help_& help) const
 void Interpreter::operator()(const quit_&) const
 {
     // no operation
+}
+
+void Interpreter::operator()(const pending_&) const
+{
+    printTree(m_datastore.pendingChanges());
 }
 
 template <typename PathType>

@@ -40,6 +40,11 @@ void ProxyDatastore::moveItem(const std::string& source, std::variant<yang::move
     pickDatastore(source)->moveItem(source, move);
 }
 
+DatastoreAccess::ChangeTree ProxyDatastore::pendingChanges()
+{
+    return m_datastore->pendingChanges();
+}
+
 void ProxyDatastore::commitChanges()
 {
     m_datastore->commitChanges();
