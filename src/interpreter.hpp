@@ -34,6 +34,7 @@ struct Interpreter : boost::static_visitor<void> {
     void operator()(const cancel_& cancel) const;
     void operator()(const switch_& switch_cmd) const;
     void operator()(const quit_&) const;
+    void operator()(const pending_&) const;
 
 private:
     [[nodiscard]] std::string buildTypeInfo(const std::string& path) const;
