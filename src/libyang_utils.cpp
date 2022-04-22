@@ -65,7 +65,13 @@ void impl_lyNodesToTree(DatastoreAccess::Tree& res, CollectionType items, std::o
         return ignoredXPathPrefix && path.find(*ignoredXPathPrefix) != std::string::npos ? path.substr(ignoredXPathPrefix->size()) : path;
     };
 
-    for (const auto& it : items) {
+    for (const libyang::DataNode& it : items) {
+        auto meta = it.meta();
+        if (std::find_if(meta.begin(), meta.end(),
+                [] (const libyang::Meta& meta) { return meta.name() == "operation" && (meta.valueStr() == "remove" || meta.valueStr() == "delete"); }) != meta.end()) {
+            res.emplace_back(stripXPathPrefix(std::string{it.path()}), special_{SpecialValue::Deleted});
+            continue;
+        }
         if (it.schema().nodeType() == libyang::NodeType::Container) {
             if (it.schema().asContainer().isPresence()) {
                 // The fact that the container is included in the data tree

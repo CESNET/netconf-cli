@@ -58,7 +58,8 @@ enum class SpecialValue {
     List,
     LeafList,
     Container,
-    PresenceContainer
+    PresenceContainer,
+    Deleted
 };
 
 struct special_ {

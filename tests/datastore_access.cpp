@@ -887,24 +887,31 @@ TEST_CASE("setting/getting values")
 #if not defined(yang_BACKEND)
     SECTION("retrieving pending changes")
     {
+        REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:leafString", std::nullopt, "some-initial-value"s, std::nullopt));
+        datastore.setLeaf("/example-schema:leafString", "some-initial-value"s);
+        datastore.commitChanges();
+
         DatastoreAccess::Tree expected{};
 
         // There are no pending changes at the start.
         REQUIRE(datastore.pendingChanges() == DatastoreAccess::Tree{});
 
-        std::unique_ptr<trompeloeil::expectation> expectation;
+        std::vector<std::unique_ptr<trompeloeil::expectation>> expectation;
         datastore.setLeaf("/example-schema:leafInt8", int8_t{-128});
+        datastore.deleteItem("/example-schema:leafString");
 
         // There are some pending changes when setting a leaf.
         REQUIRE(datastore.pendingChanges() == DatastoreAccess::Tree{
-            {"/example-schema:leafInt8", int8_t{-128}}
+            {"/example-schema:leafInt8", int8_t{-128}},
+            {"/example-schema:leafString", special_{SpecialValue::Deleted}}
         });
         // But they aren't available yet in the actual datastore.
         REQUIRE(datastore.getItems("/example-schema:leafInt8") == DatastoreAccess::Tree{});
 
         SECTION("commit")
         {
-            expectation = NAMED_REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:leafInt8", std::nullopt, "-128"s, std::nullopt));
+            expectation.push_back(NAMED_REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:leafInt8", std::nullopt, "-128"s, std::nullopt)));
+            expectation.push_back(NAMED_REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Deleted, "/example-schema:leafString", "some-initial-value", std::nullopt, std::nullopt)));
             datastore.commitChanges();
         }
 

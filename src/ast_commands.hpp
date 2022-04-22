@@ -328,8 +328,21 @@ struct quit_ : x3::position_tagged {
     bool operator==(const quit_& b) const;
 };
 
+struct pending_ : x3::position_tagged {
+    static constexpr auto name = "pending";
+    static constexpr auto shortHelp = "pending - Show changes not yet comitted to the datastore.";
+    static constexpr auto longHelp = R"(
+    pending
+
+    Show uncomitted changes. Accepts no arguments.
+
+    Usage:
+        /> pending)";
+    bool operator==(const pending_& b) const;
+};
+
 struct help_;
-using CommandTypes = boost::mpl::vector<cancel_, cd_, commit_, copy_, create_, delete_, describe_, discard_, dump_, exec_, get_, help_, ls_, move_, prepare_, quit_, set_, switch_>;
+using CommandTypes = boost::mpl::vector<cancel_, cd_, commit_, copy_, create_, delete_, describe_, discard_, dump_, exec_, get_, help_, ls_, move_, pending_, prepare_, quit_, set_, switch_>;
 struct help_ : x3::position_tagged {
     static constexpr auto name = "help";
     static constexpr auto shortHelp = "help - Print help for commands.";
@@ -382,3 +395,4 @@ BOOST_FUSION_ADAPT_STRUCT(prepare_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(exec_, m_path)
 BOOST_FUSION_ADAPT_STRUCT(switch_, m_target)
 BOOST_FUSION_ADAPT_STRUCT(quit_)
+BOOST_FUSION_ADAPT_STRUCT(pending_)
