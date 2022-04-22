@@ -296,6 +296,11 @@ void Interpreter::operator()(const quit_&) const
     // no operation
 }
 
+void Interpreter::operator()(const pending_&) const
+{
+    printTree(m_datastore.pendingChanges());
+}
+
 template <typename PathType>
 boost::variant<dataPath_, schemaPath_, module_> Interpreter::toCanonicalPath(const boost::optional<PathType>& optPath) const
 {

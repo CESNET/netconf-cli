@@ -85,6 +85,7 @@ x3::rule<exec_class, exec_> const exec = "exec";
 x3::rule<switch_class, switch_> const switch_rule = "switch";
 x3::rule<cancel_class, cancel_> const cancel = "cancel";
 x3::rule<quit_class, quit_> const quit = "quit";
+x3::rule<pending_class, pending_> const pending = "pending";
 x3::rule<command_class, command_> const command = "command";
 
 x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
@@ -358,6 +359,9 @@ auto const dump_def =
 auto const quit_def =
     quit_::name >> x3::attr(quit_{});
 
+auto const pending_def =
+    pending_::name >> x3::attr(pending_{});
+
 auto const createCommandSuggestions_def =
     x3::eps;
 
@@ -365,7 +369,7 @@ auto const command_def =
 #if BOOST_VERSION <= 107800
     x3::eps >>
 #endif
-    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | prepare | exec | cancel | switch_rule | quit];
+    createCommandSuggestions >> x3::expect[cd | copy | create | delete_rule | set | commit | get | ls | discard | describe | help | move | dump | pending | prepare | exec | cancel | switch_rule | quit];
 
 #if __clang__
 #pragma GCC diagnostic pop
@@ -389,5 +393,6 @@ BOOST_SPIRIT_DEFINE(exec)
 BOOST_SPIRIT_DEFINE(switch_rule)
 BOOST_SPIRIT_DEFINE(cancel)
 BOOST_SPIRIT_DEFINE(quit)
+BOOST_SPIRIT_DEFINE(pending)
 BOOST_SPIRIT_DEFINE(command)
 BOOST_SPIRIT_DEFINE(createCommandSuggestions)
