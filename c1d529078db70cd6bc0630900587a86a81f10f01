@@ -16,6 +16,23 @@
       "message": "On behalf of all confused users: thank you 😊",
       "revId": "c1d529078db70cd6bc0630900587a86a81f10f01",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fdda2ab_17ca4bb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-22T11:48:18Z",
+      "side": 1,
+      "message": "The CI failure with TSAN should be resolved, let\u0027s wait for the CI to pass and after that I\u0027ll merge this one. Thanks for your patience and for your review.",
+      "revId": "c1d529078db70cd6bc0630900587a86a81f10f01",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
