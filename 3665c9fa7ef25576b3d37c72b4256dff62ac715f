@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5528aeea_0e7e8542",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-26T22:54:18Z",
+      "side": 1,
+      "message": "I think that deletes should be highlighted, somehow:\n \n/\u003e set czechlight-roadm-device:leaf-ports[port\u003d1]/description \"ahoj\"\n/\u003e pending \n/czechlight-roadm-device:leaf-ports[port\u003d\u00271\u0027] \u003d (list)\n/czechlight-roadm-device:leaf-ports[port\u003d\u00271\u0027]/port \u003d 1\n/czechlight-roadm-device:leaf-ports[port\u003d\u00271\u0027]/description \u003d ahoj\n/\u003e commit\n/\u003e delete czechlight-roadm-device:leaf-ports[port\u003d1]/description\n/\u003e pending \n/czechlight-roadm-device:leaf-ports[port\u003d\u00271\u0027] \u003d (list)\n/czechlight-roadm-device:leaf-ports[port\u003d\u00271\u0027]/port \u003d 1\n/czechlight-roadm-device:leaf-ports[port\u003d\u00271\u0027]/description \n\nHere I cannot tell whether `description` was deleted, or whether it\u0027s set to an empty string; this will be fun for, e.g., `empty` nodes. Also, in a perfect world, I would expect the \"noise\" nodes (such as list parents) to be skipped as well.",
+      "revId": "3665c9fa7ef25576b3d37c72b4256dff62ac715f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
