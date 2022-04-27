@@ -16,7 +16,6 @@ namespace x3 = boost::spirit::x3;
 
 x3::rule<cdPath_class, dataPath_> const cdPath = "cdPath";
 x3::rule<getPath_class, decltype(get_::m_path)::value_type> const getPath = "getPath";
-x3::rule<rpcPath_class, dataPath_> const rpcPath = "rpcPath";
 x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
 x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
 x3::rule<leafListElementPath_class, dataPath_> const leafListElementPath = "leafListElementPath";
@@ -384,9 +383,6 @@ auto const keyValueWrapper =
 // even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
 auto const listSuffix_def =
     *keyValueWrapper;
-
-auto const list_def =
-    node_identifier >> !char_('[');
 
 auto const absoluteStart_def =
     x3::omit['/'] >> x3::attr(Scope::Absolute);

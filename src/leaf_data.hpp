@@ -19,7 +19,6 @@ struct leaf_data_class;
 
 x3::rule<struct leaf_data_class<yang::IdentityRef>, identityRef_> const leaf_data_identityRef = "leaf_data_identityRef";
 x3::rule<struct leaf_data_class<yang::Binary>, binary_> const leaf_data_binary = "leaf_data_binary";
-x3::rule<struct leaf_data_class<yang::Decimal>, double> const leaf_data_decimal = "leaf_data_decimal";
 x3::rule<struct leaf_data_class<yang::String>, std::string> const leaf_data_string = "leaf_data_string";
 
 using x3::char_;
