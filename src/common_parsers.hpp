@@ -40,3 +40,22 @@ struct as_type {
 // someParser will have its attribute coerced to std::string
 // https://github.com/boostorg/spirit/issues/530#issuecomment-584836532
 template <typename CoerceTo> const as_type<CoerceTo> as{};
+
+/**
+ * Returns a parser that generates suggestions based on a Completion set.
+ * Usage:
+ * const auto suggestSomeStuff = staticSuggestions({"some", "stuff", "yay"});
+ *
+ * You can use this as a standard parser in a Spirit grammar.
+ */
+auto staticSuggestions(const std::initializer_list<std::string>& strings)
+{
+    std::set<Completion> completions;
+    std::transform(begin(strings), end(strings), std::inserter(completions, completions.end()),
+            [](const auto s) { return Completion{s, " "}; });
+    return as<x3::unused_type>[x3::eps[([completions](auto& ctx) {
+        auto& parserContext = x3::get<parser_context_tag>(ctx);
+        parserContext.m_suggestions = completions;
+        parserContext.m_completionIterator = _where(ctx).begin();
+    })]];
+}

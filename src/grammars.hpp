@@ -15,25 +15,6 @@
 #include "leaf_data.hpp"
 #include "path_parser.hpp"
 
-/**
- * Returns a parser that generates suggestions based on a Completion set.
- * Usage:
- * const auto suggestSomeStuff = staticSuggestions({"some", "stuff", "yay"});
- *
- * You can use this as a standard parser in a Spirit grammar.
- */
-auto staticSuggestions(const std::initializer_list<std::string>& strings)
-{
-    std::set<Completion> completions;
-    std::transform(begin(strings), end(strings), std::inserter(completions, completions.end()),
-            [](const auto s) { return Completion{s, " "}; });
-    return as<x3::unused_type>[x3::eps[([completions](auto& ctx) {
-        auto& parserContext = x3::get<parser_context_tag>(ctx);
-        parserContext.m_suggestions = completions;
-        parserContext.m_completionIterator = _where(ctx).begin();
-    })]];
-}
-
 #if BOOST_VERSION <= 107700
 namespace boost::spirit::x3::traits {
     // Backport https://github.com/boostorg/spirit/pull/702
