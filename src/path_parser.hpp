@@ -14,21 +14,6 @@
 
 namespace x3 = boost::spirit::x3;
 
-x3::rule<cdPath_class, dataPath_> const cdPath = "cdPath";
-x3::rule<getPath_class, decltype(get_::m_path)::value_type> const getPath = "getPath";
-x3::rule<presenceContainerPath_class, dataPath_> const presenceContainerPath = "presenceContainerPath";
-x3::rule<listInstancePath_class, dataPath_> const listInstancePath = "listInstancePath";
-x3::rule<leafListElementPath_class, dataPath_> const leafListElementPath = "leafListElementPath";
-x3::rule<initializePath_class, x3::unused_type> const initializePath = "initializePath";
-x3::rule<trailingSlash_class, x3::unused_type> const trailingSlash = "trailingSlash";
-x3::rule<absoluteStart_class, Scope> const absoluteStart = "absoluteStart";
-x3::rule<keyValue_class, keyValue_> const keyValue = "keyValue";
-x3::rule<key_identifier_class, std::string> const key_identifier = "key_identifier";
-x3::rule<listSuffix_class, std::vector<keyValue_>> const listSuffix = "listSuffix";
-x3::rule<createKeySuggestions_class, x3::unused_type> const createKeySuggestions = "createKeySuggestions";
-x3::rule<createValueSuggestions_class, x3::unused_type> const createValueSuggestions = "createValueSuggestions";
-x3::rule<suggestKeysEnd_class, x3::unused_type> const suggestKeysEnd = "suggestKeysEnd";
-x3::rule<class leafListValue_class, leaf_data_> const leafListValue = "leafListValue";
 auto pathEnd = x3::rule<class PathEnd>{"pathEnd"} = &space_separator | x3::eoi;
 
 enum class NodeParserMode {
@@ -64,6 +49,44 @@ enum class CompletionMode {
     Schema,
     Data
 };
+
+auto const createKeySuggestions = x3::rule<createKeySuggestions_class, x3::unused_type>{"createKeySuggestions"} =
+    x3::eps;
+
+auto const key_identifier = x3::rule<key_identifier_class, std::string>{"key_identifier"} =
+    ((x3::alpha | char_("_")) >> *(x3::alnum | char_("_") | char_("-") | char_(".")));
+
+auto const createValueSuggestions = x3::rule<createValueSuggestions_class, x3::unused_type>{"createValueSuggestions"} =
+    x3::eps;
+
+auto const keyValue = x3::rule<keyValue_class, keyValue_>{"keyValue"} =
+    key_identifier > '=' > createValueSuggestions > leaf_data;
+
+auto const suggestKeysEnd = x3::rule<suggestKeysEnd_class, x3::unused_type>{"suggestKeysEnd"} =
+    x3::eps;
+
+auto const keyValueWrapper =
+    '[' > createKeySuggestions > keyValue > suggestKeysEnd > ']';
+
+// even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
+auto const listSuffix = x3::rule<listSuffix_class, std::vector<keyValue_>>{"listSuffix"} =
+    *keyValueWrapper;
+
+struct SuggestLeafListEnd : x3::parser<SuggestLeafListEnd> {
+    using attribute_type = x3::unused_type;
+    template <typename It, typename Ctx, typename RCtx, typename Attr>
+    bool parse(It& begin, It, Ctx const& ctx, RCtx&, Attr&) const
+    {
+        auto& parserContext = x3::get<parser_context_tag>(ctx);
+        parserContext.m_completionIterator = begin;
+        parserContext.m_suggestions = {Completion{"]"}};
+
+        return true;
+    }
+} const suggestLeafListEnd;
+
+auto const leafListValue = x3::rule<class leafListValue_class, leaf_data_>{"leafListValue"} =
+    '[' >> leaf_data >> suggestLeafListEnd >> ']';
 
 template <NodeParserMode PARSER_MODE, CompletionMode COMPLETION_MODE>
 struct NodeParser : x3::parser<NodeParser<PARSER_MODE, COMPLETION_MODE>> {
@@ -262,6 +285,16 @@ struct ModeToAttribute<PathParserMode::DataPathListEnd> {
     using type = dataPath_;
 };
 
+auto const trailingSlash = x3::rule<trailingSlash_class, x3::unused_type>{"trailingSlash"} =
+    x3::omit['/'];
+
+// A "nothing" parser, which is used to indicate we tried to parse a path
+auto const initializePath = x3::rule<initializePath_class, x3::unused_type>{"initializePath"} =
+    x3::eps;
+
+auto const absoluteStart = x3::rule<absoluteStart_class, Scope>{"absoluteStart"} =
+    x3::omit['/'] >> x3::attr(Scope::Absolute);
+
 template <PathParserMode PARSER_MODE, CompletionMode COMPLETION_MODE>
 struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
     using attribute_type = typename ModeToAttribute<PARSER_MODE>::type;
@@ -346,50 +379,6 @@ auto const dataPathListEnd = x3::rule<class dataPath_class, dataPath_>{"dataPath
 #pragma GCC diagnostic ignored "-Woverloaded-shift-op-parentheses"
 #endif
 
-struct SuggestLeafListEnd : x3::parser<SuggestLeafListEnd> {
-    using attribute_type = x3::unused_type;
-    template <typename It, typename Ctx, typename RCtx, typename Attr>
-    bool parse(It& begin, It, Ctx const& ctx, RCtx&, Attr&) const
-    {
-        auto& parserContext = x3::get<parser_context_tag>(ctx);
-        parserContext.m_completionIterator = begin;
-        parserContext.m_suggestions = {Completion{"]"}};
-
-        return true;
-    }
-} const suggestLeafListEnd;
-
-auto const leafListValue_def =
-    '[' >> leaf_data >> suggestLeafListEnd >> ']';
-
-auto const key_identifier_def =
-    ((x3::alpha | char_("_")) >> *(x3::alnum | char_("_") | char_("-") | char_(".")));
-
-auto const createKeySuggestions_def =
-    x3::eps;
-
-auto const createValueSuggestions_def =
-    x3::eps;
-
-auto const suggestKeysEnd_def =
-    x3::eps;
-
-auto const keyValue_def =
-    key_identifier > '=' > createValueSuggestions > leaf_data;
-
-auto const keyValueWrapper =
-    '[' > createKeySuggestions > keyValue > suggestKeysEnd > ']';
-
-// even though we don't allow no keys to be supplied, the star allows me to check which keys are missing
-auto const listSuffix_def =
-    *keyValueWrapper;
-
-auto const absoluteStart_def =
-    x3::omit['/'] >> x3::attr(Scope::Absolute);
-
-auto const trailingSlash_def =
-    x3::omit['/'];
-
 auto const filterConfigFalse = [](const Schema& schema, const std::string& path) {
     return schema.isConfig(path);
 };
@@ -469,46 +458,26 @@ auto const noRpcOrAction = [](const Schema& schema, const std::string& path) {
     return nodeType != yang::NodeTypes::Rpc && nodeType != yang::NodeTypes::Action;
 };
 
-auto const getPath_def =
+auto const getPath = x3::rule<getPath_class, decltype(get_::m_path)::value_type>{"getPath"} =
     PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{noRpcOrAction} |
     (module >> "*");
 
-auto const cdPath_def =
+auto const cdPath = x3::rule<cdPath_class, dataPath_>{"cdPath"} =
     PathParser<PathParserMode::DataPath, CompletionMode::Data>{[] (const Schema& schema, const std::string& path) {
         return noRpcOrAction(schema, path) && schema.nodeType(path) != yang::NodeTypes::Leaf;
     }};
 
-auto const presenceContainerPath_def =
+auto const presenceContainerPath = x3::rule<presenceContainerPath_class, dataPath_>{"presenceContainerPath"} =
     dataPath;
 
-auto const listInstancePath_def =
+auto const listInstancePath = x3::rule<listInstancePath_class, dataPath_>{"listInstancePath"} =
     dataPath;
 
-auto const leafListElementPath_def =
+auto const leafListElementPath = x3::rule<leafListElementPath_class, dataPath_>{"leafListElementPath"} =
     dataPath;
-
-// A "nothing" parser, which is used to indicate we tried to parse a path
-auto const initializePath_def =
-    x3::eps;
 
 
 
 #if __clang__
 #pragma GCC diagnostic pop
 #endif
-
-BOOST_SPIRIT_DEFINE(keyValue)
-BOOST_SPIRIT_DEFINE(key_identifier)
-BOOST_SPIRIT_DEFINE(listSuffix)
-BOOST_SPIRIT_DEFINE(cdPath)
-BOOST_SPIRIT_DEFINE(getPath)
-BOOST_SPIRIT_DEFINE(presenceContainerPath)
-BOOST_SPIRIT_DEFINE(listInstancePath)
-BOOST_SPIRIT_DEFINE(leafListElementPath)
-BOOST_SPIRIT_DEFINE(initializePath)
-BOOST_SPIRIT_DEFINE(createKeySuggestions)
-BOOST_SPIRIT_DEFINE(createValueSuggestions)
-BOOST_SPIRIT_DEFINE(suggestKeysEnd)
-BOOST_SPIRIT_DEFINE(leafListValue)
-BOOST_SPIRIT_DEFINE(absoluteStart)
-BOOST_SPIRIT_DEFINE(trailingSlash)
