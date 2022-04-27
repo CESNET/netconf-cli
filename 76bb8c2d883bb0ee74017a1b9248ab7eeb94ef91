@@ -52,6 +52,24 @@
       "parentUuid": "52ccd0ad_4d70eba6",
       "revId": "76bb8c2d883bb0ee74017a1b9248ab7eeb94ef91",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92872c6b_e5051689",
+        "filename": "src/leaf_data.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-27T15:51:06Z",
+      "side": 0,
+      "message": "Just writing it here so that I can find it later: the actual parsing happens in impl_LeafData, and for decimal64 a custom parser is not needed. Makes sense.",
+      "parentUuid": "31621138_053a6f75",
+      "revId": "76bb8c2d883bb0ee74017a1b9248ab7eeb94ef91",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
