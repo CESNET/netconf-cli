@@ -47,8 +47,6 @@ struct keyValue_class {
     }
 };
 
-struct node_identifier_class;
-
 boost::optional<std::string> optModuleToOptString(const boost::optional<module_> module);
 
 struct key_identifier_class {
@@ -68,8 +66,6 @@ struct key_identifier_class {
         }
     }
 };
-
-struct module_identifier_class;
 
 struct listSuffix_class {
     template <typename T, typename Iterator, typename Context>
@@ -139,10 +135,6 @@ struct absoluteStart_class {
         parserContext.clearPath();
     }
 };
-
-struct discard_class;
-
-struct ls_class;
 
 struct cd_class {
     template <typename Iterator, typename Exception, typename Context>
@@ -267,14 +259,6 @@ struct delete_class {
     }
 };
 
-struct rpcPath_class;
-
-struct actionPath_class;
-
-struct cdPath_class;
-
-struct getPath_class;
-
 struct set_class {
     template <typename Iterator, typename Exception, typename Context>
     x3::error_handler_result on_error(Iterator&, Iterator const&, Exception const& x, Context const& context)
@@ -286,32 +270,6 @@ struct set_class {
         return x3::error_handler_result::rethrow;
     }
 };
-
-struct commit_class;
-
-struct describe_class;
-
-struct help_class;
-
-struct get_class;
-
-struct copy_class;
-
-struct move_class;
-
-struct dump_class;
-
-struct prepare_class;
-
-struct action_class;
-
-struct exec_class;
-
-struct switch_class;
-
-struct cancel_class;
-
-struct quit_class;
 
 struct command_class {
     template <typename Iterator, typename Exception, typename Context>
@@ -338,8 +296,6 @@ struct initializePath_class {
         parserContext.m_suggestions.clear();
     }
 };
-
-struct trailingSlash_class;
 
 std::set<Completion> generateMissingKeyCompletionSet(std::set<std::string> keysNeeded, ListInstance currentSet);
 

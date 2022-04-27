@@ -64,7 +64,7 @@ struct ls_options_table : x3::symbols<LsOption> {
     }
 } const ls_options;
 
-auto const ls = x3::rule<ls_class, ls_>{"ls"} =
+auto const ls = x3::rule<struct ls_class, ls_>{"ls"} =
     ls_::name >> *(space_separator >> ls_options) >> -(space_separator > (anyPath | (module >> "*")));
 
 auto const cd = x3::rule<cd_class, cd_>{"cd"} =
@@ -103,7 +103,7 @@ struct ds_target_table : x3::symbols<DatastoreTarget> {
     }
 } const ds_target_table;
 
-auto const get = x3::rule<get_class, get_>{"get"} =
+auto const get = x3::rule<struct get_class, get_>{"get"} =
     get_::name
     >> -(space_separator >> "-" > staticSuggestions({"-datastore"}) > "-datastore" > space_separator > dsTargetSuggestions > ds_target_table)
     >> -(space_separator > getPath);
@@ -111,10 +111,10 @@ auto const get = x3::rule<get_class, get_>{"get"} =
 auto const set = x3::rule<set_class, set_>{"set"} =
     set_::name >> space_separator > writableLeafPath > space_separator > leaf_data;
 
-auto const commit = x3::rule<commit_class, commit_>{"commit"} =
+auto const commit = x3::rule<struct commit_class, commit_>{"commit"} =
     commit_::name >> x3::attr(commit_());
 
-auto const discard = x3::rule<discard_class, discard_>{"discard"} =
+auto const discard = x3::rule<struct discard_class, discard_>{"discard"} =
     discard_::name >> x3::attr(discard_());
 
 struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
@@ -129,7 +129,7 @@ struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
 auto const createCommandSuggestions = x3::rule<createCommandSuggestions_class, x3::unused_type>{"createCommandSuggestions"} =
     x3::eps;
 
-auto const help = x3::rule<help_class, help_>{"help"} =
+auto const help = x3::rule<struct help_class, help_>{"help"} =
     help_::name > createCommandSuggestions >> -command_names;
 
 struct datastore_symbol_table : x3::symbols<Datastore> {
@@ -174,10 +174,10 @@ struct copy_args : x3::parser<copy_args> {
     }
 } const copy_args;
 
-auto const copy = x3::rule<copy_class, copy_>{"copy"} =
+auto const copy = x3::rule<struct copy_class, copy_>{"copy"} =
     copy_::name > space_separator > copy_args;
 
-auto const describe = x3::rule<describe_class, describe_>{"describe"} =
+auto const describe = x3::rule<struct describe_class, describe_>{"describe"} =
     describe_::name >> space_separator > anyPath;
 
 struct move_mode_table : x3::symbols<MoveMode> {
@@ -275,7 +275,7 @@ struct move_args : x3::parser<move_args> {
     }
 } const move_args;
 
-auto const move = x3::rule<move_class, move_>{"move"} =
+auto const move = x3::rule<struct move_class, move_>{"move"} =
     move_::name >> space_separator >> move_args;
 
 struct format_table : x3::symbols<DataFormat> {
@@ -303,22 +303,22 @@ struct dump_args : x3::parser<dump_args> {
     }
 } const dump_args;
 
-auto const prepare = x3::rule<prepare_class, prepare_>{"prepare"} =
+auto const prepare = x3::rule<struct prepare_class, prepare_>{"prepare"} =
     prepare_::name > space_separator > as<dataPath_>[RpcActionPath<AllowInput::Yes>{}];
 
-auto const exec = x3::rule<exec_class, exec_>{"exec"} =
+auto const exec = x3::rule<struct exec_class, exec_>{"exec"} =
     exec_::name > -(space_separator > -as<dataPath_>[RpcActionPath<AllowInput::No>{}]);
 
-auto const switch_rule = x3::rule<switch_class, switch_>{"switch"} =
+auto const switch_rule = x3::rule<struct switch_class, switch_>{"switch"} =
     switch_::name > space_separator > dsTargetSuggestions > ds_target_table;
 
-auto const cancel = x3::rule<cancel_class, cancel_>{"cancel"} =
+auto const cancel = x3::rule<struct cancel_class, cancel_>{"cancel"} =
     cancel_::name >> x3::attr(cancel_{});
 
-auto const dump = x3::rule<dump_class, dump_>{"dump"} =
+auto const dump = x3::rule<struct dump_class, dump_>{"dump"} =
     dump_::name > space_separator >> dump_args;
 
-auto const quit = x3::rule<quit_class, quit_>{"quit"} =
+auto const quit = x3::rule<struct quit_class, quit_>{"quit"} =
     quit_::name >> x3::attr(quit_{});
 
 auto const command = x3::rule<command_class, command_>{"command"} =
