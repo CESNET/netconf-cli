@@ -13,10 +13,10 @@
 auto const completing = x3::rule<completing_class, x3::unused_type>{"completing"} =
     x3::eps;
 
-auto const node_identifier = x3::rule<node_identifier_class, std::string>{"node_identifier"} =
+auto const node_identifier = x3::rule<struct node_identifier_class, std::string>{"node_identifier"} =
     ((x3::alpha | x3::char_("_")) >> *(x3::alnum | x3::char_("_") | x3::char_("-") | x3::char_(".")));
 
-auto const module_identifier = x3::rule<module_identifier_class, std::string>{"module_identifier"} =
+auto const module_identifier = x3::rule<struct module_identifier_class, std::string>{"module_identifier"} =
     ((x3::alpha | x3::char_("_")) >> *(x3::alnum | x3::char_("_") | x3::char_("-") | x3::char_(".")));
 
 auto const module = x3::rule<module_class, module_>{"module"} =

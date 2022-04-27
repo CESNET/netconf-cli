@@ -274,7 +274,7 @@ struct ModeToAttribute<PathParserMode::DataPathListEnd> {
     using type = dataPath_;
 };
 
-auto const trailingSlash = x3::rule<trailingSlash_class, x3::unused_type>{"trailingSlash"} =
+auto const trailingSlash = x3::rule<struct trailingSlash_class, x3::unused_type>{"trailingSlash"} =
     x3::omit['/'];
 
 // A "nothing" parser, which is used to indicate we tried to parse a path
@@ -447,11 +447,11 @@ auto const noRpcOrAction = [](const Schema& schema, const std::string& path) {
     return nodeType != yang::NodeTypes::Rpc && nodeType != yang::NodeTypes::Action;
 };
 
-auto const getPath = x3::rule<getPath_class, decltype(get_::m_path)::value_type>{"getPath"} =
+auto const getPath = x3::rule<struct getPath_class, decltype(get_::m_path)::value_type>{"getPath"} =
     PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{noRpcOrAction} |
     (module >> "*");
 
-auto const cdPath = x3::rule<cdPath_class, dataPath_>{"cdPath"} =
+auto const cdPath = x3::rule<struct cdPath_class, dataPath_>{"cdPath"} =
     PathParser<PathParserMode::DataPath, CompletionMode::Data>{[] (const Schema& schema, const std::string& path) {
         return noRpcOrAction(schema, path) && schema.nodeType(path) != yang::NodeTypes::Leaf;
     }};
