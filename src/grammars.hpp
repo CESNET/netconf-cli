@@ -141,8 +141,8 @@ struct datastore_symbol_table : x3::symbols<Datastore> {
     }
 } const datastore;
 
-const auto copy_source = x3::rule<class source, Datastore>{"source datastore"} = datastore;
-const auto copy_destination = x3::rule<class source, Datastore>{"destination datastore"} = datastore;
+const auto copy_source = x3::rule<struct source, Datastore>{"source datastore"} = datastore;
+const auto copy_destination = x3::rule<struct source, Datastore>{"destination datastore"} = datastore;
 
 const auto datastoreSuggestions = staticSuggestions({"running", "startup"});
 
