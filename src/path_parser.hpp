@@ -72,18 +72,7 @@ auto const keyValueWrapper =
 auto const listSuffix = x3::rule<listSuffix_class, std::vector<keyValue_>>{"listSuffix"} =
     *keyValueWrapper;
 
-struct SuggestLeafListEnd : x3::parser<SuggestLeafListEnd> {
-    using attribute_type = x3::unused_type;
-    template <typename It, typename Ctx, typename RCtx, typename Attr>
-    bool parse(It& begin, It, Ctx const& ctx, RCtx&, Attr&) const
-    {
-        auto& parserContext = x3::get<parser_context_tag>(ctx);
-        parserContext.m_completionIterator = begin;
-        parserContext.m_suggestions = {Completion{"]"}};
-
-        return true;
-    }
-} const suggestLeafListEnd;
+auto const suggestLeafListEnd = staticSuggestions({"]"});
 
 auto const leafListValue = x3::rule<class leafListValue_class, leaf_data_>{"leafListValue"} =
     '[' >> leaf_data >> suggestLeafListEnd >> ']';
