@@ -14,7 +14,7 @@
 
 namespace x3 = boost::spirit::x3;
 
-auto pathEnd = x3::rule<class PathEnd>{"pathEnd"} = &space_separator | x3::eoi;
+auto pathEnd = x3::rule<struct PathEnd>{"pathEnd"} = &space_separator | x3::eoi;
 
 enum class NodeParserMode {
     CompleteDataNode,
@@ -74,7 +74,7 @@ auto const listSuffix = x3::rule<listSuffix_class, std::vector<keyValue_>>{"list
 
 auto const suggestLeafListEnd = staticSuggestions({"]"});
 
-auto const leafListValue = x3::rule<class leafListValue_class, leaf_data_>{"leafListValue"} =
+auto const leafListValue = x3::rule<struct leafListValue_class, leaf_data_>{"leafListValue"} =
     '[' >> leaf_data >> suggestLeafListEnd >> ']';
 
 template <NodeParserMode PARSER_MODE, CompletionMode COMPLETION_MODE>
@@ -359,9 +359,9 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
 // The PathParser class would get a boost::variant as the attribute, but I
 // don't want to deal with that, so I use these wrappers to ensure the
 // attribute I want (and let Spirit deal with boost::variant).
-auto const anyPath = x3::rule<class anyPath_class, AnyPath>{"anyPath"} = PathParser<PathParserMode::AnyPath, CompletionMode::Schema>{};
-auto const dataPath = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPath, CompletionMode::Data>{};
-auto const dataPathListEnd = x3::rule<class dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{};
+auto const anyPath = x3::rule<struct anyPath_class, AnyPath>{"anyPath"} = PathParser<PathParserMode::AnyPath, CompletionMode::Schema>{};
+auto const dataPath = x3::rule<struct dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPath, CompletionMode::Data>{};
+auto const dataPathListEnd = x3::rule<struct dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{};
 
 #if __clang__
 #pragma GCC diagnostic push
