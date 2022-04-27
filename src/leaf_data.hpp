@@ -17,10 +17,6 @@ namespace x3 = boost::spirit::x3;
 template <typename TYPE>
 struct leaf_data_class;
 
-x3::rule<struct leaf_data_class<yang::IdentityRef>, identityRef_> const leaf_data_identityRef = "leaf_data_identityRef";
-x3::rule<struct leaf_data_class<yang::Binary>, binary_> const leaf_data_binary = "leaf_data_binary";
-x3::rule<struct leaf_data_class<yang::String>, std::string> const leaf_data_string = "leaf_data_string";
-
 using x3::char_;
 
 struct bool_symbol_table : x3::symbols<bool> {
@@ -32,14 +28,14 @@ struct bool_symbol_table : x3::symbols<bool> {
     }
 } const bool_symbols;
 
-auto const leaf_data_string_def =
+auto const leaf_data_string = x3::rule<struct leaf_data_class<yang::String>, std::string>{"leaf_data_string"} =
     '\'' >> *(char_-'\'') >> '\'' |
     '\"' >> *(char_-'\"') >> '\"';
 
-auto const leaf_data_binary_def =
+auto const leaf_data_binary = x3::rule<struct leaf_data_class<yang::Binary>, binary_>{"leaf_data_binary"} =
     as<std::string>[+(x3::alnum | char_('+') | char_('/')) >> -char_('=') >> -char_('=')];
 
-auto const leaf_data_identityRef_def =
+auto const leaf_data_identityRef = x3::rule<struct leaf_data_class<yang::IdentityRef>, identityRef_>{"leaf_data_identityRef"} =
     -module >> node_identifier;
 
 template <typename It, typename Ctx, typename RCtx, typename Attr>
@@ -210,7 +206,3 @@ struct LeafData : x3::parser<LeafData> {
 };
 
 auto const leaf_data = LeafData();
-
-BOOST_SPIRIT_DEFINE(leaf_data_string)
-BOOST_SPIRIT_DEFINE(leaf_data_binary)
-BOOST_SPIRIT_DEFINE(leaf_data_identityRef)

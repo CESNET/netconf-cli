@@ -67,27 +67,6 @@ namespace boost::spirit::x3::traits {
 }
 #endif
 
-x3::rule<discard_class, discard_> const discard = "discard";
-x3::rule<ls_class, ls_> const ls = "ls";
-x3::rule<cd_class, cd_> const cd = "cd";
-x3::rule<set_class, set_> const set = "set";
-x3::rule<get_class, get_> const get = "get";
-x3::rule<create_class, create_> const create = "create";
-x3::rule<delete_class, delete_> const delete_rule = "delete_rule";
-x3::rule<commit_class, commit_> const commit = "commit";
-x3::rule<describe_class, describe_> const describe = "describe";
-x3::rule<help_class, help_> const help = "help";
-x3::rule<copy_class, copy_> const copy = "copy";
-x3::rule<move_class, move_> const move = "move";
-x3::rule<dump_class, dump_> const dump = "dump";
-x3::rule<prepare_class, prepare_> const prepare = "prepare";
-x3::rule<exec_class, exec_> const exec = "exec";
-x3::rule<switch_class, switch_> const switch_rule = "switch";
-x3::rule<cancel_class, cancel_> const cancel = "cancel";
-x3::rule<quit_class, quit_> const quit = "quit";
-x3::rule<command_class, command_> const command = "command";
-
-x3::rule<createCommandSuggestions_class, x3::unused_type> const createCommandSuggestions = "createCommandSuggestions";
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -104,30 +83,30 @@ struct ls_options_table : x3::symbols<LsOption> {
     }
 } const ls_options;
 
-auto const ls_def =
+auto const ls = x3::rule<ls_class, ls_>{"ls"} =
     ls_::name >> *(space_separator >> ls_options) >> -(space_separator > (anyPath | (module >> "*")));
 
-auto const cd_def =
+auto const cd = x3::rule<cd_class, cd_>{"cd"} =
     cd_::name >> space_separator > cdPath;
 
 #if BOOST_VERSION <= 107700
-auto const create_def =
+auto const create = x3::rule<create_class, create_>{"create"} =
     create_::name >> space_separator >
     (x3::eps >> presenceContainerPath |
      x3::eps >> listInstancePath |
      x3::eps >> leafListElementPath);
 
-auto const delete_rule_def =
+auto const delete_rule = x3::rule<delete_class, delete_>{"delete_rule"} =
     delete_::name >> space_separator >
     (x3::eps >> presenceContainerPath |
      x3::eps >> listInstancePath |
      x3::eps >> leafListElementPath |
      x3::eps >> writableLeafPath);
 #else
-auto const create_def =
+auto const create = x3::rule<create_class, create_>{"create"} =
     create_::name >> space_separator > (presenceContainerPath | listInstancePath | leafListElementPath);
 
-auto const delete_rule_def =
+auto const delete_rule = x3::rule<delete_class, delete_>{"delete_rule"} =
     delete_::name >> space_separator > (presenceContainerPath | listInstancePath | leafListElementPath | writableLeafPath);
 #endif
 
@@ -143,18 +122,18 @@ struct ds_target_table : x3::symbols<DatastoreTarget> {
     }
 } const ds_target_table;
 
-auto const get_def =
+auto const get = x3::rule<get_class, get_>{"get"} =
     get_::name
     >> -(space_separator >> "-" > staticSuggestions({"-datastore"}) > "-datastore" > space_separator > dsTargetSuggestions > ds_target_table)
     >> -(space_separator > getPath);
 
-auto const set_def =
+auto const set = x3::rule<set_class, set_>{"set"} =
     set_::name >> space_separator > writableLeafPath > space_separator > leaf_data;
 
-auto const commit_def =
+auto const commit = x3::rule<commit_class, commit_>{"commit"} =
     commit_::name >> x3::attr(commit_());
 
-auto const discard_def =
+auto const discard = x3::rule<discard_class, discard_>{"discard"} =
     discard_::name >> x3::attr(discard_());
 
 struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
@@ -166,7 +145,10 @@ struct command_names_table : x3::symbols<decltype(help_::m_cmd)> {
     }
 } const command_names;
 
-auto const help_def =
+auto const createCommandSuggestions = x3::rule<createCommandSuggestions_class, x3::unused_type>{"createCommandSuggestions"} =
+    x3::eps;
+
+auto const help = x3::rule<help_class, help_>{"help"} =
     help_::name > createCommandSuggestions >> -command_names;
 
 struct datastore_symbol_table : x3::symbols<Datastore> {
@@ -211,10 +193,10 @@ struct copy_args : x3::parser<copy_args> {
     }
 } const copy_args;
 
-auto const copy_def =
+auto const copy = x3::rule<copy_class, copy_>{"copy"} =
     copy_::name > space_separator > copy_args;
 
-auto const describe_def =
+auto const describe = x3::rule<describe_class, describe_>{"describe"} =
     describe_::name >> space_separator > anyPath;
 
 struct move_mode_table : x3::symbols<MoveMode> {
@@ -312,7 +294,7 @@ struct move_args : x3::parser<move_args> {
     }
 } const move_args;
 
-auto const move_def =
+auto const move = x3::rule<move_class, move_>{"move"} =
     move_::name >> space_separator >> move_args;
 
 struct format_table : x3::symbols<DataFormat> {
@@ -340,28 +322,25 @@ struct dump_args : x3::parser<dump_args> {
     }
 } const dump_args;
 
-auto const prepare_def =
+auto const prepare = x3::rule<prepare_class, prepare_>{"prepare"} =
     prepare_::name > space_separator > as<dataPath_>[RpcActionPath<AllowInput::Yes>{}];
 
-auto const exec_def =
+auto const exec = x3::rule<exec_class, exec_>{"exec"} =
     exec_::name > -(space_separator > -as<dataPath_>[RpcActionPath<AllowInput::No>{}]);
 
-auto const switch_rule_def =
+auto const switch_rule = x3::rule<switch_class, switch_>{"switch"} =
     switch_::name > space_separator > dsTargetSuggestions > ds_target_table;
 
-auto const cancel_def =
+auto const cancel = x3::rule<cancel_class, cancel_>{"cancel"} =
     cancel_::name >> x3::attr(cancel_{});
 
-auto const dump_def =
+auto const dump = x3::rule<dump_class, dump_>{"dump"} =
     dump_::name > space_separator >> dump_args;
 
-auto const quit_def =
+auto const quit = x3::rule<quit_class, quit_>{"quit"} =
     quit_::name >> x3::attr(quit_{});
 
-auto const createCommandSuggestions_def =
-    x3::eps;
-
-auto const command_def =
+auto const command = x3::rule<command_class, command_>{"command"} =
 #if BOOST_VERSION <= 107800
     x3::eps >>
 #endif
@@ -370,24 +349,3 @@ auto const command_def =
 #if __clang__
 #pragma GCC diagnostic pop
 #endif
-
-BOOST_SPIRIT_DEFINE(set)
-BOOST_SPIRIT_DEFINE(commit)
-BOOST_SPIRIT_DEFINE(get)
-BOOST_SPIRIT_DEFINE(ls)
-BOOST_SPIRIT_DEFINE(discard)
-BOOST_SPIRIT_DEFINE(cd)
-BOOST_SPIRIT_DEFINE(create)
-BOOST_SPIRIT_DEFINE(delete_rule)
-BOOST_SPIRIT_DEFINE(describe)
-BOOST_SPIRIT_DEFINE(help)
-BOOST_SPIRIT_DEFINE(copy)
-BOOST_SPIRIT_DEFINE(move)
-BOOST_SPIRIT_DEFINE(dump)
-BOOST_SPIRIT_DEFINE(prepare)
-BOOST_SPIRIT_DEFINE(exec)
-BOOST_SPIRIT_DEFINE(switch_rule)
-BOOST_SPIRIT_DEFINE(cancel)
-BOOST_SPIRIT_DEFINE(quit)
-BOOST_SPIRIT_DEFINE(command)
-BOOST_SPIRIT_DEFINE(createCommandSuggestions)
