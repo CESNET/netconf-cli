@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4edf786c_e261c430",
+        "filename": "src/datastore_access.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-28T08:58:48Z",
+      "side": 1,
+      "message": "during the call we found out that this needs to change because each item is actually \"an operation\", not \"a new value\".",
+      "range": {
+        "startLine": 65,
+        "startChar": 12,
+        "endLine": 65,
+        "endChar": 16
+      },
+      "revId": "b391dee7ac23213b7cc05608da25d00e82d762ff",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
