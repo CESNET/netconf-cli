@@ -57,50 +57,63 @@ leaf_data_ leafValueFromNode(libyang::DataNodeTerm node)
     return std::visit(impl_leafValueFromNode{},node.value());
 }
 
-namespace {
 template <typename CollectionType>
-void impl_lyNodesToTree(DatastoreAccess::Tree& res, CollectionType items, std::optional<std::string> ignoredXPathPrefix)
+void lyNodesToTree(DatastoreAccess::Tree& res, CollectionType items, std::optional<std::string> ignoredXPathPrefix)
 {
     auto stripXPathPrefix = [&ignoredXPathPrefix](auto path) {
         return ignoredXPathPrefix && path.find(*ignoredXPathPrefix) != std::string::npos ? path.substr(ignoredXPathPrefix->size()) : path;
     };
 
-    for (const auto& it : items) {
-        if (it.schema().nodeType() == libyang::NodeType::Container) {
-            if (it.schema().asContainer().isPresence()) {
+    auto itemsIt = items.begin();
+    if (itemsIt == items.end()) {
+        // No items, just return.
+        return;
+    }
+    auto dfsColl = itemsIt->childrenDfs();
+    auto dfsIt = dfsColl.begin();
+    auto advanceIt = [&] {
+        dfsIt++;
+        if (dfsIt == dfsColl.end()) {
+            itemsIt++;
+            if (itemsIt != items.end()) {
+                dfsColl = itemsIt->childrenDfs();
+                dfsIt = dfsColl.begin();
+            }
+        }
+    };
+
+    while (itemsIt != items.end()) {
+        std::cerr << "dfsIt->path() = " << dfsIt->path() << "\n";
+        if (dfsIt->schema().nodeType() == libyang::NodeType::Leaflist) {
+            auto leafListPath = stripLeafListValueFromPath(dfsIt->path());
+            res.emplace_back(leafListPath, special_{SpecialValue::LeafList});
+            while (itemsIt != items.end() && boost::starts_with(dfsIt->path(), leafListPath)) {
+                auto term = dfsIt->asTerm();
+                auto value = leafValueFromNode(term);
+                res.emplace_back(stripXPathPrefix(term.path()), value);
+                advanceIt();
+            }
+
+            continue;
+        }
+
+        if (dfsIt->schema().nodeType() == libyang::NodeType::Container) {
+            if (dfsIt->schema().asContainer().isPresence()) {
                 // The fact that the container is included in the data tree
                 // means that it is present and I don't need to check any
                 // value.
-                res.emplace_back(stripXPathPrefix(std::string{it.path()}), special_{SpecialValue::PresenceContainer});
+                res.emplace_back(stripXPathPrefix(dfsIt->path()), special_{SpecialValue::PresenceContainer});
             }
         }
-        if (it.schema().nodeType() == libyang::NodeType::List) {
-            res.emplace_back(stripXPathPrefix(std::string{it.path()}), special_{SpecialValue::List});
+        if (dfsIt->schema().nodeType() == libyang::NodeType::List) {
+            res.emplace_back(stripXPathPrefix(dfsIt->path()), special_{SpecialValue::List});
         }
-        if (it.schema().nodeType() == libyang::NodeType::Leaf || it.schema().nodeType() == libyang::NodeType::Leaflist) {
-            auto term = it.asTerm();
+        if (dfsIt->schema().nodeType() == libyang::NodeType::Leaf) {
+            auto term = dfsIt->asTerm();
             auto value = leafValueFromNode(term);
-            res.emplace_back(stripXPathPrefix(std::string{it.path()}), value);
+            res.emplace_back(stripXPathPrefix(dfsIt->path()), value);
         }
-    }
-}
-}
-
-template <typename CollectionType>
-void lyNodesToTree(DatastoreAccess::Tree& res, CollectionType items, std::optional<std::string> ignoredXPathPrefix)
-{
-    for (auto it = items.begin(); it != items.end(); /* nothing */) {
-        if ((*it).schema().nodeType() == libyang::NodeType::Leaflist) {
-            auto leafListPath = stripLeafListValueFromPath(std::string{(*it).path()});
-            res.emplace_back(leafListPath, special_{SpecialValue::LeafList});
-            while (it != items.end() && boost::starts_with(std::string{(*it).path()}, leafListPath)) {
-                impl_lyNodesToTree(res, it->childrenDfs(), ignoredXPathPrefix);
-                it++;
-            }
-        } else {
-            impl_lyNodesToTree(res, it->childrenDfs(), ignoredXPathPrefix);
-            it++;
-        }
+        advanceIt();
     }
 }
 

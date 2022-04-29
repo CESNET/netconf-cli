@@ -207,6 +207,10 @@ module test-schema {
         }
     }
 
+    leaf-list myLeafList {
+        type string;
+    }
+
     container users {
         config false;
         list userList {
@@ -255,7 +259,12 @@ const auto data = R"(
                 "name": "Aneta"
             }
         ]
-    }
+    },
+    "test-schema:myLeafList": [
+        "one",
+        "two",
+        "three"
+    ]
 }
 )";
 
@@ -384,6 +393,10 @@ TEST_CASE("libyang_utils")
             {"/test-schema:stuff[name='Xaver']", special_{SpecialValue::List}},
             {"/test-schema:stuff[name='Xaver']/name", std::string{"Xaver"}},
             {"/test-schema:leafRefPresent", std::string{"Xaver"}},
+            {"/test-schema:myLeafList", special_{SpecialValue::LeafList}},
+            {"/test-schema:myLeafList[.='one']", std::string{"one"}},
+            {"/test-schema:myLeafList[.='two']", std::string{"two"}},
+            {"/test-schema:myLeafList[.='three']", std::string{"three"}},
             {"/test-schema:users/userList[1]", special_{SpecialValue::List}},
             {"/test-schema:users/userList[1]/name", std::string{"John"}},
             {"/test-schema:users/userList[2]", special_{SpecialValue::List}},
