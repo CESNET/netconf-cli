@@ -241,7 +241,7 @@ std::vector<ListInstance> YangAccess::listInstances(const std::string& path)
     auto instances = m_datastore->findXPath(path);
     for (const auto& list : instances) {
         ListInstance instance;
-        for (const auto& child : list.child()->siblings()) {
+        for (const auto& child : list.immediateChildren()) {
             if (child.schema().nodeType() == libyang::NodeType::Leaf) {
                 auto leafSchema(child.schema().asLeaf());
                 if (leafSchema.isKey()) {
