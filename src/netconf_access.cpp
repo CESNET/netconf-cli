@@ -249,7 +249,7 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
     for (const auto& instance : instances->findXPath(path)) {
         ListInstance instanceRes;
 
-        for (const auto& keyLeaf : instance.child()->siblings()) {
+        for (const auto& keyLeaf : instance.immediateChildren()) {
             // FIXME: even though we specified we only want the key leafs, Netopeer disregards that and sends more data,
             // even lists and other stuff. We only want keys, so filter out non-leafs and non-keys
             // https://github.com/CESNET/netopeer2/issues/825
