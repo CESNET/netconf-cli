@@ -6,7 +6,7 @@
 [![taiga.io](https://img.shields.io/badge/bugs-via%20taiga.io-blue)](https://tree.taiga.io/project/jktjkt-netconf-cli)
 
 This program provides an interactive console for working with YANG data.
-It can connect to NETCONF servers, and also talk to [sysrepo](http://www.sysrepo.org/) locally.
+It can connect to NETCONF servers, work as a standalone YANG data editor, or talk to [sysrepo](http://www.sysrepo.org/) locally.
 
 ## Installation
 
