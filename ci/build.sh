@@ -10,11 +10,12 @@ ZUUL_PROJECT_SRC_DIR=$HOME/$(jq < ~/zuul-env.json -r ".projects[] | select(.name
 ZUUL_PROJECT_SHORT_NAME=$(jq < ~/zuul-env.json -r ".projects[] | select(.name == \"${LEAF_PROJECT_NAME}\").short_name")
 ZUUL_GERRIT_HOSTNAME=$(jq < ~/zuul-env.json -r '.project.canonical_hostname')
 ZUUL_JOB_NAME_NO_PROJECT=${ZUUL_JOB_NAME##${ZUUL_PROJECT_SHORT_NAME}-}
+ZUUL_SRC_COMMON_PREFIX=${ZUUL_PROJECT_SRC_DIR:0:-${#LEAF_PROJECT_NAME}}
 
 CI_PARALLEL_JOBS=$(awk -vcpu=$(getconf _NPROCESSORS_ONLN) 'BEGIN{printf "%.0f", cpu*1.3+1}')
 CMAKE_OPTIONS=""
-CFLAGS=""
-CXXFLAGS=""
+CFLAGS="-O2 -g -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer"
+CXXFLAGS="-O2 -g -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer"
 LDFLAGS=""
 
 if [[ $ZUUL_JOB_NAME =~ .*-clang.* ]]; then
@@ -30,15 +31,17 @@ if [[ $ZUUL_JOB_NAME =~ .*-ubsan ]]; then
     export UBSAN_OPTIONS=print_stacktrace=1:halt_on_error=1
 fi
 
-if [[ $ZUUL_JOB_NAME =~ .*-asan ]]; then
-    export CFLAGS="-fsanitize=address ${CFLAGS}"
-    export CXXFLAGS="-fsanitize=address ${CXXFLAGS}"
-    export LDFLAGS="-fsanitize=address ${LDFLAGS}"
+if [[ $ZUUL_JOB_NAME =~ .*-asan-ubsan ]]; then
+    export CFLAGS="-fsanitize=address,undefined -Wp,-U_FORTIFY_SOURCE ${CFLAGS}"
+    export CXXFLAGS="-fsanitize=address,undefined -Wp,-U_FORTIFY_SOURCE ${CXXFLAGS}"
+    export LDFLAGS="-fsanitize=address,undefined ${LDFLAGS}"
+    export ASAN_OPTIONS=intercept_tls_get_addr=0,log_to_syslog=true,handle_abort=2,strip_path_prefix=${ZUUL_SRC_COMMON_PREFIX}
+    export UBSAN_OPTIONS=print_stacktrace=1:halt_on_error=1
 fi
 
 if [[ $ZUUL_JOB_NAME =~ .*-tsan ]]; then
-    export CFLAGS="-fsanitize=thread ${CFLAGS}"
-    export CXXFLAGS="-fsanitize=thread ${CXXFLAGS}"
+    export CFLAGS="-fsanitize=thread -Wp,-U_FORTIFY_SOURCE ${CFLAGS}"
+    export CXXFLAGS="-fsanitize=thread -Wp,-U_FORTIFY_SOURCE ${CXXFLAGS}"
     export LDFLAGS="-fsanitize=thread ${LDFLAGS}"
     export TSAN_OPTIONS="suppressions=$HOME/target/tsan.supp"
 fi
