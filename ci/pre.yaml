@@ -11,3 +11,9 @@
         name: pam-devel
         state: present
       become: true
+
+    - name: install docopt-cpp
+      package:
+        name: docopt-cpp-devel
+        state: present
+      become: true
