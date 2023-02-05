@@ -54,7 +54,6 @@ find_package(Threads)
 find_package(Doxygen)
 option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${DOXYGEN_FOUND})
 
-find_package(docopt REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
 # Fixes C++20 build
 # https://github.com/boostorg/asio/issues/312
@@ -62,6 +61,7 @@ add_definitions(-DBOOST_ASIO_DISABLE_CONCEPTS)
 find_package(replxx REQUIRED)
 
 find_package(PkgConfig)
+pkg_check_modules(DOCOPT REQUIRED IMPORTED_TARGET docopt)
 
 set(ENABLE_SYSREPO_CLI AUTO CACHE STRING "Enable the `sysrepo-cli`")
 set_property(CACHE ENABLE_SYSREPO_CLI PROPERTY STRINGS AUTO ON OFF)
@@ -207,7 +207,7 @@ target_link_libraries(proxydatastore PUBLIC datastoreaccess yangaccess)
 
 # Links libraries, that aren't specific to a datastore type
 function(cli_link_required cli_target)
-    target_link_libraries(${cli_target} proxydatastore yangschema docopt parser replxx::replxx)
+    target_link_libraries(${cli_target} proxydatastore yangschema PkgConfig::DOCOPT parser replxx::replxx)
     add_dependencies(${cli_target} target-NETCONF_CLI_VERSION)
     target_include_directories(${cli_target} PRIVATE ${PROJECT_BINARY_DIR})
 endfunction()
