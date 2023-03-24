@@ -259,6 +259,7 @@ yang::TypeInfo YangSchema::impl_leafType(const NodeType& node) const
             typeDesc = type.description();
         } catch (libyang::ParsedInfoUnavailable&) {
             // libyang context doesn't have the parsed info.
+            typeDesc = std::nullopt;
         }
 
         return yang::TypeInfo(resType, std::optional<std::string>{leafUnits}, std::optional<std::string>{typeDesc});
