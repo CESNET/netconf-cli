@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a711fc45_b34d1bc3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-03-26T17:57:05Z",
+      "side": 1,
+      "message": "Can you please share the exact input of whatever tests you\u0027re running and the error message from valgrind? On line 256, the default constructor of std::optional\u003cT\u003e is called, which means that that variable cannot be possibly uninitialized (unless I\u0027m wrong about some assumptions about exception handling).\n\nI think that the only chance of a possible \"weird\" behavior is the case of std::optional\u003cstd::string_view\u003e::operator\u003d throwing, but if I\u0027m reading https://en.cppreference.com/w/cpp/utility/optional/operator%3D#Exceptions correctly, and because string_view\u0027s operator\u003d is noexcept, to me this looks like a valgrind false positive.",
+      "revId": "63beff4790725765b1ba8443814519c57909e06b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
