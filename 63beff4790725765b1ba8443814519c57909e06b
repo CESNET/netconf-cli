@@ -16,6 +16,24 @@
       "message": "Can you please share the exact input of whatever tests you\u0027re running and the error message from valgrind? On line 256, the default constructor of std::optional\u003cT\u003e is called, which means that that variable cannot be possibly uninitialized (unless I\u0027m wrong about some assumptions about exception handling).\n\nI think that the only chance of a possible \"weird\" behavior is the case of std::optional\u003cstd::string_view\u003e::operator\u003d throwing, but if I\u0027m reading https://en.cppreference.com/w/cpp/utility/optional/operator%3D#Exceptions correctly, and because string_view\u0027s operator\u003d is noexcept, to me this looks like a valgrind false positive.",
       "revId": "63beff4790725765b1ba8443814519c57909e06b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b53901d_fa4506c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000072
+      },
+      "writtenOn": "2023-03-26T19:33:48Z",
+      "side": 1,
+      "message": "I also thought this should not happen, but the sysrepo-cli was crashing and this fixed the crash. I used valgrind only as a debugging tool to discover why/where it was crashing. The system crashing is Yocto-based with security_flags enabled, so it\u0027s not easily reproducible on your side.\nThe crash occurs when I do e.g. `create /ietf-interfaces:interfaces/interface[name\u003d\u0027eth0\u0027]/ietf-ip:ipv4/ietf-ip:address[ip\u003d\u00271.1.1.1\u0027]`. The error says \"terminate called after throwing an instance of \u0027std::bad_alloc\u0027\" and backtrace leads to \"src/yang_schema.cpp:266\"\n\nThe valgrind error says \"Conditional jump or move depends on uninitialised value(s)\", Uninitialised value was created by a stack allocation at 0x15F825: YangSchema::impl_leafType\u003clibyang::Leaf\u003e(libyang::Leaf const\u0026) const::{lambda(libyang::Type const\u0026)#1}::operator()(libyang::Type const\u0026) const (yang_schema.cpp:182) The entire log with valgrind messages has 9MB.\n\nWhen valgrind is running it also complains much earlier: when I use double-tab to auto-complete the interface name. The valgrind error is exactly the same, however no crash occurs when running without valgrind.",
+      "parentUuid": "a711fc45_b34d1bc3",
+      "revId": "63beff4790725765b1ba8443814519c57909e06b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
