@@ -34,6 +34,24 @@
       "parentUuid": "a711fc45_b34d1bc3",
       "revId": "63beff4790725765b1ba8443814519c57909e06b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f3ef5e8_bff77ad0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2023-03-27T18:23:04Z",
+      "side": 1,
+      "message": "I have reproduced this on my local machine and I can confirm that valgrind is unhappy when running the `create` command posted above. The errors seem to match your description.\nI don\u0027t have time for it today but I will take a look at it later this week (unless Jan is faster).\n\nReproduce this easily with:\n\n  sysrepoctl -i ../../velia/yang/ietf-interfaces@2018-02-20.yang\n  sysrepoctl -i ../../velia/yang/ietf-ip@2018-02-22.yang\n  valgrind ./sysrepo-cli\n  \u003e create /ietf-interfaces:interfaces/interface[name\u003d\u0027eth0\u0027]/ietf-ip:ipv4/ietf-ip:address[ip\u003d\u00271.1.1.1\u0027]",
+      "parentUuid": "4b53901d_fa4506c9",
+      "revId": "63beff4790725765b1ba8443814519c57909e06b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
