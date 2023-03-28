@@ -70,6 +70,24 @@
       "parentUuid": "3f3ef5e8_bff77ad0",
       "revId": "63beff4790725765b1ba8443814519c57909e06b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62b9267a_5eb5c5b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000072
+      },
+      "writtenOn": "2023-03-28T12:51:03Z",
+      "side": 1,
+      "message": "Thank you! Your patch fixes the problem also on my side: no crashes and no valgrind complaints. Will you commit it, please? I will abandon this one.",
+      "parentUuid": "289ad9d1_42e83b20",
+      "revId": "63beff4790725765b1ba8443814519c57909e06b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
