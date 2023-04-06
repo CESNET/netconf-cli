@@ -123,6 +123,24 @@
       "message": "OK, it\u0027s a confirmed gcc bug https://gcc.gnu.org/bugzilla/show_bug.cgi?id\u003d109434",
       "revId": "63beff4790725765b1ba8443814519c57909e06b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fff5042_5a0a49e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000072
+      },
+      "writtenOn": "2023-04-06T18:30:14Z",
+      "side": 1,
+      "message": "Hats off to you!",
+      "parentUuid": "c6cace5c_644505c9",
+      "revId": "63beff4790725765b1ba8443814519c57909e06b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
