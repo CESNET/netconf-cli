@@ -88,6 +88,24 @@
       "parentUuid": "289ad9d1_42e83b20",
       "revId": "63beff4790725765b1ba8443814519c57909e06b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b4cd5e8_7797948e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2023-04-06T08:04:00Z",
+      "side": 1,
+      "message": "@Petr: May I ask what compiler and compiler flags did you use for compilation? It seems to me that this bug appears only on certain compilers and still only with certain optimizations enabled. That leads me to think it may be a compiler bug.",
+      "parentUuid": "62b9267a_5eb5c5b8",
+      "revId": "63beff4790725765b1ba8443814519c57909e06b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
