@@ -141,6 +141,24 @@
       "parentUuid": "c6cace5c_644505c9",
       "revId": "63beff4790725765b1ba8443814519c57909e06b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9e98a46_92f9ab8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2023-04-07T07:57:17Z",
+      "side": 1,
+      "message": "I am afraid we will have to commit Jan\u0027s patch anyway. Even if this is a compiler regression I am afraid we have persuade compiler to compile it correctly on gcc 12.x. I will discuss this with Jan on Wednesday. \n\nSorry for the delay.",
+      "parentUuid": "5fff5042_5a0a49e8",
+      "revId": "63beff4790725765b1ba8443814519c57909e06b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
