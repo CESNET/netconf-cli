@@ -9,6 +9,7 @@
     parent: f34-clang-asan-ubsan
     pre-run: ci/pre.yaml
     requires: CzechLight-deps-f34-clang-asan-ubsan
+    timeout: 1800
     vars:
       zuul_work_dir: "{{ zuul.projects[zuul.project.canonical_hostname + '/CzechLight/netconf-cli'].src_dir }}"
 
@@ -20,26 +21,32 @@
             requires: CzechLight-deps-f34-gcc
             required-projects: &projects
               - CzechLight/dependencies
+            timeout: 1800
         - netconf-cli-f34-clang-asan-ubsan:
             required-projects: *projects
         - f34-clang-tsan:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-clang-tsan
             required-projects: *projects
+            timeout: 1800
         - f34-gcc-netconf-cli-no-sysrepo:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc
             required-projects: *projects
+            timeout: 1800
         - f34-cpp-coverage-diff:
             pre-run: ci/pre.yaml
             voting: false
+            timeout: 1800
         - clang-format:
             voting: false
         - f34-gcc-cover-previous:
             pre-run: ci/pre.yaml
             requires: CzechLight-deps-f34-gcc
             required-projects: *projects
+            timeout: 1800
         - czechlight-clearfog:
             required-projects:
               - CzechLight/br2-external
             requires: CzechLight-br2-build-clearfog
+            timeout: 1800
