@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7769c912_1c45a392",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-11T09:15:22Z",
+      "side": 1,
+      "message": "nit: all footers/trailers in one paragraph -- I\u0027ve fixed this",
+      "revId": "50cd4c35c7f6c082b70f3ea93ee26b0a32b3d3ff",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ba69f5f_f46629fb",
+        "filename": "src/yang_schema.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-11T09:15:22Z",
+      "side": 1,
+      "message": "nit: nothing to \"fix\" here on our side because:\n\n- it\u0027s a workaround for a bug in a reasonably recent compiler which will be around for some time,\n- it probably doesn\u0027t make that much sense to explicitly call something an optional\u003cstring_view\u003e at first, and then add an explicit cast (which is required), so this also makes the code simpler.\n\nChanged.",
+      "range": {
+        "startLine": 256,
+        "startChar": 48,
+        "endLine": 256,
+        "endChar": 53
+      },
+      "revId": "50cd4c35c7f6c082b70f3ea93ee26b0a32b3d3ff",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
