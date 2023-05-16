@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "588c3f63_62d20d67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-05-16T16:17:39Z",
+      "side": 1,
+      "message": "Thanks, this is \"too fast\" for our CI because we\u0027re pinning specific versions of all the libraries, including libyang-cpp, and the update got blocked by something else.\n\nI\u0027ll reuse this change when we get around to the update (later today/this week).",
+      "revId": "cb1886e94eb93c5ed23552d79083244b5c5e56f1",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
