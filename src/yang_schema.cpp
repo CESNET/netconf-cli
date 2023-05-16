@@ -137,7 +137,7 @@ const std::set<std::string> YangSchema::listKeys(const schemaPath_& listPath) co
     return keys;
 }
 
-std::set<enum_> enumValues(const libyang::Type& type)
+std::set<enum_> enumValues(const libyang::types::Type& type)
 {
     auto enums = type.asEnum().items();
     std::set<enum_> enumSet;
@@ -145,7 +145,7 @@ std::set<enum_> enumValues(const libyang::Type& type)
     return enumSet;
 }
 
-std::set<identityRef_> validIdentities(const libyang::Type& type)
+std::set<identityRef_> validIdentities(const libyang::types::Type& type)
 {
     std::set<identityRef_> identSet;
 
@@ -167,7 +167,7 @@ std::set<identityRef_> validIdentities(const libyang::Type& type)
     return identSet;
 }
 
-std::string leafrefPath(const libyang::Type& type)
+std::string leafrefPath(const libyang::types::Type& type)
 {
     return std::string{type.asLeafRef().path()};
 }
@@ -178,8 +178,8 @@ yang::TypeInfo YangSchema::impl_leafType(const NodeType& node) const
     using namespace std::string_literals;
     auto leaf = std::make_shared<NodeType>(node);
     auto leafUnits = leaf->units();
-    std::function<yang::TypeInfo(const libyang::Type&)> resolveType;
-    resolveType = [&resolveType, leaf, leafUnits](const libyang::Type& type) -> yang::TypeInfo {
+    std::function<yang::TypeInfo(const libyang::types::Type&)> resolveType;
+    resolveType = [&resolveType, leaf, leafUnits](const libyang::types::Type& type) -> yang::TypeInfo {
         yang::LeafDataType resType;
         switch (type.base()) {
         case libyang::LeafBaseType::String:
