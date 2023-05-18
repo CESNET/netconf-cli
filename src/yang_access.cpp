@@ -296,8 +296,8 @@ void YangAccess::addDataFile(const std::string& path, const StrictDataParsing st
 
     std::cout << "Parsing \"" << path << "\" as " << (firstChar == '{' ? "JSON" : "XML") << "...\n";
 
-    auto dataNode = m_ctx.parseDataPath(
-            path,
+    auto dataNode = m_ctx.parseData(
+            std::filesystem::path{path},
             firstChar == '{' ? libyang::DataFormat::JSON : libyang::DataFormat::XML,
             strict == StrictDataParsing::Yes ? std::optional{libyang::ParseOptions::Strict} : std::nullopt,
             libyang::ValidationOptions::Present);

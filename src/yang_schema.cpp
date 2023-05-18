@@ -45,7 +45,7 @@ YangSchema::~YangSchema() = default;
 
 void YangSchema::addSchemaString(const char* schema)
 {
-    m_context.parseModuleMem(schema, libyang::SchemaFormat::YANG);
+    m_context.parseModule(std::string{schema}, libyang::SchemaFormat::YANG);
 }
 
 void YangSchema::addSchemaDirectory(const char* directoryName)
@@ -55,7 +55,7 @@ void YangSchema::addSchemaDirectory(const char* directoryName)
 
 void YangSchema::addSchemaFile(const char* filename)
 {
-    m_context.parseModulePath(filename, libyang::SchemaFormat::YANG);
+    m_context.parseModule(std::filesystem::path{filename}, libyang::SchemaFormat::YANG);
 }
 
 bool YangSchema::isModule(const std::string& name) const

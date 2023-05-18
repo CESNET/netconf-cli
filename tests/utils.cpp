@@ -14,6 +14,8 @@
 #include "pretty_printers.hpp"
 #include "utils.hpp"
 
+using namespace std::literals;
+
 TEST_CASE("utils")
 {
     SECTION("filterByPrefix")
@@ -216,7 +218,7 @@ module test-schema {
         }
     }
 }
-)";
+)"s;
 
 const auto data = R"(
 {
@@ -257,14 +259,14 @@ const auto data = R"(
         ]
     }
 }
-)";
+)"s;
 
 
 TEST_CASE("libyang_utils")
 {
     libyang::Context ctx;
-    ctx.parseModuleMem(schema, libyang::SchemaFormat::YANG);
-    auto dataNode = ctx.parseDataMem(data, libyang::DataFormat::JSON, std::nullopt, libyang::ValidationOptions::Present);
+    ctx.parseModule(schema, libyang::SchemaFormat::YANG);
+    auto dataNode = ctx.parseData(data, libyang::DataFormat::JSON, std::nullopt, libyang::ValidationOptions::Present);
 
     SECTION("leafValueFromNode")
     {
