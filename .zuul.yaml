@@ -1,14 +1,14 @@
 - job:
-    name: f34-gcc-netconf-cli-no-sysrepo
+    name: f38-gcc-netconf-cli-no-sysrepo
     description: |
       Build a minimal version without sysrepo or the test suite
-    parent: f34-gcc
+    parent: f38-gcc
 
 - job:
-    name: netconf-cli-f34-clang-asan-ubsan
-    parent: f34-clang-asan-ubsan
+    name: netconf-cli-f38-clang-asan-ubsan
+    parent: f38-clang-asan-ubsan
     pre-run: ci/pre.yaml
-    requires: CzechLight-deps-f34-clang-asan-ubsan
+    requires: CzechLight-deps-f38-clang-asan-ubsan
     timeout: 1800
     vars:
       zuul_work_dir: "{{ zuul.projects[zuul.project.canonical_hostname + '/CzechLight/netconf-cli'].src_dir }}"
@@ -16,33 +16,33 @@
 - project:
     check:
       jobs:
-        - f34-gcc-cover:
+        - f38-gcc-cover:
             pre-run: ci/pre.yaml
-            requires: CzechLight-deps-f34-gcc
+            requires: CzechLight-deps-f38-gcc
             required-projects: &projects
               - CzechLight/dependencies
             timeout: 1800
-        - netconf-cli-f34-clang-asan-ubsan:
+        - netconf-cli-f38-clang-asan-ubsan:
             required-projects: *projects
-        - f34-clang-tsan:
+        - f38-clang-tsan:
             pre-run: ci/pre.yaml
-            requires: CzechLight-deps-f34-clang-tsan
+            requires: CzechLight-deps-f38-clang-tsan
             required-projects: *projects
             timeout: 1800
-        - f34-gcc-netconf-cli-no-sysrepo:
+        - f38-gcc-netconf-cli-no-sysrepo:
             pre-run: ci/pre.yaml
-            requires: CzechLight-deps-f34-gcc
+            requires: CzechLight-deps-f38-gcc
             required-projects: *projects
             timeout: 1800
-        - f34-cpp-coverage-diff:
+        - f38-cpp-coverage-diff:
             pre-run: ci/pre.yaml
             voting: false
             timeout: 1800
         - clang-format:
             voting: false
-        - f34-gcc-cover-previous:
+        - f38-gcc-cover-previous:
             pre-run: ci/pre.yaml
-            requires: CzechLight-deps-f34-gcc
+            requires: CzechLight-deps-f38-gcc
             required-projects: *projects
             timeout: 1800
         - czechlight-clearfog:
