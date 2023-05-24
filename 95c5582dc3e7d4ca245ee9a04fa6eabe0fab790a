@@ -50,6 +50,23 @@
       "message": "recheck after updating dependencies",
       "revId": "95c5582dc3e7d4ca245ee9a04fa6eabe0fab790a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12c95d4a_320045d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-05-24T22:41:51Z",
+      "side": 1,
+      "message": "overriding the CI because br2-external would have failed anyway (if it didn\u0027t time out) because of cla-sysrepo. This is a breaking change which needs a bunch of independent commits.",
+      "revId": "95c5582dc3e7d4ca245ee9a04fa6eabe0fab790a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
