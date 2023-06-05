@@ -481,7 +481,7 @@ TEST_CASE("setting/getting values")
     SECTION("identityref")
     {
         datastore.setLeaf("/example-schema:beast", identityRef_{"example-schema", "Mammal"});
-        REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:beast", std::nullopt, "example-schema:Mammal"s, std::nullopt));
+        REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:beast", std::nullopt, "Mammal"s, std::nullopt));
         datastore.commitChanges();
         DatastoreAccess::Tree expected{
             {"/example-schema:beast", identityRef_{"example-schema", "Mammal"}},
@@ -489,7 +489,7 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:beast") == expected);
 
         datastore.setLeaf("/example-schema:beast", identityRef_{"Whale"});
-        REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Modified, "/example-schema:beast", "example-schema:Mammal", "example-schema:Whale"s, std::nullopt));
+        REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Modified, "/example-schema:beast", "Mammal", "Whale"s, std::nullopt));
         datastore.commitChanges();
         expected = {
             {"/example-schema:beast", identityRef_{"example-schema", "Whale"}},
