@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56dc87f0_cfc2c157",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-16T10:39:27Z",
+      "side": 1,
+      "message": "A behavior change somewhere in boost and/or spirit x3. Oh well.",
+      "revId": "4454fc5c670c9da390c142e651c21e27b630830a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
