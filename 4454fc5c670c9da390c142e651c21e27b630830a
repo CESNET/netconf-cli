@@ -34,6 +34,24 @@
       "parentUuid": "56dc87f0_cfc2c157",
       "revId": "4454fc5c670c9da390c142e651c21e27b630830a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4e39f60_f0b2d7b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-18T23:28:56Z",
+      "side": 1,
+      "message": "F38 has Boost 1.78 unfortunately, it\u0027s only rawhide/F39 that\u0027s on 1.81. Thanks for testing, though, this is good to know.",
+      "parentUuid": "7491ce0f_0b40ed46",
+      "revId": "4454fc5c670c9da390c142e651c21e27b630830a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
