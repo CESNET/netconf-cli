@@ -220,22 +220,22 @@ TEST_CASE("interpreter tests")
                         scope = Scope::Relative;
                     }
 
-                    inputPath = dataPath_{scope, {dataNode_{{"mod"}, leaf_{"myLeaf"}}}};
+                    inputPath = dataPath_{scope, {dataNode_{module_{"mod"}, leaf_{"myLeaf"}}}};
                 }
 
                 SECTION("cwd: /mod:whatever")
                 {
-                    parser.changeNode(dataPath_{Scope::Relative, {dataNode_{{"mod"}, container_{"whatever"}}}});
+                    parser.changeNode(dataPath_{Scope::Relative, {dataNode_{module_{"mod"}, container_{"whatever"}}}});
                     SECTION("absolute")
                     {
                         scope = Scope::Absolute;
-                        inputPath = dataPath_{scope, {dataNode_{{"mod"}, leaf_{"myLeaf"}}}};
+                        inputPath = dataPath_{scope, {dataNode_{module_{"mod"}, leaf_{"myLeaf"}}}};
                     }
 
                     SECTION("relative")
                     {
                         scope = Scope::Relative;
-                        inputPath = dataPath_{scope, {dataNode_{nodeup_{}}, dataNode_{{"mod"}, leaf_{"myLeaf"}}}};
+                        inputPath = dataPath_{scope, {dataNode_{nodeup_{}}, dataNode_{module_{"mod"}, leaf_{"myLeaf"}}}};
                     }
                 }
             }
@@ -256,22 +256,22 @@ TEST_CASE("interpreter tests")
                         scope = Scope::Relative;
                     }
 
-                    inputPath = dataPath_{scope, {dataNode_{{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}};
+                    inputPath = dataPath_{scope, {dataNode_{module_{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}};
                 }
 
                 SECTION("cwd: /mod:whatever")
                 {
-                    parser.changeNode(dataPath_{Scope::Relative, {dataNode_{{"mod"}, container_{"whatever"}}}});
+                    parser.changeNode(dataPath_{Scope::Relative, {dataNode_{module_{"mod"}, container_{"whatever"}}}});
                     SECTION("absolute")
                     {
                         scope = Scope::Absolute;
-                        inputPath = dataPath_{scope, {dataNode_{{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}};
+                        inputPath = dataPath_{scope, {dataNode_{module_{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}};
                     }
 
                     SECTION("relative")
                     {
                         scope = Scope::Relative;
-                        inputPath = dataPath_{scope, {dataNode_{nodeup_{}}, dataNode_{{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}};
+                        inputPath = dataPath_{scope, {dataNode_{nodeup_{}}, dataNode_{module_{"mod"}, listElement_{"myList", {{"name", "AHOJ"s}}}}}};
                     }
                 }
             }
@@ -339,21 +339,21 @@ TEST_CASE("interpreter tests")
 
         SECTION("list instance")
         {
-            inputPath.m_nodes = {dataNode_{{"mod"}, listElement_{"department", {{"name", "engineering"s}}}}};
+            inputPath.m_nodes = {dataNode_{module_{"mod"}, listElement_{"department", {{"name", "engineering"s}}}}};
             expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, createItem("/mod:department[name='engineering']")));
             expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, deleteItem("/mod:department[name='engineering']")));
         }
 
         SECTION("leaflist instance")
         {
-            inputPath.m_nodes = {dataNode_{{"mod"}, leafListElement_{"addresses", "127.0.0.1"s}}};
+            inputPath.m_nodes = {dataNode_{module_{"mod"}, leafListElement_{"addresses", "127.0.0.1"s}}};
             expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, createItem("/mod:addresses[.='127.0.0.1']")));
             expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, deleteItem("/mod:addresses[.='127.0.0.1']")));
         }
 
         SECTION("presence container")
         {
-            inputPath.m_nodes = {dataNode_{{"mod"}, container_{"pContainer"}}};
+            inputPath.m_nodes = {dataNode_{module_{"mod"}, container_{"pContainer"}}};
             expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, createItem("/mod:pContainer")));
             expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, deleteItem("/mod:pContainer")));
         }
@@ -370,7 +370,7 @@ TEST_CASE("interpreter tests")
     {
         expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, deleteItem("/mod:someLeaf")));
         delete_ deleteCmd;
-        deleteCmd.m_path = {Scope::Absolute, {dataNode_{{"mod"}, leaf_{"someLeaf"}}, }};
+        deleteCmd.m_path = {Scope::Absolute, {dataNode_{module_{"mod"}, leaf_{"someLeaf"}}, }};
         toInterpret.emplace_back(deleteCmd);
     }
 
@@ -394,7 +394,7 @@ TEST_CASE("interpreter tests")
 
         SECTION("setting identityRef without module") // The parser has to fill in the module
         {
-            inputPath.m_nodes = {dataNode_{{"mod"}, leaf_{"animal"}}};
+            inputPath.m_nodes = {dataNode_{module_{"mod"}, leaf_{"animal"}}};
             inputData = identityRef_{"Doge"};
             expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, setLeaf("/mod:animal", identityRef_{"mod", "Doge"})));
         }
@@ -441,7 +441,7 @@ TEST_CASE("rpc")
     SECTION("entering/leaving rpc context")
     {
         dataPath_ rpcPath;
-        rpcPath.pushFragment({{"example"}, rpcNode_{"launch-nukes"}});
+        rpcPath.pushFragment({module_{"example"}, rpcNode_{"launch-nukes"}});
         prepare_ prepareCmd;
         prepareCmd.m_path = rpcPath;
 
