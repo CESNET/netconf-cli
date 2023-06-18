@@ -16,6 +16,24 @@
       "message": "A behavior change somewhere in boost and/or spirit x3. Oh well.",
       "revId": "4454fc5c670c9da390c142e651c21e27b630830a",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7491ce0f_0b40ed46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2023-06-18T09:20:10Z",
+      "side": 1,
+      "message": "I have boost 1.81.0, which is the same version as in f38 (https://packages.fedoraproject.org/pkgs/boost/boost/) and tests pass for me locally with both clang15 and gcc13",
+      "parentUuid": "56dc87f0_cfc2c157",
+      "revId": "4454fc5c670c9da390c142e651c21e27b630830a",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
