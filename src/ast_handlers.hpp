@@ -16,9 +16,13 @@
 #include "ast_commands.hpp"
 #include "parser_context.hpp"
 #include "schema.hpp"
-#if BOOST_VERSION >= 107800
-#include "UniqueResource.hpp"
-#endif
+
+// Up to Boost 1.77, calling `_pass(context) = false` was enough.
+// Since 1.78 it became necessary to explicitly reset the input iterator, but unfortunately the function signature
+// was wrong and the whole handler would just be ignored.
+// That was fixed in 1.80.
+// FIXME: change the function signature and remove the const_cast once we're unconditionally on 1.80+
+#define REJECT_PARSING do { const_cast<Iterator&>(after) = before; _pass(context) = false; } while (0)
 #include "utils.hpp"
 namespace x3 = boost::spirit::x3;
 
@@ -26,12 +30,12 @@ struct parser_context_tag;
 
 struct keyValue_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const& before, Iterator const& after, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
 
         if (parserContext.m_tmpListKeys.find(ast.first) != parserContext.m_tmpListKeys.end()) {
-            _pass(context) = false;
+            REJECT_PARSING;
             parserContext.m_errorMsg = "Key \"" + ast.first + "\" was entered more than once.";
         } else {
             parserContext.m_tmpListKeys.insert({ast.first, ast.second});
@@ -51,7 +55,7 @@ boost::optional<std::string> optModuleToOptString(const boost::optional<module_>
 
 struct key_identifier_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const& before, Iterator const& after, T& ast, Context const& context)
     {
         ParserContext& parserContext = x3::get<parser_context_tag>(context);
         const Schema& schema = parserContext.m_schema;
@@ -62,14 +66,14 @@ struct key_identifier_class {
         } else {
             auto listName = std::get<list_>(parserContext.m_tmpListPath.m_nodes.back().m_suffix).m_name;
             parserContext.m_errorMsg = listName + " is not indexed by \"" + ast + "\".";
-            _pass(context) = false;
+            REJECT_PARSING;
         }
     }
 };
 
 struct listSuffix_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const& before, Iterator const& after, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const Schema& schema = parserContext.m_schema;
@@ -94,7 +98,7 @@ struct listSuffix_class {
             }
             parserContext.m_errorMsg += ".";
 
-            _pass(context) = false;
+            REJECT_PARSING;
             return;
         }
 
@@ -115,14 +119,14 @@ struct listSuffix_class {
 
 struct module_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
+    void on_success(Iterator const& before, Iterator const& after, T& ast, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
 
         if (!schema.isModule(ast.m_name)) {
             parserContext.m_errorMsg = "Invalid module name.";
-            _pass(context) = false;
+            REJECT_PARSING;
         }
     }
 };
@@ -148,79 +152,45 @@ struct cd_class {
     }
 };
 
-#if BOOST_VERSION >= 107800
-template <typename Iterator>
-[[nodiscard]] auto makeIteratorRollbacker(Iterator const& was, Iterator& will, bool& passFlag)
-{
-    return make_unique_resource([] {},
-    [&was, &will, &passFlag] {
-        if (!passFlag) {
-            will = was;
-        }
-    });
-}
-#endif
-
 struct presenceContainerPath_class {
     template <typename T, typename Iterator, typename Context>
-#if BOOST_VERSION >= 107800
-    void on_success(Iterator const& was, Iterator& will, T& ast, Context const& context)
-#else
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-#endif
+    void on_success(Iterator const& before, Iterator const& after, T& ast, Context const& context)
     {
-#if BOOST_VERSION >= 107800
-        auto rollback = makeIteratorRollbacker(was, will, _pass(context));
-#endif
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
         if (ast.m_nodes.empty()) {
             parserContext.m_errorMsg = "This container is not a presence container.";
-            _pass(context) = false;
+            REJECT_PARSING;
             return;
         }
 
         if (schema.nodeType(pathToSchemaString(parserContext.currentSchemaPath(), Prefixes::Always)) != yang::NodeTypes::PresenceContainer) {
             parserContext.m_errorMsg = "This container is not a presence container.";
-            _pass(context) = false;
+            REJECT_PARSING;
         }
     }
 };
 
 struct listInstancePath_class {
     template <typename T, typename Iterator, typename Context>
-#if BOOST_VERSION >= 107800
-    void on_success(Iterator const& was, Iterator& will, T& ast, Context const& context)
-#else
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-#endif
+    void on_success(Iterator const& before, Iterator const& after, T& ast, Context const& context)
     {
-#if BOOST_VERSION >= 107800
-        auto rollback = makeIteratorRollbacker(was, will, _pass(context));
-#endif
         auto& parserContext = x3::get<parser_context_tag>(context);
         if (ast.m_nodes.empty() || !std::holds_alternative<listElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a list instance.";
-            _pass(context) = false;
+            REJECT_PARSING;
         }
     }
 };
 
 struct leafListElementPath_class {
     template <typename T, typename Iterator, typename Context>
-#if BOOST_VERSION >= 107800
-    void on_success(Iterator const& was, Iterator& will, T& ast, Context const& context)
-#else
-    void on_success(Iterator const&, Iterator const&, T& ast, Context const& context)
-#endif
+    void on_success(Iterator const& before, Iterator const& after, T& ast, Context const& context)
     {
-#if BOOST_VERSION >= 107800
-        auto rollback = makeIteratorRollbacker(was, will, _pass(context));
-#endif
         auto& parserContext = x3::get<parser_context_tag>(context);
         if (ast.m_nodes.empty() || !std::holds_alternative<leafListElement_>(ast.m_nodes.back().m_suffix)) {
             parserContext.m_errorMsg = "This is not a leaf list element.";
-            _pass(context) = false;
+            REJECT_PARSING;
         }
     }
 };
@@ -301,12 +271,12 @@ std::set<Completion> generateMissingKeyCompletionSet(std::set<std::string> keysN
 
 struct createKeySuggestions_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    void on_success(Iterator const& before, Iterator const&, T&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
 
-        parserContext.m_completionIterator = begin;
+        parserContext.m_completionIterator = before;
 
         const auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
         parserContext.m_suggestions = generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys);
@@ -317,7 +287,7 @@ std::string leafDataToCompletion(const leaf_data_& value);
 
 struct createValueSuggestions_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    void on_success(Iterator const& before, Iterator const&, T&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         if (!parserContext.m_completing) {
@@ -325,7 +295,7 @@ struct createValueSuggestions_class {
         }
         const auto& dataQuery = parserContext.m_dataquery;
 
-        parserContext.m_completionIterator = begin;
+        parserContext.m_completionIterator = before;
         auto listInstances = dataQuery->listKeys(parserContext.m_tmpListPath);
 
         decltype(listInstances) filteredInstances;
@@ -351,12 +321,12 @@ struct createValueSuggestions_class {
 
 struct suggestKeysEnd_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const& begin, Iterator const&, T&, Context const& context)
+    void on_success(Iterator const& before, Iterator const&, T&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
         const auto& schema = parserContext.m_schema;
 
-        parserContext.m_completionIterator = begin;
+        parserContext.m_completionIterator = before;
         const auto& keysNeeded = schema.listKeys(dataPathToSchemaPath(parserContext.m_tmpListPath));
         if (generateMissingKeyCompletionSet(keysNeeded, parserContext.m_tmpListKeys).empty()) {
             parserContext.m_suggestions = {Completion{"]/"}};
@@ -374,17 +344,10 @@ std::string commandNamesVisitor(boost::type<T>)
 
 struct createCommandSuggestions_class {
     template <typename T, typename Iterator, typename Context>
-#if BOOST_VERSION >= 107800
-    void on_success(Iterator const& was, Iterator& will, T&, Context const& context)
-#else
-    void on_success(Iterator const& was, Iterator const&, T&, Context const& context)
-#endif
+    void on_success(Iterator const& before, Iterator const&, T&, Context const& context)
     {
-#if BOOST_VERSION >= 107800
-        auto rollback = makeIteratorRollbacker(was, will, _pass(context));
-#endif
         auto& parserContext = x3::get<parser_context_tag>(context);
-        parserContext.m_completionIterator = was;
+        parserContext.m_completionIterator = before;
 
         parserContext.m_suggestions.clear();
         boost::mpl::for_each<CommandTypes, boost::type<boost::mpl::_>>([&parserContext](auto cmd) {
@@ -395,12 +358,12 @@ struct createCommandSuggestions_class {
 
 struct completing_class {
     template <typename T, typename Iterator, typename Context>
-    void on_success(Iterator const&, Iterator const&, T&, Context const& context)
+    void on_success(Iterator const& before, Iterator const& after, T&, Context const& context)
     {
         auto& parserContext = x3::get<parser_context_tag>(context);
 
         if (!parserContext.m_completing) {
-            _pass(context) = false;
+            REJECT_PARSING;
         }
     }
 };
