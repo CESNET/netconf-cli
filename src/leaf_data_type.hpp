@@ -71,6 +71,9 @@ struct Bits {
     std::set<std::string> m_allowedValues;
 };
 struct LeafRef;
+struct InstanceIdentifier {
+    bool operator==(const InstanceIdentifier& other) const;
+};
 struct Union;
 using LeafDataType = std::variant<
     yang::String,
@@ -90,6 +93,7 @@ using LeafDataType = std::variant<
     yang::IdentityRef,
     yang::Bits,
     yang::LeafRef,
+    yang::InstanceIdentifier,
     yang::Union
 >;
 struct TypeInfo;

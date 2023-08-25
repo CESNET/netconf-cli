@@ -127,6 +127,10 @@ struct impl_leafDataTypeToString {
     {
         return "an empty leaf";
     }
+    std::string operator()(const yang::InstanceIdentifier&)
+    {
+        return "an instance identifier";
+    }
     std::string operator()(const yang::Union& type)
     {
         std::ostringstream ss;
@@ -209,6 +213,11 @@ struct leafDataToStringVisitor : boost::static_visitor<std::string> {
         std::stringstream ss;
         std::copy(data.m_bits.begin(), data.m_bits.end(), std::experimental::make_ostream_joiner(ss, " "));
         return ss.str();
+    }
+
+    std::string operator()(const instanceIdentifier_& data) const
+    {
+        return data.m_xpath;
     }
 
     template <typename T>
