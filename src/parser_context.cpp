@@ -59,3 +59,8 @@ void ParserContext::resetPath()
 {
     m_curPath = m_curPathOrig;
 }
+
+ParserContext ParserContext::copy() const
+{
+    return ParserContext{m_schema, m_dataquery, dataPath_{Scope::Absolute, {}}};
+}

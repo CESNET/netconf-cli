@@ -41,6 +41,8 @@ struct ParserContext {
     // Iterator pointing to where suggestions were created
     boost::optional<std::string::const_iterator> m_completionIterator;
 
+    ParserContext copy() const;
+
 private:
     boost::variant<dataPath_, schemaPath_> m_curPath;
 };

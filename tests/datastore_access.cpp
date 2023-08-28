@@ -530,6 +530,20 @@ TEST_CASE("setting/getting values")
         REQUIRE(datastore.getItems("/example-schema:flags") == expected);
     }
 
+    SECTION("instance-identifier")
+    {
+        datastore.setLeaf("/example-schema:lol/up", true);
+        datastore.setLeaf("/example-schema:iid-valid", instanceIdentifier_{"/example-schema:lol/up"});
+        REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:lol/up", std::nullopt, "true"s, std::nullopt));
+        REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:iid-valid", std::nullopt, "/example-schema:lol/up"s, std::nullopt));
+        datastore.commitChanges();
+        DatastoreAccess::Tree expected{
+            {"/example-schema:iid-valid", instanceIdentifier_{"/example-schema:lol/up"}},
+        };
+        REQUIRE(datastore.getItems("/example-schema:iid-valid") == expected);
+    }
+
+
 #if not defined(yang_BACKEND)
     SECTION("operational data")
     {
