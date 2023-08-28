@@ -106,7 +106,9 @@ private:
             of << dump(DataFormat::Xml);
         }
         auto command = std::string(sysrepocfgExecutable) + " --import=" + testConfigFile + " --format=xml --datastore=running --module=example-schema";
-        REQUIRE(std::system(command.c_str()) == 0);
+        if (std::system(command.c_str())) {
+            throw std::runtime_error{"sysrepocfg import failed"};
+        }
     }
 };
 #endif
