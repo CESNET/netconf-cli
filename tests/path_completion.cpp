@@ -44,6 +44,7 @@ TEST_CASE("path_completion")
     schema->addContainer("/", "example:system");
     schema->addContainer("/example:system", "example:thing");
     schema->addContainer("/", "example:system-state");
+    schema->addLeaf("/example:anoda", "example:iid", yang::InstanceIdentifier{yang::InstanceIdentifier::RequireInstance::Required});
     auto mockDatastore = std::make_shared<MockDatastoreAccess>();
 
     // The parser will use DataQuery for key value completion, but I'm not testing that here, so I don't return anything.
@@ -194,6 +195,13 @@ TEST_CASE("path_completion")
             input = "ls /example:system-";
             expectedCompletions = {"example:system-state/"};
             expectedContextLength = 15;
+        }
+
+        SECTION("set example:anoda/iid /example:read")
+        {
+            input = "set example:anoda/iid /example:read";
+            expectedCompletions = {"example:readonly "};
+            expectedContextLength = 12;
         }
     }
 

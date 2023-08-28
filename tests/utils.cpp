@@ -217,6 +217,16 @@ module test-schema {
             }
         }
     }
+
+    leaf iid-valid {
+        type instance-identifier;
+    }
+
+    leaf iid-relaxed {
+        type instance-identifier {
+            require-instance false;
+        }
+    }
 }
 )"s;
 
@@ -257,7 +267,9 @@ const auto data = R"(
                 "name": "Aneta"
             }
         ]
-    }
+    },
+    "test-schema:iid-valid": "/test-schema:stuff[name='Xaver']/name",
+    "test-schema:iid-relaxed": "/test-schema:stuff[name='XXX']/name"
 }
 )"s;
 
@@ -392,6 +404,8 @@ TEST_CASE("libyang_utils")
             {"/test-schema:users/userList[2]/name", std::string{"Aneta"}},
             {"/test-schema:users/userList[3]", special_{SpecialValue::List}},
             {"/test-schema:users/userList[3]/name", std::string{"Aneta"}},
+            {"/test-schema:iid-valid", instanceIdentifier_{"/test-schema:stuff[name='Xaver']/name"}},
+            {"/test-schema:iid-relaxed", instanceIdentifier_{"/test-schema:stuff[name='XXX']/name"}},
         };
 
         DatastoreAccess::Tree tree;

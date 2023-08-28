@@ -39,6 +39,9 @@ auto const leaf_data_identityRef = x3::rule<struct leaf_data_class<yang::Identit
     -module >> node_identifier;
 
 template <typename It, typename Ctx, typename RCtx, typename Attr>
+bool leaf_data_parse_data_path(It& first, It last, Ctx const& ctx, RCtx& rctx, Attr& attr);
+
+template <typename It, typename Ctx, typename RCtx, typename Attr>
 struct impl_LeafData {
     It& first;
     It last;
@@ -94,6 +97,10 @@ struct impl_LeafData {
     bool operator()(const yang::String&) const
     {
         return leaf_data_string.parse(first, last, ctx, rctx, attr);
+    }
+    bool operator()(const yang::InstanceIdentifier&) const
+    {
+        return leaf_data_parse_data_path(first, last, ctx, rctx, attr);
     }
     bool operator()(const yang::Empty) const
     {
