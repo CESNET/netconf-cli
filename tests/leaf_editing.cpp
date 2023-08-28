@@ -80,12 +80,21 @@ TEST_CASE("leaf editing")
     SECTION("valid input")
     {
         set_ expected;
+        dataPath_ cwd;
 
         SECTION("set mod:leafString \"some_data\"")
         {
             input = "set mod:leafString \'some_data\'";
             expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_("leafString"));
             expected.m_data = std::string("some_data");
+        }
+
+        SECTION("cd mod:contA; set leafInCont 'x'")
+        {
+            input = "set leafInCont 'x'";
+            cwd.m_nodes.emplace_back(module_{"mod"}, container_{"contA"});
+            expected.m_path.m_nodes.emplace_back(leaf_("leafInCont"));
+            expected.m_data = std::string("x");
         }
 
         SECTION("set mod:contA/leafInCont 'more_data'")
@@ -500,6 +509,7 @@ TEST_CASE("leaf editing")
             }
         }
 
+        parser.changeNode(cwd);
         command_ command = parser.parseCommand(input, errorStream);
         REQUIRE(command.type() == typeid(set_));
         REQUIRE(boost::get<set_>(command) == expected);
@@ -508,6 +518,8 @@ TEST_CASE("leaf editing")
     SECTION("invalid input")
     {
         std::string expectedError;
+        dataPath_ cwd;
+
         SECTION("missing space between a command and its arguments")
         {
             SECTION("setmod:leafString some_data")
@@ -671,6 +683,7 @@ TEST_CASE("leaf editing")
             input = "set mod:flags carry carry";
         }
 
+        parser.changeNode(cwd);
         REQUIRE_THROWS_AS(parser.parseCommand(input, errorStream), InvalidCommandException);
         REQUIRE(errorStream.str().find(expectedError) != std::string::npos);
     }
