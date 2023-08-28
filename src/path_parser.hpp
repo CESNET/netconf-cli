@@ -466,6 +466,25 @@ auto const leafListElementPath = x3::rule<leafListElementPath_class, dataPath_>{
     dataPath;
 
 
+template <typename It, typename Ctx, typename RCtx, typename Attr>
+bool leaf_data_parse_data_path(It& first, It last, Ctx const& ctx, RCtx&, Attr& attr)
+{
+    std::string input;
+    std::copy(first, last, std::back_inserter(input));
+
+    ParserContext freshContext = x3::get<parser_context_tag>(ctx).copy();
+    dataPath_ path;
+    auto res = dataPath.parse(
+            first,
+            last,
+            x3::make_context<parser_context_tag>(freshContext),
+            RCtx{},
+            path);
+    if (res) {
+        attr = instanceIdentifier_{pathToDataString(path, Prefixes::WhenNeeded)};
+    }
+    return res;
+}
 
 #if __clang__
 #pragma GCC diagnostic pop

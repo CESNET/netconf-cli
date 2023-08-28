@@ -26,6 +26,21 @@ identityRef_::identityRef_(const std::string& module, const std::string& value)
 {
 }
 
+instanceIdentifier_::instanceIdentifier_(const std::string& xpath)
+    : m_xpath(xpath)
+{
+}
+
+bool instanceIdentifier_::operator==(const instanceIdentifier_& other) const
+{
+    return this->m_xpath == other.m_xpath;
+}
+
+bool instanceIdentifier_::operator<(const instanceIdentifier_& other) const
+{
+    return this->m_xpath < other.m_xpath;
+}
+
 binary_::binary_() = default;
 
 binary_::binary_(const std::string& value)
