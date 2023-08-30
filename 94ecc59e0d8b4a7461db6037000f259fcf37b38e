@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0adfdf3_e53a2025",
+        "filename": "src/leaf_data_type.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-08-30T10:04:45Z",
+      "side": 1,
+      "message": "in the end I removed this because:\n\n- it is not specific to instance-identifier; a leafref takes it, too\n- the CLI currently doesn\u0027t check this  (for good reasons, because we\u0027re building the edit interactively, so chances are that the node that we\u0027re pointing to might only get added later)",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 6
+      },
+      "revId": "94ecc59e0d8b4a7461db6037000f259fcf37b38e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
