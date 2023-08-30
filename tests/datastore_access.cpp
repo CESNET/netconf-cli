@@ -22,6 +22,7 @@ using OnInvalidRpcPath = std::runtime_error;
 using OnInvalidRpcInput = sysrepo::ErrorWithCode;
 using OnKeyNotFound = void;
 using OnExec = void;
+using OnInvalidRequireInstance = DatastoreException;
 #elif defined(netconf_BACKEND)
 using OnInvalidSchemaPathCreate = std::runtime_error;
 using OnInvalidSchemaPathDelete = std::runtime_error;
@@ -30,6 +31,7 @@ using OnInvalidRpcPath = std::runtime_error;
 using OnInvalidRpcInput = std::runtime_error;
 using OnKeyNotFound = std::runtime_error;
 using OnExec = void;
+using OnInvalidRequireInstance = std::runtime_error;
 #include "netconf_access.hpp"
 #elif defined(yang_BACKEND)
 #include <fstream>
@@ -42,6 +44,7 @@ using OnInvalidRpcPath = DatastoreException;
 using OnInvalidRpcInput = std::logic_error;
 using OnKeyNotFound = DatastoreException;
 using OnExec = std::logic_error;
+using OnInvalidRequireInstance = std::runtime_error;
 #else
 #error "Unknown backend"
 #endif
@@ -531,6 +534,43 @@ TEST_CASE("setting/getting values")
         };
         REQUIRE(datastore.getItems("/example-schema:flags") == expected);
     }
+
+    SECTION("instance-identifier")
+    {
+        SECTION("simple")
+        {
+            datastore.setLeaf("/example-schema:lol/up", true);
+            datastore.setLeaf("/example-schema:iid-valid", instanceIdentifier_{"/example-schema:lol/up"});
+            REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:lol/up", std::nullopt, "true"s, std::nullopt));
+            REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:iid-valid", std::nullopt, "/example-schema:lol/up"s, std::nullopt));
+            datastore.commitChanges();
+            DatastoreAccess::Tree expected{
+                {"/example-schema:iid-valid", instanceIdentifier_{"/example-schema:lol/up"}},
+            };
+            REQUIRE(datastore.getItems("/example-schema:iid-valid") == expected);
+        }
+
+        SECTION("to a non-existing list without require-instance")
+        {
+            datastore.setLeaf("/example-schema:iid-relaxed", instanceIdentifier_{"/example-schema:ports[name='A']/shutdown"});
+            REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:iid-relaxed", std::nullopt, "/example-schema:ports[name='A']/shutdown"s, std::nullopt));
+            datastore.commitChanges();
+            DatastoreAccess::Tree expected{
+                {"/example-schema:iid-relaxed", instanceIdentifier_{"/example-schema:ports[name='A']/shutdown"}},
+            };
+            REQUIRE(datastore.getItems("/example-schema:iid-relaxed") == expected);
+        }
+
+        SECTION("to a non-existing list with require-instance")
+        {
+            catching<OnInvalidRequireInstance>([&] {
+                datastore.setLeaf("/example-schema:iid-valid", instanceIdentifier_{"/example-schema:ports[name='A']/shutdown"});
+                datastore.commitChanges();
+            });
+            datastore.discardChanges();
+        }
+    }
+
 
 #if not defined(yang_BACKEND)
     SECTION("operational data")

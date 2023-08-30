@@ -72,6 +72,10 @@ TEST_CASE("leaf editing")
     schema->addLeaf("/", "mod:readonly", yang::Int32{}, yang::AccessType::ReadOnly);
 
     schema->addLeaf("/", "mod:flags", yang::Bits{{"carry", "sign"}});
+    schema->addLeaf("/", "mod:iid-valid", yang::InstanceIdentifier{yang::InstanceIdentifier::RequireInstance::Required});
+    schema->addLeaf("/", "mod:iid-relaxed", yang::InstanceIdentifier{yang::InstanceIdentifier::RequireInstance::NotRequired});
+    schema->addLeaf("/mod:contA", "mod:x", yang::String{});
+    schema->addLeaf("/mod:contA", "mod:iid", yang::InstanceIdentifier{yang::InstanceIdentifier::RequireInstance::Required});
 
     Parser parser(schema);
     std::string input;
@@ -509,6 +513,47 @@ TEST_CASE("leaf editing")
             }
         }
 
+        SECTION("instance-identifier") {
+            SECTION("toplevel")
+            {
+                input = "set mod:iid-valid /mod:leafUint32";
+                expected.m_path.m_nodes.emplace_back(module_{"mod"}, leaf_{"iid-valid"});
+                expected.m_data = instanceIdentifier_{"/mod:leafUint32"};
+            }
+
+            SECTION("deep to toplevel")
+            {
+                input = "set mod:contA/iid /mod:leafUint32";
+                expected.m_path.m_nodes.emplace_back(module_{"mod"}, container_{"contA"});
+                expected.m_path.m_nodes.emplace_back(leaf_{"iid"});
+                expected.m_data = instanceIdentifier_{"/mod:leafUint32"};
+            }
+
+            SECTION("deep to deep unprefixed")
+            {
+                input = "set mod:contA/iid /mod:contA/x";
+                expected.m_path.m_nodes.emplace_back(module_{"mod"}, container_{"contA"});
+                expected.m_path.m_nodes.emplace_back(leaf_{"iid"});
+                expected.m_data = instanceIdentifier_{"/mod:contA/x"};
+            }
+
+            SECTION("deep to deep mod-prefixed")
+            {
+                input = "set mod:contA/iid /mod:contA/mod:x";
+                expected.m_path.m_nodes.emplace_back(module_{"mod"}, container_{"contA"});
+                expected.m_path.m_nodes.emplace_back(leaf_{"iid"});
+                expected.m_data = instanceIdentifier_{"/mod:contA/mod:x"};
+            }
+
+            SECTION("absolute when nested")
+            {
+                cwd.m_nodes.emplace_back(module_{"mod"}, container_{"contA"});
+                input = "set iid /mod:contA/x";
+                expected.m_path.m_nodes.emplace_back(leaf_{"iid"});
+                expected.m_data = instanceIdentifier_{"/mod:contA/x"};
+            }
+        }
+
         parser.changeNode(cwd);
         command_ command = parser.parseCommand(input, errorStream);
         REQUIRE(command.type() == typeid(set_));
@@ -681,6 +726,39 @@ TEST_CASE("leaf editing")
         SECTION("same bit more than once")
         {
             input = "set mod:flags carry carry";
+        }
+
+        SECTION("instance-identifier non-existing node")
+        {
+            input = "set mod:iid-valid /mod:404";
+        }
+
+        SECTION("instance-identifier non-existing node without leading slash")
+        {
+            input = "set mod:iid-valid mod:404";
+        }
+
+        SECTION("instance-identifier node without leading slash")
+        {
+            input = "set mod:iid-valid mod:leafUint32";
+        }
+
+        SECTION("instance-identifier to pseudo-relative unprefixed")
+        {
+            cwd.m_nodes.emplace_back(module_{"mod"}, container_{"contA"});
+            input = "set iid x";
+        }
+
+        SECTION("instance-identifier to pseudo-relative prefixed")
+        {
+            cwd.m_nodes.emplace_back(module_{"mod"}, container_{"contA"});
+            input = "set iid mod:x";
+        }
+
+        SECTION("instance-identifier without leading slash when nested")
+        {
+            cwd.m_nodes.emplace_back(module_{"mod"}, container_{"contA"});
+            input = "set iid mod:contA/x";
         }
 
         parser.changeNode(cwd);

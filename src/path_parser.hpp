@@ -256,7 +256,8 @@ using AnyPath = boost::variant<schemaPath_, dataPath_>;
 enum class PathParserMode {
     AnyPath,
     DataPath,
-    DataPathListEnd
+    DataPathListEnd,
+    DataPathAbsolute
 };
 
 template <>
@@ -271,6 +272,11 @@ struct ModeToAttribute<PathParserMode::DataPath> {
 
 template <>
 struct ModeToAttribute<PathParserMode::DataPathListEnd> {
+    using type = dataPath_;
+};
+
+template <>
+struct ModeToAttribute<PathParserMode::DataPathAbsolute> {
     using type = dataPath_;
 };
 
@@ -300,10 +306,22 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
         initializePath.parse(begin, end, ctx, rctx, x3::unused);
         dataPath_ attrData;
 
+        auto res = [](){
+            if constexpr (PARSER_MODE == PathParserMode::DataPathAbsolute) {
+                return absoluteStart;
+            } else {
+                return -absoluteStart;
+            }
+        }
         // absoluteStart has to be separate from the dataPath parser,
         // otherwise, if the "dataNode % '/'" parser fails, the begin iterator
         // gets reverted to before the starting slash.
-        auto res = (-absoluteStart).parse(begin, end, ctx, rctx, attrData.m_scope);
+        ().parse(begin, end, ctx, rctx, attrData.m_scope);
+        if (!res) {
+            x3::get<parser_context_tag>(ctx).m_suggestions.emplace(Completion{"/"});
+            return res;
+        }
+
         auto dataPath = x3::attr(attrData.m_scope)
             >> (dataNode<COMPLETION_MODE>{m_filterFunction} % '/' | pathEnd >> x3::attr(std::vector<dataNode_>{}))
             >> -trailingSlash;
@@ -362,6 +380,7 @@ struct PathParser : x3::parser<PathParser<PARSER_MODE, COMPLETION_MODE>> {
 auto const anyPath = x3::rule<struct anyPath_class, AnyPath>{"anyPath"} = PathParser<PathParserMode::AnyPath, CompletionMode::Schema>{};
 auto const dataPath = x3::rule<struct dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPath, CompletionMode::Data>{};
 auto const dataPathListEnd = x3::rule<struct dataPath_class, dataPath_>{"dataPath"} = PathParser<PathParserMode::DataPathListEnd, CompletionMode::Data>{};
+auto const dataPathAbsolute = x3::rule<struct dataPath_class, dataPath_>{"dataPathAbsolute"} = PathParser<PathParserMode::DataPathAbsolute, CompletionMode::Data>{};
 
 #if __clang__
 #pragma GCC diagnostic push
@@ -465,7 +484,21 @@ auto const listInstancePath = x3::rule<listInstancePath_class, dataPath_>{"listI
 auto const leafListElementPath = x3::rule<leafListElementPath_class, dataPath_>{"leafListElementPath"} =
     dataPath;
 
-
+template <typename It, typename Ctx, typename RCtx, typename Attr>
+bool leaf_data_parse_data_path(It& first, It last, Ctx const& ctx, RCtx& rctx, Attr& attr)
+{
+    dataPath_ path;
+    auto res = dataPathAbsolute.parse(first, last, ctx, rctx, path);
+    if (res) {
+        // FIXME: list key escaping in XPath is different from netconf-cli.
+        // If the key(s) are not all strings, this will produce netconf-cli-style
+        // string like /foo:xxx[k1=blah][k2=666] instead of standard XPaths like
+        // /foo:xxx[k1='blah'][k2='666'], and these will cause troubles when passed
+        // to libyang later on.
+        attr = instanceIdentifier_{pathToDataString(path, Prefixes::WhenNeeded)};
+    }
+    return res;
+}
 
 #if __clang__
 #pragma GCC diagnostic pop
