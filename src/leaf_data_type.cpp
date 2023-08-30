@@ -109,4 +109,11 @@ bool Bits::operator==(const Bits& other) const
 {
     return this->m_allowedValues == other.m_allowedValues;
 }
+InstanceIdentifier::InstanceIdentifier()
+{
+}
+bool InstanceIdentifier::operator==(const InstanceIdentifier&) const
+{
+    return true;
+}
 }

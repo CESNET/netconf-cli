@@ -246,6 +246,10 @@ yang::TypeInfo YangSchema::impl_leafType(const NodeType& node) const
             resType.emplace<yang::Union>(std::move(resUnion));
             break;
         }
+        case libyang::LeafBaseType::InstanceIdentifier: {
+            resType.emplace<yang::InstanceIdentifier>();
+            break;
+        }
         default:
             using namespace std::string_literals;
             throw UnsupportedYangTypeException("the type of "s +
