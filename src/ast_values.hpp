@@ -54,6 +54,13 @@ struct identityRef_ {
     std::string m_value;
 };
 
+struct instanceIdentifier_ {
+    instanceIdentifier_(const std::string& xpath);
+    bool operator==(const instanceIdentifier_& b) const;
+    bool operator<(const instanceIdentifier_& b) const;
+    std::string m_xpath;
+};
+
 enum class SpecialValue {
     List,
     LeafList,
@@ -74,6 +81,7 @@ using leaf_data_ = boost::variant<enum_,
                                   empty_,
                                   bits_,
                                   identityRef_,
+                                  instanceIdentifier_,
                                   special_,
                                   double,
                                   bool,

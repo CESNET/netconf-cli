@@ -473,6 +473,16 @@ module example-schema {
             bit overflow;
         }
     }
+
+    leaf iid-valid {
+        type instance-identifier;
+    }
+
+    leaf iid-relaxed {
+        type instance-identifier {
+            require-instance false;
+        }
+    }
 })";
 
 TEST_CASE("yangschema")
@@ -793,6 +803,20 @@ module schema-with-revision {
                 type = yang::IdentityRef{{}};
             }
 
+            SECTION("instance-identifier required")
+            {
+                node.first = "example-schema";
+                node.second = "iid-valid";
+                type = yang::InstanceIdentifier{yang::InstanceIdentifier::RequireInstance::Required};
+            }
+
+            SECTION("instance-identifier relaxed")
+            {
+                node.first = "example-schema";
+                node.second = "iid-relaxed";
+                type = yang::InstanceIdentifier{yang::InstanceIdentifier::RequireInstance::NotRequired};
+            }
+
             REQUIRE(ys.leafType(path, node) == yang::TypeInfo(type, std::nullopt, expectedDescription));
         }
         SECTION("availableNodes")
@@ -841,7 +865,10 @@ module schema-with-revision {
                         {"example-schema"s, "subLeaf"},
                         {"example-schema"s, "flagBits"},
                         {"example-schema"s, "leafFoodTypedef"},
-                        {"example-schema"s, "leafNoValidIdent"}};
+                        {"example-schema"s, "leafNoValidIdent"},
+                        {"example-schema"s, "iid-valid"},
+                        {"example-schema"s, "iid-relaxed"},
+                    };
                 }
 
                 SECTION("example-schema:a")
@@ -898,6 +925,8 @@ module schema-with-revision {
                         {"example-schema"s, "foodIdentLeaf"},
                         {"example-schema"s, "flagBits"},
                         {"example-schema"s, "interrupt"},
+                        {"example-schema"s, "iid-relaxed"},
+                        {"example-schema"s, "iid-valid"},
                         {"example-schema"s, "leafBool"},
                         {"example-schema"s, "leafDecimal"},
                         {"example-schema"s, "leafEnum"},
@@ -966,6 +995,8 @@ module schema-with-revision {
                         {boost::none, "/example-schema:ethernet/ip"},
                         {boost::none, "/example-schema:loopback"},
                         {boost::none, "/example-schema:loopback/ip"},
+                        {boost::none, "/example-schema:iid-relaxed"},
+                        {boost::none, "/example-schema:iid-valid"},
                         {boost::none, "/example-schema:interrupt"},
                         {boost::none, "/example-schema:leafBool"},
                         {boost::none, "/example-schema:leafDecimal"},

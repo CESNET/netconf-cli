@@ -40,9 +40,9 @@ struct impl_leafValueFromNode {
         return dec.number * std::pow(10, -dec.digits);
     }
 
-    leaf_data_ operator()(const libyang::InstanceIdentifier&) const
+    leaf_data_ operator()(const libyang::InstanceIdentifier& node) const
     {
-        throw std::runtime_error("instance-identifier is not supported");
+        return instanceIdentifier_{node.path};
     }
 
     template <typename Type>

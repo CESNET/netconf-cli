@@ -341,4 +341,13 @@ module example-schema {
         }
     }
 
+    leaf iid-valid {
+        type instance-identifier;
+    }
+
+    leaf iid-relaxed {
+        type instance-identifier {
+            require-instance false;
+        }
+    }
 }
