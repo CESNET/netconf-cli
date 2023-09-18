@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aa421dc_bdd04c7e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-09-18T13:00:02Z",
+      "side": 1,
+      "message": "I should have said that this is really for  https://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/6442 , sorry for a possible confusion. I won\u0027t be needlessly rebasing, so let me just put that into a comment here.",
+      "revId": "685c60abc4b95748e906fa19fe398b12f48fbead",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
