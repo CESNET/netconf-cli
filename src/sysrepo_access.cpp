@@ -35,6 +35,7 @@ SysrepoAccess::SysrepoAccess()
     , m_session(m_connection.sessionStart())
     , m_schema(std::make_shared<YangSchema>(m_session.getContext()))
 {
+    m_session->setOriginatorName("sysrepo-cli");
 }
 
 namespace {
