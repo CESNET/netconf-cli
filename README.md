@@ -13,7 +13,7 @@ It can connect to NETCONF servers, work as a standalone YANG data editor, or tal
 For building, one needs:
 
 * A C++20 compiler
-* [Boost](https://www.boost.org/) (we're testing with `1.75`)
+* [Boost](https://www.boost.org/) (we're testing with `1.78`)
 * [cmake](https://cmake.org/download/) for managing the build
 * [libyang](https://github.com/CESNET/libyang) **version 2.0** plus the [C++ bindings](https://github.com/CESNET/libyang-cpp)
 * [libnetconf2](https://github.com/CESNET/libnetconf2) **version 2.1** plus the [C++ bindings](https://github.com/CESNET/libnetconf2-cpp) for connecting to NETCONF servers
