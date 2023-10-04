@@ -15,15 +15,17 @@ For building, one needs:
 * A C++20 compiler
 * [Boost](https://www.boost.org/) (we're testing with `1.78`)
 * [cmake](https://cmake.org/download/) for managing the build
-* [libyang](https://github.com/CESNET/libyang) **version 2.0** plus the [C++ bindings](https://github.com/CESNET/libyang-cpp)
-* [libnetconf2](https://github.com/CESNET/libnetconf2) **version 2.1** plus the [C++ bindings](https://github.com/CESNET/libnetconf2-cpp) for connecting to NETCONF servers
+* [libyang](https://github.com/CESNET/libyang) **version 2.x** plus the [C++ bindings](https://github.com/CESNET/libyang-cpp)
+* [libnetconf2](https://github.com/CESNET/libnetconf2) **version 2.x** plus the [C++ bindings](https://github.com/CESNET/libnetconf2-cpp) for connecting to NETCONF servers
 * [replxx](https://github.com/AmokHuginnsson/replxx) which provides interactive line prompts
 * [docopt](https://github.com/docopt/docopt.cpp) for CLI option parsing
 * [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) for building
 * optionally, [Doctest](https://github.com/onqtam/doctest/) as a C++ unit test framework
 * optionally, [trompeloeil](https://github.com/rollbear/trompeloeil) for mock objects in C++
-* optionally, [sysrepo](https://github.com/sysrepo/sysrepo/) **version 2.1** plus the [C++ bindings](https://github.com/sysrepo/sysrepo-cpp) for the local sysrepo backend, and for the comprehensive test suite
-* optionally, [netopeer2](https://github.com/CESNET/netopeer2) **version 2.1** for a test suite
+* optionally, [sysrepo](https://github.com/sysrepo/sysrepo/) **version 2.x** plus the [C++ bindings](https://github.com/sysrepo/sysrepo-cpp) for the local sysrepo backend, and for the comprehensive test suite
+* optionally, [netopeer2](https://github.com/CESNET/netopeer2) **version 2.x** for a test suite
+
+At times the `devel` branch of `libyang`, `sysrepo`, `libnetconf2` and `Netopeer2` might be required due to fresh bugfixes and behavior changes.
 
 The build process uses [CMake](https://cmake.org/runningcmake/).
 A quick-and-dirty build with no fancy options can be as simple as `mkdir build && cd build && cmake .. && make && make install`.
