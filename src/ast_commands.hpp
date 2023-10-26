@@ -208,7 +208,7 @@ struct move_ : x3::position_tagged {
     move <path> before <key>
     move <path> after <key>
 
-    Moves the instance specified by <path> to the position specified by the
+    Moves the instance specified by <path> to the position
     specified by the second and third argument.
 
     Usage:
