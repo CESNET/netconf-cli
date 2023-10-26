@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adcef9c6_7466e0d3",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-26T21:24:36Z",
+      "side": 1,
+      "message": "just make the inputDatastorePath a const method in the ProxyDatastore (in a spearate commit, please); this copying is a nasty hack",
+      "range": {
+        "startLine": 61,
+        "startChar": 1,
+        "endLine": 63,
+        "endChar": 77
+      },
+      "revId": "381c952e49b774e5a63c158e5b22ae0c958e9581",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "109e1133_fe00ebb4",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-26T21:24:36Z",
+      "side": 1,
+      "message": "rather than doing:\n auto foo \u003d bar.something();\n if (foo.somethingElse()) {\n     return true;\n } else {\n     return false;\n }\n\nit\u0027s often cleaner to do just:\n\n return foo.something().somethingElse();\n\nbecause:\n\n- I\u0027m all for \"assigning names to something that needs them\" (a.k.a. a local variable for something), but maybe not in this case\n- `if (foo) return true else return false` means the same thing as `return foo`. Sometimes the more verbose version is worth it, but I think that not here.",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 5
+      },
+      "revId": "381c952e49b774e5a63c158e5b22ae0c958e9581",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da1f771a_58b61439",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-26T21:24:36Z",
+      "side": 1,
+      "message": "If I look at this function signature, I see that it\u0027s somehow working on two paths, and it\u0027s returning an absolute one. But I have no clue what that function is doing. What about the following:\n dataPath_ realPath(const dataPath_\u0026 cwd, const dataPath\u0026 newPath);\n\nThat way the order of paths will be, IMHO, more intuitive (it makes sense that the first arg is the old stuff and the second arg the new stuff after all).",
+      "revId": "381c952e49b774e5a63c158e5b22ae0c958e9581",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "353f22ef_8c179dc4",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-26T21:24:36Z",
+      "side": 1,
+      "message": "when the code looks like this:\n if (foo) {\n   return xxx();\n } else {\n    // something possibly complex and with many levels of nesting here\n }\n\nit\u0027s often cleaner and easier to read to write code like this to benefit from one less level of nesting:\n if (foo) {\n   return xxx();\n }\n // something that\u0027s still complex, but now it fits on screen without line wrapping even for those people who do not have 4k screens because there\u0027s now four spaces less, which is great! And it becomes even greater when this early-return pattern is used a few times more in the same function.\n\nIt\u0027s not always the thing to do, but I think that here it definitely is. It really conveys the message of \"ok, now I\u0027m done with that case, and let\u0027s focus on anything else that\u0027s probably more complex, and why this function exists as a function in the first place\".",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 5
+      },
+      "revId": "381c952e49b774e5a63c158e5b22ae0c958e9581",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e570ac14_d63a5745",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-26T21:24:36Z",
+      "side": 1,
+      "message": "You already know that you\u0027ll be checking the other commands in future, so let\u0027s be lazy and do it like this:\n \nvoid Interpreter::checkRpcPath(const dataPath_\u0026 commandPath) const\n{\n    if (auto cwd \u003d proxy.inputDatastorePath()) {\n        auto newPath \u003d realPath(*cwd, commandPath);\n        if (!pathToDataString(newPath, Prefixes::WhenNeeded).starts_with(pathToDataString(*cwd, Prefixes::WhenNeeded)) {\n            throw std::runtime_error{\"Can\u0027t `cd` out of the `prepare` context.\"};\n        }\n    }\n}",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 5
+      },
+      "revId": "381c952e49b774e5a63c158e5b22ae0c958e9581",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
