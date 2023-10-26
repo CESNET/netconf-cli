@@ -94,7 +94,7 @@ std::shared_ptr<Schema> ProxyDatastore::schema() const
     return m_datastore->schema();
 }
 
-std::optional<std::string> ProxyDatastore::inputDatastorePath()
+std::optional<std::string> ProxyDatastore::inputDatastorePath() const
 {
     return m_inputPath;
 }
