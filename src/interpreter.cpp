@@ -57,6 +57,50 @@ std::string pathToString(const PathType& path)
     return boost::apply_visitor(pathToStringVisitor(), path);
 }
 
+bool isRpcInitiated(const ProxyDatastore& datastore)
+{
+    ProxyDatastore nonConstDatastore = datastore;
+    std::optional<std::string> path = nonConstDatastore.inputDatastorePath();
+
+    if (path.has_value()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+dataPath_ getAbsoluteDataPath(const dataPath_& path, const dataPath_& curDir)
+{
+    if (path.m_scope == Scope::Absolute) {
+        return path;
+    } else {
+        dataPath_ res = curDir;
+        for (const auto& it : path.m_nodes) {
+            res.pushFragment(it);
+        }
+        return res;
+    }
+}
+
+bool isInputDescendant(const dataPath_& path, const dataPath_& currentPath, const ProxyDatastore& datastore)
+{
+    ProxyDatastore proxyDatastore = datastore;
+    dataPath_ absolutePath = getAbsoluteDataPath(path, currentPath);
+
+    std::string strPath = pathToDataString(absolutePath, Prefixes::WhenNeeded);
+    std::optional<std::string> rpcInputPath = proxyDatastore.inputDatastorePath();
+
+    if (!rpcInputPath.has_value()) {
+        return false;
+    }
+
+    if (strPath.starts_with(rpcInputPath.value())) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void Interpreter::operator()(const commit_&) const
 {
     m_datastore.commitChanges();
@@ -98,9 +142,13 @@ void Interpreter::operator()(const get_& get) const
 
 void Interpreter::operator()(const cd_& cd) const
 {
-    if (auto rpcInputPath = m_datastore.inputDatastorePath(); rpcInputPath && !pathToDataString(cd.m_path, Prefixes::WhenNeeded).starts_with(m_parser.currentNode())) {
-        throw std::runtime_error("Can't cd out of `prepare` context");
+    bool isRpc = isRpcInitiated(m_datastore);
+    bool isInputDesc = isInputDescendant(cd.m_path, m_parser.currentPath(), m_datastore);
+
+    if (isRpc && !isInputDesc) {
+        throw std::runtime_error("Can't `cd` out of the `prepare` context.");
     }
+
     m_parser.changeNode(cd.m_path);
 }
 
