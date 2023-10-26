@@ -57,6 +57,43 @@ std::string pathToString(const PathType& path)
     return boost::apply_visitor(pathToStringVisitor(), path);
 }
 
+dataPath_ realPath(const dataPath_& cwd, const dataPath_& newPath)
+{
+    if (newPath.m_scope == Scope::Absolute) {
+        return newPath;
+    }
+
+    dataPath_ res = cwd;
+    for (const auto& it : newPath.m_nodes) {
+        res.pushFragment(it);
+    }
+    return res;
+}
+
+bool isInputDescendant(const dataPath_& path, const dataPath_& cwd, const ProxyDatastore& datastore)
+{
+    dataPath_ absolutePath = realPath(cwd, path);
+
+    std::string strPath = pathToDataString(absolutePath, Prefixes::WhenNeeded);
+    std::optional<std::string> strInputPath = datastore.inputDatastorePath();
+
+    if (!strInputPath.has_value()) {
+        return false;
+    }
+
+    return strPath.starts_with(strInputPath.value());
+}
+
+void Interpreter::checkRpcPath(const dataPath_& commandPath, const std::string& commandName) const
+{
+    bool isRpcInitiated = m_datastore.inputDatastorePath().has_value();
+    bool isInputDesc = isInputDescendant(commandPath, m_parser.currentPath(), m_datastore);
+
+    if (isRpcInitiated && !isInputDesc) {
+        throw std::runtime_error("Can't execute `" + commandName + "` outside of the `prepare` context.");
+    }
+}
+
 void Interpreter::operator()(const commit_&) const
 {
     m_datastore.commitChanges();
@@ -98,9 +135,7 @@ void Interpreter::operator()(const get_& get) const
 
 void Interpreter::operator()(const cd_& cd) const
 {
-    if (auto rpcInputPath = m_datastore.inputDatastorePath(); rpcInputPath && !pathToDataString(cd.m_path, Prefixes::WhenNeeded).starts_with(m_parser.currentNode())) {
-        throw std::runtime_error("Can't cd out of `prepare` context");
-    }
+    checkRpcPath(cd.m_path, "cd");
     m_parser.changeNode(cd.m_path);
 }
 

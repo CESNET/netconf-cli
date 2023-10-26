@@ -35,7 +35,7 @@ public:
     [[nodiscard]] DatastoreAccess::Tree execute();
     void cancel();
 
-    std::optional<std::string> inputDatastorePath();
+    std::optional<std::string> inputDatastorePath() const;
 
     [[nodiscard]] std::shared_ptr<Schema> schema() const;
 
