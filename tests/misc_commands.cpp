@@ -10,6 +10,8 @@
 #include "pretty_printers.hpp"
 #include "static_schema.hpp"
 
+#include <iostream>
+
 TEST_CASE("miscellaneous commands")
 {
     auto schema = std::make_shared<StaticSchema>();
@@ -37,5 +39,27 @@ TEST_CASE("miscellaneous commands")
             input = "switch startup";
         }
         REQUIRE(boost::get<switch_>(parser.parseCommand(input, errorStream)) == expected);
+    }
+
+    SECTION("help")
+    {
+        std::string input;
+        bool expectedCommand = false;
+        SECTION("Short help")
+        {
+            input = "help";
+        }
+        SECTION("Short help with trailing whitespace")
+        {
+            input = "help ";
+        }
+        SECTION("Long help")
+        {
+            input = "help cd";
+            expectedCommand = true;
+        }
+
+        auto result = boost::get<help_>(parser.parseCommand(input, errorStream));
+        REQUIRE(!!result.m_cmd == expectedCommand);
     }
 }
