@@ -57,47 +57,40 @@ std::string pathToString(const PathType& path)
     return boost::apply_visitor(pathToStringVisitor(), path);
 }
 
-bool isRpcInitiated(const ProxyDatastore& datastore)
+dataPath_ realPath(const dataPath_& cwd, const dataPath_& newPath)
 {
-    ProxyDatastore nonConstDatastore = datastore;
-    std::optional<std::string> path = nonConstDatastore.inputDatastorePath();
-
-    if (path.has_value()) {
-        return true;
-    } else {
-        return false;
+    if (newPath.m_scope == Scope::Absolute) {
+        return newPath;
     }
+
+    dataPath_ res = cwd;
+    for (const auto& it : newPath.m_nodes) {
+        res.pushFragment(it);
+    }
+    return res;
 }
 
-dataPath_ getAbsoluteDataPath(const dataPath_& path, const dataPath_& curDir)
+bool isInputDescendant(const dataPath_& path, const dataPath_& cwd, const ProxyDatastore& datastore)
 {
-    if (path.m_scope == Scope::Absolute) {
-        return path;
-    } else {
-        dataPath_ res = curDir;
-        for (const auto& it : path.m_nodes) {
-            res.pushFragment(it);
-        }
-        return res;
-    }
-}
-
-bool isInputDescendant(const dataPath_& path, const dataPath_& currentPath, const ProxyDatastore& datastore)
-{
-    ProxyDatastore proxyDatastore = datastore;
-    dataPath_ absolutePath = getAbsoluteDataPath(path, currentPath);
+    dataPath_ absolutePath = realPath(cwd, path);
 
     std::string strPath = pathToDataString(absolutePath, Prefixes::WhenNeeded);
-    std::optional<std::string> rpcInputPath = proxyDatastore.inputDatastorePath();
+    std::optional<std::string> strInputPath = datastore.inputDatastorePath();
 
-    if (!rpcInputPath.has_value()) {
+    if (!strInputPath.has_value()) {
         return false;
     }
 
-    if (strPath.starts_with(rpcInputPath.value())) {
-        return true;
-    } else {
-        return false;
+    return strPath.starts_with(strInputPath.value());
+}
+
+void Interpreter::checkRpcPath(const dataPath_& commandPath, const std::string& commandName) const
+{
+    bool isRpcInitiated = m_datastore.inputDatastorePath().has_value();
+    bool isInputDesc = isInputDescendant(commandPath, m_parser.currentPath(), m_datastore);
+
+    if (isRpcInitiated && !isInputDesc) {
+        throw std::runtime_error("Can't execute `" + commandName + "` outside of the `prepare` context.");
     }
 }
 
@@ -142,13 +135,7 @@ void Interpreter::operator()(const get_& get) const
 
 void Interpreter::operator()(const cd_& cd) const
 {
-    bool isRpc = isRpcInitiated(m_datastore);
-    bool isInputDesc = isInputDescendant(cd.m_path, m_parser.currentPath(), m_datastore);
-
-    if (isRpc && !isInputDesc) {
-        throw std::runtime_error("Can't `cd` out of the `prepare` context.");
-    }
-
+    checkRpcPath(cd.m_path, "cd");
     m_parser.changeNode(cd.m_path);
 }
 
