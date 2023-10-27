@@ -130,7 +130,7 @@ auto const createCommandSuggestions = x3::rule<createCommandSuggestions_class, x
     x3::eps;
 
 auto const help = x3::rule<struct help_class, help_>{"help"} =
-    help_::name > createCommandSuggestions >> -command_names;
+    help_::name >> -(space_separator >> createCommandSuggestions > -(command_names));
 
 struct datastore_symbol_table : x3::symbols<Datastore> {
     datastore_symbol_table()
