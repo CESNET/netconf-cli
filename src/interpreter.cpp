@@ -57,6 +57,29 @@ std::string pathToString(const PathType& path)
     return boost::apply_visitor(pathToStringVisitor(), path);
 }
 
+dataPath_ realPath(const dataPath_& cwd, const dataPath_& newPath)
+{
+    if (newPath.m_scope == Scope::Absolute) {
+        return newPath;
+    }
+
+    dataPath_ res = cwd;
+    for (const auto& it : newPath.m_nodes) {
+        res.pushFragment(it);
+    }
+    return res;
+}
+
+void Interpreter::checkRpcPath(const dataPath_& commandPath) const
+{
+    if (auto inputPath = m_datastore.inputDatastorePath()) {
+        dataPath_ newPath = realPath(m_parser.currentPath(), commandPath);
+        if (!pathToDataString(newPath, Prefixes::WhenNeeded).starts_with(*inputPath)) {
+            throw std::runtime_error("Can't execute `cd` outside of the `prepare` context.");
+        }
+    }
+}
+
 void Interpreter::operator()(const commit_&) const
 {
     m_datastore.commitChanges();
@@ -98,9 +121,7 @@ void Interpreter::operator()(const get_& get) const
 
 void Interpreter::operator()(const cd_& cd) const
 {
-    if (auto rpcInputPath = m_datastore.inputDatastorePath(); rpcInputPath && !pathToDataString(cd.m_path, Prefixes::WhenNeeded).starts_with(m_parser.currentNode())) {
-        throw std::runtime_error("Can't cd out of `prepare` context");
-    }
+    checkRpcPath(cd.m_path);
     m_parser.changeNode(cd.m_path);
 }
 
