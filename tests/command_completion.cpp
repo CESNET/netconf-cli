@@ -90,5 +90,20 @@ TEST_CASE("command completion")
         expectedContextLength = 0;
     }
 
+    SECTION("help")
+    {
+        input = "help";
+        expectedCompletions = {"help "};
+        expectedContextLength = 4;
+    }
+
+    SECTION("help")
+    {
+        input = "help ";
+        expectedCompletions = {"cd", "copy", "create", "delete", "set", "commit", "get", "ls", "discard", "help", "describe", "move", "dump", "prepare", "exec", "cancel", "switch", "quit"};
+        expectedContextLength = 0;
+    }
+
+
     REQUIRE(parser.completeCommand(input, errorStream) == (Completions{expectedCompletions, expectedContextLength}));
 }
