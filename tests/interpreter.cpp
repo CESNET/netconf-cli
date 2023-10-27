@@ -456,6 +456,9 @@ TEST_CASE("rpc")
         {
             REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Absolute, {dataNode_{module_{{"example"}}, container_{"somewhereElse"}}}}}}));
             REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Relative, {dataNode_{nodeup_{}}}}}}));
+
+            // Test that the parser allows to change the current node within the rpc context
+            REQUIRE_NOTHROW(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Relative, {dataNode_{container_{"payload"}}}}}}));
             boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cancel_{}});
         }
 
