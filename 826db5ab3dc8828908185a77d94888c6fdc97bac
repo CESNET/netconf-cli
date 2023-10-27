@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f52fbb34_255f8074",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-27T10:36:08Z",
+      "side": 1,
+      "message": "commit messages cannot be just joined together like this; gerrit only recognizes the change-id when it\u0027s in a commit footer.",
+      "revId": "826db5ab3dc8828908185a77d94888c6fdc97bac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bad41776_21e63d1c",
+        "filename": "src/interpreter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-27T10:36:08Z",
+      "side": 1,
+      "message": "this belongs to a separate commit",
+      "revId": "826db5ab3dc8828908185a77d94888c6fdc97bac",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
