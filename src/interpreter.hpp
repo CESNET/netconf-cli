@@ -35,9 +35,10 @@ struct Interpreter : boost::static_visitor<void> {
     void operator()(const switch_& switch_cmd) const;
     void operator()(const quit_&) const;
 
-    void checkRpcPath(const dataPath_& commandPath, const std::string& commandName) const;
 
 private:
+    void checkRpcPath(const std::variant<move_, set_, cd_, create_, delete_>& cmd) const;
+
     [[nodiscard]] std::string buildTypeInfo(const std::string& path) const;
 
     template <typename PathType>

@@ -4,7 +4,7 @@
  *
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
-*/
+ */
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/mpl/for_each.hpp>
@@ -70,9 +70,29 @@ dataPath_ realPath(const dataPath_& cwd, const dataPath_& newPath)
     return res;
 }
 
-void Interpreter::checkRpcPath(const dataPath_& commandPath, const std::string& commandName) const
+struct NameRetriever : boost::static_visitor<std::string> {
+    template <typename T>
+    std::string operator()(const T&) const {
+        return T::name;
+    }
+};
+
+struct CommandPathRetriever : boost::static_visitor<dataPath_> {
+    dataPath_ operator()(const move_& cmd) const {
+        return cmd.m_source;
+    }
+
+    template <typename T>
+    dataPath_ operator()(const T& cmd) const {
+        return cmd.m_path;
+    }
+};
+
+void Interpreter::checkRpcPath(const std::variant<move_, set_, cd_, create_, delete_>& cmd) const
 {
     if (auto inputPath = m_datastore.inputDatastorePath()) {
+        std::string commandName = std::visit(NameRetriever(), cmd);
+        dataPath_ commandPath = std::visit(CommandPathRetriever(), cmd);
         dataPath_ newPath = realPath(m_parser.currentPath(), commandPath);
         if (!pathToDataString(newPath, Prefixes::WhenNeeded).starts_with(*inputPath)) {
             throw std::runtime_error("Can't execute `" + commandName + "` outside of the `prepare` context.");
@@ -82,17 +102,24 @@ void Interpreter::checkRpcPath(const dataPath_& commandPath, const std::string& 
 
 void Interpreter::operator()(const commit_&) const
 {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        throw std::runtime_error("Can't execute `commit` during an RPC/action execution.");
+    }
     m_datastore.commitChanges();
 }
 
 void Interpreter::operator()(const discard_&) const
 {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        throw std::runtime_error("Can't execute `discard` during an RPC/action execution.");
+    }
     m_datastore.discardChanges();
 }
 
 void Interpreter::operator()(const set_& set) const
 {
     auto data = set.m_data;
+    checkRpcPath(set);
 
     // If the user didn't supply a module prefix for identityref, we need to add it ourselves
     if (data.type() == typeid(identityRef_)) {
@@ -107,9 +134,7 @@ void Interpreter::operator()(const set_& set) const
 
 void Interpreter::operator()(const get_& get) const
 {
-    auto targetSwitcher = make_unique_resource([] {}, [this, oldTarget = m_datastore.target()] {
-        m_datastore.setTarget(oldTarget);
-    });
+    auto targetSwitcher = make_unique_resource([] {}, [this, oldTarget = m_datastore.target()] { m_datastore.setTarget(oldTarget); });
 
     if (get.m_dsTarget) {
         m_datastore.setTarget(*get.m_dsTarget);
@@ -121,17 +146,19 @@ void Interpreter::operator()(const get_& get) const
 
 void Interpreter::operator()(const cd_& cd) const
 {
-    checkRpcPath(cd.m_path, "cd");
+    checkRpcPath(cd);
     m_parser.changeNode(cd.m_path);
 }
 
 void Interpreter::operator()(const create_& create) const
 {
+    checkRpcPath(create);
     m_datastore.createItem(pathToString(toCanonicalPath(create.m_path)));
 }
 
 void Interpreter::operator()(const delete_& delet) const
 {
+    checkRpcPath(delet);
     m_datastore.deleteItem(pathToString(toCanonicalPath(delet.m_path)));
 }
 
@@ -154,6 +181,9 @@ void Interpreter::operator()(const ls_& ls) const
 
 void Interpreter::operator()(const copy_& copy) const
 {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        throw std::runtime_error("Can't execute `copy` during an RPC/action execution.");
+    }
     m_datastore.copyConfig(copy.m_source, copy.m_destination);
 }
 
@@ -226,14 +256,14 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
     }
 
     auto status = m_datastore.schema()->status(path);
-    auto statusStr = status == yang::Status::Deprecated ? " (deprecated)" :
-        status == yang::Status::Obsolete ? " (obsolete)" :
-        "";
+    auto statusStr = status == yang::Status::Deprecated ? " (deprecated)" : status == yang::Status::Obsolete ? " (obsolete)"
+                                                                                                             : "";
 
     ss << statusStr;
 
     if (auto description = m_datastore.schema()->description(path)) {
-        ss << std::endl << *description << std::endl;
+        ss << std::endl
+           << *description << std::endl;
     }
 
     ss << typeDescription;
@@ -249,6 +279,7 @@ void Interpreter::operator()(const describe_& describe) const
 
 void Interpreter::operator()(const move_& move) const
 {
+    checkRpcPath(move);
     m_datastore.moveItem(pathToDataString(move.m_source, Prefixes::WhenNeeded), move.m_destination);
 }
 
@@ -259,6 +290,9 @@ void Interpreter::operator()(const dump_& dump) const
 
 void Interpreter::operator()(const prepare_& prepare) const
 {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        throw std::runtime_error("Can't execute `prepare` during an RPC/action execution.");
+    }
     m_datastore.initiate(pathToString(toCanonicalPath(prepare.m_path)));
     m_parser.changeNode(prepare.m_path);
 }
@@ -282,6 +316,9 @@ void Interpreter::operator()(const cancel_&) const
 
 void Interpreter::operator()(const switch_& switch_cmd) const
 {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        throw std::runtime_error("Can't execute `switch` during an RPC/action execution.");
+    }
     m_datastore.setTarget(switch_cmd.m_target);
 }
 
