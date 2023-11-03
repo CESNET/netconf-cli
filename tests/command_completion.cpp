@@ -4,7 +4,7 @@
  *
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
-*/
+ */
 
 #include "trompeloeil_doctest.hpp"
 #include "parser.hpp"
@@ -97,7 +97,7 @@ TEST_CASE("command completion")
         expectedContextLength = 4;
     }
 
-    SECTION("help")
+    SECTION("help command list")
     {
         input = "help ";
         expectedCompletions = {"cd", "copy", "create", "delete", "set", "commit", "get", "ls", "discard", "help", "describe", "move", "dump", "prepare", "exec", "cancel", "switch", "quit"};
