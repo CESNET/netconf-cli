@@ -4,7 +4,7 @@
  *
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
-*/
+ */
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/mpl/for_each.hpp>
@@ -82,17 +82,24 @@ void Interpreter::checkRpcPath(const dataPath_& commandPath, const std::string& 
 
 void Interpreter::operator()(const commit_&) const
 {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        throw std::runtime_error("Can't execute `commit` during an RPC/action execution.");
+    }
     m_datastore.commitChanges();
 }
 
 void Interpreter::operator()(const discard_&) const
 {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        throw std::runtime_error("Can't execute `discard` during an RPC/action execution.");
+    }
     m_datastore.discardChanges();
 }
 
 void Interpreter::operator()(const set_& set) const
 {
     auto data = set.m_data;
+    checkRpcPath(set.m_path, "set");
 
     // If the user didn't supply a module prefix for identityref, we need to add it ourselves
     if (data.type() == typeid(identityRef_)) {
@@ -107,9 +114,7 @@ void Interpreter::operator()(const set_& set) const
 
 void Interpreter::operator()(const get_& get) const
 {
-    auto targetSwitcher = make_unique_resource([] {}, [this, oldTarget = m_datastore.target()] {
-        m_datastore.setTarget(oldTarget);
-    });
+    auto targetSwitcher = make_unique_resource([] {}, [this, oldTarget = m_datastore.target()] { m_datastore.setTarget(oldTarget); });
 
     if (get.m_dsTarget) {
         m_datastore.setTarget(*get.m_dsTarget);
@@ -127,11 +132,13 @@ void Interpreter::operator()(const cd_& cd) const
 
 void Interpreter::operator()(const create_& create) const
 {
+    checkRpcPath(create.m_path, "create");
     m_datastore.createItem(pathToString(toCanonicalPath(create.m_path)));
 }
 
 void Interpreter::operator()(const delete_& delet) const
 {
+    checkRpcPath(delet.m_path, "delete");
     m_datastore.deleteItem(pathToString(toCanonicalPath(delet.m_path)));
 }
 
@@ -154,6 +161,9 @@ void Interpreter::operator()(const ls_& ls) const
 
 void Interpreter::operator()(const copy_& copy) const
 {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        throw std::runtime_error("Can't execute `copy` during an RPC/action execution.");
+    }
     m_datastore.copyConfig(copy.m_source, copy.m_destination);
 }
 
@@ -226,14 +236,14 @@ std::string Interpreter::buildTypeInfo(const std::string& path) const
     }
 
     auto status = m_datastore.schema()->status(path);
-    auto statusStr = status == yang::Status::Deprecated ? " (deprecated)" :
-        status == yang::Status::Obsolete ? " (obsolete)" :
-        "";
+    auto statusStr = status == yang::Status::Deprecated ? " (deprecated)" : status == yang::Status::Obsolete ? " (obsolete)"
+                                                                                                             : "";
 
     ss << statusStr;
 
     if (auto description = m_datastore.schema()->description(path)) {
-        ss << std::endl << *description << std::endl;
+        ss << std::endl
+           << *description << std::endl;
     }
 
     ss << typeDescription;
@@ -249,6 +259,7 @@ void Interpreter::operator()(const describe_& describe) const
 
 void Interpreter::operator()(const move_& move) const
 {
+    checkRpcPath(move.m_source, "move");
     m_datastore.moveItem(pathToDataString(move.m_source, Prefixes::WhenNeeded), move.m_destination);
 }
 
@@ -259,6 +270,9 @@ void Interpreter::operator()(const dump_& dump) const
 
 void Interpreter::operator()(const prepare_& prepare) const
 {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        throw std::runtime_error("Can't execute `prepare` during an RPC/action execution.");
+    }
     m_datastore.initiate(pathToString(toCanonicalPath(prepare.m_path)));
     m_parser.changeNode(prepare.m_path);
 }
@@ -282,6 +296,9 @@ void Interpreter::operator()(const cancel_&) const
 
 void Interpreter::operator()(const switch_& switch_cmd) const
 {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        throw std::runtime_error("Can't execute `switch` during an RPC/action execution.");
+    }
     m_datastore.setTarget(switch_cmd.m_target);
 }
 
