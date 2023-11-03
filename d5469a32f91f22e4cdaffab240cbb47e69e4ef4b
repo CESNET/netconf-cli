@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45f502c2_533d51cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-03T12:14:58Z",
+      "side": 1,
+      "message": "Ales, this should fix the issue you had with failed expectations being reported as some hex garbage.",
+      "revId": "d5469a32f91f22e4cdaffab240cbb47e69e4ef4b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
