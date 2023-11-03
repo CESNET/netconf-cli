@@ -16,6 +16,41 @@
       "message": "Ales, this should fix the issue you had with failed expectations being reported as some hex garbage.",
       "revId": "d5469a32f91f22e4cdaffab240cbb47e69e4ef4b",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "302f4d2f_e1e67cec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000111
+      },
+      "writtenOn": "2023-11-03T14:50:46Z",
+      "side": 1,
+      "message": "This adjustment fixed the problem where the failed tests were displaying error messages as hexadecimal numbers. Now, I\u0027m unable to reproduce that output.",
+      "revId": "d5469a32f91f22e4cdaffab240cbb47e69e4ef4b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8cfb2d4_5d63481a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000111
+      },
+      "writtenOn": "2023-11-03T14:50:46Z",
+      "side": 1,
+      "message": "I agree. Here\u0027s a comparison between the previous response and the new response that resulted from this change.\n\nBefore:\n`/home/ales/cesnet/netconf-cli/tests/interpreter.cpp:524: ERROR: 0x55b9505eb4e0`\n\nNow:\n`/home/ales/cesnet/netconf-cli/tests/interpreter.cpp:524: ERROR: There was an unmet expectation: We expected *input_datastore.moveItem(pathToDataString(inRpcLeaf, Prefixes::WhenNeeded), destination) to be called once, but it was actually never called. param _1 \u003d\u003d description param _2 \u003d\u003d 4-byte object\u003d{ 0x00 0x00 0x00 0x00 }`",
+      "parentUuid": "45f502c2_533d51cd",
+      "revId": "d5469a32f91f22e4cdaffab240cbb47e69e4ef4b",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
