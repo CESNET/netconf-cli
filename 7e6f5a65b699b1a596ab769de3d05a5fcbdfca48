@@ -165,6 +165,30 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dd143f3_23dc2a3e",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-03T12:19:11Z",
+      "side": 1,
+      "message": "awesome, thanks for noticing that",
+      "parentUuid": "bc71253b_e98de2f6",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 1
+      },
+      "revId": "7e6f5a65b699b1a596ab769de3d05a5fcbdfca48",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "575139f3_ad7fe3b6",
