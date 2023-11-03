@@ -70,30 +70,48 @@ dataPath_ realPath(const dataPath_& cwd, const dataPath_& newPath)
     return res;
 }
 
-void Interpreter::checkRpcPath(const dataPath_& commandPath) const
+void Interpreter::checkRpc(const std::variant<commit_, discard_, copy_, prepare_, switch_>& cmd) const {
+    if (m_datastore.inputDatastorePath().has_value()) {
+        std::string commandName = std::visit([](const auto& cmd) { return cmd.name; }, cmd);
+        throw std::runtime_error("Can't execute `commit` during an RPC/action execution.");
+    }
+}
+
+template <typename... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template <typename... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
+void Interpreter::checkRpcContext(const std::variant<move_, set_, cd_, create_, delete_>& cmd) const
 {
     if (auto inputPath = m_datastore.inputDatastorePath()) {
+        dataPath_ commandPath = std::visit(overloaded {
+                                               [](const move_& cmd) { return cmd.m_source; },
+                                               [](const auto& cmd) { return cmd.m_path; }
+                                           }, cmd);
+        std::string commandName = std::visit([](const auto& cmd) { return cmd.name; }, cmd);
         dataPath_ newPath = realPath(m_parser.currentPath(), commandPath);
         if (!pathToDataString(newPath, Prefixes::WhenNeeded).starts_with(*inputPath)) {
-            throw std::runtime_error("Can't execute `cd` outside of the `prepare` context.");
+            throw std::runtime_error("Can't execute `" + commandName + "` out of the RPC/action context.");
         }
     }
 }
 
-void Interpreter::operator()(const commit_&) const
+void Interpreter::operator()(const commit_& commit) const
 {
+    checkRpc(commit);
     m_datastore.commitChanges();
 }
 
-void Interpreter::operator()(const discard_&) const
+void Interpreter::operator()(const discard_& discard) const
 {
+    checkRpc(discard);
     m_datastore.discardChanges();
 }
 
 void Interpreter::operator()(const set_& set) const
 {
-    auto data = set.m_data;
+    checkRpcContext(set);
 
+    auto data = set.m_data;
     // If the user didn't supply a module prefix for identityref, we need to add it ourselves
     if (data.type() == typeid(identityRef_)) {
         auto identityRef = boost::get<identityRef_>(data);
@@ -121,17 +139,19 @@ void Interpreter::operator()(const get_& get) const
 
 void Interpreter::operator()(const cd_& cd) const
 {
-    checkRpcPath(cd.m_path);
+    checkRpcContext(cd);
     m_parser.changeNode(cd.m_path);
 }
 
 void Interpreter::operator()(const create_& create) const
 {
+    checkRpcContext(create);
     m_datastore.createItem(pathToString(toCanonicalPath(create.m_path)));
 }
 
 void Interpreter::operator()(const delete_& delet) const
 {
+    checkRpcContext(delet);
     m_datastore.deleteItem(pathToString(toCanonicalPath(delet.m_path)));
 }
 
@@ -154,6 +174,7 @@ void Interpreter::operator()(const ls_& ls) const
 
 void Interpreter::operator()(const copy_& copy) const
 {
+    checkRpc(copy);
     m_datastore.copyConfig(copy.m_source, copy.m_destination);
 }
 
@@ -249,6 +270,7 @@ void Interpreter::operator()(const describe_& describe) const
 
 void Interpreter::operator()(const move_& move) const
 {
+    checkRpcContext(move);
     m_datastore.moveItem(pathToDataString(move.m_source, Prefixes::WhenNeeded), move.m_destination);
 }
 
@@ -259,6 +281,7 @@ void Interpreter::operator()(const dump_& dump) const
 
 void Interpreter::operator()(const prepare_& prepare) const
 {
+    checkRpc(prepare);
     m_datastore.initiate(pathToString(toCanonicalPath(prepare.m_path)));
     m_parser.changeNode(prepare.m_path);
 }
@@ -282,6 +305,7 @@ void Interpreter::operator()(const cancel_&) const
 
 void Interpreter::operator()(const switch_& switch_cmd) const
 {
+    checkRpc(switch_cmd);
     m_datastore.setTarget(switch_cmd.m_target);
 }
 

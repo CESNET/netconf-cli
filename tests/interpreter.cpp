@@ -452,14 +452,77 @@ TEST_CASE("rpc")
 
         REQUIRE(parser.currentPath() == rpcPath);
 
+        dataPath_ inRpcContainer = dataPath_{Scope::Relative, {dataNode_{container_{"payload"}}}};
+        dataPath_ inRpcLeaf = dataPath_{Scope::Relative, {dataNode_{leaf_{"description"}}}};
+        dataPath_ outRpcPath = dataPath_{Scope::Absolute, {dataNode_{nodeup_{}}, dataNode_{module_("example"), container_{"somewhere-else"}}}};
+
+        std::string inRpcContainerString = "/example:launch-nukes/payload";
+        std::string inRpcLeafString = "/example:launch-nukes/description";
+
+        SECTION("test `commit` inside of the rpc context")
+        {
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{commit_{}}));
+        }
+
+        SECTION("test `discard` inside of the rpc context")
+        {
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{discard_{}}));
+        }
+
+        SECTION("test `copy` inside of the rpc context")
+        {
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{copy_{{}, Datastore::Running, Datastore::Startup}}));
+        }
+
+        SECTION("test `switch` inside of the rpc context")
+        {
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{switch_{{}, DatastoreTarget::Running}}));
+        }
+
+        SECTION("test `prepare` inside of the rpc context")
+        {
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{prepare_{{}, outRpcPath}}));
+        }
+
+        SECTION("test `create` inside of the rpc context")
+        {
+            REQUIRE_CALL(*input_datastore, createItem(inRpcContainerString));
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{create_{{}, inRpcContainer}});
+
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{create_{{}, outRpcPath}}));
+        }
+
+        SECTION("test `set` inside of the rpc context")
+        {
+            leaf_data_ leafData = std::string{"Nuke the whales"};
+            REQUIRE_CALL(*input_datastore, setLeaf(inRpcLeafString, leafData));
+            REQUIRE_NOTHROW(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{set_{{}, inRpcLeaf, leafData}}));
+
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{set_{{}, outRpcPath, leafData}}));
+        }
+
         SECTION("can't leave the context with cd")
         {
-            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Absolute, {dataNode_{module_{{"example"}}, container_{"somewhereElse"}}}}}}));
-            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Relative, {dataNode_{nodeup_{}}}}}}));
+            REQUIRE_NOTHROW(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, inRpcContainer}}));
 
-            // Test that the parser allows to change the current node within the rpc context
-            REQUIRE_NOTHROW(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Relative, {dataNode_{container_{"payload"}}}}}}));
-            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cancel_{}});
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, outRpcPath}}));
+        }
+
+        SECTION("test `delete` inside of the rpc context")
+        {
+            REQUIRE_CALL(*input_datastore, deleteItem(inRpcContainerString));
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{delete_{{}, inRpcContainer}});
+
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{delete_{{}, outRpcPath}}));
+        }
+
+        SECTION("test `move` inside of the rpc context")
+        {
+            yang::move::Absolute destination = yang::move::Absolute::Begin;
+            REQUIRE_CALL(*datastore, moveItem("description", destination));
+            REQUIRE_NOTHROW(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{move_{{}, inRpcLeaf, destination}}));
+
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{move_{{}, outRpcPath, destination}}));
         }
 
         SECTION("exec")
@@ -473,7 +536,5 @@ TEST_CASE("rpc")
         {
             boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cancel_{}});
         }
-
-        REQUIRE(parser.currentPath() == dataPath_{});
     }
 }
