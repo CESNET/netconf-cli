@@ -36,7 +36,8 @@ struct Interpreter : boost::static_visitor<void> {
     void operator()(const quit_&) const;
 
 private:
-    void checkRpcPath(const dataPath_& commandPath) const;
+    void enforceRpcRestrictions(const std::variant<commit_, discard_, copy_, prepare_, switch_>& cmd) const;
+    void enforceRpcRestrictions(const std::variant<move_, set_, cd_, create_, delete_>& cmd) const;
 
     [[nodiscard]] std::string buildTypeInfo(const std::string& path) const;
 
