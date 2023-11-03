@@ -16,6 +16,24 @@
       "message": "please add a test for this (tests/command_completion.cpp)",
       "revId": "0a696a9c7963fde6c044f4b4aec12a1972bfe8fe",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba528e3f_77d27456",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000111
+      },
+      "writtenOn": "2023-11-03T17:57:30Z",
+      "side": 1,
+      "message": "I\u0027ve included two new tests to check the grammar during command completion. One test is set up to automatically insert a space after typing \u0027help\u0027, while the other test is designed to display a list of all commands after typing \u0027help \u0027 (with a space after the command).",
+      "parentUuid": "b90430ba_a8785d6f",
+      "revId": "0a696a9c7963fde6c044f4b4aec12a1972bfe8fe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
