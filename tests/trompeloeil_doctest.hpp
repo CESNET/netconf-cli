@@ -16,6 +16,4 @@
 #define REQUIRE_THROWS_WITH(expr, e) DOCTEST_REQUIRE_THROWS_WITH(static_cast<void>(expr), e)
 #define REQUIRE_NOTHROW(expr) DOCTEST_REQUIRE_NOTHROW(static_cast<void>(expr))
 
-extern template struct trompeloeil::reporter<trompeloeil::specialized>;
-
 void waitForCompletionAndBitMore(const trompeloeil::sequence& seq);
