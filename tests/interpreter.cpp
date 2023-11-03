@@ -437,6 +437,11 @@ TEST_CASE("rpc")
         return input_datastore;
     };
     ProxyDatastore proxyDatastore(datastore, createTemporaryDatastore);
+    std::vector<std::unique_ptr<trompeloeil::expectation>> expectations;
+
+    std::vector<command_> toInterpretValid;
+    std::vector<command_> toInterpretError;
+
 
     SECTION("entering/leaving rpc context")
     {
@@ -452,14 +457,72 @@ TEST_CASE("rpc")
 
         REQUIRE(parser.currentPath() == rpcPath);
 
-        SECTION("can't leave the context with cd")
-        {
-            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Absolute, {dataNode_{module_{{"example"}}, container_{"somewhereElse"}}}}}}));
-            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Relative, {dataNode_{nodeup_{}}}}}}));
+        dataPath_ inRpcContainer = dataPath_{Scope::Relative, {dataNode_{container_{"payload"}}}};
+        dataPath_ inRpcLeaf = dataPath_{Scope::Relative, {dataNode_{leaf_{"description"}}}};
+        dataPath_ outRpcPath = dataPath_{Scope::Absolute, {dataNode_{nodeup_{}}, dataNode_{module_("example"), container_{"somewhere-else"}}}};
 
-            // Test that the parser allows to change the current node within the rpc context
-            REQUIRE_NOTHROW(boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cd_{{}, dataPath_{Scope::Relative, {dataNode_{container_{"payload"}}}}}}));
-            boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cancel_{}});
+        std::string inRpcContainerString = "/example:launch-nukes/payload";
+        std::string inRpcLeafString = "/example:launch-nukes/description";
+
+        SECTION("test `commit` inside of the rpc context")
+        {
+            toInterpretError.emplace_back(commit_{});
+        }
+
+        SECTION("test `discard` inside of the rpc context")
+        {
+            toInterpretError.emplace_back(discard_{});
+        }
+
+        SECTION("test `copy` inside of the rpc context")
+        {
+            toInterpretError.emplace_back(copy_{{}, Datastore::Running, Datastore::Startup});
+        }
+
+        SECTION("test `switch` inside of the rpc context")
+        {
+            toInterpretError.emplace_back(switch_{{}, DatastoreTarget::Running});
+        }
+
+        SECTION("test `prepare` inside of the rpc context")
+        {
+            toInterpretError.emplace_back(prepare_{{}, outRpcPath});
+        }
+
+        SECTION("test `create` inside of the rpc context")
+        {
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*input_datastore, createItem(inRpcContainerString)));
+            toInterpretValid.emplace_back(create_{{}, inRpcContainer});
+            toInterpretError.emplace_back(create_{{}, outRpcPath});
+        }
+
+        SECTION("test `set` inside of the rpc context")
+        {
+            leaf_data_ leafData = std::string{"Nuke the whales"};
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*input_datastore, setLeaf(inRpcLeafString, leafData)));
+            toInterpretValid.emplace_back(set_{{}, inRpcLeaf, leafData});
+            toInterpretError.emplace_back(set_{{}, outRpcPath, leafData});
+        }
+
+        SECTION("test `cd` inside of the rpc context")
+        {
+            toInterpretValid.emplace_back(cd_{{}, inRpcContainer});
+            toInterpretError.emplace_back(cd_{{}, outRpcPath});
+        }
+
+        SECTION("test `delete` inside of the rpc context")
+        {
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*input_datastore, deleteItem(inRpcContainerString)));
+            toInterpretValid.emplace_back(delete_{{}, inRpcContainer});
+            toInterpretError.emplace_back(delete_{{}, outRpcPath});
+        }
+
+        SECTION("test `move` inside of the rpc context")
+        {
+            yang::move::Absolute destination = yang::move::Absolute::Begin;
+            expectations.emplace_back(NAMED_REQUIRE_CALL(*datastore, moveItem("description", destination)));
+            toInterpretValid.emplace_back(move_{{}, inRpcLeaf, destination});
+            toInterpretError.emplace_back(move_{{}, outRpcPath, destination});
         }
 
         SECTION("exec")
@@ -467,13 +530,21 @@ TEST_CASE("rpc")
             REQUIRE_CALL(*input_datastore, getItems("/")).RETURN(DatastoreAccess::Tree{});
             REQUIRE_CALL(*datastore, execute("/example:launch-nukes", DatastoreAccess::Tree{})).RETURN(DatastoreAccess::Tree{});
             boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{exec_{}});
+            REQUIRE(parser.currentPath() == dataPath_{});
         }
 
         SECTION("cancel")
         {
             boost::apply_visitor(Interpreter(parser, proxyDatastore), command_{cancel_{}});
+            REQUIRE(parser.currentPath() == dataPath_{});
         }
 
-        REQUIRE(parser.currentPath() == dataPath_{});
+        for (const auto& command : toInterpretValid) {
+            boost::apply_visitor(Interpreter(parser, proxyDatastore), command);
+        }
+
+        for (const auto& command : toInterpretError) {
+            REQUIRE_THROWS(boost::apply_visitor(Interpreter(parser, proxyDatastore), command));
+        }
     }
 }
