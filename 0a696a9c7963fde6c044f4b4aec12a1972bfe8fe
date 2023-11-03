@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b90430ba_a8785d6f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-03T12:20:14Z",
+      "side": 1,
+      "message": "please add a test for this (tests/command_completion.cpp)",
+      "revId": "0a696a9c7963fde6c044f4b4aec12a1972bfe8fe",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
