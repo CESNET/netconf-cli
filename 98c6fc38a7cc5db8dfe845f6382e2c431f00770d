@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e98c3607_c14c7fce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-04T15:58:02Z",
+      "side": 1,
+      "message": "Sorry for this back-and-forth, I only noticed this when reading https://gerrit.cesnet.cz/c/CzechLight/netconf-cli/+/6612 .",
+      "revId": "98c6fc38a7cc5db8dfe845f6382e2c431f00770d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2d9b817_2129a1a5",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-04T15:58:02Z",
+      "side": 1,
+      "message": "Please take a `const command_\u0026` here, and extract that string with a command name from there.",
+      "range": {
+        "startLine": 73,
+        "startChar": 61,
+        "endLine": 73,
+        "endChar": 91
+      },
+      "revId": "98c6fc38a7cc5db8dfe845f6382e2c431f00770d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
