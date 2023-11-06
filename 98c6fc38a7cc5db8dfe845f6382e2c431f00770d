@@ -39,6 +39,30 @@
       },
       "revId": "98c6fc38a7cc5db8dfe845f6382e2c431f00770d",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43f93a2e_0f75e4be",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000111
+      },
+      "writtenOn": "2023-11-06T13:45:47Z",
+      "side": 1,
+      "message": "The implementation you\u0027re suggesting will also require the creation of a visitor object for retrieving the name. Another approach is to have a single argument in the function, which could be of type `const command_\u0026`, and implement two visitors for handling the path and the name if you agree.",
+      "parentUuid": "a2d9b817_2129a1a5",
+      "range": {
+        "startLine": 73,
+        "startChar": 61,
+        "endLine": 73,
+        "endChar": 91
+      },
+      "revId": "98c6fc38a7cc5db8dfe845f6382e2c431f00770d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
