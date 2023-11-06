@@ -63,6 +63,30 @@
       },
       "revId": "98c6fc38a7cc5db8dfe845f6382e2c431f00770d",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f94ba81e_b81f531c",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-06T13:59:41Z",
+      "side": 1,
+      "message": "Yes, one argument looks like a nice design. That visitor will be a simple one-liner, and extracting the path will be just a tiny bit more complex due to some irregularity in `move_`. Good idea!",
+      "parentUuid": "43f93a2e_0f75e4be",
+      "range": {
+        "startLine": 73,
+        "startChar": 61,
+        "endLine": 73,
+        "endChar": 91
+      },
+      "revId": "98c6fc38a7cc5db8dfe845f6382e2c431f00770d",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
