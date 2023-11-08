@@ -1,0 +1,221 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "989082d4_f408bdb9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "wrap lines at 75 chars in commit messages, please",
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0259917f_443cb280",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "just \"Bug\" here, please",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 13
+      },
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e3b0ed9_be14a0d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "This one in particular doesn\u0027t add new information to the commit message; I think it\u0027s a bit excessive to say \"one commit among the parents fixes a similar issue\".",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 71
+      },
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8241839b_01bfc41b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "These \"tags\" have some meaning, so let\u0027s try to limit the number of different variants. If you\u0027re referring to a bug, use `Bug:`, if it\u0027s fixing another commit, say `Fixes:`.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 52
+      },
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5aec3e34_a9fa763a",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "I think that a tiny helper function is worth it.",
+      "range": {
+        "startLine": 84,
+        "startChar": 1,
+        "endLine": 87,
+        "endChar": 5
+      },
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa1eb0ab_6517e39a",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "In all other cases it\u0027s the first thing, but here in this change it\u0027s put in between a \"shorthand variable initialization\" and \"code which uses that shortcut\".",
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d956209a_f8f29e8e",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "unrelated change",
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f815af5_ef201293",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "unrelated change",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 247,
+        "endChar": 5
+      },
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67ddc79c_78087b52",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "what for?",
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6e0bf7e_790035c2",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "unrelated change (and also later in this file in various places); please configure your editor to not do this",
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7474a0af_37d2f47c",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T19:16:55Z",
+      "side": 1,
+      "message": "unused",
+      "revId": "9494d1fdae80493b8d173bd8fcee1d021d0fe2d4",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
