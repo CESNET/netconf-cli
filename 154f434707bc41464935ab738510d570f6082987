@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7a9727f_b350a38d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T17:18:08Z",
+      "side": 1,
+      "message": "recheck\n\nThat CI failure is, hopefully, just noise. The backtrace leads once again to sssd\u0027s NSS modules, and I don\u0027t really want to debug that...",
+      "revId": "154f434707bc41464935ab738510d570f6082987",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
