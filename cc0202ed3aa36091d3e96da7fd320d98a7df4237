@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88df8aeb_72e8cb9c",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-09T00:22:54Z",
+      "side": 1,
+      "message": "commandName",
+      "range": {
+        "startLine": 76,
+        "startChar": 49,
+        "endLine": 76,
+        "endChar": 55
+      },
+      "revId": "cc0202ed3aa36091d3e96da7fd320d98a7df4237",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42ad80a4_3486ffbe",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-09T00:22:54Z",
+      "side": 1,
+      "message": "- please mention in the commit message where this comes from (see .e.g https://gerrit.cesnet.cz/c/CzechLight/rousette/+/6360 how we\u0027re doing this)\n- it looks like a useful utility function that might be used in other files over time; please add it to src/utils.hpp",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 65
+      },
+      "revId": "cc0202ed3aa36091d3e96da7fd320d98a7df4237",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca63e806_90d03548",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-09T00:22:54Z",
+      "side": 1,
+      "message": "I think that `checkRpc` and `checkRpcContext` should have the same name; they are doing effectively the same thing, and overload resolution should take care of the rest.",
+      "range": {
+        "startLine": 83,
+        "startChar": 18,
+        "endLine": 83,
+        "endChar": 33
+      },
+      "revId": "cc0202ed3aa36091d3e96da7fd320d98a7df4237",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0035a766_2116d559",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-09T00:22:54Z",
+      "side": 1,
+      "message": "It\u0027s a lot of code which differs essentially just in the value of command that\u0027s executed. Let\u0027s structure the code like that -- initialize the command in SECTIONs, and have just one place where you check the behavior via REQUIRE_THROWS. Check tests/leaf_editing.cpp for the pattern I have in mind.\n\nThis means that the \"positive\" tests (stuff that is checked whether it\u0027s really working) should be in a separate SECTION, next to the negative one.",
+      "range": {
+        "startLine": 462,
+        "startChar": 0,
+        "endLine": 526,
+        "endChar": 9
+      },
+      "revId": "cc0202ed3aa36091d3e96da7fd320d98a7df4237",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
