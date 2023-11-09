@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac959547_61551177",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-09T00:07:49Z",
+      "side": 1,
+      "message": "During the call we agreed to make an extra commit (as a parent to this one) and port Parser::changeNode to that. src/ast_path.hpp looks like a good place for this.",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 15
+      },
+      "revId": "46e4b9c9dda338a3799df0645d972e921ab63d3c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
