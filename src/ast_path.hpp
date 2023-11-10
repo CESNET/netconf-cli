@@ -154,6 +154,9 @@ schemaNode_ dataNodeToSchemaNode(const dataNode_& node);
 schemaPath_ dataPathToSchemaPath(const dataPath_& path);
 std::string escapeListKeyString(const std::string& what);
 
+// @brief Combining the current working directory with a new path, this function returns the resulting absolute path
+dataPath_ realPath(const dataPath_& cwd, const dataPath_& newPath);
+
 BOOST_FUSION_ADAPT_STRUCT(container_, m_name)
 BOOST_FUSION_ADAPT_STRUCT(listElement_, m_name, m_keys)
 BOOST_FUSION_ADAPT_STRUCT(leafListElement_, m_name, m_value)
