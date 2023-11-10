@@ -359,3 +359,16 @@ void dataPath_::pushFragment(const dataNode_& fragment)
     impl_pushFragment(m_nodes, fragment);
     validatePathNodes(m_nodes);
 }
+
+dataPath_ realPath(const dataPath_& cwd, const dataPath_& newPath)
+    {
+        if (newPath.m_scope == Scope::Absolute) {
+                return newPath;
+            }
+
+            dataPath_ res = cwd;
+        for (const auto& it : newPath.m_nodes) {
+                res.pushFragment(it);
+            }
+        return res;
+    }

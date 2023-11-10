@@ -85,13 +85,7 @@ Completions Parser::completeCommand(const std::string& line, std::ostream& error
 
 void Parser::changeNode(const dataPath_& name)
 {
-    if (name.m_scope == Scope::Absolute) {
-        m_curDir = name;
-    } else {
-        for (const auto& it : name.m_nodes) {
-            m_curDir.pushFragment(it);
-        }
-    }
+    m_curDir = realPath(m_curDir, name);
 }
 
 std::string Parser::currentNode() const
