@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0572a6e_ea92c7f8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-13T09:14:36Z",
+      "side": 1,
+      "message": "nit: if you open the commit message in Gerrit (change page -\u003e \"expand all\"), you\u0027ll see that it wraps the lines at 72 chars, yielding an ugly result. Please rewrap the commit message at 72 chars per line (I think I said 75 chars earlier, and apparently that doesn\u0027t work well -- sorry!).",
+      "revId": "7c4287f6cde0455ac1e5b4cd2b8a46c94c518480",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4996858d_6bc6761f",
+        "filename": "src/ast_path.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-13T09:14:36Z",
+      "side": 1,
+      "message": "please add a doxygen comment which explains what this function is doing in a single sentence",
+      "revId": "7c4287f6cde0455ac1e5b4cd2b8a46c94c518480",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41086917_705d2c42",
+        "filename": "src/ast_path.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-13T09:14:36Z",
+      "side": 1,
+      "message": "nit: please use the same indenting as the rest of the code",
+      "range": {
+        "startLine": 364,
+        "startChar": 0,
+        "endLine": 374,
+        "endChar": 5
+      },
+      "revId": "7c4287f6cde0455ac1e5b4cd2b8a46c94c518480",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
