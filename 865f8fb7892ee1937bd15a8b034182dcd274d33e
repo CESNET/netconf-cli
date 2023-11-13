@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf41a75f_88b13339",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-13T09:17:13Z",
+      "side": 1,
+      "message": "please make sure to press \"done\" for all the comments that have been resolved already, and \"reply\" once you\u0027ve done that so that they are actually sent",
+      "revId": "865f8fb7892ee1937bd15a8b034182dcd274d33e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "380bc0b0_17d811e9",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-13T09:17:13Z",
+      "side": 1,
+      "message": "the error string probably shouldn\u0027t talk about `cd` because it\u0027s a generic function now, but hey, let\u0027s ignore this, you\u0027re changing that in the follow-up commit anyway, and this change has been through enough revision already",
+      "range": {
+        "startLine": 65,
+        "startChar": 38,
+        "endLine": 65,
+        "endChar": 90
+      },
+      "revId": "865f8fb7892ee1937bd15a8b034182dcd274d33e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}

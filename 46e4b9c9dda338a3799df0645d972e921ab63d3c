@@ -24,6 +24,30 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3713d54a_51fa4f64",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-13T09:17:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fbf8e86_327166aa",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 5
+      },
+      "revId": "46e4b9c9dda338a3799df0645d972e921ab63d3c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9499741_9a6dcea5",
@@ -47,6 +71,30 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd1a4dcb_370fbdb7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-13T09:17:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9499741_9a6dcea5",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 3
+      },
+      "revId": "46e4b9c9dda338a3799df0645d972e921ab63d3c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac959547_61551177",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-11-09T00:07:49Z",
       "side": 1,
       "message": "During the call we agreed to make an extra commit (as a parent to this one) and port Parser::changeNode to that. src/ast_path.hpp looks like a good place for this.",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 15
+      },
+      "revId": "46e4b9c9dda338a3799df0645d972e921ab63d3c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e15f3b99_842d8c46",
+        "filename": "src/interpreter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-13T09:17:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac959547_61551177",
       "range": {
         "startLine": 62,
         "startChar": 0,
