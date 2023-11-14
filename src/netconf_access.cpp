@@ -59,7 +59,7 @@ DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
 }
 
 NetconfAccess::NetconfAccess(const int source, const int sink)
-    : m_context(std::nullopt, libyang::ContextOptions::SetPrivParsed)
+    : m_context(std::nullopt, libyang::ContextOptions::SetPrivParsed | libyang::ContextOptions::DisableSearchCwd)
     , m_session(libnetconf::client::Session::connectFd(source, sink, m_context))
     , m_schema(std::make_shared<YangSchema>(m_context))
 {
@@ -74,7 +74,7 @@ NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& sess
 }
 
 NetconfAccess::NetconfAccess(const std::string& socketPath)
-    : m_context(std::nullopt, libyang::ContextOptions::SetPrivParsed)
+    : m_context(std::nullopt, libyang::ContextOptions::SetPrivParsed | libyang::ContextOptions::DisableSearchCwd)
     , m_session(libnetconf::client::Session::connectSocket(socketPath, m_context))
     , m_schema(std::make_shared<YangSchema>(m_context))
 {
