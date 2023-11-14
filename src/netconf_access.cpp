@@ -58,14 +58,6 @@ DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
     return res;
 }
 
-NetconfAccess::NetconfAccess(const std::string& hostname, uint16_t port, const std::string& user, const std::string& pubKey, const std::string& privKey)
-    : m_context(std::nullopt, libyang::ContextOptions::SetPrivParsed)
-    , m_session(libnetconf::client::Session::connectPubkey(hostname, port, user, pubKey, privKey, m_context))
-    , m_schema(std::make_shared<YangSchema>(m_context))
-{
-    checkNMDA();
-}
-
 NetconfAccess::NetconfAccess(const int source, const int sink)
     : m_context(std::nullopt, libyang::ContextOptions::SetPrivParsed)
     , m_session(libnetconf::client::Session::connectFd(source, sink, m_context))
