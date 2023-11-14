@@ -7,6 +7,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 include(GNUInstallDirs)
 include(CTest)
 
+option(BUILD_SHARED_LIBS "By default, shared libs are enabled. Turn off for a static build." ON)
+
 # Set a default build type if none was specified. This was shamelessly stolen
 # from VTK's cmake setup because these guys produce both CMake and a project that
 # manipulates this variable, and the web is full of posts where people say that
@@ -240,6 +242,13 @@ add_executable(netconf-cli
     src/cli-netconf.cpp
     )
 target_compile_definitions(netconf-cli PRIVATE NETCONF_CLI)
+if(NOT BUILD_SHARED_LIBS)
+    message(STATUS "Fixing transitive linking of static libraries")
+    pkg_check_modules(LY_STACK REQUIRED libnetconf2 libyang libpcre2-8)
+    foreach(tgt IN ITEMS ast_values path leaf_data_type utils schemas datastoreaccess netconfaccess yangaccess yangutils yangschema parser proxydatastore yang-cli netconf-cli)
+        target_link_libraries(${tgt} PRIVATE ${LY_STACK_STATIC_LDFLAGS})
+    endforeach()
+endif()
 
 target_link_libraries(netconf-cli PRIVATE netconfaccess Threads::Threads Boost::filesystem)
 cli_link_required(netconf-cli)
