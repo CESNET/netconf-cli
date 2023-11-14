@@ -141,12 +141,12 @@ target_link_libraries(path PUBLIC ast_values Boost::boost)
 add_library(leaf_data_type STATIC
     src/leaf_data_type.cpp
     )
-target_link_libraries(leaf_data_type ast_values)
+target_link_libraries(leaf_data_type PUBLIC ast_values)
 
 add_library(utils STATIC
     src/utils.cpp
     )
-target_link_libraries(utils path ast_values)
+target_link_libraries(utils PUBLIC path ast_values)
 
 add_library(schemas STATIC
     src/static_schema.cpp
@@ -198,7 +198,7 @@ add_library(parser STATIC
     src/ast_handlers.cpp
     src/completion.cpp
     )
-target_link_libraries(parser schemas utils ast_values yangutils)
+target_link_libraries(parser PUBLIC schemas utils ast_values yangutils)
 
 add_library(proxydatastore STATIC
     src/proxy_datastore.cpp
@@ -207,7 +207,7 @@ target_link_libraries(proxydatastore PUBLIC datastoreaccess yangaccess)
 
 # Links libraries, that aren't specific to a datastore type
 function(cli_link_required cli_target)
-    target_link_libraries(${cli_target} proxydatastore yangschema PkgConfig::DOCOPT parser replxx::replxx)
+    target_link_libraries(${cli_target} PRIVATE proxydatastore yangschema PkgConfig::DOCOPT parser replxx::replxx)
     add_dependencies(${cli_target} target-NETCONF_CLI_VERSION)
     target_include_directories(${cli_target} PRIVATE ${PROJECT_BINARY_DIR})
 endfunction()
@@ -217,7 +217,7 @@ if(DO_ENABLE_SYSREPO_CLI)
         src/cli.cpp
         )
     target_compile_definitions(sysrepo-cli PRIVATE SYSREPO_CLI)
-    target_link_libraries(sysrepo-cli sysrepoaccess)
+    target_link_libraries(sysrepo-cli PUBLIC sysrepoaccess)
     cli_link_required(sysrepo-cli)
     list(APPEND cli_targets sysrepo-cli)
 endif()
@@ -227,12 +227,12 @@ add_executable(yang-cli
     )
 target_compile_definitions(yang-cli PRIVATE YANG_CLI)
 cli_link_required(yang-cli)
-target_link_libraries(yang-cli yangaccess)
+target_link_libraries(yang-cli PRIVATE yangaccess)
 list(APPEND cli_targets yang-cli)
 if(CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+" AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
-    target_link_libraries(yang-cli c++experimental)
+    target_link_libraries(yang-cli PRIVATE c++experimental)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1)
-    target_link_libraries(yang-cli stdc++fs)
+    target_link_libraries(yang-cli PRIVATE stdc++fs)
 endif()
 
 add_executable(netconf-cli
@@ -241,7 +241,7 @@ add_executable(netconf-cli
     )
 target_compile_definitions(netconf-cli PRIVATE NETCONF_CLI)
 
-target_link_libraries(netconf-cli netconfaccess Threads::Threads Boost::filesystem)
+target_link_libraries(netconf-cli PRIVATE netconfaccess Threads::Threads Boost::filesystem)
 cli_link_required(netconf-cli)
 list(APPEND cli_targets netconf-cli)
 
@@ -256,7 +256,7 @@ if(BUILD_TESTING)
         tests/wait-a-bit-longer.cpp
         )
     target_include_directories(DoctestIntegration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/tests/ ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-    target_link_libraries(DoctestIntegration doctest::doctest trompeloeil::trompeloeil)
+    target_link_libraries(DoctestIntegration PUBLIC doctest::doctest trompeloeil::trompeloeil)
     target_compile_definitions(DoctestIntegration PUBLIC DOCTEST_CONFIG_SUPER_FAST_ASSERTS)
 
     if(DO_ENABLE_NETCONF_TESTS)
@@ -282,7 +282,7 @@ if(BUILD_TESTING)
                 tests/${name}.cpp
                 )
         endif()
-        target_link_libraries(test_${name} DoctestIntegration parser datastoreaccess)
+        target_link_libraries(test_${name} PRIVATE DoctestIntegration parser datastoreaccess)
         if(NOT CMAKE_CROSSCOMPILING)
             add_test(test_${name} test_${name})
         endif()
@@ -295,15 +295,15 @@ if(BUILD_TESTING)
         cli_test(${name}_${backend} ${name}.cpp)
         target_include_directories(${TESTNAME} PRIVATE ${PROJECT_SOURCE_DIR}/tests/mock)
         if (${backend} STREQUAL "sysrepo")
-            target_link_libraries(${TESTNAME} sysrepoaccess)
+            target_link_libraries(${TESTNAME} PRIVATE sysrepoaccess)
         elseif (${backend} STREQUAL "netconf")
-            target_link_libraries(${TESTNAME} netconfaccess)
+            target_link_libraries(${TESTNAME} PRIVATE netconfaccess)
         elseif (${backend} STREQUAL "yang")
-            target_link_libraries(${TESTNAME} yangaccess)
+            target_link_libraries(${TESTNAME} PRIVATE yangaccess)
         else()
             message(FATAL_ERROR "Unknown backend ${backend}")
         endif()
-        target_link_libraries(${TESTNAME} yangschema sysreposubscription proxydatastore PkgConfig::SYSREPO)
+        target_link_libraries(${TESTNAME} PRIVATE yangschema sysreposubscription proxydatastore PkgConfig::SYSREPO)
 
         target_compile_definitions(${TESTNAME} PRIVATE ${backend}_BACKEND)
         set_tests_properties(${TESTNAME} PROPERTIES FIXTURES_REQUIRED ${TESTNAME}_setup)
@@ -331,20 +331,20 @@ if(BUILD_TESTING)
     cli_test(ls)
     cli_test(presence_containers)
     cli_test(leaf_editing)
-    target_link_libraries(test_leaf_editing leaf_data_type)
+    target_link_libraries(test_leaf_editing PRIVATE leaf_data_type)
     cli_test(yang)
-    target_link_libraries(test_yang yangschema)
+    target_link_libraries(test_yang PRIVATE yangschema)
     cli_test(utils)
-    target_link_libraries(test_utils yangutils)
+    target_link_libraries(test_utils PRIVATE yangutils)
     cli_test(path_completion)
     cli_test(command_completion)
     cli_test(set_value_completion)
-    target_link_libraries(test_set_value_completion leaf_data_type)
+    target_link_libraries(test_set_value_completion PRIVATE leaf_data_type)
     cli_test(list_manipulation)
     cli_test(interpreter)
-    target_link_libraries(test_interpreter proxydatastore)
+    target_link_libraries(test_interpreter PRIVATE proxydatastore)
     cli_test(path_utils)
-    target_link_libraries(test_path_utils path)
+    target_link_libraries(test_path_utils PRIVATE path)
     cli_test(keyvalue_completion)
     cli_test(parser_rpc)
     cli_test(misc_commands)
