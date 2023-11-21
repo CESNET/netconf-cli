@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34f85074_7a618730",
+        "filename": "src/ast_path.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-21T14:23:30Z",
+      "side": 1,
+      "message": "please fix the whitespace",
+      "range": {
+        "startLine": 365,
+        "startChar": 0,
+        "endLine": 372,
+        "endChar": 9
+      },
+      "revId": "2f578379f7a7ebe5b38e10d4aeff5fab01b6164f",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
