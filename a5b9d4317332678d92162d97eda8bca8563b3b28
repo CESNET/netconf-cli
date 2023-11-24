@@ -18,6 +18,24 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d59972c_1075fae5",
+        "filename": "tests/misc_commands.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000111
+      },
+      "writtenOn": "2023-11-24T16:27:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a88bb6b_1aa8e8c8",
+      "revId": "a5b9d4317332678d92162d97eda8bca8563b3b28",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5181189f_63fc40d6",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-11-21T14:29:03Z",
       "side": 1,
       "message": "please also add one more, `help cd `",
+      "revId": "a5b9d4317332678d92162d97eda8bca8563b3b28",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "208bb5b9_031381e6",
+        "filename": "tests/misc_commands.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000111
+      },
+      "writtenOn": "2023-11-24T16:27:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5181189f_63fc40d6",
       "revId": "a5b9d4317332678d92162d97eda8bca8563b3b28",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
