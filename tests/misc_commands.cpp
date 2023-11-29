@@ -38,4 +38,31 @@ TEST_CASE("miscellaneous commands")
         }
         REQUIRE(boost::get<switch_>(parser.parseCommand(input, errorStream)) == expected);
     }
+
+    SECTION("help")
+    {
+        std::string input;
+        bool expectedCommand = false;
+        SECTION("Short help")
+        {
+            input = "help";
+        }
+        SECTION("Short help with trailing whitespace")
+        {
+            input = "help ";
+        }
+        SECTION("Long help")
+        {
+            input = "help cd";
+            expectedCommand = true;
+        }
+        SECTION("Long help with trailing whitespace")
+        {
+            input = "help cd ";
+            expectedCommand = true;
+        }
+
+        auto result = boost::get<help_>(parser.parseCommand(input, errorStream));
+        REQUIRE(!!result.m_cmd == expectedCommand);
+    }
 }
