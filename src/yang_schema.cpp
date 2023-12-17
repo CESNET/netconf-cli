@@ -93,7 +93,7 @@ std::optional<libyang::SchemaNode> YangSchema::impl_getSchemaNode(const std::str
         }
     }
     try {
-        return m_context.findPath(node, libyang::OutputNodes::Yes);
+        return m_context.findPath(node, libyang::InputOutputNodes::Output);
     } catch (libyang::ErrorWithCode& err) {
         if (err.code() != libyang::ErrorCode::ValidationFailure) {
             throw;
