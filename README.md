@@ -32,7 +32,7 @@ A quick-and-dirty build with no fancy options can be as simple as `mkdir build &
 
 ## Bug Reporting
 
-Issue reporting and feature requests are welcome [via Taiga.io](https://tree.taiga.io/project/jktjkt-netconf-cli/issues?status=1900205,1900206,1900207).
+Issue reporting and feature requests are welcome over GitHub.
 
 ## Development
 
