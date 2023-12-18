@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1234603a_8167b8ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-18T08:59:49Z",
+      "side": 1,
+      "message": "(manually adjusting Verified, it only failed because of that ARM build which is fixed by update of dependencies in https://gerrit.cesnet.cz/c/CzechLight/dependencies/+/6717 )",
+      "revId": "fbf22b9903be0ad92043a746a1b627c8fc0ab7a0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
