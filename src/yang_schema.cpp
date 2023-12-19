@@ -330,7 +330,7 @@ std::set<ModuleNodePair> YangSchema::availableNodes(const boost::variant<dataPat
     std::string topLevelModule;
 
     if (path.type() == typeid(module_)) {
-        nodeCollections.emplace_back(m_context.getModule(boost::get<module_>(path).m_name)->childInstantiables());
+        nodeCollections.emplace_back(m_context.getModuleLatest(boost::get<module_>(path).m_name)->childInstantiables());
     } else {
         auto schemaPath = anyPathToSchemaPath(path);
         if (schemaPath.m_nodes.empty()) {

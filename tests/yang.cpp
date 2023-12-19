@@ -1052,6 +1052,10 @@ module schema-with-revision {
                         {boost::none, "/second-schema:bla/bla2"}
                     };
                 }
+                SECTION("schema-with-revision")
+                {
+                    module = "schema-with-revision";
+                }
 
                 REQUIRE(ys.availableNodes(module_{module}, Recursion::NonRecursive) == expectedNonRecursive);
                 REQUIRE(ys.availableNodes(module_{module}, Recursion::Recursive) == expectedRecursive);
