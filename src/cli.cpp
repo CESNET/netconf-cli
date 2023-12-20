@@ -40,12 +40,12 @@ static const auto usage = R"(CLI interface for creating local YANG data instance
   will be used to find a schema for that module.
 
 Usage:
-  yang-cli [--configonly] [--ignore-unknown-data] [-s <search_dir>] [-e enable_features]... [-i data_file]... <schema_file_or_module_name>...
+  yang-cli [--configonly] [--ignore-unknown-data] [-s <search_dir>]... [-e enable_features]... [-i data_file]... <schema_file_or_module_name>...
   yang-cli (-h | --help)
   yang-cli --version
 
 Options:
-  -s <search_dir>        Set search for schema lookup
+  -s <search_dir>        Search in these directories for YANG schema files. This option can be supplied more than once.
   -e <enable_features>   Feature to enable after modules are loaded. This option can be supplied more than once. Format: <module_name>:<feature>
   -i <data_file>         File to import data from
   --configonly           Disable editing of operational data
@@ -124,8 +124,8 @@ int main(int argc, char* argv[])
         writableOps = WritableOps::Yes;
         std::cout << "ops is writable" << std::endl;
     }
-    if (const auto& search_dir = args["-s"]) {
-        datastore->addSchemaDir(search_dir.asString());
+    for (const auto& dir : args["-s"].asStringList()) {
+        datastore->addSchemaDir(dir);
     }
     for (const auto& schemaFile : args["<schema_file_or_module_name>"].asStringList()) {
         if (std::filesystem::exists(schemaFile)) {

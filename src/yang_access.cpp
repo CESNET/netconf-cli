@@ -278,9 +278,9 @@ void YangAccess::addSchemaFile(const std::string& path)
     m_schema->addSchemaFile(path.c_str());
 }
 
-void YangAccess::addSchemaDir(const std::string& path)
+void YangAccess::addSchemaDir(const std::filesystem::path& path)
 {
-    m_schema->addSchemaDirectory(path.c_str());
+    m_schema->addSchemaDirectory(path);
 }
 
 void YangAccess::setEnabledFeatures(const std::string& module, const std::vector<std::string>& features)

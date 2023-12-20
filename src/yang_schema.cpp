@@ -8,6 +8,7 @@
 
 #include <libyang-cpp/Enum.hpp>
 #include <libyang-cpp/Utils.hpp>
+#include <experimental/iterator>
 #include <string_view>
 #include "UniqueResource.hpp"
 #include "utils.hpp"
@@ -48,9 +49,16 @@ void YangSchema::addSchemaString(const char* schema)
     m_context.parseModule(std::string{schema}, libyang::SchemaFormat::YANG);
 }
 
-void YangSchema::addSchemaDirectory(const char* directoryName)
+void YangSchema::addSchemaDirectory(const std::filesystem::path& directory)
 {
-    m_context.setSearchDir(directoryName);
+    m_schemaSearchDirs.insert(directory);
+    std::ostringstream ss;
+    std::transform(m_schemaSearchDirs.begin(), m_schemaSearchDirs.end(),
+            std::experimental::make_ostream_joiner(ss, ":"),
+            [](const auto& fragment) {
+                return std::string{fragment};
+            });
+    m_context.setSearchDir(ss.str());
 }
 
 void YangSchema::addSchemaFile(const char* filename)

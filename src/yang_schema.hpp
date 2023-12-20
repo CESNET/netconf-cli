@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <filesystem>
 #include <functional>
 #include <libyang-cpp/Context.hpp>
 #include <optional>
@@ -57,7 +58,7 @@ public:
     void addSchemaFile(const char* filename);
 
     /** @short Adds a new directory for schema lookup. */
-    void addSchemaDirectory(const char* directoryName);
+    void addSchemaDirectory(const std::filesystem::path& directory);
 
     /** @short Creates a new data node from a path (to be used with NETCONF edit-config) */
     [[nodiscard]] libyang::CreatedNodes dataNodeFromPath(const std::string& path, const std::optional<const std::string> value = std::nullopt) const;
@@ -82,4 +83,6 @@ private:
     libyang::Context m_context;
 
     [[nodiscard]] std::optional<libyang::SchemaNode> impl_getSchemaNode(const std::string& node) const;
+
+    std::set<std::filesystem::path> m_schemaSearchDirs;
 };

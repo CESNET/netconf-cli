@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <filesystem>
 #include <libyang-cpp/Context.hpp>
 #include "datastore_access.hpp"
 
@@ -46,7 +47,7 @@ public:
 
     void loadModule(const std::string& name);
     void addSchemaFile(const std::string& path);
-    void addSchemaDir(const std::string& path);
+    void addSchemaDir(const std::filesystem::path& path);
     void addDataFile(const std::string& path, const StrictDataParsing strict);
 
 private:
