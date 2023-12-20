@@ -128,7 +128,11 @@ int main(int argc, char* argv[])
         datastore->addSchemaDir(dir);
     }
     for (const auto& schemaFile : args["<schema_file_or_module_name>"].asStringList()) {
-        if (std::filesystem::exists(schemaFile)) {
+        std::filesystem::path path{schemaFile};
+        if (std::filesystem::exists(path)) {
+            if (std::filesystem::is_regular_file(path)) {
+                datastore->addSchemaDir(path.parent_path());
+            }
             datastore->addSchemaFile(schemaFile);
         } else if (schemaFile.find('/') == std::string::npos) { // Module names cannot have a slash
             datastore->loadModule(schemaFile);
