@@ -48,14 +48,14 @@ void YangSchema::addSchemaString(const char* schema)
     m_context.parseModule(std::string{schema}, libyang::SchemaFormat::YANG);
 }
 
-void YangSchema::addSchemaDirectory(const char* directoryName)
+void YangSchema::addSchemaDirectory(const std::filesystem::path& directory)
 {
-    m_context.setSearchDir(directoryName);
+    m_context.setSearchDir(directory);
 }
 
-void YangSchema::addSchemaFile(const char* filename)
+void YangSchema::addSchemaFile(const std::filesystem::path& filename)
 {
-    m_context.parseModule(std::filesystem::path{filename}, libyang::SchemaFormat::YANG);
+    m_context.parseModule(filename, libyang::SchemaFormat::YANG);
 }
 
 bool YangSchema::isModule(const std::string& name) const

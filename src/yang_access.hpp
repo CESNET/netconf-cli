@@ -45,8 +45,8 @@ public:
     [[nodiscard]] std::string dump(const DataFormat format) const override;
 
     void loadModule(const std::string& name);
-    void addSchemaFile(const std::string& path);
-    void addSchemaDir(const std::string& path);
+    void addSchemaFile(const std::filesystem::path& path);
+    void addSchemaDir(const std::filesystem::path& path);
     void addDataFile(const std::string& path, const StrictDataParsing strict);
 
 private:
