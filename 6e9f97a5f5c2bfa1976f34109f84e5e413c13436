@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38d3cac5_fda2c811",
+        "filename": "src/yang_access.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2024-01-03T07:36:05Z",
+      "side": 1,
+      "message": "By the way, what is our policy to \"include what you use\"? The \u003cfilesystem\u003e is obviously missing here and is probably included from one of these two headers.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 31
+      },
+      "revId": "6e9f97a5f5c2bfa1976f34109f84e5e413c13436",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
