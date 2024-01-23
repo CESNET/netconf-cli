@@ -29,3 +29,6 @@ std::string stripLeafListValueFromPath(const std::string& path);
 std::string stripLastListInstanceFromPath(const std::string& path);
 // The second argument controls whether module prefixes should be added to the keys.
 std::string instanceToString(const ListInstance& instance, const std::optional<std::string>& modName = std::nullopt);
+
+template <typename... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template <typename... Ts> overloaded(Ts...) -> overloaded<Ts...>;
