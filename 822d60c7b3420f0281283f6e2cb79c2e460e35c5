@@ -81,6 +81,24 @@
       "parentUuid": "1ae14ea9_7b3355c3",
       "revId": "822d60c7b3420f0281283f6e2cb79c2e460e35c5",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcea8c2f_76261486",
+        "filename": "tests/interpreter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-23T12:38:05Z",
+      "side": 0,
+      "message": "removed",
+      "parentUuid": "73f97321_80104a91",
+      "revId": "822d60c7b3420f0281283f6e2cb79c2e460e35c5",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
