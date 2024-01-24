@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9735d642_5830ae15",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2024-01-24T10:03:46Z",
+      "side": 1,
+      "message": "What does this mean?",
+      "range": {
+        "startLine": 26,
+        "startChar": 35,
+        "endLine": 27,
+        "endChar": 23
+      },
+      "revId": "7d4c9f135f5814a6f55a57733449c01c70c842b0",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
