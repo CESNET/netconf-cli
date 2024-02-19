@@ -44,8 +44,8 @@ public:
     void setEnabledFeatures(const std::string& module, const std::vector<std::string>& features);
     [[nodiscard]] std::string dump(const DataFormat format) const override;
 
-    void loadModule(const std::string& name);
-    void addSchemaFile(const std::filesystem::path& path);
+    void loadModule(const std::string& name, const std::vector<std::string>& features = {});
+    void addSchemaFile(const std::filesystem::path& path, const std::vector<std::string>& features = {});
     void addSchemaDir(const std::filesystem::path& path);
     void addDataFile(const std::string& path, const StrictDataParsing strict);
 

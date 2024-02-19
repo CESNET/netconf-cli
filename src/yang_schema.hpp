@@ -46,16 +46,16 @@ public:
     void registerModuleCallback(const std::function<std::string(const std::string_view, const std::optional<std::string_view>, const std::optional<std::string_view>, const std::optional<std::string_view>)>& clb);
 
     /** @short Loads a module called moduleName. */
-    void loadModule(const std::string& moduleName);
+    void loadModule(const std::string& moduleName, const std::vector<std::string>& features = {});
 
     /** @short Sets enabled features. */
     void setEnabledFeatures(const std::string& moduleName, const std::vector<std::string>& features);
 
     /** @short Adds a new module passed as a YANG string. */
-    void addSchemaString(const char* schema);
+    void addSchemaString(const char* schema, const std::vector<std::string>& features = {});
 
     /** @short Adds a new module from a file. */
-    void addSchemaFile(const std::filesystem::path& filename);
+    void addSchemaFile(const std::filesystem::path& filename, const std::vector<std::string>& features = {});
 
     /** @short Adds a new directory for schema lookup. */
     void addSchemaDirectory(const std::filesystem::path& directory);
