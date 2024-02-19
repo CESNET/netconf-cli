@@ -268,14 +268,14 @@ std::string YangAccess::dump(const DataFormat format) const
     return std::string{*str};
 }
 
-void YangAccess::loadModule(const std::string& name)
+void YangAccess::loadModule(const std::string& name, const std::vector<std::string>& features)
 {
-    m_schema->loadModule(name);
+    m_schema->loadModule(name, features);
 }
 
-void YangAccess::addSchemaFile(const std::filesystem::path& path)
+void YangAccess::addSchemaFile(const std::filesystem::path& path, const std::vector<std::string>& features)
 {
-    m_schema->addSchemaFile(path);
+    m_schema->addSchemaFile(path, features);
 }
 
 void YangAccess::addSchemaDir(const std::filesystem::path& path)

@@ -8,6 +8,7 @@
 #include <atomic>
 #include <boost/algorithm/string.hpp>
 #include <docopt.h>
+#include <experimental/iterator>
 #include <iostream>
 #include <optional>
 #include <replxx.hxx>
@@ -40,13 +41,13 @@ static const auto usage = R"(CLI interface for creating local YANG data instance
   will be used to find a schema for that module.
 
 Usage:
-  yang-cli [--configonly] [--ignore-unknown-data] [-s <search_dir>]... [-e enable_features]... [-i data_file]... <schema_file_or_module_name>...
+  yang-cli [--configonly] [--ignore-unknown-data] [-s <search_dir>]... [-e <module>:<feature>]... [-i data_file]... <schema_file_or_module_name>...
   yang-cli (-h | --help)
   yang-cli --version
 
 Options:
   -s <search_dir>        Search in these directories for YANG schema files. This option can be supplied more than once.
-  -e <enable_features>   Feature to enable after modules are loaded. This option can be supplied more than once. Format: <module_name>:<feature>
+  -e <module>:<feature>  Features to enable for a given module. This option can be supplied more than once.
   -i <data_file>         File to import data from
   --configonly           Disable editing of operational data
   --ignore-unknown-data  Silently ignore data with no available schema file)";
@@ -127,41 +128,60 @@ int main(int argc, char* argv[])
     for (const auto& dir : args["-s"].asStringList()) {
         datastore->addSchemaDir(dir);
     }
-    for (const auto& schemaFile : args["<schema_file_or_module_name>"].asStringList()) {
-        std::filesystem::path path{schemaFile};
-        if (std::filesystem::exists(path)) {
-            if (std::filesystem::is_regular_file(path)) {
-                datastore->addSchemaDir(path.parent_path());
-            }
-            datastore->addSchemaFile(schemaFile);
-        } else if (schemaFile.find('/') == std::string::npos) { // Module names cannot have a slash
-            datastore->loadModule(schemaFile);
-        } else {
-            std::cerr << "Cannot load YANG module " << schemaFile << "\n";
-        }
-    }
+    std::map<std::string, std::vector<std::string>> featuresToEnable;
     if (const auto& enableFeatures = args["-e"]) {
         namespace x3 = boost::spirit::x3;
-        std::map<std::string, std::vector<std::string>> toEnable;
         auto grammar = +(x3::char_-":") >> ":" >> +(x3::char_-":");
         for (const auto& enableFeature : enableFeatures.asStringList()) {
             std::pair<std::string, std::string> parsed;
             auto it = enableFeature.begin();
             auto res = x3::parse(it, enableFeature.cend(), grammar, parsed);
             if (!res || it != enableFeature.cend()) {
-                std::cerr << "Error parsing feature enable flags: " << enableFeature << "\n";
+                std::cerr << "Error: wrong feature name '" << enableFeature << "'. Use the <module-name>:<feature-name> format.\n";
                 return 1;
             }
-            toEnable[parsed.first].emplace_back(parsed.second);
+            featuresToEnable[parsed.first].emplace_back(parsed.second);
         }
-        try {
-            for (const auto& [moduleName, features] : toEnable) {
-                datastore->setEnabledFeatures(moduleName, features);
-            }
-        } catch (std::runtime_error& ex) {
-            std::cerr << ex.what() << "\n";
+    }
+    for (const auto& schemaFile : args["<schema_file_or_module_name>"].asStringList()) {
+        std::filesystem::path path{schemaFile};
+        auto grammar = +(x3::char_-"@") >> -("@" >> +(x3::char_-"@"));
+        std::pair<std::string, std::string> parsed;
+        auto& [module, revision] = parsed;
+        const std::string rawName = path.stem().string();
+        auto it = rawName.begin();
+        auto res = x3::parse(it, rawName.cend(), grammar, parsed);
+        if (!res || it != rawName.cend()) {
             return 1;
         }
+        auto myFeatures = [&]() {
+            if (auto featureIt = featuresToEnable.find(module); featureIt != featuresToEnable.cend()) {
+                auto features = featureIt->second;
+                featuresToEnable.erase(featureIt);
+                return features;
+            } else {
+                return std::vector<std::string>{};
+            }
+        }();
+
+        if (std::filesystem::exists(path)) {
+            if (std::filesystem::is_regular_file(path)) {
+                datastore->addSchemaDir(path.parent_path());
+            }
+            datastore->addSchemaFile(schemaFile, myFeatures);
+        } else if (schemaFile.find('/') == std::string::npos) { // Module names cannot have a slash
+            datastore->loadModule(schemaFile, myFeatures);
+        } else {
+            std::cerr << "Cannot load YANG module " << schemaFile << "\n";
+        }
+    }
+    if (featuresToEnable.size()) {
+        std::cerr << "Error: the following modules were not implemented, but have features enabled: ";
+        std::transform(featuresToEnable.begin(), featuresToEnable.end(),
+                std::experimental::make_ostream_joiner(std::cerr, ", "),
+                [](const auto& x) { return x.first; });
+        std::cerr << "\n";
+        return 1;
     }
 
     auto strict = args.at("--ignore-unknown-data").asBool() ? StrictDataParsing::No : StrictDataParsing::Yes;

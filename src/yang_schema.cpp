@@ -43,9 +43,9 @@ YangSchema::YangSchema(libyang::Context lyCtx)
 
 YangSchema::~YangSchema() = default;
 
-void YangSchema::addSchemaString(const char* schema)
+void YangSchema::addSchemaString(const char* schema, const std::vector<std::string>& features)
 {
-    m_context.parseModule(std::string{schema}, libyang::SchemaFormat::YANG);
+    m_context.parseModule(std::string{schema}, libyang::SchemaFormat::YANG, features);
 }
 
 void YangSchema::addSchemaDirectory(const std::filesystem::path& directory)
@@ -53,9 +53,9 @@ void YangSchema::addSchemaDirectory(const std::filesystem::path& directory)
     m_context.setSearchDir(directory);
 }
 
-void YangSchema::addSchemaFile(const std::filesystem::path& filename)
+void YangSchema::addSchemaFile(const std::filesystem::path& filename, const std::vector<std::string>& features)
 {
-    m_context.parseModule(filename, libyang::SchemaFormat::YANG);
+    m_context.parseModule(filename, libyang::SchemaFormat::YANG, features);
 }
 
 bool YangSchema::isModule(const std::string& name) const
@@ -375,9 +375,9 @@ std::set<ModuleNodePair> YangSchema::availableNodes(const boost::variant<dataPat
     return res;
 }
 
-void YangSchema::loadModule(const std::string& moduleName)
+void YangSchema::loadModule(const std::string& moduleName, const std::vector<std::string>& features)
 {
-    m_context.loadModule(moduleName);
+    m_context.loadModule(moduleName, std::nullopt, features);
 }
 
 void YangSchema::setEnabledFeatures(const std::string& moduleName, const std::vector<std::string>& features)
