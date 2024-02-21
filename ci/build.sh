@@ -110,5 +110,5 @@ if [[ $JOB_PERFORM_EXTRA_WORK == 1 ]]; then
 fi
 
 if [[ $LDFLAGS =~ .*--coverage.* ]]; then
-    gcovr -j ${CI_PARALLEL_JOBS} --object-directory ${BUILD_DIR} --root ${ZUUL_PROJECT_SRC_DIR} --xml --output ${BUILD_DIR}/coverage.xml
+    gcovr --merge-mode-functions=separate -j ${CI_PARALLEL_JOBS} --object-directory ${BUILD_DIR} --root ${ZUUL_PROJECT_SRC_DIR} --xml --output ${BUILD_DIR}/coverage.xml
 fi
