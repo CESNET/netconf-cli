@@ -45,8 +45,9 @@
             requires: CzechLight-deps-f38-gcc
             required-projects: *projects
             timeout: 1800
-        - czechlight-clearfog:
-            required-projects:
-              - CzechLight/br2-external
-            requires: CzechLight-br2-build-clearfog
-            timeout: 1800
+        # FIXME: https://gerrit.cesnet.cz/c/CzechLight/br2-external/+/7074
+        # - czechlight-clearfog:
+        #     required-projects:
+        #       - CzechLight/br2-external
+        #     requires: CzechLight-br2-build-clearfog
+        #     timeout: 1800
