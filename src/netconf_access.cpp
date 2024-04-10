@@ -94,7 +94,7 @@ void NetconfAccess::setNcLogLevel(libnetconf::LogLevel level)
 
 void NetconfAccess::setNcLogCallback(const LogCb& callback)
 {
-    libnetconf::client::setLogCallback(callback);
+    libnetconf::client::setLogCallback([=](const auto, const auto level, const auto message) { callback(level, message); });
 }
 
 void NetconfAccess::setLeaf(const std::string& path, leaf_data_ value)
