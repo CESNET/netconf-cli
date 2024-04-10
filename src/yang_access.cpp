@@ -36,7 +36,7 @@ YangAccess::~YangAccess() = default;
     std::vector<DatastoreError> errorsRes;
 
     for (const auto& err : m_ctx.getErrors()) {
-        errorsRes.emplace_back(err.message, err.path);
+        errorsRes.emplace_back(err.message, err.dataPath ? err.dataPath : err.schemaPath ? err.schemaPath : std::nullopt);
     }
     throw DatastoreException(errorsRes);
 }
