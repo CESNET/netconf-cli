@@ -60,12 +60,7 @@ PYBIND11_MODULE(netconf_cli_py, m) {
 
     pybind11::class_<NetconfAccess>(m, "NetconfAccess")
             .def(pybind11::init<const std::string&>(), "socketPath"_a)
-            .def(pybind11::init(
-                     [](const std::string& host, const uint16_t port, const std::string& user, const libnetconf::client::KbdInteractiveCb interactiveAuth) {
-                        auto session = libnetconf::client::Session::connectKbdInteractive(host, port, user, interactiveAuth);
-                        return std::make_unique<NetconfAccess>(std::move(session));
-                    }),
-                    "server"_a, "port"_a=830, "username"_a, "interactive_auth"_a)
+            .def(pybind11::init<const int, const int>(), "source"_a, "sink"_a)
             .def("getItems", &NetconfAccess::getItems, "xpath"_a)
             .def("setLeaf", &NetconfAccess::setLeaf, "xpath"_a, "value"_a)
             .def("createItem", &NetconfAccess::createItem, "xpath"_a)
