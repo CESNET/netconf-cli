@@ -77,14 +77,14 @@ if(NOT BUILD_TESTING AND ENABLE_FULL_TESTS STREQUAL ON)
     message(FATAL_ERROR "Cannot combine ENABLE_FULL_TESTS=ON with BUILD_TESTING=OFF")
 endif()
 
-pkg_check_modules(LIBYANG-CPP REQUIRED libyang-cpp>=2 IMPORTED_TARGET)
-pkg_check_modules(LIBNETCONF2-CPP REQUIRED libnetconf2-cpp>=2 IMPORTED_TARGET)
+pkg_check_modules(LIBYANG-CPP REQUIRED IMPORTED_TARGET libyang-cpp>=2)
+pkg_check_modules(LIBNETCONF2-CPP REQUIRED IMPORTED_TARGET libnetconf2-cpp>=2)
 
 if(ENABLE_FULL_TESTS STREQUAL OFF AND ENABLE_SYSREPO_CLI STREQUAL OFF)
     message(STATUS "Skipping sysrepo per configure options")
     set(SYSREPO_FOUND 0)
 else()
-    pkg_check_modules(SYSREPO sysrepo-cpp>=2 IMPORTED_TARGET)
+    pkg_check_modules(SYSREPO IMPORTED_TARGET sysrepo-cpp>=2)
 endif()
 
 if(SYSREPO_FOUND)
