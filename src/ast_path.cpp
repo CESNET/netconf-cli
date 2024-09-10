@@ -6,6 +6,7 @@
  *
 */
 
+#include <algorithm>
 #include <experimental/iterator>
 #include <sstream>
 #include "ast_path.hpp"

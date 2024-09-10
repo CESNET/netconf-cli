@@ -5,6 +5,7 @@
  * Written by Václav Kubernát <kubervac@fit.cvut.cz>
  *
 */
+#include <algorithm>
 #include <experimental/iterator>
 #include <sstream>
 #include "completion.hpp"

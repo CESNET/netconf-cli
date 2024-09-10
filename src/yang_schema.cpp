@@ -6,6 +6,7 @@
  *
 */
 
+#include <algorithm>
 #include <libyang-cpp/Enum.hpp>
 #include <libyang-cpp/Utils.hpp>
 #include <string_view>
