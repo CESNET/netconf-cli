@@ -933,7 +933,7 @@ struct ActionCb {
     sysrepo::ErrorCode operator()(
         [[maybe_unused]] sysrepo::Session session,
         [[maybe_unused]] uint32_t subscriptionId,
-        std::string_view xpath,
+        const std::string& xpath,
         [[maybe_unused]] const libyang::DataNode input,
         [[maybe_unused]] sysrepo::Event event,
         [[maybe_unused]] uint32_t requestId,
@@ -954,7 +954,7 @@ struct RpcCb {
     sysrepo::ErrorCode operator()(
         [[maybe_unused]] sysrepo::Session session,
         [[maybe_unused]] uint32_t subscriptionId,
-        std::string_view xpath,
+        const std::string& xpath,
         const libyang::DataNode input,
         [[maybe_unused]] sysrepo::Event event,
         [[maybe_unused]] uint32_t requestId,

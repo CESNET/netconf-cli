@@ -152,7 +152,7 @@ void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move:
         if (m_schema->nodeType(source) == yang::NodeTypes::LeafList) {
             sourceNode.newMeta(yangModule, "value", leafDataToString(relative.m_path.at(".")));
         } else {
-            sourceNode.newMeta(yangModule, "key", instanceToString(relative.m_path, std::string{nodes.createdNode->schema().module().name()}));
+            sourceNode.newMeta(yangModule, "key", instanceToString(relative.m_path, nodes.createdNode->schema().module().name()));
         }
     }
     doEditFromDataNode(sourceNode);
@@ -162,14 +162,14 @@ void NetconfAccess::doEditFromDataNode(libyang::DataNode dataNode)
 {
     auto data = dataNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings);
     if (m_serverHasNMDA) {
-        m_session->editData(targetToDs_set(m_target), std::string{*data});
+        m_session->editData(targetToDs_set(m_target), *data);
     } else {
         m_session->editConfig(
                 libnetconf::Datastore::Candidate,
                 libnetconf::EditDefaultOp::Merge,
                 libnetconf::EditTestOpt::TestSet,
                 libnetconf::EditErrorOpt::Stop,
-                std::string{*data});
+                *data);
     }
 }
 
@@ -188,7 +188,7 @@ DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree
     auto inputNode = treeToRpcInput(m_session->libyangContext(), path, input);
     auto data = inputNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings);
 
-    auto output = m_session->rpc_or_action(std::string{*data});
+    auto output = m_session->rpc_or_action(*data);
     if (!output) {
         return {};
     }
@@ -232,7 +232,7 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
 
     // Have to use `newParent` in case our wanted list is a nested list. With `newNode` I would only send the inner
     // nested list and not the whole tree.
-    auto instances = m_session->get(std::string{*nodes.createdParent->printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings)});
+    auto instances = m_session->get(nodes.createdParent->printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings));
 
     if (!instances) {
         return res;
@@ -253,7 +253,7 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
             }
 
             auto leafData = keyLeaf.asTerm();
-            instanceRes.insert({std::string{leafData.schema().name()}, leafValueFromNode(leafData)});
+            instanceRes.insert({leafData.schema().name(), leafValueFromNode(leafData)});
         }
         res.emplace_back(instanceRes);
     }
@@ -272,5 +272,5 @@ std::string NetconfAccess::dump(const DataFormat format) const
         return "";
     }
 
-    return std::string{*str};
+    return *str;
 }

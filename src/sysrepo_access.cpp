@@ -223,7 +223,7 @@ std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
         ListInstance instanceRes;
         for (const auto& key : keys) {
             auto leaf = instance.findPath(key.name().data());
-            instanceRes.emplace(std::string{leaf->schema().name()}, leafValueFromNode(leaf->asTerm()));
+            instanceRes.emplace(leaf->schema().name(), leafValueFromNode(leaf->asTerm()));
         }
         res.emplace_back(instanceRes);
     }
@@ -239,5 +239,5 @@ std::string SysrepoAccess::dump(const DataFormat format) const
         return "";
     }
 
-    return std::string{*str};
+    return *str;
 }

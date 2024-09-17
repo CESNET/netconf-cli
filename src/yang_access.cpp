@@ -245,7 +245,7 @@ std::vector<ListInstance> YangAccess::listInstances(const std::string& path)
             if (child.schema().nodeType() == libyang::NodeType::Leaf) {
                 auto leafSchema(child.schema().asLeaf());
                 if (leafSchema.isKey()) {
-                    instance.insert({std::string{leafSchema.name()}, leafValueFromNode(child.asTerm())});
+                    instance.insert({leafSchema.name(), leafValueFromNode(child.asTerm())});
                 }
             }
         }
@@ -265,7 +265,7 @@ std::string YangAccess::dump(const DataFormat format) const
         return "";
     }
 
-    return std::string{*str};
+    return *str;
 }
 
 void YangAccess::loadModule(const std::string& name)

@@ -24,8 +24,8 @@ public:
     sysrepo::ErrorCode operator()(
         sysrepo::Session sess,
         uint32_t /* sub_id */,
-        std::string_view module_name,
-        std::optional<std::string_view> /* sub_xpath */,
+        const std::string& module_name,
+        const std::optional<std::string>& /* sub_xpath */,
         sysrepo::Event event,
         uint32_t /* request_id */)
     {
@@ -34,7 +34,7 @@ public:
             return sysrepo::ErrorCode::Ok;
         }
 
-        for (const auto& it : sess.getChanges("/"s + module_name.data() + ":*//.")) {
+        for (const auto& it : sess.getChanges("/"s + module_name + ":*//.")) {
             auto xpath = it.node.path();
             std::optional<std::string> oldValue;
             std::optional<std::string> newValue;
@@ -88,13 +88,13 @@ public:
     sysrepo::ErrorCode operator()(
             sysrepo::Session session,
             [[maybe_unused]] uint32_t subscriptionId,
-            [[maybe_unused]] std::string_view moduleName,
-            std::optional<std::string_view> subXPath,
-            [[maybe_unused]] std::optional<std::string_view> requestXPath,
+            [[maybe_unused]] const std::string& moduleName,
+            const std::optional<std::string>& subXPath,
+            [[maybe_unused]] const std::optional<std::string>& requestXPath,
             [[maybe_unused]] uint32_t requestId,
             std::optional<libyang::DataNode>& output)
     {
-        auto data = m_dataSupplier.get_data(subXPath->data());
+        auto data = m_dataSupplier.get_data(*subXPath);
         for (const auto& [p, v] : data) {
             if (!output) {
                 output = session.getContext().newPath(p, v.type() == typeid(empty_) ? std::nullopt : std::optional<std::string>(leafDataToString(v)));

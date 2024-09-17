@@ -13,7 +13,7 @@ struct impl_leafValueFromNode {
 
     leaf_data_ operator()(const libyang::Binary& bin) const
     {
-        return binary_{std::string{bin.base64}};
+        return binary_{bin.base64};
     }
 
     leaf_data_ operator()(const std::vector<libyang::Bit>& bits) const
@@ -71,16 +71,16 @@ void impl_lyNodesToTree(DatastoreAccess::Tree& res, CollectionType items, std::o
                 // The fact that the container is included in the data tree
                 // means that it is present and I don't need to check any
                 // value.
-                res.emplace_back(stripXPathPrefix(std::string{it.path()}), special_{SpecialValue::PresenceContainer});
+                res.emplace_back(stripXPathPrefix(it.path()), special_{SpecialValue::PresenceContainer});
             }
         }
         if (it.schema().nodeType() == libyang::NodeType::List) {
-            res.emplace_back(stripXPathPrefix(std::string{it.path()}), special_{SpecialValue::List});
+            res.emplace_back(stripXPathPrefix(it.path()), special_{SpecialValue::List});
         }
         if (it.schema().nodeType() == libyang::NodeType::Leaf || it.schema().nodeType() == libyang::NodeType::Leaflist) {
             auto term = it.asTerm();
             auto value = leafValueFromNode(term);
-            res.emplace_back(stripXPathPrefix(std::string{it.path()}), value);
+            res.emplace_back(stripXPathPrefix(it.path()), value);
         }
     }
 }
@@ -91,9 +91,9 @@ void lyNodesToTree(DatastoreAccess::Tree& res, CollectionType items, std::option
 {
     for (auto it = items.begin(); it != items.end(); /* nothing */) {
         if ((*it).schema().nodeType() == libyang::NodeType::Leaflist) {
-            auto leafListPath = stripLeafListValueFromPath(std::string{(*it).path()});
+            auto leafListPath = stripLeafListValueFromPath(it->path());
             res.emplace_back(leafListPath, special_{SpecialValue::LeafList});
-            while (it != items.end() && boost::starts_with(std::string{(*it).path()}, leafListPath)) {
+            while (it != items.end() && boost::starts_with(it->path(), leafListPath)) {
                 impl_lyNodesToTree(res, it->childrenDfs(), ignoredXPathPrefix);
                 it++;
             }
@@ -117,7 +117,7 @@ void lyNodesToTree<libyang::Set<libyang::DataNode>>(DatastoreAccess::Tree& res, 
 DatastoreAccess::Tree rpcOutputToTree(libyang::DataNode output)
 {
     DatastoreAccess::Tree res;
-    lyNodesToTree(res, output.siblings(), joinPaths(std::string{output.path()}, "/"));
+    lyNodesToTree(res, output.siblings(), joinPaths(output.path(), "/"));
     return res;
 }
 

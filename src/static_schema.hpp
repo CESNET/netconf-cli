@@ -85,7 +85,7 @@ public:
     /** A helper for making tests a little bit easier. It returns all
      * identities which are based on the argument passed and which can then be
      * used in addLeaf for the `type` argument */
-    std::set<identityRef_> validIdentities(std::string_view module, std::string_view value);
+    std::set<identityRef_> validIdentities(const std::string& module, const std::string& value);
     void addContainer(const std::string& location, const std::string& name, yang::ContainerTraits isPresence = yang::ContainerTraits::None);
     void addLeaf(const std::string& location, const std::string& name, const yang::LeafDataType& type, const yang::AccessType accessType = yang::AccessType::Writable);
     void addLeafList(const std::string& location, const std::string& name, const yang::LeafDataType& type);

@@ -84,10 +84,10 @@ void StaticSchema::addList(const std::string& location, const std::string& name,
     m_nodes.emplace(key, std::unordered_map<std::string, NodeInfo>());
 }
 
-std::set<identityRef_> StaticSchema::validIdentities(std::string_view module, std::string_view value)
+std::set<identityRef_> StaticSchema::validIdentities(const std::string& module, const std::string& value)
 {
     std::set<identityRef_> identities;
-    getIdentSet(identityRef_{std::string{module}, std::string{value}}, identities);
+    getIdentSet(identityRef_{module, value}, identities);
 
     return identities;
 }
