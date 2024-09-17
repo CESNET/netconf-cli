@@ -43,7 +43,7 @@ add_custom_target(git-version-cmake-ide
     cmake/DiscoverNetconfExecutables.cmake
     )
 include(cmake/ProjectGitVersion.cmake)
-prepare_git_version(NETCONF_CLI_VERSION "0.0")
+prepare_git_version(NETCONF_CLI_VERSION "1")
 
 # Boost.Process needs linking with threads, but doesn't have special CMake target which would do that for us. So, we
 # need to link manually. This will hopefully change in the future.
