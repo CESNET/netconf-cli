@@ -22,6 +22,30 @@
       },
       "revId": "97b804274bf4d6dce6ea27e2ff99c52f6d4c766c",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b2ef5b9_a659ad87",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-09-23T20:05:10Z",
+      "side": 1,
+      "message": "it\u0027s just an arbitrary number, and I don\u0027t want to make the impression that we might be following, e.g., semver",
+      "parentUuid": "0b2c8668_0e14094e",
+      "range": {
+        "startLine": 46,
+        "startChar": 40,
+        "endLine": 46,
+        "endChar": 43
+      },
+      "revId": "97b804274bf4d6dce6ea27e2ff99c52f6d4c766c",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
