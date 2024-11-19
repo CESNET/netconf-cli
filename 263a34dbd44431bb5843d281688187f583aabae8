@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fabf5d86_80969477",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-11-19T11:35:09Z",
+      "side": 1,
+      "message": "I have to bypass CI for this one because that clarfog job would effectively require a circular dependency (or not using the Depends-on header here, which would be a waste of CPU time now).",
+      "revId": "263a34dbd44431bb5843d281688187f583aabae8",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
