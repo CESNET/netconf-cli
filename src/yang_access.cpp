@@ -16,7 +16,7 @@ using DatastoreType = std::optional<libyang::DataNode>;
 }
 
 YangAccess::YangAccess()
-    : m_ctx(std::nullopt, libyang::ContextOptions::DisableSearchCwd | libyang::ContextOptions::SetPrivParsed)
+    : m_ctx(std::nullopt, libyang::ContextOptions::DisableSearchCwd | libyang::ContextOptions::SetPrivParsed | libyang::ContextOptions::NoYangLibrary)
     , m_datastore(std::nullopt)
     , m_schema(std::make_shared<YangSchema>(m_ctx))
 {
