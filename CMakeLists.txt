@@ -54,7 +54,7 @@ find_package(Threads)
 find_package(Doxygen)
 option(WITH_DOCS "Create and install internal documentation (needs Doxygen)" ${DOXYGEN_FOUND})
 
-find_package(Boost REQUIRED COMPONENTS filesystem)
+find_package(Boost REQUIRED CONFIG COMPONENTS filesystem)
 # Fixes C++20 build
 # https://github.com/boostorg/asio/issues/312
 add_definitions(-DBOOST_ASIO_DISABLE_CONCEPTS)
