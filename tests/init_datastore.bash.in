@@ -50,7 +50,7 @@ if [[ "$BACKEND" = "netconf" ]]; then
     # of running `exec` directly. Finally, I redirect its stdout and stderr to a file.
     NETOPEER_PIDFILE="@CMAKE_CURRENT_BINARY_DIR@/test_netopeer_files/$SYSREPO_SHM_PREFIX.pid"
     setsid -f \
-        bash -c "exec -a '${SYSREPO_SHM_PREFIX}_netopeer2-server' '$NETOPEER2' -d -v2 '-U$NETOPEER_SOCKET' -p'$NETOPEER_PIDFILE'" \
+        bash -c "exec -a '${SYSREPO_SHM_PREFIX}_netopeer2-server' '$NETOPEER2' -d -c MSG '-U$NETOPEER_SOCKET' -p'$NETOPEER_PIDFILE'" \
         < /dev/null &> "@CMAKE_CURRENT_BINARY_DIR@/test_netopeer_outputs/$SYSREPO_SHM_PREFIX.out"
     sleep 5
 fi
