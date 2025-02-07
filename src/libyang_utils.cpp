@@ -114,10 +114,12 @@ void lyNodesToTree<DfsColl>(DatastoreAccess::Tree& res, DfsColl items, std::opti
 template
 void lyNodesToTree<libyang::Set<libyang::DataNode>>(DatastoreAccess::Tree& res, libyang::Set<libyang::DataNode> items, std::optional<std::string> ignoredXPathPrefix);
 
-DatastoreAccess::Tree rpcOutputToTree(libyang::DataNode output)
+DatastoreAccess::Tree rpcOutputToTree(const std::optional<libyang::DataNode>& output)
 {
     DatastoreAccess::Tree res;
-    lyNodesToTree(res, output.siblings(), joinPaths(output.path(), "/"));
+    if (output) {
+        lyNodesToTree(res, output->siblings(), joinPaths(output->path(), "/"));
+    }
     return res;
 }
 
