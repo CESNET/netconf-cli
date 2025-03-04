@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1e59c03_6fb324f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2025-03-04T07:58:12Z",
+      "side": 1,
+      "message": "The timeout of 30 minutes is short compared to other repos, isn\u0027t it?",
+      "revId": "2087336473f5032afd27fdd040e3378408a4cf03",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
