@@ -20,7 +20,7 @@ For building, one needs:
 * [replxx](https://github.com/AmokHuginnsson/replxx) which provides interactive line prompts
 * [docopt](https://github.com/docopt/docopt.cpp) for CLI option parsing
 * [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) for building
-* optionally, [Doctest](https://github.com/onqtam/doctest/) as a C++ unit test framework
+* optionally, [Doctest](https://github.com/doctest/doctest/) as a C++ unit test framework
 * optionally, [trompeloeil](https://github.com/rollbear/trompeloeil) for mock objects in C++
 * optionally, [sysrepo](https://github.com/sysrepo/sysrepo/) plus the [C++ bindings](https://github.com/sysrepo/sysrepo-cpp) for the local sysrepo backend, and for the comprehensive test suite
 * optionally, [netopeer2](https://github.com/CESNET/netopeer2) for a test suite
