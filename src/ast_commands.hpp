@@ -7,6 +7,7 @@
 */
 #pragma once
 
+#include <boost/type.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/spirit/home/x3/support/ast/position_tagged.hpp>
 #include "ast_path.hpp"
