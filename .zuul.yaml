@@ -34,18 +34,18 @@
             requires: CzechLight-deps-f38-gcc
             required-projects: *projects
             timeout: 1800
-        # - f38-cpp-coverage-diff:
-        #     pre-run: ci/pre.yaml
-        #     voting: false
-        #     timeout: 1800
+        - f38-cpp-coverage-diff:
+            pre-run: ci/pre.yaml
+            voting: false
+            timeout: 1800
         - clang-format:
             voting: false
-        # - f38-gcc-cover-previous:
-        #     pre-run: ci/pre.yaml
-        #     requires: CzechLight-deps-f38-gcc
-        #     required-projects: *projects
-        #     timeout: 1800
-        # - czechlight-clearfog:
-        #     required-projects:
-        #       - CzechLight/br2-external
-        #     requires: CzechLight-br2-build-clearfog
+        - f38-gcc-cover-previous:
+            pre-run: ci/pre.yaml
+            requires: CzechLight-deps-f38-gcc
+            required-projects: *projects
+            timeout: 1800
+        - czechlight-clearfog:
+            required-projects:
+              - CzechLight/br2-external
+            requires: CzechLight-br2-build-clearfog

@@ -84,7 +84,7 @@ if(ENABLE_FULL_TESTS STREQUAL OFF AND ENABLE_SYSREPO_CLI STREQUAL OFF)
     message(STATUS "Skipping sysrepo per configure options")
     set(SYSREPO_FOUND 0)
 else()
-    pkg_check_modules(SYSREPO IMPORTED_TARGET sysrepo-cpp>=5)
+    pkg_check_modules(SYSREPO IMPORTED_TARGET sysrepo-cpp>=6)
 endif()
 
 if(SYSREPO_FOUND)
