@@ -9,7 +9,7 @@
 #pragma once
 
 #include <string>
-#include <sysrepo-cpp/Connection.hpp>
+#include <sysrepo-cpp/Session.hpp>
 #include "datastore_access.hpp"
 
 /*! \class DatastoreAccess

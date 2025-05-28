@@ -10,7 +10,7 @@
 
 #include <memory>
 #include <optional>
-#include <sysrepo-cpp/Connection.hpp>
+#include <sysrepo-cpp/Subscription.hpp>
 #include "datastore_access.hpp"
 
 class YangSchema;
