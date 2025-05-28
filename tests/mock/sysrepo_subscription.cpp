@@ -8,7 +8,7 @@
 
 #include <experimental/iterator>
 #include <sstream>
-#include <sysrepo-cpp/Session.hpp>
+#include <sysrepo-cpp/Changes.hpp>
 #include "sysrepo_subscription.hpp"
 #include "utils.hpp"
 
