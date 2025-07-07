@@ -350,4 +350,25 @@ module example-schema {
             require-instance false;
         }
     }
+
+    container pump {
+      choice control {
+        default disabled;
+
+        leaf disabled {
+          type empty;
+          default "";
+        }
+
+        leaf agc {
+          type int32;
+          mandatory true;
+        }
+
+        leaf manual-current {
+          type int32;
+          mandatory true;
+        }
+      }
+    }
 }

@@ -142,6 +142,12 @@ TEST_CASE("setting/getting values")
 #endif
 
 
+    SECTION("pump bidi")
+    {
+        datastore.deleteItem("/example-schema:pump/disabled");
+        REQUIRE(false);
+    }
+
     SECTION("set leafInt8 to -128")
     {
         REQUIRE_CALL(mockRunning, write(sysrepo::ChangeOperation::Created, "/example-schema:leafInt8", std::nullopt, "-128"s, std::nullopt));
