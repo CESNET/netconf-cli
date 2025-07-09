@@ -269,7 +269,7 @@ struct exec_ : x3::position_tagged {
     `prepare` command.
 
     If the RPC/action has no input parameters, it can be directly execute via
-    `exec` without usgin `prepare`.
+    `exec` without using `prepare`.
 
     Usage:
         /> exec
