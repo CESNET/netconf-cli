@@ -128,8 +128,7 @@ int main(int argc, char* argv[])
         datastore->addSchemaDir(dir);
     }
     for (const auto& schemaFile : args["<schema_file_or_module_name>"].asStringList()) {
-        std::filesystem::path path{schemaFile};
-        if (std::filesystem::exists(path)) {
+        if (auto path = std::filesystem::canonical(schemaFile); std::filesystem::exists(path)) {
             if (std::filesystem::is_regular_file(path)) {
                 datastore->addSchemaDir(path.parent_path());
             }
