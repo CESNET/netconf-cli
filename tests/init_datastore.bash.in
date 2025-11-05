@@ -35,13 +35,29 @@ if [[ "$BACKEND" = "netconf" ]]; then
     pkill -f "${SYSREPO_SHM_PREFIX}_netopeer2-server" || true
 
     NETOPEER2="@NETOPEER2_EXECUTABLE@"
-    # Setup netopeer config
-    "$SYSREPOCFG" --import --datastore=running --format=xml --module=ietf-netconf-server <<< ""
+    # Setup netopeer config and disable NACM
+    "$SYSREPOCFG" --import --datastore=running --format=xml <<EOF
+<nacm xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-acm">
+  <enable-nacm>false</enable-nacm>
+</nacm>
+<netconf-server xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-server">
+  <listen>
+    <endpoints>
+      <endpoint>
+        <name>socket</name>
+        <unix xmlns="urn:cesnet:libnetconf2-netconf-server">
+          <path>${NETOPEER_SOCKET}</path>
+          <socket-permissions>
+            <mode>0600</mode>
+          </socket-permissions>
+        </unix>
+      </endpoint>
+    </endpoints>
+  </listen>
+</netconf-server>
+EOF
 
-    # Disable nacm
-    for datastore in startup running; do
-        "$SYSREPOCFG" --import="@CMAKE_CURRENT_SOURCE_DIR@/tests/disable-nacm.xml" --datastore="$datastore" --format=xml --module=ietf-netconf-acm
-    done
+    "$SYSREPOCFG" --copy-from running -d startup
 
     # I need to run netopeer in the foreground, because I want to get its standard outputs.  However, ctest doesn't like
     # when child processes don't exit and always waits fot them.  The `setsid` command runs a program in a separate
@@ -50,7 +66,7 @@ if [[ "$BACKEND" = "netconf" ]]; then
     # of running `exec` directly. Finally, I redirect its stdout and stderr to a file.
     NETOPEER_PIDFILE="@CMAKE_CURRENT_BINARY_DIR@/test_netopeer_files/$SYSREPO_SHM_PREFIX.pid"
     setsid -f \
-        bash -c "exec -a '${SYSREPO_SHM_PREFIX}_netopeer2-server' '$NETOPEER2' -d -c MSG '-U$NETOPEER_SOCKET' -p'$NETOPEER_PIDFILE'" \
+        bash -c "exec -a '${SYSREPO_SHM_PREFIX}_netopeer2-server' '$NETOPEER2' -d -c MSG -p'$NETOPEER_PIDFILE'" \
         < /dev/null &> "@CMAKE_CURRENT_BINARY_DIR@/test_netopeer_outputs/$SYSREPO_SHM_PREFIX.out"
     sleep 5
 fi

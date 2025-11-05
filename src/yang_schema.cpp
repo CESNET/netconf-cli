@@ -32,7 +32,10 @@ public:
 };
 
 YangSchema::YangSchema()
-    : m_context(std::nullopt, libyang::ContextOptions::DisableSearchDirs | libyang::ContextOptions::SetPrivParsed)
+    : m_context(std::nullopt,
+                libyang::ContextOptions::DisableSearchDirs
+                    | libyang::ContextOptions::SetPrivParsed
+                    | libyang::ContextOptions::CompileObsolete)
 {
 }
 
@@ -50,7 +53,15 @@ void YangSchema::addSchemaString(const char* schema)
 
 void YangSchema::addSchemaDirectory(const std::filesystem::path& directory)
 {
-    m_context.setSearchDir(directory);
+    try {
+        m_context.setSearchDir(directory);
+    } catch (libyang::ErrorWithCode& e) {
+        if (e.code() == libyang::ErrorCode::ItemAlreadyExists) {
+            // ignore this, it happens with libyang v4 and repeated search directories
+        } else {
+            throw;
+        }
+    }
 }
 
 void YangSchema::addSchemaFile(const std::filesystem::path& filename)
