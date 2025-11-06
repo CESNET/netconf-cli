@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fb6c428_0c13f6c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2025-11-06T11:01:36Z",
+      "side": 1,
+      "message": "Looks fine. The -1 from CI is because of the ARM build. I am fine with force overriding this unless you want to do it right (TM).",
+      "revId": "9641ac27f543b9180920c1ba6b0048eda1dbd0c3",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
