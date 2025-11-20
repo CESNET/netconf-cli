@@ -234,7 +234,7 @@ std::vector<ListInstance> SysrepoAccess::listInstances(const std::string& path)
 std::string SysrepoAccess::dump(const DataFormat format) const
 {
     auto root = m_session.getData("/*");
-    auto str = root->printStr(format == DataFormat::Xml ? libyang::DataFormat::XML : libyang::DataFormat::JSON, libyang::PrintFlags::WithSiblings);
+    auto str = root->printStr(format == DataFormat::Xml ? libyang::DataFormat::XML : libyang::DataFormat::JSON, libyang::PrintFlags::Siblings);
     if (!str) {
         return "";
     }

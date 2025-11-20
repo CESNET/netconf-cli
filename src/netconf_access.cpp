@@ -166,7 +166,7 @@ void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move:
 
 void NetconfAccess::doEditFromDataNode(libyang::DataNode dataNode)
 {
-    auto data = dataNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings);
+    auto data = dataNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::Siblings);
     if (m_serverHasNMDA) {
         m_session->editData(targetToDs_set(m_target), *data);
     } else {
@@ -192,7 +192,7 @@ void NetconfAccess::discardChanges()
 DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree& input)
 {
     auto inputNode = treeToRpcInput(m_session->libyangContext(), path, input);
-    auto data = inputNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings);
+    auto data = inputNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::Siblings);
 
     auto output = m_session->rpc_or_action(*data);
     if (!output) {
@@ -238,7 +238,7 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
 
     // Have to use `newParent` in case our wanted list is a nested list. With `newNode` I would only send the inner
     // nested list and not the whole tree.
-    auto instances = m_session->get(nodes.createdParent->printStr(libyang::DataFormat::XML, libyang::PrintFlags::WithSiblings));
+    auto instances = m_session->get(nodes.createdParent->printStr(libyang::DataFormat::XML, libyang::PrintFlags::Siblings));
 
     if (!instances) {
         return res;
@@ -273,7 +273,7 @@ std::string NetconfAccess::dump(const DataFormat format) const
     if (!config) {
         return "";
     }
-    auto str = config->printStr(format == DataFormat::Xml ? libyang::DataFormat::XML : libyang::DataFormat::JSON, libyang::PrintFlags::WithSiblings);
+    auto str = config->printStr(format == DataFormat::Xml ? libyang::DataFormat::XML : libyang::DataFormat::JSON, libyang::PrintFlags::Siblings);
     if (!str) {
         return "";
     }

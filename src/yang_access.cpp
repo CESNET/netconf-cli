@@ -264,7 +264,7 @@ std::string YangAccess::dump(const DataFormat format) const
         return "";
     }
 
-    auto str = m_datastore->firstSibling().printStr(format == DataFormat::Xml ? libyang::DataFormat::XML : libyang::DataFormat::JSON, libyang::PrintFlags::WithSiblings);
+    auto str = m_datastore->firstSibling().printStr(format == DataFormat::Xml ? libyang::DataFormat::XML : libyang::DataFormat::JSON, libyang::PrintFlags::Siblings);
     if (!str) {
         return "";
     }
