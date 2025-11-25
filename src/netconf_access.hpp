@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <boost/asio.hpp>
 #include <libyang-cpp/Context.hpp>
 #include <libnetconf2-cpp/Enum.hpp>
 #include <string>
@@ -57,7 +58,19 @@ private:
 
     bool m_serverHasNMDA;
 
+    mutable std::mutex m_sessionMutex;
     libyang::Context m_context;
     std::unique_ptr<libnetconf::client::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;
+
+    /** @brief Keeps the NETCONF session alive by sending periodic keepalive messages. */
+    struct SessionKeepalive {
+        SessionKeepalive(libnetconf::client::Session* session, std::mutex* sessionMutex);
+        ~SessionKeepalive();
+        void schedule(libnetconf::client::Session* session, std::mutex* sessionMutex);
+
+        boost::asio::io_context m_io;
+        std::thread m_thr;
+        boost::asio::steady_timer m_timer;
+    } m_timeoutTrick;
 };
