@@ -5,6 +5,7 @@
  *
 */
 
+#include <boost/asio.hpp>
 #include <libnetconf2-cpp/netconf-client.hpp>
 #include "libyang_utils.hpp"
 #include "netconf_access.hpp"
@@ -45,6 +46,7 @@ DatastoreAccess::Tree NetconfAccess::getItems(const std::string& path) const
 {
     Tree res;
     auto config = [this, &path] {
+        std::lock_guard lock(m_sessionMutex);
         if (m_serverHasNMDA) {
             return m_session->getData(targetToDs_get(m_target), (path != "/") ? std::optional{path} : std::nullopt);
         }
@@ -67,6 +69,7 @@ NetconfAccess::NetconfAccess(const int source, const int sink)
     , m_schema(std::make_shared<YangSchema>(m_context))
 {
     checkNMDA();
+    initKeepAlive();
 }
 
 NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& session)
@@ -74,6 +77,7 @@ NetconfAccess::NetconfAccess(std::unique_ptr<libnetconf::client::Session>&& sess
     , m_schema(std::make_shared<YangSchema>(m_session->libyangContext()))
 {
     checkNMDA();
+    initKeepAlive();
 }
 
 NetconfAccess::NetconfAccess(const std::string& socketPath)
@@ -85,6 +89,11 @@ NetconfAccess::NetconfAccess(const std::string& socketPath)
     , m_schema(std::make_shared<YangSchema>(m_context))
 {
     checkNMDA();
+    initKeepAlive();
+}
+
+void NetconfAccess::initKeepAlive() {
+    m_keepalive = std::make_unique<SessionKeepalive>(m_session.get(), &m_sessionMutex, m_serverHasNMDA, std::chrono::seconds(60));
 }
 
 void NetconfAccess::checkNMDA()
@@ -167,6 +176,7 @@ void NetconfAccess::moveItem(const std::string& source, std::variant<yang::move:
 void NetconfAccess::doEditFromDataNode(libyang::DataNode dataNode)
 {
     auto data = dataNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::Siblings);
+    std::lock_guard lock(m_sessionMutex);
     if (m_serverHasNMDA) {
         m_session->editData(targetToDs_set(m_target), *data);
     } else {
@@ -181,16 +191,19 @@ void NetconfAccess::doEditFromDataNode(libyang::DataNode dataNode)
 
 void NetconfAccess::commitChanges()
 {
+    std::lock_guard lock(m_sessionMutex);
     m_session->commit();
 }
 
 void NetconfAccess::discardChanges()
 {
+    std::lock_guard lock(m_sessionMutex);
     m_session->discard();
 }
 
 DatastoreAccess::Tree NetconfAccess::execute(const std::string& path, const Tree& input)
 {
+    std::lock_guard lock(m_sessionMutex);
     auto inputNode = treeToRpcInput(m_session->libyangContext(), path, input);
     auto data = inputNode.printStr(libyang::DataFormat::XML, libyang::PrintFlags::Siblings);
 
@@ -214,6 +227,7 @@ libnetconf::Datastore toNcDatastore(Datastore datastore)
 
 void NetconfAccess::copyConfig(const Datastore source, const Datastore destination)
 {
+    std::lock_guard lock(m_sessionMutex);
     m_session->copyConfig(toNcDatastore(source), toNcDatastore(destination));
 }
 
@@ -225,6 +239,7 @@ std::shared_ptr<Schema> NetconfAccess::schema()
 std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
 {
     std::vector<ListInstance> res;
+    std::lock_guard lock(m_sessionMutex);
     auto keys = m_session->libyangContext().findXPath(path).front().asList().keys();
     auto nodes = m_session->libyangContext().newPath2(path, std::nullopt, libyang::CreationOptions::Opaque);
 
@@ -269,6 +284,7 @@ std::vector<ListInstance> NetconfAccess::listInstances(const std::string& path)
 
 std::string NetconfAccess::dump(const DataFormat format) const
 {
+    std::lock_guard lock(m_sessionMutex);
     auto config = m_session->get();
     if (!config) {
         return "";
@@ -279,4 +295,30 @@ std::string NetconfAccess::dump(const DataFormat format) const
     }
 
     return *str;
+}
+
+NetconfAccess::SessionKeepalive::~SessionKeepalive()
+{
+    m_timer.cancel();
+    m_io.stop();
+    m_thr.join();
+}
+
+void NetconfAccess::SessionKeepalive::schedule(libnetconf::client::Session* session, std::mutex* mutex)
+{
+    m_timer.expires_after(m_interval);
+    m_timer.async_wait([this, session, mutex](const boost::system::error_code& ec) {
+        if (ec.failed()) {
+            return;
+        }
+
+        constexpr auto path = "/ietf-yang-library:yang-library/content-id";
+        std::lock_guard lock(*mutex);
+        if (m_serverHasNMDA) {
+            session->getData(libnetconf::NmdaDatastore::Operational, path);
+        } else {
+            session->get(path);
+        }
+        schedule(session, mutex);
+    });
 }

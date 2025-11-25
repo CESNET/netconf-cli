@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <boost/asio.hpp>
 #include <libyang-cpp/Context.hpp>
 #include <libnetconf2-cpp/Enum.hpp>
 #include <string>
@@ -54,10 +55,36 @@ private:
     void doEditFromDataNode(libyang::DataNode dataNode);
 
     void checkNMDA();
+    void initKeepAlive();
 
     bool m_serverHasNMDA;
 
+    mutable std::mutex m_sessionMutex;
     libyang::Context m_context;
     std::unique_ptr<libnetconf::client::Session> m_session;
     std::shared_ptr<YangSchema> m_schema;
+
+    /** @brief Keeps the NETCONF session alive by sending periodic keepalive messages. */
+    struct SessionKeepalive {
+        template <class Duration>
+        SessionKeepalive(libnetconf::client::Session* session, std::mutex* sessionMutex, bool serverHasNMDA, const Duration& interval)
+            : m_thr([this]() { m_io.run(); })
+            , m_timer(m_io)
+            , m_serverHasNMDA(serverHasNMDA)
+            , m_interval(std::chrono::duration_cast<decltype(m_interval)>(interval))
+        {
+            schedule(session, sessionMutex);
+        }
+
+        ~SessionKeepalive();
+        void schedule(libnetconf::client::Session* session, std::mutex* sessionMutex);
+
+        boost::asio::io_context m_io;
+        std::thread m_thr;
+        boost::asio::steady_timer m_timer;
+        bool m_serverHasNMDA;
+        std::chrono::milliseconds m_interval;
+    };
+
+    std::unique_ptr<SessionKeepalive> m_keepalive;
 };
