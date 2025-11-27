@@ -24,6 +24,30 @@
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "861c9031_74863f84",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2025-11-27T10:19:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cef4cfc4_f158c104",
+      "range": {
+        "startLine": 312,
+        "startChar": 26,
+        "endLine": 312,
+        "endChar": 50
+      },
+      "revId": "5ad9db7a7588ab273ce5a91f668eb6ef20ef0609",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d85e3273_508fff3b",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-11-26T11:45:33Z",
       "side": 1,
       "message": "This is a bit too much data to fetch, IMHO. let\u0027s use getData to read from the operational DS, and let\u0027s only ask for `/ietf-yang-library:yang-library/content-id`. This will fail on old NETCONF servers (which do not implement the ietf-yang-library module), but I don\u0027t really care that much about them right now.",
+      "revId": "5ad9db7a7588ab273ce5a91f668eb6ef20ef0609",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a4f21ed_f4492c3c",
+        "filename": "src/netconf_access.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2025-11-27T10:19:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d85e3273_508fff3b",
       "revId": "5ad9db7a7588ab273ce5a91f668eb6ef20ef0609",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
