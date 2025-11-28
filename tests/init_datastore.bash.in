@@ -46,7 +46,7 @@ if [[ "$BACKEND" = "netconf" ]]; then
       <endpoint>
         <name>socket</name>
         <unix xmlns="urn:cesnet:libnetconf2-netconf-server">
-          <path>${NETOPEER_SOCKET}</path>
+          <hidden-path/>
           <socket-permissions>
             <mode>0600</mode>
           </socket-permissions>
@@ -66,7 +66,11 @@ EOF
     # of running `exec` directly. Finally, I redirect its stdout and stderr to a file.
     NETOPEER_PIDFILE="@CMAKE_CURRENT_BINARY_DIR@/test_netopeer_files/$SYSREPO_SHM_PREFIX.pid"
     setsid -f \
-        bash -c "exec -a '${SYSREPO_SHM_PREFIX}_netopeer2-server' '$NETOPEER2' -d -c MSG -p'$NETOPEER_PIDFILE'" \
+        bash -c "exec -a '${SYSREPO_SHM_PREFIX}_netopeer2-server' '$NETOPEER2' -d -c MSG '-Usocket:$NETOPEER_SOCKET' -p'$NETOPEER_PIDFILE'" \
         < /dev/null &> "@CMAKE_CURRENT_BINARY_DIR@/test_netopeer_outputs/$SYSREPO_SHM_PREFIX.out"
     sleep 5
+    if [[ ! -f ${NETOPEER_PIDFILE} ]]; then
+        echo "netopeer2-server died too early"
+        exit 1
+    fi
 fi

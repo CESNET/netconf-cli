@@ -79,6 +79,8 @@ endif()
 
 pkg_check_modules(LIBYANG-CPP REQUIRED IMPORTED_TARGET libyang-cpp>=6)
 pkg_check_modules(LIBNETCONF2-CPP REQUIRED IMPORTED_TARGET libnetconf2-cpp>=4)
+# we require a new enough YANG layout
+pkg_check_modules(LIBNETCONF2 REQUIRED IMPORTED_TARGET libnetconf2>=4.1.0)
 
 if(ENABLE_FULL_TESTS STREQUAL OFF AND ENABLE_SYSREPO_CLI STREQUAL OFF)
     message(STATUS "Skipping sysrepo per configure options")
