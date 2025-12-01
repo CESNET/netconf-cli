@@ -16,6 +16,23 @@
       "message": "recheck",
       "revId": "93890f4c990a7bef109aff13329cc0ad3d81288e",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cec74fda_0d37dc7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2025-12-01T12:52:53Z",
+      "side": 1,
+      "message": "The arm build failed because of new modules",
+      "revId": "93890f4c990a7bef109aff13329cc0ad3d81288e",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
