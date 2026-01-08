@@ -1,19 +1,14 @@
 - hosts: all
   tasks:
-    - name: install pcre2
+    - name: install deps
       package:
-        name: pcre2-devel
+        name: "{{ item }}"
         state: present
       become: true
-
-    - name: install PAM
-      package:
-        name: pam-devel
-        state: present
-      become: true
-
-    - name: install docopt-cpp
-      package:
-        name: docopt-cpp-devel
-        state: present
-      become: true
+      loop:
+        - pcre2-devel
+        - xxhash-devel
+        - libcurl-devel
+        - openssl-perl
+        - pam-devel
+        - docopt-cpp-devel
