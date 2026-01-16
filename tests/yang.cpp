@@ -868,6 +868,7 @@ module schema-with-revision {
                         {"example-schema"s, "leafNoValidIdent"},
                         {"example-schema"s, "iid-valid"},
                         {"example-schema"s, "iid-relaxed"},
+                        {"yang"s, "date-and-time"},
                     };
                 }
 
