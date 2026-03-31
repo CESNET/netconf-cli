@@ -15,7 +15,7 @@
 #include "utils.hpp"
 #include "yang_schema.hpp"
 
-const auto OPERATION_TIMEOUT_MS = std::chrono::milliseconds{1000};
+const auto OPERATION_TIMEOUT_MS = std::chrono::milliseconds{10'000};
 
 SysrepoAccess::~SysrepoAccess() = default;
 
