@@ -18,6 +18,7 @@
 #include "yang_schema.hpp"
 #if defined(SYSREPO_CLI)
 #include "sysrepo_access.hpp"
+#include <sysrepo-cpp/utils/utils.hpp>
 #define PROGRAM_NAME "sysrepo-cli"
 static const auto usage = R"(CLI interface to sysrepo
 
@@ -114,6 +115,7 @@ int main(int argc, char* argv[])
     auto datastoreTargetString = args["-d"] ? args["-d"].asString() : std::string("operational");
 
 #if defined(SYSREPO_CLI)
+    sysrepo::setLogLevelStderr(sysrepo::LogLevel::Warning);
     auto datastore = std::make_shared<SysrepoAccess>();
     std::cout << "Connected to sysrepo [datastore target: " << datastoreTargetString << "]" << std::endl;
 #elif defined(YANG_CLI)
