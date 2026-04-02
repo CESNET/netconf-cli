@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "448329ed_9c296145",
+        "filename": "src/cli.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2026-04-02T06:30:35Z",
+      "side": 1,
+      "message": "This means the error gets printed on my console, right? This will get ugly but we dont have other way, now.",
+      "revId": "678d460e90f764c480a2ea183c7c182c6f562968",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
