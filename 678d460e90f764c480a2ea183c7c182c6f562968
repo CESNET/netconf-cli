@@ -51,6 +51,24 @@
       "parentUuid": "448329ed_9c296145",
       "revId": "678d460e90f764c480a2ea183c7c182c6f562968",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "655c0a84_eca1877b",
+        "filename": "src/cli.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-02T09:30:55Z",
+      "side": 1,
+      "message": "Yeah, printing the same error twice is a bummer. Once I update sysrepo and check this particular error condition which prompted this change, we can probably roll it back, but for now, it\u0027s a useful thing to at least not swallow real errors...",
+      "parentUuid": "fed7ec21_5dcf440d",
+      "revId": "678d460e90f764c480a2ea183c7c182c6f562968",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
