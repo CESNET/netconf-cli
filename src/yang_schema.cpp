@@ -32,8 +32,8 @@ public:
 };
 
 YangSchema::YangSchema()
-    : m_context(std::nullopt,
-                libyang::ContextOptions::DisableSearchDirs
+    : m_context(libyang::internalModuleDirectory(),
+                libyang::ContextOptions::DisableSearchCwd
                     | libyang::ContextOptions::SetPrivParsed
                     | libyang::ContextOptions::CompileObsolete)
 {

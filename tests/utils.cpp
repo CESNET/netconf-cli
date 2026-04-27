@@ -276,7 +276,7 @@ const auto data = R"(
 
 TEST_CASE("libyang_utils")
 {
-    libyang::Context ctx{std::nullopt, libyang::ContextOptions::DisableSearchCwd};
+    libyang::Context ctx{libyang::internalModuleDirectory(), libyang::ContextOptions::DisableSearchCwd};
     ctx.parseModule(schema, libyang::SchemaFormat::YANG);
     auto dataNode = ctx.parseData(data, libyang::DataFormat::JSON, std::nullopt, libyang::ValidationOptions::Present);
 
