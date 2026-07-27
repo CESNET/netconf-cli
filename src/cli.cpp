@@ -69,6 +69,8 @@ Options:
 #include "cli-netconf.hpp"
 #include "netconf_access.hpp"
 #define PROGRAM_NAME "netconf-cli"
+#include <sys/select.h>
+#include <unistd.h>
 #else
 #error "Unknown CLI backend"
 #endif
@@ -170,7 +172,7 @@ int main(int argc, char* argv[])
     }
 
     SshProcess process;
-    std::jthread processWatcher;
+    std::jthread processWatcher, stderrPump;
     std::shared_ptr<NetconfAccess> datastore;
 
     if (args.at("--socket").asBool()) {
@@ -192,6 +194,28 @@ int main(int argc, char* argv[])
                 lineEditor.emulate_key_press(replxx::Replxx::KEY::control('U'));
                 lineEditor.emulate_key_press(replxx::Replxx::KEY::control('K'));
                 lineEditor.emulate_key_press(replxx::Replxx::KEY::control('D'));
+            }};
+            // The child's stderr cannot share our stderr directly, so let's pump its content ASAP.
+            // I tried to do some nice line-based printing here, along with a pretty "[ssh]: " prefix,
+            // but that ended up truncating Dropbear's interactive prompts for hostkey confirmation.
+            // Sorry, we apprently cannot have nice things.
+            stderrPump = std::jthread{[&process] () {
+                fd_set rfds;
+                FD_ZERO(&rfds);
+                FD_SET(process.std_err.native_source(), &rfds);
+                while (process.process.running()) {
+                    select(process.std_err.native_source() + 1, &rfds, nullptr, nullptr, nullptr);
+                    std::string buf = std::string(666, '\0');
+                    auto len = read(process.std_err.native_source(), buf.data(), buf.size());
+                    if (len == 0) {
+                        // EOF
+                        break;
+                    }
+                    if (len > 0) {
+                        buf = buf.substr(0, len);
+                        std::cerr << buf;
+                    }
+                }
             }};
             datastore = std::make_shared<NetconfAccess>(process.std_out.native_source(), process.std_in.native_sink());
         } catch (std::runtime_error& ex) {

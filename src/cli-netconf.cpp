@@ -15,8 +15,7 @@
 SshProcess sshProcess(const std::string& target, const std::string& port)
 {
     namespace bp = boost::process;
-    bp::pipe in;
-    bp::pipe out;
+    bp::pipe in, out, err;
     auto sshPath = bp::search_path("ssh");
     if (sshPath.empty()) {
         throw std::runtime_error("ssh not found in PATH.");
@@ -30,7 +29,7 @@ SshProcess sshProcess(const std::string& target, const std::string& port)
             port,
             "-s",
             "netconf",
-            bp::std_out > out, bp::std_in < in);
+            bp::std_out > out, bp::std_in < in, bp::std_err > err);
 
-    return {.process = std::move(ssh), .std_in = std::move(in), .std_out = std::move(out)};
+    return {.process = std::move(ssh), .std_in = std::move(in), .std_out = std::move(out), .std_err = std::move(err)};
 }

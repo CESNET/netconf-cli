@@ -22,5 +22,6 @@ struct SshProcess {
     boost::process::child process;
     boost::process::pipe std_in;
     boost::process::pipe std_out;
+    boost::process::pipe std_err;
 };
 SshProcess sshProcess(const std::string& target, const std::string& port);
