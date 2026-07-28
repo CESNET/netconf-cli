@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d98cb76a_e5154017",
+        "filename": "src/cli.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000070
+      },
+      "writtenOn": "2026-07-28T09:13:53Z",
+      "side": 1,
+      "message": "Shouldn\u0027t the error value be handled somehow?",
+      "range": {
+        "startLine": 207,
+        "startChar": 20,
+        "endLine": 207,
+        "endChar": 26
+      },
+      "revId": "8d5a9a5bfc20e8918a206d57aa9674c72ffb4407",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    }
+  ]
+}
