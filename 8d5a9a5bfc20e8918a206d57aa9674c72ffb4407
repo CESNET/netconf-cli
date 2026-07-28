@@ -22,6 +22,30 @@
       },
       "revId": "8d5a9a5bfc20e8918a206d57aa9674c72ffb4407",
       "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a66fd99_a1a0a8c9",
+        "filename": "src/cli.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-28T09:38:56Z",
+      "side": 1,
+      "message": "OK, now it\u0027s like this:\n```\n$ ./netconf-cli dwdm@10.0.0.112\nterminate called after throwing an instance of \u0027std::system_error\u0027\n  what():  read() from ssh\u0027s stderr failed: Bad file descriptor\nAborted                    ./netconf-cli dwdm@10.0.0.112\n```",
+      "parentUuid": "d98cb76a_e5154017",
+      "range": {
+        "startLine": 207,
+        "startChar": 20,
+        "endLine": 207,
+        "endChar": 26
+      },
+      "revId": "8d5a9a5bfc20e8918a206d57aa9674c72ffb4407",
+      "serverId": "e32f8df8-3db0-4f76-a6c6-fe9d6e69dd68"
     }
   ]
 }
